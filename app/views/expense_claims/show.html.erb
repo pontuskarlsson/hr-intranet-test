@@ -1,0 +1,47 @@
+<h2><%= @expense_claim.description %></h2>
+
+<table class="js_receipts_table">
+  <tr>
+    <th>From</th>
+    <th>Receipt Date</th>
+    <th>Receipt Registered</th>
+    <th>Items</th>
+    <th>Status</th>
+    <th>Amount</th>
+  </tr>
+  <tr class="js_receipt_template" style="display: none;">
+    <td>{{ (status === 'Not-Submitted' ? '<a href="<%= expense_claim_receipts_path(@expense_claim) %>/'+id+'">'+contact_name+'</a>' : contact_name) }}</td>
+    <td>{{ (function(){ var d = new Date(date); return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/') })() }}</td>
+    <td>{{ (function(){ var d = new Date(created_at); return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/') })() }}</td>
+    <td>{{no_of_items}}</td>
+    <td>{{status}}</td>
+    <td>{{total}} HKD</td>
+  </tr>
+  <tr class="js_no_receipt_node">
+    <td colspan="6" class="italic">No Receipts registered.</td>
+  </tr>
+</table>
+
+<p><%= link_to 'Add Receipt', new_expense_claim_receipt_path(@expense_claim), class: 'button small' %></p>
+<% if @expense_claim.status == 'Not-Submitted' %>
+  <% if @expense_claim.submittable? %>
+    <p><%= link_to 'Submit Expense Claim', submit_expense_claim_path(@expense_claim), class: 'button round', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %></p>
+  <% else %>
+    <p><%= link_to 'Submit Expense Claim', '#', class: 'button round disabled' %></p>
+  <% end %>
+<% else %>
+  <p><%= link_to 'Submitted', '#', class: 'button round disabled' %></p>
+<% end %>
+
+
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'expense_claims' %>
+
+  <%= javascript_tag do %>
+    $(function(){
+      loadReceipts(<%= @expense_claim.receipts.to_json(methods: [:no_of_items, :contact_name]).html_safe %>);
+    });
+  <% end %>
+
+<% end %>

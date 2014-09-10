@@ -1,0 +1,109 @@
+<h1>Add Receipt</h1>
+
+<%= form_for @receipt, url: expense_claim_receipts_path(@expense_claim) do |f| %>
+
+  <div class="row">
+    <div class="large-8 columns">
+
+      <div class="row">
+        <div class="medium-6 columns">
+          <label>From
+            <%= f.text_field :contact_name, class: 'js_contact_text_field' %>
+          </label>
+        </div>
+
+        <div class="medium-3 columns">
+          <label>Date
+            <%= f.text_field :date %>
+          </label>
+        </div>
+
+        <div class="medium-3 columns">
+          <label>Reference
+            <%= f.text_field :reference %>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="medium-5 columns bold">
+      Description
+    </div>
+    <div class="medium-2 columns bold">
+      Account
+    </div>
+    <div class="medium-2 columns bold">
+      Quantity
+    </div>
+    <div class="medium-3 columns bold">
+      Unit Price
+    </div>
+  </div>
+
+  <%- accounts = Account.all -%>
+  <%- selected_account = accounts.detect { |acc| acc.name['Travel Expense'] } -%>
+  <%- f.object.line_items.any? || f.object.line_items.build -%>
+  <%= f.fields_for :line_items do |line_items_form| %>
+    <div class="row">
+      <div class="medium-5 columns">
+        <%= line_items_form.text_field :description %>
+      </div>
+      <div class="medium-2 columns">
+        <%= line_items_form.select :account_id, options_from_collection_for_select(accounts, :id, :code_and_name, line_items_form.object.account_id.present? ? line_items_form.object.account_id : selected_account.try(:id)) %>
+      </div>
+      <div class="medium-2 columns">
+        <%= line_items_form.text_field :quantity %>
+      </div>
+      <div class="medium-2 columns">
+        <%= line_items_form.text_field :unit_amount %>
+      </div>
+      <div class="medium-1 columns">
+        <%= link_to 'Remove', '#', class: 'js_remove_line_item' %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.fields_for :line_items, f.object.line_items.build do |line_items_form| %>
+    <div class="row js_line_item_tmpl" style="display: none;">
+      <div class="medium-5 columns">
+        <%= line_items_form.text_field :description %>
+      </div>
+      <div class="medium-2 columns">
+        <%= line_items_form.select :account_id, options_from_collection_for_select(accounts, :id, :code_and_name) %>
+      </div>
+      <div class="medium-2 columns">
+        <%= line_items_form.text_field :quantity %>
+      </div>
+      <div class="medium-2 columns">
+        <%= line_items_form.text_field :unit_amount %>
+      </div>
+      <div class="medium-1 columns">
+        <%= link_to 'Remove', '#', class: 'js_remove_line_item' %>
+      </div>
+    </div>
+  <% end %>
+
+  <p class="js_new_line_anchor"><%= link_to 'Add a new line', '#', class: 'button js_add_line_item' %></p>
+
+  <p><%= f.submit 'Save', class: 'button round' %></p>
+
+<% end %>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'receipts' %>
+
+  <%= javascript_tag do %>
+    $(function(){
+      $('.js_contact_text_field').autocomplete({
+        source: <%= Contact.select(:name).map(&:name).to_json.html_safe %>
+      });
+    });
+  <% end %>
+<% end %>

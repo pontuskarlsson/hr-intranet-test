@@ -1,0 +1,46 @@
+module XeroClient
+
+  YOUR_OAUTH_PATH = File.join(Rails.root, 'config', 'xero.yml')
+  YOUR_OAUTH_CONSUMER_KEY = ENV['XERO_CONSUMER_KEY'] || YAML.load_file(YOUR_OAUTH_PATH)[Rails.env]['consumer_key']
+  YOUR_OAUTH_CONSUMER_SECRET = ENV['XERO_CONSUMER_SECRET'] || YAML.load_file(YOUR_OAUTH_PATH)[Rails.env]['consumer_secret']
+
+  class << self
+
+    def client
+      pem_path = File.join(Rails.root, '.pem', 'privatekey.pem')
+      if File.exist?(pem_path)
+        Xeroizer::PrivateApplication.new(YOUR_OAUTH_CONSUMER_KEY, YOUR_OAUTH_CONSUMER_SECRET, pem_path)
+      else
+        raise StandardError('Pem File missing')
+      end
+    end
+
+
+    def sync_accounts
+      begin
+        client.Account.all(where: { show_in_expense_claims: true }).each do |xero_account|
+          account = ::Account.find_or_initialize_by_guid(xero_account.account_id)
+          account.code = xero_account.code
+          account.name = xero_account.name
+          account.save!
+        end
+      rescue StandardError => e
+        binding.pry if binding.respond_to?(:pry)
+      end
+    end
+
+    def sync_contacts
+      begin
+        client.Contact.all.each do |xero_contact|
+          contact = ::Contact.find_or_initialize_by_guid(xero_contact.contact_id)
+          contact.name = xero_contact.name
+          contact.save!
+        end
+      rescue StandardError => e
+        binding.pry if binding.respond_to?(:pry)
+      end
+    end
+
+  end
+
+end

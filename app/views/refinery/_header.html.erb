@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="medium-6 columns text-left t1 p1">
+    <a href="/"><img class="header-logo" src="/assets/logo.png"/></a>
+  </div>
+  <div class="medium-6 columns text-right">
+    <a href="https://www.facebook.com/happyrabbitlimited" class="social-media facebook"></a>
+    <a href="https://twitter.com/happyrabbitltd" class="social-media twitter"></a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns">
+    <div class="contain-to-grid">
+      <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+          <li class="name"></li>
+          <li class="toggle-topbar menu-icon"><a href="#"></a></li>
+        </ul>
+
+        <!-- Left Nav Section -->
+        <section class="top-bar-section">
+          <ul class="left">
+            <li><a href="/"><img class="header-logo" src="/assets/home.png"/></a></li>
+            <% header_menu_items.items.each do |item| %>
+              <li><%= link_to item.title, refinery.url_for(item.url) %></li>
+            <% end %>
+          </ul>
+
+          <ul class="right">
+            <% if refinery_user_signed_in? %>
+              <li class="has-dropdown">
+                <a href="#"><%= current_refinery_user.full_name.present? ? current_refinery_user.full_name : current_refinery_user.email %></a>
+                <ul class="dropdown">
+                  <li><%= link_to 'SIGN OUT', destroy_session_path('refinery_user'), method: 'delete' %></li>
+                </ul>
+              </li>
+            <% else %>
+              <li class="has-form">
+                <%= link_to 'SIGN IN', new_session_path('refinery_user'), class: 'button radius' %>
+              </li>
+            <% end %>
+          </ul>
+        </section>
+
+
+      </nav>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<% if content_for? :before_javascript_libraries %>
+  <% Refinery.deprecate "content_for :before_javascript_libraries", :when => '2.2', :replacement => "content_for :javascripts" %>
+  <% content_for :javascripts, yield(:before_javascript_libraries) %>
+<% end %>
+
+<% if content_for? :javascript_libraries %>
+  <% Refinery.deprecate "content_for :javascript_libraries", :when => '2.2', :replacement => "content_for :javascripts" %>
+  <% content_for :javascripts, yield(:javascript_libraries) %>
+<% end %>
+
+<% if content_for? :after_javascript_libraries %>
+  <% Refinery.deprecate "content_for :after_javascript_libraries", :when => '2.2', :replacement => "content_for :javascripts" %>
+  <% content_for :javascripts, yield(:after_javascript_libraries) %>
+<% end %>
+
+<%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js' %>
+<%= javascript_include_tag 'application' %>
+<%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js' %>
+<%= yield :javascripts -%>

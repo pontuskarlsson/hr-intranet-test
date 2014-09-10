@@ -1,0 +1,27 @@
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/**/*
+tmp/*
+.idea
+config/database.yml
+config/twitter.yml
+config/facebook.yml
+config/xero.yml
+config/config.yml
+config/s3.yml
+ext/exports/templates/*
+Guardfile
+.vagrant
+Vagrantfile
+.sass-cache/
+.env
+public/system
+
+# Public Cache
+public/assets
+public/refinery/*
+
+# Vendor Cache
+vendor/cache
+.pem/*

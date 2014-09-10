@@ -1,0 +1,163 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require refinery/formatting
+ *= require refinery/theme
+ *= require_self
+ *= require foundation_and_overrides
+
+ *= require_tree .
+ */
+
+#page {
+    background-color: #fff;
+}
+
+
+/* HEADER */
+a.social-media {
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+
+    margin: 8px;
+
+    background-image: image-url('social-media.png');
+
+    &.facebook {
+        background-position: 0 0;
+        &:hover { background-position: 0 -48px; }
+    }
+    &.twitter {
+        background-position: -48px 0;
+        &:hover { background-position: -48px -48px; }
+    }
+    &.instagram {
+        background-position: -96px 0;
+        &:hover { background-position: -96px -48px; }
+    }
+}
+
+
+/* CONTENT */
+section.page-part {
+    margin: 0.5rem;
+    padding: 0.5rem;
+
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+
+    .page-part-header {
+        margin: -0.5rem -0.5rem 0.5rem -0.5rem;
+        padding: 0.2rem;
+        background-color: #ccc;
+    }
+}
+
+
+/* Home */
+.home-orbit {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    /* Makes sure that only the first slide is visible before the orbit is loaded */
+    &:not(.orbit-slides-container) {
+        li:not(:first-child) {
+            display: none;
+        }
+    }
+}
+
+.orbit-timer {
+    display: none;
+}
+
+.orbit-bullets-container {
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+    width: 100%;
+}
+
+ul.latest-news {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li:not(:last-child) {
+        border-bottom: 2px solid #ccc;
+    }
+}
+
+ul.upcoming-events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li:not(:last-child) {
+        border-bottom: 2px solid #ccc;
+    }
+
+    table {
+        border: 0;
+    }
+
+    .event-date {
+        width: 25%;
+        vertical-align: middle;
+
+        .event-day {
+            display: block;
+            font-size: 3rem;
+            line-height: 1;
+            color: #666;
+        }
+
+        .event-month {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+    }
+    .event-description {
+        width: 75%;
+        vertical-align: middle;
+    }
+}
+
+
+/* Employees */
+.employees {
+    padding: 1rem;
+
+    .employee {
+        height: 8rem;
+        padding: 1rem;
+
+        background-color: #eee;
+
+        .profile-picture {
+            float: left;
+            margin-right: 0.5rem;
+
+            width: 6rem;
+            height: 6rem;
+        }
+
+        p {
+            color: #666;
+            margin: 0;
+            font-size: 0.8rem;
+        }
+    }
+}
