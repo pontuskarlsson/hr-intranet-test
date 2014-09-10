@@ -90,8 +90,31 @@
   <div class="medium-4 columns">
 
     <!-- Right Side Column -->
-    <a class="twitter-timeline" href="https://twitter.com/happyrabbitltd" data-widget-id="395005698821455872">Tweets by @happyrabbitltd</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <section class="page-part">
+      <div class="page-part-header">
+        EMPLOYEE FOCUS
+      </div>
+
+      <%- user = Refinery::User.random.first -%>
+      <% if user.profile_image.present? %>
+        <%= image_tag(user.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
+      <% else %>
+        <%= image_tag('user_unknown.png', class: 'profile-picture') %>
+      <% end %>
+      <h5>
+        <%= user.full_name %><br />
+        <%= user.title.upcase %><br />
+        <%= mail_to user.email %>
+      </h5>
+    </section>
+
+    <section class="page-part">
+      <div class="page-part-header">
+        TWITTER
+      </div>
+      <a class="twitter-timeline" href="https://twitter.com/happyrabbitltd" data-widget-id="395005698821455872">Tweets by @happyrabbitltd</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </section>
 
   </div>
 </div>
