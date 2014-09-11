@@ -30,9 +30,10 @@ module Refinery
     # :login is a virtual attribute for authenticating by either username or email
     # This is in addition to a real persisted field like 'username'
     attr_accessor :login
-    attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :plugins, :login, :full_name, :title, :profile_image_id
+    attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :plugins, :login, :full_name, :title, :profile_image_id, :xero_guid
 
     validates :username, :presence => true, :uniqueness => true
+    validates :xero_guid, uniqueness: true, allow_blank: true
     before_validation :downcase_username, :strip_username
 
     class << self

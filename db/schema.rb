@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140910092817) do
+ActiveRecord::Schema.define(:version => 20140911024542) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -363,9 +363,9 @@ ActiveRecord::Schema.define(:version => 20140910092817) do
   add_index "refinery_user_plugins", ["user_id", "name"], :name => "index_refinery_user_plugins_on_user_id_and_name", :unique => true
 
   create_table "refinery_users", :force => true do |t|
-    t.string   "username",               :null => false
-    t.string   "email",                  :null => false
-    t.string   "encrypted_password",     :null => false
+    t.string   "username",                               :null => false
+    t.string   "email",                                  :null => false
+    t.string   "encrypted_password",                     :null => false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -374,12 +374,13 @@ ActiveRecord::Schema.define(:version => 20140910092817) do
     t.datetime "remember_created_at"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "slug"
     t.string   "title"
     t.string   "full_name"
     t.integer  "profile_image_id"
+    t.string   "xero_guid",              :default => "", :null => false
   end
 
   add_index "refinery_users", ["id"], :name => "index_refinery_users_on_id"

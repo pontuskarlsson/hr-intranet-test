@@ -11,6 +11,8 @@ class ReceiptsController < ApplicationController
     @receipt.user = @expense_claim.user
     @receipt.total = @receipt.line_items.inject(0) { |sum, li| sum += li.line_total }
     if @receipt.save
+      @expense_claim.total = @expense_claim.receipts(true).inject(0) { |sum, rec| sum += rec.total }
+      @expense_claim.save
       redirect_to expense_claim_path(@expense_claim)
     else
       render action: :new

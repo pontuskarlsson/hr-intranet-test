@@ -1,5 +1,7 @@
 class Receipt < ActiveRecord::Base
-  STATUSES = %w(Not-Submitted)
+  STATUS_NOT_SUBMITTED  = 'Not-Submitted'
+  STATUS_SUBMITTED      = 'Submitted'
+  STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED]
 
   belongs_to :expense_claim
   belongs_to :user,     class_name: 'Refinery::User'

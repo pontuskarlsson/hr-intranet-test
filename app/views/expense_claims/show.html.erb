@@ -25,7 +25,9 @@
 <p><%= link_to 'Add Receipt', new_expense_claim_receipt_path(@expense_claim), class: 'button small' %></p>
 <% if @expense_claim.status == 'Not-Submitted' %>
   <% if @expense_claim.submittable? %>
-    <p><%= link_to 'Submit Expense Claim', submit_expense_claim_path(@expense_claim), class: 'button round', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %></p>
+    <%= form_tag submit_expense_claim_path(@expense_claim) do %>
+      <p><%= submit_tag 'Submit Expense Claim', class: 'button round', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %></p>
+    <% end %>
   <% else %>
     <p><%= link_to 'Submit Expense Claim', '#', class: 'button round disabled' %></p>
   <% end %>
@@ -41,6 +43,11 @@
   <%= javascript_tag do %>
     $(function(){
       loadReceipts(<%= @expense_claim.receipts.to_json(methods: [:no_of_items, :contact_name]).html_safe %>);
+
+      $('body').on('click', '.js_submit_expense_claim', function(){
+        console.log('here');
+        //$(this).parents('form').first().submit()
+      });
     });
   <% end %>
 

@@ -6,6 +6,8 @@ module XeroClient
 
   class << self
 
+    # Note! This method returns a new instance everytime it is called, so only call once and store
+    # the instance in a variable until the batch of operations is done
     def client
       pem_path = File.join(Rails.root, '.pem', 'privatekey.pem')
       if File.exist?(pem_path)

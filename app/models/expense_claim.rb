@@ -1,5 +1,7 @@
 class ExpenseClaim < ActiveRecord::Base
-  STATUSES = %w(Not-Submitted)
+  STATUS_NOT_SUBMITTED  = 'Not-Submitted'
+  STATUS_SUBMITTED      = 'Submitted'
+  STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED]
 
   belongs_to :user, class_name: 'Refinery::User'
   has_many :receipts,   dependent: :destroy
@@ -14,7 +16,7 @@ class ExpenseClaim < ActiveRecord::Base
   scope :submitted, where("#{table_name}.guid <> ''")
 
   def submittable?
-    status == 'Not-Submitted' and receipts.any?
+    status == 'Not-Submitted' and receipts.any? && user.try(:xero_guid).present?
   end
 
 end

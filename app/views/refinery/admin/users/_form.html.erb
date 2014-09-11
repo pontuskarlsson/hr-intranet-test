@@ -47,6 +47,11 @@
     <%= f.label :password_confirmation %>
     <%= f.password_field :password_confirmation, :autocomplete => 'off' %>
   </div>
+  <div class='field'>
+    <%= f.label :xero_guid %>
+    <%= f.text_field :xero_guid %>
+  </div>
+
   <div class='field plugin_access'>
     <span class='label_with_help'>
       <%= f.label :plugin_access, t('.plugin_access'), :class => "title_label" %>
