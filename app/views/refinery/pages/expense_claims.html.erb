@@ -1,6 +1,6 @@
-<p><%= link_to 'Add Expense Claim', main_app.new_expense_claim_path, class: 'button round' %></p>
+<p class="t1"><%= link_to 'Add Expense Claim', main_app.new_expense_claim_path, class: 'button round' %></p>
 
-<h2>Non-Submitted Expense Claims</h2>
+<h4>Non-Submitted Expense Claims</h4>
 
 <table>
   <tr>
@@ -28,14 +28,14 @@
     <% end %>
   <% else %>
     <tr>
-      <td colspan="6" class="italic">You have no Expense Claims registered.</td>
+      <td colspan="6" class="italic">You have no non-submitted Expense Claims registered.</td>
     </tr>
   <% end %>
 </table>
 
 
 
-<h2>Submitted Expense Claims</h2>
+<h4>Submitted Expense Claims</h4>
 
 <table>
   <tr>
@@ -63,7 +63,7 @@
     <% end %>
   <% else %>
     <tr>
-      <td colspan="6" class="italic">You have no Expense Claims registered.</td>
+      <td colspan="6" class="italic">You have no submitted Expense Claims registered.</td>
     </tr>
   <% end %>
 </table>
