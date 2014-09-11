@@ -162,3 +162,12 @@ ul.upcoming-events {
         }
     }
 }
+
+
+/* Calendar Widget */
+.ui-datepicker-title {
+    select {
+        padding: 0;
+        height: inherit;
+    }
+}

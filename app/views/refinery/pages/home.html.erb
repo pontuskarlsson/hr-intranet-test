@@ -52,10 +52,10 @@
 
         <section class="page-part">
           <div class="page-part-header">
-            UPCOMING EVENTS
+            UPCOMING IN CALENDAR
           </div>
 
-          <% @events = Refinery::Calendar::Event.upcoming.limit(5) %>
+          <% @events = Refinery::Calendar::Event.current_and_upcoming.limit(5) %>
           <% if @events.any? %>
             <ul class="upcoming-events">
               <% @events.each do |event| %>
@@ -67,6 +67,9 @@
                         <span class="event-month"><%= event.starts_at.strftime('%^b') %></span>
                       </td>
                       <td class="event-description">
+                        <% if event.ends_at.present? %>
+                          <h5>- <%= event.ends_at.strftime('%d %^b') %></h5>
+                        <% end %>
                         <%= link_to event.title, refinery.calendar_event_path(event) %>
                         <% if event.excerpt.present? %>
                           <div><%= event.excerpt %></div>

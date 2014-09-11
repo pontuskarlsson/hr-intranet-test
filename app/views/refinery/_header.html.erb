@@ -42,7 +42,7 @@
               <li class="has-dropdown">
                 <a href="#"><%= current_refinery_user.full_name.present? ? current_refinery_user.full_name : current_refinery_user.email %></a>
                 <ul class="dropdown">
-                  <li><%= link_to 'Refniery', '/refinery' %></li>
+                  <li><%= link_to 'Refinery', '/refinery' %></li>
                   <li><%= link_to 'SIGN OUT', destroy_session_path('refinery_user'), method: 'delete' %></li>
                 </ul>
               </li>

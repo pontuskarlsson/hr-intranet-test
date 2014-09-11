@@ -12,6 +12,7 @@ module Refinery
     has_many :plugins, :class_name => "UserPlugin", :order => "position ASC", :dependent => :destroy
 
     has_many :expense_claims, dependent: :destroy
+    has_many :leaves,         dependent: :destroy
 
     def xero_expense_claims
       @xero_expense_claims ||= ::XeroClient.client.ExpenseClaim.all(where: "User.EmailAddress.Contains(\"#{ email }\")", order: 'UpdatedDateUTC DESC')

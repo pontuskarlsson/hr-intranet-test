@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140911024542) do
+ActiveRecord::Schema.define(:version => 20140911043135) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -51,6 +51,23 @@ ActiveRecord::Schema.define(:version => 20140911024542) do
   add_index "expense_claims", ["guid"], :name => "index_expense_claims_on_guid"
   add_index "expense_claims", ["status"], :name => "index_expense_claims_on_status"
   add_index "expense_claims", ["user_id"], :name => "index_expense_claims_on_user_id"
+
+  create_table "leaves", :force => true do |t|
+    t.integer  "user_id",                       :null => false
+    t.integer  "event_id"
+    t.datetime "starts_at",                     :null => false
+    t.datetime "ends_at",                       :null => false
+    t.string   "comment",    :default => "",    :null => false
+    t.boolean  "approved",   :default => false, :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "leaves", ["approved"], :name => "index_leaves_on_approved"
+  add_index "leaves", ["ends_at"], :name => "index_leaves_on_ends_at"
+  add_index "leaves", ["event_id"], :name => "index_leaves_on_event_id"
+  add_index "leaves", ["starts_at"], :name => "index_leaves_on_starts_at"
+  add_index "leaves", ["user_id"], :name => "index_leaves_on_user_id"
 
   create_table "line_items", :force => true do |t|
     t.integer  "receipt_id",                                                   :null => false

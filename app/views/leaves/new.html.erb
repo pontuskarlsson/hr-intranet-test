@@ -1,0 +1,45 @@
+<h4>Register Annual Leave</h4>
+
+<div class="row">
+  <div class="large-8 columns">
+
+    <%= form_for @leave, url: leaves_path do |f| %>
+
+      <div class="row">
+        <div class="medium-3 columns">
+          <label>From
+            <%= f.text_field :starts_at, class: 'datetime_range' %>
+          </label>
+        </div>
+        <div class="medium-3 columns end">
+          <label>To
+            <%= f.text_field :ends_at, class: 'datetime_range' %>
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="medium-6 columns end">
+          <label>Comment (Optional)
+            <%= f.text_field :comment %>
+          </label>
+        </div>
+      </div>
+
+      <%= f.submit 'Register', class: 'button round small' %>
+
+    <% end %>
+
+  </div>
+</div>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'jquery-ui.css' %>
+  <%= stylesheet_link_tag 'refinery/calendar' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'jquery.ui.timepicker.addon' %>
+  <%= javascript_include_tag 'refinery/calendar' %>
+<% end %>
