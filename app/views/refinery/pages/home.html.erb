@@ -106,7 +106,9 @@
       <% end %>
       <h5>
         <%= user.full_name %><br />
-        <%= user.title.upcase %><br />
+        <% if user.title.present? %>
+          <%= user.title.upcase %><br />
+        <% end %>
         <%= mail_to user.email %>
       </h5>
     </section>
