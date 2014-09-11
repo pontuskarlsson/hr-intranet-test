@@ -6,7 +6,7 @@ class Receipt < ActiveRecord::Base
   belongs_to :expense_claim
   belongs_to :user,     class_name: 'Refinery::User'
   belongs_to :contact
-  has_many :line_items
+  has_many :line_items, dependent: :destroy
 
   accepts_nested_attributes_for :line_items, allow_destroy: true, reject_if: proc { |attr| attr[:description].blank? }
 

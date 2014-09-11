@@ -42,4 +42,23 @@ describe ExpenseClaimsController do
     end
   end
 
+  describe "DELETE 'destroy'" do
+    let(:submitted_expense_claim) { FactoryGirl.create(:expense_claim, status: ExpenseClaim::STATUS_SUBMITTED) }
+    it 'can remove a non-submitted expense claim' do
+      expect( expense_claim.status ).to eq ExpenseClaim::STATUS_NOT_SUBMITTED
+
+      delete 'destroy', id: expense_claim.to_param
+      expect( response.redirect_url ).not_to include "/expense_claims/#{ submitted_expense_claim.to_param }"
+      expect( ExpenseClaim.find_by_id(expense_claim.id) ).to be_nil
+    end
+
+    it 'cannot remove a submitted expense claim' do
+      expect( submitted_expense_claim.status ).to eq ExpenseClaim::STATUS_SUBMITTED
+
+      delete 'destroy', id: submitted_expense_claim.to_param
+      expect( response.redirect_url ).to include "/expense_claims/#{ submitted_expense_claim.to_param }"
+      expect( ExpenseClaim.find_by_id(submitted_expense_claim.id) ).to be_present
+    end
+  end
+
 end

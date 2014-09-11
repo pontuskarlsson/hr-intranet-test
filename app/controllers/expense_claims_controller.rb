@@ -32,7 +32,13 @@ class ExpenseClaimsController < ApplicationController
   end
 
   def destroy
-
+    if @expense_claim.status == 'Not-Submitted'
+      @expense_claim.destroy
+      redirect_to '/employee/expense-claims'
+    else
+      flash[:alert] = 'Cannot delete a Submitted Expense Claim'
+      redirect_to action: :show
+    end
   end
 
 private
