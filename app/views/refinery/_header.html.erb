@@ -21,8 +21,19 @@
         <section class="top-bar-section">
           <ul class="left">
             <li><a href="/"><img class="header-logo" src="/assets/home.png"/></a></li>
-            <% header_menu_items.items.each do |item| %>
-              <li><%= link_to item.title, refinery.url_for(item.url) %></li>
+            <% header_menu_items.roots.each do |root| %>
+              <% if root.has_children? %>
+                <li class="has-dropdown">
+                  <%= link_to root.title, refinery.url_for(root.url) %>
+                  <ul class="dropdown">
+                    <% root.children.each do |child| %>
+                      <li><%= link_to child.title, refinery.url_for(child.url) %></li>
+                    <% end %>
+                  </ul>
+                </li>
+              <% else %>
+                <li><%= link_to root.title, refinery.url_for(root.url) %></li>
+              <% end %>
             <% end %>
           </ul>
 
