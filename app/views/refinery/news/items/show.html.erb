@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="medium-8 columns">
+    <article class="news_item">
+      <h4><%= @item.title %></h4>
+      <p>
+        <small><%= t('.published') %> <%= l(@item.publish_date, :format => :long) %></small>
+      </p>
+      <% if @item.source.present? %>
+        <p>
+          <small><%= t('.source') %> <%= @item.source %></small>
+        </p>
+      <% end %>
+      <%= @item.body.html_safe %>
+      <p>
+        <%= link_to t('.back_to_index'), refinery.news_items_path %>
+      </p>
+    </article>
+  </div>
+
+  <div class="medium-4 columns">
+    <% if ::Refinery::Pages.default_parts.many? -%>
+      <%= raw @page.content_for(::Refinery::Pages.default_parts.second.to_sym) %>
+    <% end  -%>
+    <%= render '/refinery/news/shared/body_content_right' %>
+  </div>
+</div>

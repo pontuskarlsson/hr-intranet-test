@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="medium-8 columns">
+    <%=raw @page.content_for(Refinery::Pages.default_parts.first.to_sym) unless params[:page] %>
+
+    <% if @items.any? %>
+      <% @items.each do |item| %>
+        <article class="news_item_truncated">
+          <h4><%= link_to item.title, refinery.news_item_path(item) %></h4>
+          <p>
+            <small><%= t('.published') %> <%= l(item.publish_date, :format => :long) %></small>
+          </p>
+          <%= truncate  item.body, :length => 400,
+                        :omission => " ... #{link_to t('.read_more'), refinery.news_item_path(item)}",
+                        :preserve_html_tags => true %>
+        </article>
+      <% end %>
+
+      <%= will_paginate @items %>
+    <% else %>
+      <p><em><%= t('.no_items_yet') %></em></p>
+    <% end %>
+  </div>
+
+  <div class="medium-4 columns">
+    <% if ::Refinery::Pages.default_parts.many? -%>
+      <%= raw @page.content_for(::Refinery::Pages.default_parts.second.to_sym) %>
+    <% end  -%>
+    <%= render '/refinery/news/shared/body_content_right' %>
+  </div>
+</div>
