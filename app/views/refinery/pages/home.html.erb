@@ -57,7 +57,7 @@
 
           <% @events = Refinery::Calendar::Event.current_and_upcoming.limit(5) %>
           <% if @events.any? %>
-            <ul class="upcoming-events">
+            <ul class="events">
               <% @events.each do |event| %>
                 <li>
                   <table>
