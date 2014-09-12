@@ -71,5 +71,7 @@ module HrIntranet
       g.assets false
     end
 
+    I18n.enforce_available_locales = false
+
   end
 end
