@@ -1,5 +1,5 @@
 <h1>Employee Directory</h1>
-<%- @users = Refinery::User.all -%>
+<%- @users = Refinery::User.order(:full_name) -%>
 <div class="employees">
 
   <ul class="medium-block-grid-3">
