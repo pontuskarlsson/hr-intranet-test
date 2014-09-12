@@ -6,16 +6,6 @@ Refinery::Core.configure do |config|
   # When true this will force SSL redirection in all Refinery backend controllers.
   # config.force_ssl = false
 
-  # This is used to set config in dev environment
-  if File.exists?((path = File.join(Rails.root, 'config', 's3.yml')))
-    conf = (YAML.load_file(path) || {})[Rails.env] || {}
-    ENV['S3_KEY']     = conf['s3_key']
-    ENV['S3_SECRET']  = conf['s3_secret']
-    ENV['S3_BUCKET']  = conf['s3_bucket']
-    ENV['S3_REGION']  = conf['s3_region']
-  end
-
-
   config.s3_backend = !(ENV['S3_KEY'].nil? || ENV['S3_SECRET'].nil?)
   config.s3_access_key_id =     ENV['S3_KEY']
   config.s3_secret_access_key = ENV['S3_SECRET']

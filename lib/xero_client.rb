@@ -1,8 +1,6 @@
 module XeroClient
-
-  YOUR_OAUTH_PATH = File.join(Rails.root, 'config', 'xero.yml')
-  YOUR_OAUTH_CONSUMER_KEY = ENV['XERO_CONSUMER_KEY'] || YAML.load_file(YOUR_OAUTH_PATH)[Rails.env]['consumer_key']
-  YOUR_OAUTH_CONSUMER_SECRET = ENV['XERO_CONSUMER_SECRET'] || YAML.load_file(YOUR_OAUTH_PATH)[Rails.env]['consumer_secret']
+  YOUR_OAUTH_CONSUMER_KEY     = ENV['XERO_CONSUMER_KEY']
+  YOUR_OAUTH_CONSUMER_SECRET  = ENV['XERO_CONSUMER_SECRET']
 
   class << self
 
