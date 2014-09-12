@@ -48,6 +48,10 @@
     <%= f.password_field :password_confirmation, :autocomplete => 'off' %>
   </div>
   <div class='field'>
+    <%= f.label :password_has_expired %>
+    <%= f.check_box :password_has_expired %>
+  </div>
+  <div class='field'>
     <%= f.label :xero_guid %>
     <%= f.text_field :xero_guid %>
   </div>

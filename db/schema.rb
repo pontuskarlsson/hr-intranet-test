@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140911043135) do
+ActiveRecord::Schema.define(:version => 20140912035215) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -398,9 +398,11 @@ ActiveRecord::Schema.define(:version => 20140911043135) do
     t.string   "full_name"
     t.integer  "profile_image_id"
     t.string   "xero_guid",              :default => "", :null => false
+    t.datetime "password_changed_at"
   end
 
   add_index "refinery_users", ["id"], :name => "index_refinery_users_on_id"
+  add_index "refinery_users", ["password_changed_at"], :name => "index_refinery_users_on_password_changed_at"
   add_index "refinery_users", ["profile_image_id"], :name => "index_refinery_users_on_profile_image_id"
   add_index "refinery_users", ["slug"], :name => "index_refinery_users_on_slug"
 

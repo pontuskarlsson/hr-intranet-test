@@ -24,18 +24,28 @@ module Refinery
     # :token_authenticatable, :confirmable, :lockable and :timeoutable
     if self.respond_to?(:devise)
       devise :database_authenticatable, :registerable, :recoverable, :rememberable,
-             :trackable, :validatable, :authentication_keys => [:login]
+             :password_expirable, :trackable, :validatable,
+             :authentication_keys => [:login],
+             :expire_password_after => 10.years
     end
 
     # Setup accessible (or protected) attributes for your model
     # :login is a virtual attribute for authenticating by either username or email
     # This is in addition to a real persisted field like 'username'
     attr_accessor :login
-    attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :plugins, :login, :full_name, :title, :profile_image_id, :xero_guid
+    attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :plugins,
+                    :login, :full_name, :title, :profile_image_id, :xero_guid, :password_has_expired
 
     validates :username, :presence => true, :uniqueness => true
     validates :xero_guid, uniqueness: true, allow_blank: true
     before_validation :downcase_username, :strip_username
+    after_save do
+      if password_has_expired and !need_change_password?
+        # Means that the password_has_expired checkbox was clicked on save. We
+        # need to make the password expired.
+        need_change_password!
+      end
+    end
 
     class << self
       # Find user by email or username.
@@ -128,6 +138,14 @@ module Refinery
 
     def to_s
       username.to_s
+    end
+
+    def password_has_expired=(val)
+      @password_has_expired = val == '1'
+    end
+
+    def password_has_expired
+      @password_has_expired ||= need_change_password?
     end
 
     private
