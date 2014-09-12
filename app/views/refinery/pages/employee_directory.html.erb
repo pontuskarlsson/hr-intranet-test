@@ -5,15 +5,17 @@
   <ul class="medium-block-grid-3">
     <% @users.each do |user| %>
 
-      <li class="employee">
-        <% if user.profile_image.present? %>
-          <%= image_tag(user.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
-        <% else %>
-          <%= image_tag('user_unknown.png', class: 'profile-picture') %>
-        <% end %>
-        <h5 class="name"><%= user.full_name %></h5>
-        <p><%= user.title.upcase %></p>
-        <p><%= mail_to user.email %></p>
+      <li>
+        <div class="employee">
+          <% if user.profile_image.present? %>
+            <%= image_tag(user.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
+          <% else %>
+            <%= image_tag('user_unknown.png', class: 'profile-picture') %>
+          <% end %>
+          <h5 class="name"><%= user.full_name %></h5>
+          <p><%= user.title.upcase %></p>
+          <p><%= mail_to user.email %></p>
+        </div>
       </li>
 
     <% end %>

@@ -35,9 +35,9 @@
                     <%= link_to item.title, refinery.news_item_path(item) %><br/>
                     <small><%= item.publish_date.strftime('%d %b - %I:%M %P') %></small>
                   </h5>
-                  <%= truncate  item.body, length: 200,
-                                omission: " ... #{link_to 'Read More', refinery.news_item_path(item)}",
-                                preserve_html_tags: true %>
+                  <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 200,
+                                                omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
+                  <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
                 </li>
               <% end %>
             </ul>
