@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140912035215) do
+ActiveRecord::Schema.define(:version => 20140918063014) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -23,6 +23,20 @@ ActiveRecord::Schema.define(:version => 20140912035215) do
 
   add_index "accounts", ["code"], :name => "index_accounts_on_code"
   add_index "accounts", ["guid"], :name => "index_accounts_on_guid"
+
+  create_table "amqp_messages", :force => true do |t|
+    t.string   "queue",       :null => false
+    t.text     "message",     :null => false
+    t.text     "type",        :null => false
+    t.integer  "sender_id"
+    t.string   "sender_type"
+    t.datetime "sent_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "amqp_messages", ["sender_id", "sender_type"], :name => "index_amqp_messages_on_sender_id_and_sender_type"
+  add_index "amqp_messages", ["sent_at"], :name => "index_amqp_messages_on_sent_at"
 
   create_table "contacts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -185,6 +199,26 @@ ActiveRecord::Schema.define(:version => 20140912035215) do
   add_index "refinery_blog_posts", ["access_count"], :name => "index_refinery_blog_posts_on_access_count"
   add_index "refinery_blog_posts", ["id"], :name => "index_refinery_blog_posts_on_id"
   add_index "refinery_blog_posts", ["slug"], :name => "index_refinery_blog_posts_on_slug"
+
+  create_table "refinery_brand_shows", :force => true do |t|
+    t.integer  "brand_id"
+    t.integer  "show_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "refinery_brand_shows", ["brand_id"], :name => "index_refinery_brand_shows_on_brand_id"
+  add_index "refinery_brand_shows", ["show_id"], :name => "index_refinery_brand_shows_on_show_id"
+
+  create_table "refinery_brands", :force => true do |t|
+    t.string   "name"
+    t.string   "website"
+    t.integer  "logo_id"
+    t.text     "description"
+    t.integer  "position"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "refinery_calendar_events", :force => true do |t|
     t.string   "title"
@@ -369,6 +403,19 @@ ActiveRecord::Schema.define(:version => 20140912035215) do
   end
 
   add_index "refinery_settings", ["name"], :name => "index_refinery_settings_on_name"
+
+  create_table "refinery_shows", :force => true do |t|
+    t.string   "name"
+    t.string   "website"
+    t.integer  "logo_id"
+    t.text     "description"
+    t.text     "msg_json_struct"
+    t.datetime "last_sync_datetime"
+    t.string   "last_sync_result"
+    t.integer  "position"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "refinery_user_plugins", :force => true do |t|
     t.integer "user_id"

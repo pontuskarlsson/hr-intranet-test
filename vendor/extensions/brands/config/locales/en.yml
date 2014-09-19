@@ -1,0 +1,61 @@
+en:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+      shows:
+        title: Shows
+    brands:
+      admin:
+        shared:
+          links:
+            manage_brands: Manage Brands
+            manage_shows: Manage Shows
+        brands:
+          actions:
+            create_new: Add New Brand
+            reorder: Reorder Brands
+            reorder_done: Done Reordering Brands
+          records:
+            title: Brands
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Brands yet. Click "Add New Brand" to add your first brand.
+          brand:
+            view_live_html: View this brand live <br/><em>(opens in a new window)</em>
+            edit: Edit this brand
+            delete: Remove this brand forever
+        shows:
+          actions:
+            create_new: Add New Show
+            reorder: Reorder Shows
+            reorder_done: Done Reordering Shows
+          records:
+            title: Shows
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Shows yet. Click "Add New Show" to add your first show.
+          show:
+            view_live_html: View this show live <br/><em>(opens in a new window)</em>
+            edit: Edit this show
+            delete: Remove this show forever
+          form:
+            not_synced_yet: Has not been synced yet
+            sync: Sync
+      brands:
+        show:
+          other: Other Brands
+      shows:
+        show:
+          other: Other Shows
+  activerecord:
+    attributes:
+      'refinery/brands/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description
+      'refinery/brands/show':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description
+        msg_json_struct: Sync Instructions (JSON)

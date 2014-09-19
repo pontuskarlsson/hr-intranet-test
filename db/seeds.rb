@@ -14,3 +14,6 @@ Refinery::News::Engine.load_seed
 
 # Added by Refinery CMS Venues extension
 Refinery::Calendar::Engine.load_seed
+
+# Added by Refinery CMS Brands extension
+Refinery::Brands::Engine.load_seed

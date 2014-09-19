@@ -26,6 +26,13 @@ GIT
       oauth (= 0.4.5)
       tzinfo
 
+PATH
+  remote: vendor/extensions
+  specs:
+    refinerycms-brands (1.0)
+      amqp
+      refinerycms-core (~> 2.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -57,6 +64,10 @@ GEM
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     acts_as_indexed (0.8.3)
+    amq-protocol (1.9.2)
+    amqp (1.5.0)
+      amq-protocol (>= 1.9.2)
+      eventmachine
     arel (3.0.3)
     awesome_nested_set (2.1.6)
       activerecord (>= 3.0.0)
@@ -100,6 +111,7 @@ GEM
       rack
     equalizer (0.0.9)
     erubis (2.7.0)
+    eventmachine (1.0.3)
     excon (0.39.5)
     execjs (2.2.1)
     factory_girl (4.4.0)
@@ -390,6 +402,7 @@ DEPENDENCIES
   rails_12factor
   refinerycms (~> 2.1.0)
   refinerycms-acts-as-indexed (~> 1.0.0)
+  refinerycms-brands!
   refinerycms-calendar!
   refinerycms-news (~> 2.1.0)
   refinerycms-page-images (~> 2.1.0)
