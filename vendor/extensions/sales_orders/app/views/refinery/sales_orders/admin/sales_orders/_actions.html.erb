@@ -1,0 +1,28 @@
+<ul>
+  <% if ::Refinery::SalesOrders::Admin::SalesOrdersController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.sales_orders_admin_sales_orders_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_sales_orders_admin_sales_order_path,
+                 :class => "add_icon" %>
+  </li>
+  <li>
+    <%= link_to t('.import_cin7'), refinery.import_sales_orders_admin_sales_orders_path, method: :post, confirm: t('.confirm_import_cin7') %>
+  </li>
+<% if !searching? && ::Refinery::SalesOrders::Admin::SalesOrdersController.sortable? && ::Refinery::SalesOrders::SalesOrder.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Sales Orders"),
+                 refinery.sales_orders_admin_sales_orders_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Sales Orders"),
+                 refinery.sales_orders_admin_sales_orders_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

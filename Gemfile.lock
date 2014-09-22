@@ -32,6 +32,8 @@ PATH
     refinerycms-brands (1.0)
       amqp
       refinerycms-core (~> 2.1.2)
+    refinerycms-sales_orders (1.0)
+      refinerycms-core (~> 2.1.2)
 
 GEM
   remote: https://rubygems.org/
@@ -406,6 +408,7 @@ DEPENDENCIES
   refinerycms-calendar!
   refinerycms-news (~> 2.1.0)
   refinerycms-page-images (~> 2.1.0)
+  refinerycms-sales_orders!
   rspec-rails (~> 3.0.0)
   sass (= 3.2.13)
   sass-rails (~> 3.2.3)

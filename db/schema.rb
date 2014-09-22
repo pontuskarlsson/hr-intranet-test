@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140918063014) do
+ActiveRecord::Schema.define(:version => 20140922063658) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -306,6 +306,38 @@ ActiveRecord::Schema.define(:version => 20140918063014) do
 
   add_index "refinery_news_items", ["id"], :name => "index_refinery_news_items_on_id"
 
+  create_table "refinery_order_items", :force => true do |t|
+    t.integer  "sales_order_id",                                                              :null => false
+    t.string   "order_detail_id",                                          :default => "",    :null => false
+    t.string   "order_detail_imported_ref",                                :default => "",    :null => false
+    t.string   "order_id",                                                 :default => "",    :null => false
+    t.string   "order_ref",                                                :default => "",    :null => false
+    t.datetime "created_date"
+    t.boolean  "active",                                                   :default => false, :null => false
+    t.string   "sku",                                                      :default => "",    :null => false
+    t.string   "code",                                                     :default => "",    :null => false
+    t.string   "product_id",                                               :default => "",    :null => false
+    t.string   "style_code",                                               :default => "",    :null => false
+    t.string   "master_id",                                                :default => "",    :null => false
+    t.decimal  "price",                     :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.decimal  "qty",                       :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.string   "name",                                                     :default => "",    :null => false
+    t.decimal  "discount",                  :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.string   "option1",                                                  :default => "",    :null => false
+    t.string   "option2",                                                  :default => "",    :null => false
+    t.string   "option3",                                                  :default => "",    :null => false
+    t.string   "line_comments",                                            :default => "",    :null => false
+    t.integer  "position"
+    t.datetime "created_at",                                                                  :null => false
+    t.datetime "updated_at",                                                                  :null => false
+  end
+
+  add_index "refinery_order_items", ["active"], :name => "index_refinery_order_items_on_active"
+  add_index "refinery_order_items", ["order_detail_id"], :name => "index_refinery_order_items_on_order_detail_id"
+  add_index "refinery_order_items", ["order_id"], :name => "index_refinery_order_items_on_order_id"
+  add_index "refinery_order_items", ["position"], :name => "index_refinery_order_items_on_position"
+  add_index "refinery_order_items", ["sales_order_id"], :name => "index_refinery_order_items_on_sales_order_id"
+
   create_table "refinery_page_part_translations", :force => true do |t|
     t.integer  "refinery_page_part_id"
     t.string   "locale",                :null => false
@@ -389,6 +421,72 @@ ActiveRecord::Schema.define(:version => 20140918063014) do
 
   add_index "refinery_roles_users", ["role_id", "user_id"], :name => "index_refinery_roles_users_on_role_id_and_user_id"
   add_index "refinery_roles_users", ["user_id", "role_id"], :name => "index_refinery_roles_users_on_user_id_and_role_id"
+
+  create_table "refinery_sales_orders", :force => true do |t|
+    t.string   "order_id",                                            :default => "",    :null => false
+    t.string   "order_session_id",                                    :default => "",    :null => false
+    t.string   "order_ref",                                           :default => "",    :null => false
+    t.datetime "created_date"
+    t.datetime "modified_date"
+    t.boolean  "active",                                              :default => false, :null => false
+    t.string   "transaction_type",                                    :default => "",    :null => false
+    t.string   "member_id",                                           :default => "",    :null => false
+    t.string   "member_email",                                        :default => "",    :null => false
+    t.string   "member_cost_center",                                  :default => "",    :null => false
+    t.string   "member_session_id",                                   :default => "",    :null => false
+    t.string   "sales_person_id",                                     :default => "",    :null => false
+    t.string   "sales_person_email",                                  :default => "",    :null => false
+    t.decimal  "product_total",        :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.decimal  "freight_total",        :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.string   "freight_description",                                 :default => "",    :null => false
+    t.decimal  "discount_total",       :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.string   "discount_description",                                :default => "",    :null => false
+    t.decimal  "total",                :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.decimal  "currency_rate",        :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.string   "currency_name",                                       :default => "",    :null => false
+    t.string   "currency_symbol",                                     :default => "",    :null => false
+    t.string   "tax_status",                                          :default => "",    :null => false
+    t.decimal  "tax_rate",             :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.string   "first_name",                                          :default => "",    :null => false
+    t.string   "last_name",                                           :default => "",    :null => false
+    t.string   "company",                                             :default => "",    :null => false
+    t.string   "phone",                                               :default => "",    :null => false
+    t.string   "mobile",                                              :default => "",    :null => false
+    t.string   "email",                                               :default => "",    :null => false
+    t.string   "delivery_first_name",                                 :default => "",    :null => false
+    t.string   "delivery_last_name",                                  :default => "",    :null => false
+    t.string   "delivery_company",                                    :default => "",    :null => false
+    t.string   "delivery_address",                                    :default => "",    :null => false
+    t.string   "delivery_suburb",                                     :default => "",    :null => false
+    t.string   "delivery_city",                                       :default => "",    :null => false
+    t.string   "delivery_postal_code",                                :default => "",    :null => false
+    t.string   "delivery_state",                                      :default => "",    :null => false
+    t.string   "delivery_country",                                    :default => "",    :null => false
+    t.string   "billing_first_name",                                  :default => "",    :null => false
+    t.string   "billing_last_name",                                   :default => "",    :null => false
+    t.string   "billing_company",                                     :default => "",    :null => false
+    t.string   "billing_address",                                     :default => "",    :null => false
+    t.string   "billing_suburb",                                      :default => "",    :null => false
+    t.string   "billing_city",                                        :default => "",    :null => false
+    t.string   "billing_postal_code",                                 :default => "",    :null => false
+    t.string   "billing_state",                                       :default => "",    :null => false
+    t.string   "billing_country",                                     :default => "",    :null => false
+    t.string   "comments",                                            :default => "",    :null => false
+    t.string   "voucher_code",                                        :default => "",    :null => false
+    t.string   "branch_id",                                           :default => "",    :null => false
+    t.string   "branch_email",                                        :default => "",    :null => false
+    t.string   "stage",                                               :default => "",    :null => false
+    t.string   "cost_center",                                         :default => "",    :null => false
+    t.string   "tracking_code",                                       :default => "",    :null => false
+    t.string   "payment_terms",                                       :default => "",    :null => false
+    t.integer  "position"
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
+  end
+
+  add_index "refinery_sales_orders", ["active"], :name => "index_refinery_sales_orders_on_active"
+  add_index "refinery_sales_orders", ["order_id"], :name => "index_refinery_sales_orders_on_order_id"
+  add_index "refinery_sales_orders", ["position"], :name => "index_refinery_sales_orders_on_position"
 
   create_table "refinery_settings", :force => true do |t|
     t.string   "name"

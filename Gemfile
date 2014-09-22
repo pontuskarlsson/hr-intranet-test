@@ -49,6 +49,7 @@ gem 'refinerycms-page-images', '~> 2.1.0'
 gem 'refinerycms-calendar', git: 'https://github.com/dannemanne/refinerycms-calendar.git'
 gem 'refinerycms-acts-as-indexed', '~> 1.0.0'
 gem 'refinerycms-brands', path: 'vendor/extensions'
+gem 'refinerycms-sales_orders', path: 'vendor/extensions'
 
 # Needed for S3 storage
 gem 'fog'

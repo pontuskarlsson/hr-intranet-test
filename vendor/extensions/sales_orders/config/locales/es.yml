@@ -1,0 +1,34 @@
+es:
+  refinery:
+    plugins:
+      sales_orders:
+        title: Sales Orders
+#        article: masculino/femenino
+    sales_orders:
+      admin:
+        sales_orders:
+          actions:
+            create_new: Crear nuevo sales order
+            reorder: Reordenar sales orders
+            reorder_done: Reordenación de sales orders completada
+          records:
+            title: Sales Orders
+            sorry_no_results: Lo siento, no hay resultados
+            no_items_yet: No hay sales orders todavía. Pulsa en "Crear nuevo Sales Order" para crear tu primer sales order.
+          sales_order:
+            view_live_html: Ver este sales order como abierto al público <br/><em>(abre en ventana nueva)</em>
+            edit: Editar este sales order
+            delete: Borrar este sales order para siempre
+      sales_orders:
+        show:
+          other: Otros sales orders
+  activerecord:
+    attributes:
+      'refinery/sales_orders/sales_order':
+        po_number: Po Number
+        company: Company
+        billing_address: Billing Address
+        delivery_address: Delivery Address
+        order_date: Order Date
+        amount: Amount
+        currency: Currency

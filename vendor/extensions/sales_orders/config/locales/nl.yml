@@ -1,0 +1,33 @@
+nl:
+  refinery:
+    plugins:
+      sales_orders:
+        title: Sales Orders
+    sales_orders:
+      admin:
+        sales_orders:
+          actions:
+            create_new: Nieuwe Sales Order toevoegen
+            reorder: De volgorde van de Sales Orders wijzigen
+            reorder_done: Klaar met het wijzingen van de van de Sales Order-volgorde
+          records:
+            title: Sales Orders
+            sorry_no_results: Helaas! Er zijn geen resultaten gevonden.
+            no_items_yet: Er zijn nog geen Sales Orders. Druk op 'Nieuwe Sales Order toevoegen' om de eerste toe te voegen.
+          sales_order:
+            view_live_html: Deze sales order op de website bekijken <br/><em>(opent in een nieuw venster)</em>
+            edit: Bewerk deze sales order
+            delete: Deze sales order definitief verwijderen
+      sales_orders:
+        show:
+          other: Andere Sales Orders
+  activerecord:
+    attributes:
+      'refinery/sales_orders/sales_order':
+        po_number: Po Number
+        company: Company
+        billing_address: Billing Address
+        delivery_address: Delivery Address
+        order_date: Order Date
+        amount: Amount
+        currency: Currency

@@ -1,0 +1,35 @@
+en:
+  refinery:
+    plugins:
+      sales_orders:
+        title: Sales Orders
+    sales_orders:
+      admin:
+        sales_orders:
+          actions:
+            create_new: Add New Sales Order
+            reorder: Reorder Sales Orders
+            reorder_done: Done Reordering Sales Orders
+            import_cin7: Import Orders from Cin7
+            confirm_import_cin7: Are you sure you want to Import?
+          records:
+            title: Sales Orders
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Sales Orders yet. Click "Add New Sales Order" to add your first sales order.
+          sales_order:
+            view_live_html: View this sales order live <br/><em>(opens in a new window)</em>
+            edit: Edit this sales order
+            delete: Remove this sales order forever
+      sales_orders:
+        show:
+          other: Other Sales Orders
+  activerecord:
+    attributes:
+      'refinery/sales_orders/sales_order':
+        order_id: Po Order ID
+        company: Company
+        billing_address: Billing Address
+        delivery_address: Delivery Address
+        modified_date: Modified Date
+        total: Total
+        currency_name: Currency
