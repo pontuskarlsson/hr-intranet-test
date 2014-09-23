@@ -1470,3 +1470,52 @@ $body-bg: #ccc;
 .t8 { padding-top: 8rem !important; }
 .t9 { padding-top: 9rem !important; }
 .t10 { padding-top: 10rem !important; }
+
+
+.row.calendar-row {
+    width: 171.4%;
+    padding: 0 1.5rem;
+
+    &.header {
+        .columns, .column {
+            text-align: center;
+
+            border-bottom: 1px solid #000;
+
+            &:first-child {
+                border-left: none;
+            }
+        }
+    }
+
+    .columns, .column {
+        padding: 0;
+
+        &:first-child {
+            border-left: 1px solid #000;
+        }
+    }
+
+    .calendar-day {
+        height: 6rem;
+
+        border-right: 1px solid #000;
+        border-bottom: 1px solid #000;
+
+        padding: 0.1rem;
+
+        &.today {
+            background-color: #ffffcc;
+        }
+
+        p, p a {
+            font-size: 0.9rem;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
