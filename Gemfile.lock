@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/dannemanne/refinerycms-calendar.git
-  revision: 741fad0041342db735ac14429dfe17ed8f065d7d
+  revision: 346cd6f72a569475a7cc51126237c75e1592a5a2
   specs:
     refinerycms-calendar (2.1.0)
       refinerycms-core (~> 2.1.0)
@@ -373,7 +373,7 @@ GEM
       polyglot (>= 0.3.1)
       polyglot (>= 0.3.1)
       polyglot (>= 0.3.1)
-    truncate_html (0.9.2)
+    truncate_html (0.9.3)
     tzinfo (0.3.41)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
