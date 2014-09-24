@@ -4,6 +4,9 @@
     <!-- Main Content -->
     <% if @page.images.any? %>
       <section class="page-part">
+        <div class="page-part-header">
+          HIGHLIGHTS
+        </div>
         <ul class="home-orbit" data-orbit data-options="pause_on_hover: false; slide_number: false">
           <% @page.images.each_with_index do |image, image_i| %>
             <li>
