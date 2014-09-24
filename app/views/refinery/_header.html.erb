@@ -44,6 +44,11 @@
               <a href="#"><%= current_refinery_user.full_name.present? ? current_refinery_user.full_name : current_refinery_user.email %></a>
               <ul class="dropdown">
                 <li><%= link_to 'Refinery', '/refinery' %></li>
+                <% if current_refinery_user.has_role?(:superuser) %>
+                  <% if @page.present? %>
+                    <li><%= link_to 'Edit this Page', refinery.edit_admin_page_path(@page.id) %></li>
+                  <% end %>
+                <% end %>
                 <li><%= link_to 'SIGN OUT', destroy_session_path('refinery_user'), method: 'delete' %></li>
               </ul>
             </li>
