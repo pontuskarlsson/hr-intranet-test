@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140922063658) do
+ActiveRecord::Schema.define(:version => 20140925035124) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -244,6 +244,49 @@ ActiveRecord::Schema.define(:version => 20140922063658) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "refinery_contacts", :force => true do |t|
+    t.integer  "base_id"
+    t.string   "name"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "skype"
+    t.string   "zip"
+    t.string   "country"
+    t.string   "title"
+    t.boolean  "private"
+    t.integer  "contact_id"
+    t.boolean  "is_organisation"
+    t.string   "mobile"
+    t.string   "fax"
+    t.string   "website"
+    t.string   "phone"
+    t.string   "description"
+    t.string   "linked_in"
+    t.string   "facebook"
+    t.string   "industry"
+    t.string   "twitter"
+    t.string   "email"
+    t.string   "organisation_name"
+    t.integer  "organisation_id"
+    t.string   "tags_joined_by_comma"
+    t.boolean  "is_sales_account"
+    t.string   "customer_status"
+    t.string   "prospect_status"
+    t.datetime "base_modified_at"
+    t.text     "custom_fields"
+    t.integer  "position"
+    t.boolean  "removed_from_base",    :default => false, :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+  end
+
+  add_index "refinery_contacts", ["base_id"], :name => "index_refinery_contacts_on_base_id"
+  add_index "refinery_contacts", ["base_modified_at"], :name => "index_refinery_contacts_on_base_modified_at"
+  add_index "refinery_contacts", ["organisation_id"], :name => "index_refinery_contacts_on_organisation_id"
+  add_index "refinery_contacts", ["removed_from_base"], :name => "index_refinery_contacts_on_removed_from_base"
 
   create_table "refinery_image_page_translations", :force => true do |t|
     t.integer  "refinery_image_page_id"

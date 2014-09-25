@@ -1,0 +1,51 @@
+nl:
+  refinery:
+    plugins:
+      contacts:
+        title: Contacts
+    contacts:
+      admin:
+        contacts:
+          actions:
+            create_new: Nieuwe Contact toevoegen
+            reorder: De volgorde van de Contacts wijzigen
+            reorder_done: Klaar met het wijzingen van de van de Contact-volgorde
+          records:
+            title: Contacts
+            sorry_no_results: Helaas! Er zijn geen resultaten gevonden.
+            no_items_yet: Er zijn nog geen Contacts. Druk op 'Nieuwe Contact toevoegen' om de eerste toe te voegen.
+          contact:
+            view_live_html: Deze contact op de website bekijken <br/><em>(opent in een nieuw venster)</em>
+            edit: Bewerk deze contact
+            delete: Deze contact definitief verwijderen
+      contacts:
+        show:
+          other: Andere Contacts
+  activerecord:
+    attributes:
+      'refinery/contacts/contact':
+        base_id: Base
+        name: Name
+        first_name: First Name
+        last_name: Last Name
+        address: Address
+        city: City
+        skype: Skype
+        zip: Zip
+        country: Country
+        title: Title
+        private: Private
+        contact_id: Contact
+        is_organisation: Is Organisation
+        mobile: Mobile
+        fax: Fax
+        website: Website
+        phone: Phone
+        description: Description
+        linked_in: Linked In
+        facebook: Facebook
+        industry: Industry
+        twitter: Twitter
+        email: Email
+        organisation_name: Organisation Name
+        tags_joined_by_comma: Tags Joined By Comma

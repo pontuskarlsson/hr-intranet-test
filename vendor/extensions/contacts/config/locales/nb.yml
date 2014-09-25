@@ -1,0 +1,51 @@
+nb:
+  refinery:
+    plugins:
+      contacts:
+        title: Contacts
+    contacts:
+      admin:
+        contacts:
+          actions:
+            create_new: Lag en ny Contact
+            reorder: Endre rekkefølgen på Contacts
+            reorder_done: Ferdig å endre rekkefølgen Contacts
+          records:
+            title: Contacts
+            sorry_no_results: Beklager! Vi fant ikke noen resultater.
+            no_items_yet: Det er ingen Contacts enda. Klikk på "Lag en ny Contact" for å legge til din første contact.
+          contact:
+            view_live_html: Vis hvordan denne contact ser ut offentlig <br/><em>(åpner i et nytt vindu)</em>
+            edit: Rediger denne contact
+            delete: Fjern denne contact permanent
+      contacts:
+        show:
+          other: Andre Contacts
+  activerecord:
+    attributes:
+      'refinery/contacts/contact':
+        base_id: Base
+        name: Name
+        first_name: First Name
+        last_name: Last Name
+        address: Address
+        city: City
+        skype: Skype
+        zip: Zip
+        country: Country
+        title: Title
+        private: Private
+        contact_id: Contact
+        is_organisation: Is Organisation
+        mobile: Mobile
+        fax: Fax
+        website: Website
+        phone: Phone
+        description: Description
+        linked_in: Linked In
+        facebook: Facebook
+        industry: Industry
+        twitter: Twitter
+        email: Email
+        organisation_name: Organisation Name
+        tags_joined_by_comma: Tags Joined By Comma

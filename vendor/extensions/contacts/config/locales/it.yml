@@ -1,0 +1,51 @@
+it:
+  refinery:
+    plugins:
+      contacts:
+        title: Contacts
+    contacts:
+      admin:
+        contacts:
+          actions:
+            create_new: Aggiungi Nuovo Contact
+            reorder: Riordina Contacts
+            reorder_done: Termina il Riordino di Contacts
+          records:
+            title: Contacts
+            sorry_no_results: "Spiacenti! Nessun risultato trovato"
+            no_items_yet: Non ci sono ancora Contacts. Clicca "Aggiungi Nuovo Contact" per aggiungere il tuo primo contact.
+          contact:
+            view_live_html: Guarda live questo contact <br/><em>(apre una nuova finestra)</em>
+            edit: Modifica questo contact
+            delete: Rimuovi per sempre questo contact
+      contacts:
+        show:
+          other: Altri Contacts
+  activerecord:
+    attributes:
+      'refinery/contacts/contact':
+        base_id: Base
+        name: Name
+        first_name: First Name
+        last_name: Last Name
+        address: Address
+        city: City
+        skype: Skype
+        zip: Zip
+        country: Country
+        title: Title
+        private: Private
+        contact_id: Contact
+        is_organisation: Is Organisation
+        mobile: Mobile
+        fax: Fax
+        website: Website
+        phone: Phone
+        description: Description
+        linked_in: Linked In
+        facebook: Facebook
+        industry: Industry
+        twitter: Twitter
+        email: Email
+        organisation_name: Organisation Name
+        tags_joined_by_comma: Tags Joined By Comma

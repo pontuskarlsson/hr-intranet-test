@@ -1,0 +1,51 @@
+cs:
+  refinery:
+    plugins:
+      contacts:
+        title: Contacts
+    contacts:
+      admin:
+        contacts:
+          actions:
+            create_new: Přidat Contact
+            reorder: Řadit Contacts
+            reorder_done: Konec řazení Contacts
+          records:
+            title: Contacts
+            sorry_no_results: Litujeme, ale nebyly nalezny žádné výsledky.
+            no_items_yet: Zatím nebyly vytvořeny žádné Contacts. Zvolte "Přidat Contact" pro přidání prvního contact.
+          contact:
+            view_live_html: Zobrazit náhled contact<br/><em>(otevře se v novém okně)</em>
+            edit: Upravit contact
+            delete: Smazat contact
+      contacts:
+        show:
+          other: Další Contacts
+  activerecord:
+    attributes:
+      'refinery/contacts/contact':
+        base_id: Base
+        name: Name
+        first_name: First Name
+        last_name: Last Name
+        address: Address
+        city: City
+        skype: Skype
+        zip: Zip
+        country: Country
+        title: Title
+        private: Private
+        contact_id: Contact
+        is_organisation: Is Organisation
+        mobile: Mobile
+        fax: Fax
+        website: Website
+        phone: Phone
+        description: Description
+        linked_in: Linked In
+        facebook: Facebook
+        industry: Industry
+        twitter: Twitter
+        email: Email
+        organisation_name: Organisation Name
+        tags_joined_by_comma: Tags Joined By Comma

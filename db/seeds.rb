@@ -20,3 +20,6 @@ Refinery::Brands::Engine.load_seed
 
 # Added by Refinery CMS SalesOrders extension
 Refinery::SalesOrders::Engine.load_seed
+
+# Added by Refinery CMS Contacts extension
+Refinery::Contacts::Engine.load_seed

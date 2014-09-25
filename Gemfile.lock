@@ -32,6 +32,9 @@ PATH
     refinerycms-brands (1.0)
       amqp
       refinerycms-core (~> 2.1.2)
+    refinerycms-contacts (1.0)
+      basecrm
+      refinerycms-core (~> 2.1.2)
     refinerycms-sales_orders (1.0)
       refinerycms-core (~> 2.1.2)
 
@@ -70,6 +73,11 @@ GEM
     amqp (1.5.0)
       amq-protocol (>= 1.9.2)
       eventmachine
+    api_client (0.5.7)
+      faraday (>= 0.8.1)
+      hashie (>= 2.0.5)
+      multi_json (>= 1.6.1)
+      yajl-ruby
     arel (3.0.3)
     awesome_nested_set (2.1.6)
       activerecord (>= 3.0.0)
@@ -78,6 +86,8 @@ GEM
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     babosa (0.3.11)
+    basecrm (0.1.2)
+      api_client (>= 0.4.2)
     bcrypt (3.1.7)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
@@ -121,6 +131,8 @@ GEM
     factory_girl_rails (4.4.1)
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     fog (1.23.0)
       fog-brightbox
       fog-core (~> 1.23)
@@ -156,6 +168,7 @@ GEM
     globalize (3.1.0)
       activemodel (>= 3.1.0, < 4.0.0)
       activerecord (>= 3.1.0, < 4.0.0)
+    hashie (3.3.1)
     hike (1.2.3)
     i18n (0.6.11)
     ice_nine (0.11.0)
@@ -173,6 +186,7 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.6.0)
     multi_json (1.10.1)
+    multipart-post (2.0.0)
     mysql2 (0.3.16)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -386,6 +400,7 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
+    yajl-ruby (1.2.1)
 
 PLATFORMS
   ruby
@@ -406,6 +421,7 @@ DEPENDENCIES
   refinerycms-acts-as-indexed (~> 1.0.0)
   refinerycms-brands!
   refinerycms-calendar!
+  refinerycms-contacts!
   refinerycms-news (~> 2.1.0)
   refinerycms-page-images (~> 2.1.0)
   refinerycms-sales_orders!

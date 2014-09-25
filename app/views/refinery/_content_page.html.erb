@@ -1,0 +1,29 @@
+<% if @page.try(:live?) %>
+  <%- side_body_content = content_for(:side_body).present? ? content_for(:side_body) : @page.part_with_title('side_body').try(:body) -%>
+  <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_title('body').try(:body) -%>
+  <%- body_content_title = content_for(:body_content_title).present? ? content_for(:body_content_title) : @page.title -%>
+  <div class="row">
+    <% if side_body_content.present? %>
+
+      <div class="medium-8 columns">
+        <h1 class=body_content_title"><%=raw body_content_title %></h1>
+        <%=raw body_content %>
+      </div>
+
+      <div class="medium-4 columns">
+        <%=raw side_body_content %>
+      </div>
+
+    <% else %>
+
+      <div class="columns">
+        <h1 class=body_content_title"><%=raw body_content_title %></h1>
+        <%=raw body_content %>
+      </div>
+
+    <% end %>
+  </div>
+
+<% else %>
+  <%= render '/refinery/draft_page_message' -%>
+<% end %>
