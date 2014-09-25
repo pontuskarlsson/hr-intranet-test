@@ -1,0 +1,34 @@
+sk:
+  refinery:
+    plugins:
+      parcels:
+        title: Parcels
+    parcels:
+      admin:
+        parcels:
+          actions:
+            create_new: Pridať Parcel
+            reorder: Preusporiadať Parcels
+            reorder_done: Koniec radenia Parcels
+          records:
+            title: Parcels
+            sorry_no_results: Ľutujeme, ale neboli nájdené žiadne výsledky.
+            no_items_yet: Nie sú vytvorené žiadne Parcels. Kliknite na "Pridať Parcel" pre pridanie prvého parcel.
+          parcel:
+            view_live_html: Zobraziť náhľad parcel<br/><em>(otvorí sa v novom okne)</em>
+            edit: Upraviť parcel
+            delete: Zmazať parcel
+      parcels:
+        show:
+          other: Daľšie Parcels
+  activerecord:
+    attributes:
+      'refinery/parcels/parcel':
+        parcel_date: Parcel Date
+        from_name: From Name
+        from_contact_id: From Contact
+        courier: Courier
+        air_waybill_no: Air Waybill No
+        to_name: To Name
+        to_user_id: To User
+        shipping_document_id: Shipping Document

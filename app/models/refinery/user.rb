@@ -13,6 +13,7 @@ module Refinery
 
     has_many :expense_claims, dependent: :destroy
     has_many :leaves,         dependent: :destroy
+    has_many :parcels,        class_name: '::Refinery::Parcels::Parcel', dependent: :nullify, foreign_key: :to_user_id
 
     def xero_expense_claims
       @xero_expense_claims ||= ::XeroClient.client.ExpenseClaim.all(where: "User.EmailAddress.Contains(\"#{ email }\")", order: 'UpdatedDateUTC DESC')

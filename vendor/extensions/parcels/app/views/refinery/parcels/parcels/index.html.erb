@@ -1,0 +1,81 @@
+<% content_for :body do %>
+  <h4>Add Parcel</h4>
+
+  <section class="add_parcels">
+    <%= form_for @parcel, url: refinery.parcels_parcels_path do |f| -%>
+
+      <div class="row">
+        <div class="medium-2 columns">
+          <div class='field'>
+            <%= f.label :parcel_date -%>
+            <%= f.text_field :parcel_date, value: @parcel.parcel_date || Date.today, class: 'js_parcel_date_field' -%>
+          </div>
+        </div>
+
+        <div class="medium-2 columns">
+          <div class='field'>
+            <%= f.label :from -%>
+            <%= f.text_field :from, autofocus: true, class: 'js_from_field' -%>
+          </div>
+        </div>
+
+        <div class="medium-2 columns">
+          <div class='field'>
+            <%= f.label :courier -%>
+            <%= f.text_field :courier -%>
+          </div>
+        </div>
+
+        <div class="medium-2 columns">
+          <div class='field'>
+            <%= f.label :air_waybill_no -%>
+            <%= f.text_field :air_waybill_no -%>
+          </div>
+        </div>
+
+        <div class="medium-2 columns">
+          <div class='field'>
+            <%= f.label :to -%>
+            <%= f.text_field :to, class: 'js_to_field' -%>
+          </div>
+        </div>
+
+        <div class="medium-2 columns">
+          <div class='field t1'>
+            <%= f.submit 'Save', class: 'tiny button round' %>
+          </div>
+        </div>
+      </div>
+    <% end -%>
+
+  </section>
+
+  <% if @my_unsigned_parcels.any? %>
+    <h4>You need to sign the following Parcels</h4>
+    <%= render 'parcel_list', parcels: @my_unsigned_parcels, allow_sign: true %>
+  <% end %>
+
+  <h4>Received Parcels</h4>
+  <%= render 'parcel_list', parcels: @parcels, allow_sign: false %>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <%= javascript_tag do %>
+    $(function(){
+      $('.js_parcel_date_field').datepicker();
+      $('.js_from_field').autocomplete({
+        source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
+      });
+      $('.js_to_field').autocomplete({
+        source: <%= ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe %>
+      });
+    });
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

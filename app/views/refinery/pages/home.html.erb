@@ -96,6 +96,16 @@
   <div class="medium-4 columns">
 
     <!-- Right Side Column -->
+    <% if current_refinery_user.parcels.unsigned.any? %>
+      <section class="page-part">
+        <div class="page-part-header">
+          NOTIFICATIONS
+        </div>
+
+        <p><%= link_to 'You have unsigned Parcels waiting!', refinery.parcels_parcels_path %></p>
+      </section>
+    <% end %>
+
     <section class="page-part">
       <div class="page-part-header">
         EMPLOYEE FOCUS

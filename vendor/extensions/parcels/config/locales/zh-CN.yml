@@ -1,0 +1,36 @@
+zh-CN:
+  refinery:
+    plugins:
+      parcels:
+        title: Parcels
+    parcels:
+      admin:
+        parcels:
+          actions:
+            create_new: 建立新的 Parcel
+            reorder: 对 Parcels 重新排序
+            reorder_done: 对 Parcels 的重新排序结束
+          records:
+            title: Parcels
+            sorry_no_results: 对不起，未找到结果。 #Sorry! There are no results found.
+
+            # There are no Parcels yet. Click "Add New Parcel" to add your first parcel.
+            no_items_yet: 目前没有 Parcels . 点击 "Add New Parcel" 创建一个parcel.
+          parcel:
+            view_live_html: 查看 parcel 的最新内容.<br/><em>(新窗口中打开)</em>
+            edit: 编辑 parcel
+            delete: 永久删除 parcel
+      parcels:
+        show:
+          other: 其他 Parcels
+  activerecord:
+    attributes:
+      'refinery/parcels/parcel':
+        parcel_date: Parcel Date
+        from_name: From Name
+        from_contact_id: From Contact
+        courier: Courier
+        air_waybill_no: Air Waybill No
+        to_name: To Name
+        to_user_id: To User
+        shipping_document_id: Shipping Document

@@ -1,0 +1,67 @@
+<%= form_for [refinery, :parcels_admin, @parcel] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @parcel,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :parcel_date -%>
+    <%= f.text_field :parcel_date, class: 'js_parcel_date_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :from -%>
+    <%= f.text_field :from, class: 'js_from_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :courier -%>
+    <%= f.text_field :courier -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :air_waybill_no -%>
+    <%= f.text_field :air_waybill_no -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :to -%>
+    <%= f.text_field :to, class: 'js_to_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :receiver_signed -%>
+    <%= f.check_box :receiver_signed -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :shipping_document -%>
+    <%= render '/refinery/admin/resource_picker',
+               :f => f,
+               :field => :shipping_document_id,
+               :resource => @parcel.shipping_document -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.parcels.admin.parcels.parcel'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @parcel.from_name) -%>
+<% end -%>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <%= javascript_tag do %>
+    $(function(){
+      $('.js_parcel_date_field').datepicker();
+      $('.js_from_field').autocomplete({
+        source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
+      });
+      $('.js_to_field').autocomplete({
+        source: <%= ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe %>
+      });
+    });
+  <% end %>
+<% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140925035124) do
+ActiveRecord::Schema.define(:version => 20140925082305) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -442,6 +442,27 @@ ActiveRecord::Schema.define(:version => 20140925035124) do
   add_index "refinery_pages", ["lft"], :name => "index_refinery_pages_on_lft"
   add_index "refinery_pages", ["parent_id"], :name => "index_refinery_pages_on_parent_id"
   add_index "refinery_pages", ["rgt"], :name => "index_refinery_pages_on_rgt"
+
+  create_table "refinery_parcels", :force => true do |t|
+    t.date     "parcel_date"
+    t.string   "from_name"
+    t.integer  "from_contact_id"
+    t.string   "courier"
+    t.string   "air_waybill_no"
+    t.string   "to_name"
+    t.integer  "to_user_id"
+    t.integer  "shipping_document_id"
+    t.boolean  "receiver_signed",      :default => false, :null => false
+    t.integer  "position"
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+  end
+
+  add_index "refinery_parcels", ["from_contact_id"], :name => "index_refinery_parcels_on_from_contact_id"
+  add_index "refinery_parcels", ["position"], :name => "index_refinery_parcels_on_position"
+  add_index "refinery_parcels", ["receiver_signed"], :name => "index_refinery_parcels_on_receiver_signed"
+  add_index "refinery_parcels", ["shipping_document_id"], :name => "index_refinery_parcels_on_shipping_document_id"
+  add_index "refinery_parcels", ["to_user_id"], :name => "index_refinery_parcels_on_to_user_id"
 
   create_table "refinery_resources", :force => true do |t|
     t.string   "file_mime_type"

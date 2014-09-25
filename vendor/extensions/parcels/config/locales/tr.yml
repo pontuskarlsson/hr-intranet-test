@@ -1,0 +1,34 @@
+tr:
+  refinery:
+    plugins:
+      parcels:
+        title: Parcels
+    parcels:
+      admin:
+        parcels:
+          actions:
+            create_new: Yeni Ekle Parcel
+            reorder: Tekrar sirala Parcels
+            reorder_done: Tekrar siralama tamamlandiParcels
+          records:
+            title: Parcels
+            sorry_no_results: Uzgunum! Herhangi bir sonuc bulunamadi.
+            no_items_yet: Herhangi bir Parcels yok henuz.  Tikla "Yeni Ekle Parcel" eklemek senin ilk parcel.
+          parcel:
+            view_live_html: Bunu canlu parcel goruntule <br/><em>(yeni bir pencerede acar)</em>
+            edit: Bunu Duzenle parcel
+            delete: Bunu Sil parcel sonsuza dek
+      parcels:
+        show:
+          other: Diger Parcels
+  activerecord:
+    attributes:
+      'refinery/parcels/parcel':
+        parcel_date: Parcel Date
+        from_name: From Name
+        from_contact_id: From Contact
+        courier: Courier
+        air_waybill_no: Air Waybill No
+        to_name: To Name
+        to_user_id: To User
+        shipping_document_id: Shipping Document

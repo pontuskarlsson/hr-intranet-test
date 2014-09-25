@@ -1,0 +1,73 @@
+<% content_for :body_content_title do %>
+  <%= @parcel.from_name %>
+<% end %>
+
+<% content_for :body do %>
+  <section>
+    <h1>Parcel Date</h1>
+    <p>
+      <%=raw @parcel.parcel_date %>
+    </p>
+  </section>
+  <section>
+    <h1>From Name</h1>
+    <p>
+      <%=raw @parcel.from_name %>
+    </p>
+  </section>
+  <section>
+    <h1>From Contact</h1>
+    <p>
+      <%=raw @parcel.from_contact_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Courier</h1>
+    <p>
+      <%=raw @parcel.courier %>
+    </p>
+  </section>
+  <section>
+    <h1>Air Waybill No</h1>
+    <p>
+      <%=raw @parcel.air_waybill_no %>
+    </p>
+  </section>
+  <section>
+    <h1>To Name</h1>
+    <p>
+      <%=raw @parcel.to_name %>
+    </p>
+  </section>
+  <section>
+    <h1>To User</h1>
+    <p>
+      <%=raw @parcel.to_user_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Shipping Document</h1>
+    <p>
+      <% if @parcel.shipping_document.present? %>
+        <%= link_to 'shipping_document', @parcel.shipping_document.url %>
+      <% else %>
+        shipping_document
+      <% end %>
+    </p>
+  </section>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="parcels">
+      <% @parcels.each do |parcel| %>
+        <li>
+          <%= link_to parcel.from_name, refinery.parcels_parcel_path(parcel) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

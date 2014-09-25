@@ -35,6 +35,9 @@ PATH
     refinerycms-contacts (1.0)
       basecrm
       refinerycms-core (~> 2.1.2)
+    refinerycms-parcels (1.0)
+      refinerycms-contacts (~> 1.0)
+      refinerycms-core (~> 2.1.2)
     refinerycms-sales_orders (1.0)
       refinerycms-core (~> 2.1.2)
 
@@ -424,6 +427,7 @@ DEPENDENCIES
   refinerycms-contacts!
   refinerycms-news (~> 2.1.0)
   refinerycms-page-images (~> 2.1.0)
+  refinerycms-parcels!
   refinerycms-sales_orders!
   rspec-rails (~> 3.0.0)
   sass (= 3.2.13)

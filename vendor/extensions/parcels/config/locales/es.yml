@@ -1,0 +1,35 @@
+es:
+  refinery:
+    plugins:
+      parcels:
+        title: Parcels
+#        article: masculino/femenino
+    parcels:
+      admin:
+        parcels:
+          actions:
+            create_new: Crear nuevo parcel
+            reorder: Reordenar parcels
+            reorder_done: Reordenación de parcels completada
+          records:
+            title: Parcels
+            sorry_no_results: Lo siento, no hay resultados
+            no_items_yet: No hay parcels todavía. Pulsa en "Crear nuevo Parcel" para crear tu primer parcel.
+          parcel:
+            view_live_html: Ver este parcel como abierto al público <br/><em>(abre en ventana nueva)</em>
+            edit: Editar este parcel
+            delete: Borrar este parcel para siempre
+      parcels:
+        show:
+          other: Otros parcels
+  activerecord:
+    attributes:
+      'refinery/parcels/parcel':
+        parcel_date: Parcel Date
+        from_name: From Name
+        from_contact_id: From Contact
+        courier: Courier
+        air_waybill_no: Air Waybill No
+        to_name: To Name
+        to_user_id: To User
+        shipping_document_id: Shipping Document

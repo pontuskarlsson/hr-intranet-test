@@ -1,0 +1,32 @@
+<table>
+  <tr>
+    <th>Date</th>
+    <th>From</th>
+    <th>Courier</th>
+    <th>Air Waybill No</th>
+    <th>To</th>
+    <th>Signed?</th>
+  </tr>
+  <% if parcels.any? %>
+    <% parcels.each do |parcel| %>
+      <tr>
+        <td><%= parcel.parcel_date.strftime('%d %b, %Y') %></td>
+        <td><%= parcel.from_contact.present? ? link_to(parcel.from_contact.name, refinery.contacts_contact_path(parcel.from_contact)) : parcel.from_name %></td>
+        <td><%= parcel.courier %></td>
+        <td><%= parcel.air_waybill_no %></td>
+        <td><%= parcel.to_name %></td>
+        <td>
+          <% if allow_sign %>
+            <%= parcel.receiver_signed ? 'Already Signed' : link_to('Sign', refinery.sign_parcels_parcel_path(parcel), method: :post, confirm: 'Confirm that you have received the Parcel') %>
+          <% else %>
+            <%= parcel.receiver_signed ? 'Yes' : 'No' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="6" class="italic">No parcels found</td>
+    </tr>
+  <% end %>
+</table>
