@@ -1,5 +1,4 @@
 require 'basecrm'
-require 'pry'
 
 module Refinery
   module Contacts
