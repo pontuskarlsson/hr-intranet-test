@@ -43,7 +43,7 @@
         <div class="medium-2 columns">
           <div class='field'>
             <%= f.label :given_to, 'Assign To' -%>
-            <%= f.text_field :given_to, class: 'js_given_to_field' -%>
+            <%= f.text_field :given_to, value: @parcel.given_to || current_refinery_user.full_name, class: 'js_given_to_field' -%>
           </div>
         </div>
 
