@@ -1,11 +1,61 @@
 <% content_for :body do %>
-  <ul id="contacts">
-    <% @contacts.each do |contact| %>
-      <li>
-        <%= link_to contact.name, refinery.contacts_contact_path(contact) %>
-      </li>
-    <% end %>
-  </ul>
+  <h1>Contacts</h1>
+
+  <table class="display js_contacts_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Is Organisation?</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>Tags</th>
+      </tr>
+    </thead>
+
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Is Organisation?</th>
+        <th>Email</th>
+        <th>Country</th>
+        <th>Tags</th>
+      </tr>
+    </tfoot>
+
+    <tbody>
+      <tr>
+        <td colspan="5">Loading, please wait...</td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css' %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/responsive/1.0.1/css/dataTables.responsive.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.js' %>
+
+  <%= javascript_tag do %>
+    $(function(){
+      $('.js_contacts_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "data":           <%= @contacts.to_json.html_safe %>,
+        "columns": [
+          { data: "name", "render": function(data, type, row){ return ('<a href="<%= refinery.contacts_contact_path('%%contact_id%%') %>">'+data+'</a>').replace('%%contact_id%%', row.id); } },
+          { data: "is_organisation", "render": function(data, type, row) { return (data ? 'Yes' : 'No'); } },
+          { data: "email" },
+          { data: "country" },
+          { data: "tags_joined_by_comma" },
+        ]
+      });
+    });
+  <% end %>
 <% end %>
 
 <%= render '/refinery/content_page' %>
