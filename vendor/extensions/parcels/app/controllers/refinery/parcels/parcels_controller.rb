@@ -52,7 +52,7 @@ module Refinery
     protected
 
       def find_all_parcels
-        @parcels = Parcel.order('parcel_date DESC')
+        @parcels = Parcel.order('parcel_date DESC, id DESC')
 
         @my_unsigned_parcels = current_refinery_user.assigned_parcels.unsigned.order('parcel_date ASC')
       end

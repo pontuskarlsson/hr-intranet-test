@@ -1,0 +1,75 @@
+<%- disabled = @parcel.assigned_to_id != current_refinery_user.id -%>
+
+<% if disabled %>
+  <p class="italic">Can only be edited by <%= @parcel.assigned_to.full_name %></p>
+<% end %>
+
+<%= form_for @parcel, url: refinery.parcels_parcel_path(@parcel) do |f| %>
+  <div class="row">
+    <div class="medium-6 columns end">
+
+      <div class="fields">
+        <%= f.label :received_by_id %>
+        <%= f.text_field :received_by_id, value: @parcel.received_by.full_name, disabled: true %>
+      </div>
+
+      <div class="fields">
+        <%= f.label :parcel_date %>
+        <%= f.text_field :parcel_date, class: 'js_parcel_date_field', disabled: disabled %>
+      </div>
+
+      <div class="fields">
+        <%= f.label :from %>
+        <%= f.text_field :from, class: 'js_from_field', disabled: disabled %>
+      </div>
+
+      <div class="fields">
+        <%= f.label :courier %>
+        <%= f.text_field :courier, disabled: disabled %>
+      </div>
+
+      <div class="fields">
+        <%= f.label :air_waybill_no %>
+        <%= f.text_field :air_waybill_no, disabled: disabled %>
+      </div>
+
+      <div class="fields">
+        <%= f.label :to, 'Addressed To' %>
+        <%= f.text_field :to, class: 'js_to_field', disabled: disabled %>
+      </div>
+
+      <div class="fields">
+        <%= f.label :given_to, 'Assigned To' %>
+        <%= f.text_field :given_to, class: 'js_given_to_field', disabled: disabled %>
+      </div>
+
+      <div class="fields">
+        <%= f.submit 'Save', class: 'button round tiny', disabled: disabled %>
+      </div>
+
+    </div>
+  </div>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <%= javascript_tag do %>
+    $(function(){
+    $('.js_parcel_date_field').datepicker();
+    $('.js_from_field').autocomplete({
+    source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
+    });
+    <%- users = ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe -%>
+    $('.js_to_field').autocomplete({
+    source: <%= users %>
+    });
+    $('.js_given_to_field').autocomplete({
+    source: <%= users %>
+    });
+    });
+  <% end %>
+<% end %>

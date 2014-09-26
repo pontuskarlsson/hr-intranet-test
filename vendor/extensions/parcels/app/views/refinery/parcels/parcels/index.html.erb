@@ -102,8 +102,7 @@
   <%= stylesheet_link_tag 'jquery-ui.css' %>
   <%= stylesheet_link_tag 'refinery/ui' %>
 
-  <%= stylesheet_link_tag '//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css' %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/responsive/1.0.1/css/dataTables.responsive.css' %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -125,7 +124,7 @@
   <% end %>
 
   <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
-  <%= javascript_include_tag '//cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
 
   <%= javascript_tag do %>
     $(function(){
@@ -133,9 +132,10 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
+        "order":          [[ 0, "desc" ]],
         "data":           <%= @parcels.to_json(methods: [:given_to]).html_safe %>,
         "columns": [
-          { data: "parcel_date" },
+          { data: "parcel_date", "render": function(data, type, row){ return ('<a href="<%= refinery.parcels_parcel_path('%%parcel_id%%') %>">'+data+'</a>').replace('%%parcel_id%%', row.id); } },
           { data: "from_name" },
           { data: "courier" },
           { data: "air_waybill_no" },

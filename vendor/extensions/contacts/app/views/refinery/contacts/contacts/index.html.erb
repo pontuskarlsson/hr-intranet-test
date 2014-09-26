@@ -31,13 +31,12 @@
 <% end %>
 
 <% content_for :stylesheets do %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css' %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/responsive/1.0.1/css/dataTables.responsive.css' %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
 <% end %>
 
 <% content_for :javascripts do %>
   <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
-  <%= javascript_include_tag '//cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
 
   <%= javascript_tag do %>
     $(function(){
