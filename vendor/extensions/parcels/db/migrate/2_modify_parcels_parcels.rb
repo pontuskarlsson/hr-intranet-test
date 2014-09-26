@@ -7,6 +7,7 @@ class ModifyParcelsParcels < ActiveRecord::Migration
 
     add_index :refinery_parcels, :received_by_id
     add_index :refinery_parcels, :assigned_to_id
+
   end
 
   def down
@@ -16,6 +17,7 @@ class ModifyParcelsParcels < ActiveRecord::Migration
     remove_column :refinery_parcels, :received_by_id
     remove_column :refinery_parcels, :assigned_to_id
     remove_column :refinery_parcels, :description
+
   end
 
 end
