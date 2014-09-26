@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140925082305) do
+ActiveRecord::Schema.define(:version => 20140926022836) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -456,10 +456,15 @@ ActiveRecord::Schema.define(:version => 20140925082305) do
     t.integer  "position"
     t.datetime "created_at",                              :null => false
     t.datetime "updated_at",                              :null => false
+    t.integer  "received_by_id"
+    t.integer  "assigned_to_id"
+    t.string   "description"
   end
 
+  add_index "refinery_parcels", ["assigned_to_id"], :name => "index_refinery_parcels_on_assigned_to_id"
   add_index "refinery_parcels", ["from_contact_id"], :name => "index_refinery_parcels_on_from_contact_id"
   add_index "refinery_parcels", ["position"], :name => "index_refinery_parcels_on_position"
+  add_index "refinery_parcels", ["received_by_id"], :name => "index_refinery_parcels_on_received_by_id"
   add_index "refinery_parcels", ["receiver_signed"], :name => "index_refinery_parcels_on_receiver_signed"
   add_index "refinery_parcels", ["shipping_document_id"], :name => "index_refinery_parcels_on_shipping_document_id"
   add_index "refinery_parcels", ["to_user_id"], :name => "index_refinery_parcels_on_to_user_id"

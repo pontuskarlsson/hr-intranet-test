@@ -229,3 +229,25 @@ ul.latest-news {
         height: inherit;
     }
 }
+
+
+/* jQuery overrides */
+.ui-button {
+    padding: 0 !important;
+    margin: 0 !important;
+
+    &.ui-dialog-titlebar-close {
+        font-size: 1px !important;
+    }
+}
+
+.ui-autocomplete {
+    z-index: 5000 !important;
+}
+
+
+/* DataTables overrides */
+.dataTables_wrapper .dataTables_filter {
+    float: left !important;
+    text-align: left !important;
+}

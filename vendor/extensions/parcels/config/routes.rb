@@ -2,9 +2,9 @@ Refinery::Core::Engine.routes.draw do
 
   # Frontend routes
   namespace :parcels do
-    resources :parcels, :path => '', :only => [:index, :create, :show] do
+    resources :parcels, :path => '', :only => [:index, :create, :show, :update] do
       member do
-        post :sign
+        get :sign, :pass_on
       end
     end
   end

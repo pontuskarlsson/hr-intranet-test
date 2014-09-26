@@ -1,0 +1,8 @@
+var dialog = $("<%=escape_javascript render('pass_on_form') %>");
+
+<%- users = ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe -%>
+$('.js_given_to_field', dialog).autocomplete({
+  source: <%= users %>
+});
+
+dialog.appendTo('body').dialog();

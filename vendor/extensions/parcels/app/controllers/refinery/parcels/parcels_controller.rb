@@ -1,8 +1,6 @@
 module Refinery
   module Parcels
     class ParcelsController < ::ApplicationController
-      skip_before_filter :verify_authenticity_token, only: [:sign]
-
       before_filter :find_all_parcels
       before_filter :find_page
 
@@ -14,7 +12,7 @@ module Refinery
       end
 
       def create
-        @parcel = Parcel.new(params[:parcel])
+        @parcel = current_refinery_user.received_parcels.build(params[:parcel])
         if @parcel.save
           flash[:info] = 'Parcel successfully added.'
           redirect_to refinery.parcels_parcels_path
@@ -32,11 +30,10 @@ module Refinery
         present(@page)
       end
 
-      def sign
-        @parcel = current_refinery_user.parcels.unsigned.find(params[:id])
-        @parcel.receiver_signed = true
-        if @parcel.save
-          flash[:info] = 'Parcel successfully signed for.'
+      def update
+        @parcel = current_refinery_user.assigned_parcels.find(params[:id])
+        if @parcel.update_attributes(params[:parcel])
+          flash[:info] = 'Parcel successfully updated.'
           redirect_to refinery.parcels_parcels_path
         else
           present(@page)
@@ -44,12 +41,20 @@ module Refinery
         end
       end
 
+      def sign
+        @parcel = current_refinery_user.assigned_parcels.find(params[:id])
+      end
+
+      def pass_on
+        @parcel = current_refinery_user.assigned_parcels.find(params[:id])
+      end
+
     protected
 
       def find_all_parcels
         @parcels = Parcel.order('parcel_date DESC')
 
-        @my_unsigned_parcels = current_refinery_user.parcels.unsigned.order('parcel_date ASC')
+        @my_unsigned_parcels = current_refinery_user.assigned_parcels.unsigned.order('parcel_date ASC')
       end
 
       def find_page

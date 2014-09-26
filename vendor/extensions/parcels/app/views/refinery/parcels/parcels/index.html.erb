@@ -19,7 +19,7 @@
           </div>
         </div>
 
-        <div class="medium-2 columns">
+        <div class="medium-1 columns">
           <div class='field'>
             <%= f.label :courier -%>
             <%= f.text_field :courier -%>
@@ -35,12 +35,19 @@
 
         <div class="medium-2 columns">
           <div class='field'>
-            <%= f.label :to -%>
+            <%= f.label :to, 'Addressed To' -%>
             <%= f.text_field :to, class: 'js_to_field' -%>
           </div>
         </div>
 
         <div class="medium-2 columns">
+          <div class='field'>
+            <%= f.label :given_to, 'Assign To' -%>
+            <%= f.text_field :given_to, class: 'js_given_to_field' -%>
+          </div>
+        </div>
+
+        <div class="medium-1 columns">
           <div class='field t1'>
             <%= f.submit 'Save', class: 'tiny button round' %>
           </div>
@@ -52,15 +59,51 @@
 
   <% if @my_unsigned_parcels.any? %>
     <h4>You need to sign the following Parcels</h4>
-    <%= render 'parcel_list', parcels: @my_unsigned_parcels, allow_sign: true %>
+    <%= render 'sign_parcel_list', parcels: @my_unsigned_parcels, allow_sign: true %>
   <% end %>
 
-  <h4>Received Parcels</h4>
-  <%= render 'parcel_list', parcels: @parcels, allow_sign: false %>
+  <table class="display js_parcels_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+    <tr>
+      <th>Parcel Date</th>
+      <th>From</th>
+      <th>Courier</th>
+      <th>Air Waybill No</th>
+      <th>Addressed To</th>
+      <th>Assigned To</th>
+      <th>Description</th>
+      <th>Signed?</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>Parcel Date</th>
+      <th>From</th>
+      <th>Courier</th>
+      <th>Air Waybill No</th>
+      <th>Addressed To</th>
+      <th>Assigned To</th>
+      <th>Description</th>
+      <th>Signed?</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td colspan="7">Loading, please wait...</td>
+    </tr>
+    </tbody>
+  </table>
+
 <% end %>
 
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag 'jquery-ui.css' %>
+  <%= stylesheet_link_tag 'refinery/ui' %>
+
+  <%= stylesheet_link_tag '//cdn.datatables.net/1.10.2/css/jquery.dataTables.min.css' %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/responsive/1.0.1/css/dataTables.responsive.css' %>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -71,8 +114,36 @@
       $('.js_from_field').autocomplete({
         source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
       });
+    <%- users = ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe -%>
       $('.js_to_field').autocomplete({
-        source: <%= ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe %>
+        source: <%= users %>
+      });
+      $('.js_given_to_field').autocomplete({
+        source: <%= users %>
+      });
+    });
+  <% end %>
+
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/responsive/1.0.1/js/dataTables.responsive.js' %>
+
+  <%= javascript_tag do %>
+    $(function(){
+      $('.js_parcels_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "data":           <%= @parcels.to_json(methods: [:given_to]).html_safe %>,
+        "columns": [
+          { data: "parcel_date" },
+          { data: "from_name" },
+          { data: "courier" },
+          { data: "air_waybill_no" },
+          { data: "to_name" },
+          { data: "given_to" },
+          { data: "description" },
+          { data: "receiver_signed", "render": function(data, type, row) { return (data ? 'Yes' : 'No'); } }
+        ]
       });
     });
   <% end %>

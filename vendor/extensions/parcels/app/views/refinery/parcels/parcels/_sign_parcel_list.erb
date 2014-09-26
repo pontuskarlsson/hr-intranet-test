@@ -4,8 +4,9 @@
     <th>From</th>
     <th>Courier</th>
     <th>Air Waybill No</th>
-    <th>To</th>
-    <th>Signed?</th>
+    <th>Addressed To</th>
+    <th>Assigned To</th>
+    <th>Actions</th>
   </tr>
   <% if parcels.any? %>
     <% parcels.each do |parcel| %>
@@ -15,12 +16,11 @@
         <td><%= parcel.courier %></td>
         <td><%= parcel.air_waybill_no %></td>
         <td><%= parcel.to_name %></td>
+        <td><%= parcel.assigned_to.full_name %></td>
         <td>
-          <% if allow_sign %>
-            <%= parcel.receiver_signed ? 'Already Signed' : link_to('Sign', refinery.sign_parcels_parcel_path(parcel), method: :post, confirm: 'Confirm that you have received the Parcel') %>
-          <% else %>
-            <%= parcel.receiver_signed ? 'Yes' : 'No' %>
-          <% end %>
+          <%= link_to 'Sign', refinery.sign_parcels_parcel_path(parcel), remote: true %>
+          or
+          <%= link_to 'Pass On', refinery.pass_on_parcels_parcel_path(parcel), remote: true %>
         </td>
       </tr>
     <% end %>
