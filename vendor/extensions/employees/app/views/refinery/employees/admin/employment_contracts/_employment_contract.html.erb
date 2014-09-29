@@ -1,0 +1,20 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(employment_contract) -%>">
+  <span class='title'>
+    <%= employment_contract.start_date %>
+
+  </span>
+  <span class='actions'>
+    
+    <%= link_to refinery_icon_tag("application_go.png"), '#', #refinery.employees_employment_contract_path(employment_contract),
+        :title => t('.view_live_html'),
+        :target => "_blank" %>
+    
+    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_employees_admin_employment_contract_path(employment_contract),
+         :title => t('.edit') %>
+    <%= link_to refinery_icon_tag("delete.png"), refinery.employees_admin_employment_contract_path(employment_contract),
+        :class => "cancel confirm-delete",
+        :title => t('.delete'),
+        :confirm => t('message', :scope => 'refinery.admin.delete', :title => employment_contract.start_date),
+        :method => :delete %>
+  </span>
+</li>

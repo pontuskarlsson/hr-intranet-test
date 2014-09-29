@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140926085246) do
+ActiveRecord::Schema.define(:version => 20140929081759) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -320,6 +320,36 @@ ActiveRecord::Schema.define(:version => 20140926085246) do
   add_index "refinery_contacts", ["organisation_id"], :name => "index_refinery_contacts_on_organisation_id"
   add_index "refinery_contacts", ["removed_from_base"], :name => "index_refinery_contacts_on_removed_from_base"
 
+  create_table "refinery_employees", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "profile_image_id"
+    t.string   "employee_no"
+    t.string   "full_name"
+    t.string   "id_no"
+    t.string   "title"
+    t.integer  "position"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "refinery_employees", ["employee_no"], :name => "index_refinery_employees_on_employee_no"
+  add_index "refinery_employees", ["position"], :name => "index_refinery_employees_on_position"
+  add_index "refinery_employees", ["profile_image_id"], :name => "index_refinery_employees_on_profile_image_id"
+  add_index "refinery_employees", ["user_id"], :name => "index_refinery_employees_on_user_id"
+
+  create_table "refinery_employment_contracts", :force => true do |t|
+    t.integer  "employee_id",                                                          :null => false
+    t.date     "start_date",                                                           :null => false
+    t.date     "end_date"
+    t.decimal  "vacation_days_per_year", :precision => 10, :scale => 0, :default => 0, :null => false
+    t.datetime "created_at",                                                           :null => false
+    t.datetime "updated_at",                                                           :null => false
+  end
+
+  add_index "refinery_employment_contracts", ["employee_id"], :name => "index_refinery_employment_contracts_on_employee_id"
+  add_index "refinery_employment_contracts", ["end_date"], :name => "index_refinery_employment_contracts_on_end_date"
+  add_index "refinery_employment_contracts", ["start_date"], :name => "index_refinery_employment_contracts_on_start_date"
+
   create_table "refinery_image_page_translations", :force => true do |t|
     t.integer  "refinery_image_page_id"
     t.string   "locale",                 :null => false
@@ -501,6 +531,19 @@ ActiveRecord::Schema.define(:version => 20140926085246) do
   add_index "refinery_parcels", ["shipping_document_id"], :name => "index_refinery_parcels_on_shipping_document_id"
   add_index "refinery_parcels", ["to_user_id"], :name => "index_refinery_parcels_on_to_user_id"
 
+  create_table "refinery_public_holidays", :force => true do |t|
+    t.integer  "event_id"
+    t.string   "title"
+    t.string   "country"
+    t.date     "holiday_date",                    :null => false
+    t.boolean  "half_day",     :default => false, :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "refinery_public_holidays", ["event_id"], :name => "index_refinery_public_holidays_on_event_id"
+  add_index "refinery_public_holidays", ["holiday_date"], :name => "index_refinery_public_holidays_on_holiday_date"
+
   create_table "refinery_resources", :force => true do |t|
     t.string   "file_mime_type"
     t.string   "file_name"
@@ -615,6 +658,25 @@ ActiveRecord::Schema.define(:version => 20140926085246) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
   end
+
+  create_table "refinery_sick_leaves", :force => true do |t|
+    t.integer  "employee_id"
+    t.integer  "event_id"
+    t.integer  "doctors_note_id"
+    t.date     "start_date"
+    t.boolean  "start_half_day",                                 :default => false, :null => false
+    t.date     "end_date"
+    t.boolean  "end_half_day",                                   :default => false, :null => false
+    t.decimal  "number_of_days",  :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
+  end
+
+  add_index "refinery_sick_leaves", ["doctors_note_id"], :name => "index_refinery_sick_leaves_on_doctors_note_id"
+  add_index "refinery_sick_leaves", ["employee_id"], :name => "index_refinery_sick_leaves_on_employee_id"
+  add_index "refinery_sick_leaves", ["end_date"], :name => "index_refinery_sick_leaves_on_end_date"
+  add_index "refinery_sick_leaves", ["event_id"], :name => "index_refinery_sick_leaves_on_event_id"
+  add_index "refinery_sick_leaves", ["start_date"], :name => "index_refinery_sick_leaves_on_start_date"
 
   create_table "refinery_user_plugins", :force => true do |t|
     t.integer "user_id"

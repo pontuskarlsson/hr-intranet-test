@@ -1,0 +1,27 @@
+<ul>
+  <% if ::Refinery::Employees::Admin::PublicHolidaysController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.employees_admin_public_holidays_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_employees_admin_public_holiday_path,
+                :class => "add_icon" %>
+  </li>
+  <%= render '/refinery/employees/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::Employees::Admin::PublicHolidaysController.sortable? && ::Refinery::Employees::PublicHoliday.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Public Holidays"),
+                 refinery.employees_admin_public_holidays_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Public Holidays"),
+                 refinery.employees_admin_public_holidays_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

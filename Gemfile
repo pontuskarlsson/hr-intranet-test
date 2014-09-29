@@ -72,3 +72,4 @@ end
 
 gem 'refinerycms-contacts', :path => 'vendor/extensions'
 gem 'refinerycms-parcels', :path => 'vendor/extensions'
+gem 'refinerycms-employees', :path => 'vendor/extensions'

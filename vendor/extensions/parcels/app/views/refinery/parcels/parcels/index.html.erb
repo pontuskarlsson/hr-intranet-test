@@ -109,7 +109,7 @@
 
   <%= javascript_tag do %>
     $(function(){
-      $('.js_parcel_date_field').datepicker();
+      $('.js_parcel_date_field').datepicker({ dateFormat: "yy-mm-dd" });
       $('.js_from_field').autocomplete({
         source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
       });

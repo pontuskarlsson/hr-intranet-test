@@ -57,19 +57,19 @@
 
 <% content_for :javascripts do %>
 
-  <%= javascript_tag do %>
+  <script type="text/javascript">
     $(function(){
-    $('.js_parcel_date_field').datepicker();
-    $('.js_from_field').autocomplete({
-    source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
+      $('.js_parcel_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_from_field').autocomplete({
+        source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
+      });
+      <%- users = ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe -%>
+      $('.js_to_field').autocomplete({
+        source: <%= users %>
+      });
+      $('.js_given_to_field').autocomplete({
+        source: <%= users %>
+      });
     });
-    <%- users = ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe -%>
-    $('.js_to_field').autocomplete({
-    source: <%= users %>
-    });
-    $('.js_given_to_field').autocomplete({
-    source: <%= users %>
-    });
-    });
-  <% end %>
+  </script>
 <% end %>

@@ -1,0 +1,61 @@
+<%= form_for [refinery, :employees_admin, @sick_leave] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @sick_leave,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :employee_name -%>
+    <%= f.text_field :employee_name, class: 'js_employee_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :start_date -%>
+    <%= f.text_field :start_date, class: 'js_date_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :start_half_day -%>
+    <%= f.check_box :start_half_day -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_date -%>
+    <%= f.text_field :end_date, class: 'js_date_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_half_day -%>
+    <%= f.check_box :end_half_day -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :doctors_note_id -%>
+    <%= render '/refinery/admin/resource_picker',
+               :f => f,
+               :field => :doctors_note_id,
+               :resource => @sick_leave.doctors_note -%>
+  </div>
+
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.employees.admin.sick_leaves.sick_leave'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @sick_leave.start_date) -%>
+<% end -%>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_employee_field').autocomplete({
+        source: <%= ::Refinery::Employees::Employee.select(:full_name).map(&:full_name).to_json.html_safe %>
+      });
+    });
+  </script>
+<% end %>

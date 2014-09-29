@@ -1,0 +1,33 @@
+module Refinery
+  module Employees
+    class PublicHoliday < Refinery::Core::BaseModel
+      self.table_name = 'refinery_public_holidays'
+
+      CALENDAR_FUNCTION_PREFIX = 'PublicHolidays_'
+      COUNTRIES = %w(HK)
+
+      belongs_to :event,          class_name: '::Refinery::Calendar::Event', dependent: :destroy
+
+      attr_accessible :holiday_date, :half_day, :country, :title
+
+      validates :event_id,      uniqueness: true, allow_blank: true
+      validates :holiday_date,  presence: true, uniqueness: { scope: :country }
+      validates :country,       presence: true, inclusion: COUNTRIES
+
+      after_save do
+        unless event.present?
+          # This creates a Calendar for the specific function of displaying Sick Leave events.
+          calendar = ::Refinery::Calendar::Calendar.find_or_create_by_function!(CALENDAR_FUNCTION_PREFIX+country, { title: "Public Holidays (#{country})", private: false, activate_on_create: true })
+          self.event = calendar.events.build
+        end
+
+        event.title = title
+        event.starts_at = half_day ? holiday_date.beginning_of_day + 14.hours : holiday_date.beginning_of_day
+        event.ends_at = holiday_date.end_of_day
+
+        event.save!
+      end
+
+    end
+  end
+end
