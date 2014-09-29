@@ -1,13 +1,36 @@
-<section id="events" class="events">
-  <%- @calendar = Calendar.new(params[:year], params[:month]) -%>
-  <h3 style="text-align: center;"><%= @calendar.date.strftime('%Y') %></h3>
+<section id="events" class="calendar-events p1">
+  <%- @calendar = CalendarLayout.new(@events, params[:year], params[:month]) -%>
+  <%- active_calendar_ids = @active_calendars.map(&:id) -%>
+
+  <div class="row">
+    <div class="medium-3 columns">
+      <button data-dropdown="select-calendars" aria-controls="select-calendars" aria-expanded="false">Calendars</button>
+      <div id="select-calendars" data-dropdown-content class="f-dropdown content" aria-hidden="true" tabindex="-1">
+        <h6>Select active Calendars</h6>
+        <% @calendars.each do |calendar| %>
+          <div>
+            <%= form_for ::Refinery::Calendar::UserCalendar.new, url: refinery.calendar_user_calendars_path, remote: true do |f| %>
+              <%= f.hidden_field :calendar_id, value: calendar.id %>
+              <div class="field">
+                  <%= f.check_box :inactive, { id: "calendar_inactive_#{calendar.id}", checked: active_calendar_ids.include?(calendar.id), class: 'js_calendar_inactive', 'data-inactivate-id' => calendar.id }, '0', '1' %>
+                  <%= f.label :inactive, calendar.uniq_name, for: "calendar_inactive_#{calendar.id}", :class => 'stripped' %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="medium-6 columns end">
+      <h3 style="text-align: center;"><%= @calendar.date.strftime('%Y') %></h3>
+    </div>
+  </div>
   <h1 style="text-align: center;">
     <span style="float: left;"><small><%= link_to @calendar.previous_month.strftime('<< %^B'), refinery.calendar_events_path(year: @calendar.previous_month.year, month: @calendar.previous_month.month) %></small></span>
     <%= @calendar.date.strftime('%^B') %>
     <span style="float: right;"><small><%= link_to @calendar.next_month.strftime('%^B >>'), refinery.calendar_events_path(year: @calendar.next_month.year, month: @calendar.next_month.month) %></small></span>
   </h1>
 
-  <div class="row calendar-row header">
+  <div class="row calendar-row header show-for-medium-up">
     <% @calendar.headers.each_with_index do |day, day_i| %>
       <div class="medium-1 columns<% if day_i%7 == 6 %> end<% end %>">
         <%= day %>
@@ -20,9 +43,38 @@
       <% @calendar.each_cell do |cell_idx, cell_date, events| %>
         <div class="medium-1 columns<% if cell_idx%7 == 6 %> end<% end %>">
           <div class="calendar-day<% if cell_date == @calendar.today %> today<% end %>"<% if cell_date.month != @calendar.date.month %> style="background-color: #eee; color: #999;"<% end %>>
-            <p><%= cell_date.day %></p>
+            <p class="show-for-medium-up"><%= cell_date.day %></p>
+            <p class="show-for-small-only"><%= cell_date.day %> <%= cell_date.strftime('%A') %></p>
             <% events.each do |event| %>
-              <p class="calendar-event"><%= link_to event.title, refinery.calendar_event_path(event), title: event.title %></p>
+              <p class="calendar-event" data-calendar-id="<%= event.calendar_id %>" <% unless active_calendar_ids.include?(event.calendar_id) %>style="display: none;"<% end %>>
+                <%= link_to event.title, '#', 'data-reveal-id' => "event-modal-#{event.id}" %>
+              </p>
+
+              <div id="event-modal-<%= event.id %>" class="reveal-modal" data-reveal>
+                <h4><%= link_to event.title, refinery.calendar_event_path(event) %></h4>
+
+                <h5><%= event.venue_name %></h5>
+
+                <h5><%= event.calendar_title %></h5>
+
+                <p><%= t('.from', default: 'From') %> <%= event.from.try(:strftime, '%B %d, %Y %I:%M%p') %><br>
+                  <%= t('.to', default: 'To') %> <%= event.to.try(:strftime, '%B %d, %Y %I:%M%p') %></p>
+
+                <% if event.registration_link.present? %>
+                  <p><%= link_to t('.register', default: 'Register for this event'), event.registration_link %></p>
+                <% end -%>
+
+                <% if event.venue_address.present? %>
+                  <p><%= link_to t('.view_on_map', default: 'View it on a map'), "http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=#{CGI::escape(@event.venue.address)}&ie=UTF8&z=16" %></p>
+                <% end -%>
+
+                <div class="event_description">
+                  <h4><%= event.excerpt %></h4>
+                  <%=raw event.description %>
+                </div>
+
+                <a class="close-reveal-modal">&#215;</a>
+              </div>
             <% end %>
           </div>
         </div>
@@ -30,3 +82,7 @@
     </div>
   <% end %>
 </section>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'calendars' %>
+<% end %>

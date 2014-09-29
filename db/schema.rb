@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140926022836) do
+ActiveRecord::Schema.define(:version => 20140926085246) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -220,6 +220,22 @@ ActiveRecord::Schema.define(:version => 20140926022836) do
     t.datetime "updated_at",  :null => false
   end
 
+  create_table "refinery_calendar_calendars", :force => true do |t|
+    t.string   "title"
+    t.string   "function"
+    t.integer  "user_id"
+    t.boolean  "private",          :default => false, :null => false
+    t.string   "default_rgb_code"
+    t.integer  "position"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
+  add_index "refinery_calendar_calendars", ["function"], :name => "index_refinery_calendar_calendars_on_function"
+  add_index "refinery_calendar_calendars", ["position"], :name => "index_refinery_calendar_calendars_on_position"
+  add_index "refinery_calendar_calendars", ["private"], :name => "index_refinery_calendar_calendars_on_private"
+  add_index "refinery_calendar_calendars", ["user_id"], :name => "index_refinery_calendar_calendars_on_user_id"
+
   create_table "refinery_calendar_events", :force => true do |t|
     t.string   "title"
     t.string   "registration_link"
@@ -233,7 +249,23 @@ ActiveRecord::Schema.define(:version => 20140926022836) do
     t.datetime "updated_at",        :null => false
     t.datetime "starts_at"
     t.datetime "ends_at"
+    t.integer  "calendar_id"
   end
+
+  add_index "refinery_calendar_events", ["calendar_id"], :name => "index_refinery_calendar_events_on_calendar_id"
+
+  create_table "refinery_calendar_user_calendars", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "calendar_id"
+    t.boolean  "inactive",    :default => false, :null => false
+    t.string   "rgb_code"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "refinery_calendar_user_calendars", ["calendar_id"], :name => "index_refinery_calendar_user_calendars_on_calendar_id"
+  add_index "refinery_calendar_user_calendars", ["inactive"], :name => "index_refinery_calendar_user_calendars_on_inactive"
+  add_index "refinery_calendar_user_calendars", ["user_id"], :name => "index_refinery_calendar_user_calendars_on_user_id"
 
   create_table "refinery_calendar_venues", :force => true do |t|
     t.string   "name"

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/dannemanne/refinerycms-calendar.git
-  revision: 346cd6f72a569475a7cc51126237c75e1592a5a2
+  revision: 3a028615ca8239256f7d69fc7de582b599356c85
   specs:
     refinerycms-calendar (2.1.0)
       refinerycms-core (~> 2.1.0)
