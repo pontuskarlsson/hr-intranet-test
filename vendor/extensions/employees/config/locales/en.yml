@@ -5,6 +5,8 @@ en:
         title: Employees
       sick_leaves:
         title: Sick Leave
+      annual_leaves:
+        title: Annual Leave
       employment_contracts:
         title: Employment Contract
       public_holidays:
@@ -15,6 +17,7 @@ en:
           links:
             manage_employees: Manage Employees
             manage_sick_leaves: Manage Sick Leaves
+            manage_annual_leaves: Manage Annual Leaves
             manage_employment_contracts: Manage Employment Contracts
             manage_public_holidays: Manage Public Holidays
         employees:
@@ -43,6 +46,19 @@ en:
             view_live_html: View this sick leave live <br/><em>(opens in a new window)</em>
             edit: Edit this sick leave
             delete: Remove this sick leave forever
+        annual_leaves:
+          actions:
+            create_new: Add New Annual Leave
+            reorder: Reorder Annual Leaves
+            reorder_done: Done Reordering Annual Leaves
+          records:
+            title: Annual Leaves
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Annual Leaves yet. Click "Add New Annual Leave" to add your first annual leave.
+          annual_leave:
+            view_live_html: View this annual leave live <br/><em>(opens in a new window)</em>
+            edit: Edit this annual leave
+            delete: Remove this annual leave forever
         employment_contracts:
           actions:
             create_new: Add New Employment Contract
@@ -76,6 +92,9 @@ en:
       sick_leaves:
         show:
           other: Other Sick Leaves
+      annual_leaves:
+        show:
+          other: Other Annual Leaves
       employment_contract:
         show:
           other: Other Employment Contracts
@@ -97,6 +116,12 @@ en:
         end_half_day: Ended with Half Day?
         doctors_note_id: Doctor's Note
         doctors_note: Doctor's Note
+      'refinery/employees/annual_leave':
+        employee_id: Employee
+        start_date: Start Date
+        start_half_day: Started with Half Day?
+        end_date: End Date
+        end_half_day: Ended with Half Day?
       'refinery/employees/employment_contract':
         employee_id: Employee
         start_date: Start Date

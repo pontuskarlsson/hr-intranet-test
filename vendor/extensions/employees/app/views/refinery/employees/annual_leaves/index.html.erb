@@ -1,0 +1,89 @@
+<% content_for :body do %>
+
+  <%= render 'form', annual_leave: ::Refinery::Employees::AnnualLeave.new %>
+
+  <h4 class="t2">Registered Annual Leave</h4>
+
+  <table class="display js_annual_leaves_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Start</th>
+        <th>End</th>
+        <th>No. of days</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tfoot>
+      <tr>
+        <th>Start</th>
+        <th>End</th>
+        <th>No. of days</th>
+        <th>Action</th>
+      </tr>
+    </tfoot>
+
+    <tbody>
+      <tr>
+        <td colspan="4">Loading, please wait...</td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+
+
+<% content_for :side_body do %>
+  <h4>Vacation Summary</h4>
+
+  <% if (employee = current_refinery_user.employee).present? && (employment_contract = employee.current_employment_contract).present? %>
+    <section>
+      <h5>
+        <%= employment_contract.start_date.strftime('%d %B, %Y') %> - <%= employment_contract.end_date.try(:strftime, '%d %B, %Y') || 'Present' %><br/>
+        <small><%= employment_contract.vacation_days_per_year %> days per year.</small>
+      </h5>
+
+      <% if employment_contract.start_date.year == Date.today.year %>
+        <p>This year: <%= ((employment_contract.start_date.end_of_year - employment_contract.start_date).to_f / 365 * employment_contract.vacation_days_per_year).ceil %> days</p>
+        <% if employment_contract.days_carried_over > 0 %>
+          <p><%= employment_contract.days_carried_over %> days carried over from previous contract.</p>
+        <% end %>
+      <% else %>
+        <p>This year: <%= employment_contract.vacation_days_per_year %></p>
+      <% end %>
+
+      <p>Used: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year, Date.today.end_of_year).sum(&:record_value) %></p>
+
+
+    </section>
+  <% end %>
+<% end %>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_annual_leaves_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= @annual_leaves.to_json.html_safe %>,
+        "columns": [
+          { data: "start_date" },
+          { data: "end_date" },
+          { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
+          { data: "id", "render": function(data, type, row){ return '<a href="/employees/annual_leaves/'+data+'/edit">Edit</a>'; } }
+        ]
+      });
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>

@@ -9,7 +9,7 @@ class CreateEmployeesSickLeaves < ActiveRecord::Migration
       t.boolean :start_half_day,      null: false, default: 0
       t.date :end_date
       t.boolean :end_half_day,        null: false, default: 0
-      t.decimal :number_of_days,      null: false, default: 0
+      t.decimal :number_of_days,      null: false, default: 0, scale: 2, precision: 10
 
       t.timestamps
     end

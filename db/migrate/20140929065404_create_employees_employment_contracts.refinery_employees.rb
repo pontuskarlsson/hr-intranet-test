@@ -7,6 +7,8 @@ class CreateEmployeesEmploymentContracts < ActiveRecord::Migration
       t.date :start_date,                 null: false
       t.date :end_date
       t.decimal :vacation_days_per_year,  null: false, default: 0
+      t.decimal :days_carried_over,       null: false, default: 0, scale: 2, precision: 10
+      t.string :country
 
       t.timestamps
     end

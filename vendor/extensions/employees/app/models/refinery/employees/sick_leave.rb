@@ -30,15 +30,33 @@ module Refinery
       end
 
       before_save do
+        unless event.present?
+          # This creates a Calendar for the specific function of displaying Sick Leave events.
+          calendar = ::Refinery::Calendar::Calendar.find_or_create_by_function!(CALENDAR_FUNCTION, { title: 'Sick Leave', private: false, activate_on_create: true })
+          self.event = calendar.events.build
+        end
+
+        event.title = "#{ employee.full_name } on sick leave"
+        event.excerpt = 'Sick Leave'
+        event.starts_at = start_date.beginning_of_day  + (start_half_day ? 14.hours : 0)
+        event.ends_at =  (end_half_day   ? end_date.beginning_of_day + 14.hours : end_date.end_of_day) if end_date.present?
+
+        event.save!
+        self.event_id = event.id # Not getting associated without this line...
+
         # Start by retrieving all public holidays that are in between the starting and ending dates of
         # the sick leave and is not a half day (sick leave on half days still counts as whole day of sick leave).
-        ph_dates = ::Refinery::Employees::PublicHoliday.where('holiday_date >= ? AND holiday_date <= ? AND half_day = ?', start_date, end_date, false).map(&:holiday_date)
+        if (country = employee.current_employment_contract.try(:country)).present?
+          ph_dates = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date >= ? AND holiday_date <= ? AND half_day = ?', country, start_date, end_date, false).map(&:holiday_date)
+        else
+          ph_dates = []
+        end
 
         if end_date.present?
           # We can calculate the entire leave
 
           # Remove all days in the sick leave range that are either a weekend or a public holiday
-          self.number_of_days = (start_date..end_date).to_a.reject { |d| d.saturday? || d.sunday? || ph_dates.include?(d) }.count
+          self.number_of_days = (start_date..end_date).to_a.reject { |d| d.saturday? || d.sunday? || ph_dates.include?(d) }.count.to_f
 
           # If the sick leave started with half day (i.e. employee left after lunch, NOT employee was
           # sick on a half day public holiday), then we reduce the sick leave with half a day, same
@@ -48,7 +66,7 @@ module Refinery
         else
           # Check that start_date is not on a weekend or whole-day public holiday
           if start_date.saturday? || start_date.sunday? || ph_dates.include?(start_date)
-            errors.add(:start_date, 'Cannot start sick leave on non-working dat')
+            errors.add(:start_date, 'Cannot start sick leave on non-working day')
           end
 
           # We assume it is only one day leave
@@ -58,20 +76,6 @@ module Refinery
         errors.add(:number_of_days, 'must be higher than 0') unless number_of_days > 0
 
         errors.empty? # Rollback if any errors are present
-      end
-
-      after_save do
-        unless event.present?
-          # This creates a Calendar for the specific function of displaying Sick Leave events.
-          calendar = ::Refinery::Calendar::Calendar.find_or_create_by_function!(CALENDAR_FUNCTION, { title: 'Sick Leave', private: false, activate_on_create: true })
-          self.event = calendar.events.build
-        end
-
-        event.title = "Sick Leave: #{ employee.full_name }"
-        event.starts_at = start_date.beginning_of_day  + (start_half_day ? 14.hours : 0)
-        event.ends_at =  (end_half_day   ? end_date.beginning_of_day + 14.hours : end_date.end_of_day) if end_date.present?
-
-        event.save!
       end
 
       def employee_name

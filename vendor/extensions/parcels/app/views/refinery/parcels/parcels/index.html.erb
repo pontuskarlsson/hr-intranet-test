@@ -126,7 +126,7 @@
   <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
   <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
 
-  <%= javascript_tag do %>
+  <script type="text/javascript">
     $(function(){
       $('.js_parcels_data_table').dataTable({
         "scrollY":        "600px",
@@ -146,7 +146,7 @@
         ]
       });
     });
-  <% end %>
+  </script>
 <% end %>
 
 <%= render '/refinery/content_page' %>

@@ -3,7 +3,8 @@ Refinery::Core::Engine.routes.draw do
   # Frontend routes
   namespace :employees do
     resources :sick_leaves, :only => [:index, :create, :edit, :update]
-    resources :employees, :path => '', :only => [:index, :show]
+    resources :annual_leaves, :only => [:index, :create, :edit, :update]
+    resources :employees, :only => [:index, :show]
   end
 
   # Admin routes
@@ -16,6 +17,12 @@ Refinery::Core::Engine.routes.draw do
       end
 
       resources :sick_leaves, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :annual_leaves, :except => :show do
         collection do
           post :update_positions
         end

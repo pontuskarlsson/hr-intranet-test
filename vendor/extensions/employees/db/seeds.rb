@@ -10,10 +10,10 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/employees"
+  url = "/employees/employees"
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
-      :title => 'Employees',
+      :title => 'Employee Directory',
       :link_url => url,
       :deletable => false,
       :menu_match => "^#{url}(\/|\/.+?|)$"
@@ -27,6 +27,19 @@ Refinery::I18n.frontend_locales.each do |lang|
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
         :title => 'Sick Leave',
+        :link_url => url,
+        :deletable => false,
+        :menu_match => "^#{url}(\/|\/.+?|)$"
+    )
+    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
+      page.parts.create(:title => default_page_part, :body => nil, :position => index)
+    end
+  end
+
+  url = "/employees/annual_leaves"
+  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
+    page = Refinery::Page.create(
+        :title => 'Annual Leave',
         :link_url => url,
         :deletable => false,
         :menu_match => "^#{url}(\/|\/.+?|)$"

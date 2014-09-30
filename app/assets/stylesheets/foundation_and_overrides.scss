@@ -1472,6 +1472,10 @@ $body-bg: none;
 .t10 { padding-top: 10rem !important; }
 
 
+.calendar-events {
+    overflow: hidden;
+}
+
 @media #{$medium-up} {
     .row.calendar-row {
         width: 171.4%;
@@ -1504,6 +1508,11 @@ $body-bg: none;
 
         &.today {
             background-color: #ffffcc;
+        }
+
+        &.different-month {
+            background-color: #eee;
+            color: #999;
         }
 
         p, p a {

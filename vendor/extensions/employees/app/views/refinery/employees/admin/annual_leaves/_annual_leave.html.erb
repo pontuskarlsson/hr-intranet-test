@@ -1,0 +1,20 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(annual_leave) -%>">
+  <span class='title'>
+    <%= annual_leave.start_date %>
+
+  </span>
+  <span class='actions'>
+    
+    <%= link_to refinery_icon_tag("application_go.png"), '#', #refinery.employees_annual_leave_path(annual_leave),
+        :title => t('.view_live_html'),
+        :target => "_blank" %>
+    
+    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_employees_admin_annual_leave_path(annual_leave),
+         :title => t('.edit') %>
+    <%= link_to refinery_icon_tag("delete.png"), refinery.employees_admin_annual_leave_path(annual_leave),
+        :class => "cancel confirm-delete",
+        :title => t('.delete'),
+        :confirm => t('message', :scope => 'refinery.admin.delete', :title => annual_leave.start_date),
+        :method => :delete %>
+  </span>
+</li>

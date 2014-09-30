@@ -44,12 +44,20 @@ private
     date + row * 7 + cell - date.wday + 1
   end
 
+  def first_date
+    date_for(0, 0)
+  end
+
+  def last_date
+    date_for(weeks_for_month-1, 6)
+  end
+
   def weeks_for_month
     @weeks_for_month ||= (0.5 + (date.at_end_of_month.day + date.at_beginning_of_month.wday).to_f / 7.0).round
   end
 
   def grouped_events
-    @_ge ||= (@date..@date.end_of_month).inject({}) { |acc, date| acc.merge(date => @events.select { |e| e.is_on_day?(date) }) }
+    @_ge ||= (first_date..last_date).inject({}) { |acc, date| acc.merge(date => @events.select { |e| e.is_on_day?(date) }) }
   end
 
 end

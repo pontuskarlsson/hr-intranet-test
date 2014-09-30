@@ -47,11 +47,12 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
+        "order":          [[ 0, "desc" ]],
         "data":           <%= @sick_leaves.to_json.html_safe %>,
         "columns": [
           { data: "start_date" },
           { data: "end_date" },
-          { data: "number_of_days" },
+          { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
           { data: "doctors_note_id", "render": function(data, type, row){ return (data === null ? 'Missing' : 'Present'); } },
           { data: "id", "render": function(data, type, row){ return '<a href="/employees/sick_leaves/'+data+'/edit">Edit</a>'; } }
         ]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140929081759) do
+ActiveRecord::Schema.define(:version => 20140930072015) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -121,6 +121,38 @@ ActiveRecord::Schema.define(:version => 20140929081759) do
   add_index "receipts", ["guid"], :name => "index_receipts_on_guid"
   add_index "receipts", ["status"], :name => "index_receipts_on_status"
   add_index "receipts", ["user_id"], :name => "index_receipts_on_user_id"
+
+  create_table "refinery_annual_leave_records", :force => true do |t|
+    t.integer  "employee_id"
+    t.integer  "annual_leave_id"
+    t.string   "record_type"
+    t.date     "record_date"
+    t.decimal  "record_value",    :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.datetime "created_at",                                                      :null => false
+    t.datetime "updated_at",                                                      :null => false
+  end
+
+  add_index "refinery_annual_leave_records", ["annual_leave_id"], :name => "index_refinery_annual_leave_records_on_annual_leave_id"
+  add_index "refinery_annual_leave_records", ["employee_id"], :name => "index_refinery_annual_leave_records_on_employee_id"
+  add_index "refinery_annual_leave_records", ["record_date"], :name => "index_refinery_annual_leave_records_on_record_date"
+  add_index "refinery_annual_leave_records", ["record_type"], :name => "index_refinery_annual_leave_records_on_record_type"
+
+  create_table "refinery_annual_leaves", :force => true do |t|
+    t.integer  "employee_id"
+    t.integer  "event_id"
+    t.date     "start_date"
+    t.boolean  "start_half_day",                                :default => false, :null => false
+    t.date     "end_date"
+    t.boolean  "end_half_day",                                  :default => false, :null => false
+    t.decimal  "number_of_days", :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
+  end
+
+  add_index "refinery_annual_leaves", ["employee_id"], :name => "index_refinery_annual_leaves_on_employee_id"
+  add_index "refinery_annual_leaves", ["end_date"], :name => "index_refinery_annual_leaves_on_end_date"
+  add_index "refinery_annual_leaves", ["event_id"], :name => "index_refinery_annual_leaves_on_event_id"
+  add_index "refinery_annual_leaves", ["start_date"], :name => "index_refinery_annual_leaves_on_start_date"
 
   create_table "refinery_blog_categories", :force => true do |t|
     t.string   "title"
@@ -338,12 +370,14 @@ ActiveRecord::Schema.define(:version => 20140929081759) do
   add_index "refinery_employees", ["user_id"], :name => "index_refinery_employees_on_user_id"
 
   create_table "refinery_employment_contracts", :force => true do |t|
-    t.integer  "employee_id",                                                          :null => false
-    t.date     "start_date",                                                           :null => false
+    t.integer  "employee_id",                                                            :null => false
+    t.date     "start_date",                                                             :null => false
     t.date     "end_date"
-    t.decimal  "vacation_days_per_year", :precision => 10, :scale => 0, :default => 0, :null => false
-    t.datetime "created_at",                                                           :null => false
-    t.datetime "updated_at",                                                           :null => false
+    t.decimal  "vacation_days_per_year", :precision => 10, :scale => 0, :default => 0,   :null => false
+    t.string   "country"
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
+    t.decimal  "days_carried_over",      :precision => 10, :scale => 2, :default => 0.0, :null => false
   end
 
   add_index "refinery_employment_contracts", ["employee_id"], :name => "index_refinery_employment_contracts_on_employee_id"
@@ -667,7 +701,7 @@ ActiveRecord::Schema.define(:version => 20140929081759) do
     t.boolean  "start_half_day",                                 :default => false, :null => false
     t.date     "end_date"
     t.boolean  "end_half_day",                                   :default => false, :null => false
-    t.decimal  "number_of_days",  :precision => 10, :scale => 0, :default => 0,     :null => false
+    t.decimal  "number_of_days",  :precision => 10, :scale => 2, :default => 0.0,   :null => false
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
   end
