@@ -1474,6 +1474,19 @@ $body-bg: none;
 
 .calendar-events {
     overflow: hidden;
+
+    .calendar-list-item {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        border: 1px solid #333;
+
+        padding: 0 0.2rem;
+
+        -webkit-border-radius: 0.75rem;
+        -moz-border-radius: 0.75rem;
+        border-radius: 0.75rem;
+
+    }
 }
 
 @media #{$medium-up} {
@@ -1523,6 +1536,17 @@ $body-bg: none;
             overflow: hidden;
             margin: 0;
             padding: 0;
+        }
+
+        .calendar-event {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            border: 1px solid #333;
+
+            a {
+                color: inherit;
+            }
+
         }
     }
 }
