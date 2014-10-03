@@ -39,7 +39,7 @@ module Refinery
 
       def submit
         if @xero_expense_claim.submittable?
-          if verify_contacts && batch_create_receipt #&& submit_expense_claim
+          if verify_contacts && batch_create_receipt && submit_expense_claim
             redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
           end
         end
