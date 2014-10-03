@@ -1,0 +1,76 @@
+<% content_for :body do %>
+
+  <p class="t1"><%= link_to 'Add Expense Claim', refinery.new_employees_expense_claim_path, class: 'button round small' %></p>
+
+  <h4>Non-Submitted Expense Claims</h4>
+
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Updated At</th>
+      <th>Payment Due Date</th>
+      <th>Amount Paid</th>
+      <th>Amount Due</th>
+      <th>Total</th>
+    </tr>
+
+    <% if (expense_claims = @xero_expense_claims.not_submitted).any? %>
+      <% expense_claims.each do |expense_claim| %>
+
+        <tr>
+          <td><%= link_to expense_claim.description, refinery.employees_expense_claim_path(expense_claim) %></td>
+          <td><%= expense_claim.status %></td>
+          <td><%= expense_claim.updated_at.strftime('%-d %b, %Y') %></td>
+          <td><%= expense_claim.payment_due_date %></td>
+          <td><%= expense_claim.amount_paid %></td>
+          <td><%= expense_claim.amount_due %></td>
+          <td><%= expense_claim.total %></td>
+        </tr>
+
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="6" class="italic">You have no non-submitted Expense Claims registered.</td>
+      </tr>
+    <% end %>
+  </table>
+
+
+
+  <h4>Submitted Expense Claims</h4>
+
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Updated At</th>
+      <th>Payment Due Date</th>
+      <th>Amount Paid</th>
+      <th>Amount Due</th>
+      <th>Total</th>
+    </tr>
+    <% if (expense_claims = @xero_expense_claims.submitted).any? %>
+      <% expense_claims.each do |expense_claim| %>
+
+        <tr>
+          <td><%= link_to expense_claim.description, refinery.employees_expense_claim_path(expense_claim) %></td>
+          <td><%= expense_claim.status %></td>
+          <td><%= expense_claim.updated_date_utc.strftime('%-d %b, %Y') %></td>
+          <td><%= expense_claim.payment_due_date %></td>
+          <td><%= expense_claim.amount_paid %></td>
+          <td><%= expense_claim.amount_due %></td>
+          <td><%= expense_claim.total %></td>
+        </tr>
+
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="6" class="italic">You have no submitted Expense Claims registered.</td>
+      </tr>
+    <% end %>
+  </table>
+
+<% end %>
+
+<%= render '/refinery/content_page' %>

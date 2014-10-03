@@ -5,6 +5,10 @@ Refinery::Core::Engine.routes.draw do
     resources :sick_leaves, :only => [:index, :create, :edit, :update]
     resources :annual_leaves, :only => [:index, :create, :edit, :update]
     resources :employees, :only => [:index, :show]
+    resources :expense_claims do
+      resources :receipts
+      post :submit, on: :member
+    end
   end
 
   # Admin routes

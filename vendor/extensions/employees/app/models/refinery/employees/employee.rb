@@ -9,12 +9,15 @@ module Refinery
       has_many :annual_leaves,        dependent: :destroy
       has_many :annual_leave_records, dependent: :destroy
       has_many :employment_contracts, dependent: :destroy
+      has_many :xero_expense_claims,  dependent: :destroy
+      has_many :xero_receipts,        dependent: :destroy
 
-      attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position
+      attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position, :xero_guid
 
       validates :employee_no, presence: true, uniqueness: true
       validates :full_name,   presence: true
       validates :user_id,     uniqueness: true, allow_nil: true
+      validates :xero_guid,   uniqueness: true, allow_blank: true
 
       def current_employment_contract
         @_cec ||= employment_contracts.where(end_date: nil).first

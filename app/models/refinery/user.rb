@@ -37,10 +37,9 @@ module Refinery
     # This is in addition to a real persisted field like 'username'
     attr_accessor :login
     attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :plugins,
-                    :login, :full_name, :title, :profile_image_id, :xero_guid, :password_has_expired
+                    :login, :full_name, :title, :profile_image_id, :password_has_expired
 
     validates :username, :presence => true, :uniqueness => true
-    validates :xero_guid, uniqueness: true, allow_blank: true
     before_validation :downcase_username, :strip_username
     after_save do
       if password_has_expired and !need_change_password?

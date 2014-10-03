@@ -1,6 +1,6 @@
 <h1>Add Receipt</h1>
 
-<%= form_for @receipt, url: expense_claim_receipts_path(@expense_claim) do |f| %>
+<%= form_for @xero_receipt, url: refinery.employees_expense_claim_receipts_path(@xero_expense_claim) do |f| %>
 
   <div class="row">
     <div class="large-8 columns">
@@ -14,7 +14,7 @@
 
         <div class="medium-3 columns">
           <label>Date
-            <%= f.text_field :date %>
+            <%= f.text_field :date, class: 'js_date_field' %>
           </label>
         </div>
 
@@ -42,22 +42,36 @@
     </div>
   </div>
 
-  <%- accounts = Account.all -%>
+  <%- accounts = ::Refinery::Employees::XeroAccount.all -%>
   <%- selected_account = accounts.detect { |acc| acc.name['Travel Expense'] } -%>
-  <%- f.object.line_items.any? || f.object.line_items.build -%>
-  <%= f.fields_for :line_items do |line_items_form| %>
+  <%- f.object.xero_line_items.any? || f.object.xero_line_items.build -%>
+  <%= f.fields_for :xero_line_items do |line_items_form| %>
     <div class="row">
       <div class="medium-5 columns">
         <%= line_items_form.text_field :description %>
       </div>
       <div class="medium-2 columns">
-        <%= line_items_form.select :account_id, options_from_collection_for_select(accounts, :id, :code_and_name, line_items_form.object.account_id.present? ? line_items_form.object.account_id : selected_account.try(:id)) %>
+        <%= line_items_form.select :xero_account_id, options_from_collection_for_select(accounts, :id, :code_and_name, line_items_form.object.xero_account_id.present? ? line_items_form.object.xero_account_id : selected_account.try(:id)) %>
       </div>
       <div class="medium-2 columns">
-        <%= line_items_form.text_field :quantity %>
+        <div class="row collapse">
+          <div class="small-9 columns">
+            <%= line_items_form.number_field :quantity, step: 'any' %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">Items</span>
+          </div>
+        </div>
       </div>
       <div class="medium-2 columns">
-        <%= line_items_form.text_field :unit_amount %>
+        <div class="row collapse">
+          <div class="small-9 columns">
+            <%= line_items_form.number_field :unit_amount, step: 'any' %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">HKD</span>
+          </div>
+        </div>
       </div>
       <div class="medium-1 columns">
         <%= link_to 'Remove', '#', class: 'js_remove_line_item' %>
@@ -65,13 +79,13 @@
     </div>
   <% end %>
 
-  <%= f.fields_for :line_items, f.object.line_items.build do |line_items_form| %>
+  <%= f.fields_for :xero_line_items, f.object.xero_line_items.build do |line_items_form| %>
     <div class="row js_line_item_tmpl" style="display: none;">
       <div class="medium-5 columns">
         <%= line_items_form.text_field :description %>
       </div>
       <div class="medium-2 columns">
-        <%= line_items_form.select :account_id, options_from_collection_for_select(accounts, :id, :code_and_name) %>
+        <%= line_items_form.select :xero_account_id, options_from_collection_for_select(accounts, :id, :code_and_name) %>
       </div>
       <div class="medium-2 columns">
         <%= line_items_form.text_field :quantity %>
@@ -97,13 +111,14 @@
 <% end %>
 
 <% content_for :javascripts do %>
-  <%= javascript_include_tag 'receipts' %>
+  <%= javascript_include_tag 'refinery/employees/receipts' %>
 
-  <%= javascript_tag do %>
+  <script type="text/javascript">
     $(function(){
+      $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
       $('.js_contact_text_field').autocomplete({
-        source: <%= Contact.select(:name).map(&:name).to_json.html_safe %>
+        source: <%= ::Refinery::Employees::XeroContact.select(:name).map(&:name).to_json.html_safe %>
       });
     });
-  <% end %>
+  </script>
 <% end %>

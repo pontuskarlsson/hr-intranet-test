@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140930072015) do
+ActiveRecord::Schema.define(:version => 20141003033931) do
 
   create_table "accounts", :force => true do |t|
     t.string   "guid",       :default => "", :null => false
@@ -747,6 +747,123 @@ ActiveRecord::Schema.define(:version => 20140930072015) do
   add_index "refinery_users", ["password_changed_at"], :name => "index_refinery_users_on_password_changed_at"
   add_index "refinery_users", ["profile_image_id"], :name => "index_refinery_users_on_profile_image_id"
   add_index "refinery_users", ["slug"], :name => "index_refinery_users_on_slug"
+
+  create_table "refinery_xero_accounts", :force => true do |t|
+    t.string   "guid"
+    t.string   "code"
+    t.string   "name"
+    t.string   "account_type"
+    t.string   "account_class"
+    t.string   "status"
+    t.string   "currency_code"
+    t.string   "tax_type"
+    t.string   "description"
+    t.string   "system_account"
+    t.boolean  "enable_payments_account"
+    t.boolean  "show_in_expense_claims"
+    t.string   "bank_account_number"
+    t.string   "reporting_code"
+    t.string   "reporting_code_name"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "refinery_xero_accounts", ["guid"], :name => "index_refinery_xero_accounts_on_guid"
+
+  create_table "refinery_xero_api_keyfiles", :force => true do |t|
+    t.string   "organisation"
+    t.text     "key_content"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "refinery_xero_api_keyfiles", ["organisation"], :name => "index_refinery_xero_api_keyfiles_on_organisation"
+
+  create_table "refinery_xero_contacts", :force => true do |t|
+    t.string   "guid"
+    t.string   "contact_number"
+    t.string   "contact_status"
+    t.string   "name"
+    t.string   "tax_number"
+    t.string   "bank_account_details"
+    t.string   "accounts_receivable_tax_type"
+    t.string   "accounts_payable_tax_type"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email_address"
+    t.string   "skype_user_name"
+    t.string   "contact_groups"
+    t.string   "default_currency"
+    t.datetime "updated_date_utc"
+    t.boolean  "is_supplier",                  :default => false, :null => false
+    t.boolean  "is_customer",                  :default => false, :null => false
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+  end
+
+  add_index "refinery_xero_contacts", ["guid"], :name => "index_refinery_xero_contacts_on_guid"
+
+  create_table "refinery_xero_expense_claims", :force => true do |t|
+    t.integer  "employee_id"
+    t.string   "description"
+    t.string   "guid"
+    t.string   "status"
+    t.decimal  "total",            :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "amount_due",       :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "amount_paid",      :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.date     "payment_due_date"
+    t.date     "reporting_date"
+    t.datetime "updated_date_utc"
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
+  end
+
+  add_index "refinery_xero_expense_claims", ["employee_id"], :name => "index_refinery_xero_expense_claims_on_employee_id"
+  add_index "refinery_xero_expense_claims", ["guid"], :name => "index_refinery_xero_expense_claims_on_guid"
+  add_index "refinery_xero_expense_claims", ["updated_date_utc"], :name => "index_refinery_xero_expense_claims_on_updated_date_utc"
+
+  create_table "refinery_xero_line_items", :force => true do |t|
+    t.integer  "xero_receipt_id"
+    t.integer  "xero_account_id"
+    t.string   "item_code"
+    t.string   "description"
+    t.decimal  "quantity",        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "unit_amount",     :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "account_code"
+    t.string   "tax_type"
+    t.decimal  "tax_amount",      :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "line_amount",     :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "discount_rate",   :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.datetime "created_at",                                                      :null => false
+    t.datetime "updated_at",                                                      :null => false
+  end
+
+  add_index "refinery_xero_line_items", ["xero_account_id"], :name => "index_refinery_xero_line_items_on_xero_account_id"
+  add_index "refinery_xero_line_items", ["xero_receipt_id"], :name => "index_refinery_xero_line_items_on_xero_receipt_id"
+
+  create_table "refinery_xero_receipts", :force => true do |t|
+    t.integer  "employee_id"
+    t.integer  "xero_expense_claim_id"
+    t.string   "guid"
+    t.string   "receipt_number"
+    t.string   "reference"
+    t.string   "status"
+    t.string   "line_amount_types"
+    t.decimal  "sub_total",             :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal  "total_tax",             :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.decimal  "total",                 :precision => 10, :scale => 2, :default => 0.0,   :null => false
+    t.date     "date"
+    t.string   "url"
+    t.boolean  "has_attachments",                                      :default => false, :null => false
+    t.datetime "updated_date_utc"
+    t.datetime "created_at",                                                              :null => false
+    t.datetime "updated_at",                                                              :null => false
+  end
+
+  add_index "refinery_xero_receipts", ["employee_id"], :name => "index_refinery_xero_receipts_on_employee_id"
+  add_index "refinery_xero_receipts", ["guid"], :name => "index_refinery_xero_receipts_on_guid"
+  add_index "refinery_xero_receipts", ["updated_date_utc"], :name => "index_refinery_xero_receipts_on_updated_date_utc"
+  add_index "refinery_xero_receipts", ["xero_expense_claim_id"], :name => "index_refinery_xero_receipts_on_xero_expense_claim_id"
 
   create_table "seo_meta", :force => true do |t|
     t.integer  "seo_meta_id"
