@@ -1,4 +1,4 @@
-<div title="Sign for receival of Parcel">
+<div title="Sign for receival of Parcel" style="min-width: 10rem;">
   <%= form_for @parcel, url: refinery.parcels_parcel_path(@parcel) do |f| %>
     <%= f.hidden_field :receiver_signed, value: '1' %>
 

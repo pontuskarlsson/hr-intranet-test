@@ -246,3 +246,7 @@ ul.latest-news {
 .ui-autocomplete {
     z-index: 5000 !important;
 }
+
+.ui-dialog-titlebar {
+    height: inherit !important;
+}
