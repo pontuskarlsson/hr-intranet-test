@@ -18,7 +18,7 @@ module Refinery
             pem.rewind
             Xeroizer::PrivateApplication.new(YOUR_OAUTH_CONSUMER_KEY, YOUR_OAUTH_CONSUMER_SECRET, pem.path)
           else
-            raise StandardError('Pem File missing')
+            raise StandardError, 'Pem File missing'
           end
         end
 
@@ -48,6 +48,19 @@ module Refinery
             end
           rescue StandardError => e
             binding.pry if binding.respond_to?(:pry) && Rails.env.development?
+          end
+        end
+
+        def load_xero_guids
+          begin
+            guids = []
+            client.User.all.each do |user|
+              guids << "#{user.user_id} (#{user.first_name} #{user.last_name})"
+            end
+            guids
+          rescue StandardError => e
+            binding.pry if binding.respond_to?(:pry) && Rails.env.development?
+            []
           end
         end
 

@@ -18,6 +18,9 @@ Refinery::Core::Engine.routes.draw do
         collection do
           post :update_positions
         end
+        member do
+          post :load_xero_guids
+        end
       end
 
       resources :sick_leaves, :except => :show do

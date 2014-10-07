@@ -12,8 +12,8 @@ module Refinery
       has_many :xero_expense_claims,  dependent: :destroy
       has_many :xero_receipts,        dependent: :destroy
 
-      attr_writer :user_name
-      attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position, :xero_guid, :user_name
+      attr_writer :user_name, :xero_guid_field
+      attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position, :xero_guid, :xero_guid_field, :user_name
 
       validates :employee_no, presence: true, uniqueness: true
       validates :full_name,   presence: true
@@ -26,10 +26,21 @@ module Refinery
             self.user = user
           end
         end
+        if @xero_guid_field.present?
+          # To make it easier to select in the form, this field might contain
+          # the name of the person the guid belongs to appended at the end of
+          # the string.
+          # Makes sure that only the guid and not any possible name gets saved
+          self.xero_guid = @xero_guid_field.split(' ').first
+        end
       end
 
       def user_name
         @user_name ||= user.try(:full_name)
+      end
+
+      def xero_guid_field
+        @xero_guid_field ||= xero_guid
       end
 
       def current_employment_contract
