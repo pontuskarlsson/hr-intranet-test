@@ -5,7 +5,8 @@ module Refinery
 
         crudify :'refinery/parcels/parcel',
                 :title_attribute => 'from_name',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'parcel_date DESC'
 
       end
     end

@@ -5,7 +5,8 @@ module Refinery
 
         crudify :'refinery/employees/public_holiday',
                 :title_attribute => 'title',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'holiday_date DESC'
 
       end
     end

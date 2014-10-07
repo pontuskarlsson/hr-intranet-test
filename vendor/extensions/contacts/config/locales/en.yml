@@ -20,6 +20,7 @@ en:
             view_live_html: View this contact live <br/><em>(opens in a new window)</em>
             edit: Edit this contact
             delete: Remove this contact forever
+            preview: 'added %{created_at}'
       contacts:
         show:
           other: Other Contacts

@@ -33,6 +33,7 @@ en:
             view_live_html: View this employee live <br/><em>(opens in a new window)</em>
             edit: Edit this employee
             delete: Remove this employee forever
+            preview: '(%{full_name}) added %{created_at}'
         sick_leaves:
           actions:
             create_new: Add New Sick Leave
@@ -46,6 +47,7 @@ en:
             view_live_html: View this sick leave live <br/><em>(opens in a new window)</em>
             edit: Edit this sick leave
             delete: Remove this sick leave forever
+            preview: 'Started at %{start_date}'
         annual_leaves:
           actions:
             create_new: Add New Annual Leave
@@ -59,6 +61,7 @@ en:
             view_live_html: View this annual leave live <br/><em>(opens in a new window)</em>
             edit: Edit this annual leave
             delete: Remove this annual leave forever
+            preview: '(%{number_of_days} days) Started at %{start_date}'
         employment_contracts:
           actions:
             create_new: Add New Employment Contract
@@ -85,6 +88,7 @@ en:
             view_live_html: View this public holiday live <br/><em>(opens in a new window)</em>
             edit: Edit this public holiday
             delete: Remove this public holiday forever
+            preview: 'on %{holiday_date}'
 
       employees:
         show:

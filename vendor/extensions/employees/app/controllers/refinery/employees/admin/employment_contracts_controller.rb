@@ -5,7 +5,8 @@ module Refinery
 
         crudify :'refinery/employees/employment_contract',
                 :title_attribute => 'start_date',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'start_date DESC'
 
       end
     end

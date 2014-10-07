@@ -6,7 +6,8 @@ module Refinery
 
         crudify :'refinery/contacts/contact',
                 :title_attribute => 'name',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'name ASC'
 
         def synchronise
           @synchroniser = Refinery::Contacts::BaseSynchroniser.new

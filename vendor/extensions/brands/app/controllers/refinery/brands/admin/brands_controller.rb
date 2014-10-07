@@ -5,7 +5,8 @@ module Refinery
 
         crudify :'refinery/brands/brand',
                 :title_attribute => 'name',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'name ASC'
 
       end
     end

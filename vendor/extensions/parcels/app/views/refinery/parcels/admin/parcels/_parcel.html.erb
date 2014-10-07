@@ -1,7 +1,13 @@
 <li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(parcel) -%>">
   <span class='title'>
-    <%= parcel.from_name %>
-
+    <% if parcel.air_waybill_no.present? %>
+      <%= parcel.from_name %>
+    <% else %>
+      <span class="italic">N/A</span>
+    <% end %>
+    <span class="preview">
+      <%= t('.preview', from_name: parcel.from_name, to_name: parcel.to_name, :parcel_date => l(parcel.parcel_date, :format => :short)) %>
+    </span>
   </span>
   <span class='actions'>
     

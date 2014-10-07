@@ -1,7 +1,9 @@
 <li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(annual_leave) -%>">
   <span class='title'>
-    <%= annual_leave.start_date %>
-
+    <%= annual_leave.employee.full_name %>
+    <span class="preview">
+      <%= t('.preview', number_of_days: annual_leave.number_of_days, :start_date => l(annual_leave.start_date, :format => :short)) %>
+    </span>
   </span>
   <span class='actions'>
     

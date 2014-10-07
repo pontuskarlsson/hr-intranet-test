@@ -5,7 +5,8 @@ module Refinery
 
         crudify :'refinery/employees/employee',
                 :title_attribute => 'employee_no',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'employee_no ASC'
 
       end
     end

@@ -6,7 +6,8 @@ module Refinery
 
         crudify :'refinery/sales_orders/sales_order',
                 :title_attribute => 'order_id',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'order_ref ASC'
 
         def import
           latest_date = SalesOrder.select(:modified_date).order('modified_date DESC').first.try(:modified_date)

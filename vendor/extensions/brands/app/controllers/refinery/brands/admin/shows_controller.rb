@@ -9,7 +9,8 @@ module Refinery
 
         crudify :'refinery/brands/show',
                 :title_attribute => 'name',
-                :xhr_paging => true
+                :xhr_paging => true,
+                order: 'name ASC'
 
         prepend_before_filter :find_show, only: [:sync, :update, :destroy, :edit, :show]
 
