@@ -49,10 +49,11 @@
              :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @employee.employee_no) -%>
 <% end -%>
 
-<%= form_tag refinery.load_xero_guids_employees_admin_employee_path(@employee), class: 'js_xero_guid_form' do %>
+<% if @employee.persisted? %>
+  <%= form_tag refinery.load_xero_guids_employees_admin_employee_path(@employee), class: 'js_xero_guid_form' do %>
 
+  <% end %>
 <% end %>
-
 
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
