@@ -48,13 +48,15 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 0, "desc" ]],
-        "data":           <%= @sick_leaves.to_json.html_safe %>,
+        "data":           <%= @sick_leaves.to_json(only: [:start_date, :end_date, :number_of_days, :id], include: { doctors_note: { only: [], methods: [:url] } }).html_safe %>,
         "columns": [
           { data: "start_date" },
           { data: "end_date" },
           { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
-          { data: "doctors_note_id", "render": function(data, type, row){ return (data === null ? 'Missing' : 'Present'); } },
-          { data: "id", "render": function(data, type, row){ return '<a href="/employees/sick_leaves/'+data+'/edit">Edit</a>'; } }
+          { data: "doctors_note", "render": function(data, type, row){ console.log(row); return (data === null || typeof data == 'undefined' ? '<a href="/employees/sick_leaves/'+row.id+'/add_note" data-remote="true">Add Note</a>' : '<a href="'+data.url+'">Download</a>'); } },
+          { data: "id", "render": function(data, type, row){
+            return '<a href="/employees/sick_leaves/'+data+'/edit">Edit</a>';
+          } }
         ]
       });
     });

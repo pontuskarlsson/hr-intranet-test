@@ -2,7 +2,12 @@ Refinery::Core::Engine.routes.draw do
 
   # Frontend routes
   namespace :employees do
-    resources :sick_leaves, :only => [:index, :create, :edit, :update]
+    resources :sick_leaves, :only => [:index, :create, :edit, :update] do
+      member do
+        get :add_note
+        post :create_note
+      end
+    end
     resources :annual_leaves, :only => [:index, :create, :edit, :update]
     resources :employees, :only => [:index, :show]
     resources :expense_claims do
