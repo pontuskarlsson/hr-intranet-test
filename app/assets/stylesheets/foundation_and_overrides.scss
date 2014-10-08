@@ -1523,6 +1523,10 @@ $body-bg: none;
             background-color: #ffffcc;
         }
 
+        .sunday {
+            color: #b33c33;
+        }
+
         &.different-month {
             background-color: #eee;
             color: #999;
@@ -1541,6 +1545,16 @@ $body-bg: none;
         .calendar-event {
             white-space: nowrap;
             text-overflow: ellipsis;
+
+            &:hover {
+                text-overflow: clip;
+                overflow: visible;
+                z-index: 100;
+            }
+
+            a {
+                font-size: 0.8rem;
+            }
 //            border: 1px solid #333;
 
 //            a {

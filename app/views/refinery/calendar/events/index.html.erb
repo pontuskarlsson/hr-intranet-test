@@ -41,7 +41,7 @@
       <% @calendar.each_cell do |cell_idx, cell_date, events| %>
         <div class="medium-1 columns<% if cell_idx%7 == 6 %> end<% end %>">
           <div class="calendar-day<% if cell_date == @calendar.today %> today<% end %><% if cell_date.month != @calendar.date.month %> show-for-medium-up different-month<% end %>">
-            <p class="show-for-medium-up"><%= cell_date.day %></p>
+            <p class="show-for-medium-up <%= cell_date.strftime('%A').downcase %>"><%= cell_date.day %></p>
             <p class="show-for-small-only"><%= cell_date.day %> <%= cell_date.strftime('%A') %></p>
             <% events.each do |event| %>
               <p class="calendar-event" data-calendar-id="<%= event.calendar_id %>" style="<% unless active_calendar_ids.include?(event.calendar_id) %>display: none;<% end %>">
