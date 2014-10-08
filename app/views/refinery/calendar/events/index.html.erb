@@ -44,7 +44,8 @@
             <p class="show-for-medium-up"><%= cell_date.day %></p>
             <p class="show-for-small-only"><%= cell_date.day %> <%= cell_date.strftime('%A') %></p>
             <% events.each do |event| %>
-              <p class="calendar-event" data-calendar-id="<%= event.calendar_id %>" style="background-color: <%= "##{event.calendar.default_rgb_code}" %>;color: <%= "##{event.calendar.text_color}" %>;<% unless active_calendar_ids.include?(event.calendar_id) %>display: none;<% end %>">
+              <p class="calendar-event" data-calendar-id="<%= event.calendar_id %>" style="<% unless active_calendar_ids.include?(event.calendar_id) %>display: none;<% end %>">
+                <span class="event-bullet" style="background-color: <%= "##{event.calendar.default_rgb_code}" %>">&nbsp;</span>
                 <%= link_to event.title, '#', 'data-reveal-id' => "event-modal-#{event.id}" %>
               </p>
 
