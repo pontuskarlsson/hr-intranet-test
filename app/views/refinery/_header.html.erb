@@ -41,7 +41,7 @@
         <ul class="right">
           <% if refinery_user_signed_in? %>
             <li class="has-dropdown">
-              <a href="#"><%= current_refinery_user.full_name.present? ? current_refinery_user.full_name : current_refinery_user.email %></a>
+              <a href="#"><%= current_refinery_user.employee.present? ? current_refinery_user.employee.full_name : current_refinery_user.email %></a>
               <ul class="dropdown">
                 <li><%= link_to 'Refinery', '/refinery' %></li>
                 <% if current_refinery_user.has_role?(:superuser) %>

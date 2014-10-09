@@ -9,8 +9,6 @@ module Refinery
 
     has_many :plugins, :class_name => "UserPlugin", :order => "position ASC", :dependent => :destroy
 
-    has_many :expense_claims, dependent: :destroy
-    has_many :leaves,         dependent: :destroy
     has_many :received_parcels,     class_name: '::Refinery::Parcels::Parcel', dependent: :nullify, foreign_key: :received_by_id
     has_many :assigned_parcels,     class_name: '::Refinery::Parcels::Parcel', dependent: :nullify, foreign_key: :assigned_to_id
     has_many :addressed_to_parcels, class_name: '::Refinery::Parcels::Parcel', dependent: :nullify, foreign_key: :to_user_id
@@ -35,7 +33,7 @@ module Refinery
     # This is in addition to a real persisted field like 'username'
     attr_accessor :login
     attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :plugins,
-                    :login, :full_name, :password_has_expired
+                    :login, :password_has_expired
 
     validates :username, :presence => true, :uniqueness => true
     before_validation :downcase_username, :strip_username
