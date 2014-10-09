@@ -5,8 +5,6 @@ module Refinery
   class User < Refinery::Core::BaseModel
     extend FriendlyId
 
-    belongs_to :profile_image, class_name: 'Refinery::Image'
-
     has_and_belongs_to_many :roles, :join_table => :refinery_roles_users
 
     has_many :plugins, :class_name => "UserPlugin", :order => "position ASC", :dependent => :destroy
@@ -37,7 +35,7 @@ module Refinery
     # This is in addition to a real persisted field like 'username'
     attr_accessor :login
     attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :plugins,
-                    :login, :full_name, :title, :profile_image_id, :password_has_expired
+                    :login, :full_name, :password_has_expired
 
     validates :username, :presence => true, :uniqueness => true
     before_validation :downcase_username, :strip_username
@@ -55,18 +53,6 @@ module Refinery
       def find_for_database_authentication(conditions)
         value = conditions[authentication_keys.first]
         where(["username = :value OR email = :value", { :value => value }]).first
-      end
-
-      def random(number_of_records = 1)
-        # Determines if it is necessary to randomize. For example, if
-        # there are only two records and number_of_records is 2, then
-        # just return those.
-        max_offset = count - ( number_of_records - 1 )
-        if max_offset <= 1
-          scoped
-        else
-          offset(rand(max_offset)).limit(number_of_records)
-        end
       end
     end
 

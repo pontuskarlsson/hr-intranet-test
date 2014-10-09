@@ -4,21 +4,6 @@
              :object => @user,
              :include_object_name => true %>
 
-  <div class="field">
-    <%= f.label :profile_image_id %>
-    <%= f.hidden_field :profile_image_id %>
-    <% if @user.profile_image.present? %>
-      <%= image_tag(@user.profile_image.thumbnail(geometry: '135x135#c').url, class: 'user_profile_image') %>
-    <% else %>
-      <%= image_tag('#', class: 'user_profile_image', style: 'display: none;') %>
-      <p class="italic no-profile-image-present">No Profile Image present</p>
-    <% end %>
-    <p><%= link_to 'Select Profile Image', refinery.insert_admin_images_path({
-                               :dialog => true, :width => 950, :height => 510,
-                               :callback => 'profile_image_added'
-                           }),
-                         :id => 'add_image_link' %></p>
-  </div>
   <div class='field'>
     <%= f.label :username %>
     <%= f.text_field :username %>
@@ -26,10 +11,6 @@
   <div class='field'>
     <%= f.label :full_name %>
     <%= f.text_field :full_name %>
-  </div>
-  <div class='field'>
-    <%= f.label :title %>
-    <%= f.text_field :title %>
   </div>
   <div class='field'>
     <%= f.label :email %>
