@@ -7,18 +7,6 @@ GIT
       activesupport (>= 3.1.0)
       virtus
 
-GIT
-  remote: https://github.com/waynerobinson/xeroizer.git
-  revision: 5fdf67645d3e289da694a44147189cb979336f54
-  specs:
-    xeroizer (2.15.5)
-      activesupport
-      builder (>= 2.1.2)
-      i18n
-      nokogiri
-      oauth (= 0.4.5)
-      tzinfo
-
 PATH
   remote: vendor/extensions
   specs:
@@ -34,6 +22,7 @@ PATH
       refinerycms-authentication (~> 2.1.2)
       refinerycms-calendar (~> 2.1)
       refinerycms-core (~> 2.1.2)
+      xeroizer
     refinerycms-parcels (1.0)
       refinerycms-contacts (~> 1.0)
       refinerycms-core (~> 2.1.2)
@@ -402,6 +391,17 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
+    xeroizer (2.15.5)
+      activesupport
+      activesupport
+      builder (>= 2.1.2)
+      builder (>= 2.1.2)
+      i18n
+      nokogiri
+      nokogiri
+      oauth (= 0.4.5)
+      oauth (>= 0.3.6)
+      tzinfo
     yajl-ruby (1.2.1)
 
 PLATFORMS
@@ -434,4 +434,3 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   trans_forms!
   uglifier (>= 1.0.3)
-  xeroizer!

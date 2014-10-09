@@ -56,8 +56,6 @@ gem 'fog'
 
 # Need for password expiration
 gem 'devise_security_extension'
-
-gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'
 gem 'trans_forms', git: 'https://github.com/dannemanne/trans_forms.git'
 
 group :production do
