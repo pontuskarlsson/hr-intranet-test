@@ -1,11 +1,4 @@
 GIT
-  remote: https://github.com/dannemanne/refinerycms-calendar.git
-  revision: 37699fe459fe37bea48e699be475c0981c7ddd8c
-  specs:
-    refinerycms-calendar (2.1.0)
-      refinerycms-core (~> 2.1.0)
-
-GIT
   remote: https://github.com/dannemanne/trans_forms.git
   revision: 15568f653ec512afca62b86d216919b4a3ca1d9b
   specs:
@@ -32,6 +25,8 @@ PATH
     refinerycms-brands (1.0)
       amqp
       refinerycms-core (~> 2.1.2)
+    refinerycms-calendar (2.1.0)
+      refinerycms-core (~> 2.1.0)
     refinerycms-contacts (1.0)
       basecrm
       refinerycms-core (~> 2.1.2)
