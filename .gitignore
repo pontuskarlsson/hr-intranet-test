@@ -1,27 +1,91 @@
+config/database.yml
+
+spec/dummy
+*.gem# Rails
+spec/dummy
 .bundle
 db/*.sqlite3
-log/*.log
+db/*.sqlite3-journal
+*.log
+tmp
 tmp/**/*
-tmp/*
-.idea
-config/database.yml
-config/twitter.yml
-config/facebook.yml
-config/xero.yml
-config/config.yml
-config/s3.yml
-ext/exports/templates/*
-Guardfile
-.vagrant
-Vagrantfile
-.sass-cache/
-.env
-public/system
+
+# Documentation
+doc/api
+doc/app
+.yardoc
+.yardopts
+coverage
+
+# Public Uploads
+public/system/*
+public/themes/*
 
 # Public Cache
-public/assets
-public/refinery/*
+public/javascripts/cache
+public/stylesheets/cache
 
 # Vendor Cache
 vendor/cache
-.pem/*
+
+# Acts as Indexed
+index/**/*
+
+# Refinery Specific
+*.tmproj
+*.autobackupbyrefinery.*
+refinerycms-*.gem
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# NetBeans
+nbproject
+
+# Eclipse
+.project
+
+# Redcar
+.redcar
+
+# Rubinius
+*.rbc
+
+# Vim
+*.swp
+*.swo
+
+# RubyMine
+.idea
+
+# E-texteditor
+.eprj
+
+# Vagrant
+Vagrantfile
+.vagrant
+
+# Foreman
+.env
+
+# Backup
+*~
+
+# Capybara Bug
+capybara-*html
+
+# sass
+.sass-cache
+.sass-cache/*
+
+#rvm
+.rvmrc
+.rvmrc.*
+
+# vendor/extensions dummy applications.
+vendor/extensions/**/spec/dummy
+
+Gemfile.lock
