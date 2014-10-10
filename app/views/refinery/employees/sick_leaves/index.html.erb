@@ -1,0 +1,66 @@
+<% content_for :body do %>
+
+  <%= render 'form', sick_leave: ::Refinery::Employees::SickLeave.new %>
+
+  <h4 class="t2">Previously registered Sick Leave</h4>
+
+  <table class="display js_sick_leaves_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+    <tr>
+      <th>Start</th>
+      <th>End</th>
+      <th>No. of sick days</th>
+      <th>Doctor's Note</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>Start</th>
+      <th>End</th>
+      <th>No. of sick days</th>
+      <th>Doctor's Note</th>
+      <th>Action</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td colspan="5">Loading, please wait...</td>
+    </tr>
+    </tbody>
+  </table>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_sick_leaves_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= @sick_leaves.to_json(only: [:start_date, :end_date, :number_of_days, :id], include: { doctors_note: { only: [], methods: [:url] } }).html_safe %>,
+        "columns": [
+          { data: "start_date" },
+          { data: "end_date" },
+          { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
+          { data: "doctors_note", "render": function(data, type, row){ console.log(row); return (data === null || typeof data == 'undefined' ? '<a href="/employees/sick_leaves/'+row.id+'/add_note" data-remote="true">Add Note</a>' : '<a href="'+data.url+'">Download</a>'); } },
+          { data: "id", "render": function(data, type, row){
+            return '<a href="/employees/sick_leaves/'+data+'/edit">Edit</a>';
+          } }
+        ]
+      });
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>
