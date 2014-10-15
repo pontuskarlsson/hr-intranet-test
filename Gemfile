@@ -71,3 +71,6 @@ end
 gem 'refinerycms-contacts', :path => 'vendor/extensions'
 gem 'refinerycms-parcels', :path => 'vendor/extensions'
 gem 'refinerycms-employees', :path => 'vendor/extensions'
+
+# Workaround to get the latest version of xeroizer that is not available from rubygems yet
+gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'

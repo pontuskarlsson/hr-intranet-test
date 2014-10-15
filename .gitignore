@@ -89,3 +89,7 @@ capybara-*html
 vendor/extensions/**/spec/dummy
 
 Gemfile.lock
+
+# Dev or Test pem-file folder
+.pem
+.pem/*

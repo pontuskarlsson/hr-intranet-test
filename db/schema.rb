@@ -11,18 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141003033931) do
-
-  create_table "accounts", :force => true do |t|
-    t.string   "guid",       :default => "", :null => false
-    t.string   "code",       :default => "", :null => false
-    t.string   "name",       :default => "", :null => false
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-  end
-
-  add_index "accounts", ["code"], :name => "index_accounts_on_code"
-  add_index "accounts", ["guid"], :name => "index_accounts_on_guid"
+ActiveRecord::Schema.define(:version => 20141015044057) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -37,90 +26,6 @@ ActiveRecord::Schema.define(:version => 20141003033931) do
 
   add_index "amqp_messages", ["sender_id", "sender_type"], :name => "index_amqp_messages_on_sender_id_and_sender_type"
   add_index "amqp_messages", ["sent_at"], :name => "index_amqp_messages_on_sent_at"
-
-  create_table "contacts", :force => true do |t|
-    t.string   "guid",       :default => "", :null => false
-    t.string   "name",       :default => "", :null => false
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-  end
-
-  add_index "contacts", ["guid"], :name => "index_contacts_on_guid"
-  add_index "contacts", ["name"], :name => "index_contacts_on_name"
-
-  create_table "expense_claims", :force => true do |t|
-    t.integer  "user_id",                                                                      :null => false
-    t.string   "guid",                                            :default => "",              :null => false
-    t.string   "status",                                          :default => "Not-Submitted", :null => false
-    t.string   "description",                                     :default => "",              :null => false
-    t.decimal  "total",            :precision => 10, :scale => 0, :default => 0,               :null => false
-    t.decimal  "amount_due",       :precision => 10, :scale => 0, :default => 0,               :null => false
-    t.decimal  "amount_paid",      :precision => 10, :scale => 0, :default => 0,               :null => false
-    t.date     "payment_due_date"
-    t.datetime "updated_date"
-    t.datetime "created_at",                                                                   :null => false
-    t.datetime "updated_at",                                                                   :null => false
-  end
-
-  add_index "expense_claims", ["guid"], :name => "index_expense_claims_on_guid"
-  add_index "expense_claims", ["status"], :name => "index_expense_claims_on_status"
-  add_index "expense_claims", ["user_id"], :name => "index_expense_claims_on_user_id"
-
-  create_table "leaves", :force => true do |t|
-    t.integer  "user_id",                       :null => false
-    t.integer  "event_id"
-    t.datetime "starts_at",                     :null => false
-    t.datetime "ends_at",                       :null => false
-    t.string   "comment",    :default => "",    :null => false
-    t.boolean  "approved",   :default => false, :null => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-  end
-
-  add_index "leaves", ["approved"], :name => "index_leaves_on_approved"
-  add_index "leaves", ["ends_at"], :name => "index_leaves_on_ends_at"
-  add_index "leaves", ["event_id"], :name => "index_leaves_on_event_id"
-  add_index "leaves", ["starts_at"], :name => "index_leaves_on_starts_at"
-  add_index "leaves", ["user_id"], :name => "index_leaves_on_user_id"
-
-  create_table "line_items", :force => true do |t|
-    t.integer  "receipt_id",                                                   :null => false
-    t.integer  "account_id",                                                   :null => false
-    t.string   "description",                                  :default => "", :null => false
-    t.string   "item_code",                                    :default => "", :null => false
-    t.decimal  "quantity",      :precision => 10, :scale => 0, :default => 0,  :null => false
-    t.decimal  "unit_amount",   :precision => 10, :scale => 0, :default => 0,  :null => false
-    t.string   "tax_type",                                     :default => "", :null => false
-    t.decimal  "tax_amount",    :precision => 10, :scale => 0, :default => 0,  :null => false
-    t.decimal  "line_amount",   :precision => 10, :scale => 0, :default => 0,  :null => false
-    t.decimal  "discount_rate", :precision => 10, :scale => 0, :default => 0,  :null => false
-    t.datetime "created_at",                                                   :null => false
-    t.datetime "updated_at",                                                   :null => false
-  end
-
-  add_index "line_items", ["account_id"], :name => "index_line_items_on_account_id"
-  add_index "line_items", ["receipt_id"], :name => "index_line_items_on_receipt_id"
-
-  create_table "receipts", :force => true do |t|
-    t.integer  "expense_claim_id",                                                              :null => false
-    t.integer  "contact_id",                                                                    :null => false
-    t.string   "guid",                                             :default => "",              :null => false
-    t.string   "reference",                                        :default => "",              :null => false
-    t.string   "status",                                           :default => "Not-Submitted", :null => false
-    t.string   "line_amount_types",                                :default => "",              :null => false
-    t.decimal  "sub_total",         :precision => 10, :scale => 0, :default => 0,               :null => false
-    t.decimal  "total",             :precision => 10, :scale => 0, :default => 0,               :null => false
-    t.date     "date"
-    t.integer  "user_id",                                                                       :null => false
-    t.datetime "created_at",                                                                    :null => false
-    t.datetime "updated_at",                                                                    :null => false
-  end
-
-  add_index "receipts", ["contact_id"], :name => "index_receipts_on_contact_id"
-  add_index "receipts", ["expense_claim_id"], :name => "index_receipts_on_expense_claim_id"
-  add_index "receipts", ["guid"], :name => "index_receipts_on_guid"
-  add_index "receipts", ["status"], :name => "index_receipts_on_status"
-  add_index "receipts", ["user_id"], :name => "index_receipts_on_user_id"
 
   create_table "refinery_annual_leave_records", :force => true do |t|
     t.integer  "employee_id"
@@ -362,12 +267,14 @@ ActiveRecord::Schema.define(:version => 20141003033931) do
     t.integer  "position"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.string   "xero_guid"
   end
 
   add_index "refinery_employees", ["employee_no"], :name => "index_refinery_employees_on_employee_no"
   add_index "refinery_employees", ["position"], :name => "index_refinery_employees_on_position"
   add_index "refinery_employees", ["profile_image_id"], :name => "index_refinery_employees_on_profile_image_id"
   add_index "refinery_employees", ["user_id"], :name => "index_refinery_employees_on_user_id"
+  add_index "refinery_employees", ["xero_guid"], :name => "index_refinery_employees_on_xero_guid"
 
   create_table "refinery_employment_contracts", :force => true do |t|
     t.integer  "employee_id",                                                            :null => false
@@ -722,9 +629,9 @@ ActiveRecord::Schema.define(:version => 20141003033931) do
   add_index "refinery_user_plugins", ["user_id", "name"], :name => "index_refinery_user_plugins_on_user_id_and_name", :unique => true
 
   create_table "refinery_users", :force => true do |t|
-    t.string   "username",                               :null => false
-    t.string   "email",                                  :null => false
-    t.string   "encrypted_password",                     :null => false
+    t.string   "username",               :null => false
+    t.string   "email",                  :null => false
+    t.string   "encrypted_password",     :null => false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -733,19 +640,14 @@ ActiveRecord::Schema.define(:version => 20141003033931) do
     t.datetime "remember_created_at"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
     t.string   "slug"
-    t.string   "title"
-    t.string   "full_name"
-    t.integer  "profile_image_id"
-    t.string   "xero_guid",              :default => "", :null => false
     t.datetime "password_changed_at"
   end
 
   add_index "refinery_users", ["id"], :name => "index_refinery_users_on_id"
   add_index "refinery_users", ["password_changed_at"], :name => "index_refinery_users_on_password_changed_at"
-  add_index "refinery_users", ["profile_image_id"], :name => "index_refinery_users_on_profile_image_id"
   add_index "refinery_users", ["slug"], :name => "index_refinery_users_on_slug"
 
   create_table "refinery_xero_accounts", :force => true do |t|
@@ -764,11 +666,13 @@ ActiveRecord::Schema.define(:version => 20141003033931) do
     t.string   "bank_account_number"
     t.string   "reporting_code"
     t.string   "reporting_code_name"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.boolean  "inactive",                :default => false, :null => false
   end
 
   add_index "refinery_xero_accounts", ["guid"], :name => "index_refinery_xero_accounts_on_guid"
+  add_index "refinery_xero_accounts", ["inactive"], :name => "index_refinery_xero_accounts_on_inactive"
 
   create_table "refinery_xero_api_keyfiles", :force => true do |t|
     t.string   "organisation"
@@ -799,9 +703,11 @@ ActiveRecord::Schema.define(:version => 20141003033931) do
     t.boolean  "is_customer",                  :default => false, :null => false
     t.datetime "created_at",                                      :null => false
     t.datetime "updated_at",                                      :null => false
+    t.boolean  "inactive",                     :default => false, :null => false
   end
 
   add_index "refinery_xero_contacts", ["guid"], :name => "index_refinery_xero_contacts_on_guid"
+  add_index "refinery_xero_contacts", ["inactive"], :name => "index_refinery_xero_contacts_on_inactive"
 
   create_table "refinery_xero_expense_claims", :force => true do |t|
     t.integer  "employee_id"
@@ -858,11 +764,13 @@ ActiveRecord::Schema.define(:version => 20141003033931) do
     t.datetime "updated_date_utc"
     t.datetime "created_at",                                                              :null => false
     t.datetime "updated_at",                                                              :null => false
+    t.integer  "xero_contact_id"
   end
 
   add_index "refinery_xero_receipts", ["employee_id"], :name => "index_refinery_xero_receipts_on_employee_id"
   add_index "refinery_xero_receipts", ["guid"], :name => "index_refinery_xero_receipts_on_guid"
   add_index "refinery_xero_receipts", ["updated_date_utc"], :name => "index_refinery_xero_receipts_on_updated_date_utc"
+  add_index "refinery_xero_receipts", ["xero_contact_id"], :name => "index_refinery_xero_receipts_on_xero_contact_id"
   add_index "refinery_xero_receipts", ["xero_expense_claim_id"], :name => "index_refinery_xero_receipts_on_xero_expense_claim_id"
 
   create_table "seo_meta", :force => true do |t|

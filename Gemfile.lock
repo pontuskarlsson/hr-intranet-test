@@ -7,6 +7,18 @@ GIT
       activesupport (>= 3.1.0)
       virtus
 
+GIT
+  remote: https://github.com/waynerobinson/xeroizer.git
+  revision: a3704349dbad11585e9a8b311d7388b34073e556
+  specs:
+    xeroizer (2.15.6)
+      activesupport
+      builder (>= 2.1.2)
+      i18n
+      nokogiri
+      oauth (>= 0.4.5)
+      tzinfo
+
 PATH
   remote: vendor/extensions
   specs:
@@ -184,7 +196,7 @@ GEM
     net-ssh (2.9.1)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
-    oauth (0.4.5)
+    oauth (0.4.7)
     orm_adapter (0.5.0)
     polyglot (0.3.5)
     pry (0.10.1)
@@ -391,17 +403,6 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
-    xeroizer (2.15.5)
-      activesupport
-      activesupport
-      builder (>= 2.1.2)
-      builder (>= 2.1.2)
-      i18n
-      nokogiri
-      nokogiri
-      oauth (= 0.4.5)
-      oauth (>= 0.3.6)
-      tzinfo
     yajl-ruby (1.2.1)
 
 PLATFORMS
@@ -434,3 +435,4 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   trans_forms!
   uglifier (>= 1.0.3)
+  xeroizer!
