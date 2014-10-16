@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141015044057) do
+ActiveRecord::Schema.define(:version => 20141016013806) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -708,6 +708,18 @@ ActiveRecord::Schema.define(:version => 20141015044057) do
 
   add_index "refinery_xero_contacts", ["guid"], :name => "index_refinery_xero_contacts_on_guid"
   add_index "refinery_xero_contacts", ["inactive"], :name => "index_refinery_xero_contacts_on_inactive"
+
+  create_table "refinery_xero_expense_claim_attachments", :force => true do |t|
+    t.integer  "xero_expense_claim_id"
+    t.integer  "resource_id"
+    t.string   "guid"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
+
+  add_index "refinery_xero_expense_claim_attachments", ["guid"], :name => "refinery_xeca_on_guid"
+  add_index "refinery_xero_expense_claim_attachments", ["resource_id"], :name => "refinery_xeca_on_resource_id"
+  add_index "refinery_xero_expense_claim_attachments", ["xero_expense_claim_id"], :name => "refinery_xeca_on_xero_expense_claim_id"
 
   create_table "refinery_xero_expense_claims", :force => true do |t|
     t.integer  "employee_id"
