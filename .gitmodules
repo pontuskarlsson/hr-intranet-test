@@ -4,3 +4,6 @@
 [submodule "vendor/extensions/refinerycms-employees"]
 	path = vendor/extensions/refinerycms-employees
 	url = https://github.com/dannemanne/refinerycms-employees.git
+[submodule "vendor/extensions/refinerycms-marketing"]
+	path = vendor/extensions/refinerycms-marketing
+	url = git@github.com:dannemanne/refinerycms-marketing.git

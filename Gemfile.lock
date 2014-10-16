@@ -22,9 +22,6 @@ GIT
 PATH
   remote: vendor/extensions
   specs:
-    refinerycms-brands (1.0)
-      amqp
-      refinerycms-core (~> 2.1.2)
     refinerycms-calendar (2.1.0)
       refinerycms-core (~> 2.1.0)
     refinerycms-contacts (1.0)
@@ -35,6 +32,9 @@ PATH
       refinerycms-calendar (~> 2.1)
       refinerycms-core (~> 2.1.2)
       xeroizer
+    refinerycms-marketing (1.0)
+      amqp
+      refinerycms-core (~> 2.1.2)
     refinerycms-parcels (1.0)
       refinerycms-contacts (~> 1.0)
       refinerycms-core (~> 2.1.2)
@@ -422,10 +422,10 @@ DEPENDENCIES
   rails_12factor
   refinerycms (~> 2.1.0)
   refinerycms-acts-as-indexed (~> 1.0.0)
-  refinerycms-brands!
   refinerycms-calendar!
   refinerycms-contacts!
   refinerycms-employees!
+  refinerycms-marketing!
   refinerycms-news (~> 2.1.0)
   refinerycms-page-images (~> 2.1.0)
   refinerycms-parcels!

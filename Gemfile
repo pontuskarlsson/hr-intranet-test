@@ -48,7 +48,7 @@ gem 'refinerycms-news', '~> 2.1.0'
 gem 'refinerycms-page-images', '~> 2.1.0'
 gem 'refinerycms-calendar', path: 'vendor/extensions'
 gem 'refinerycms-acts-as-indexed', '~> 1.0.0'
-gem 'refinerycms-brands', path: 'vendor/extensions'
+gem 'refinerycms-marketing', path: 'vendor/extensions'
 gem 'refinerycms-sales_orders', path: 'vendor/extensions'
 
 # Needed for S3 storage
