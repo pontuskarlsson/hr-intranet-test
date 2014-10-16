@@ -1,2 +1,2 @@
 web: bundle exec rails server -p $PORT -e $RAILS_ENV
-worker: bundle exec rake messenger:start
+worker: bundle exec rake refinery:marketing:messenger:start

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141016013806) do
+ActiveRecord::Schema.define(:version => 20141016081825) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(:version => 20141016013806) do
 
   add_index "amqp_messages", ["sender_id", "sender_type"], :name => "index_amqp_messages_on_sender_id_and_sender_type"
   add_index "amqp_messages", ["sent_at"], :name => "index_amqp_messages_on_sent_at"
+
+  create_table "refinery_amqp_messages", :force => true do |t|
+    t.string   "queue",       :null => false
+    t.text     "message",     :null => false
+    t.text     "type",        :null => false
+    t.integer  "sender_id"
+    t.string   "sender_type"
+    t.datetime "sent_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "refinery_amqp_messages", ["sender_id", "sender_type"], :name => "index_refinery_amqp_messages_on_sender_id_and_sender_type"
+  add_index "refinery_amqp_messages", ["sent_at"], :name => "index_refinery_amqp_messages_on_sent_at"
 
   create_table "refinery_annual_leave_records", :force => true do |t|
     t.integer  "employee_id"
