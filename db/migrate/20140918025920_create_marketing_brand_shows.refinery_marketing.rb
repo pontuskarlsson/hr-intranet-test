@@ -1,5 +1,5 @@
 # This migration comes from refinery_brands (originally 3)
-class CreateBrandsBrandShows < ActiveRecord::Migration
+class CreateMarketingBrandShows < ActiveRecord::Migration
 
   def up
     create_table :refinery_brand_shows do |t|
