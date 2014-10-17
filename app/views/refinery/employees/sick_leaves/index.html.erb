@@ -1,8 +1,9 @@
 <% content_for :body do %>
+  <h4>Register Sick Leave</h4>
 
-  <%= render 'form', sick_leave: ::Refinery::Employees::SickLeave.new %>
+  <%= render 'quick_form', sick_leave: ::Refinery::Employees::SickLeave.new %>
 
-  <h4 class="t2">Previously registered Sick Leave</h4>
+  <h4 class="t2">All of your registered Sick Leave occasions</h4>
 
   <table class="display js_sick_leaves_data_table" cellspacing="0" style="width: 100%;">
     <thead>
@@ -56,7 +57,7 @@
           { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
           { data: "doctors_note", "render": function(data, type, row){ console.log(row); return (data === null || typeof data == 'undefined' ? '<a href="/employees/sick_leaves/'+row.id+'/add_note" data-remote="true">Add Note</a>' : '<a href="'+data.url+'">Download</a>'); } },
           { data: "id", "render": function(data, type, row){
-            return '<a href="/employees/sick_leaves/'+data+'/edit">Edit</a>';
+            return '<a href="/employees/sick_leaves/'+data+'/edit">Edit</a>, <a href="/employees/sick_leaves/'+data+'" data-method="delete">Remove</a>';
           } }
         ]
       });

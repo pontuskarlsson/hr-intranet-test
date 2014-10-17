@@ -12,7 +12,19 @@
 
   <div class="row" id="page">
     <div class="columns">
-        <%= yield %>
+
+      <% if flash.any? %>
+        <div id="message">
+          <% flash.each do |key, value| %>
+            <div id='flash' class="flash flash_<%= key %>" >
+              <%= value %>
+              <%= link_to 'Close', '', id: 'flash_close' %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= yield %>
     </div>
   </div>
   <div class="clearfix"></div>
