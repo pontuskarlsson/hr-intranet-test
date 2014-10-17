@@ -6,4 +6,4 @@
 	url = https://github.com/dannemanne/refinerycms-employees.git
 [submodule "vendor/extensions/refinerycms-marketing"]
 	path = vendor/extensions/refinerycms-marketing
-	url = git@github.com:dannemanne/refinerycms-marketing.git
+	url = https://github.com/dannemanne/refinerycms-marketing.git
