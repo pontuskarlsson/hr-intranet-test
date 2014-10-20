@@ -29,3 +29,6 @@ Refinery::Parcels::Engine.load_seed
 
 # Added by Refinery CMS Employees extension
 Refinery::Employees::Engine.load_seed
+
+# Added by Refinery CMS Store extension
+Refinery::Store::Engine.load_seed

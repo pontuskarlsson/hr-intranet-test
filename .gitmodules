@@ -7,3 +7,6 @@
 [submodule "vendor/extensions/refinerycms-marketing"]
 	path = vendor/extensions/refinerycms-marketing
 	url = https://github.com/dannemanne/refinerycms-marketing.git
+[submodule "vendor/extensions/refinerycms-store"]
+	path = vendor/extensions/refinerycms-store
+	url = https://github.com/dannemanne/refinerycms-store.git

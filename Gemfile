@@ -50,6 +50,10 @@ gem 'refinerycms-calendar', path: 'vendor/extensions'
 gem 'refinerycms-acts-as-indexed', '~> 1.0.0'
 gem 'refinerycms-marketing', path: 'vendor/extensions'
 gem 'refinerycms-sales_orders', path: 'vendor/extensions'
+gem 'refinerycms-contacts', :path => 'vendor/extensions'
+gem 'refinerycms-parcels', :path => 'vendor/extensions'
+gem 'refinerycms-employees', :path => 'vendor/extensions'
+gem 'refinerycms-store', :path => 'vendor/extensions'
 
 # Needed for S3 storage
 gem 'fog'
@@ -67,10 +71,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
   gem 'factory_girl_rails'
 end
-
-gem 'refinerycms-contacts', :path => 'vendor/extensions'
-gem 'refinerycms-parcels', :path => 'vendor/extensions'
-gem 'refinerycms-employees', :path => 'vendor/extensions'
 
 # Workaround to get the latest version of xeroizer that is not available from rubygems yet
 gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer.git'

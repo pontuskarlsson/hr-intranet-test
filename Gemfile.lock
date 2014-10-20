@@ -40,6 +40,10 @@ PATH
       refinerycms-core (~> 2.1.2)
     refinerycms-sales_orders (1.0)
       refinerycms-core (~> 2.1.2)
+    refinerycms-store (1.0)
+      hiredis (~> 0.4.5)
+      redis (~> 3.0.1)
+      refinerycms-core (~> 2.1.2)
 
 GEM
   remote: https://rubygems.org/
@@ -173,6 +177,7 @@ GEM
       activerecord (>= 3.1.0, < 4.0.0)
     hashie (3.3.1)
     hike (1.2.3)
+    hiredis (0.4.5)
     i18n (0.6.11)
     ice_nine (0.11.0)
     inflecto (0.0.2)
@@ -235,6 +240,7 @@ GEM
     rake (10.3.2)
     rdoc (3.12.2)
       json (~> 1.4)
+    redis (3.0.7)
     refinerycms (2.1.2)
       bundler (>= 1.2.2, < 2.0)
       refinerycms-authentication (= 2.1.2)
@@ -430,6 +436,7 @@ DEPENDENCIES
   refinerycms-page-images (~> 2.1.0)
   refinerycms-parcels!
   refinerycms-sales_orders!
+  refinerycms-store!
   rspec-rails (~> 3.0.0)
   sass (= 3.2.13)
   sass-rails (~> 3.2.3)

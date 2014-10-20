@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141016081825) do
+ActiveRecord::Schema.define(:version => 20141020075141) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -632,6 +632,79 @@ ActiveRecord::Schema.define(:version => 20141016081825) do
   add_index "refinery_sick_leaves", ["end_date"], :name => "index_refinery_sick_leaves_on_end_date"
   add_index "refinery_sick_leaves", ["event_id"], :name => "index_refinery_sick_leaves_on_event_id"
   add_index "refinery_sick_leaves", ["start_date"], :name => "index_refinery_sick_leaves_on_start_date"
+
+  create_table "refinery_store_order_items", :force => true do |t|
+    t.integer  "order_id"
+    t.integer  "product_id"
+    t.string   "product_number"
+    t.decimal  "quantity",        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "price_per_item",  :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "sub_total_price", :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "comment"
+    t.integer  "position"
+    t.datetime "created_at",                                                      :null => false
+    t.datetime "updated_at",                                                      :null => false
+  end
+
+  add_index "refinery_store_order_items", ["order_id"], :name => "index_refinery_store_order_items_on_order_id"
+  add_index "refinery_store_order_items", ["position"], :name => "index_refinery_store_order_items_on_position"
+  add_index "refinery_store_order_items", ["product_id"], :name => "index_refinery_store_order_items_on_product_id"
+  add_index "refinery_store_order_items", ["product_number"], :name => "index_refinery_store_order_items_on_product_number"
+
+  create_table "refinery_store_orders", :force => true do |t|
+    t.integer  "retailer_id"
+    t.string   "order_number"
+    t.string   "reference"
+    t.decimal  "total_price",  :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "price_unit"
+    t.integer  "user_id"
+    t.string   "status"
+    t.integer  "position"
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
+  end
+
+  add_index "refinery_store_orders", ["order_number"], :name => "index_refinery_store_orders_on_order_number"
+  add_index "refinery_store_orders", ["position"], :name => "index_refinery_store_orders_on_position"
+  add_index "refinery_store_orders", ["retailer_id"], :name => "index_refinery_store_orders_on_retailer_id"
+  add_index "refinery_store_orders", ["status"], :name => "index_refinery_store_orders_on_status"
+  add_index "refinery_store_orders", ["user_id"], :name => "index_refinery_store_orders_on_user_id"
+
+  create_table "refinery_store_products", :force => true do |t|
+    t.integer  "retailer_id"
+    t.string   "product_number"
+    t.string   "name"
+    t.text     "description"
+    t.string   "measurement_unit"
+    t.decimal  "price_amount",     :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.string   "price_unit"
+    t.integer  "image_id"
+    t.date     "featured_at"
+    t.date     "expired_at"
+    t.integer  "position"
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
+  end
+
+  add_index "refinery_store_products", ["expired_at"], :name => "index_refinery_store_products_on_expired_at"
+  add_index "refinery_store_products", ["featured_at"], :name => "index_refinery_store_products_on_featured_at"
+  add_index "refinery_store_products", ["image_id"], :name => "index_refinery_store_products_on_image_id"
+  add_index "refinery_store_products", ["position"], :name => "index_refinery_store_products_on_position"
+  add_index "refinery_store_products", ["product_number"], :name => "index_refinery_store_products_on_product_number"
+  add_index "refinery_store_products", ["retailer_id"], :name => "index_refinery_store_products_on_retailer_id"
+
+  create_table "refinery_store_retailers", :force => true do |t|
+    t.string   "name"
+    t.string   "default_price_unit"
+    t.integer  "position"
+    t.date     "expired_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "refinery_store_retailers", ["expired_at"], :name => "index_refinery_store_retailers_on_expired_at"
+  add_index "refinery_store_retailers", ["name"], :name => "index_refinery_store_retailers_on_name"
+  add_index "refinery_store_retailers", ["position"], :name => "index_refinery_store_retailers_on_position"
 
   create_table "refinery_user_plugins", :force => true do |t|
     t.integer "user_id"
