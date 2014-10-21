@@ -38,23 +38,23 @@
   <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
   <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
 
-  <%= javascript_tag do %>
+  <script type="text/javascript">
     $(function(){
-    $('.js_contacts_data_table').dataTable({
-    "scrollY":        "600px",
-    "scrollCollapse": true,
-    "paging":         false,
-    "data":           <%= @contacts.to_json.html_safe %>,
-    "columns": [
-    { data: "name", "render": function(data, type, row){ return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+data+'</a>').replace('%%contact_id%%', row.id); } },
-    { data: "is_organisation", "render": function(data, type, row) { return (data ? 'Yes' : 'No'); } },
-    { data: "email" },
-    { data: "country" },
-    { data: "tags_joined_by_comma" },
-    ]
+      $('.js_contacts_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "data":           <%= @contacts.to_json.html_safe %>,
+        "columns": [
+          { data: "name", "render": function(data, type, row){ return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+data+'</a>').replace('%%contact_id%%', row.id); } },
+          { data: "is_organisation", "render": function(data, type, row) { return (data ? 'Yes' : 'No'); } },
+          { data: "email" },
+          { data: "country" },
+          { data: "tags_joined_by_comma" },
+        ]
+      });
     });
-    });
-  <% end %>
+  </script>
 <% end %>
 
 <%= render '/refinery/content_page' %>
