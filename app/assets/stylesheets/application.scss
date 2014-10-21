@@ -282,9 +282,24 @@ ul.latest-news {
         padding: 1rem;
         border: 1px solid #ccc;
 
+        .preview-missing {
+            position: relative;
+            border: 1px dashed #000;
+            height: 10rem;
+
+            p {
+                position: absolute;
+                width: 100%;
+                text-align: center;
+                font-style: italic;
+                height: 1rem;
+                margin-top: -0.5rem;
+                top: 50%;
+            }
+        }
+
         img {
             width: 100%;
-            min-height: 100px;
         }
 
         h1 {

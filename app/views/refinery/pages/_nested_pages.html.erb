@@ -1,0 +1,10 @@
+<ul>
+  <% child_pages.each do |page| %>
+    <li>
+      <%= link_to page.title, page.url %>
+      <% if page.children.any? %>
+        <%= render 'nested_pages', child_pages: page.children %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>

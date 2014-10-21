@@ -6,7 +6,9 @@
           <% if product.image.present? %>
             <%= image_tag product.image.url %>
           <% else %>
-            <img alt="Preview Missing" />
+            <div class="preview-missing">
+              <p>Preview Missing</p>
+            </div>
           <% end %>
           <h1>
             <%= link_to product.name, refinery.store_product_path(product) %>
