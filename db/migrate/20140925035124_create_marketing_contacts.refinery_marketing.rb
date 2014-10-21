@@ -1,7 +1,7 @@
-# This migration comes from refinery_contacts (originally 1)
-class CreateContactsContacts < ActiveRecord::Migration
+# This migration comes from refinery_marketing (originally 5)
+class CreateMarketingContacts < ActiveRecord::Migration
 
-  def up
+  def change
     create_table :refinery_contacts do |t|
       t.integer :base_id
       t.string :name
@@ -45,24 +45,6 @@ class CreateContactsContacts < ActiveRecord::Migration
     add_index :refinery_contacts, :base_modified_at
     add_index :refinery_contacts, :organisation_id
     add_index :refinery_contacts, :removed_from_base
-
-  end
-
-  def down
-    remove_index :refinery_contacts, :base_id
-    remove_index :refinery_contacts, :base_modified_at
-    remove_index :refinery_contacts, :organisation_id
-    remove_index :refinery_contacts, :removed_from_base
-
-    if defined?(::Refinery::UserPlugin)
-      ::Refinery::UserPlugin.destroy_all({:name => "refinerycms-contacts"})
-    end
-
-    if defined?(::Refinery::Page)
-      ::Refinery::Page.delete_all({:link_url => "/contacts/contacts"})
-    end
-
-    drop_table :refinery_contacts
 
   end
 

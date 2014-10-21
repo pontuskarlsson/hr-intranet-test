@@ -21,9 +21,6 @@ Refinery::Marketing::Engine.load_seed
 # Added by Refinery CMS SalesOrders extension
 Refinery::SalesOrders::Engine.load_seed
 
-# Added by Refinery CMS Contacts extension
-Refinery::Contacts::Engine.load_seed
-
 # Added by Refinery CMS Parcels extension
 Refinery::Parcels::Engine.load_seed
 
