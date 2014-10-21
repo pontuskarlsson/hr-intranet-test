@@ -18,7 +18,7 @@
           <% flash.each do |key, value| %>
             <div id='flash' class="flash flash_<%= key %>" >
               <%= value %>
-              <%= link_to 'Close', '', id: 'flash_close' %>
+              <%= link_to 'X', '', id: 'flash_close' %>
             </div>
           <% end %>
         </div>

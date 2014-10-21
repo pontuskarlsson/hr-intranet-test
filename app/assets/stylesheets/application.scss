@@ -488,9 +488,9 @@ ul.latest-news {
 
 
 /* Flash Message */
-#message, .flash {
-    padding: 8px 8px 8px 30px;
-    margin-bottom: 15px;
+#message .flash {
+    padding: 8px 30px;
+    margin-bottom: 5px;
     position: relative;
 }
 .flash_notice, .flash_message {
