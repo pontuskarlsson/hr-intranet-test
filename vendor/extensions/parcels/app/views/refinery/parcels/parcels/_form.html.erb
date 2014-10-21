@@ -61,7 +61,7 @@
     $(function(){
       $('.js_parcel_date_field').datepicker({ dateFormat: "yy-mm-dd" });
       $('.js_from_field').autocomplete({
-        source: <%= ::Refinery::Contacts::Contact.select(:name).map(&:name).to_json.html_safe %>
+        source: <%= ::Refinery::Marketing::Contact.select(:name).map(&:name).to_json.html_safe %>
       });
       <%- users = ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe -%>
       $('.js_to_field').autocomplete({

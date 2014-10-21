@@ -24,9 +24,6 @@ PATH
   specs:
     refinerycms-calendar (2.1.0)
       refinerycms-core (~> 2.1.0)
-    refinerycms-contacts (1.0)
-      basecrm
-      refinerycms-core (~> 2.1.2)
     refinerycms-employees (1.0)
       refinerycms-authentication (~> 2.1.2)
       refinerycms-calendar (~> 2.1)
@@ -37,8 +34,8 @@ PATH
       basecrm
       refinerycms-core (~> 2.1.2)
     refinerycms-parcels (1.0)
-      refinerycms-contacts (~> 1.0)
       refinerycms-core (~> 2.1.2)
+      refinerycms-marketing
     refinerycms-sales_orders (1.0)
       refinerycms-core (~> 2.1.2)
     refinerycms-store (1.0)

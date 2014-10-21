@@ -4,7 +4,7 @@ module Refinery
       self.table_name = 'refinery_parcels'
 
       belongs_to :shipping_document,  class_name: '::Refinery::Resource'
-      belongs_to :from_contact,       class_name: '::Refinery::Contacts::Contact'
+      belongs_to :from_contact,       class_name: '::Refinery::Marketing::Contact'
       belongs_to :to_user,            class_name: '::Refinery::User'
       belongs_to :received_by,        class_name: '::Refinery::User'
       belongs_to :assigned_to,        class_name: '::Refinery::User'
@@ -24,7 +24,7 @@ module Refinery
 
       before_validation do
         if @from.present?
-          if (contact = ::Refinery::Contacts::Contact.find_by_name(@from)).present?
+          if (contact = ::Refinery::Marketing::Contact.find_by_name(@from)).present?
             self.from_contact = contact
           end
           self.from_name = @from
