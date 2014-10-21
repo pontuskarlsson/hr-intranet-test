@@ -342,6 +342,19 @@ ul.latest-news {
 
 
 
+/* Pages */
+.nested-pages {
+    list-style: none;
+    margin-left: 0;
+    padding: 0;
+
+    > li > ul {
+        margin-left: 5px;
+    }
+}
+
+
+
 /* Calendar view */
 .calendar-events {
     overflow: hidden;
