@@ -1,0 +1,23 @@
+<ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-3">
+  <% if products.any? %>
+    <% products.each do |product| %>
+      <li class="store-product-card">
+        <div class="inner-product-card">
+          <% if product.image.present? %>
+            <%= image_tag product.image.url %>
+          <% else %>
+            <img alt="Preview Missing" />
+          <% end %>
+          <h1>
+            <%= link_to product.name, refinery.store_product_path(product) %>
+            <small><%= product.product_number %></small>
+          </h1>
+          <p>
+            <%= product.price %>
+            <%= render 'refinery/store/shared/cart_button', product: product %>
+          </p>
+        </div>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
