@@ -1,5 +1,4 @@
 require 'refinerycms-core'
-require 'refinerycms-contacts'
 
 module Refinery
   autoload :ParcelsGenerator, 'generators/refinery/parcels_generator'
