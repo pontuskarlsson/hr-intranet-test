@@ -30,15 +30,15 @@ module Refinery
           self.from_name = @from
         end
         if @to.present?
-          if (user = ::Refinery::User.find_by_full_name(@to)).present?
+          if (user = ::Refinery::User.send("find_by_#{ Refinery::Parcels.config.user_attribute_reference }", @to)).present?
             self.to_user = user
           end
           self.to_name = @to
         end
         if @given_to.present?
-          self.assigned_to = ::Refinery::User.find_by_full_name(@given_to) || received_by
+          self.assigned_to = ::Refinery::User.send("find_by_#{ Refinery::Parcels.config.user_attribute_reference }", @given_to)
         end
-        self.assigned_to ||= received_by
+        self.assigned_to ||= to_user || received_by
       end
 
       def from
@@ -46,11 +46,11 @@ module Refinery
       end
 
       def to
-        @to ||= to_user.present? ? to_user.full_name : to_name
+        @to ||= to_user.present? ? to_user.send(Refinery::Parcels.config.user_attribute_reference) : to_name
       end
 
       def given_to
-        @given_to ||= assigned_to.try(:full_name)
+        @given_to ||= assigned_to.try(Refinery::Parcels.config.user_attribute_reference)
       end
 
     end

@@ -1,7 +1,9 @@
 module Refinery
   module Parcels
     class ParcelsController < ::ApplicationController
+      before_filter :authenticate_refinery_user!
       before_filter :find_all_parcels
+      before_filter :authorize_for_parcel, only: [:update, :sign, :pass_on]
       before_filter :find_page
 
       def index
@@ -14,7 +16,7 @@ module Refinery
       def create
         @parcel = current_refinery_user.received_parcels.build(params[:parcel])
         if @parcel.save
-          flash[:info] = 'Parcel successfully added.'
+          flash[:notice] = 'Parcel successfully added.'
           redirect_to refinery.parcels_parcels_path
         else
           present(@page)
@@ -31,9 +33,8 @@ module Refinery
       end
 
       def update
-        @parcel = current_refinery_user.assigned_parcels.find(params[:id])
         if @parcel.update_attributes(params[:parcel])
-          flash[:info] = 'Parcel successfully updated.'
+          flash[:notice] = 'Parcel successfully updated.'
           redirect_to refinery.parcels_parcels_path
         else
           present(@page)
@@ -42,11 +43,9 @@ module Refinery
       end
 
       def sign
-        @parcel = current_refinery_user.assigned_parcels.find(params[:id])
       end
 
       def pass_on
-        @parcel = current_refinery_user.assigned_parcels.find(params[:id])
       end
 
     protected
@@ -55,6 +54,15 @@ module Refinery
         @parcels = Parcel.order('parcel_date DESC, id DESC')
 
         @my_unsigned_parcels = current_refinery_user.assigned_parcels.unsigned.order('parcel_date ASC')
+      end
+
+      def authorize_for_parcel
+        @parcel = current_refinery_user.assigned_parcels.find_by_id(params[:id])
+        @parcel = current_refinery_user.received_parcels.find_by_id(params[:id]) if @parcel.nil?
+        if @parcel.nil?
+          flash[:alert] = 'You are not authorized to update that parcel'
+          redirect_to refinery.parcels_parcels_path
+        end
       end
 
       def find_page

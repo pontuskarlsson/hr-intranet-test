@@ -60,7 +60,7 @@
         source: <%= ::Refinery::Marketing::Contact.select(:name).map(&:name).to_json.html_safe %>
       });
       $('.js_to_field').autocomplete({
-        source: <%= ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe %>
+        source: <%= ::Refinery::User.select(:username).map(&:username).to_json.html_safe %>
       });
     });
   </script>

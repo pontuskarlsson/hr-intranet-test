@@ -5,6 +5,7 @@ module Refinery
 
   module Parcels
     require 'refinery/parcels/engine'
+    require 'refinery/parcels/configuration'
 
     class << self
       attr_writer :root

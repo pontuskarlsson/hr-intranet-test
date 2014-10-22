@@ -1,7 +1,7 @@
 <%- disabled = @parcel.assigned_to_id != current_refinery_user.id -%>
 
 <% if disabled %>
-  <p class="italic">Can only be edited by <%= @parcel.assigned_to.full_name %></p>
+  <p class="italic">Can only be edited by <%= @parcel.assigned_to.username %></p>
 <% end %>
 
 <%= form_for @parcel, url: refinery.parcels_parcel_path(@parcel) do |f| %>
@@ -10,7 +10,7 @@
 
       <div class="fields">
         <%= f.label :received_by_id %>
-        <%= f.text_field :received_by_id, value: @parcel.received_by.full_name, disabled: true %>
+        <%= f.text_field :received_by_id, value: @parcel.received_by.username, disabled: true %>
       </div>
 
       <div class="fields">
@@ -39,7 +39,7 @@
       </div>
 
       <div class="fields">
-        <%= f.label :given_to, 'Assigned To' %>
+        <%= f.label :given_to %>
         <%= f.text_field :given_to, class: 'js_given_to_field', disabled: disabled %>
       </div>
 
@@ -63,7 +63,7 @@
       $('.js_from_field').autocomplete({
         source: <%= ::Refinery::Marketing::Contact.select(:name).map(&:name).to_json.html_safe %>
       });
-      <%- users = ::Refinery::User.select(:full_name).map(&:full_name).to_json.html_safe -%>
+      <%- users = ::Refinery::User.select(:username).map(&:username).to_json.html_safe -%>
       $('.js_to_field').autocomplete({
         source: <%= users %>
       });

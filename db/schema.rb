@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141020075141) do
+ActiveRecord::Schema.define(:version => 20141022080349) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -731,8 +731,10 @@ ActiveRecord::Schema.define(:version => 20141020075141) do
     t.datetime "updated_at",             :null => false
     t.string   "slug"
     t.datetime "password_changed_at"
+    t.string   "full_name"
   end
 
+  add_index "refinery_users", ["full_name"], :name => "index_refinery_users_on_full_name"
   add_index "refinery_users", ["id"], :name => "index_refinery_users_on_id"
   add_index "refinery_users", ["password_changed_at"], :name => "index_refinery_users_on_password_changed_at"
   add_index "refinery_users", ["slug"], :name => "index_refinery_users_on_slug"
