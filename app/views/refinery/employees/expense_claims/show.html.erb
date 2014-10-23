@@ -1,0 +1,125 @@
+<% content_for :body do %>
+  <%= link_to 'Back to All Expense Claims', refinery.employees_expense_claims_path, class: 'button tiny round' %>
+
+  <h2><%= @xero_expense_claim.description %></h2>
+
+  <table class="js_receipts_data_table">
+    <thead>
+    <tr>
+      <th>From</th>
+      <th>Receipt Date</th>
+      <th>Receipt Registered</th>
+      <th>Items</th>
+      <th>Status</th>
+      <th>Amount</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>From</th>
+      <th>Receipt Date</th>
+      <th>Receipt Registered</th>
+      <th>Items</th>
+      <th>Status</th>
+      <th>Amount</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td colspan="6">Loading, please wait...</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <% if @xero_expense_claim.status == 'Not-Submitted' %>
+    <p><%= link_to 'Add Receipt', refinery.new_employees_expense_claim_receipt_path(@xero_expense_claim), class: 'button tiny' %></p>
+  <% end %>
+
+  <h4>Scanned Receipts</h4>
+  <% if @xero_expense_claim.xero_expense_claim_attachments.any? %>
+    <% @xero_expense_claim.xero_expense_claim_attachments.each do |xero_expense_claim_attachment| %>
+      <p><%= link_to "Download #{ xero_expense_claim_attachment.resource.file_name }", xero_expense_claim_attachment.resource.url %></p>
+    <% end %>
+  <% else %>
+    <p class="italic">No Scanned Receipts attached yet.</p>
+  <% end %>
+
+  <% if @xero_expense_claim.status == 'Not-Submitted' %>
+    <p><%= link_to 'Add Scanned Receipts', refinery.add_resource_employees_expense_claim_path(@xero_expense_claim), remote: true, class: 'button tiny' %></p>
+  <% end %>
+
+  <div class="row">
+    <% if @xero_expense_claim.status == 'Not-Submitted' %>
+      <% if @xero_expense_claim.submittable? %>
+        <div class="medium-3 columns">
+          <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
+            <%= submit_tag 'Submit Expense Claim', class: 'button round small', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="medium-3 columns">
+          <%= link_to 'Submit Expense Claim', '#', class: 'button round small disabled' %>
+        </div>
+      <% end %>
+      <div class="medium-9 columns">
+        <%= form_tag refinery.employees_expense_claim_path(@xero_expense_claim), method: :delete do %>
+          <%= submit_tag 'Delete Expense Claim', class: 'button alert tiny', confirm: 'Are you sure you want to delete this Expense Claim?' %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="medium-3 columns">
+        <%= link_to 'Submitted', '#', class: 'button round small disabled' %>
+      </div>
+      <div class="medium-9 columns">
+        <%= link_to 'Cannot Delete a submitted claim', '#', class: 'button alert tiny disabled' %>
+      </div>
+    <% end %>
+  </div>
+
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_receipts_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= @xero_expense_claim.xero_receipts.to_json(methods: [:no_of_items, :contact_name]).html_safe %>,
+        "columns": [
+          { data: "contact_name", "render": function(data, type, row){
+            if(row.status === 'Not-Submitted'){
+              return '<a href="<%= refinery.employees_expense_claim_receipts_path(@xero_expense_claim) %>/'+row.id+'/edit">'+data+'</a>';
+            }else{
+              return '<a href="<%= refinery.employees_expense_claim_receipts_path(@xero_expense_claim) %>/'+row.id+'">'+data+'</a>';
+            }
+          } },
+          { data: "date", "render": function(data, type, row){
+            var d = new Date(data);
+            return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+          } },
+          { data: "created_at", "render": function(data, type, row){
+            var d = new Date(data);
+            return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+          } },
+          { data: "no_of_items" },
+          { data: "status" },
+          { data: "total", "render": function(data, type, row){ return data + ' HKD'; } }
+        ]
+      });
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>
