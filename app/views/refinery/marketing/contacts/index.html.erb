@@ -5,20 +5,20 @@
     <thead>
     <tr>
       <th>Name</th>
-      <th>Is Organisation?</th>
+      <th>Organisation</th>
       <th>Email</th>
+      <th>Phone</th>
       <th>Country</th>
-      <th>Tags</th>
     </tr>
     </thead>
 
     <tfoot>
     <tr>
       <th>Name</th>
-      <th>Is Organisation?</th>
+      <th>Organisation</th>
       <th>Email</th>
+      <th>Phone</th>
       <th>Country</th>
-      <th>Tags</th>
     </tr>
     </tfoot>
 
@@ -44,13 +44,29 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
-        "data":           <%= @contacts.to_json.html_safe %>,
+        "data":           <%= @contacts.to_json(only: [:id, :name, :is_organisation, :organisation_name, :email, :phone, :mobile, :country], include: { organisation: { only: [:id, :name] } }).html_safe %>,
         "columns": [
           { data: "name", "render": function(data, type, row){ return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+data+'</a>').replace('%%contact_id%%', row.id); } },
-          { data: "is_organisation", "render": function(data, type, row) { return (data ? 'Yes' : 'No'); } },
+          { data: "is_organisation", "render": function(data, type, row) {
+            if(data){
+              return row.name;
+            }else{
+              if(row.organisation){
+                return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+row.organisation.name+'</a>').replace('%%contact_id%%', row.organisation.id);
+              }else{
+                return row.organisation_name;
+              }
+            }
+          } },
           { data: "email" },
-          { data: "country" },
-          { data: "tags_joined_by_comma" },
+          { data: "phone", "render": function(data, type, row){
+            if(typeof data == 'undefined' || data === null || data == ''){
+              return row.mobile;
+            }else{
+              return data;
+            }
+          } },
+          { data: "country" }
         ]
       });
     });
