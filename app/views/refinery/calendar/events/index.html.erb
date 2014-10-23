@@ -6,18 +6,20 @@
     <div class="row">
       <div class="medium-3 columns">
         <button data-dropdown="select-calendars" aria-controls="select-calendars" aria-expanded="false" class="small">Calendars</button>
-        <div id="select-calendars" data-dropdown-content class="f-dropdown content" aria-hidden="true" tabindex="-1">
-          <h6>Select Calendars</h6>
-          <% @calendars.each do |calendar| %>
-            <%= form_for ::Refinery::Calendar::UserCalendar.new, url: refinery.calendar_user_calendars_path, remote: true do |f| %>
-              <%= f.hidden_field :calendar_id, value: calendar.id %>
-              <div class="roundedOne">
-                <%= f.check_box :inactive, { id: "calendar_inactive_#{calendar.id}", checked: active_calendar_ids.include?(calendar.id), class: 'js_calendar_inactive', 'data-inactivate-id' => calendar.id }, '0', '1' %>
-                <label for="calendar_inactive_<%= calendar.id %>"><span style="background: none; background-color: #<%= calendar.default_rgb_code %>;"></span></label>
-              </div>
-              <%= f.label :inactive, calendar.uniq_name, for: "calendar_inactive_#{calendar.id}", :class => 'stripped', style: "font-size: 0.7rem; padding: 0; margin: 0; display: inline-block;" %>
+        <div id="select-calendars" data-dropdown-content class="f-dropdown content wider-dropdown" aria-hidden="true" tabindex="-1">
+          <div style="min-width: 20rem;">
+            <h6>Select Calendars</h6>
+            <% @calendars.each do |calendar| %>
+              <%= form_for ::Refinery::Calendar::UserCalendar.new, url: refinery.calendar_user_calendars_path, remote: true do |f| %>
+                <%= f.hidden_field :calendar_id, value: calendar.id %>
+                <div class="roundedOne">
+                  <%= f.check_box :inactive, { id: "calendar_inactive_#{calendar.id}", checked: active_calendar_ids.include?(calendar.id), class: 'js_calendar_inactive', 'data-inactivate-id' => calendar.id }, '0', '1' %>
+                  <label for="calendar_inactive_<%= calendar.id %>"><span style="background: none; background-color: #<%= calendar.default_rgb_code %>;"></span></label>
+                </div>
+                <%= f.label :inactive, calendar.uniq_name, for: "calendar_inactive_#{calendar.id}", :class => 'stripped', style: "font-size: 0.7rem; padding: 0; margin: 0; display: inline-block;" %>
+              <% end %>
             <% end %>
-          <% end %>
+          </div>
         </div>
       </div>
       <div class="medium-6 columns end">
