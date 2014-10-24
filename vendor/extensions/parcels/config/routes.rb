@@ -11,7 +11,7 @@ Refinery::Core::Engine.routes.draw do
 
   # Admin routes
   namespace :parcels, :path => '' do
-    namespace :admin, :path => Refinery::Core.backend_route do
+    namespace :admin, :path => "#{Refinery::Core.backend_route}/parcels" do
       resources :parcels, :except => :show do
         collection do
           post :update_positions
