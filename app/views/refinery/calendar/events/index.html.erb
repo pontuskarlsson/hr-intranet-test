@@ -51,33 +51,11 @@
               <% events.each do |event| %>
                 <p class="calendar-event" data-calendar-id="<%= event.calendar_id %>" style="<% unless active_calendar_ids.include?(event.calendar_id) %>display: none;<% end %>">
                   <span class="event-bullet" style="background-color: <%= "##{event.calendar.default_rgb_code}" %>">&nbsp;</span>
-                  <%= link_to event.title, '#', 'data-reveal-id' => "event-modal-#{event.id}" %>
+                  <%= link_to event.title, refinery.calendar_event_path(event.id), 'data-reveal-id' => "event-modal-#{event.id}", 'data-reveal-ajax' => true %>
                 </p>
 
                 <div id="event-modal-<%= event.id %>" class="reveal-modal" data-reveal>
-                  <h4><%= link_to event.title, refinery.calendar_event_path(event) %></h4>
 
-                  <h5><%= event.venue_name %></h5>
-
-                  <h5><%= event.calendar_title %></h5>
-
-                  <p><%= t('.from', default: 'From') %> <%= event.from.try(:strftime, '%B %d, %Y %I:%M%p') %><br>
-                    <%= t('.to', default: 'To') %> <%= event.to.try(:strftime, '%B %d, %Y %I:%M%p') %></p>
-
-                  <% if event.registration_link.present? %>
-                    <p><%= link_to t('.register', default: 'Register for this event'), event.registration_link %></p>
-                  <% end -%>
-
-                  <% if event.venue_address.present? %>
-                    <p><%= link_to t('.view_on_map', default: 'View it on a map'), "http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=#{CGI::escape(event.venue.address)}&ie=UTF8&z=16" %></p>
-                  <% end -%>
-
-                  <div class="event_description">
-                    <h4><%= event.excerpt %></h4>
-                    <%=raw event.description %>
-                  </div>
-
-                  <a class="close-reveal-modal">&#215;</a>
                 </div>
               <% end %>
             </div>
