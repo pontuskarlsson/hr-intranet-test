@@ -141,7 +141,7 @@
         EMPLOYEE FOCUS
       </div>
 
-      <%- employee = Refinery::Employees::Employee.random.first -%>
+      <%- employee = Refinery::Employees::Employee.current.random.first -%>
       <% if employee.profile_image.present? %>
         <%= image_tag(employee.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
       <% else %>
