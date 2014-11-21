@@ -3,6 +3,7 @@ source "http://rubygems.org"
 gemspec
 
 gem 'refinerycms', '~> 2.1.0'
+gem 'refinerycms-marketing', git: 'https://github.com/dannemanne/refinerycms-marketing.git'
 
 # Database Configuration
 platforms :jruby do

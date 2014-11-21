@@ -11,7 +11,7 @@ module Refinery
 
       attr_writer :from, :to, :given_to
 
-      attr_accessible :parcel_date, :from, :courier, :air_waybill_no, :to, :shipping_document_id, :position, :received_by, :assigned_to, :description, :given_to, :receiver_signed
+      attr_accessible :parcel_date, :from, :courier, :air_waybill_no, :to, :shipping_document_id, :position, :received_by, :assigned_to, :description, :given_to, :receiver_signed, :received_by_id
 
       validates :parcel_date,     presence: true
       validates :from_name,       presence: true

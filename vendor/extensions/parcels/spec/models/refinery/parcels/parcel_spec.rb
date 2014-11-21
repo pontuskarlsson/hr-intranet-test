@@ -4,14 +4,14 @@ module Refinery
   module Parcels
     describe Parcel do
       describe "validations" do
-        subject do
-          FactoryGirl.create(:parcel,
-          :from_name => "Refinery CMS")
-        end
+        let(:parcel) { FactoryGirl.build(:parcel) }
 
-        it { should be_valid }
-        its(:errors) { should be_empty }
-        its(:from_name) { should == "Refinery CMS" }
+        it 'validates received by presence' do
+          expect( parcel ).to be_valid
+
+          parcel.received_by = nil
+          expect( parcel ).not_to be_valid
+        end
       end
     end
   end

@@ -4,6 +4,11 @@
               :include_object_name => true %>
 
   <div class='field'>
+    <%= f.label :received_by_id -%>
+    <%= f.collection_select :received_by_id, Refinery::User.all, :id, :username -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :parcel_date -%>
     <%= f.text_field :parcel_date, class: 'js_parcel_date_field' -%>
   </div>

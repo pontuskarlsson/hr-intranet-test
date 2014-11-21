@@ -39,18 +39,9 @@
       </tfoot>
 
       <tbody>
-      <% @parcels.each do |parcel| %>
-        <tr>
-          <td><%= parcel.parcel_date %></td>
-          <td><%= parcel.from_name %></td>
-          <td><%= parcel.courier %></td>
-          <td><%= parcel.air_waybill_no %></td>
-          <td><%= parcel.to_name %></td>
-          <td><%= parcel.assigned_to.try(:username) %></td>
-          <td><%= parcel.description %></td>
-          <td>&nbsp;</td>
-        </tr>
-      <% end %>
+      <tr>
+        <td colspan="7">Loading, please wait...</td>
+      </tr>
       </tbody>
     </table>
   </section>

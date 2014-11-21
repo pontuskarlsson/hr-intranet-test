@@ -21,7 +21,10 @@ describe Refinery do
         end
 
         describe "create" do
+          let(:refinery_user) { FactoryGirl.create(:refinery_user) }
           before do
+            refinery_user # Creates one record before loading form
+
             visit refinery.parcels_admin_parcels_path
 
             click_link "Add New Parcel"
@@ -29,7 +32,11 @@ describe Refinery do
 
           context "valid data" do
             it "should succeed" do
-              fill_in "From Name", :with => "This is a test of the first string field"
+              fill_in "From", :with => "This is a test of the first string field"
+              fill_in "Parcel Date", :with => "2014-01-01"
+              fill_in "Courier", :with => "Express Courier"
+              fill_in "To", :with => "John Doe"
+              select refinery_user.username, :from => "Received by"
               click_button "Save"
 
               page.should have_content("'This is a test of the first string field' was successfully added.")
@@ -54,7 +61,7 @@ describe Refinery do
 
               click_link "Add New Parcel"
 
-              fill_in "From Name", :with => "UniqueTitle"
+              fill_in "From", :with => "UniqueTitle"
               click_button "Save"
 
               page.should have_content("There were problems")
@@ -74,7 +81,7 @@ describe Refinery do
               click_link "Edit this parcel"
             end
 
-            fill_in "From Name", :with => "A different from_name"
+            fill_in "From", :with => "A different from_name"
             click_button "Save"
 
             page.should have_content("'A different from_name' was successfully updated.")
