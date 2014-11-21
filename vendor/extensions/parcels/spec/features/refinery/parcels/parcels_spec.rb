@@ -48,6 +48,60 @@ describe Refinery do
 
       end
 
+      describe "update" do
+        context "parcel received by current user" do
+          let(:other_user) { FactoryGirl.create(:refinery_user) }
+          let(:parcel) { FactoryGirl.create(:parcel, received_by: logged_in_user, assigned_to: other_user) }
+
+          it "should succeed" do
+            parcel.received_by.should eq logged_in_user
+            parcel.assigned_to.should_not eq logged_in_user
+
+            visit refinery.parcels_parcel_path(parcel)
+
+            page.should_not have_content('Can only be edited by')
+
+            fill_in "Parcel Date", :with => Date.today - 1.year
+            click_button "Save"
+
+            expect( parcel.reload.parcel_date ).to eq Date.today - 1.year
+          end
+        end
+
+        context "parcel received by current user" do
+          let(:parcel) { FactoryGirl.create(:parcel, assigned_to: logged_in_user) }
+
+          it "should succeed" do
+            parcel.received_by.should_not eq logged_in_user
+            parcel.assigned_to.should eq logged_in_user
+
+            visit refinery.parcels_parcel_path(parcel)
+
+            page.should_not have_content('Can only be edited by')
+
+            fill_in "Parcel Date", :with => Date.today - 1.year
+            click_button "Save"
+
+            expect( parcel.reload.parcel_date ).to eq Date.today - 1.year
+          end
+        end
+
+        context "not received by not assigned to current user" do
+          let(:parcel) { FactoryGirl.create(:parcel) }
+
+          it "should not succeed" do
+            parcel.received_by.should_not eq logged_in_user
+            parcel.assigned_to.should_not eq logged_in_user
+
+            visit refinery.parcels_parcel_path(parcel)
+
+            page.should have_content('Can only be edited by')
+
+            expect { fill_in "Parcel Date", :with => Date.today - 1.year }.to raise_error
+          end
+        end
+      end
+
     end
   end
 end
