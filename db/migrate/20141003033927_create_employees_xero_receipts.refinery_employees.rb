@@ -5,6 +5,7 @@ class CreateEmployeesXeroReceipts < ActiveRecord::Migration
     create_table :refinery_xero_receipts do |t|
       t.integer :employee_id
       t.integer :xero_expense_claim_id
+      t.integer :xero_contact_id
       t.string :guid
       t.string :receipt_number
       t.string :reference
@@ -23,6 +24,7 @@ class CreateEmployeesXeroReceipts < ActiveRecord::Migration
 
     add_index :refinery_xero_receipts, :employee_id
     add_index :refinery_xero_receipts, :xero_expense_claim_id
+    add_index :refinery_xero_receipts, :xero_contact_id
     add_index :refinery_xero_receipts, :guid
     add_index :refinery_xero_receipts, :updated_date_utc
   end
@@ -30,6 +32,7 @@ class CreateEmployeesXeroReceipts < ActiveRecord::Migration
   def down
     remove_index :refinery_xero_receipts, :employee_id
     remove_index :refinery_xero_receipts, :xero_expense_claim_id
+    remove_index :refinery_xero_receipts, :xero_contact_id
     remove_index :refinery_xero_receipts, :guid
     remove_index :refinery_xero_receipts, :updated_date_utc
 
