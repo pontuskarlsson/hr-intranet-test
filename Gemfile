@@ -53,6 +53,7 @@ gem 'refinerycms-sales_orders', path: 'vendor/extensions'
 gem 'refinerycms-parcels', :path => 'vendor/extensions'
 gem 'refinerycms-employees', :path => 'vendor/extensions'
 gem 'refinerycms-store', :path => 'vendor/extensions'
+gem 'refinerycms-custom_lists', :path => 'vendor/extensions'
 
 # Needed for S3 storage
 gem 'fog'

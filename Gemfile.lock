@@ -24,6 +24,9 @@ PATH
   specs:
     refinerycms-calendar (2.1.0)
       refinerycms-core (~> 2.1.0)
+    refinerycms-custom_lists (1.0)
+      refinerycms-core (~> 2.1.2)
+      trans_forms
     refinerycms-employees (1.0)
       refinerycms-authentication (~> 2.1.2)
       refinerycms-calendar (~> 2.1)
@@ -427,6 +430,7 @@ DEPENDENCIES
   refinerycms (~> 2.1.0)
   refinerycms-acts-as-indexed (~> 1.0.0)
   refinerycms-calendar!
+  refinerycms-custom_lists!
   refinerycms-employees!
   refinerycms-marketing!
   refinerycms-news (~> 2.1.0)

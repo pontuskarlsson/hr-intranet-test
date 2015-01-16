@@ -29,3 +29,6 @@ Refinery::Employees::Engine.load_seed
 
 # Added by Refinery CMS Store extension
 Refinery::Store::Engine.load_seed
+
+# Added by Refinery CMS CustomLists extension
+Refinery::CustomLists::Engine.load_seed

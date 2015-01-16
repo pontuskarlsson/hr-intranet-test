@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141022080349) do
+ActiveRecord::Schema.define(:version => 20150116035807) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -270,6 +270,48 @@ ActiveRecord::Schema.define(:version => 20141022080349) do
   add_index "refinery_contacts", ["base_modified_at"], :name => "index_refinery_contacts_on_base_modified_at"
   add_index "refinery_contacts", ["organisation_id"], :name => "index_refinery_contacts_on_organisation_id"
   add_index "refinery_contacts", ["removed_from_base"], :name => "index_refinery_contacts_on_removed_from_base"
+
+  create_table "refinery_custom_lists_custom_lists", :force => true do |t|
+    t.string   "title"
+    t.integer  "position"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "refinery_custom_lists_list_cells", :force => true do |t|
+    t.integer  "list_row_id"
+    t.integer  "list_column_id"
+    t.string   "value"
+    t.integer  "position"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "refinery_custom_lists_list_cells", ["list_column_id"], :name => "index_refinery_custom_lists_list_cells_on_list_column_id"
+  add_index "refinery_custom_lists_list_cells", ["list_row_id"], :name => "index_refinery_custom_lists_list_cells_on_list_row_id"
+  add_index "refinery_custom_lists_list_cells", ["value"], :name => "index_refinery_custom_lists_list_cells_on_value"
+
+  create_table "refinery_custom_lists_list_columns", :force => true do |t|
+    t.integer  "custom_list_id"
+    t.string   "title"
+    t.string   "column_type"
+    t.integer  "position"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "refinery_custom_lists_list_columns", ["custom_list_id"], :name => "index_refinery_custom_lists_list_columns_on_custom_list_id"
+  add_index "refinery_custom_lists_list_columns", ["position"], :name => "index_refinery_custom_lists_list_columns_on_position"
+
+  create_table "refinery_custom_lists_list_rows", :force => true do |t|
+    t.integer  "custom_list_id"
+    t.integer  "position"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "refinery_custom_lists_list_rows", ["custom_list_id"], :name => "index_refinery_custom_lists_list_rows_on_custom_list_id"
+  add_index "refinery_custom_lists_list_rows", ["position"], :name => "index_refinery_custom_lists_list_rows_on_position"
 
   create_table "refinery_employees", :force => true do |t|
     t.integer  "user_id"

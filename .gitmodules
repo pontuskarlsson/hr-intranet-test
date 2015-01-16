@@ -10,3 +10,6 @@
 [submodule "vendor/extensions/refinerycms-store"]
 	path = vendor/extensions/refinerycms-store
 	url = https://github.com/dannemanne/refinerycms-store.git
+[submodule "vendor/extensions/refinerycms-custom_lists"]
+	path = vendor/extensions/refinerycms-custom_lists
+	url = https://github.com/dannemanne/refinerycms-custom_list.git
