@@ -1,6 +1,3 @@
-[submodule "vendor/extensions/refinerycms-calendar"]
-  path = vendor/extensions/refinerycms-calendar
-  url = https://github.com/dannemanne/refinerycms-calendar.git
 [submodule "vendor/extensions/refinerycms-employees"]
   path = vendor/extensions/refinerycms-employees
   url = https://github.com/dannemanne/refinerycms-employees.git
