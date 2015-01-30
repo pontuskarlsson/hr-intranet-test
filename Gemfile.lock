@@ -1,6 +1,49 @@
 GIT
-  remote: https://github.com/dannemanne/trans_forms.git
-  revision: 15568f653ec512afca62b86d216919b4a3ca1d9b
+  remote: git://github.com/dannemanne/refinerycms-calendar.git
+  revision: 36db82452dbbdfd93a64a43206ea9e778c6112a7
+  specs:
+    refinerycms-calendar (2.1.0)
+      refinerycms-core (~> 2.1.0)
+
+GIT
+  remote: git://github.com/dannemanne/refinerycms-custom_lists.git
+  revision: cdfbfd740427fcf2374cdcc908b660e7e9a7b0d3
+  specs:
+    refinerycms-custom_lists (1.0)
+      refinerycms-core (~> 2.1.2)
+      trans_forms
+
+GIT
+  remote: git://github.com/dannemanne/refinerycms-employees.git
+  revision: 7b84ad67419612826e6c8a8f2bc7c6665d8c6c38
+  specs:
+    refinerycms-employees (1.0)
+      refinerycms-authentication (~> 2.1.2)
+      refinerycms-calendar (~> 2.1)
+      refinerycms-core (~> 2.1.2)
+      xeroizer
+
+GIT
+  remote: git://github.com/dannemanne/refinerycms-marketing.git
+  revision: 29fbb008f771221e4574e2eb6016af8055f896dd
+  specs:
+    refinerycms-marketing (1.0)
+      amqp
+      basecrm
+      refinerycms-core (~> 2.1.2)
+
+GIT
+  remote: git://github.com/dannemanne/refinerycms-store.git
+  revision: ecfa6a271a9c0d035ca54118fd6a79c76176c3e2
+  specs:
+    refinerycms-store (1.0)
+      hiredis (~> 0.4.5)
+      redis (~> 3.0.1)
+      refinerycms-core (~> 2.1.2)
+
+GIT
+  remote: git://github.com/dannemanne/trans_forms.git
+  revision: 83967e3be8668b8184165d90d288f2dd8faae002
   specs:
     trans_forms (0.1.0)
       activemodel (>= 3.1.0)
@@ -8,10 +51,10 @@ GIT
       virtus
 
 GIT
-  remote: https://github.com/waynerobinson/xeroizer.git
-  revision: a3704349dbad11585e9a8b311d7388b34073e556
+  remote: git://github.com/waynerobinson/xeroizer.git
+  revision: 3198164a8182c8d672def1a402ebac9a9b8284be
   specs:
-    xeroizer (2.15.6)
+    xeroizer (2.15.8)
       activesupport
       builder (>= 2.1.2)
       i18n
@@ -22,28 +65,10 @@ GIT
 PATH
   remote: vendor/extensions
   specs:
-    refinerycms-calendar (2.1.0)
-      refinerycms-core (~> 2.1.0)
-    refinerycms-custom_lists (1.0)
-      refinerycms-core (~> 2.1.2)
-      trans_forms
-    refinerycms-employees (1.0)
-      refinerycms-authentication (~> 2.1.2)
-      refinerycms-calendar (~> 2.1)
-      refinerycms-core (~> 2.1.2)
-      xeroizer
-    refinerycms-marketing (1.0)
-      amqp
-      basecrm
-      refinerycms-core (~> 2.1.2)
     refinerycms-parcels (1.0)
       refinerycms-core (~> 2.1.2)
       refinerycms-marketing
     refinerycms-sales_orders (1.0)
-      refinerycms-core (~> 2.1.2)
-    refinerycms-store (1.0)
-      hiredis (~> 0.4.5)
-      redis (~> 3.0.1)
       refinerycms-core (~> 2.1.2)
 
 GEM
@@ -131,7 +156,7 @@ GEM
       rack
     equalizer (0.0.9)
     erubis (2.7.0)
-    eventmachine (1.0.3)
+    eventmachine (1.0.4)
     excon (0.39.5)
     execjs (2.2.1)
     factory_girl (4.4.0)
@@ -139,7 +164,7 @@ GEM
     factory_girl_rails (4.4.1)
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
-    faraday (0.9.0)
+    faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fog (1.23.0)
       fog-brightbox
@@ -176,11 +201,11 @@ GEM
     globalize (3.1.0)
       activemodel (>= 3.1.0, < 4.0.0)
       activerecord (>= 3.1.0, < 4.0.0)
-    hashie (3.3.1)
+    hashie (3.3.2)
     hike (1.2.3)
     hiredis (0.4.5)
     i18n (0.6.11)
-    ice_nine (0.11.0)
+    ice_nine (0.11.1)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     journey (1.0.4)
@@ -402,7 +427,7 @@ GEM
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
-    virtus (1.0.3)
+    virtus (1.0.4)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
