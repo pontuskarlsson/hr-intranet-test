@@ -91,3 +91,4 @@ Gemfile.lock
 # Dev or Test pem-file folder
 .pem
 .pem/*
+.elasticbeanstalk/
