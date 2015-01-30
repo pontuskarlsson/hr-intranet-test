@@ -1,0 +1,77 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>b726962e-1d70-443b-baa0-293f3387d5b1</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:33:09.1072608Z</DateTimeUTC>
+  <Invoices>
+    <Invoice>
+      <Contact>
+        <ContactID>d0cd2c4f-18a0-4f7c-a32a-2db00f29d298</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>PC Complete</Name>
+        <Addresses>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>18 Little Flinders Street</AddressLine1>
+            <City>Melbourne</City>
+            <PostalCode>3313</PostalCode>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+            <PhoneNumber>4389376</PhoneNumber>
+            <PhoneAreaCode>0800</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-05-03T23:41:00.857</UpdatedDateUTC>
+        <IsSupplier>true</IsSupplier>
+        <IsCustomer>false</IsCustomer>
+      </Contact>
+      <Date>2011-05-13T00:00:00</Date>
+      <DueDate>2011-06-07T00:00:00</DueDate>
+      <Status>AUTHORISED</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Laptop (Tracy)</Description>
+          <UnitAmount>1969.99</UnitAmount>
+          <TaxType>CAPEXINPUT</TaxType>
+          <TaxAmount>197.00</TaxAmount>
+          <LineAmount>1969.99</LineAmount>
+          <AccountCode>720</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Tracy Green</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>1969.99</SubTotal>
+      <TotalTax>197.00</TotalTax>
+      <Total>2166.99</Total>
+      <UpdatedDateUTC>2009-03-17T11:16:38.36</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <Type>ACCPAY</Type>
+      <InvoiceID>c12aff7e-12bf-4185-8702-460929f19674</InvoiceID>
+      <AmountDue>2166.99</AmountDue>
+      <AmountPaid>0.00</AmountPaid>
+      <SentToContact>false</SentToContact>
+    </Invoice>
+  </Invoices>
+</Response>

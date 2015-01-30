@@ -47,20 +47,20 @@ gem 'refinerycms', '~> 2.1.0'
 gem 'refinerycms-news', '~> 2.1.0'
 gem 'refinerycms-page-images', '~> 2.1.0'
 gem 'refinerycms-acts-as-indexed', '~> 1.0.0'
-gem 'refinerycms-calendar',     github: 'dannemanne/refinerycms-calendar'
-gem 'refinerycms-marketing',    github: 'dannemanne/refinerycms-marketing'
+gem 'refinerycms-calendar',     path: 'vendor/extensions'
+gem 'refinerycms-marketing',    path: 'vendor/extensions'
 gem 'refinerycms-sales_orders', path: 'vendor/extensions'
 gem 'refinerycms-parcels',      path: 'vendor/extensions'
-gem 'refinerycms-employees',    github: 'dannemanne/refinerycms-employees'
-gem 'refinerycms-store',        github: 'dannemanne/refinerycms-store'
-gem 'refinerycms-custom_lists', github: 'dannemanne/refinerycms-custom_lists'
+gem 'refinerycms-employees',    path: 'vendor/extensions'
+gem 'refinerycms-store',        path: 'vendor/extensions'
+gem 'refinerycms-custom_lists', path: 'vendor/extensions'
 
 # Needed for S3 storage
 gem 'fog'
 
 # Need for password expiration
 gem 'devise_security_extension'
-gem 'trans_forms', github: 'dannemanne/trans_forms'
+gem 'trans_forms', path: 'vendor/extensions'
 
 group :production do
   gem 'rails_12factor'
@@ -73,4 +73,4 @@ group :development, :test do
 end
 
 # Workaround to get the latest version of xeroizer that is not available from rubygems yet
-gem 'xeroizer', github: 'waynerobinson/xeroizer'
+gem 'xeroizer', path: 'vendor/extensions'

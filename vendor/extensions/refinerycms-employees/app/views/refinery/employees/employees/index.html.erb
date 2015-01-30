@@ -1,0 +1,28 @@
+<% content_for :body do %>
+  <h1>Employee Directory</h1>
+  <div class="employees">
+
+    <ul class="medium-block-grid-3">
+      <% @employees.each do |employee| %>
+
+        <li>
+          <div class="employee">
+            <% if employee.profile_image.present? %>
+              <%= image_tag(employee.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
+            <% else %>
+              <%= image_tag('user_unknown.png', class: 'profile-picture') %>
+            <% end %>
+            <h5 class="name"><%= employee.full_name %></h5>
+            <% if employee.title.present? %>
+              <p><%= employee.title.upcase %></p>
+            <% end %>
+          </div>
+        </li>
+
+      <% end %>
+    </ul>
+
+  </div>
+<% end %>
+
+<%= render '/refinery/content_page' %>

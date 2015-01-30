@@ -1,0 +1,25 @@
+<%= form_for [refinery, :custom_lists_admin, @list_column] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @list_column,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :custom_list_id -%>
+    <%= f.collection_select :custom_list_id, ::Refinery::CustomLists::CustomList.all, :id, :title, {}, :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :title -%>
+    <%= f.text_field :title, :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :column_type -%>
+    <%= f.select :column_type, ::Refinery::CustomLists::ListColumn::COLUMN_TYPES, {}, :class => 'larger widest' -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.custom_lists.admin.list_columns.list_column'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @list_column.title) -%>
+<% end -%>

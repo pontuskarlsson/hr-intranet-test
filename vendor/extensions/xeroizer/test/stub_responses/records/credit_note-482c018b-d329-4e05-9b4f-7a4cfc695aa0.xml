@@ -1,0 +1,77 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>b0b7c195-92c7-4d8c-bc82-e6c0c15f5094</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:28:30.2197672Z</DateTimeUTC>
+  <CreditNotes>
+    <CreditNote>
+      <Contact>
+        <ContactID>ef6f54c1-eb45-4956-b8cd-1be82ad665f2</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>Maddox Publishing Group</Name>
+        <Addresses>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>L9 BWA Tower
+</AddressLine1>
+            <AddressLine2>150 Bourke Street</AddressLine2>
+            <City>Melbourne</City>
+            <PostalCode>3133</PostalCode>
+          </Address>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-05-10T23:55:12.14</UpdatedDateUTC>
+      </Contact>
+      <Date>2011-04-05T00:00:00</Date>
+      <DueDate>2011-04-05T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Credit half day Project Management onsite fee</Description>
+          <UnitAmount>350.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>35.00</TaxAmount>
+          <LineAmount>350.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Oliver Gray</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <ItemCode>PMD</ItemCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>350.00</SubTotal>
+      <TotalTax>35.00</TotalTax>
+      <Total>385.00</Total>
+      <UpdatedDateUTC>2008-09-25T09:39:40.737</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-04-18T00:00:00</FullyPaidOnDate>
+      <Type>ACCRECCREDIT</Type>
+      <Reference>Yr ref H008-346</Reference>
+      <CreditNoteID>482c018b-d329-4e05-9b4f-7a4cfc695aa0</CreditNoteID>
+      <CreditNoteNumber>CR1014</CreditNoteNumber>
+      <SentToContact>true</SentToContact>
+    </CreditNote>
+  </CreditNotes>
+</Response>

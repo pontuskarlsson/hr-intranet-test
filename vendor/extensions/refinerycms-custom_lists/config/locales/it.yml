@@ -1,0 +1,27 @@
+it:
+  refinery:
+    plugins:
+      custom_lists:
+        title: Custom Lists
+    custom_lists:
+      admin:
+        custom_lists:
+          actions:
+            create_new: Aggiungi Nuovo Custom List
+            reorder: Riordina Custom Lists
+            reorder_done: Termina il Riordino di Custom Lists
+          records:
+            title: Custom Lists
+            sorry_no_results: "Spiacenti! Nessun risultato trovato"
+            no_items_yet: Non ci sono ancora Custom Lists. Clicca "Aggiungi Nuovo Custom List" per aggiungere il tuo primo custom list.
+          custom_list:
+            view_live_html: Guarda live questo custom list <br/><em>(apre una nuova finestra)</em>
+            edit: Modifica questo custom list
+            delete: Rimuovi per sempre questo custom list
+      custom_lists:
+        show:
+          other: Altri Custom Lists
+  activerecord:
+    attributes:
+      'refinery/custom_lists/custom_list':
+        title: Title

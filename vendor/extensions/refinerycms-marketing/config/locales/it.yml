@@ -1,0 +1,30 @@
+it:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+    brands:
+      admin:
+        brands:
+          actions:
+            create_new: Aggiungi Nuovo Brand
+            reorder: Riordina Brands
+            reorder_done: Termina il Riordino di Brands
+          records:
+            title: Brands
+            sorry_no_results: "Spiacenti! Nessun risultato trovato"
+            no_items_yet: Non ci sono ancora Brands. Clicca "Aggiungi Nuovo Brand" per aggiungere il tuo primo brand.
+          brand:
+            view_live_html: Guarda live questo brand <br/><em>(apre una nuova finestra)</em>
+            edit: Modifica questo brand
+            delete: Rimuovi per sempre questo brand
+      brands:
+        show:
+          other: Altri Brands
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description

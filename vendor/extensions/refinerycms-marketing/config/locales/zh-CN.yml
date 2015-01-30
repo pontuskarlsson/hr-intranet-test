@@ -1,0 +1,32 @@
+zh-CN:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+    brands:
+      admin:
+        brands:
+          actions:
+            create_new: 建立新的 Brand
+            reorder: 对 Brands 重新排序
+            reorder_done: 对 Brands 的重新排序结束
+          records:
+            title: Brands
+            sorry_no_results: 对不起，未找到结果。 #Sorry! There are no results found.
+
+            # There are no Brands yet. Click "Add New Brand" to add your first brand.
+            no_items_yet: 目前没有 Brands . 点击 "Add New Brand" 创建一个brand.
+          brand:
+            view_live_html: 查看 brand 的最新内容.<br/><em>(新窗口中打开)</em>
+            edit: 编辑 brand
+            delete: 永久删除 brand
+      brands:
+        show:
+          other: 其他 Brands
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description

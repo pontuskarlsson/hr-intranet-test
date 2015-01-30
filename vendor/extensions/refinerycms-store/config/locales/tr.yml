@@ -1,0 +1,32 @@
+tr:
+  refinery:
+    plugins:
+      store:
+        title: Store
+    store:
+      admin:
+        orders:
+          actions:
+            create_new: Yeni Ekle Order
+            reorder: Tekrar sirala Orders
+            reorder_done: Tekrar siralama tamamlandiOrders
+          records:
+            title: Orders
+            sorry_no_results: Uzgunum! Herhangi bir sonuc bulunamadi.
+            no_items_yet: Herhangi bir Orders yok henuz.  Tikla "Yeni Ekle Order" eklemek senin ilk order.
+          order:
+            view_live_html: Bunu canlu order goruntule <br/><em>(yeni bir pencerede acar)</em>
+            edit: Bunu Duzenle order
+            delete: Bunu Sil order sonsuza dek
+      orders:
+        show:
+          other: Diger Orders
+  activerecord:
+    attributes:
+      'refinery/store/order':
+        order_number: Order Number
+        reference: Reference
+        quantity: Quantity
+        unit: Unit
+        user_id: User
+        status: Status

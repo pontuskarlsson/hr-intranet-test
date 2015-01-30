@@ -1,0 +1,123 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>15cc4604-8d38-4b4a-b4aa-77949830f75b</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:30:48.1634468Z</DateTimeUTC>
+  <Invoices>
+    <Invoice>
+      <Contact>
+        <ContactID>571a2414-81ff-4f8f-8498-d91d83793131</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>Bank West</Name>
+        <EmailAddress>procteam@bwb.co</EmailAddress>
+        <Addresses>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>Procurement
+</AddressLine1>
+            <AddressLine2>GPO 1234</AddressLine2>
+            <City>Melbourne</City>
+            <PostalCode>3313</PostalCode>
+          </Address>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-05-04T21:11:54.647</UpdatedDateUTC>
+        <IsSupplier>false</IsSupplier>
+        <IsCustomer>true</IsCustomer>
+      </Contact>
+      <Date>2011-02-22T00:00:00</Date>
+      <DueDate>2011-03-07T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Half day training - Microsoft Office - for your Customer Support Team (Session 1)</Description>
+          <UnitAmount>450.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>45.00</TaxAmount>
+          <LineAmount>450.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Tracy Green</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <ItemCode>Train-MS</ItemCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+        <LineItem>
+          <Description>Half day training - Microsoft Office - for your Lending Service Analysts (Session 2)</Description>
+          <UnitAmount>450.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>45.00</TaxAmount>
+          <LineAmount>450.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Tracy Green</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <ItemCode>Train-MS</ItemCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+        <LineItem>
+          <Description>Half day training - Microsoft Office - for your Priority Services Team (Session 3)</Description>
+          <UnitAmount>450.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>45.00</TaxAmount>
+          <LineAmount>450.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Tracy Green</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <ItemCode>Train-MS</ItemCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>1350.00</SubTotal>
+      <TotalTax>135.00</TotalTax>
+      <Total>1485.00</Total>
+      <UpdatedDateUTC>2008-09-18T12:49:33.933</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-03-07T00:00:00</FullyPaidOnDate>
+      <Type>ACCREC</Type>
+      <InvoiceID>e3d96555-2876-4364-a46a-7551a4f52611</InvoiceID>
+      <InvoiceNumber>ORC1006</InvoiceNumber>
+      <Payments>
+        <Payment>
+          <PaymentID>f41fd62d-48d2-4bab-975b-c770d1541014</PaymentID>
+          <Date>2011-03-07T00:00:00</Date>
+          <Amount>1485.00</Amount>
+        </Payment>
+      </Payments>
+      <AmountDue>0.00</AmountDue>
+      <AmountPaid>1485.00</AmountPaid>
+      <AmountCredited>0.00</AmountCredited>
+      <SentToContact>true</SentToContact>
+    </Invoice>
+  </Invoices>
+</Response>

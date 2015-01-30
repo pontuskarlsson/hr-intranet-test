@@ -1,0 +1,41 @@
+<% content_for :body do %>
+  <section>
+    <h4>Employee No</h4>
+    <p>
+      <%=raw @employee.employee_no %>
+    </p>
+  </section>
+  <section>
+    <h4>Full Name</h4>
+    <p>
+      <%=raw @employee.full_name %>
+    </p>
+  </section>
+  <section>
+    <h4>Id No</h4>
+    <p>
+      <%=raw @employee.id_no %>
+    </p>
+  </section>
+  <section>
+    <h4>Title</h4>
+    <p>
+      <%=raw @employee.title %>
+    </p>
+  </section>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="employees">
+      <% @employees.each do |employee| %>
+        <li>
+          <%= link_to employee.full_name, refinery.employees_employee_path(employee) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

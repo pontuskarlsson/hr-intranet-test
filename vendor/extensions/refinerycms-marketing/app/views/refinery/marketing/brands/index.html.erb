@@ -1,0 +1,32 @@
+<% content_for :body do %>
+  <div class="filters p1">
+    <h5>Filters</h5>
+    <% %w(All # A B C D E F G H I J K L M N O P Q R S T U V W X Y Z).each do |filter| %>
+      <%= link_to filter, refinery.marketing_brands_path(filter: filter), class: (filter == params[:filter] ? 'active' : nil) %>
+    <% end %>
+  </div>
+
+  <div class="pages">
+    <h5>Pages</h5>
+    <% no_of_pages.times do |page_no| %>
+      <%= link_to page_no+1, refinery.marketing_brands_path(filter: params[:filter], page: page_no+1), class: (page_no+1 == current_page ? 'active' : nil) %>
+    <% end %>
+  </div>
+
+  <ul class="medium-block-grid-3 brands">
+    <% @brands.each do |brand| %>
+      <li>
+        <div class="brand">
+          <% if brand.logo.present? %>
+            <%= image_tag(brand.logo.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
+          <% else %>
+            <%= image_tag('user_unknown.png', class: 'profile-picture') %>
+          <% end %>
+          <h5 class="name"><%= link_to brand.name, refinery.marketing_brand_path(brand) %></h5>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render '/refinery/content_page' %>

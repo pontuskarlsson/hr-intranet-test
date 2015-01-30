@@ -1,0 +1,101 @@
+<% content_for :body do %>
+  <%= link_to 'Back to All Expense Claims', refinery.employees_expense_claims_path, class: 'button tiny round' %>
+
+  <h2><%= @xero_expense_claim.description %></h2>
+
+  <table class="js_receipts_data_table">
+    <thead>
+    <tr>
+      <th>From</th>
+      <th>Receipt Date</th>
+      <th>Receipt Registered</th>
+      <th>Items</th>
+      <th>Status</th>
+      <th>Amount</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>From</th>
+      <th>Receipt Date</th>
+      <th>Receipt Registered</th>
+      <th>Items</th>
+      <th>Status</th>
+      <th>Amount</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <% @xero_expense_claim.xero_receipts.each do |xero_receipt| %>
+      <tr>
+        <td>
+          <% if xero_receipt.status == 'Not-Submitted' %>
+            <%= link_to xero_receipt.contact_name, refinery.edit_employees_expense_claim_receipt_path(@xero_expense_claim, xero_receipt) %>
+          <% else %>
+            <%= link_to xero_receipt.contact_name, refinery.employees_expense_claim_receipt_path(@xero_expense_claim, xero_receipt) %>
+          <% end %>
+        </td>
+        <td><%= xero_receipt.date %></td>
+        <td><%= xero_receipt.created_at %></td>
+        <td><%= xero_receipt.no_of_items %></td>
+        <td><%= xero_receipt.status %></td>
+        <td><%= xero_receipt.total %> HKD</td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <% if @xero_expense_claim.status == 'Not-Submitted' %>
+    <p><%= link_to 'Add Receipt', refinery.new_employees_expense_claim_receipt_path(@xero_expense_claim), class: 'button tiny' %></p>
+  <% end %>
+
+  <h4>Scanned Receipts</h4>
+  <% if @xero_expense_claim.xero_expense_claim_attachments.any? %>
+    <% @xero_expense_claim.xero_expense_claim_attachments.each do |xero_expense_claim_attachment| %>
+      <p><%= link_to "Download #{ xero_expense_claim_attachment.resource.file_name }", xero_expense_claim_attachment.resource.url %></p>
+    <% end %>
+  <% else %>
+    <p class="italic">No Scanned Receipts attached yet.</p>
+  <% end %>
+
+  <% if @xero_expense_claim.status == 'Not-Submitted' %>
+    <p><%= link_to 'Add Scanned Receipts', refinery.add_resource_employees_expense_claim_path(@xero_expense_claim), remote: true, class: 'button tiny' %></p>
+  <% end %>
+
+  <div class="row">
+    <% if @xero_expense_claim.status == 'Not-Submitted' %>
+      <% if @xero_expense_claim.submittable? %>
+        <div class="medium-3 columns">
+          <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
+            <%= submit_tag 'Submit Expense Claim', class: 'button round small', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="medium-3 columns">
+          <%= link_to 'Submit Expense Claim', '#', class: 'button round small disabled' %>
+        </div>
+      <% end %>
+      <div class="medium-9 columns">
+        <%= form_tag refinery.employees_expense_claim_path(@xero_expense_claim), method: :delete do %>
+          <%= submit_tag 'Delete Expense Claim', class: 'button alert tiny', confirm: 'Are you sure you want to delete this Expense Claim?' %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="medium-3 columns">
+        <%= link_to 'Submitted', '#', class: 'button round small disabled' %>
+      </div>
+      <div class="medium-9 columns">
+        <%= link_to 'Cannot Delete a submitted claim', '#', class: 'button alert tiny disabled' %>
+      </div>
+    <% end %>
+  </div>
+
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+
+<%= render '/refinery/content_page' %>

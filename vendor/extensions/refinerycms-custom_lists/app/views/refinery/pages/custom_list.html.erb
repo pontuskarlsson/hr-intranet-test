@@ -1,0 +1,47 @@
+<% content_for :body do %>
+  <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_title('body').try(:body) -%>
+  <% body_content.scan(/\[CustomList:(?<custom_list>[A-Za-z\s]+)\]/) do |_| %>
+    <% if (custom_list = ::Refinery::CustomLists::CustomList.find_by_title($~[:custom_list].strip)).present? %>
+      <h1><%= custom_list.title %></h1>
+      <%= form_for ::Refinery::CustomLists::ListRowCreator.new, url: refinery.custom_lists_custom_list_list_rows_path(custom_list) do |f| %>
+        <%= hidden_field_tag :originating_page_id, @page.id %>
+        <table>
+          <thead>
+          <tr>
+            <% custom_list.list_columns.each do |list_column| %>
+              <th><%= list_column.title %></th>
+            <% end %>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% custom_list.list_rows.includes(:list_cells).each do |list_row| %>
+            <tr>
+              <% custom_list.list_columns.each do |list_column| %>
+                <%- list_cell = list_row.cell_for_column(list_column) -%>
+                <td><%= list_cell.value %></td>
+              <% end %>
+              <td>
+                <%= link_to 'Edit', refinery.edit_custom_lists_custom_list_list_row_path(custom_list, list_row, originating_page_id: @page.id) %>
+              </td>
+            </tr>
+          <% end %>
+
+          <tr>
+            <% custom_list.list_columns.each_with_index do |list_column, i| %>
+              <%= f.fields_for :list_cells, list_column.list_cells.build, child_index: i do |cell_form| %>
+                <%= cell_form.hidden_field :list_column_id %>
+                <td><%= cell_form.text_field :value %></td>
+              <% end %>
+            <% end %>
+            <td><%= f.submit 'Save' %></td>
+          </tr>
+
+          </tbody>
+        </table>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

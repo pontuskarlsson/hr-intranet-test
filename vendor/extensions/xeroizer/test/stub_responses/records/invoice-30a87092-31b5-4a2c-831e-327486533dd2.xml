@@ -1,0 +1,79 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>55079f95-7cf4-4bbc-8a9f-36e7a04e786a</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:32:19.0737694Z</DateTimeUTC>
+  <Invoices>
+    <Invoice>
+      <Contact>
+        <ContactID>c135f994-01e4-427b-9e15-acfe8a477c16</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>Cube Land</Name>
+        <EmailAddress>info@cubeland.co</EmailAddress>
+        <Addresses>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>13 Matilda Ave
+</AddressLine1>
+            <AddressLine2>Southbank</AddressLine2>
+            <City>Melbourne</City>
+            <Region>VIC</Region>
+            <PostalCode>3113</PostalCode>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+            <PhoneNumber>3981894</PhoneNumber>
+            <PhoneAreaCode>03</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+            <PhoneNumber>213243</PhoneNumber>
+            <PhoneAreaCode>4444</PhoneAreaCode>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-05-19T19:25:05.307</UpdatedDateUTC>
+        <IsSupplier>false</IsSupplier>
+        <IsCustomer>true</IsCustomer>
+      </Contact>
+      <Date>2011-05-18T00:00:00</Date>
+      <DueDate>2011-05-25T00:00:00</DueDate>
+      <Status>AUTHORISED</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Project management &amp; implementation - website revamp workshop with your team</Description>
+          <UnitAmount>450.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>45.00</TaxAmount>
+          <LineAmount>450.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <ItemCode>PMWe</ItemCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>450.00</SubTotal>
+      <TotalTax>45.00</TotalTax>
+      <Total>495.00</Total>
+      <UpdatedDateUTC>2008-10-01T14:09:32.34</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <Type>ACCREC</Type>
+      <InvoiceID>30a87092-31b5-4a2c-831e-327486533dd2</InvoiceID>
+      <InvoiceNumber>ORC1032</InvoiceNumber>
+      <AmountDue>495.00</AmountDue>
+      <AmountPaid>0.00</AmountPaid>
+      <AmountCredited>0.00</AmountCredited>
+      <SentToContact>true</SentToContact>
+    </Invoice>
+  </Invoices>
+</Response>

@@ -1,0 +1,48 @@
+<%= form_for [refinery, :store_admin, @product] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @product,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :retailer_id -%>
+    <%= f.collection_select :retailer_id, ::Refinery::Store::Retailer.not_expired, :id, :name -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :product_number -%>
+    <%= f.text_field :product_number, :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :name -%>
+    <%= f.text_field :name, :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_area :description, :rows => 20, :class => 'wymeditor widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :measurement_unit -%>
+    <%= f.text_field :measurement_unit, value: @product.measurement_unit || 'pcs', :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :price_amount -%>
+    <%= f.text_field :price_amount, :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :image_id -%>
+    <%= render '/refinery/admin/image_picker',
+               :f => f,
+               :field => :image_id,
+               :image => @product.image -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.store.admin.products.product'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @product.product_number) -%>
+<% end -%>

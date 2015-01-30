@@ -1,0 +1,75 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>9951a941-8afb-49fa-a79a-867b5d02cd5b</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:30:18.1777285Z</DateTimeUTC>
+  <Invoices>
+    <Invoice>
+      <Contact>
+        <ContactID>416ab20c-5357-4beb-a740-e8d175d71efb</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>Swanston Security</Name>
+        <Addresses>
+          <Address>
+            <AddressType>POBOX</AddressType>
+          </Address>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-04-26T06:35:43.133</UpdatedDateUTC>
+        <IsSupplier>true</IsSupplier>
+        <IsCustomer>false</IsCustomer>
+      </Contact>
+      <Date>2011-03-07T00:00:00</Date>
+      <DueDate>2011-03-18T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Our monthly share building security</Description>
+          <UnitAmount>69.00</UnitAmount>
+          <TaxType>INPUT</TaxType>
+          <TaxAmount>6.90</TaxAmount>
+          <LineAmount>69.00</LineAmount>
+          <AccountCode>453</AccountCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>69.00</SubTotal>
+      <TotalTax>6.90</TotalTax>
+      <Total>75.90</Total>
+      <UpdatedDateUTC>2008-09-18T11:43:31.57</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-03-18T00:00:00</FullyPaidOnDate>
+      <Type>ACCPAY</Type>
+      <InvoiceID>166f0588-d0ba-458c-b28a-8edd4c8fc463</InvoiceID>
+      <Payments>
+        <Payment>
+          <PaymentID>c3cf164e-a931-40f8-907c-d6505b47f3fb</PaymentID>
+          <Date>2011-03-18T00:00:00</Date>
+          <Amount>75.90</Amount>
+          <Reference>DD 112102</Reference>
+        </Payment>
+      </Payments>
+      <AmountDue>0.00</AmountDue>
+      <AmountPaid>75.90</AmountPaid>
+      <AmountCredited>0.00</AmountCredited>
+      <SentToContact>false</SentToContact>
+    </Invoice>
+  </Invoices>
+</Response>

@@ -1,0 +1,30 @@
+cs:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+    brands:
+      admin:
+        brands:
+          actions:
+            create_new: Přidat Brand
+            reorder: Řadit Brands
+            reorder_done: Konec řazení Brands
+          records:
+            title: Brands
+            sorry_no_results: Litujeme, ale nebyly nalezny žádné výsledky.
+            no_items_yet: Zatím nebyly vytvořeny žádné Brands. Zvolte "Přidat Brand" pro přidání prvního brand.
+          brand:
+            view_live_html: Zobrazit náhled brand<br/><em>(otevře se v novém okně)</em>
+            edit: Upravit brand
+            delete: Smazat brand
+      brands:
+        show:
+          other: Další Brands
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description

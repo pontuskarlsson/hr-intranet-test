@@ -1,0 +1,30 @@
+it:
+  refinery:
+    plugins:
+      employees:
+        title: Employees
+    employees:
+      admin:
+        employees:
+          actions:
+            create_new: Aggiungi Nuovo Employee
+            reorder: Riordina Employees
+            reorder_done: Termina il Riordino di Employees
+          records:
+            title: Employees
+            sorry_no_results: "Spiacenti! Nessun risultato trovato"
+            no_items_yet: Non ci sono ancora Employees. Clicca "Aggiungi Nuovo Employee" per aggiungere il tuo primo employee.
+          employee:
+            view_live_html: Guarda live questo employee <br/><em>(apre una nuova finestra)</em>
+            edit: Modifica questo employee
+            delete: Rimuovi per sempre questo employee
+      employees:
+        show:
+          other: Altri Employees
+  activerecord:
+    attributes:
+      'refinery/employees/employee':
+        user_id: User
+        employee_no: Employee No
+        full_name: Full Name
+        id_no: Id No

@@ -1,0 +1,18 @@
+<% content_for :body_content_left do %>
+  <section id="events">
+    <%= render @events %>
+  </section>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag('events') %>
+  <%= stylesheet_link_tag 'refinery/ui' %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'calendars' %>
+  <%= javascript_include_tag 'jquery.ui.timepicker.addon' %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

@@ -1,0 +1,27 @@
+<ul>
+  <% if ::Refinery::Employees::Admin::SickLeavesController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.employees_admin_sick_leaves_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_employees_admin_sick_leave_path,
+                :class => "add_icon" %>
+  </li>
+  <%= render '/refinery/employees/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::Employees::Admin::SickLeavesController.sortable? && ::Refinery::Employees::SickLeave.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Sick Leaves"),
+                 refinery.employees_admin_sick_leaves_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Sick Leaves"),
+                 refinery.employees_admin_sick_leaves_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

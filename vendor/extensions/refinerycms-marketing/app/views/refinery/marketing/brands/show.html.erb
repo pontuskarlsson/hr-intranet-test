@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="medium-9 columns">
+    <section>
+      <h5>Name</h5>
+      <p>
+        <%= @brand.name %>
+      </p>
+    </section>
+    <section>
+      <h5>Website</h5>
+      <p><%= link_to @brand.website, @brand.website %></p>
+    </section>
+    <section>
+      <h5>Logo</h5>
+      <p><%= image_fu @brand.logo, nil %></p>
+    </section>
+    <section>
+      <h5>Description</h5>
+      <p><%=raw @brand.description %></p>
+    </section>
+    <section>
+      <h5>Fashion Show Participation</h5>
+      <% if @brand.shows.any? %>
+        <ul>
+          <% @brand.shows.each do |show| %>
+            <li><%= show.name %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="italic">No Shows</p>
+      <% end %>
+    </section>
+  </div>
+
+  <div class="medium-3 columns">
+    <h5><%= t('.other') %></h5>
+    <ul id="brands">
+      <% @brands.each do |brand| %>
+        <li>
+          <%= link_to brand.name, refinery.marketing_brand_path(brand) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+</div>

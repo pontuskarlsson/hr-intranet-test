@@ -1,0 +1,15 @@
+<%= form_for [refinery, :custom_lists_admin, @custom_list] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @custom_list,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :title -%>
+    <%= f.text_field :title, :class => 'larger widest' -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.custom_lists.admin.custom_lists.custom_list'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @custom_list.title) -%>
+<% end -%>

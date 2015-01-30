@@ -1,0 +1,27 @@
+tr:
+  refinery:
+    plugins:
+      custom_lists:
+        title: Custom Lists
+    custom_lists:
+      admin:
+        custom_lists:
+          actions:
+            create_new: Yeni Ekle Custom List
+            reorder: Tekrar sirala Custom Lists
+            reorder_done: Tekrar siralama tamamlandiCustom Lists
+          records:
+            title: Custom Lists
+            sorry_no_results: Uzgunum! Herhangi bir sonuc bulunamadi.
+            no_items_yet: Herhangi bir Custom Lists yok henuz.  Tikla "Yeni Ekle Custom List" eklemek senin ilk custom list.
+          custom_list:
+            view_live_html: Bunu canlu custom list goruntule <br/><em>(yeni bir pencerede acar)</em>
+            edit: Bunu Duzenle custom list
+            delete: Bunu Sil custom list sonsuza dek
+      custom_lists:
+        show:
+          other: Diger Custom Lists
+  activerecord:
+    attributes:
+      'refinery/custom_lists/custom_list':
+        title: Title

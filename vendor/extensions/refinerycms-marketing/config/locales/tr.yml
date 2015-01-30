@@ -1,0 +1,30 @@
+tr:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+    brands:
+      admin:
+        brands:
+          actions:
+            create_new: Yeni Ekle Brand
+            reorder: Tekrar sirala Brands
+            reorder_done: Tekrar siralama tamamlandiBrands
+          records:
+            title: Brands
+            sorry_no_results: Uzgunum! Herhangi bir sonuc bulunamadi.
+            no_items_yet: Herhangi bir Brands yok henuz.  Tikla "Yeni Ekle Brand" eklemek senin ilk brand.
+          brand:
+            view_live_html: Bunu canlu brand goruntule <br/><em>(yeni bir pencerede acar)</em>
+            edit: Bunu Duzenle brand
+            delete: Bunu Sil brand sonsuza dek
+      brands:
+        show:
+          other: Diger Brands
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description

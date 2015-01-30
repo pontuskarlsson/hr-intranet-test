@@ -1,0 +1,53 @@
+<%= form_for [refinery, :employees_admin, @employment_contract] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @employment_contract,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :employee_name -%>
+    <%= f.text_field :employee_name, class: 'js_employee_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :start_date -%>
+    <%= f.text_field :start_date, class: 'js_date_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_date -%>
+    <%= f.text_field :end_date, class: 'js_date_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :vacation_days_per_year -%>
+    <%= f.number_field :vacation_days_per_year -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :country %>
+    <%= f.select :country, ::Refinery::Employees::Countries::COUNTRIES, {  }, :class => 'chzn-select', :'data-placeholder' => 'Search Country', :style => 'width: 300px;' %>
+  </div>
+
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.employees.admin.employment_contracts.employment_contract'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @employment_contract.start_date) -%>
+<% end -%>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_employee_field').autocomplete({
+        source: <%= ::Refinery::Employees::Employee.select(:full_name).map(&:full_name).to_json.html_safe %>
+      });
+    });
+  </script>
+<% end %>

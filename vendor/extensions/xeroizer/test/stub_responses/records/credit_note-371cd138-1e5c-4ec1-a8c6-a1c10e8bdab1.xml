@@ -1,0 +1,73 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>14b0625b-4a0c-4547-b413-4518bf05a646</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:28:23.3600849Z</DateTimeUTC>
+  <CreditNotes>
+    <CreditNote>
+      <Contact>
+        <ContactID>1b2be6e9-8d58-4da9-aaf8-4fe5471b653c</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>Hamilton Smith Pty</Name>
+        <EmailAddress>info@hsg.co</EmailAddress>
+        <Addresses>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>3 Park Street Industrial Village
+</AddressLine1>
+            <AddressLine2>Southbank</AddressLine2>
+            <City>Melbourne</City>
+            <PostalCode>3331</PostalCode>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+            <PhoneNumber>3189080</PhoneNumber>
+            <PhoneAreaCode>03</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-05-19T19:28:52.123</UpdatedDateUTC>
+      </Contact>
+      <Date>2011-02-25T00:00:00</Date>
+      <DueDate>2011-02-25T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Duplicate invoice sent in error for last month - fully credited</Description>
+          <UnitAmount>500.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>50.00</TaxAmount>
+          <LineAmount>500.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <ItemCode>Support-M</ItemCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>500.00</SubTotal>
+      <TotalTax>50.00</TotalTax>
+      <Total>550.00</Total>
+      <UpdatedDateUTC>2008-09-25T09:39:19.657</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-02-25T00:00:00</FullyPaidOnDate>
+      <Type>ACCRECCREDIT</Type>
+      <Reference>Monthly Support</Reference>
+      <CreditNoteID>371cd138-1e5c-4ec1-a8c6-a1c10e8bdab1</CreditNoteID>
+      <CreditNoteNumber>CR1003</CreditNoteNumber>
+      <SentToContact>true</SentToContact>
+    </CreditNote>
+  </CreditNotes>
+</Response>

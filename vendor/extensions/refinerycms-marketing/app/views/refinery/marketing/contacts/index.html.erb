@@ -1,0 +1,59 @@
+<% content_for :body do %>
+  <h1>Contacts</h1>
+
+  <table class="display js_contacts_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Organisation</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Country</th>
+      </tr>
+    </thead>
+
+    <tfoot>
+      <tr>
+        <th>Name</th>
+        <th>Is Organisation?</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Country</th>
+      </tr>
+    </tfoot>
+
+    <tbody>
+      <% @contacts.each do |contact| %>
+        <tr>
+          <td><%= link_to contact.name, refinery.marketing_contact_path(contact) %></td>
+          <td>
+            <% if contact.is_organisation %>
+              <%= contact.name %>
+            <% else %>
+              <% if contact.organisation.present? %>
+                <%= link_to contact.organisation.name, refinery.marketing_contact_path(contact.organisation) %>
+              <% else %>
+                <%= contact.organisation_name %>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if contact.email.present? %>
+              <%= mail_to contact.email %>
+            <% end %>
+          </td>
+          <td>
+            <% if contact.phone.present? %>
+              <%= contact.phone %>
+            <% elsif contact.mobile.present? %>
+              <%= contact.mobile %>
+            <% end %>
+          </td>
+          <td><%= contact.country %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<%= render '/refinery/content_page' %>

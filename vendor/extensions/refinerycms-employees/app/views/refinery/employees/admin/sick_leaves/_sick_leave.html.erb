@@ -1,0 +1,22 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(sick_leave) -%>">
+  <span class='title'>
+    <%= sick_leave.employee.full_name %>
+    <span class="preview">
+      <%= t('.preview', :start_date => sick_leave.start_date) %>
+    </span>
+  </span>
+  <span class='actions'>
+    
+    <%= link_to refinery_icon_tag("application_go.png"), '#', #refinery.employees_sick_leave_path(sick_leave),
+        :title => t('.view_live_html'),
+        :target => "_blank" %>
+    
+    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_employees_admin_sick_leave_path(sick_leave),
+         :title => t('.edit') %>
+    <%= link_to refinery_icon_tag("delete.png"), refinery.employees_admin_sick_leave_path(sick_leave),
+        :class => "cancel confirm-delete",
+        :title => t('.delete'),
+        :confirm => t('message', :scope => 'refinery.admin.delete', :title => sick_leave.start_date),
+        :method => :delete %>
+  </span>
+</li>

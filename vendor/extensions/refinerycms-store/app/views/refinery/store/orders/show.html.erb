@@ -1,0 +1,66 @@
+<% content_for :body do %>
+  <h2><%=raw @order.order_number %> <small><%=raw @order.retailer.name %></small></h2>
+
+  <% if @order.reference.present? %>
+    <p><%= @order.reference %></p>
+  <% end %>
+
+  <p>
+    Ordered by:
+    <%=raw @order.user.username %>
+  </p>
+
+  <p>
+    Total Cost:
+    <%= number_to_currency @order.total_price, unit: @order.price_unit, format: '%n %u' %>
+  </p>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Product No.</th>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>Sub Total</th>
+    </tr>
+    </thead>
+    <body>
+    <% @order.order_items.each do |order_item| %>
+      <tr>
+        <td>
+          <% if order_item.product.present? %>
+            <%= link_to order_item.product.product_number, refinery.store_product_path(order_item.product) %>
+          <% else %>
+            <%= order_item.product_number %>
+          <% end %>
+        </td>
+        <td>
+          <% if order_item.product.present? %>
+            <%=raw order_item.product.name %>
+          <% else %>
+            <%= order_item.comment %>
+          <% end %>
+        </td>
+        <td><%= order_item.quantity %> <%= order_item.product.try(:measurement_unit) %></td>
+        <td><%= number_to_currency order_item.sub_total_price, unit: @order.price_unit, format: '%n %u' %></td>
+      </tr>
+    <% end %>
+    </body>
+  </table>
+
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="orders">
+      <% @orders.each do |order| %>
+        <li>
+          <%= link_to order.order_number, refinery.store_order_path(order) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

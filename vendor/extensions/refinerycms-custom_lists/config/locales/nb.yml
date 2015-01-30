@@ -1,0 +1,27 @@
+nb:
+  refinery:
+    plugins:
+      custom_lists:
+        title: Custom Lists
+    custom_lists:
+      admin:
+        custom_lists:
+          actions:
+            create_new: Lag en ny Custom List
+            reorder: Endre rekkefølgen på Custom Lists
+            reorder_done: Ferdig å endre rekkefølgen Custom Lists
+          records:
+            title: Custom Lists
+            sorry_no_results: Beklager! Vi fant ikke noen resultater.
+            no_items_yet: Det er ingen Custom Lists enda. Klikk på "Lag en ny Custom List" for å legge til din første custom list.
+          custom_list:
+            view_live_html: Vis hvordan denne custom list ser ut offentlig <br/><em>(åpner i et nytt vindu)</em>
+            edit: Rediger denne custom list
+            delete: Fjern denne custom list permanent
+      custom_lists:
+        show:
+          other: Andre Custom Lists
+  activerecord:
+    attributes:
+      'refinery/custom_lists/custom_list':
+        title: Title

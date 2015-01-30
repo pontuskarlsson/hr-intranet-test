@@ -1,0 +1,55 @@
+<%= link_to 'Back to Expense Claim', refinery.employees_expense_claim_path(@xero_receipt.xero_expense_claim), class: 'button tiny round' %>
+
+<div class="row">
+  <div class="large-8 columns">
+
+    <div class="row">
+      <div class="medium-6 columns">
+        <h5>From</h5>
+        <p><%= @xero_receipt.contact_name %></p>
+      </div>
+
+      <div class="medium-3 columns">
+        <h5>Date</h5>
+        <p><%= @xero_receipt.date %></p>
+      </div>
+
+      <div class="medium-3 columns">
+        <h5>Reference</h5>
+        <p><%= @xero_receipt.reference %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="medium-5 columns bold">
+    Description
+  </div>
+  <div class="medium-3 columns bold">
+    Account
+  </div>
+  <div class="medium-2 columns bold">
+    Quantity
+  </div>
+  <div class="medium-2 columns bold">
+    Unit Price
+  </div>
+</div>
+
+<% @xero_receipt.xero_line_items.each do |xero_line_item| %>
+  <div class="row">
+    <div class="medium-5 columns">
+      <%= xero_line_item.description %>
+    </div>
+    <div class="medium-3 columns">
+      <%= xero_line_item.xero_account.code_and_name %>
+    </div>
+    <div class="medium-2 columns">
+      <p><%= xero_line_item.quantity %></p>
+    </div>
+    <div class="medium-2 columns">
+      <p><%= xero_line_item.quantity %> HKD</p>
+    </div>
+  </div>
+<% end %>

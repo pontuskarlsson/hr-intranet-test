@@ -1,0 +1,94 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>4c7bba8e-5ef3-4d76-8483-0db72972dc94</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:28:33.40741Z</DateTimeUTC>
+  <CreditNotes>
+    <CreditNote>
+      <Contact>
+        <ContactID>860b99a9-0958-4c8d-a98f-bb1f092b16bb</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>DIISR - Small Business Services</Name>
+        <FirstName>Sheree</FirstName>
+        <LastName>Bond</LastName>
+        <EmailAddress>accounts@diisr.govt</EmailAddress>
+        <Addresses>
+          <Address>
+            <AddressType>STREET</AddressType>
+            <AddressLine1>Melbourne Regional Office
+</AddressLine1>
+            <AddressLine2>L3, Southbank House
+</AddressLine2>
+            <AddressLine3>13 Gallery Ave</AddressLine3>
+            <City>Melbourne</City>
+            <PostalCode>3131</PostalCode>
+          </Address>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>Melbourne Regional Office
+</AddressLine1>
+            <AddressLine2>L3, Southbank House
+</AddressLine2>
+            <AddressLine3>13 Gallery Ave</AddressLine3>
+            <City>Melbourne</City>
+            <PostalCode>3131</PostalCode>
+            <AttentionTo>Accounts Dept.</AttentionTo>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+            <PhoneNumber>4389376</PhoneNumber>
+            <PhoneAreaCode>0800</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+            <PhoneNumber>4389379</PhoneNumber>
+            <PhoneAreaCode>03</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2012-04-27T23:28:25.387</UpdatedDateUTC>
+      </Contact>
+      <Date>2011-05-18T00:00:00</Date>
+      <DueDate>2011-05-18T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Credit development as agreed</Description>
+          <UnitAmount>1050.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>105.00</TaxAmount>
+          <LineAmount>1050.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Oliver Gray</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <ItemCode>DevD</ItemCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>1050.00</SubTotal>
+      <TotalTax>105.00</TotalTax>
+      <Total>1155.00</Total>
+      <UpdatedDateUTC>2008-10-01T15:24:57.1</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-06-27T00:00:00</FullyPaidOnDate>
+      <Type>ACCRECCREDIT</Type>
+      <Reference>Portal proj</Reference>
+      <CreditNoteID>43c678ee-f357-48e2-b192-b6e3634762f9</CreditNoteID>
+      <CreditNoteNumber>1026C</CreditNoteNumber>
+      <SentToContact>false</SentToContact>
+    </CreditNote>
+  </CreditNotes>
+</Response>

@@ -1,0 +1,32 @@
+cs:
+  refinery:
+    plugins:
+      store:
+        title: Store
+    store:
+      admin:
+        orders:
+          actions:
+            create_new: Přidat Order
+            reorder: Řadit Orders
+            reorder_done: Konec řazení Orders
+          records:
+            title: Orders
+            sorry_no_results: Litujeme, ale nebyly nalezny žádné výsledky.
+            no_items_yet: Zatím nebyly vytvořeny žádné Orders. Zvolte "Přidat Order" pro přidání prvního order.
+          order:
+            view_live_html: Zobrazit náhled order<br/><em>(otevře se v novém okně)</em>
+            edit: Upravit order
+            delete: Smazat order
+      orders:
+        show:
+          other: Další Orders
+  activerecord:
+    attributes:
+      'refinery/store/order':
+        order_number: Order Number
+        reference: Reference
+        quantity: Quantity
+        unit: Unit
+        user_id: User
+        status: Status

@@ -1,0 +1,24 @@
+<table>
+  <tr>
+    <th>Product No.</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Action</th>
+  </tr>
+  <% if products.any? %>
+    <% products.each do |product| %>
+      <tr>
+        <td><%= link_to product.product_number, refinery.store_product_path(product) %></td>
+        <td><%= product.name %></td>
+        <td><%= product.price %></td>
+        <td>
+          <%= render 'refinery/store/shared/cart_button', product: product %>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="4" class="italic">No products added yet</td>
+    </tr>
+  <% end %>
+</table>

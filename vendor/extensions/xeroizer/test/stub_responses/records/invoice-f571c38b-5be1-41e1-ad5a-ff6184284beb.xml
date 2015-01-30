@@ -1,0 +1,114 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>74c0516c-010e-4ea1-b0a1-19b5b2ff68f3</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:30:11.5055546Z</DateTimeUTC>
+  <Invoices>
+    <Invoice>
+      <Contact>
+        <ContactID>860b99a9-0958-4c8d-a98f-bb1f092b16bb</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>DIISR - Small Business Services</Name>
+        <FirstName>Sheree</FirstName>
+        <LastName>Bond</LastName>
+        <EmailAddress>accounts@diisr.govt</EmailAddress>
+        <Addresses>
+          <Address>
+            <AddressType>STREET</AddressType>
+            <AddressLine1>Melbourne Regional Office
+</AddressLine1>
+            <AddressLine2>L3, Southbank House
+</AddressLine2>
+            <AddressLine3>13 Gallery Ave</AddressLine3>
+            <City>Melbourne</City>
+            <PostalCode>3131</PostalCode>
+          </Address>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>Melbourne Regional Office
+</AddressLine1>
+            <AddressLine2>L3, Southbank House
+</AddressLine2>
+            <AddressLine3>13 Gallery Ave</AddressLine3>
+            <City>Melbourne</City>
+            <PostalCode>3131</PostalCode>
+            <AttentionTo>Accounts Dept.</AttentionTo>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+            <PhoneNumber>4389376</PhoneNumber>
+            <PhoneAreaCode>0800</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+            <PhoneNumber>4389379</PhoneNumber>
+            <PhoneAreaCode>03</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2012-04-27T23:28:25.387</UpdatedDateUTC>
+        <IsSupplier>false</IsSupplier>
+        <IsCustomer>true</IsCustomer>
+      </Contact>
+      <Date>2011-03-07T00:00:00</Date>
+      <DueDate>2011-03-18T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Project management &amp; implementation - 'due diligence' stocktake of your project scope/schedule/implementation plan/outcome measures (hourly rate as agreed)</Description>
+          <UnitAmount>85.00</UnitAmount>
+          <TaxType>OUTPUT</TaxType>
+          <TaxAmount>136.00</TaxAmount>
+          <LineAmount>1360.00</LineAmount>
+          <AccountCode>200</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Oliver Gray</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <ItemCode>PMDD</ItemCode>
+          <Quantity>16.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>1360.00</SubTotal>
+      <TotalTax>136.00</TotalTax>
+      <Total>1496.00</Total>
+      <UpdatedDateUTC>2008-09-17T07:36:27.537</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-03-19T00:00:00</FullyPaidOnDate>
+      <Type>ACCREC</Type>
+      <InvoiceID>f571c38b-5be1-41e1-ad5a-ff6184284beb</InvoiceID>
+      <InvoiceNumber>ORC1001</InvoiceNumber>
+      <Reference>Portal proj</Reference>
+      <Payments>
+        <Payment>
+          <PaymentID>8ebc072b-b7cd-431c-972d-66ce0c3fde69</PaymentID>
+          <Date>2011-03-19T00:00:00</Date>
+          <Amount>1469.60</Amount>
+        </Payment>
+      </Payments>
+      <CreditNotes>
+        <CreditNote>
+          <Date>2011-03-17T00:00:00</Date>
+          <Total>26.40</Total>
+          <CreditNoteID>3bffc09b-79f2-490d-b91b-c59b700b43a4</CreditNoteID>
+          <CreditNoteNumber>CR1001</CreditNoteNumber>
+        </CreditNote>
+      </CreditNotes>
+      <AmountDue>0.00</AmountDue>
+      <AmountPaid>1469.60</AmountPaid>
+      <AmountCredited>26.40</AmountCredited>
+      <SentToContact>true</SentToContact>
+    </Invoice>
+  </Invoices>
+</Response>

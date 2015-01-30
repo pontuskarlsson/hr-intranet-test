@@ -1,0 +1,31 @@
+es:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+#        article: masculino/femenino
+    brands:
+      admin:
+        brands:
+          actions:
+            create_new: Crear nuevo brand
+            reorder: Reordenar brands
+            reorder_done: Reordenación de brands completada
+          records:
+            title: Brands
+            sorry_no_results: Lo siento, no hay resultados
+            no_items_yet: No hay brands todavía. Pulsa en "Crear nuevo Brand" para crear tu primer brand.
+          brand:
+            view_live_html: Ver este brand como abierto al público <br/><em>(abre en ventana nueva)</em>
+            edit: Editar este brand
+            delete: Borrar este brand para siempre
+      brands:
+        show:
+          other: Otros brands
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description

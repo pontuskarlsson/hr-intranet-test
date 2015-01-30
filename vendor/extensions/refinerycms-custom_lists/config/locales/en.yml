@@ -1,0 +1,51 @@
+en:
+  refinery:
+    plugins:
+      custom_lists:
+        title: Custom Lists
+    custom_lists:
+      admin:
+        shared:
+          links:
+            manage_custom_lists: Manage Custom Lists
+            manage_list_columns: Manage List Columns
+        custom_lists:
+          actions:
+            create_new: Add New Custom List
+            reorder: Reorder Custom Lists
+            reorder_done: Done Reordering Custom Lists
+          records:
+            title: Custom Lists
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Custom Lists yet. Click "Add New Custom List" to add your first custom list.
+          custom_list:
+            view_live_html: View this custom list live <br/><em>(opens in a new window)</em>
+            edit: Edit this custom list
+            delete: Remove this custom list forever
+        list_columns:
+          actions:
+            create_new: Add New List Column
+            reorder: Reorder List Columns
+            reorder_done: Done Reordering List Columns
+          records:
+            title: List Columns
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no List Columns yet. Click "Add New List Column" to add your first list column.
+          list_column:
+            view_live_html: View this list column live <br/><em>(opens in a new window)</em>
+            edit: Edit this list column
+            delete: Remove this list column forever
+      custom_lists:
+        show:
+          other: Other Custom Lists
+      list_columns:
+        show:
+          other: Other List Columns
+
+  activerecord:
+    attributes:
+      'refinery/custom_lists/custom_list':
+        title: Title
+      'refinery/custom_lists/list_column':
+        title: Title
+        custom_list_id: Custom List

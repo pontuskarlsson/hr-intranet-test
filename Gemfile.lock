@@ -1,59 +1,34 @@
-GIT
-  remote: git://github.com/dannemanne/refinerycms-calendar.git
-  revision: 36db82452dbbdfd93a64a43206ea9e778c6112a7
+PATH
+  remote: vendor/extensions
   specs:
     refinerycms-calendar (2.1.0)
       refinerycms-core (~> 2.1.0)
-
-GIT
-  remote: git://github.com/dannemanne/refinerycms-custom_lists.git
-  revision: cdfbfd740427fcf2374cdcc908b660e7e9a7b0d3
-  specs:
     refinerycms-custom_lists (1.0)
       refinerycms-core (~> 2.1.2)
       trans_forms
-
-GIT
-  remote: git://github.com/dannemanne/refinerycms-employees.git
-  revision: 7b84ad67419612826e6c8a8f2bc7c6665d8c6c38
-  specs:
     refinerycms-employees (1.0)
       refinerycms-authentication (~> 2.1.2)
       refinerycms-calendar (~> 2.1)
       refinerycms-core (~> 2.1.2)
       xeroizer
-
-GIT
-  remote: git://github.com/dannemanne/refinerycms-marketing.git
-  revision: 29fbb008f771221e4574e2eb6016af8055f896dd
-  specs:
     refinerycms-marketing (1.0)
       amqp
       basecrm
       refinerycms-core (~> 2.1.2)
-
-GIT
-  remote: git://github.com/dannemanne/refinerycms-store.git
-  revision: ecfa6a271a9c0d035ca54118fd6a79c76176c3e2
-  specs:
+    refinerycms-parcels (1.0)
+      easypost (~> 2.1.0)
+      refinerycms-core (~> 2.1.2)
+      refinerycms-marketing
+    refinerycms-sales_orders (1.0)
+      refinerycms-core (~> 2.1.2)
     refinerycms-store (1.0)
       hiredis (~> 0.4.5)
       redis (~> 3.0.1)
       refinerycms-core (~> 2.1.2)
-
-GIT
-  remote: git://github.com/dannemanne/trans_forms.git
-  revision: 83967e3be8668b8184165d90d288f2dd8faae002
-  specs:
     trans_forms (0.1.0)
       activemodel (>= 3.1.0)
       activesupport (>= 3.1.0)
       virtus
-
-GIT
-  remote: git://github.com/waynerobinson/xeroizer.git
-  revision: 3198164a8182c8d672def1a402ebac9a9b8284be
-  specs:
     xeroizer (2.15.8)
       activesupport
       builder (>= 2.1.2)
@@ -61,16 +36,6 @@ GIT
       nokogiri
       oauth (>= 0.4.5)
       tzinfo
-
-PATH
-  remote: vendor/extensions
-  specs:
-    refinerycms-parcels (1.0)
-      easypost (~> 2.1.0)
-      refinerycms-core (~> 2.1.2)
-      refinerycms-marketing
-    refinerycms-sales_orders (1.0)
-      refinerycms-core (~> 2.1.2)
 
 GEM
   remote: https://rubygems.org/

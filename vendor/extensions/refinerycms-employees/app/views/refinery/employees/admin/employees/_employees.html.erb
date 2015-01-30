@@ -1,0 +1,2 @@
+<%= will_paginate @employees if Refinery::Employees::Admin::EmployeesController.pageable? %>
+<%= render 'sortable_list' %>

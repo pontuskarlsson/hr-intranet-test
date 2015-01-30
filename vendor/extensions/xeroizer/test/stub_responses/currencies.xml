@@ -1,0 +1,12 @@
+<Response xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>f259293f-5af4-4951-b31d-2f42098c8093</Id>
+  <Status>OK</Status>
+  <ProviderName>Appcordion Private</ProviderName>
+  <DateTimeUTC>2010-12-21T01:01:37.4579379Z</DateTimeUTC>
+  <Currencies>
+    <Currency>
+      <Code>AUD</Code>
+      <Description>Australian Dollar</Description>
+    </Currency>
+  </Currencies>
+</Response>

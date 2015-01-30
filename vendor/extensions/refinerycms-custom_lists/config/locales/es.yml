@@ -1,0 +1,28 @@
+es:
+  refinery:
+    plugins:
+      custom_lists:
+        title: Custom Lists
+#        article: masculino/femenino
+    custom_lists:
+      admin:
+        custom_lists:
+          actions:
+            create_new: Crear nuevo custom list
+            reorder: Reordenar custom lists
+            reorder_done: Reordenación de custom lists completada
+          records:
+            title: Custom Lists
+            sorry_no_results: Lo siento, no hay resultados
+            no_items_yet: No hay custom lists todavía. Pulsa en "Crear nuevo Custom List" para crear tu primer custom list.
+          custom_list:
+            view_live_html: Ver este custom list como abierto al público <br/><em>(abre en ventana nueva)</em>
+            edit: Editar este custom list
+            delete: Borrar este custom list para siempre
+      custom_lists:
+        show:
+          other: Otros custom lists
+  activerecord:
+    attributes:
+      'refinery/custom_lists/custom_list':
+        title: Title

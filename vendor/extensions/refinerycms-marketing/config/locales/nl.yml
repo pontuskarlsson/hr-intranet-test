@@ -1,0 +1,30 @@
+nl:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+    brands:
+      admin:
+        brands:
+          actions:
+            create_new: Nieuwe Brand toevoegen
+            reorder: De volgorde van de Brands wijzigen
+            reorder_done: Klaar met het wijzingen van de van de Brand-volgorde
+          records:
+            title: Brands
+            sorry_no_results: Helaas! Er zijn geen resultaten gevonden.
+            no_items_yet: Er zijn nog geen Brands. Druk op 'Nieuwe Brand toevoegen' om de eerste toe te voegen.
+          brand:
+            view_live_html: Deze brand op de website bekijken <br/><em>(opent in een nieuw venster)</em>
+            edit: Bewerk deze brand
+            delete: Deze brand definitief verwijderen
+      brands:
+        show:
+          other: Andere Brands
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description

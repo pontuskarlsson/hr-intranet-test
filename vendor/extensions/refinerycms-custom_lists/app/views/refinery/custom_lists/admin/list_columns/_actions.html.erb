@@ -1,0 +1,27 @@
+<ul>
+  <% if ::Refinery::CustomLists::Admin::ListColumnsController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.custom_lists_admin_list_columns_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_custom_lists_admin_list_column_path,
+                 :class => "add_icon" %>
+  </li>
+  <%= render '/refinery/custom_lists/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::CustomLists::Admin::ListColumnsController.sortable? && ::Refinery::CustomLists::ListColumn.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "List Columns"),
+                 refinery.custom_lists_admin_list_columns_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "List Columns"),
+                 refinery.custom_lists_admin_list_columns_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

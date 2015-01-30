@@ -1,0 +1,83 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>8dfb3078-721a-431f-8ada-c0d3e1c2bf87</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:30:24.8811538Z</DateTimeUTC>
+  <Invoices>
+    <Invoice>
+      <Contact>
+        <ContactID>e8b98c13-a424-41d2-ba0e-7b7621411e7a</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>Qantas</Name>
+        <Addresses>
+          <Address>
+            <AddressType>POBOX</AddressType>
+          </Address>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-04-30T05:49:48.123</UpdatedDateUTC>
+        <IsSupplier>true</IsSupplier>
+        <IsCustomer>false</IsCustomer>
+      </Contact>
+      <Date>2011-02-17T00:00:00</Date>
+      <DueDate>2011-02-24T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Flights for ICT 08 conference</Description>
+          <UnitAmount>199.00</UnitAmount>
+          <TaxType>INPUT</TaxType>
+          <TaxAmount>19.90</TaxAmount>
+          <LineAmount>199.00</LineAmount>
+          <AccountCode>493</AccountCode>
+          <Tracking>
+            <TrackingCategory>
+              <Name>Consultant</Name>
+              <Option>Odette Garrison</Option>
+              <TrackingCategoryID>093af706-c2aa-4d97-a4ce-2d205a017eac</TrackingCategoryID>
+            </TrackingCategory>
+          </Tracking>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>199.00</SubTotal>
+      <TotalTax>19.90</TotalTax>
+      <Total>218.90</Total>
+      <UpdatedDateUTC>2008-09-18T11:45:11.227</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-02-18T00:00:00</FullyPaidOnDate>
+      <Type>ACCPAY</Type>
+      <InvoiceID>52ee4d67-cae4-462c-adb2-182c39017f3d</InvoiceID>
+      <InvoiceNumber>ICT 08</InvoiceNumber>
+      <Payments>
+        <Payment>
+          <PaymentID>a826f56f-52b0-49cd-974f-dc6697fb33ca</PaymentID>
+          <Date>2011-02-18T00:00:00</Date>
+          <Amount>218.90</Amount>
+          <Reference>DD 111093</Reference>
+        </Payment>
+      </Payments>
+      <AmountDue>0.00</AmountDue>
+      <AmountPaid>218.90</AmountPaid>
+      <AmountCredited>0.00</AmountCredited>
+      <SentToContact>false</SentToContact>
+    </Invoice>
+  </Invoices>
+</Response>

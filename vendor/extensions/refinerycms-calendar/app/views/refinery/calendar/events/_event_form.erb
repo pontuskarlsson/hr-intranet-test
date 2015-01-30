@@ -1,0 +1,66 @@
+<div title="Calendar Event" style="width: 600px;">
+  <%= form_for [refinery, :calendar, event] do |f| %>
+
+    <div class="field">
+      <%= f.label :title %>
+      <%= f.text_field :title %>
+    </div>
+
+    <div class='field'>
+      <%= f.label :from -%>
+      <%= f.text_field :from, value: event.from.try(:strftime, '%Y-%m-%d %H:%M'), :class => 'datetime_range'  -%>
+    </div>
+
+    <div class='field'>
+      <%= f.label :to -%>
+      <%= f.text_field :to, :class => 'datetime_range'  -%>
+    </div>
+
+    <div class='field'>
+      <%= f.label :venue_id, 'Venue' %>
+      <%= f.collection_select :venue_id, ::Refinery::Calendar::Venue.order(:name), :id, :name, { :include_blank => 'None' }, :class => 'chzn-select', :'data-placeholder' => 'Search Venues' %>
+    </div>
+
+    <div class='field'>
+      <%= f.label :excerpt -%>
+      <%= f.text_area :excerpt, :size => '65x5'  -%>
+    </div>
+
+    <% if event.new_record? %>
+      <div class="row">
+        <div class="medium-6 columns">
+          <fieldset id="existing-calendar">
+            <legend>Existing Calendar</legend>
+
+            <div class="field">
+              <%= radio_button_tag 'calendar', nil, personal_calendars.any?, class: 'js_exist_cal_radio' %>
+              <%= f.collection_select :calendar_id, personal_calendars, :id, :title, {  }, class: 'js_exist_cal_id_select', disabled: personal_calendars.empty? %>
+            </div>
+
+          </fieldset>
+        </div>
+        <div class="medium-6 columns">
+          <fieldset id="new-calendar">
+            <legend>New Calendar</legend>
+
+            <div class="field">
+              <%= radio_button_tag 'calendar', nil, personal_calendars.empty?, class: 'js_new_cal_radio' %>
+              <%= f.text_field :new_calendar_title, value: personal_calendars.empty? ? 'My Calendar' : '', class: 'js_new_cal_title_field', disabled: personal_calendars.any? %>
+            </div>
+
+            <div class="field">
+              <p>
+                <%= f.check_box :private, checked: false, :class => 'stripped js_new_cal_private_box', disabled: personal_calendars.any? %>
+                <%= f.label :private %>
+              </p>
+            </div>
+
+          </fieldset>
+        </div>
+      </div>
+    <% end %>
+
+    <p><%= f.submit event.persisted? ? 'Update Event' : 'Create Event', class: 'button round tiny' %></p>
+  <% end %>
+  <p><%= link_to 'Remove Event', refinery.calendar_event_path(event), method: :delete, confirm: 'Are you sure you want to remove this Event?', class: 'button tiny alert' %></p>
+</div>

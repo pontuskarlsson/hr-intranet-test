@@ -1,0 +1,84 @@
+<Response xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Id>88a803a8-b301-470d-978f-516efbfd6eac</Id>
+  <Status>OK</Status>
+  <ProviderName>Demo AU</ProviderName>
+  <DateTimeUTC>2011-05-31T01:33:42.1556163Z</DateTimeUTC>
+  <Invoices>
+    <Invoice>
+      <Contact>
+        <ContactID>d6a384fb-f46f-41a3-8ac7-b7bc9e0b5efa</ContactID>
+        <ContactStatus>ACTIVE</ContactStatus>
+        <Name>Melrose Parking</Name>
+        <Addresses>
+          <Address>
+            <AddressType>POBOX</AddressType>
+            <AddressLine1>Parking Administration
+</AddressLine1>
+            <AddressLine2>P O Box 123
+</AddressLine2>
+            <City>Melbourne</City>
+            <PostalCode>3333</PostalCode>
+          </Address>
+          <Address>
+            <AddressType>STREET</AddressType>
+          </Address>
+        </Addresses>
+        <Phones>
+          <Phone>
+            <PhoneType>DEFAULT</PhoneType>
+            <PhoneNumber>4389376</PhoneNumber>
+            <PhoneAreaCode>0800</PhoneAreaCode>
+          </Phone>
+          <Phone>
+            <PhoneType>MOBILE</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>FAX</PhoneType>
+          </Phone>
+          <Phone>
+            <PhoneType>DDI</PhoneType>
+          </Phone>
+        </Phones>
+        <UpdatedDateUTC>2011-05-03T23:28:09.993</UpdatedDateUTC>
+        <IsSupplier>true</IsSupplier>
+        <IsCustomer>false</IsCustomer>
+      </Contact>
+      <Date>2011-02-16T00:00:00</Date>
+      <DueDate>2011-02-25T00:00:00</DueDate>
+      <Status>PAID</Status>
+      <LineAmountTypes>Exclusive</LineAmountTypes>
+      <LineItems>
+        <LineItem>
+          <Description>Company car park (month in advance)</Description>
+          <UnitAmount>135.00</UnitAmount>
+          <TaxType>INPUT</TaxType>
+          <TaxAmount>13.50</TaxAmount>
+          <LineAmount>135.00</LineAmount>
+          <AccountCode>449</AccountCode>
+          <Quantity>1.0000</Quantity>
+        </LineItem>
+      </LineItems>
+      <SubTotal>135.00</SubTotal>
+      <TotalTax>13.50</TotalTax>
+      <Total>148.50</Total>
+      <UpdatedDateUTC>2008-09-16T10:28:51.5</UpdatedDateUTC>
+      <CurrencyCode>AUD</CurrencyCode>
+      <FullyPaidOnDate>2011-02-24T00:00:00</FullyPaidOnDate>
+      <Type>ACCPAY</Type>
+      <InvoiceID>0032f627-3156-4d30-9b1c-4d3b994dc921</InvoiceID>
+      <InvoiceNumber>9871</InvoiceNumber>
+      <Payments>
+        <Payment>
+          <PaymentID>22974891-3689-4694-9ee7-fd2ba917af55</PaymentID>
+          <Date>2011-02-24T00:00:00</Date>
+          <Amount>148.50</Amount>
+          <Reference>Chq 409</Reference>
+        </Payment>
+      </Payments>
+      <AmountDue>0.00</AmountDue>
+      <AmountPaid>148.50</AmountPaid>
+      <AmountCredited>0.00</AmountCredited>
+      <SentToContact>false</SentToContact>
+    </Invoice>
+  </Invoices>
+</Response>

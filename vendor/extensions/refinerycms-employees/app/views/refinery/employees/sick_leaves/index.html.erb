@@ -1,0 +1,56 @@
+<% content_for :body do %>
+  <h4>Register Sick Leave</h4>
+
+  <%= render 'quick_form', sick_leave: ::Refinery::Employees::SickLeave.new %>
+
+  <h4 class="t2">All of your registered Sick Leave occasions</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Start</th>
+        <th>End</th>
+        <th>No. of sick days</th>
+        <th>Doctor's Note</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @sick_leaves.each do |sick_leave| %>
+        <tr>
+          <td><%= sick_leave.start_date %></td>
+          <td><%= sick_leave.end_date %></td>
+          <td><%= sick_leave.number_of_days %></td>
+          <td>
+            <% if sick_leave.doctors_note.present? %>
+              <%= link_to 'Download', sick_leave.doctors_note.url %>
+            <% else %>
+              <%= link_to 'Add Note', refinery.add_note_employees_sick_leave_path(sick_leave) %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to 'Edit', refinery.edit_employees_sick_leave_path(sick_leave) %>
+            <%= link_to 'Remove', refinery.employees_sick_leave_path(sick_leave), method: :delete %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th>Start</th>
+        <th>End</th>
+        <th>No. of sick days</th>
+        <th>Doctor's Note</th>
+        <th>Action</th>
+      </tr>
+    </tfoot>
+  </table>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

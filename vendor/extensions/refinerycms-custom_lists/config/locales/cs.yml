@@ -1,0 +1,27 @@
+cs:
+  refinery:
+    plugins:
+      custom_lists:
+        title: Custom Lists
+    custom_lists:
+      admin:
+        custom_lists:
+          actions:
+            create_new: Přidat Custom List
+            reorder: Řadit Custom Lists
+            reorder_done: Konec řazení Custom Lists
+          records:
+            title: Custom Lists
+            sorry_no_results: Litujeme, ale nebyly nalezny žádné výsledky.
+            no_items_yet: Zatím nebyly vytvořeny žádné Custom Lists. Zvolte "Přidat Custom List" pro přidání prvního custom list.
+          custom_list:
+            view_live_html: Zobrazit náhled custom list<br/><em>(otevře se v novém okně)</em>
+            edit: Upravit custom list
+            delete: Smazat custom list
+      custom_lists:
+        show:
+          other: Další Custom Lists
+  activerecord:
+    attributes:
+      'refinery/custom_lists/custom_list':
+        title: Title

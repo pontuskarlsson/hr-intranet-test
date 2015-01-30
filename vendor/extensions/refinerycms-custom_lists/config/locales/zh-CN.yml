@@ -1,0 +1,29 @@
+zh-CN:
+  refinery:
+    plugins:
+      custom_lists:
+        title: Custom Lists
+    custom_lists:
+      admin:
+        custom_lists:
+          actions:
+            create_new: 建立新的 Custom List
+            reorder: 对 Custom Lists 重新排序
+            reorder_done: 对 Custom Lists 的重新排序结束
+          records:
+            title: Custom Lists
+            sorry_no_results: 对不起，未找到结果。 #Sorry! There are no results found.
+
+            # There are no Custom Lists yet. Click "Add New Custom List" to add your first custom list.
+            no_items_yet: 目前没有 Custom Lists . 点击 "Add New Custom List" 创建一个custom list.
+          custom_list:
+            view_live_html: 查看 custom list 的最新内容.<br/><em>(新窗口中打开)</em>
+            edit: 编辑 custom list
+            delete: 永久删除 custom list
+      custom_lists:
+        show:
+          other: 其他 Custom Lists
+  activerecord:
+    attributes:
+      'refinery/custom_lists/custom_list':
+        title: Title

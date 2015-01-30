@@ -1,0 +1,15 @@
+language: ruby
+
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1.1
+
+gemfile:
+  - gemfiles/3.1.gemfile
+  - gemfiles/3.2.gemfile
+  - gemfiles/4.0.gemfile
+  - gemfiles/4.1.gemfile
+
+script:
+  - CODECLIMATE_REPO_TOKEN=c815cc06c282d0eec6709c751088034096c5ff87678018ff4147e4220a0adddd bundle exec rake

@@ -1,0 +1,35 @@
+<%= form_for [refinery, :store_admin, @order] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @order,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :retailer_id -%>
+    <%= f.collection_select :retailer_id, ::Refinery::Store::Retailer.not_expired, :id, :name -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :order_number -%>
+    <%= f.text_field :order_number, :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :reference -%>
+    <%= f.text_field :reference -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :user_id -%>
+    <%= f.number_field :user_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :status -%>
+    <%= f.text_field :status -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.store.admin.orders.order'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @order.order_number) -%>
+<% end -%>

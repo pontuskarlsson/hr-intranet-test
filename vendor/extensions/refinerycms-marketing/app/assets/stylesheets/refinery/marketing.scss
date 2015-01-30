@@ -1,0 +1,27 @@
+/* Contact Card */
+.contact-card {
+    h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    h3 {
+        font-size: 0.8rem;
+        font-style: italic;
+        text-decoration: underline;
+        margin: 0.5rem 0 0;
+    }
+
+    .cc-attribute {
+        margin: 0;
+
+        &.cc-title {
+            font-size: 0.8rem;
+        }
+
+        &.cc-missing {
+            color: #999;
+            font-style: italic;
+        }
+    }
+}

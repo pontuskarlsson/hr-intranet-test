@@ -1,0 +1,107 @@
+en:
+  refinery:
+    plugins:
+      marketing:
+        title: Marketing
+    marketing:
+      admin:
+        shared:
+          links:
+            manage_brands: Manage Brands
+            manage_shows: Manage Shows
+            manage_contacts: Manage Contacts
+        brands:
+          actions:
+            create_new: Add New Brand
+            reorder: Reorder Brands
+            reorder_done: Done Reordering Brands
+          records:
+            title: Brands
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Brands yet. Click "Add New Brand" to add your first brand.
+          brand:
+            view_live_html: View this brand live <br/><em>(opens in a new window)</em>
+            edit: Edit this brand
+            delete: Remove this brand forever
+            preview: 'added %{created_at}'
+        shows:
+          actions:
+            create_new: Add New Show
+            reorder: Reorder Shows
+            reorder_done: Done Reordering Shows
+          records:
+            title: Shows
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Shows yet. Click "Add New Show" to add your first show.
+          show:
+            view_live_html: View this show live <br/><em>(opens in a new window)</em>
+            edit: Edit this show
+            delete: Remove this show forever
+            preview: 'added %{created_at}'
+          form:
+            not_synced_yet: Has not been synced yet
+            sync: Sync
+        contacts:
+          actions:
+            create_new: Add New Contact
+            synchronise: Synchronise with Base
+            confirm_synchronise: Are you sure you want to Synchronise. It can take a few minutes, so please do not click synchronise more than once at a time.
+            reorder: Reorder Contacts
+            reorder_done: Done Reordering Contacts
+          records:
+            title: Contacts
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Contacts yet. Click "Add New Contact" to add your first contact.
+          contact:
+            view_live_html: View this contact live <br/><em>(opens in a new window)</em>
+            edit: Edit this contact
+            delete: Remove this contact forever
+            preview: 'added %{created_at}'
+      brands:
+        show:
+          other: Other Brands
+      shows:
+        show:
+          other: Other Shows
+      contacts:
+        show:
+          similar: Similar Contacts
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description
+      'refinery/marketing/show':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description
+        msg_json_struct: Sync Instructions (JSON)
+      'refinery/contacts/contact':
+        base_id: Base
+        name: Name
+        first_name: First Name
+        last_name: Last Name
+        address: Address
+        city: City
+        skype: Skype
+        zip: Zip
+        country: Country
+        title: Title
+        private: Private
+        contact_id: Contact
+        is_organisation: Is Organisation
+        mobile: Mobile
+        fax: Fax
+        website: Website
+        phone: Phone
+        description: Description
+        linked_in: Linked In
+        facebook: Facebook
+        industry: Industry
+        twitter: Twitter
+        email: Email
+        organisation_name: Organisation Name
+        tags_joined_by_comma: Tags Joined By Comma

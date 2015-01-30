@@ -1,0 +1,55 @@
+<Response xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Id>204553b4-f573-48f4-b1c6-7c5be6c8e799</Id>
+  <Status>OK</Status>
+  <ProviderName>Test Provider Name</ProviderName>
+  <DateTimeUTC>2010-12-17T00:52:18.1900484Z</DateTimeUTC>
+  <Organisations>
+    <Organisation>
+      <Name>Demo Company (AU)</Name>
+      <LegalName>Demo Company (AU)</LegalName>
+      <PaysTax>true</PaysTax>
+      <Version>AU</Version>
+      <OrganisationType>COMPANY</OrganisationType>
+      <BaseCurrency>AUD</BaseCurrency>
+      <CountryCode>AU</CountryCode>
+      <IsDemoCompany>true</IsDemoCompany>
+      <OrganisationStatus>ACTIVE</OrganisationStatus>
+      <RegistrationNumber>53003086616</RegistrationNumber>
+      <TaxNumber>53003086616</TaxNumber>
+      <FinancialYearEndDay>30</FinancialYearEndDay>
+      <FinancialYearEndMonth>6</FinancialYearEndMonth>
+      <PeriodLockDate>2008-06-30T00:00:00</PeriodLockDate>
+      <CreatedDateUTC>2011-05-19T05:26:03.95</CreatedDateUTC>
+      <Addresses>
+        <Address>
+          <AddressType>STREET</AddressType>
+        </Address>
+        <Address>
+          <AddressType>POBOX</AddressType>
+          <AddressLine1>23 Main Street</AddressLine1>
+          <AddressLine2>Central City</AddressLine2>
+          <City>Oaktown</City>
+          <Region>NY</Region>
+          <PostalCode>12123</PostalCode>
+          <Country>USA</Country>
+        </Address>
+      </Addresses>
+      <Phones>
+        <Phone>
+          <PhoneType>DDI</PhoneType>
+        </Phone>
+        <Phone>
+          <PhoneType>MOBILE</PhoneType>
+        </Phone>
+        <Phone>
+          <PhoneType>DEFAULT</PhoneType>
+          <PhoneNumber>1234 5678</PhoneNumber>
+          <PhoneAreaCode>800</PhoneAreaCode>
+        </Phone>
+        <Phone>
+          <PhoneType>FAX</PhoneType>
+        </Phone>
+      </Phones>
+    </Organisation>
+  </Organisations>
+</Response>

@@ -1,0 +1,61 @@
+<%= form_for [refinery, :marketing_admin, @show] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @show,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :name -%>
+    <%= f.text_field :name, :class => 'larger widest' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :website -%>
+    <%= f.text_field :website -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :logo -%>
+    <%= render '/refinery/admin/image_picker',
+               :f => f,
+               :field => :logo_id,
+               :image => @show.logo,
+               :toggle_image_display => false -%>
+  </div>
+
+  <div class='field'>
+    <%= render '/refinery/admin/wysiwyg',
+                :f => f,
+                :fields => [:description],
+                :object => "brands/show" -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :msg_json_struct -%>
+    <%= f.text_area :msg_json_struct, style: 'width: 100%; height: 10rem;' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :last_sync_datetime -%>
+    <%= @show.last_sync_datetime || t('.not_synced_yet')%>
+    <% if @show.persisted? && @show.msg_json_struct.present? %>
+      <p><%= link_to t('.sync'),
+                     refinery.sync_marketing_admin_show_path(@show),
+                     :id => 'sync_show', method: :post %></p>
+    <% else %>
+      <p style="font-style: italic;">Cannot sync until msg structure is properly saved.</p>
+    <% end %>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.marketing.admin.shows.show'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @show.name) -%>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      page_options.init(false, '', '');
+    });
+  </script>
+<% end -%>

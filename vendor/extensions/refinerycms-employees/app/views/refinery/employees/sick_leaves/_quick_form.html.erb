@@ -1,0 +1,21 @@
+<% if @employee.recent_sick_leave.present? %>
+  <% if @employee.recent_sick_leave.matches_date?(Date.today) %>
+    <p>You have registered Sick Leave today.</p>
+  <% else %>
+    <p>You recently registered Sick Leave.</p>
+    <p><%= link_to 'Extend until Today', refinery.extend_employees_sick_leave_path(@employee.recent_sick_leave), method: :put, class: 'button round tiny' %></p>
+  <% end %>
+  <% if @employee.recent_sick_leave.doctors_note.present? %>
+    <p>Doctor's Note has been added. <%= link_to 'View / Download', @employee.recent_sick_leave.doctors_note.url %></p>
+  <% else %>
+    <% if @employee.recent_sick_leave.number_of_days > 1 %>
+      <p class="italic">Doctor's Note is mandatory when you are sick for more than 1 day.</p>
+    <% end %>
+    <p><%= link_to "Add Doctor's Note", refinery.add_note_employees_sick_leave_path(@employee.recent_sick_leave), remote: true, class: 'button round tiny' %></p>
+  <% end %>
+<% else %>
+  <%= form_for ::Refinery::Employees::SickLeave.new, url: refinery.employees_sick_leaves_path do |f| %>
+    <%= f.hidden_field :start_date, value: Date.today %>
+    <p><%= f.submit 'I am sick today', class: 'button round tiny' %></p>
+  <% end %>
+<% end %>

@@ -1,0 +1,22 @@
+<% content_for :body do %>
+  <% if @contact.is_organisation %>
+    <%= render 'refinery/marketing/contacts/organisation', contact: @contact %>
+  <% else %>
+    <%= render 'refinery/marketing/contacts/person', contact: @contact %>
+  <% end %>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.similar') %></h2>
+    <ul id="contacts">
+      <% @contact.contacts_with_same_tags.each do |contact| %>
+        <li>
+          <%= link_to contact.name, refinery.marketing_contact_path(contact) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

@@ -1,0 +1,43 @@
+<% content_for :body do %>
+  <div id="mycart" class="small-10 small-centered medium-8 large-8 column">
+    <div class="p1 glassy-bg mb1 text-center radius-l1 radius-r1">
+      <h4>My Cart</h4>
+      <p class="mb0"> You've selected <span class="cart-count"><%= current_refinery_user.cart_count %></span> products!</p>
+    </div>
+
+    <% if current_refinery_user.cart_count > 0 %>
+      <p><%= link_to 'Place Order', refinery.place_order_store_cart_path, class: 'button round tiny', method: :post %></p>
+    <% end %>
+  
+    <% @cart_products.each do |product| %>
+      <div data-equalizer class="cart-product large-12 column mb1">
+        <div class="column large-2 text-center p0" data-equalizer-watch>
+          <% if product.image.present? %>
+            <%= link_to refinery.store_product_path(product) do %>
+              <%= image_tag product.image.url, class: "radius-l1" %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="column large-7 glassy-bg text-center" data-equalizer-watch>
+          <p class="scale ptm"> <%= link_to product.name, refinery.store_product_path(product) %> </p>
+        </div>
+        <div class="column large-3 primary-bg text-center radius-r1" data-equalizer-watch>
+          <%= link_to '' , data: { targetUrl: refinery.remove_from_store_cart_path(product) } do %>
+            <i class="fi-x right"></i>
+          <% end %>
+          <h4 class="scale">$ <%= product.price %></h4>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'refinery/store' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'refinery/store' %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

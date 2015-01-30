@@ -1,0 +1,17 @@
+<div title="Add Scanned Receipts" style="min-width: 10rem;">
+  <%= form_for @resource, :url => refinery.create_resource_employees_expense_claim_path(@xero_expense_claim),
+               :html => { :multipart => true },
+               :as => 'resource' do |f| %>
+
+    <%= render '/refinery/admin/error_messages',
+               :object => @resource,
+               :include_object_name => false %>
+
+    <div class="field">
+      <% # we must only hint at multiple when it's a *new* record otherwise update fails. %>
+      <%= f.file_field :file, :multiple => true %>
+    </div>
+
+    <p><%= f.submit 'Add Scanned Receipts', class: 'button round tiny' %></p>
+  <% end %>
+</div>

@@ -1,0 +1,50 @@
+<%= form_for [refinery, :calendar_admin, @calendar] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @calendar,
+              :include_object_name => true %>
+
+
+  <div class='field'>
+    <%= f.label :title -%>
+    <%= f.text_field :title, :class => 'larger widest'  -%>
+
+  </div>
+
+  <div class='field'>
+    <%= f.label :user_id, 'User' %>
+    <%= f.collection_select :user_id, @users, :id, :username, { :include_blank => 'None' }, :class => 'chzn-select', :'data-placeholder' => 'Search User', :style => 'width: 300px;' %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :function -%>
+    <%= f.text_field :function -%>
+
+  </div>
+
+  <div class='field'>
+    <%= f.label :default_rgb_code -%>
+    <%= f.text_field :default_rgb_code -%>
+
+  </div>
+
+  <div class="field">
+    <p>
+      <%= f.check_box :private %>
+      <%= f.label :private, :class => 'stripped' %>
+    </p>
+  </div>
+
+  <% if @calendar.new_record? %>
+    <div class="field">
+      <p>
+        <%= f.check_box :activate_on_create %>
+        <%= f.label :activate_on_create, 'Enable for all Users', :class => 'stripped' %>
+      </p>
+    </div>
+  <% end %>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.calendars.admin.calendars.calendar'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @calendar.title) %>
+<% end -%>

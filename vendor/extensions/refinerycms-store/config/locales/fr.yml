@@ -1,0 +1,32 @@
+fr:
+  refinery:
+    plugins:
+      store:
+        title: Store
+    store:
+      admin:
+        orders:
+          actions:
+            create_new: Créer un(e) nouve(au/l/lle) Order
+            reorder: Réordonner les Orders
+            reorder_done: Fin de réordonnancement des Orders
+          records:
+            title: Orders
+            sorry_no_results: "Désolé ! Aucun résultat."
+            no_items_yet: 'Il n''y a actuellement aucun(e) Order. Cliquer sur "Créer un(e) nouve(au/l/lle) Order" pour créer votre premi(er/ère) order.'
+          order:
+            view_live_html: Voir ce(t/tte) order <br/><em>(Ouvre une nouvelle fenêtre)</em>
+            edit: Modifier ce(t/tte) order
+            delete: Supprimer définitivement ce(t/tte) order
+      orders:
+        show:
+          other: Autres Orders
+  activerecord:
+    attributes:
+      'refinery/store/order':
+        order_number: Order Number
+        reference: Reference
+        quantity: Quantity
+        unit: Unit
+        user_id: User
+        status: Status

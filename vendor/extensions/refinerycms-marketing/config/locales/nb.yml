@@ -1,0 +1,30 @@
+nb:
+  refinery:
+    plugins:
+      brands:
+        title: Brands
+    brands:
+      admin:
+        brands:
+          actions:
+            create_new: Lag en ny Brand
+            reorder: Endre rekkefølgen på Brands
+            reorder_done: Ferdig å endre rekkefølgen Brands
+          records:
+            title: Brands
+            sorry_no_results: Beklager! Vi fant ikke noen resultater.
+            no_items_yet: Det er ingen Brands enda. Klikk på "Lag en ny Brand" for å legge til din første brand.
+          brand:
+            view_live_html: Vis hvordan denne brand ser ut offentlig <br/><em>(åpner i et nytt vindu)</em>
+            edit: Rediger denne brand
+            delete: Fjern denne brand permanent
+      brands:
+        show:
+          other: Andre Brands
+  activerecord:
+    attributes:
+      'refinery/marketing/brand':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description

@@ -1,0 +1,30 @@
+<% content_for :body do %>
+  <h1><%= @custom_list.title %></h1>
+  <%= form_for @list_row_updater, url: refinery.custom_lists_custom_list_list_row_path(@custom_list), html: { method: :put } do |f| %>
+    <%= hidden_field_tag :originating_page_id, @page.id %>
+    <table>
+      <thead>
+      <tr>
+        <% @custom_list.list_columns.each do |list_column| %>
+          <th><%= list_column.title %></th>
+        <% end %>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <% @custom_list.list_columns.each_with_index do |list_column, i| %>
+          <%- list_cell = @list_row.cell_for_column(list_column) -%>
+          <%= f.fields_for :list_cells, list_cell, child_index: i do |cell_form| %>
+            <%= cell_form.hidden_field :list_column_id %>
+            <td><%= cell_form.text_field :value %></td>
+          <% end %>
+        <% end %>
+        <td><%= f.submit 'Save' %></td>
+      </tr>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>
