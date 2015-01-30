@@ -66,6 +66,7 @@ PATH
   remote: vendor/extensions
   specs:
     refinerycms-parcels (1.0)
+      easypost (~> 2.1.0)
       refinerycms-core (~> 2.1.2)
       refinerycms-marketing
     refinerycms-sales_orders (1.0)
@@ -154,6 +155,9 @@ GEM
     dragonfly (0.9.15)
       multi_json (~> 1.0)
       rack
+    easypost (2.1.0)
+      multi_json (>= 1.0.4, < 2)
+      rest-client (~> 1.4)
     equalizer (0.0.9)
     erubis (2.7.0)
     eventmachine (1.0.4)
@@ -225,6 +229,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
+    netrc (0.10.2)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
     oauth (0.4.7)
@@ -320,6 +325,9 @@ GEM
       refinerycms-core (= 2.1.2)
     refinerycms-settings (2.1.1)
       refinerycms-core (~> 2.1.1)
+    rest-client (1.7.2)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     routing-filter (0.3.1)
       actionpack
     rspec-core (3.0.4)

@@ -1,0 +1,71 @@
+<% content_for :body do %>
+  <h4>Add Shipment</h4>
+
+  <section class="add_shipment">
+    <%= render 'quick_form', shipment: @shipment %>
+  </section>
+
+  <section>
+    <table class="display js_shipments_data_table" cellspacing="0" style="width: 100%;">
+      <thead>
+      <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Courier</th>
+        <th>Assigned To</th>
+      </tr>
+      </thead>
+
+      <tfoot>
+      <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Courier</th>
+        <th>Assigned To</th>
+      </tr>
+      </tfoot>
+
+      <tbody>
+      <% @shipments.each do |shipment| %>
+        <tr>
+          <td><%= shipment.from_contact_name %></td>
+          <td><%= shipment.to_contact_name %></td>
+          <td><%= shipment.courier %></td>
+          <td><%= shipment.assigned_to.try(:"#{ ::Refinery::Parcels.config.user_attribute_reference }") %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </section>
+
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_shipments_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= @shipments.to_json(methods: [:from_contact_name, :to_contact_name, :assign_to]).html_safe %>,
+        "columns": [
+          { data: "from_contact_name", "render": function(data, type, row){ return ('<a href="<%= refinery.parcels_shipment_path('%%shipment_id%%') %>">'+data+'</a>').replace('%%shipment_id%%', row.id); } },
+          { data: "to_contact_name" },
+          { data: "courier" },
+          { data: "assign_to" }
+        ]
+      });
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>

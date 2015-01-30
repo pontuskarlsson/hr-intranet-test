@@ -1,0 +1,115 @@
+<% content_for :body do %>
+  <div class="row">
+    <div class="medium-6 columns">
+      <h2>From</h2>
+
+      <p>
+        <% if @shipment.from_address.name.present? %>
+          <%= @shipment.from_address.name %>
+        <% end %>
+
+        <% if @shipment.from_address.street1.present? %>
+          <br/><%= @shipment.from_address.street1 %>
+        <% end %>
+        <% if @shipment.from_address.street2.present? %>
+          <br/><%= @shipment.from_address.street2 %>
+        <% end %>
+        <% if @shipment.from_address.city.present? %>
+          <br/><%= @shipment.from_address.city %>
+        <% end %>
+        <% if @shipment.from_address.state.present? %>
+          <br/><%= @shipment.from_address.state %>
+        <% end %>
+        <% if @shipment.from_address.zip.present? %>
+          <br/><%= @shipment.from_address.zip %>
+        <% end %>
+        <% if @shipment.from_address.country.present? %>
+          <br/><%= @shipment.from_address.country %>
+        <% end %>
+        <% if @shipment.from_address.phone.present? %>
+          <br/><%= @shipment.from_address.phone %>
+        <% end %>
+        <% if @shipment.from_address.email.present? %>
+          <br/><%= @shipment.from_address.email %>
+        <% end %>
+      </p>
+    </div>
+
+    <div class="medium-6 columns">
+      <h2>To</h2>
+
+      <p>
+        <% if @shipment.to_address.name.present? %>
+          <%= @shipment.to_address.name %>
+        <% end %>
+
+        <% if @shipment.to_address.street1.present? %>
+          <br/><%= @shipment.to_address.street1 %>
+        <% end %>
+        <% if @shipment.to_address.street2.present? %>
+          <br/><%= @shipment.to_address.street2 %>
+        <% end %>
+        <% if @shipment.to_address.city.present? %>
+          <br/><%= @shipment.to_address.city %>
+        <% end %>
+        <% if @shipment.to_address.state.present? %>
+          <br/><%= @shipment.to_address.state %>
+        <% end %>
+        <% if @shipment.to_address.zip.present? %>
+          <br/><%= @shipment.to_address.zip %>
+        <% end %>
+        <% if @shipment.to_address.country.present? %>
+          <br/><%= @shipment.to_address.country %>
+        <% end %>
+        <% if @shipment.to_address.phone.present? %>
+          <br/><%= @shipment.to_address.phone %>
+        <% end %>
+        <% if @shipment.to_address.email.present? %>
+          <br/><%= @shipment.to_address.email %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+
+  <dl class="tabs" data-tab>
+    <dd class="active"><a href="#panel-parcels">Parcels</a></dd>
+    <% if @shipment.courier_predefined_packages.any? %>
+      <dd><a href="#panel-add-courier">Add <%= @shipment.courier %> Parcel</a></dd>
+    <% end %>
+    <dd><a href="#panel-add-custom">Add Custom Parcel</a></dd>
+  </dl>
+  <div class="tabs-content">
+    <div class="content active" id="panel-parcels">
+      <% if @shipment.shipment_parcels.any? %>
+        <% @shipment.shipment_parcels.each do |shipment_parcel| %>
+          <div class="row">
+            <div class="columns"></div>
+            <% if shipment_parcel.predefined_package.present? %>
+              Package Type: <%= shipment_parcel.predefined_package %>, Weight: <%= shipment_parcel.weight %>
+            <% else %>
+              L: <%= shipment_parcel.length %>, W: <%= shipment_parcel.width %>, H: <%= shipment_parcel.height %>,
+              Weight: <%= shipment_parcel.weight %>
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="italic">No parcels added yet</p>
+      <% end %>
+    </div>
+    <% if @shipment.courier_predefined_packages.any? %>
+      <div class="content" id="panel-add-courier">
+        <p>This is the fourth panel of the basic tab example. This is the fourth panel of the basic tab example.</p>
+      </div>
+    <% end %>
+    <div class="content" id="panel-add-custom">
+      <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels %>
+    </div>
+  </div>
+
+  <% if @shipment.from_address.country != @shipment.to_address.country %>
+    <%= render 'customs_info', shipment: @shipment %>
+  <% end %>
+
+<% end %>
+
+<%= render '/refinery/content_page' %>

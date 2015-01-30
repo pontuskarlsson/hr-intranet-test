@@ -53,7 +53,7 @@ module Refinery
         @given_to ||= assigned_to.try(Refinery::Parcels.config.user_attribute_reference)
       end
 
-      # Method used to check wether a particular user has the right to update the
+      # Method used to check whether a particular user has the right to update the
       # parcel information. This is only used by the front-end controller, not the
       # admin controller.
       def editable_by?(user)

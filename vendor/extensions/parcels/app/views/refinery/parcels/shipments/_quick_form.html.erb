@@ -1,0 +1,54 @@
+<%= form_for [refinery, :parcels, shipment] do |f| -%>
+
+  <div class="row">
+    <div class="medium-4 columns">
+      <div class='field'>
+        <%= f.label :from_contact_name  -%>
+        <%= f.text_field :from_contact_name, autofocus: true, class: 'js_from_field' -%>
+      </div>
+    </div>
+
+    <div class="medium-4 columns">
+      <div class='field'>
+        <%= f.label :to_contact_name, 'Address To' -%>
+        <%= f.text_field :to_contact_name, class: 'js_to_field' -%>
+      </div>
+    </div>
+
+    <div class="medium-2 columns">
+      <div class='field'>
+        <%= f.label :courier -%>
+        <%= f.text_field :courier, class: 'js_courier_field' -%>
+      </div>
+    </div>
+
+    <div class="medium-2 columns">
+      <div class='field t1'>
+        <%= f.submit 'Add', class: 'tiny button round' %>
+      </div>
+    </div>
+  </div>
+<% end -%>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'refinery/ui' %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_parcel_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_from_field').autocomplete({
+        source: <%= contact_references.html_safe %>
+      });
+      $('.js_to_field').autocomplete({
+        source: <%= contact_references.html_safe %>
+      });
+      $('.js_courier_field').autocomplete({
+        source: <%= ::Refinery::Parcels::Shipment::COURIERS.to_json.html_safe %>
+      });
+    });
+  </script>
+<% end %>

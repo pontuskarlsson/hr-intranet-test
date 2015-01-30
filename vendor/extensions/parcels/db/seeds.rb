@@ -10,13 +10,26 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/parcels"
+  url = '/parcels/parcels'
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
       :title => 'Parcels',
       :link_url => url,
       :deletable => false,
       :menu_match => "^#{url}(\/|\/.+?|)$"
+    )
+    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
+      page.parts.create(:title => default_page_part, :body => nil, :position => index)
+    end
+  end
+
+  url = '/parcels/shipments'
+  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
+    page = Refinery::Page.create(
+        :title => 'Shipments',
+        :link_url => url,
+        :deletable => false,
+        :menu_match => "^#{url}(\/|\/.+?|)$"
     )
     Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
       page.parts.create(:title => default_page_part, :body => nil, :position => index)

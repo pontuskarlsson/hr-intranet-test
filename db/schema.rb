@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150116035807) do
+ActiveRecord::Schema.define(:version => 20150120043935) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -527,6 +527,81 @@ ActiveRecord::Schema.define(:version => 20150116035807) do
   add_index "refinery_parcels", ["receiver_signed"], :name => "index_refinery_parcels_on_receiver_signed"
   add_index "refinery_parcels", ["shipping_document_id"], :name => "index_refinery_parcels_on_shipping_document_id"
   add_index "refinery_parcels", ["to_user_id"], :name => "index_refinery_parcels_on_to_user_id"
+
+  create_table "refinery_parcels_shipment_addresses", :force => true do |t|
+    t.string   "easy_post_id"
+    t.string   "name"
+    t.string   "company"
+    t.string   "street1"
+    t.string   "street2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.string   "phone"
+    t.string   "email"
+    t.integer  "position"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "refinery_parcels_shipment_addresses", ["easy_post_id"], :name => "index_refinery_parcels_shipment_addresses_on_easy_post_id"
+  add_index "refinery_parcels_shipment_addresses", ["position"], :name => "index_refinery_parcels_shipment_addresses_on_position"
+
+  create_table "refinery_parcels_shipment_customs_items", :force => true do |t|
+    t.integer  "shipment_id"
+    t.string   "description"
+    t.integer  "quantity"
+    t.integer  "value"
+    t.integer  "weight"
+    t.integer  "hs_tariff_number"
+    t.string   "origin_country"
+    t.integer  "position"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "refinery_parcels_shipment_customs_items", ["position"], :name => "index_refinery_parcels_shipment_customs_items_on_position"
+
+  create_table "refinery_parcels_shipment_parcels", :force => true do |t|
+    t.integer  "shipment_id"
+    t.integer  "length"
+    t.integer  "width"
+    t.integer  "height"
+    t.integer  "weight"
+    t.string   "predefined_package"
+    t.integer  "position"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "refinery_parcels_shipment_parcels", ["position"], :name => "index_refinery_parcels_shipment_parcels_on_position"
+
+  create_table "refinery_parcels_shipments", :force => true do |t|
+    t.integer  "from_contact_id"
+    t.integer  "from_address_id"
+    t.integer  "to_contact_id"
+    t.integer  "to_address_id"
+    t.integer  "created_by_id"
+    t.integer  "assigned_to_id"
+    t.string   "courier"
+    t.string   "eel_pfc"
+    t.boolean  "customs_certify"
+    t.string   "customs_signer"
+    t.string   "contents_type"
+    t.string   "contents_explanation"
+    t.integer  "position"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "refinery_parcels_shipments", ["assigned_to_id"], :name => "index_refinery_parcels_shipments_on_assigned_to_id"
+  add_index "refinery_parcels_shipments", ["created_by_id"], :name => "index_refinery_parcels_shipments_on_created_by_id"
+  add_index "refinery_parcels_shipments", ["from_address_id"], :name => "index_refinery_parcels_shipments_on_from_address_id"
+  add_index "refinery_parcels_shipments", ["from_contact_id"], :name => "index_refinery_parcels_shipments_on_from_contact_id"
+  add_index "refinery_parcels_shipments", ["position"], :name => "index_refinery_parcels_shipments_on_position"
+  add_index "refinery_parcels_shipments", ["to_address_id"], :name => "index_refinery_parcels_shipments_on_to_address_id"
+  add_index "refinery_parcels_shipments", ["to_contact_id"], :name => "index_refinery_parcels_shipments_on_to_contact_id"
 
   create_table "refinery_public_holidays", :force => true do |t|
     t.integer  "event_id"
