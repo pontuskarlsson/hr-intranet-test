@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.date        = '2014-07-08'
 
   s.files         = Dir['{lib}/**/*'] + ['README.md']
-  s.test_files    = Dir['{spec}/**/*'] + ['README.md']
+  s.test_files    = Dir['{spec}/**/*']
   s.require_paths = ['lib']
 
   s.required_ruby_version = '~> 1.9.3'
