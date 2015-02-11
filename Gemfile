@@ -62,10 +62,6 @@ gem 'fog'
 gem 'devise_security_extension'
 gem 'trans_forms', path: 'vendor/extensions'
 
-group :production do
-  gem 'rails_12factor'
-end
-
 group :development, :test do
   gem 'pry'
   gem 'rspec-rails', '~> 3.0.0'
