@@ -3,9 +3,11 @@ module Refinery
     class XeroExpenseClaim < Refinery::Core::BaseModel
       self.table_name = 'refinery_xero_expense_claims'
 
-      STATUS_NOT_SUBMITTED  = 'Not-Submitted'
-      STATUS_SUBMITTED      = 'Submitted'
-      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED]
+      STATUS_NOT_SUBMITTED  = 'NOT-SUBMITTED' # Not represented in Xero
+      STATUS_SUBMITTED      = 'SUBMITTED'
+      STATUS_AUTHORISED     = 'AUTHORISED'
+      STATUS_PAID           = 'PAID'
+      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID]
 
       belongs_to :employee
       has_many :xero_receipts,     dependent: :destroy
@@ -32,6 +34,18 @@ module Refinery
 
         def submitted
           where(status: STATUS_SUBMITTED)
+        end
+
+        def authorised
+          where(status: STATUS_AUTHORISED)
+        end
+
+        def paid
+          where(status: STATUS_PAID)
+        end
+
+        def pending_in_xero
+          where(status: [STATUS_SUBMITTED, STATUS_AUTHORISED]).includes(:xero_receipts)
         end
       end
 

@@ -76,5 +76,19 @@ module HrIntranet
 
     I18n.enforce_available_locales = false
 
+    # Mail config
+    config.action_mailer.raise_delivery_errors = true
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+        address:              ENV['MAIL_SERVER'],
+        port:                 587,
+        user_name:            ENV['MAIL_USER'],
+        password:             ENV['MAIL_PASS'],
+        enable_starttls_auto: true
+    }
+    config.action_mailer.default_url_options = {
+        host: ENV['MAIL_DEFAULT_HOST']
+    }
+
   end
 end

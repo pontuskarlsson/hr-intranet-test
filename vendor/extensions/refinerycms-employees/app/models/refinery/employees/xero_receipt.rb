@@ -3,9 +3,11 @@ module Refinery
     class XeroReceipt < Refinery::Core::BaseModel
       self.table_name = 'refinery_xero_receipts'
 
-      STATUS_NOT_SUBMITTED  = 'Not-Submitted'
-      STATUS_SUBMITTED      = 'Submitted'
-      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED]
+      STATUS_DRAFT          = 'DRAFT'
+      STATUS_SUBMITTED      = 'SUBMITTED'
+      STATUS_AUTHORISED     = 'AUTHORISED'
+      STATUS_DECLINED       = 'DECLINED'
+      STATUSES = [STATUS_DRAFT, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_DECLINED]
 
       belongs_to :employee
       belongs_to :xero_expense_claim
@@ -24,7 +26,7 @@ module Refinery
       validates :total,                   numericality: { greater_than: 0 }
 
       before_validation do
-        self.status ||= STATUS_NOT_SUBMITTED
+        self.status ||= STATUS_DRAFT
         if @contact_name.present?
           self.xero_contact = XeroContact.find_or_create_by_name!(@contact_name)
         end

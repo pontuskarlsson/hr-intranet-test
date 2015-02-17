@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+  <h1>An error occoured on the Intranet</h1>
+  <p>
+    The error message is:<br />
+    <%= @error.message %>
+  </p>
+  <p>
+    Backtrace:<br />
+    <% @error.backtrace.each do |line| %>
+      <%= line %>
+    <% end %>
+  </p>
+</body>
+</html>
