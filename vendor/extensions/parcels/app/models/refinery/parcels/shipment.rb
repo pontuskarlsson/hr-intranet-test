@@ -5,14 +5,14 @@ module Refinery
 
       self.table_name = 'refinery_parcels_shipments'
 
-      belongs_to :from_contact,       class_name: '::Refinery::Marketing::Contact'
-      belongs_to :from_address,       class_name: '::Refinery::Parcels::ShipmentAddress'
-      belongs_to :to_contact,         class_name: '::Refinery::Marketing::Contact'
-      belongs_to :to_address,         class_name: '::Refinery::Parcels::ShipmentAddress'
-      belongs_to :created_by,         class_name: '::Refinery::User'
-      belongs_to :assigned_to,        class_name: '::Refinery::User'
-      has_many :shipment_parcels,     dependent: :destroy
-      has_many :shipment_customs_info
+      belongs_to :from_contact,         class_name: '::Refinery::Marketing::Contact'
+      belongs_to :from_address,         class_name: '::Refinery::Parcels::ShipmentAddress'
+      belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact'
+      belongs_to :to_address,           class_name: '::Refinery::Parcels::ShipmentAddress'
+      belongs_to :created_by,           class_name: '::Refinery::User'
+      belongs_to :assigned_to,          class_name: '::Refinery::User'
+      has_many :shipment_parcels,       dependent: :destroy
+      has_many :shipment_customs_items, dependent: :destroy
 
       attr_writer :from_contact_name, :to_contact_name, :assign_to
 
@@ -24,6 +24,8 @@ module Refinery
 
       delegate :name, to: :from_contact,  prefix: true, allow_nil: true
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
+      delegate :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email, to: :from_address, prefix: true, allow_nil: true
+      delegate :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email, to: :to_address,   prefix: true, allow_nil: true
 
       before_validation do
         # Makes sure there is always address object present to assign values to.

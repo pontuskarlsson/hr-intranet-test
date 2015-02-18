@@ -6,6 +6,8 @@ module Refinery
       validates :name,          presence: true
       validates :easy_post_id,  uniqueness: true, allow_blank: true
 
+      attr_accessible :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email
+
       def assign_from_contact(contact)
         self.name     = contact.name
         self.street1  = contact.address

@@ -1,0 +1,107 @@
+<% content_for :body do %>
+  <%= form_for @shipment_address_updater, url: refinery.parcels_shipment_path(@shipment) do |f| %>
+    <div class="row">
+      <div class="medium-6 columns">
+        <h2>From</h2>
+        <p>
+          <%= f.label :from_address_name %>
+          <%= f.text_field :from_address_name %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_street1 %>
+          <%= f.text_field :from_address_street1 %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_street2 %>
+          <%= f.text_field :from_address_street2 %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_city %>
+          <%= f.text_field :from_address_city %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_zip %>
+          <%= f.text_field :from_address_zip %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_state %>
+          <%= f.text_field :from_address_state %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_country %>
+          <%= f.text_field :from_address_country %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_phone %>
+          <%= f.text_field :from_address_phone %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_email %>
+          <%= f.text_field :from_address_email %>
+        </p>
+      </div>
+
+      <div class="medium-6 columns">
+        <h2>To</h2>
+        <p>
+          <%= f.label :to_address_name %>
+          <%= f.text_field :to_address_name %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_street1 %>
+          <%= f.text_field :to_address_street1 %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_street2 %>
+          <%= f.text_field :to_address_street2 %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_city %>
+          <%= f.text_field :to_address_city %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_zip %>
+          <%= f.text_field :to_address_zip %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_state %>
+          <%= f.text_field :to_address_state %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_country %>
+          <%= f.text_field :to_address_country %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_phone %>
+          <%= f.text_field :to_address_phone %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_email %>
+          <%= f.text_field :to_address_email %>
+        </p>
+      </div>
+    </div>
+
+    <%= f.submit t('.save') %>
+    <%= link_to t('.cancel'), refinery.parcels_shipment_path(@shipment) %>
+
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

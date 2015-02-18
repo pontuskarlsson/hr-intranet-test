@@ -1,8 +1,9 @@
 module Refinery
   module Parcels
-    class ShipmentsController < ::ApplicationController
+    class ShipmentParcelsController < ::ApplicationController
       before_filter :authenticate_refinery_user!
-      before_filter :find_all_shipments
+      before_filter :find_shipment
+      before_filter :find_shipment_parcel, only: [:show, :update]
       before_filter :find_page
 
       def index
@@ -31,21 +32,10 @@ module Refinery
         present(@page)
       end
 
-      def edit
-        @shipment = Shipment.find(params[:id])
-        @shipment_address_updater = Refinery::Parcels::ShipmentAddressUpdater.new(shipment: @shipment)
-
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @parcel in the line below:
-        present(@page)
-      end
-
       def update
-        @shipment = Shipment.find(params[:id])
-        @shipment_address_updater = Refinery::Parcels::ShipmentAddressUpdater.new({ shipment: @shipment }.reverse_merge(params[:shipment_address_updater] || {}))
-        if @shipment_address_updater.save
-          flash[:notice] = 'Shipment successfully updated.'
-          redirect_to refinery.parcels_shipment_path(@shipment)
+        if @parcel.update_attributes(params[:parcel])
+          flash[:notice] = 'Parcel successfully updated.'
+          redirect_to refinery.parcels_parcels_path
         else
           present(@page)
           render action: :index
@@ -54,8 +44,12 @@ module Refinery
 
       protected
 
-      def find_all_shipments
-        @shipments = Shipment.includes(:from_contact, :to_contact, :assigned_to).order('updated_at DESC, id DESC')
+      def find_shipment
+        @shipment = Shipment.find(params[:shipment_id])
+      end
+
+      def find_shipment_parcel
+        @shipment_parcel = @shipment.shipment_parcels.find(params[:id])
       end
 
       def find_page

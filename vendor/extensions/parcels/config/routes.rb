@@ -8,7 +8,8 @@ Refinery::Core::Engine.routes.draw do
       end
     end
 
-    resources :shipments, :only => [:index, :create, :show, :update] do
+    resources :shipments, :only => [:index, :create, :show, :edit, :update] do
+      resources :shipment_parcels, path: 'parcels', as: :parcels
     end
   end
 
@@ -16,6 +17,17 @@ Refinery::Core::Engine.routes.draw do
   namespace :parcels, :path => '' do
     namespace :admin, :path => "#{Refinery::Core.backend_route}/parcels" do
       resources :parcels, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+      resources :shipments, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :shipment_parcels, :except => :show do
         collection do
           post :update_positions
         end

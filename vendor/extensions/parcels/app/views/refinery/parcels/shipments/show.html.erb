@@ -4,33 +4,33 @@
       <h2>From</h2>
 
       <p>
-        <% if @shipment.from_address.name.present? %>
-          <%= @shipment.from_address.name %>
+        <% if @shipment.from_address_name.present? %>
+          <%= @shipment.from_address_name %>
         <% end %>
 
-        <% if @shipment.from_address.street1.present? %>
-          <br/><%= @shipment.from_address.street1 %>
+        <% if @shipment.from_address_street1.present? %>
+          <br/><%= @shipment.from_address_street1 %>
         <% end %>
-        <% if @shipment.from_address.street2.present? %>
-          <br/><%= @shipment.from_address.street2 %>
+        <% if @shipment.from_address_street2.present? %>
+          <br/><%= @shipment.from_address_street2 %>
         <% end %>
-        <% if @shipment.from_address.city.present? %>
-          <br/><%= @shipment.from_address.city %>
+        <% if @shipment.from_address_city.present? %>
+          <br/><%= @shipment.from_address_city %>
         <% end %>
-        <% if @shipment.from_address.state.present? %>
-          <br/><%= @shipment.from_address.state %>
+        <% if @shipment.from_address_state.present? %>
+          <br/><%= @shipment.from_address_state %>
         <% end %>
-        <% if @shipment.from_address.zip.present? %>
-          <br/><%= @shipment.from_address.zip %>
+        <% if @shipment.from_address_zip.present? %>
+          <br/><%= @shipment.from_address_zip %>
         <% end %>
-        <% if @shipment.from_address.country.present? %>
-          <br/><%= @shipment.from_address.country %>
+        <% if @shipment.from_address_country.present? %>
+          <br/><%= @shipment.from_address_country %>
         <% end %>
-        <% if @shipment.from_address.phone.present? %>
-          <br/><%= @shipment.from_address.phone %>
+        <% if @shipment.from_address_phone.present? %>
+          <br/><%= @shipment.from_address_phone %>
         <% end %>
-        <% if @shipment.from_address.email.present? %>
-          <br/><%= @shipment.from_address.email %>
+        <% if @shipment.from_address_email.present? %>
+          <br/><%= @shipment.from_address_email %>
         <% end %>
       </p>
     </div>
@@ -39,37 +39,39 @@
       <h2>To</h2>
 
       <p>
-        <% if @shipment.to_address.name.present? %>
-          <%= @shipment.to_address.name %>
+        <% if @shipment.to_address_name.present? %>
+          <%= @shipment.to_address_name %>
         <% end %>
 
-        <% if @shipment.to_address.street1.present? %>
-          <br/><%= @shipment.to_address.street1 %>
+        <% if @shipment.to_address_street1.present? %>
+          <br/><%= @shipment.to_address_street1 %>
         <% end %>
-        <% if @shipment.to_address.street2.present? %>
-          <br/><%= @shipment.to_address.street2 %>
+        <% if @shipment.to_address_street2.present? %>
+          <br/><%= @shipment.to_address_street2 %>
         <% end %>
-        <% if @shipment.to_address.city.present? %>
-          <br/><%= @shipment.to_address.city %>
+        <% if @shipment.to_address_city.present? %>
+          <br/><%= @shipment.to_address_city %>
         <% end %>
-        <% if @shipment.to_address.state.present? %>
-          <br/><%= @shipment.to_address.state %>
+        <% if @shipment.to_address_state.present? %>
+          <br/><%= @shipment.to_address_state %>
         <% end %>
-        <% if @shipment.to_address.zip.present? %>
-          <br/><%= @shipment.to_address.zip %>
+        <% if @shipment.to_address_zip.present? %>
+          <br/><%= @shipment.to_address_zip %>
         <% end %>
-        <% if @shipment.to_address.country.present? %>
-          <br/><%= @shipment.to_address.country %>
+        <% if @shipment.to_address_country.present? %>
+          <br/><%= @shipment.to_address_country %>
         <% end %>
-        <% if @shipment.to_address.phone.present? %>
-          <br/><%= @shipment.to_address.phone %>
+        <% if @shipment.to_address_phone.present? %>
+          <br/><%= @shipment.to_address_phone %>
         <% end %>
-        <% if @shipment.to_address.email.present? %>
-          <br/><%= @shipment.to_address.email %>
+        <% if @shipment.to_address_email.present? %>
+          <br/><%= @shipment.to_address_email %>
         <% end %>
       </p>
     </div>
   </div>
+
+  <%= link_to t('.edit_addresses'), refinery.edit_parcels_shipment_path(@shipment) %>
 
   <dl class="tabs" data-tab>
     <dd class="active"><a href="#panel-parcels">Parcels</a></dd>
@@ -102,12 +104,14 @@
       </div>
     <% end %>
     <div class="content" id="panel-add-custom">
-      <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels %>
+      <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels_path(@shipment) do %>
+
+      <% end %>
     </div>
   </div>
 
   <% if @shipment.from_address.country != @shipment.to_address.country %>
-    <%= render 'customs_info', shipment: @shipment %>
+    <%= render 'customs_items', shipment: @shipment %>
   <% end %>
 
 <% end %>

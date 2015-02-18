@@ -5,6 +5,11 @@ en:
         title: Parcels
     parcels:
       admin:
+        shared:
+          links:
+            manage_parcels: Manage Parcels
+            manage_shipments: Manage Shipments
+            manage_shipment_parcels: Manage Shipment Parcels
         parcels:
           actions:
             create_new: Add New Parcel
@@ -22,6 +27,12 @@ en:
       parcels:
         show:
           other: Other Parcels
+      shipments:
+        edit:
+          cancel: Cancel
+          save: Save
+        show:
+          edit_addresses: Edit Addresses
   activerecord:
     attributes:
       'refinery/parcels/parcel':
@@ -33,3 +44,24 @@ en:
         to_name: To Name
         to_user_id: To User
         shipping_document_id: Shipping Document
+  activemodel:
+    attributes:
+      'refinery/parcels/shipment_address_updater':
+        from_address_name: Name
+        from_address_street1: Street 1
+        from_address_street2: Street 2
+        from_address_city: City
+        from_address_zip: Zip
+        from_address_state: State
+        from_address_country: Country
+        from_address_phone: Phone
+        from_address_email: Email
+        to_address_name: Name
+        to_address_street1: Street 1
+        to_address_street2: Street 2
+        to_address_city: City
+        to_address_zip: Zip
+        to_address_state: State
+        to_address_country: Country
+        to_address_phone: Phone
+        to_address_email: Email

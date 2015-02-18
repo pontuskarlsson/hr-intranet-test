@@ -8,6 +8,8 @@
     <%= link_to t('.create_new'), refinery.new_parcels_admin_parcel_path,
                  :class => "add_icon" %>
   </li>
+  <%= render '/refinery/parcels/admin/shared/links' %>
+
 <% if !searching? && ::Refinery::Parcels::Admin::ParcelsController.sortable? && ::Refinery::Parcels::Parcel.many? %>
   <li>
     <%= link_to t('.reorder', :what => "Parcels"),

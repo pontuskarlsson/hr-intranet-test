@@ -19,6 +19,7 @@ PATH
       easypost (~> 2.1.0)
       refinerycms-core (~> 2.1.2)
       refinerycms-marketing
+      trans_forms
     refinerycms-sales_orders (1.0)
       refinerycms-core (~> 2.1.2)
     refinerycms-store (1.0)

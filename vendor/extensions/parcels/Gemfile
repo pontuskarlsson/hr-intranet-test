@@ -5,6 +5,8 @@ gemspec
 gem 'refinerycms', '~> 2.1.0'
 gem 'refinerycms-marketing', git: 'https://github.com/dannemanne/refinerycms-marketing.git'
 
+gem 'trans_forms', git: 'https://github.com/dannemanne/trans_forms'
+
 # Database Configuration
 platforms :jruby do
   gem 'activerecord-jdbcsqlite3-adapter'

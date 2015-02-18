@@ -30,10 +30,68 @@ describe Refinery do
 
             fill_in 'From', with: 'Lisa'
             fill_in 'Address To', with: 'Ted'
+            fill_in 'Courier', with: Refinery::Parcels::Shipment::COURIERS.first
             click_button 'Add'
 
-            page.should have_content('You have registered Sick Leave today')
+            page.should have_content('Lisa')
+            page.should have_content('Ted')
             expect( Refinery::Parcels::Shipment.count ).to eq 1
+          end
+
+        end
+      end
+
+      describe 'updating addresses of Shipment' do
+        context 'when entering new address information' do
+          before(:each) do
+            FactoryGirl.create(:shipment)
+          end
+          it 'can update Shipment addresses' do
+            visit refinery.parcels_shipment_path(Refinery::Parcels::Shipment.first)
+
+            click_link 'Edit Addresses'
+
+            fill_in 'shipment_address_updater[from_address_name]',    with: 'Ken'
+            fill_in 'shipment_address_updater[from_address_street1]', with: '1 First Road'
+            fill_in 'shipment_address_updater[from_address_street2]', with: 'Flat A'
+            fill_in 'shipment_address_updater[from_address_city]',    with: 'First City'
+            fill_in 'shipment_address_updater[from_address_zip]',     with: '11111'
+            fill_in 'shipment_address_updater[from_address_state]',   with: 'First State'
+            fill_in 'shipment_address_updater[from_address_country]', with: 'First Country'
+            fill_in 'shipment_address_updater[from_address_phone]',   with: '555-First'
+            fill_in 'shipment_address_updater[from_address_email]',   with: 'first@email.com'
+
+            fill_in 'shipment_address_updater[to_address_name]',      with: 'Barbie'
+            fill_in 'shipment_address_updater[to_address_street1]',   with: '1 Second Road'
+            fill_in 'shipment_address_updater[to_address_street2]',   with: 'Flat B'
+            fill_in 'shipment_address_updater[to_address_city]',      with: 'Second City'
+            fill_in 'shipment_address_updater[to_address_zip]',       with: '22222'
+            fill_in 'shipment_address_updater[to_address_state]',     with: 'Second State'
+            fill_in 'shipment_address_updater[to_address_country]',   with: 'Second Country'
+            fill_in 'shipment_address_updater[to_address_phone]',     with: '555-Second'
+            fill_in 'shipment_address_updater[to_address_email]',     with: 'second@email.com'
+            
+            click_button 'Save'
+
+            page.should have_content('Ken')
+            page.should have_content('1 First Road')
+            page.should have_content('Flat A')
+            page.should have_content('First City')
+            page.should have_content('11111')
+            page.should have_content('First State')
+            page.should have_content('First Country')
+            page.should have_content('555-First')
+            page.should have_content('first@email.com')
+
+            page.should have_content('Barbie')
+            page.should have_content('1 Second Road')
+            page.should have_content('Flat B')
+            page.should have_content('Second City')
+            page.should have_content('22222')
+            page.should have_content('Second State')
+            page.should have_content('Second Country')
+            page.should have_content('555-Second')
+            page.should have_content('second@email.com')
           end
 
         end

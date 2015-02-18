@@ -28,8 +28,8 @@
       <tbody>
       <% @shipments.each do |shipment| %>
         <tr>
-          <td><%= shipment.from_contact_name %></td>
-          <td><%= shipment.to_contact_name %></td>
+          <td><%= shipment.from_address_name %></td>
+          <td><%= shipment.to_address_name %></td>
           <td><%= shipment.courier %></td>
           <td><%= shipment.assigned_to.try(:"#{ ::Refinery::Parcels.config.user_attribute_reference }") %></td>
         </tr>
