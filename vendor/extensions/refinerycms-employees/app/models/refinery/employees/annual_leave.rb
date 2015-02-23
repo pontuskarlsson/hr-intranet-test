@@ -39,7 +39,7 @@ module Refinery
         event.title = "AL: #{ employee.full_name }"
         event.excerpt = 'Annual Leave'
         event.starts_at = start_date.beginning_of_day  + (start_half_day ? 14.hours : 0)
-        event.ends_at =  (end_half_day   ? end_date.beginning_of_day + 14.hours : end_date.end_of_day) if end_date.present?
+        event.ends_at = end_date.present? ? (end_half_day   ? end_date.beginning_of_day + 14.hours : end_date.end_of_day) : nil
 
         event.save!
         self.event_id = event.id # Not getting associated without this line...
