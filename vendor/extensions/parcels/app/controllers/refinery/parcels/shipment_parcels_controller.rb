@@ -14,14 +14,13 @@ module Refinery
       end
 
       def create
-        @shipment = current_refinery_user.created_shipments.build(params[:shipment])
-        if @shipment.save
-          flash[:notice] = 'Shipment successfully added.'
-          redirect_to refinery.parcels_shipment_path(@shipment)
+        @shipment_parcel = @shipment.shipment_parcels.build(params[:shipment_parcel])
+        if @shipment_parcel.save
+          flash[:notice] = 'Parcel successfully added to Shipment.'
         else
-          present(@page)
-          render action: :index
+          flash[:alert] = 'Parcel could not be added.'
         end
+        redirect_to refinery.parcels_shipment_path(@shipment)
       end
 
       def show

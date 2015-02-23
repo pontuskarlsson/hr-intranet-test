@@ -32,6 +32,7 @@ en:
           cancel: Cancel
           save: Save
         show:
+          add: Add
           edit_addresses: Edit Addresses
   activerecord:
     attributes:

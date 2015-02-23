@@ -97,6 +97,25 @@ describe Refinery do
         end
       end
 
+      describe 'adding ShipmentParcels to Shipment' do
+        context 'when entering information for a Custom Sized Parcel' do
+          before { FactoryGirl.create(:shipment) }
+
+          it 'can add a new parcel' do
+            visit refinery.parcels_shipment_path(Refinery::Parcels::Shipment.first)
+
+            fill_in 'shipment_parcel[length]',    with: 20
+            fill_in 'shipment_parcel[width]',     with: 10
+            fill_in 'shipment_parcel[height]',    with: 5
+            fill_in 'shipment_parcel[weight]',    with: 2
+
+            click_button 'Add'
+
+            Refinery::Parcels::ShipmentParcel.count.should eq 1
+          end
+        end
+      end
+
     end
   end
 end

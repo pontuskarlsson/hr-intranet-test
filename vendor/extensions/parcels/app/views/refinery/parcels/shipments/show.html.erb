@@ -104,8 +104,32 @@
       </div>
     <% end %>
     <div class="content" id="panel-add-custom">
-      <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels_path(@shipment) do %>
+      <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels_path(@shipment) do |f| %>
+        <div class="row">
+          <div class="medium-4 columns">
+            <p>
+              <%= f.label :length %>
+              <%= f.text_field :length %>
+            </p>
 
+            <p>
+              <%= f.label :width %>
+              <%= f.text_field :width %>
+            </p>
+
+            <p>
+              <%= f.label :height %>
+              <%= f.text_field :height %>
+            </p>
+
+            <p>
+              <%= f.label :weight %>
+              <%= f.text_field :weight %>
+            </p>
+
+            <%= f.submit t('.add') %>
+          </div>
+        </div>
       <% end %>
     </div>
   </div>
