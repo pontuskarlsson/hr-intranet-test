@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150223090830) do
+ActiveRecord::Schema.define(:version => 20150224031545) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -321,9 +321,10 @@ ActiveRecord::Schema.define(:version => 20150223090830) do
     t.string   "id_no"
     t.string   "title"
     t.integer  "position"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
     t.string   "xero_guid"
+    t.text     "default_tracking_options"
   end
 
   add_index "refinery_employees", ["employee_no"], :name => "index_refinery_employees_on_employee_no"
@@ -953,15 +954,16 @@ ActiveRecord::Schema.define(:version => 20150223090830) do
     t.integer  "xero_account_id"
     t.string   "item_code"
     t.string   "description"
-    t.decimal  "quantity",        :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal  "unit_amount",     :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "quantity",                        :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "unit_amount",                     :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.string   "account_code"
     t.string   "tax_type"
-    t.decimal  "tax_amount",      :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal  "line_amount",     :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.decimal  "discount_rate",   :precision => 10, :scale => 2, :default => 0.0, :null => false
-    t.datetime "created_at",                                                      :null => false
-    t.datetime "updated_at",                                                      :null => false
+    t.decimal  "tax_amount",                      :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "line_amount",                     :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "discount_rate",                   :precision => 10, :scale => 2, :default => 0.0, :null => false
+    t.datetime "created_at",                                                                      :null => false
+    t.datetime "updated_at",                                                                      :null => false
+    t.text     "tracking_categories_and_options"
   end
 
   add_index "refinery_xero_line_items", ["xero_account_id"], :name => "index_refinery_xero_line_items_on_xero_account_id"
@@ -992,6 +994,19 @@ ActiveRecord::Schema.define(:version => 20150223090830) do
   add_index "refinery_xero_receipts", ["updated_date_utc"], :name => "index_refinery_xero_receipts_on_updated_date_utc"
   add_index "refinery_xero_receipts", ["xero_contact_id"], :name => "index_refinery_xero_receipts_on_xero_contact_id"
   add_index "refinery_xero_receipts", ["xero_expense_claim_id"], :name => "index_refinery_xero_receipts_on_xero_expense_claim_id"
+
+  create_table "refinery_xero_tracking_categories", :force => true do |t|
+    t.string   "guid"
+    t.string   "name"
+    t.string   "status"
+    t.text     "options"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "refinery_xero_tracking_categories", ["guid"], :name => "index_refinery_xero_tracking_categories_on_guid"
+  add_index "refinery_xero_tracking_categories", ["name"], :name => "index_refinery_xero_tracking_categories_on_name"
+  add_index "refinery_xero_tracking_categories", ["status"], :name => "index_refinery_xero_tracking_categories_on_status"
 
   create_table "seo_meta", :force => true do |t|
     t.integer  "seo_meta_id"

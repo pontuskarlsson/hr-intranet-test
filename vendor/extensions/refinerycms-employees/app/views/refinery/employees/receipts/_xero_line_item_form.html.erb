@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="medium-4 columns">
+    <%= f.text_field :description %>
+  </div>
+  <div class="medium-3 columns">
+    <%= f.select :xero_account_id, options_from_collection_for_select(accounts, :id, :code_and_name, f.object.xero_account_id.present? ? f.object.xero_account_id : selected_account.try(:id)) %>
+  </div>
+  <div class="medium-2 columns">
+    <div class="row collapse">
+      <div class="small-9 columns">
+        <%= f.number_field :quantity, step: 'any' %>
+      </div>
+      <div class="small-3 columns">
+        <span class="postfix">Items</span>
+      </div>
+    </div>
+  </div>
+  <div class="medium-2 columns">
+    <div class="row collapse">
+      <div class="small-9 columns">
+        <%= f.number_field :unit_amount, step: 'any' %>
+      </div>
+      <div class="small-3 columns">
+        <span class="postfix">HKD</span>
+      </div>
+    </div>
+  </div>
+  <div class="medium-1 columns">
+    <% if f.object.persisted? %>
+      <%= f.check_box :_destroy %>X
+    <% else %>
+      <%= link_to 'X', '#', class: 'js_remove_line_item' %>
+    <% end %>
+  </div>
+</div>
+<% if active_tracking_categories.any? %>
+  <div class="row">
+    <% active_tracking_categories.each do |tracking_category| %>
+      <div class="medium-4 columns">
+        <div class="row collapse">
+          <div class="small-6 columns">
+            <span class="prefix"><%= tracking_category.name %></span>
+          </div>
+          <div class="small-6 columns">
+            <%= select_tag "#{f.object_name}[tracking_categories_and_options][#{ tracking_category.guid }]", options_for_select(tracking_category.options.map { |o| [o[:name], o[:guid]] }, f.object.persisted? ? f.object.tracking_categories_and_options[tracking_category.guid] : xero_receipt.xero_expense_claim.employee.default_tracking_options[tracking_category.guid]), include_blank: true %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

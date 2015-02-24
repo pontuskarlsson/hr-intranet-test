@@ -4,6 +4,33 @@
   <h2><%= @xero_expense_claim.description %></h2>
   <h5>For: <%= @xero_expense_claim.employee.full_name %></h5>
 
+  <div class="row">
+    <div class="medium-3 columns">
+      <h5>Status</h5>
+      <p><%= @xero_expense_claim.status %></p>
+    </div>
+
+    <div class="medium-2 columns">
+      <h5>Total</h5>
+      <p><%= number_to_currency @xero_expense_claim.total, unit: '$HK ' %></p>
+    </div>
+
+    <div class="medium-2 columns">
+      <h5>Amount Due</h5>
+      <p><%= number_to_currency @xero_expense_claim.amount_due, unit: '$HK ' %></p>
+    </div>
+
+    <div class="medium-2 columns">
+      <h5>Amount Paid</h5>
+      <p><%= number_to_currency @xero_expense_claim.amount_paid, unit: '$HK ' %></p>
+    </div>
+
+    <div class="medium-3 columns">
+      <h5>Payment Due Date</h5>
+      <p><%= @xero_expense_claim.payment_due_date %></p>
+    </div>
+  </div>
+
   <table class="js_receipts_data_table">
     <thead>
     <tr>
@@ -38,10 +65,10 @@
           <% end %>
         </td>
         <td><%= xero_receipt.date %></td>
-        <td><%= xero_receipt.created_at %></td>
+        <td><%= xero_receipt.created_at.to_date %></td>
         <td><%= xero_receipt.no_of_items %></td>
         <td><%= xero_receipt.status %></td>
-        <td><%= xero_receipt.total %> HKD</td>
+        <td><%= number_to_currency xero_receipt.total, unit: 'HK$ ' %></td>
       </tr>
     <% end %>
     </tbody>

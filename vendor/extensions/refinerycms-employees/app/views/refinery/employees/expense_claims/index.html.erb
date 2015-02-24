@@ -15,7 +15,7 @@
       <th>Total</th>
     </tr>
 
-    <% if (expense_claims = @xero_expense_claims.not_submitted).any? %>
+    <% if (expense_claims = @xero_expense_claims.not_submitted + @xero_expense_claims.pending_in_xero + @xero_expense_claims.paid).any? %>
       <% expense_claims.each do |expense_claim| %>
 
         <tr>
@@ -23,86 +23,19 @@
           <td><%= expense_claim.status %></td>
           <td><%= expense_claim.updated_at.strftime('%-d %b, %Y') %></td>
           <td><%= expense_claim.payment_due_date %></td>
-          <td><%= expense_claim.amount_paid %></td>
-          <td><%= expense_claim.amount_due %></td>
-          <td><%= expense_claim.total %></td>
+          <td><%= number_to_currency expense_claim.amount_paid, unit: 'HK$ ' %></td>
+          <td><%= number_to_currency expense_claim.amount_due, unit: 'HK$ ' %></td>
+          <td><%= number_to_currency expense_claim.total, unit: 'HK$ ' %></td>
         </tr>
 
       <% end %>
     <% else %>
       <tr>
-        <td colspan="7" class="italic">You have no non-submitted Expense Claims registered.</td>
+        <td colspan="7" class="italic">You have no Expense Claims registered.</td>
       </tr>
     <% end %>
   </table>
 
-
-
-  <h4>Pending Expense Claims</h4>
-
-  <table>
-    <tr>
-      <th>Description</th>
-      <th>Status</th>
-      <th>Updated At</th>
-      <th>Payment Due Date</th>
-      <th>Amount Paid</th>
-      <th>Amount Due</th>
-      <th>Total</th>
-    </tr>
-    <% if (expense_claims = @xero_expense_claims.pending_in_xero).any? %>
-      <% expense_claims.each do |expense_claim| %>
-
-        <tr>
-          <td><%= link_to expense_claim.description, refinery.employees_expense_claim_path(expense_claim) %></td>
-          <td><%= expense_claim.status %></td>
-          <td><%= expense_claim.updated_date_utc.try(:strftime, '%-d %b, %Y') %></td>
-          <td><%= expense_claim.payment_due_date %></td>
-          <td><%= expense_claim.amount_paid %></td>
-          <td><%= expense_claim.amount_due %></td>
-          <td><%= expense_claim.total %></td>
-        </tr>
-
-      <% end %>
-    <% else %>
-      <tr>
-        <td colspan="7" class="italic">You have no submitted Expense Claims registered.</td>
-      </tr>
-    <% end %>
-  </table>
-
-  <h4>Paid Expense Claims</h4>
-
-  <table>
-    <tr>
-      <th>Description</th>
-      <th>Status</th>
-      <th>Updated At</th>
-      <th>Payment Due Date</th>
-      <th>Amount Paid</th>
-      <th>Amount Due</th>
-      <th>Total</th>
-    </tr>
-    <% if (expense_claims = @xero_expense_claims.paid).any? %>
-      <% expense_claims.each do |expense_claim| %>
-
-        <tr>
-          <td><%= link_to expense_claim.description, refinery.employees_expense_claim_path(expense_claim) %></td>
-          <td><%= expense_claim.status %></td>
-          <td><%= expense_claim.updated_date_utc.try(:strftime, '%-d %b, %Y') %></td>
-          <td><%= expense_claim.payment_due_date %></td>
-          <td><%= expense_claim.amount_paid %></td>
-          <td><%= expense_claim.amount_due %></td>
-          <td><%= expense_claim.total %></td>
-        </tr>
-
-      <% end %>
-    <% else %>
-      <tr>
-        <td colspan="7" class="italic">You have no submitted Expense Claims registered.</td>
-      </tr>
-    <% end %>
-  </table>
 
   <h4>Other's Expense Claims</h4>
 
@@ -123,7 +56,7 @@
           <td><%= link_to expense_claim.description, refinery.employees_expense_claim_path(expense_claim) %></td>
           <td><%= expense_claim.status %></td>
           <td><%= expense_claim.updated_at.strftime('%-d %b, %Y') %></td>
-          <td><%= expense_claim.total %></td>
+          <td><%= number_to_currency expense_claim.total, unit: 'HK$ ' %></td>
         </tr>
 
       <% end %>

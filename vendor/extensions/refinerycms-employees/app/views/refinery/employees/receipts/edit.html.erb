@@ -1,3 +1,10 @@
 <h1>Edit Receipt</h1>
 
-<%= render 'form', xero_receipt: @xero_receipt %>
+<%= form_for @xero_receipt, url: refinery.employees_expense_claim_receipt_path(@xero_receipt.xero_expense_claim, @xero_receipt) do |f| %>
+
+  <%= render 'form', f: f %>
+
+  <p><%= f.submit 'Save', class: 'button round' %></p>
+<% end %>
+
+<p><%= link_to 'Cancel', refinery.employees_expense_claim_receipt_path(@xero_receipt.xero_expense_claim, @xero_receipt) %></p>

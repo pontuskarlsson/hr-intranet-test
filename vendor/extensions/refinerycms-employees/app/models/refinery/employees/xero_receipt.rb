@@ -23,7 +23,7 @@ module Refinery
       validates :xero_contact_id,         presence: true
       validates :employee_id,             presence: true
       validates :status,                  inclusion: STATUSES
-      validates :total,                   numericality: { greater_than: 0 }
+      validates :total,                   numericality: { greater_than_or_equal_to: 0 }
 
       before_validation do
         self.status ||= STATUS_DRAFT

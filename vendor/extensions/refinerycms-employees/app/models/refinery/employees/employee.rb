@@ -12,8 +12,11 @@ module Refinery
       has_many :xero_expense_claims,  dependent: :destroy
       has_many :xero_receipts,        dependent: :destroy
 
+      serialize :default_tracking_options, Hash
+
       attr_writer :user_name, :xero_guid_field
-      attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position, :xero_guid, :xero_guid_field, :user_name
+      attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position,
+                      :xero_guid, :xero_guid_field, :user_name, :default_tracking_options
 
       validates :employee_no, presence: true, uniqueness: true
       validates :full_name,   presence: true

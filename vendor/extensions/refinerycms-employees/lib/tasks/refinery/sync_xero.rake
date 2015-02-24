@@ -31,9 +31,45 @@ namespace :hr_intranet do
 
         end
       rescue ActiveRecord::ActiveRecordError => e
-        ::ErrorMailer.error_email(e).deliver_now
+        ::ErrorMailer.error_email(e).deliver
+
+      rescue Xeroizer::ObjectNotFound => e
+        ::ErrorMailer.error_email(e).deliver
       end
 
+    end
+
+    puts 'Synchronising Tracking Categories'
+    tracking_categories = client.TrackingCategory.all
+    # If a XeroTrackingCategory is Active but not found in Xero, change it to Archived
+    Refinery::Employees::XeroTrackingCategory.active.where('guid NOT IN (?)', tracking_categories.map(&:tracking_category_id) << -1).each do |xero_expense_claim|
+      xero_expense_claim.status = Refinery::Employees::XeroTrackingCategory::STATUS_ARCHIVED
+      xero_expense_claim.save
+    end
+
+    # Start with updating the archived Categories, that way we avoid triggering validation
+    # errors by trying to activate a third Category before the Category it replaced has
+    # been archived
+    tracking_categories.select { |tc|
+      tc.status ==  Refinery::Employees::XeroTrackingCategory::STATUS_ARCHIVED
+    }.each do |tracking_category|
+      xero_expense_claim = Refinery::Employees::XeroTrackingCategory.find_or_initialize_by_guid(tracking_category.tracking_category_id)
+      xero_expense_claim.name = tracking_category.name
+      xero_expense_claim.status = tracking_category.status
+      xero_expense_claim.options = tracking_category.options.map { |option| { guid: option.tracking_option_id, name: option.name } }
+      xero_expense_claim.save
+    end
+
+    # Now that we have archived everything that should be, we can potentially activate
+    # additional categories
+    tracking_categories.select { |tc|
+      tc.status ==  Refinery::Employees::XeroTrackingCategory::STATUS_ACTIVE
+    }.each do |tracking_category|
+      xero_expense_claim = Refinery::Employees::XeroTrackingCategory.find_or_initialize_by_guid(tracking_category.tracking_category_id)
+      xero_expense_claim.name = tracking_category.name
+      xero_expense_claim.status = tracking_category.status
+      xero_expense_claim.options = tracking_category.options.map { |option| { guid: option.tracking_option_id, name: option.name } }
+      xero_expense_claim.save
     end
 
     puts 'Done Synchronising'

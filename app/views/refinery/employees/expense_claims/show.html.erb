@@ -4,6 +4,33 @@
   <h2><%= @xero_expense_claim.description %></h2>
   <h5>For: <%= @xero_expense_claim.employee.full_name %></h5>
 
+  <div class="row">
+    <div class="medium-3 columns">
+      <h5>Status</h5>
+      <p><%= @xero_expense_claim.status %></p>
+    </div>
+
+    <div class="medium-2 columns">
+      <h5>Total</h5>
+      <p><%= number_to_currency @xero_expense_claim.total, unit: '$HK ' %></p>
+    </div>
+
+    <div class="medium-2 columns">
+      <h5>Amount Due</h5>
+      <p><%= number_to_currency @xero_expense_claim.amount_due, unit: '$HK ' %></p>
+    </div>
+
+    <div class="medium-2 columns">
+      <h5>Amount Paid</h5>
+      <p><%= number_to_currency @xero_expense_claim.amount_paid, unit: '$HK ' %></p>
+    </div>
+
+    <div class="medium-3 columns">
+      <h5>Payment Due Date</h5>
+      <p><%= @xero_expense_claim.payment_due_date %></p>
+    </div>
+  </div>
+
   <table class="js_receipts_data_table">
     <thead>
     <tr>
@@ -122,7 +149,7 @@
           } },
           { data: "no_of_items" },
           { data: "status" },
-          { data: "total", "render": function(data, type, row){ return data + ' HKD'; } }
+          { data: "total", "render": function(data, type, row){ return "$HK "+parseInt(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } }
         ]
       });
     });

@@ -8,8 +8,7 @@ do ($ = jQuery, _ = @._) ->
     lineItemTmpl = $('.js_line_item_tmpl').html()
 
     $('.js_add_line_item').click ->
-      $row = $("<div class=\"row\">#{lineItemTmpl}</div>").prependTo('.js_new_line_anchor')
+      $("<div class=\"js_line_item line-item\">#{lineItemTmpl}</div>").insertBefore('.js_line_item_tmpl')
 
     $('body').on 'click', '.js_remove_line_item', (event) ->
-      $row = $(event.target).parents('.row').first()
-      $row.remove()
+      $(event.target).parents('.js_line_item').first().remove()

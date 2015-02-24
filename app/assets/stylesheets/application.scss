@@ -221,6 +221,16 @@ ul.latest-news {
     }
 }
 
+.receipt-line-items {
+    .line-item {
+        padding-top: 1rem;
+
+        &:nth-child(even) {
+            background: #eef;
+        }
+    }
+}
+
 
 /* Brands */
 .brands {

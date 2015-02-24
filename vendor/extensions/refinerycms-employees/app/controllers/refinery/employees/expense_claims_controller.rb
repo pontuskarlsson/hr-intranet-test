@@ -19,6 +19,7 @@ module Refinery
       def create
         @xero_expense_claim = current_refinery_user.xero_expense_claims.build(params[:xero_expense_claim])
         if @xero_expense_claim.save
+          flash[:notice] = "Expense Claim '#{ @xero_expense_claim.description }' has been Added"
           redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
         else
           present(@page)
@@ -115,12 +116,14 @@ module Refinery
 
         true
 
-      rescue ActiveRecord::StandardError => e
+      rescue ::StandardError => e
         flash[:alert] = 'Something went wrong while verifying Contacts'
         false
       end
 
       def batch_create_receipt
+        active_tracking_categories = ::Refinery::Employees::XeroTrackingCategory.active
+
         built_receipts = {}
         client.Receipt.batch_save do
           @xero_expense_claim.xero_receipts.each do |xero_receipt|
@@ -129,12 +132,23 @@ module Refinery
               receipt.contact = client.Contact.build(name: xero_receipt.xero_contact.name)
               receipt.user = client.User.build(user_id: xero_receipt.employee.xero_guid)
               xero_receipt.xero_line_items.each do |xero_line_item|
-                receipt.add_line_item(
+                line_item = receipt.add_line_item(
                     description:  xero_line_item.description,
                     unit_amount:  xero_line_item.unit_amount,
                     quantity:     xero_line_item.quantity,
                     account_code: xero_line_item.xero_account.code
                 )
+                active_tracking_categories.each do |xero_tracking_category|
+                  # First make sure that the line item has an option guid for the selected category, then also
+                  # make sure that the guid found can be matched to one of the options available for the category
+                  if (option_guid = xero_line_item.tracking_categories_and_options[xero_tracking_category.guid]).present? && (option = xero_tracking_category.options.detect { |o| o[:guid] == option_guid }).present?
+                    line_item.add_tracking(
+                        tracking_category_id: xero_tracking_category.guid,
+                        name: xero_tracking_category.name,
+                        option: option[:name]
+                    )
+                  end
+                end
               end
               built_receipts[receipt] = xero_receipt
             end
