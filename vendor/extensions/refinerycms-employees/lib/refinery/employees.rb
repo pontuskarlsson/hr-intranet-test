@@ -5,7 +5,7 @@ module Refinery
 
   module Employees
     require 'refinery/employees/engine'
-    require 'refinery/employees/user_employee_addon'
+    require 'refinery/employees/configuration'
     require 'refinery/employees/countries'
     require 'refinery/employees/xero_client'
 

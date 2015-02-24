@@ -1,4 +1,9 @@
 <%= link_to 'Back to Expense Claim', refinery.employees_expense_claim_path(@xero_receipt.xero_expense_claim), class: 'button tiny round' %>
+<% if @xero_receipt.editable? %>
+  <%= link_to 'Edit Receipt', refinery.edit_employees_expense_claim_receipt_path(@xero_receipt.xero_expense_claim, @xero_receipt), class: 'button tiny round' %>
+<% else %>
+  <%= link_to 'Cannot Edit Receipt', '#', class: 'button tiny round disabled' %>
+<% end %>
 
 <div class="row">
   <div class="large-8 columns">

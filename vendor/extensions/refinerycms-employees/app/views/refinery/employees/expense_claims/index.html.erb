@@ -31,7 +31,7 @@
       <% end %>
     <% else %>
       <tr>
-        <td colspan="6" class="italic">You have no non-submitted Expense Claims registered.</td>
+        <td colspan="7" class="italic">You have no non-submitted Expense Claims registered.</td>
       </tr>
     <% end %>
   </table>
@@ -66,7 +66,7 @@
       <% end %>
     <% else %>
       <tr>
-        <td colspan="6" class="italic">You have no submitted Expense Claims registered.</td>
+        <td colspan="7" class="italic">You have no submitted Expense Claims registered.</td>
       </tr>
     <% end %>
   </table>
@@ -99,7 +99,37 @@
       <% end %>
     <% else %>
       <tr>
-        <td colspan="6" class="italic">You have no submitted Expense Claims registered.</td>
+        <td colspan="7" class="italic">You have no submitted Expense Claims registered.</td>
+      </tr>
+    <% end %>
+  </table>
+
+  <h4>Other's Expense Claims</h4>
+
+  <table>
+    <tr>
+      <th>Employee</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Updated At</th>
+      <th>Total</th>
+    </tr>
+
+    <% if (expense_claims = current_refinery_user.xero_expense_claims.where('employee_id <> ?', current_refinery_user.employee.try(:id) || -1)).any? %>
+      <% expense_claims.each do |expense_claim| %>
+
+        <tr>
+          <td><%= expense_claim.employee.full_name %></td>
+          <td><%= link_to expense_claim.description, refinery.employees_expense_claim_path(expense_claim) %></td>
+          <td><%= expense_claim.status %></td>
+          <td><%= expense_claim.updated_at.strftime('%-d %b, %Y') %></td>
+          <td><%= expense_claim.total %></td>
+        </tr>
+
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="5" class="italic">You have not added any Expense Claims for other Employees.</td>
       </tr>
     <% end %>
   </table>

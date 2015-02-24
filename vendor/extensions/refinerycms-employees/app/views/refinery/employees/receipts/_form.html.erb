@@ -86,10 +86,24 @@
         <%= line_items_form.select :xero_account_id, options_from_collection_for_select(accounts, :id, :code_and_name) %>
       </div>
       <div class="medium-2 columns">
-        <%= line_items_form.text_field :quantity %>
+        <div class="row collapse">
+          <div class="small-9 columns">
+            <%= line_items_form.number_field :quantity, step: 'any' %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">Items</span>
+          </div>
+        </div>
       </div>
       <div class="medium-2 columns">
-        <%= line_items_form.text_field :unit_amount %>
+        <div class="row collapse">
+          <div class="small-9 columns">
+            <%= line_items_form.number_field :unit_amount, step: 'any' %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">HKD</span>
+          </div>
+        </div>
       </div>
       <div class="medium-1 columns">
         <%= link_to 'Remove', '#', class: 'js_remove_line_item' %>

@@ -33,7 +33,7 @@ module Refinery
       end
 
       def editable?
-        status == 'Not-Submitted'
+        status == STATUS_DRAFT
       end
 
       def no_of_items

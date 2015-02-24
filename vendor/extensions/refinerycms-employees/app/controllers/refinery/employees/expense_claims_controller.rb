@@ -1,24 +1,23 @@
 module Refinery
   module Employees
     class ExpenseClaimsController < ::ApplicationController
-      before_filter :find_employee
       before_filter :find_expense_claim,        except: [:index, :new, :create]
       before_filter :find_all_expense_claims,   only: :index
       before_filter :find_page
 
       def index
         # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @employee in the line below:
+        # by swapping @page for @expense_claim in the line below:
         present(@page)
       end
 
       def new
-        @xero_expense_claim = @employee.xero_expense_claims.build
+        @xero_expense_claim = current_refinery_user.xero_expense_claims.build(employee_id: current_refinery_user.employee.try(:id))
         present(@page)
       end
 
       def create
-        @xero_expense_claim = @employee.xero_expense_claims.build(params[:xero_expense_claim])
+        @xero_expense_claim = current_refinery_user.xero_expense_claims.build(params[:xero_expense_claim])
         if @xero_expense_claim.save
           redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
         else
@@ -29,7 +28,7 @@ module Refinery
 
       def show
         # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @employee in the line below:
+        # by swapping @page for @expense_claim in the line below:
         present(@page)
       end
 
@@ -38,7 +37,7 @@ module Refinery
       end
 
       def submit
-        if @xero_expense_claim.submittable?
+        if @xero_expense_claim.submittable_by?(current_refinery_user)
           if verify_contacts && batch_create_receipt && attach_scanned_receipts && submit_expense_claim
             flash[:notice] = 'Successfully submitted Expense Claim'
           end
@@ -47,7 +46,7 @@ module Refinery
       end
 
       def destroy
-        if @xero_expense_claim.status == 'Not-Submitted'
+        if @xero_expense_claim.destroyable_by?(current_refinery_user)
           @xero_expense_claim.destroy
           redirect_to refinery.employees_expense_claims_path
         else
@@ -70,17 +69,12 @@ module Refinery
       end
 
       protected
-      def find_employee
-        @employee = current_refinery_user.employee
-        redirect_to '/' if @employee.nil?
-      end
-
       def find_all_expense_claims
-        @xero_expense_claims = @employee.xero_expense_claims
+        @xero_expense_claims = current_refinery_user.employee.xero_expense_claims
       end
 
       def find_expense_claim
-        @xero_expense_claim = @employee.xero_expense_claims.find(params[:id])
+        @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_refinery_user).find(params[:id])
       rescue ActiveRecord::RecordNotFound
         redirect_to refinery.employees_expense_claims_path
       end

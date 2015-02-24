@@ -7,6 +7,10 @@
 
       <%= form_for @xero_expense_claim, url: refinery.employees_expense_claims_path do |f| %>
 
+        <label>For
+          <%= f.collection_select :employee_id, ::Refinery::Employees::Employee.all, :id, :full_name %>
+        </label>
+
         <label>Description
           <%= f.text_field :description %>
         </label>

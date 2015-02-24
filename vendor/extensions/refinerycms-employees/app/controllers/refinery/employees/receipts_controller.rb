@@ -1,7 +1,6 @@
 module Refinery
   module Employees
     class ReceiptsController < ::ApplicationController
-      before_filter :find_employee
       before_filter :find_expense_claim
       before_filter :find_receipt,      except: [:new, :create]
 
@@ -56,13 +55,8 @@ module Refinery
       end
 
       protected
-      def find_employee
-        @employee = current_refinery_user.employee
-        redirect_to '/' if @employee.nil?
-      end
-
       def find_expense_claim
-        @xero_expense_claim = @employee.xero_expense_claims.find(params[:expense_claim_id])
+        @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_refinery_user).find(params[:expense_claim_id])
       rescue ActiveRecord::RecordNotFound
         redirect_to refinery.employees_expense_claims_path
       end

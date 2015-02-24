@@ -21,8 +21,6 @@ module Refinery
         ActiveSupport::Inflector.inflections do |inflect|
           inflect.irregular 'leave', 'leaves'
         end
-
-        Refinery.include_once(::Refinery::User, Refinery::Employees::UserEmployeeAddon)
       end
 
       config.after_initialize do

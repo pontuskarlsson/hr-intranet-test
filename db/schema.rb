@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150120043935) do
+ActiveRecord::Schema.define(:version => 20150223090830) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -940,8 +940,10 @@ ActiveRecord::Schema.define(:version => 20150120043935) do
     t.datetime "updated_date_utc"
     t.datetime "created_at",                                                       :null => false
     t.datetime "updated_at",                                                       :null => false
+    t.integer  "added_by_id"
   end
 
+  add_index "refinery_xero_expense_claims", ["added_by_id"], :name => "index_refinery_xero_expense_claims_on_added_by_id"
   add_index "refinery_xero_expense_claims", ["employee_id"], :name => "index_refinery_xero_expense_claims_on_employee_id"
   add_index "refinery_xero_expense_claims", ["guid"], :name => "index_refinery_xero_expense_claims_on_guid"
   add_index "refinery_xero_expense_claims", ["updated_date_utc"], :name => "index_refinery_xero_expense_claims_on_updated_date_utc"
