@@ -32,6 +32,7 @@ describe Refinery do
           context "valid data" do
             it "should succeed" do
               fill_in "Title", :with => "This is a test of the first string field"
+              fill_in "From", :with => "2014-05-09 12:30:00 UTC"
               select calendar.title, from: "Calendar"
               click_button "Save"
 

@@ -60,7 +60,12 @@
       </div>
     <% end %>
 
-    <p><%= f.submit event.persisted? ? 'Update Event' : 'Create Event', class: 'button round tiny' %></p>
+    <% if event.persisted? %>
+      <p><%= f.submit 'Update Event', class: 'button round tiny' %></p>
+      <p><%= link_to 'Remove Event', refinery.calendar_event_path(event), method: :delete, confirm: 'Are you sure you want to remove this Event?', class: 'button tiny alert' %></p>
+    <% else %>
+      <p><%= f.submit 'Create Event', class: 'button round tiny' %></p>
+      <p><%= link_to 'Cancel', refinery.calendar_events_path, class: 'button tiny alert' %></p>
+    <% end %>
   <% end %>
-  <p><%= link_to 'Remove Event', refinery.calendar_event_path(event), method: :delete, confirm: 'Are you sure you want to remove this Event?', class: 'button tiny alert' %></p>
 </div>

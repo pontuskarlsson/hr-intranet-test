@@ -1,7 +1,7 @@
 module Refinery
   module Calendar
     class EventsController < ::ApplicationController
-      before_filter :find_page,           except: [:archive, :new, :create]
+      before_filter :find_page,           except: [:archive, :create]
       before_filter :find_event,          except: [:archive, :new, :create, :index]
       before_filter :auth_or_create_cal,  only: :create
 
@@ -68,7 +68,7 @@ module Refinery
 
       protected
       def find_page
-        @page = ::Refinery::Page.where(:link_url => "/calendar/events").first
+        @page = ::Refinery::Page.where(link_url: '/calendar/events').first
       end
 
       def find_event

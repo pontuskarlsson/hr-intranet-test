@@ -4,12 +4,12 @@ module Refinery
       belongs_to :venue
       belongs_to :calendar
 
-      validates :title, :presence => true
-      validates :calendar_id,   presence: true
+      validates :title,       presence: true
+      validates :calendar_id, presence: true
+      validates :starts_at,   presence: true
 
-      attr_accessible :title, :from, :to, :registration_link,
-                      :venue_id, :excerpt, :description,
-                      :featured, :position, :calendar_id
+      attr_accessible :title, :from, :to, :registration_link, :venue_id, :excerpt,
+                      :description, :featured, :position, :calendar_id
 
       alias_attribute :from, :starts_at
       alias_attribute :to, :ends_at
