@@ -69,6 +69,10 @@ module Refinery
               where("#{Refinery::Employees::EmploymentContract.table_name}.start_date <= :today "<<
                         "AND (#{Refinery::Employees::EmploymentContract.table_name}.end_date IS NULL OR #{Refinery::Employees::EmploymentContract.table_name}.end_date >= :today)", today: Date.today)
         end
+
+        def alphabetical
+          order(:full_name)
+        end
       end
 
     end

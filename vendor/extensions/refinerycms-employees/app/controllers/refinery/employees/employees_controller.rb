@@ -22,7 +22,7 @@ module Refinery
     protected
 
       def find_all_employees
-        @employees = Employee.order('position ASC')
+        @employees = Employee.current.alphabetical
       end
 
       def find_page
