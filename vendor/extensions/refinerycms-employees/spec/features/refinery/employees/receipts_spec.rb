@@ -89,13 +89,27 @@ describe Refinery do
         end
       end
 
-      describe 'removing line items from receipt' do
+      describe 'editing line items' do
         let(:xero_receipt) { FactoryGirl.create(:xero_receipt_with_line_items, xero_expense_claim: xero_expense_claim) }
         before(:each) do
           xero_receipt
         end
 
-        context 'when there is one line item present' do
+        context 'when updating the details' do
+          it 'succeeds and updates total on receipt and expense claim' do
+            visit refinery.edit_employees_expense_claim_receipt_path(xero_receipt.xero_expense_claim, xero_receipt)
+
+            fill_in 'xero_receipt[xero_line_items_attributes][0][quantity]', with: 2
+            fill_in 'xero_receipt[xero_line_items_attributes][0][unit_amount]', with: 89.90
+            click_button 'Save'
+
+            xero_receipt.reload.xero_line_items.first.line_total.should eq 2 * 89.90
+            xero_receipt.total.should eq 2 * 89.90
+            xero_receipt.xero_expense_claim.total.should eq 2 * 89.90
+          end
+        end
+
+        context 'when removing it' do
           it 'succeeds and updates total on receipt and expense claim' do
             visit refinery.edit_employees_expense_claim_receipt_path(xero_receipt.xero_expense_claim, xero_receipt)
 
