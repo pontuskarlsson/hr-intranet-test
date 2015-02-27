@@ -3,7 +3,11 @@
     <%= f.text_field :description %>
   </div>
   <div class="medium-3 columns">
-    <%= f.select :xero_account_id, options_from_collection_for_select(accounts, :id, :code_and_name, f.object.xero_account_id.present? ? f.object.xero_account_id : selected_account.try(:id)) %>
+    <%- common = %w(5420 5891 5892 6071 6110 7694) -%>
+    <%= f.select :xero_account_id, grouped_options_for_select([
+                     ['Common', accounts.select { |a| common.include?(a.code) }.map { |a| [ a.code_and_name, a.id ] }],
+                     ['All', accounts.map { |a| [ a.code_and_name, a.id ] }]
+                 ], f.object.xero_account_id.present? ? f.object.xero_account_id : selected_account.try(:id)) %>
   </div>
   <div class="medium-2 columns">
     <div class="row collapse">
