@@ -9,7 +9,7 @@ module Refinery
       helper_method :personal_calendars
 
       def new
-        @event = ::Refinery::Calendar::Event.new(params[:event])
+        @event = ::Refinery::Calendar::Event.new(from: '2015-03-26 09:00:00')
         @venues = ::Refinery::Calendar::Venue.order('name')
       end
 
@@ -34,6 +34,12 @@ module Refinery
       end
 
       def show
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @event in the line below:
+        present(@page)
+      end
+
+      def edit
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @event in the line below:
         present(@page)

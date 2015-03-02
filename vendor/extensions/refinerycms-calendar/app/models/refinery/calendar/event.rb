@@ -3,6 +3,7 @@ module Refinery
     class Event < Refinery::Core::BaseModel
       belongs_to :venue
       belongs_to :calendar
+      has_many :google_events, dependent: :nullify
 
       validates :title,       presence: true
       validates :calendar_id, presence: true

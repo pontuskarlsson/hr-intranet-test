@@ -5,6 +5,7 @@ module Refinery
 
   module Calendar
     require 'refinery/calendar/engine'
+    require 'refinery/calendar/google_client'
 
     class << self
       attr_writer :root

@@ -2,14 +2,14 @@
   <%= @event.title %>
 <% end %>
 
-<% content_for :body_content_left do %>
+<% content_for :body do %>
   <h4><%= t('.details', default: 'Event Details') %></h4>
   <h5><%= @event.venue_name %></h5>
 
   <h5><%= @event.calendar_title %></h5>
 
-  <p><%= t('.from', default: 'From') %> <%= @event.from.strftime('%B %d, %Y %I:%M%p') %><br>
-      <%= t('.to', default: 'To') %> <%= @event.to.strftime('%B %d, %Y %I:%M%p') %></p>
+  <p><%= t('.from', default: 'From') %> <%= @event.from.try(:strftime, '%B %d, %Y %I:%M%p') %><br>
+      <%= t('.to', default: 'To') %> <%= @event.to.try(:strftime, '%B %d, %Y %I:%M%p') %></p>
 
   <% if @event.registration_link.present? %>
     <p><%= link_to t('.register', default: 'Register for this event'), @event.registration_link %></p>
@@ -18,6 +18,11 @@
   <% if @event.venue_address.present? %>
     <p><%= link_to t('.view_on_map', default: 'View it on a map'), "http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=#{CGI::escape(@event.venue.address)}&ie=UTF8&z=16" %></p>
   <% end -%>
+
+  <% if refinery_user_signed_in? && @event.calendar.user_id == current_refinery_user.id %>
+    <p><%= link_to t('.edit', default: 'Edit Details'), refinery.edit_calendar_event_path(@event) %></p>
+    <p><%= link_to t('.delete', default: 'Remove Event'), refinery.calendar_event_path(@event), method: :delete, confirm: 'Are you sure you want to remove this event?' %></p>
+  <% end %>
 
   <div class="event_description">
     <h4><%= @event.excerpt %></h4>

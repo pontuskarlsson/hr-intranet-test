@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150224031545) do
+ActiveRecord::Schema.define(:version => 20150227071045) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -204,6 +204,34 @@ ActiveRecord::Schema.define(:version => 20150224031545) do
   end
 
   add_index "refinery_calendar_events", ["calendar_id"], :name => "index_refinery_calendar_events_on_calendar_id"
+
+  create_table "refinery_calendar_google_calendars", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "primary_calendar_id"
+    t.string   "google_calendar_id"
+    t.string   "refresh_token"
+    t.integer  "sync_to_id",          :default => 0, :null => false
+    t.integer  "sync_from_id",        :default => 0, :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  add_index "refinery_calendar_google_calendars", ["google_calendar_id"], :name => "index_rcgc_on_google_calendar_id"
+  add_index "refinery_calendar_google_calendars", ["primary_calendar_id"], :name => "index_rcgc_on_primary_calendar_id"
+  add_index "refinery_calendar_google_calendars", ["user_id"], :name => "index_rcgc_on_user_id"
+
+  create_table "refinery_calendar_google_events", :force => true do |t|
+    t.integer  "google_calendar_id"
+    t.integer  "event_id"
+    t.string   "google_event_id"
+    t.datetime "last_synced_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "refinery_calendar_google_events", ["event_id"], :name => "index_rcge_on_event_id"
+  add_index "refinery_calendar_google_events", ["google_calendar_id"], :name => "index_rcge_on_google_calendar_id"
+  add_index "refinery_calendar_google_events", ["google_event_id"], :name => "index_rcge_on_google_event_id"
 
   create_table "refinery_calendar_user_calendars", :force => true do |t|
     t.integer  "user_id"

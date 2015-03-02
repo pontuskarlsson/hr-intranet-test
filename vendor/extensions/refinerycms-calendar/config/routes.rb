@@ -1,9 +1,8 @@
 Refinery::Core::Engine.routes.append do
-
   # Frontend routes
   namespace :calendar do
     get 'events/archive' => 'events#archive'
-    resources :events, :only => [:index, :show, :new, :create, :update, :destroy]
+    resources :events
     resources :user_calendars, only: [:create]
   end
 
@@ -22,6 +21,13 @@ Refinery::Core::Engine.routes.append do
       end
       resources :calendars, :except => :show do
         collection do
+          post :update_positions
+        end
+      end
+      resources :google_calendars, :except => :show do
+        get :oauth2, on: :member
+        collection do
+          get :oauth2callback
           post :update_positions
         end
       end

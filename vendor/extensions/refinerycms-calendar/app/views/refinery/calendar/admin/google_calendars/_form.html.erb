@@ -1,0 +1,41 @@
+<%= form_for [refinery, :calendar_admin, @google_calendar] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @google_calendar,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :user_id %>
+    <%= f.collection_select :user_id, @users, :id, :username, { :include_blank => 'None' }, :class => 'chzn-select', :'data-placeholder' => 'Search User', :style => 'width: 300px;' %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :primary_calendar_id %>
+    <%= f.collection_select :primary_calendar_id, @calendars, :id, :title, { :include_blank => 'None' }, :class => 'chzn-select', :'data-placeholder' => 'Search User', :style => 'width: 300px;' %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :google_calendar_id -%>
+    <%= f.text_field :google_calendar_id, :class => 'larger widest'  -%>
+  </div>
+
+  <% if @google_calendar.persisted? %>
+    <div class='field'>
+      <%= f.label :refresh_token, 'Refresh Token (Automatically set by using Access Code)' -%>
+      <%= f.text_field :refresh_token, :class => 'larger widest', disabled: true -%>
+    </div>
+
+    <div class='field'>
+      <%= f.label :access_code -%>
+      <%= f.text_field :access_code, :class => 'larger widest', disabled: !@google_calendar.refresh_token.blank? -%>
+
+      <% if @google_calendar.refresh_token.blank? %>
+        <p><%= link_to 'Click here to retrieve Access Code', refinery.oauth2_calendar_admin_google_calendar_path(@google_calendar) %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.calendars.admin.calendars.google_calendar'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @google_calendar.google_calendar_id) %>
+<% end -%>

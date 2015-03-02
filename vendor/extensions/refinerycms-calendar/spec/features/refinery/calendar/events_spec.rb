@@ -61,35 +61,47 @@ describe Refinery do
       end
 
       describe 'edit' do
-        before(:each) { FactoryGirl.create(:event, :title => 'A title') }
+        context 'when it is from users own calendar' do
+          let(:event) { FactoryGirl.create(:event,  title: 'A title',
+                                                    calendar: FactoryGirl.create(:calendar, user: logged_in_user)) }
+          it 'should succeed' do
+            visit refinery.calendar_event_path(event)
+            click_link 'Edit Details'
 
-        it 'should succeed' do
-          pending 'Not implemented'
-          visit refinery.calendar_events_path
+            fill_in 'Title', :with => 'A different title'
+            click_button 'Update Event'
 
-          within '.actions' do
-            click_link 'Edit this event'
+            page.should have_content('A different title')
+            page.should have_no_content('A title')
           end
+        end
 
-          fill_in 'Title', :with => 'A different title'
-          click_button 'Save'
-
-          page.should have_content('A different title')
-          page.should have_no_content('A title')
+        context 'when it is not from users own calendar' do
+          let(:event) { FactoryGirl.create(:event,  title: 'A title') }
+          it 'should not be able to edit' do
+            visit refinery.calendar_event_path(event)
+            page.should have_no_content('Edit Details')
+          end
         end
       end
 
       describe 'destroy' do
-        before(:each) { FactoryGirl.create(:event, :title => 'UniqueTitleOne') }
+        context 'when it is from users own calendar' do
+          let(:event) { FactoryGirl.create(:event, calendar: FactoryGirl.create(:calendar, user: logged_in_user)) }
+          it 'should succeed' do
+            visit refinery.calendar_event_path(event)
+            click_link 'Remove Event'
 
-        it 'should succeed' do
-          pending 'Not implemented'
-          visit refinery.calendar_events_path
+            ::Refinery::Calendar::Event.count.should eq 0
+          end
+        end
 
-          click_link 'Remove this event forever'
-
-          page.should have_content("'UniqueTitleOne' was successfully removed.")
-          Refinery::Calendar::Event.count.should == 0
+        context 'when it is not from users own calendar' do
+          let(:event) { FactoryGirl.create(:event) }
+          it 'should not be able to remove' do
+            visit refinery.calendar_event_path(event)
+            page.should have_no_content('Remove Event')
+          end
         end
       end
 
