@@ -33,8 +33,20 @@ module Refinery
         present(@page)
       end
 
-      def update
+      def edit
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @expense_claim in the line below:
+        present(@page)
+      end
 
+      def update
+        if @xero_expense_claim.update_attributes(params[:xero_expense_claim])
+          flash[:notice] = "Expense Claim '#{ @xero_expense_claim.description }' has been Updated"
+          redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
+        else
+          present(@page)
+          render action: :edit
+        end
       end
 
       def submit

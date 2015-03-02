@@ -1,7 +1,45 @@
 <% content_for :body do %>
-  <%= link_to 'Back to All Expense Claims', refinery.employees_expense_claims_path, class: 'button tiny round' %>
+  <div class="row">
+    <div class="medium-3 columns">
+      <%= link_to 'Back to All Expense Claims', refinery.employees_expense_claims_path, class: 'button tiny round' %>
+    </div>
+    <% if @xero_expense_claim.status == ::Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED %>
+      <% if @xero_expense_claim.submittable_by?(current_refinery_user) %>
+        <div class="medium-3 columns">
+          <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
+            <%= submit_tag 'Submit Expense Claim', class: 'button round tiny', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="medium-3 columns">
+          <%= link_to 'Submit Expense Claim', '#', class: 'button round tiny disabled' %>
+        </div>
+      <% end %>
+      <% if @xero_expense_claim.destroyable_by?(current_refinery_user) %>
+        <div class="medium-6 columns">
+          <%= form_tag refinery.employees_expense_claim_path(@xero_expense_claim), method: :delete do %>
+            <%= submit_tag 'Delete Expense Claim', class: 'button alert tiny', confirm: 'Are you sure you want to delete this Expense Claim?' %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="medium-6 columns">
+          <%= link_to 'Delete Expense Claim', '#', class: 'button round tiny disabled' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="medium-6 columns">
+        <%= link_to 'Submitted', '#', class: 'button round tiny disabled' %>
+      </div>
+      <div class="medium-6 columns">
+        <%= link_to 'Cannot Delete a submitted claim', '#', class: 'button alert tiny disabled' %>
+      </div>
+    <% end %>
+  </div>
 
-  <h2><%= @xero_expense_claim.description %></h2>
+  <h2>
+    <%= @xero_expense_claim.description %>
+    <small><%= link_to t('.edit', default: 'Edit'), refinery.edit_employees_expense_claim_path(@xero_expense_claim) %></small>
+  </h2>
   <h5>For: <%= @xero_expense_claim.employee.full_name %></h5>
 
   <div class="row">
@@ -90,40 +128,6 @@
   <% if @xero_expense_claim.status == ::Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED %>
     <p><%= link_to 'Add Scanned Receipts', refinery.add_resource_employees_expense_claim_path(@xero_expense_claim), remote: true, class: 'button tiny' %></p>
   <% end %>
-
-  <div class="row">
-    <% if @xero_expense_claim.status == ::Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED %>
-      <% if @xero_expense_claim.submittable_by?(current_refinery_user) %>
-        <div class="medium-3 columns">
-          <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
-            <%= submit_tag 'Submit Expense Claim', class: 'button round small', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="medium-3 columns">
-          <%= link_to 'Submit Expense Claim', '#', class: 'button round small disabled' %>
-        </div>
-      <% end %>
-      <% if @xero_expense_claim.destroyable_by?(current_refinery_user) %>
-        <div class="medium-9 columns">
-          <%= form_tag refinery.employees_expense_claim_path(@xero_expense_claim), method: :delete do %>
-            <%= submit_tag 'Delete Expense Claim', class: 'button alert tiny', confirm: 'Are you sure you want to delete this Expense Claim?' %>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="medium-9 columns">
-          <%= link_to 'Delete Expense Claim', '#', class: 'button round small disabled' %>
-        </div>
-      <% end %>
-    <% else %>
-      <div class="medium-3 columns">
-        <%= link_to 'Submitted', '#', class: 'button round small disabled' %>
-      </div>
-      <div class="medium-9 columns">
-        <%= link_to 'Cannot Delete a submitted claim', '#', class: 'button alert tiny disabled' %>
-      </div>
-    <% end %>
-  </div>
 
 <% end %>
 

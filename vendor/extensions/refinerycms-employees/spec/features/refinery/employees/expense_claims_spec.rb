@@ -80,6 +80,24 @@ describe Refinery do
         end
       end
 
+      describe 'edit' do
+        let(:other_employee) { FactoryGirl.create(:employee) }
+        let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: employee, description: 'A Description', added_by: logged_in_user) }
+        before { other_employee }
+        it 'should succeed' do
+          visit refinery.employees_expense_claim_path(xero_expense_claim)
+          click_link 'Edit'
+
+          select other_employee.full_name, from: 'For'
+          fill_in 'Description', with: 'A different Description'
+          click_button 'Update'
+
+          page.should have_content('A different Description')
+          page.should have_content(other_employee.full_name)
+          page.should have_no_content('A Description')
+        end
+      end
+
       describe "removing expense claim" do
         context "when it is not submitted" do
           let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED) }
