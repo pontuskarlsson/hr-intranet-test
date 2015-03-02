@@ -13,7 +13,7 @@
 
     <div class='field'>
       <%= f.label :to -%>
-      <%= f.text_field :to, :class => 'datetime_range'  -%>
+      <%= f.text_field :to, value: event.to.try(:strftime, '%Y-%m-%d %H:%M'), :class => 'datetime_range'  -%>
     </div>
 
     <div class='field'>
