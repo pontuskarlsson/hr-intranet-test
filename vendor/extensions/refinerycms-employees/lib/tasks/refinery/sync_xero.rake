@@ -15,17 +15,29 @@ namespace :hr_intranet do
           # Updates the status of the Expense Claim
           expense_claim = client.ExpenseClaim.find(xero_expense_claim.guid)
           xero_expense_claim.status           = expense_claim.status
-          xero_expense_claim.updated_date_utc = expense_claim.updated_date_utc
-          xero_expense_claim.total            = expense_claim.total
-          xero_expense_claim.amount_due       = expense_claim.amount_due
-          xero_expense_claim.amount_paid      = expense_claim.amount_paid
-          xero_expense_claim.payment_due_date = expense_claim.payment_due_date
+          if xero_expense_claim.status == Refinery::Employees::XeroExpenseClaim::STATUS_DELETED
+            xero_expense_claim.guid = nil
+            xero_expense_claim.xero_expense_claim_attachments.each do |attachment|
+              attachment.guid = nil
+              attachment.save!
+            end
+          else
+            xero_expense_claim.updated_date_utc = expense_claim.updated_date_utc
+            xero_expense_claim.total            = expense_claim.total
+            xero_expense_claim.amount_due       = expense_claim.amount_due
+            xero_expense_claim.amount_paid      = expense_claim.amount_paid
+            xero_expense_claim.payment_due_date = expense_claim.payment_due_date
+          end
           xero_expense_claim.save!
 
           # Updates the status of all the Receipts
           xero_expense_claim.xero_receipts.each do |xero_receipt|
-            receipt = expense_claim.receipts.detect { |r| r.receipt_id == xero_receipt.guid }
-            xero_receipt.status = receipt.status
+            if (receipt = expense_claim.receipts.detect { |r| r.receipt_id == xero_receipt.guid }).present?
+              xero_receipt.status = receipt.status
+            else
+              xero_receipt.status = Refinery::Employees::XeroReceipt::STATUS_DELETED
+              xero_receipt.guid = nil
+            end
             xero_receipt.save!
           end
 

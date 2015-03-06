@@ -15,8 +15,8 @@
       <th>Total</th>
     </tr>
 
-    <% if (expense_claims = @xero_expense_claims.not_submitted + @xero_expense_claims.pending_in_xero + @xero_expense_claims.paid).any? %>
-      <% expense_claims.each do |expense_claim| %>
+    <% if @xero_expense_claims.any? %>
+      <% @xero_expense_claims.each do |expense_claim| %>
 
         <tr>
           <td><%= link_to expense_claim.description, refinery.employees_expense_claim_path(expense_claim) %></td>

@@ -7,7 +7,8 @@ module Refinery
       STATUS_SUBMITTED      = 'SUBMITTED'
       STATUS_AUTHORISED     = 'AUTHORISED'
       STATUS_PAID           = 'PAID'
-      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID]
+      STATUS_DELETED        = 'DELETED'
+      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED]
 
       belongs_to :added_by,                     class_name: '::Refinery::User'
       belongs_to :employee
@@ -25,8 +26,16 @@ module Refinery
         self.status ||= STATUS_NOT_SUBMITTED
       end
 
+      # A Receipt is considered editable even when the status is deleted. The reason for
+      # that is because if there was something wrong with the Expense Claim that was not
+      # discovered until after it was approved, then it can be deleted from Xero, edited
+      # here and then re-submitted again with minimum amount of work needed.
+      def editable?
+        (status == STATUS_NOT_SUBMITTED || status == STATUS_DELETED)
+      end
+
       def submittable?
-        status == STATUS_NOT_SUBMITTED and xero_receipts.any? && employee.try(:xero_guid).present?
+        editable? && xero_receipts.any? && employee.try(:xero_guid).present?
       end
 
       def submittable_by?(refinery_user)
@@ -34,7 +43,7 @@ module Refinery
       end
 
       def destroyable_by?(refinery_user)
-        status == STATUS_NOT_SUBMITTED
+        editable?
       end
 
       class << self

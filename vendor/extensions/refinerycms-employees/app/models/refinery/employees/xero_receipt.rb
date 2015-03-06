@@ -7,7 +7,8 @@ module Refinery
       STATUS_SUBMITTED      = 'SUBMITTED'
       STATUS_AUTHORISED     = 'AUTHORISED'
       STATUS_DECLINED       = 'DECLINED'
-      STATUSES = [STATUS_DRAFT, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_DECLINED]
+      STATUS_DELETED        = 'DELETED'
+      STATUSES = [STATUS_DRAFT, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_DECLINED, STATUS_DELETED]
 
       belongs_to :employee
       belongs_to :xero_expense_claim
@@ -32,8 +33,12 @@ module Refinery
         end
       end
 
+      # A Receipt is considered editable even when the status is deleted. The reason for
+      # that is because if there was something wrong with the Expense Claim that was not
+      # discovered until after it was approved, then it can be deleted from Xero, edited
+      # here and then re-submitted again with minimum amount of work needed.
       def editable?
-        status == STATUS_DRAFT
+        status == STATUS_DRAFT || status == STATUS_DELETED
       end
 
       def no_of_items

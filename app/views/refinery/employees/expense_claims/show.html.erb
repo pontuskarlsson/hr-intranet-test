@@ -4,7 +4,7 @@
     <div class="medium-3 columns">
       <%= link_to 'Back to All Expense Claims', refinery.employees_expense_claims_path, class: 'button tiny round' %>
     </div>
-    <% if @xero_expense_claim.status == ::Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED %>
+    <% if @xero_expense_claim.editable? %>
       <% if @xero_expense_claim.submittable_by?(current_refinery_user) %>
         <div class="medium-3 columns">
           <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
@@ -28,7 +28,7 @@
         </div>
       <% end %>
     <% else %>
-      <div class="medium-6 columns">
+      <div class="medium-3 columns">
         <%= link_to 'Submitted', '#', class: 'button round tiny disabled' %>
       </div>
       <div class="medium-6 columns">
