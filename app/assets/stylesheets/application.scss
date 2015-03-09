@@ -503,6 +503,13 @@ ul.latest-news {
 
     &.ui-dialog-titlebar-close {
         font-size: 1px !important;
+        top: 15px !important;
+        right: 15px !important;
+
+        .ui-button-icon-primary {
+            margin-left: -50% !important;
+            margin-top: -50% !important;
+        }
     }
 }
 

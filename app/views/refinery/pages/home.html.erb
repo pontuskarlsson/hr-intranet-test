@@ -71,7 +71,7 @@
                         <% if event.ends_at.present? && event.ends_at.to_date != event.starts_at.to_date %>
                           <h5>- <%= event.ends_at.strftime('%d %^b') %></h5>
                         <% end %>
-                        <%= link_to event.title, refinery.calendar_event_path(event) %>
+                        <%= link_to event.title, refinery.calendar_event_path(event.id), 'data-reveal-id' => "event-modal-#{event.id}", 'data-reveal-ajax' => true %>
                         <% if event.excerpt.present? %>
                           <div><%= event.excerpt %></div>
                         <% end %>
@@ -103,7 +103,8 @@
                         <% if event.ends_at.present? && event.ends_at.to_date != event.starts_at.to_date %>
                           <h5>- <%= event.ends_at.strftime('%d %^b') %></h5>
                         <% end %>
-                        <%= link_to event.title, refinery.calendar_event_path(event) %>
+                        <%= link_to event.title, refinery.calendar_event_path(event.id), 'data-reveal-id' => "event-modal-#{event.id}", 'data-reveal-ajax' => true %>
+                        <div id="event-modal-<%= event.id %>" class="reveal-modal" data-reveal></div>
                         <% if event.excerpt.present? %>
                           <div><%= event.excerpt %></div>
                         <% end %>
