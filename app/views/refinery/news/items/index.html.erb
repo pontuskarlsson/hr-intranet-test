@@ -9,9 +9,9 @@
           <p>
             <small><%= t('.published') %> <%= l(item.publish_date, :format => :long) %></small>
           </p>
-          <%= truncate  item.body, :length => 400,
-                        :omission => " ... #{link_to t('.read_more'), refinery.news_item_path(item)}",
-                        :preserve_html_tags => true %>
+          <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 400,
+                                         omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
+          <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
         </article>
       <% end %>
 
