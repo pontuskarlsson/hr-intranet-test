@@ -1,12 +1,12 @@
 module Refinery
   module Calendar
     class Engine < Rails::Engine
-      include Refinery::Engine
+      extend Refinery::Engine
       isolate_namespace Refinery::Calendar
 
       engine_name :refinery_calendar
 
-      initializer "register refinerycms_calendar plugin" do
+      before_inclusion do
         Refinery::Plugin.register do |plugin|
           plugin.name = "calendar"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.calendar_admin_events_path }

@@ -4,6 +4,7 @@ module Refinery
   autoload :CalendarGenerator, 'generators/refinery/calendar_generator'
 
   module Calendar
+    require 'refinery/calendar/configuration'
     require 'refinery/calendar/engine'
     require 'refinery/calendar/google_client'
 
