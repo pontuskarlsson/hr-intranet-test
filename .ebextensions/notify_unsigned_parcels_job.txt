@@ -1,0 +1,1 @@
+00 2 * * * root /bin/bash /hr-intranet/scripts/notify_unsigned_parcels.sh

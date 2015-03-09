@@ -1,0 +1,26 @@
+<h1>Hello,</h1>
+
+<p>You have the following Parcels waiting to be signed:</p>
+
+<table>
+  <tr>
+    <th>From</th>
+    <th>Addressed To</th>
+    <th>Delivered by</th>
+    <th>Received at</th>
+    <th>Waybill no</th>
+  </tr>
+  <% @parcels.each do |parcel| %>
+    <tr>
+      <td><%= parcel.from %></td>
+      <td><%= parcel.to %></td>
+      <td><%= parcel.courier %></td>
+      <td><%= parcel.created_at %></td>
+      <td><%= parcel.air_waybill_no %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%=raw link_to 'Click here to view Parcels', refinery.parcels_parcels_url -%></p>
+
+<p><%=raw Refinery::Core.site_name %></p>

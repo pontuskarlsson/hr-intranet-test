@@ -12,4 +12,6 @@ Refinery::Parcels.configure do |config|
   # specify that column here.
   #
   config.user_attribute_reference = :full_name
+
+  config.mailer_from_address = 'info@happyrabbit.com'
 end
