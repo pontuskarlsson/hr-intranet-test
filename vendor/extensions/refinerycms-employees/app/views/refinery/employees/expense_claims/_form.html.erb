@@ -1,0 +1,7 @@
+<label><%= ::Refinery::Employees::XeroExpenseClaim.human_attribute_name(:employee_id) %>
+  <%= f.collection_select :employee_id, ::Refinery::Employees::Employee.current, :id, :full_name %>
+</label>
+
+<label><%= ::Refinery::Employees::XeroExpenseClaim.human_attribute_name(:description) %>
+  <%= f.text_field :description %>
+</label>

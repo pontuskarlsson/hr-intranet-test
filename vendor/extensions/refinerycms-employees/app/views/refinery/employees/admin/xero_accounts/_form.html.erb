@@ -1,0 +1,41 @@
+<%= form_for [refinery, :employees_admin, @xero_account] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @xero_account,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :code -%>
+    <%= f.text_field :code, disabled: true -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :name -%>
+    <%= f.text_field :name, disabled: true -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :guid -%>
+    <%= f.text_field :guid, disabled: true -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :featured -%>
+    <%= f.check_box :featured -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :when_to_use -%>
+    <%= f.text_area :when_to_use -%>
+  </div>
+
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.employees.admin.xero_accounts.xero_account'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @xero_account.code) -%>
+<% end -%>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>

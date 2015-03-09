@@ -1,0 +1,15 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(xero_account) -%>">
+  <span class='title'>
+    <%= xero_account.code %>
+    <span class="preview">
+      <%= t('.preview', :name => xero_account.name) %>
+      <% if xero_account.featured %>
+        <span style="font-weight: bold; color: #666;"><%= ::Refinery::Employees::XeroAccount.human_attribute_name(:featured) %></span>
+      <% end %>
+    </span>
+  </span>
+  <span class='actions'>
+    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_employees_admin_xero_account_path(xero_account),
+         :title => t('.edit') %>
+  </span>
+</li>

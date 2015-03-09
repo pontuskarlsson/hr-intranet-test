@@ -56,6 +56,13 @@ Refinery::Core::Engine.routes.draw do
           post :update_positions
         end
       end
+
+      resources :xero_accounts, :only => [:index, :edit, :update] do
+        collection do
+          post :update_positions
+          post :sync_accounts
+        end
+      end
     end
   end
 

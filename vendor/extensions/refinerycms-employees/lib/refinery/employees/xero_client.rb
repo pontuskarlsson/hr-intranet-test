@@ -24,8 +24,12 @@ module Refinery
             end
             xero_account.save!
           end
+
+          true # Returns true if everything went okay
+
         rescue StandardError => e
           binding.pry if binding.respond_to?(:pry) && Rails.env.development?
+          false # Returns false if something went wrong
         end
       end
 

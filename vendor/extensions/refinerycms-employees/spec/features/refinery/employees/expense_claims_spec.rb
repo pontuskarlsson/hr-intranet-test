@@ -50,6 +50,7 @@ describe Refinery do
       end
 
       describe "adding new expense claim" do
+        before { FactoryGirl.create(:employment_contract, employee: employee) }
         it "created an expense claim" do
           visit refinery.employees_expense_claims_path
 
@@ -61,9 +62,9 @@ describe Refinery do
           page.should have_content("My Expenses")
         end
 
-        context 'when adding for another employee' do
+        context 'when adding for another employee ' do
           let(:other_employee) { FactoryGirl.create(:employee) }
-          before { other_employee }
+          before { FactoryGirl.create(:employment_contract, employee: other_employee) }
 
           it 'created an expense claim' do
             visit refinery.employees_expense_claims_path
@@ -83,7 +84,7 @@ describe Refinery do
       describe 'edit' do
         let(:other_employee) { FactoryGirl.create(:employee) }
         let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: employee, description: 'A Description', added_by: logged_in_user) }
-        before { other_employee }
+        before { FactoryGirl.create(:employment_contract, employee: other_employee) }
         it 'should succeed' do
           visit refinery.employees_expense_claim_path(xero_expense_claim)
           click_link 'Edit'

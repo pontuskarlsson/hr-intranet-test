@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150227071045) do
+ActiveRecord::Schema.define(:version => 20150309041628) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -904,8 +904,11 @@ ActiveRecord::Schema.define(:version => 20150227071045) do
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
     t.boolean  "inactive",                :default => false, :null => false
+    t.boolean  "featured",                :default => false, :null => false
+    t.text     "when_to_use"
   end
 
+  add_index "refinery_xero_accounts", ["featured"], :name => "index_refinery_xero_accounts_on_featured"
   add_index "refinery_xero_accounts", ["guid"], :name => "index_refinery_xero_accounts_on_guid"
   add_index "refinery_xero_accounts", ["inactive"], :name => "index_refinery_xero_accounts_on_inactive"
 

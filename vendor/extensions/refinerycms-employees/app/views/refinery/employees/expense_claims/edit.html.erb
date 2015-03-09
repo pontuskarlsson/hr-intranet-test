@@ -6,23 +6,14 @@
     <div class="large-8 columns">
 
       <%= form_for @xero_expense_claim, url: refinery.employees_expense_claim_path(@xero_expense_claim) do |f| %>
-
-        <label>For
-          <%= f.collection_select :employee_id, ::Refinery::Employees::Employee.all, :id, :full_name %>
-        </label>
-
-        <label>Description
-          <%= f.text_field :description %>
-        </label>
-
+        <%= render 'form', f: f %>
         <%= f.submit t('.update', default: 'Update'), class: 'button round small' %>
-
       <% end %>
 
     </div>
   </div>
 
-  <p><%= link_to 'Cancel', refinery.employees_expense_claim_path(@xero_expense_claim) %></p>
+  <p><%= link_to t('.cancel', default: 'Cancel'), refinery.employees_expense_claim_path(@xero_expense_claim) %></p>
 <% end %>
 
 <%= render '/refinery/content_page' %>

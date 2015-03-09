@@ -5,7 +5,8 @@ module Refinery
 
       has_many :xero_line_items, dependent: :nullify
 
-      attr_accessible :code, :guid, :name
+      attr_accessible :featured, :when_to_use
+      attr_accessible :code, :guid, :name, as: :sync_update
 
       validates :guid,    presence: true, uniqueness: true
       validates :code,    presence: true, uniqueness: { scope: :inactive }, unless: :inactive
@@ -13,6 +14,12 @@ module Refinery
 
       def code_and_name
         [code, name].reject(&:blank?).join(' - ')
+      end
+
+      class << self
+        def featured
+          where(featured: true)
+        end
       end
 
     end

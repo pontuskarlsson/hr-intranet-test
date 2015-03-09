@@ -1,0 +1,26 @@
+<ul>
+  <% if ::Refinery::Employees::Admin::XeroAccountsController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.employees_admin_xero_accounts_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.synchronise_accounts', default: 'Synchronise Xero Accounts'), refinery.sync_accounts_employees_admin_xero_accounts_path, method: :post %>
+  </li>
+  <%= render '/refinery/employees/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::Employees::Admin::XeroAccountsController.sortable? && ::Refinery::Employees::XeroAccount.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Xero Accounts"),
+                 refinery.employees_admin_xero_accounts_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Xero Accounts"),
+                 refinery.employees_admin_xero_accounts_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

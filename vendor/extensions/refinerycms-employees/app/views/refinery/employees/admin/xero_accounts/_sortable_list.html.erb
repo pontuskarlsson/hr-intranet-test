@@ -1,0 +1,5 @@
+<ul id='sortable_list'>
+  <%= render :partial => 'xero_account', :collection => @xero_accounts %>
+</ul>
+<%= render '/refinery/admin/sortable_list',
+            :continue_reordering => (local_assigns.keys.include?(:continue_reordering)) ? continue_reordering : true %>

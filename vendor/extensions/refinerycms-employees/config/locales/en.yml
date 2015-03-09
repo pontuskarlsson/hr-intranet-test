@@ -20,6 +20,7 @@ en:
             manage_annual_leaves: Manage Annual Leaves
             manage_employment_contracts: Manage Employment Contracts
             manage_public_holidays: Manage Public Holidays
+            manage_xero_accounts: Manage Xero Accounts
         employees:
           actions:
             create_new: Add New Employee
@@ -89,6 +90,17 @@ en:
             edit: Edit this public holiday
             delete: Remove this public holiday forever
             preview: 'on %{holiday_date}'
+        xero_accounts:
+          actions:
+            reorder: Reorder Xero Accounts
+            reorder_done: Done Reordering Xero Accounts
+          records:
+            title: Xero Accounts
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Xero Accounts yet.
+          xero_account:
+            edit: Edit this xero account
+            preview: 'labeled "%{name}"'
 
       employees:
         show:
@@ -137,6 +149,15 @@ en:
         country: Country
         holiday_date: Holiday Date
         half_day: Half day?
+      'refinery/employees/xero_account':
+        code: Code
+        featured: Featured
+        guid: GUID
+        name: Name
+        when_to_use: When to use
+      'refinery/employees/xero_expense_claim':
+        employee_id: For
+        description: Description
       'refinery/employees/xero_receipt':
         contact_name: From
         date: Date

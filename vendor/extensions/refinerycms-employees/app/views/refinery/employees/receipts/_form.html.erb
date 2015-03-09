@@ -26,33 +26,40 @@
 <h4>Line Items</h4>
 
 <div class="row">
-  <div class="medium-5 columns bold">
+  <div class="medium-4 columns bold">
     Description
   </div>
-  <div class="medium-2 columns bold">
+  <div class="medium-3 columns bold">
     Account
+    <% if featured_xero_accounts.any? %>
+      <span data-tooltip aria-haspopup="true" class="has-tip" title="
+      <% featured_xero_accounts.each_with_index do |account, i| %>
+      <% unless i.zero? %><br/><br/><% end %>
+      <%= account.code %> - <%= account.name %><br/>
+        <%= account.when_to_use %>
+      <% end %>
+      " style="font-weight: normal; font-size: 0.8rem;">What to use?</span>
+    <% end %>
   </div>
   <div class="medium-2 columns bold">
     Quantity
   </div>
-  <div class="medium-3 columns bold">
+  <div class="medium-2 end columns bold">
     Unit Price
   </div>
 </div>
 
 <div class="receipt-line-items">
-  <%- accounts = ::Refinery::Employees::XeroAccount.where(inactive: false) -%>
-  <%- selected_account = accounts.detect { |acc| acc.name['Travel - International'] } -%>
   <%- f.object.xero_line_items.any? || f.object.xero_line_items.build -%>
   <%= f.fields_for :xero_line_items do |line_items_form| %>
     <div class="js_line_item line-item">
-      <%= render 'xero_line_item_form', f: line_items_form, xero_receipt: f.object, accounts: accounts, selected_account: selected_account %>
+      <%= render 'xero_line_item_form', f: line_items_form, xero_receipt: f.object %>
     </div>
   <% end %>
 
   <%= f.fields_for :xero_line_items, f.object.xero_line_items.build do |line_items_form| %>
     <div class="js_line_item_tmpl js_line_item line-item" style="display: none;">
-      <%= render 'xero_line_item_form', f: line_items_form, xero_receipt: f.object, accounts: accounts, selected_account: selected_account %>
+      <%= render 'xero_line_item_form', f: line_items_form, xero_receipt: f.object %>
     </div>
   <% end %>
 
