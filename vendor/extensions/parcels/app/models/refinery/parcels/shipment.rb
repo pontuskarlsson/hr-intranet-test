@@ -16,7 +16,7 @@ module Refinery
 
       attr_writer :from_contact_name, :to_contact_name, :assign_to
 
-      attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to
+      attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id
 
       validates :created_by_id,   presence: true
       validates :assigned_to_id,  presence: true

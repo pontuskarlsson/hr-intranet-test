@@ -6,7 +6,7 @@ module Refinery
       before_filter :find_page
 
       def index
-        @shipment = Shipment.new
+        @shipment = Shipment.new(from_contact_id: current_refinery_user.contact.try(:id))
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @parcel in the line below:
         present(@page)

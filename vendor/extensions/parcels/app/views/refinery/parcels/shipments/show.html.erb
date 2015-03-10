@@ -1,5 +1,15 @@
 <% content_for :body do %>
   <div class="row">
+    <div class="medium-2 columns">
+      <%= link_to t('.go_back', default: 'Go Back'), refinery.parcels_shipments_path, class: 'button tiny' %>
+    </div>
+
+    <div class="medium-2 columns end">
+      <%= link_to t('.edit_addresses'), refinery.edit_parcels_shipment_path(@shipment), class: 'button tiny' %>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="medium-6 columns">
       <h2>From</h2>
 
@@ -71,65 +81,105 @@
     </div>
   </div>
 
-  <%= link_to t('.edit_addresses'), refinery.edit_parcels_shipment_path(@shipment) %>
-
-  <dl class="tabs" data-tab>
-    <dd class="active"><a href="#panel-parcels">Parcels</a></dd>
-    <% if @shipment.courier_predefined_packages.any? %>
-      <dd><a href="#panel-add-courier">Add <%= @shipment.courier %> Parcel</a></dd>
-    <% end %>
-    <dd><a href="#panel-add-custom">Add Custom Parcel</a></dd>
-  </dl>
-  <div class="tabs-content">
-    <div class="content active" id="panel-parcels">
-      <% if @shipment.shipment_parcels.any? %>
-        <% @shipment.shipment_parcels.each do |shipment_parcel| %>
-          <div class="row">
-            <div class="columns"></div>
-            <% if shipment_parcel.predefined_package.present? %>
-              Package Type: <%= shipment_parcel.predefined_package %>, Weight: <%= shipment_parcel.weight %>
-            <% else %>
-              L: <%= shipment_parcel.length %>, W: <%= shipment_parcel.width %>, H: <%= shipment_parcel.height %>,
-              Weight: <%= shipment_parcel.weight %>
-            <% end %>
-          </div>
+  <h4>Parcels</h4>
+  <% if @shipment.shipment_parcels.any? %>
+    <table>
+      <thead>
+      <tr>
+        <th>Type</th>
+        <th>Length</th>
+        <th>Width</th>
+        <th>Height</th>
+        <th>Oz</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @shipment.shipment_parcels.each do |shipment_parcel| %>
+        <% if shipment_parcel.predefined_package.present? %>
+          <tr>
+            <td><%= shipment_parcel.predefined_package %></td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><%= shipment_parcel.weight %> Oz</td>
+          </tr>
+        <% else %>
+          <tr>
+            <td>Custom</td>
+            <td><%= shipment_parcel.length %> In</td>
+            <td><%= shipment_parcel.width %> In</td>
+            <td><%= shipment_parcel.height %> In</td>
+            <td><%= shipment_parcel.weight %> Oz</td>
+          </tr>
         <% end %>
-      <% else %>
-        <p class="italic">No parcels added yet</p>
       <% end %>
-    </div>
-    <% if @shipment.courier_predefined_packages.any? %>
-      <div class="content" id="panel-add-courier">
-        <p>This is the fourth panel of the basic tab example. This is the fourth panel of the basic tab example.</p>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="italic">No parcels added yet</p>
+  <% end %>
+  <% if @shipment.courier_predefined_packages.any? %>
+    <div class="medium-2 columns">
+      <%= link_to "Add #{ @shipment.courier } Parcel", '#', class: 'button tiny', 'data-reveal-id' => 'courier-parcel-modal' %>
+
+      <div id="courier-parcel-modal" class="reveal-modal tiny" data-reveal>
+        <a class="close-reveal-modal">&#215;</a>
+        <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels_path(@shipment) do |f| %>
+
+
+          <p><%= f.submit t('.add'), class: 'button tiny' %></p>
+        <% end %>
       </div>
-    <% end %>
-    <div class="content" id="panel-add-custom">
+    </div>
+  <% end %>
+
+  <div class="medium-2 columns end">
+    <%= link_to t('.add_custom_parcel', default: 'Add Parcel'), '#', class: 'button tiny', 'data-reveal-id' => 'custom-parcel-modal' %>
+
+    <div id="custom-parcel-modal" class="reveal-modal tiny" data-reveal>
+      <a class="close-reveal-modal">&#215;</a>
       <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels_path(@shipment) do |f| %>
-        <div class="row">
-          <div class="medium-4 columns">
-            <p>
-              <%= f.label :length %>
-              <%= f.text_field :length %>
-            </p>
-
-            <p>
-              <%= f.label :width %>
-              <%= f.text_field :width %>
-            </p>
-
-            <p>
-              <%= f.label :height %>
-              <%= f.text_field :height %>
-            </p>
-
-            <p>
-              <%= f.label :weight %>
-              <%= f.text_field :weight %>
-            </p>
-
-            <%= f.submit t('.add') %>
+        <div class="row collapse">
+          <%= f.label :length %>
+          <div class="small-9 columns">
+            <%= f.number_field :length %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">Inches</span>
           </div>
         </div>
+
+        <div class="row collapse">
+          <%= f.label :width %>
+          <div class="small-9 columns">
+            <%= f.number_field :width %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">Inches</span>
+          </div>
+        </div>
+
+        <div class="row collapse">
+          <%= f.label :height %>
+          <div class="small-9 columns">
+            <%= f.number_field :height %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">Inches</span>
+          </div>
+        </div>
+
+        <div class="row collapse">
+          <%= f.label :weight %>
+          <div class="small-9 columns">
+            <%= f.number_field :weight %>
+          </div>
+          <div class="small-3 columns">
+            <span class="postfix">Ounces</span>
+          </div>
+        </div>
+
+        <p><%= f.submit t('.add'), class: 'button tiny' %></p>
       <% end %>
     </div>
   </div>

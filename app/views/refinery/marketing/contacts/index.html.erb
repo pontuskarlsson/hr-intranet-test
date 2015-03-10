@@ -37,6 +37,7 @@
 <% content_for :javascripts do %>
   <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
   <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/f2c75b7247b/api/fnSetFilteringDelay.js' %>
 
   <script type="text/javascript">
     $(function(){
@@ -68,7 +69,7 @@
           } },
           { data: "country" }
         ]
-      });
+      }).fnSetFilteringDelay();
     });
   </script>
 <% end %>

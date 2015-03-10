@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150309041628) do
+ActiveRecord::Schema.define(:version => 20150310031600) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -292,12 +292,14 @@ ActiveRecord::Schema.define(:version => 20150309041628) do
     t.boolean  "removed_from_base",    :default => false, :null => false
     t.datetime "created_at",                              :null => false
     t.datetime "updated_at",                              :null => false
+    t.integer  "user_id"
   end
 
   add_index "refinery_contacts", ["base_id"], :name => "index_refinery_contacts_on_base_id"
   add_index "refinery_contacts", ["base_modified_at"], :name => "index_refinery_contacts_on_base_modified_at"
   add_index "refinery_contacts", ["organisation_id"], :name => "index_refinery_contacts_on_organisation_id"
   add_index "refinery_contacts", ["removed_from_base"], :name => "index_refinery_contacts_on_removed_from_base"
+  add_index "refinery_contacts", ["user_id"], :name => "index_refinery_contacts_on_user_id"
 
   create_table "refinery_custom_lists_custom_lists", :force => true do |t|
     t.string   "title"

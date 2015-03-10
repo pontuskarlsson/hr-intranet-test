@@ -4,8 +4,13 @@
               :include_object_name => true %>
 
   <div class='field'>
+    <%= f.label :user_id -%>
+    <%= f.select :user_id, options_from_collection_for_select(::Refinery::User.all, :id, ::Refinery::Parcels.config.user_attribute_reference), include_blank: true -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :base_id -%>
-    <%= f.number_field :base_id -%>
+    <%= f.text_field :base_id, disabled: true -%>
   </div>
 
   <div class='field'>
@@ -60,7 +65,7 @@
 
   <div class='field'>
     <%= f.label :contact_id -%>
-    <%= f.number_field :contact_id -%>
+    <%= f.text_field :contact_id, disabled: true -%>
   </div>
 
   <div class='field'>

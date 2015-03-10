@@ -4,6 +4,7 @@ module Refinery
   autoload :MarketingGenerator, 'generators/refinery/marketing_generator'
 
   module Marketing
+    require 'refinery/marketing/configuration'
     require 'refinery/marketing/engine'
     require 'refinery/marketing/amqp_messenger'
     require 'refinery/marketing/base_synchroniser'
