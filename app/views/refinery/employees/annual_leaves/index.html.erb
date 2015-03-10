@@ -85,7 +85,14 @@
           { data: "start_date" },
           { data: "end_date" },
           { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
-          { data: "id", "render": function(data, type, row){ return '<a href="/employees/annual_leaves/'+data+'/edit">Edit</a>, <a href="/employees/annual_leaves/'+data+'" data-method="delete">Remove</a>'; } }
+          { data: "id", "render": function(data, type, row){
+            var strDate = (row.end_date ? row.end_date : row.start_date);
+            if((Date.now() - Date.parse(strDate)) / (1000*60*60*24) < 21){
+              return '<a href="/employees/annual_leaves/'+data+'/edit">Edit</a>, <a href="/employees/annual_leaves/'+data+'" data-method="delete">Remove</a>';
+            } else {
+              return '<span style="font-style: italic; color: #999;">Cannot edit</span>';
+            }
+          } }
         ]
       });
     });
