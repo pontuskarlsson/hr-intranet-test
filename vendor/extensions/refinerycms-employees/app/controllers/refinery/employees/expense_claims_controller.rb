@@ -203,7 +203,7 @@ module Refinery
         @xero_expense_claim.xero_expense_claim_attachments(true).all? { |a| a.guid.present? }
 
       rescue ::StandardError => e
-        flash[:alert] = 'Something went wrong while attaching scanned receipts'
+        flash[:alert] = "Something went wrong while attaching scanned receipts: #{e.message} | #{e.backtrace.join(', ')}"
         false
       end
 
