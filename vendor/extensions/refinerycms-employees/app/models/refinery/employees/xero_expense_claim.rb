@@ -22,6 +22,8 @@ module Refinery
       validates :status,          inclusion: STATUSES
       validates :description,     presence: true
 
+      delegate :full_name, to: :employee, prefix: true
+
       before_validation do
         self.status ||= STATUS_NOT_SUBMITTED
       end
@@ -44,6 +46,10 @@ module Refinery
 
       def destroyable_by?(refinery_user)
         editable?
+      end
+
+      def date
+        updated_date_utc || updated_at
       end
 
       class << self

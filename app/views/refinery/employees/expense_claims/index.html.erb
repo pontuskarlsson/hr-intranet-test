@@ -1,0 +1,143 @@
+<% content_for :body do %>
+
+  <p class="t1"><%= link_to 'Add Expense Claim', refinery.new_employees_expense_claim_path, class: 'button round small' %></p>
+
+  <h4>Non-Submitted Expense Claims</h4>
+
+  <table class="js_expense_claims_data_table">
+    <thead>
+    <tr>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Updated At</th>
+      <th>Payment Due Date</th>
+      <th>Amount Paid</th>
+      <th>Amount Due</th>
+      <th>Total</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Updated At</th>
+      <th>Payment Due Date</th>
+      <th>Amount Paid</th>
+      <th>Amount Due</th>
+      <th>Total</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td colspan="7" class="italic">Loading, please wait...</td>
+    </tr>
+    </tbody>
+  </table>
+
+
+  <h4>Other's Expense Claims</h4>
+
+  <table class="js_other_expense_claims_data_table">
+    <thead>
+    <tr>
+      <th>Employee</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Updated At</th>
+      <th>Total</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>Employee</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Updated At</th>
+      <th>Total</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td colspan="5" class="italic">Loading, please wait...</td>
+    </tr>
+    </tbody>
+  </table>
+
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_expense_claims_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 2, "desc" ]],
+        "data":           <%= @xero_expense_claims.to_json(methods: [:date]).html_safe %>,
+        "columns": [
+          { data: "description", "render": function(data, type, row){
+            return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'/edit">'+data+'</a>';
+          } },
+          { data: "status" },
+          { data: "date", "render": function(data, type, row){
+            if(data){
+              var d = new Date(data);
+              return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+            } else {
+              return '';
+            }
+          } },
+          { data: "payment_due_date", "render": function(data, type, row){
+            if(data){
+              var d = new Date(data);
+              return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+            } else {
+              return '';
+            }
+          } },
+          { data: "amount_paid", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } },
+          { data: "amount_due", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } },
+          { data: "total", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } }
+        ]
+      });
+
+      $('.js_other_expense_claims_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 2, "desc" ]],
+        "data":           <%= current_refinery_user.xero_expense_claims.where('employee_id <> ?', current_refinery_user.employee.try(:id) || -1).to_json(methods: [:date, :employee_full_name]).html_safe %>,
+        "columns": [
+          { data: "employee_full_name" },
+          { data: "description", "render": function(data, type, row){
+            return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'/edit">'+data+'</a>';
+          } },
+          { data: "status" },
+          { data: "date", "render": function(data, type, row){
+            if(data){
+              var d = new Date(data);
+              return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+            } else {
+              return '';
+            }
+          } },
+          { data: "total", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } }
+        ]
+      });
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>
