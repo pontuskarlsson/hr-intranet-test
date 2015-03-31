@@ -45,24 +45,22 @@
 
   <% if (employee = current_refinery_user.employee).present? && (employment_contract = employee.current_employment_contract).present? %>
     <section>
-      <h5>
-        <%= employment_contract.start_date.strftime('%d %B, %Y') %><br/>
-        <% if employment_contract.vacation_days_per_year > 0 %><small><%= employment_contract.vacation_days_per_year %> days per year.</small><% end %>
-      </h5>
-
       <% if employment_contract.vacation_days_per_year > 0 %>
         <% if employment_contract.start_date.year == Date.today.year %>
-          <p>This year: <%= ((employment_contract.start_date.end_of_year - employment_contract.start_date).to_f / 365 * employment_contract.vacation_days_per_year).ceil %> days</p>
+          <p>No. of vacation days this year: <%= ((employment_contract.start_date.end_of_year - employment_contract.start_date).to_f / 365 * employment_contract.vacation_days_per_year).ceil %> days</p>
           <% if employment_contract.days_carried_over > 0 %>
             <p><%= employment_contract.days_carried_over %> days carried over from previous contract.</p>
           <% end %>
         <% else %>
-          <p>This year: <%= employment_contract.vacation_days_per_year %></p>
+          <p>No. of vacation days this year: <%= employment_contract.vacation_days_per_year %></p>
         <% end %>
       <% end %>
 
-      <p>Used: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year, Date.today.end_of_year).sum(&:record_value) %></p>
+      <p>Used this year: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year, Date.today.end_of_year).sum(&:record_value) %></p>
 
+      <% if employment_contract.start_date.year < Date.today.year %>
+        <p>Used last year: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year - 1.year, Date.today.end_of_year - 1.year).sum(&:record_value) %></p>
+      <% end %>
 
     </section>
   <% else %>
