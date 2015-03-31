@@ -93,16 +93,14 @@
           { data: "status" },
           { data: "date", "render": function(data, type, row){
             if(data){
-              var d = new Date(data);
-              return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+              return (new Date(data)).format('yyyy/mm/dd');
             } else {
               return '';
             }
           } },
           { data: "payment_due_date", "render": function(data, type, row){
             if(data){
-              var d = new Date(data);
-              return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+              return (new Date(data)).format('yyyy/mm/dd');
             } else {
               return '';
             }
@@ -117,7 +115,7 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
-        "order":          [[ 2, "desc" ]],
+        "order":          [[ 3, "desc" ]],
         "data":           <%= current_refinery_user.xero_expense_claims.where('employee_id <> ?', current_refinery_user.employee.try(:id) || -1).to_json(methods: [:date, :employee_full_name]).html_safe %>,
         "columns": [
           { data: "employee_full_name" },
@@ -127,8 +125,7 @@
           { data: "status" },
           { data: "date", "render": function(data, type, row){
             if(data){
-              var d = new Date(data);
-              return [d.getDate(), d.getMonth()+1, d.getFullYear()].join('/');
+              return (new Date(data)).format('yyyy/mm/dd');
             } else {
               return '';
             }
