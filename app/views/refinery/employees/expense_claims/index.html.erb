@@ -88,7 +88,7 @@
         "data":           <%= @xero_expense_claims.to_json(methods: [:date]).html_safe %>,
         "columns": [
           { data: "description", "render": function(data, type, row){
-            return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'/edit">'+data+'</a>';
+            return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'">'+data+'</a>';
           } },
           { data: "status" },
           { data: "date", "render": function(data, type, row){
@@ -120,7 +120,7 @@
         "columns": [
           { data: "employee_full_name" },
           { data: "description", "render": function(data, type, row){
-            return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'/edit">'+data+'</a>';
+            return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'">'+data+'</a>';
           } },
           { data: "status" },
           { data: "date", "render": function(data, type, row){

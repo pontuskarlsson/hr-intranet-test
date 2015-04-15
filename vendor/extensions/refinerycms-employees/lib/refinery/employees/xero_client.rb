@@ -92,10 +92,10 @@ module Refinery
               YOUR_OAUTH_KEYFILE_PATH[0] == '/' ? YOUR_OAUTH_KEYFILE_PATH : File.join(Rails.root, YOUR_OAUTH_KEYFILE_PATH)
             else
               if (xero_api_keyfile = ::Refinery::Employees::XeroApiKeyfile.first).present?
-                pem = Tempfile.new(['privatekey', '.pem'])
-                pem.write xero_api_keyfile.key_content
-                pem.rewind
-                pem.path
+                @pem = Tempfile.new(['privatekey', '.pem'])
+                @pem.write xero_api_keyfile.key_content
+                @pem.rewind
+                @pem.path
               end
             end
       end
