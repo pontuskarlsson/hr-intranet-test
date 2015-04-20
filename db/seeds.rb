@@ -19,7 +19,7 @@ Refinery::Calendar::Engine.load_seed
 Refinery::Marketing::Engine.load_seed
 
 # Added by Refinery CMS SalesOrders extension
-Refinery::SalesOrders::Engine.load_seed
+Refinery::Business::Engine.load_seed
 
 # Added by Refinery CMS Parcels extension
 Refinery::Parcels::Engine.load_seed
@@ -35,3 +35,6 @@ Refinery::CustomLists::Engine.load_seed
 
 # Added by Refinery CMS Calendar extension
 Refinery::Calendar::Engine.load_seed
+
+# Added by Refinery CMS Business extension
+Refinery::Business::Engine.load_seed

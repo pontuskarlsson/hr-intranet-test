@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_user_time_zone
 
+  # Workaround to avoid problem with user accessing other
+  # engines while password is expired.
+  delegate :refinery_user_password_expired_path, to: :refinery
+
   private
   def set_user_time_zone
     Time.zone = 'Hong Kong'

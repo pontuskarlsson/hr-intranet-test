@@ -7,8 +7,19 @@ module TransForms
       # and controllers handle the form model as if it were
       # the main model itself
 
+      # Dependency for the Proxy Module. Usually this is already
+      # included before Proxy is included, but we make sure it
+      # is present by including it from here as well.
+      include ::TransForms::MainModel::Active
+
       def persisted?
         respond_to?(:main_instance) && main_instance && main_instance.persisted?
+      end
+
+      # In case the Main Model has implemented custom +to_param+ method, we need
+      # to make sure we use it here as well
+      def to_param
+        respond_to?(:main_instance) && main_instance && main_instance.to_param || super
       end
 
       # Returns an Enumerable of all key attributes of the main instanceif any is
@@ -101,7 +112,7 @@ module TransForms
         #   PostForm.model_name.plural   # => "posts"
         def model_name
           @_model_name ||= begin
-            klass = respond_to?(:main_model) ? main_model.to_s.classify.constantize : self
+            klass = respond_to?(:main_class) ? main_class : self
 
             namespace = klass.parents.detect do |n|
               n.respond_to?(:use_relative_model_naming?) && n.use_relative_model_naming?

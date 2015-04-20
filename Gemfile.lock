@@ -1,6 +1,10 @@
 PATH
   remote: vendor/extensions
   specs:
+    refinerycms-business (1.0)
+      refinerycms-core (~> 2.1.2)
+      refinerycms-marketing
+      trans_forms
     refinerycms-calendar (2.1.0)
       google_calendar (~> 0.4)
       refinerycms-core (~> 2.1.0)
@@ -21,8 +25,6 @@ PATH
       refinerycms-core (~> 2.1.2)
       refinerycms-marketing
       trans_forms
-    refinerycms-sales_orders (1.0)
-      refinerycms-core (~> 2.1.2)
     refinerycms-store (1.0)
       hiredis (~> 0.4.5)
       redis (~> 3.0.1)
@@ -435,6 +437,7 @@ DEPENDENCIES
   rails (= 3.2.17)
   refinerycms (~> 2.1.0)
   refinerycms-acts-as-indexed (~> 1.0.0)
+  refinerycms-business!
   refinerycms-calendar!
   refinerycms-custom_lists!
   refinerycms-employees!
@@ -442,7 +445,6 @@ DEPENDENCIES
   refinerycms-news (~> 2.1.0)
   refinerycms-page-images (~> 2.1.0)
   refinerycms-parcels!
-  refinerycms-sales_orders!
   refinerycms-store!
   rspec-rails (~> 3.0.0)
   sass (= 3.2.13)

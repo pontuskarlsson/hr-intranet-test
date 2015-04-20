@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="medium-6 columns">
+    <label><%= ::Refinery::Business::Budget.human_attribute_name(:description) %>
+      <%= f.text_field :description %>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="medium-6 columns">
+    <label><%= ::Refinery::Business::Budget.human_attribute_name(:customer_name) %>
+      <%= f.text_field :customer_name %>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="medium-6 columns">
+    <label><%= ::Refinery::Business::Budget.human_attribute_name(:from_date) %>
+      <%= f.text_field :from_date %>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="medium-6 columns">
+    <label><%= ::Refinery::Business::Budget.human_attribute_name(:to_date) %>
+      <%= f.text_field :to_date %>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="medium-6 columns">
+    <label><%= ::Refinery::Business::Budget.human_attribute_name(:comments) %>
+      <%= f.text_area :comments, rows: 5 %>
+    </label>
+  </div>
+</div>
+
+
+<table>
+  <tr>
+    <th>Description</th>
+    <th>Products</th>
+    <th>SKU's</th>
+    <th>Est. Price</th>
+    <th>Est. Quantity</th>
+    <th>Est. Total</th>
+    <th>Est. Margin</th>
+    <th>Est. Margin Total</th>
+    <th>Comments</th>
+  </tr>
+  <% [10, f.object.budget_items.length + 5].max.times do |i| %>
+    <%- budget_item = f.object.budget_items[i] || f.object.budget_items.build -%>
+    <%= f.fields_for :budget_items, budget_item, child_index: i do |budget_item_form| %>
+      <tr>
+        <td><%= budget_item_form.text_field :description %></td>
+        <td><%= budget_item_form.text_field :no_of_products %></td>
+        <td><%= budget_item_form.text_field :no_of_skus %></td>
+        <td><%= budget_item_form.text_field :price %></td>
+        <td><%= budget_item_form.text_field :quantity %></td>
+        <td><%= budget_item.total %></td>
+        <td><%= budget_item_form.text_field :margin_percent %></td>
+        <td><%= budget_item.margin_total %></td>
+        <td><%= budget_item_form.text_field :comments %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

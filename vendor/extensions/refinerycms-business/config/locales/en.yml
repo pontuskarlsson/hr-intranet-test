@@ -1,0 +1,57 @@
+en:
+  refinery:
+    plugins:
+      business:
+        title: Business
+    business:
+      admin:
+        sales_orders:
+          actions:
+            create_new: Add New Sales Order
+            reorder: Reorder Sales Orders
+            reorder_done: Done Reordering Sales Orders
+            import_cin7: Import Orders from Cin7
+            confirm_import_cin7: Are you sure you want to Import?
+          records:
+            title: Sales Orders
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Sales Orders yet. Click "Add New Sales Order" to add your first sales order.
+          sales_order:
+            view_live_html: View this sales order live <br/><em>(opens in a new window)</em>
+            edit: Edit this sales order
+            delete: Remove this sales order forever
+            preview: 'Order total: %{total} %{currency_name}, Last modified at %{modified_date}'
+        budgets:
+          actions:
+            create_new: Add New Budget
+            reorder: Reorder Budgets
+            reorder_done: Done Reordering Budgets
+          records:
+            title: Budgets
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Budgets yet. Click "Add New Budget" to add your first budget.
+          budget:
+            view_live_html: View this budget live <br/><em>(opens in a new window)</em>
+            edit: Edit this budget
+            delete: Remove this budget forever
+            preview: 'Customer: %{customer}'
+        shared:
+          links:
+            manage_budgets: Manage Budgets
+            manage_sales_orders: Manage Sales Orders
+      sales_orders:
+        show:
+          other: Other Sales Orders
+  activerecord:
+    attributes:
+      'refinery/business/sales_order':
+        order_ref: Order Ref
+        order_id: Po Order ID
+        company: Company
+        billing_address: Billing Address
+        delivery_address: Delivery Address
+        modified_date: Modified Date
+        total: Total
+        currency_name: Currency
+      'refinery/business/budget':
+        description: Description

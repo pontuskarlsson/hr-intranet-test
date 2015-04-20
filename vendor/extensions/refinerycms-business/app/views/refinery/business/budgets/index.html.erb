@@ -1,0 +1,44 @@
+<% content_for :body do %>
+  <p><%= link_to 'Add Budget', refinery.new_business_budget_path %></p>
+
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>Customer</th>
+      <th>Year</th>
+      <th>From Date</th>
+      <th>To Date</th>
+      <th>No. of Products</th>
+      <th>No. of SKU's</th>
+      <th>Est. Price</th>
+      <th>Est. Quantity</th>
+      <th>Est. Total</th>
+      <th>Est. Margin</th>
+      <th>Est. Margin Total</th>
+    </tr>
+    <% @budgets.each do |budget| %>
+      <tr>
+        <td><%= link_to budget.description, refinery.business_budget_path(budget) %></td>
+        <td>
+          <% if budget.customer_contact.present? %>
+            <%= link_to budget.customer_contact.name, refinery.marketing_contact_path(budget.customer_contact) %>
+          <% else %>
+            <%= budget.customer_name %>
+          <% end %>
+        </td>
+        <td><%= budget.year %></td>
+        <td><%= budget.from_date %></td>
+        <td><%= budget.to_date %></td>
+        <td><%= budget.no_of_products %></td>
+        <td><%= budget.no_of_skus %></td>
+        <td><%= budget.price %></td>
+        <td><%= budget.quantity %></td>
+        <td><%= budget.total %></td>
+        <td><%= budget.margin %></td>
+        <td><%= budget.margin_total %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<%= render '/refinery/content_page' %>
