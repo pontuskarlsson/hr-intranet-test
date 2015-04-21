@@ -13,20 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20150415095760) do
 
-  create_table "amqp_messages", :force => true do |t|
-    t.string   "queue",       :null => false
-    t.text     "message",     :null => false
-    t.text     "type",        :null => false
-    t.integer  "sender_id"
-    t.string   "sender_type"
-    t.datetime "sent_at"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  add_index "amqp_messages", ["sender_id", "sender_type"], :name => "index_amqp_messages_on_sender_id_and_sender_type"
-  add_index "amqp_messages", ["sent_at"], :name => "index_amqp_messages_on_sent_at"
-
   create_table "refinery_amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
     t.text     "message",     :null => false
@@ -72,84 +58,6 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
   add_index "refinery_annual_leaves", ["end_date"], :name => "index_refinery_annual_leaves_on_end_date"
   add_index "refinery_annual_leaves", ["event_id"], :name => "index_refinery_annual_leaves_on_event_id"
   add_index "refinery_annual_leaves", ["start_date"], :name => "index_refinery_annual_leaves_on_start_date"
-
-  create_table "refinery_blog_categories", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "slug"
-  end
-
-  add_index "refinery_blog_categories", ["id"], :name => "index_refinery_blog_categories_on_id"
-  add_index "refinery_blog_categories", ["slug"], :name => "index_refinery_blog_categories_on_slug"
-
-  create_table "refinery_blog_categories_blog_posts", :force => true do |t|
-    t.integer "blog_category_id"
-    t.integer "blog_post_id"
-  end
-
-  add_index "refinery_blog_categories_blog_posts", ["blog_category_id", "blog_post_id"], :name => "index_blog_categories_blog_posts_on_bc_and_bp"
-
-  create_table "refinery_blog_category_translations", :force => true do |t|
-    t.integer  "refinery_blog_category_id"
-    t.string   "locale",                    :null => false
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-    t.string   "title"
-    t.string   "slug"
-  end
-
-  add_index "refinery_blog_category_translations", ["locale"], :name => "index_refinery_blog_category_translations_on_locale"
-  add_index "refinery_blog_category_translations", ["refinery_blog_category_id"], :name => "index_a0315945e6213bbe0610724da0ee2de681b77c31"
-
-  create_table "refinery_blog_comments", :force => true do |t|
-    t.integer  "blog_post_id"
-    t.boolean  "spam"
-    t.string   "name"
-    t.string   "email"
-    t.text     "body"
-    t.string   "state"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  add_index "refinery_blog_comments", ["blog_post_id"], :name => "index_refinery_blog_comments_on_blog_post_id"
-  add_index "refinery_blog_comments", ["id"], :name => "index_refinery_blog_comments_on_id"
-
-  create_table "refinery_blog_post_translations", :force => true do |t|
-    t.integer  "refinery_blog_post_id"
-    t.string   "locale",                :null => false
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
-    t.text     "body"
-    t.text     "custom_teaser"
-    t.string   "custom_url"
-    t.string   "slug"
-    t.string   "title"
-  end
-
-  add_index "refinery_blog_post_translations", ["locale"], :name => "index_refinery_blog_post_translations_on_locale"
-  add_index "refinery_blog_post_translations", ["refinery_blog_post_id"], :name => "index_refinery_blog_post_translations_on_refinery_blog_post_id"
-
-  create_table "refinery_blog_posts", :force => true do |t|
-    t.string   "title"
-    t.text     "body"
-    t.boolean  "draft"
-    t.datetime "published_at"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.integer  "user_id"
-    t.string   "custom_url"
-    t.text     "custom_teaser"
-    t.string   "source_url"
-    t.string   "source_url_title"
-    t.integer  "access_count",     :default => 0
-    t.string   "slug"
-  end
-
-  add_index "refinery_blog_posts", ["access_count"], :name => "index_refinery_blog_posts_on_access_count"
-  add_index "refinery_blog_posts", ["id"], :name => "index_refinery_blog_posts_on_id"
-  add_index "refinery_blog_posts", ["slug"], :name => "index_refinery_blog_posts_on_slug"
 
   create_table "refinery_brand_shows", :force => true do |t|
     t.integer  "brand_id"
@@ -490,10 +398,10 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
     t.string   "full_name"
     t.string   "id_no"
     t.string   "title"
+    t.string   "xero_guid"
     t.integer  "position"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.string   "xero_guid"
     t.text     "default_tracking_options"
   end
 
@@ -508,10 +416,10 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
     t.date     "start_date",                                                             :null => false
     t.date     "end_date"
     t.decimal  "vacation_days_per_year", :precision => 10, :scale => 0, :default => 0,   :null => false
+    t.decimal  "days_carried_over",      :precision => 10, :scale => 2, :default => 0.0, :null => false
     t.string   "country"
     t.datetime "created_at",                                                             :null => false
     t.datetime "updated_at",                                                             :null => false
-    t.decimal  "days_carried_over",      :precision => 10, :scale => 2, :default => 0.0, :null => false
   end
 
   add_index "refinery_employment_contracts", ["employee_id"], :name => "index_refinery_employment_contracts_on_employee_id"
@@ -1047,6 +955,7 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
   create_table "refinery_xero_receipts", :force => true do |t|
     t.integer  "employee_id"
     t.integer  "xero_expense_claim_id"
+    t.integer  "xero_contact_id"
     t.string   "guid"
     t.string   "receipt_number"
     t.string   "reference"
@@ -1061,7 +970,6 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
     t.datetime "updated_date_utc"
     t.datetime "created_at",                                                              :null => false
     t.datetime "updated_at",                                                              :null => false
-    t.integer  "xero_contact_id"
   end
 
   add_index "refinery_xero_receipts", ["employee_id"], :name => "index_refinery_xero_receipts_on_employee_id"
@@ -1094,22 +1002,5 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
 
   add_index "seo_meta", ["id"], :name => "index_seo_meta_on_id"
   add_index "seo_meta", ["seo_meta_id", "seo_meta_type"], :name => "id_type_index_on_seo_meta"
-
-  create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "context"
-    t.datetime "created_at"
-  end
-
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
-
-  create_table "tags", :force => true do |t|
-    t.string "name"
-  end
 
 end
