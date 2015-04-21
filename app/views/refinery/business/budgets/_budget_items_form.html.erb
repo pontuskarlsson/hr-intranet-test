@@ -1,0 +1,118 @@
+<section>
+  <table class="display js_budget_items_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+    <tr>
+      <th>Description</th>
+      <th>Styles</th>
+      <th>SKU's</th>
+      <th>Price $</th>
+      <th>Quantity</th>
+      <th>Total $</th>
+      <th>Margin %</th>
+      <th>Margin $</th>
+      <th>Comments</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>Description</th>
+      <th>Styles</th>
+      <th>SKU's</th>
+      <th>Price $</th>
+      <th>Quantity</th>
+      <th>Total $</th>
+      <th>Margin %</th>
+      <th>Margin $</th>
+      <th>Comments</th>
+      <th>&nbsp;</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td colspan="10">Loading, please wait...</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      var _rowIdx = 0;
+
+      var formatCurrency = function(data){
+        return parseFloat(data).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+      };
+
+      var buildFormFunction = function (attr, options){
+        if(!options)
+          options = {};
+        if(!options.formType)
+          options.formType = 'text';
+
+        return function(data, type, row) {
+          // Setting Row index if undefined
+          if(typeof row._idx == 'undefined') row._idx = _rowIdx++;
+          var $input = $('<input>', { name: 'budget[budget_items_attributes]['+row._idx+']['+attr+']', value: data, type: options.formType || 'text', 'class': 'js_budget_item_'+attr+'_field', 'data-index': row._idx });
+          if(options.css)
+            $input.css(options.css);
+
+          if(options.suffix){
+            var $cont = $('<div class="row collapse"><div class="small-9 columns"></div><div class="small-3 columns"><span class="postfix" style="font-size: 0.6rem;">'+options.suffix+'</span></div></div>');
+            $('.small-9', $cont).append($input);
+            return $cont.prop('outerHTML');
+          } else {
+            return $input.prop('outerHTML');
+          }
+        };
+      };
+
+      $('.js_budget_items_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= f.object.budget_items_for_list.to_json(methods: [:total, :margin_total, :margin_percent]).html_safe %>,
+        "columns": [
+          { data: "description", width: '20%', "render": buildFormFunction('description') },
+          { data: "no_of_products", "render": buildFormFunction('no_of_products', { formType: 'number' }) },
+          { data: "no_of_skus", "render": buildFormFunction('no_of_skus', { formType: 'number' }) },
+          { data: "price", "render": buildFormFunction('price', { suffix: '$' }) },
+          { data: "quantity", "render": buildFormFunction('quantity') },
+          { data: "total", "render": function(data,type,row){ return $('<span class="js_budget_item_total"></span>').html(formatCurrency(data)).prop('outerHTML'); } },
+          { data: "margin_percent", "render": buildFormFunction('margin_percent', { suffix: '%' }) },
+          { data: "margin_total", "render": function(data,type,row){ return $('<span class="js_budget_item_total_margin"></span>').html(formatCurrency(data)).prop('outerHTML'); }},
+          { data: "comments", width: '15%', "render": buildFormFunction('comments') },
+          { data: "id", "render": function(data, type, row){
+            if(data === null){
+              return '';
+            }else{
+              return '<input type="hidden" name="budget[budget_items_attributes]['+row._idx+'][id]" value="'+data+'"/>';
+            }
+          } }
+        ]
+      }).change('.js_budget_item_price_field, .js_budget_item_quantity_field, .js_budget_item_margin_percent_field, .js_budget_item_no_of_skus_field', function(evt){
+        var idx = $(evt.target).data('index');
+        var no_of_skus = $('[name="budget[budget_items_attributes]['+idx+'][no_of_skus]"]').prop('value');
+        var price = $('[name="budget[budget_items_attributes]['+idx+'][price]"]').prop('value');
+        var quantity = $('[name="budget[budget_items_attributes]['+idx+'][quantity]"]').prop('value');
+        var margin = $('[name="budget[budget_items_attributes]['+idx+'][margin_percent]"]').prop('value');
+
+        var $row = $(evt.target).parents('tr[role=row]').first();
+        $('.js_budget_item_total', $row).html(formatCurrency(parseFloat(quantity) * parseFloat(price) * parseFloat(no_of_skus)));
+        $('.js_budget_item_total_margin', $row).html(formatCurrency(parseFloat(quantity) * parseFloat(price) * parseFloat(no_of_skus) * parseFloat(margin) / 100.0));
+      });
+    });
+  </script>
+<% end %>

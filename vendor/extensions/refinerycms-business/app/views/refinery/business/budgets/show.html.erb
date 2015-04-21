@@ -3,14 +3,14 @@
     <%= form_for @budget.budget_form, url: refinery.business_budget_path(@budget) do |f| %>
       <p>
         <%= f.submit 'Update', class: 'button small round' %>
-        <%= link_to 'Cancel', refinery.business_budgets_path %>
+        <%= link_to 'Go Back', refinery.business_budgets_path %>
       </p>
 
       <%= render 'form', f: f %>
 
       <p>
         <%= f.submit 'Update', class: 'button small round' %>
-        <%= link_to 'Cancel', refinery.business_budgets_path %>
+        <%= link_to 'Go Back', refinery.business_budgets_path %>
       </p>
     <% end %>
   </div>

@@ -35,6 +35,7 @@ module Refinery
 
       def update
         if @budget.budget_form(params[:budget], current_refinery_user).save
+          flash[:notice] = 'Successfully updated the Budget'
           redirect_to refinery.business_budget_path(@budget)
         else
           present(@page)
