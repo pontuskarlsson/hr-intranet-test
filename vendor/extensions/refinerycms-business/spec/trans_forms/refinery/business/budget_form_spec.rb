@@ -60,6 +60,34 @@ module Refinery
               expect( Budget.last.customer_name ).to eq contact.name
             end
           end
+
+          context 'when adding BudgetItems' do
+            let(:attr) { { description: 'Budget Q4', from_date: '2011-02-03', to_date: '2011-04-05', comments: 'new comments', customer_name: 'Company Ltd.',
+               budget_items_attributes: {
+                   '0' => { description: 'T-Shirts',  no_of_products: '10', no_of_skus: '20', price: '9.50', quantity: '600', margin_percent: '30', comments: 'T-Shirt comments' },
+                   '1' => { description: 'Sweathers', no_of_products: '15', no_of_skus: '30', price: '14.50', quantity: '300', margin_percent: '15', comments: 'Sweather comments' },
+                   '2' => { description: 'T-Pants',   no_of_products: '8', no_of_skus: '12', price: '28', quantity: '100', margin_percent: '40', comments: 'Pants comments' },
+               }
+            } }
+
+            it 'updates summary attributes on Budget' do
+              expect{ form.save }.to change{ BudgetItem.count }.by(3)
+              expect( Budget.last.no_of_products ).to eq attr[:budget_items_attributes].values.map { |v| v[:no_of_products].to_i }.sum
+              expect( Budget.last.no_of_skus ).to eq attr[:budget_items_attributes].values.map { |v| v[:no_of_skus].to_i }.sum
+              expect( Budget.last.quantity ).to eq attr[:budget_items_attributes].values.map { |v| v[:quantity].to_i }.sum
+              expect( Budget.last.price).to eq (600 * 9.5 + 300 * 14.5 + 100 * 28) / (600 + 300 + 100) # Average
+              expect( Budget.last.margin).to eq (600 * 0.3 + 300 * 0.15 + 100 * 0.4) / (600 + 300 + 100) # Average
+            end
+          end
+
+          context 'when Budget with :description already exists' do
+            before { FactoryGirl.create(:budget, description: 'A Description') }
+            let(:attr) { { description: 'A Description', from_date: '2011-02-03', to_date: '2011-04-05', comments: 'new comments', customer_name: 'Customer Name' } }
+
+            it 'cannot create a Budget' do
+              expect{ form.save }.to change{ Budget.count }.by(0)
+            end
+          end
         end
 
         describe 'for an existing Budget' do

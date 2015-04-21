@@ -21,6 +21,24 @@ module Refinery
         budget.save!
 
         update_budget_items!
+
+        budget.no_of_products = budget.budget_items.map(&:no_of_products).sum
+        budget.no_of_skus = budget.budget_items.map(&:no_of_skus).sum
+        budget.quantity = budget.budget_items.map(&:quantity).sum
+
+        # Sets average price
+        if budget.quantity.zero? # Makes sure that there are quantities to calculate with
+          budget.price = 0
+          budget.margin = 0
+        else
+          total_price = budget.budget_items.inject(0) { |sum_price, budget_item| sum_price + budget_item.quantity * budget_item.price }
+          budget.price = total_price / budget.quantity
+
+          total_margin = budget.budget_items.inject(0.0) { |sum_margin, budget_item| sum_margin + budget_item.quantity * budget_item.margin }
+          budget.margin = total_margin / budget.quantity
+        end
+
+        budget.save!
       end
 
       private

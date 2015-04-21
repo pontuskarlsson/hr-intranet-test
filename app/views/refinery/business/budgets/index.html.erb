@@ -1,0 +1,80 @@
+<% content_for :body do %>
+  <p><%= link_to 'Add Budget', refinery.new_business_budget_path, class: 'button tiny round' %></p>
+
+  <table class="display js_budgets_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+    <tr>
+      <th>Description</th>
+      <th>Customer</th>
+      <th>Year</th>
+      <th>Quarter</th>
+      <th>No. of Styles</th>
+      <th>No. of SKU's</th>
+      <th>Est. Price</th>
+      <th>Est. Quantity</th>
+      <th>Est. Total</th>
+      <th>Est. Margin</th>
+      <th>Est. Margin Total</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+      <td colspan="11">Loading, please wait...</td>
+    </tr>
+    </tbody>
+
+    <tfooter>
+    <tr>
+      <th>Description</th>
+      <th>Customer</th>
+      <th>Year</th>
+      <th>Quarter</th>
+      <th>No. of Styles</th>
+      <th>No. of SKU's</th>
+      <th>Est. Price</th>
+      <th>Est. Quantity</th>
+      <th>Est. Total</th>
+      <th>Est. Margin</th>
+      <th>Est. Margin Total</th>
+    </tr>
+    </tfooter>
+  </table>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_budgets_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= @budgets.to_json(methods: [:quarter, :total, :margin_total]).html_safe %>,
+        "columns": [
+          { data: "description", "render": function(data, type, row){ return ('<a href="<%= refinery.business_budget_path('%%model_id%%') %>">'+data+'</a>').replace('%%model_id%%', row.id); } },
+          { data: "customer_name" },
+          { data: "year" },
+          { data: "quarter" },
+          { data: "no_of_products" },
+          { data: "no_of_skus" },
+          { data: "price", "render": function(data, type, row){ return "$US "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } },
+          { data: "quantity" },
+          { data: "total", "render": function(data, type, row){ return "$US "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } },
+          { data: "margin" },
+          { data: "margin_total", "render": function(data, type, row){ return "$US "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } }
+        ]
+      });
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>

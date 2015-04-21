@@ -9,23 +9,21 @@
 <div class="row">
   <div class="medium-6 columns">
     <label><%= ::Refinery::Business::Budget.human_attribute_name(:customer_name) %>
-      <%= f.text_field :customer_name %>
+      <%= f.text_field :customer_name, class: 'js_customer_name_field' %>
     </label>
   </div>
 </div>
 
 <div class="row">
-  <div class="medium-6 columns">
+  <div class="medium-3 columns">
     <label><%= ::Refinery::Business::Budget.human_attribute_name(:from_date) %>
-      <%= f.text_field :from_date %>
+      <%= f.text_field :from_date, class: 'js_from_date_field' %>
     </label>
   </div>
-</div>
 
-<div class="row">
-  <div class="medium-6 columns">
+  <div class="medium-3 columns end">
     <label><%= ::Refinery::Business::Budget.human_attribute_name(:to_date) %>
-      <%= f.text_field :to_date %>
+      <%= f.text_field :to_date, class: 'js_to_date_field' %>
     </label>
   </div>
 </div>
@@ -68,3 +66,21 @@
     <% end %>
   <% end %>
 </table>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'refinery/ui' %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_from_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_to_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_customer_name_field').autocomplete({
+        source: <%= contact_references.html_safe %>
+      });
+    });
+  </script>
+<% end %>
