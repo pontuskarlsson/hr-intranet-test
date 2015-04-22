@@ -16,6 +16,16 @@ module Refinery
         @budget_form ||= BudgetForm.new_in_model(self, params, current_user)
       end
 
+      # Since the percentage value is stored in a decimal column, i.e. the
+      # value 25% is stored as 0.25, so this method converts that value into
+      # a more presentable format that can be used in views and form fields.
+      def margin_percent
+        margin * 100
+      end
+
+      # The methods +total+ and +margin_total+ is calculated values based
+      # on the other columns. It would be unnecessary to store this data
+      # as well since they are always relative to the other columns.
       def total
         price * quantity
       end
