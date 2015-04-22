@@ -7,14 +7,24 @@ module TransForms
     include Virtus.model
 
     extend ActiveModel::Naming
+    extend ActiveModel::Callbacks
     include ActiveModel::Conversion
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
 
     include TransForms::Callbacks
 
+    # Defines the class methods +before_save+, +around_save+ and +after_save+.
+    define_model_callbacks :save
+
     def save
-      valid? && run_transaction
+      if valid?
+        run_callbacks :save do
+          run_transaction
+        end
+      else
+        false
+      end
     end
 
     def save!

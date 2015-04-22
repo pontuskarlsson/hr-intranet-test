@@ -7,9 +7,6 @@ class CreateBusinessBudgets < ActiveRecord::Migration
       t.string :customer_name, null: false, default: ''
       t.integer :customer_contact_id
 
-      t.integer :year
-      t.string :time_period, null: false, default: ''
-
       t.date :from_date
       t.date :to_date
 
@@ -31,14 +28,12 @@ class CreateBusinessBudgets < ActiveRecord::Migration
     add_index :refinery_business_budgets, :description
     add_index :refinery_business_budgets, :customer_contact_id
     add_index :refinery_business_budgets, :account_manager_user_id
-    add_index :refinery_business_budgets, :year
   end
 
   def down
     remove_index :refinery_business_budgets, :description
     remove_index :refinery_business_budgets, :customer_contact_id
     remove_index :refinery_business_budgets, :account_manager_user_id
-    remove_index :refinery_business_budgets, :year
 
     drop_table :refinery_business_budgets
 

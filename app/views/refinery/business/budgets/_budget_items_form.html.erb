@@ -51,56 +51,30 @@
 
   <script type="text/javascript">
     $(function(){
-      var Budgets = Refinery.Business.Budgets;
+      var dataTable = Refinery.Business.Budgets.budgetItemsDataTable;
 
-//      var formatCurrency = function(data){
-//        return parseFloat(data).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-//      };
-
-      var buildFormFunction = function (attr, options){
-        if(!options)
-          options = {};
-        if(!options.formType)
-          options.formType = 'text';
-
-        return function(data, type, row, meta) {
-          // Setting Row index if undefined
-          var $input = $('<input>', { name: 'budget[budget_items_attributes]['+meta.row+']['+attr+']', value: data, type: options.formType || 'text', 'class': 'js_budget_item_'+attr+'_field', 'data-index': meta.row });
-          if(options.css)
-            $input.css(options.css);
-
-          if(options.suffix){
-            var $cont = $('<div class="row collapse"><div class="small-9 columns"></div><div class="small-3 columns"><span class="postfix" style="font-size: 0.6rem;">'+options.suffix+'</span></div></div>');
-            $('.small-9', $cont).append($input);
-            return $cont.prop('outerHTML');
-          } else {
-            return $input.prop('outerHTML');
-          }
-        };
-      };
-
-      var dataTable = $('.js_budget_items_data_table').dataTable({
+      $('.js_budget_items_data_table').dataTable({
         "scrollY":        "400px",
         "scrollCollapse": true,
         "paging":         false,
         "order":          [],
         "data":           <%= f.object.budget_items_for_list.to_json(methods: [:total, :margin_total, :margin_percent]).html_safe %>,
         "columns": [
-          { data: "description", width: '20%', "render": { "display": Budgets.dataTable.columns.description } },
-          { data: "no_of_products", "render": { "display": Budgets.dataTable.columns.noOfProducts } },
-          { data: "no_of_skus", "render": { "display": Budgets.dataTable.columns.noOfSkus } },
-          { data: "price", "render": { "display": Budgets.dataTable.columns.price } },
-          { data: "quantity", "render": { "display": Budgets.dataTable.columns.quantity } },
-          { data: "total", "render": { "display": Budgets.dataTable.columns.total } },
-          { data: "margin_percent", "render": { "display": Budgets.dataTable.columns.marginPercent } },
-          { data: "margin_total", "render": { "display": Budgets.dataTable.columns.marginTotal } },
-          { data: "comments", width: '15%', "render": { "display": Budgets.dataTable.columns.comments } },
-          { data: "id", "render": { "display": Budgets.dataTable.columns.id } }
+          { data: "description",    "render": { "display": dataTable.columns.description }, width: '20%' },
+          { data: "no_of_products", "render": { "display": dataTable.columns.noOfProducts } },
+          { data: "no_of_skus",     "render": { "display": dataTable.columns.noOfSkus } },
+          { data: "price",          "render": { "display": dataTable.columns.price } },
+          { data: "quantity",       "render": { "display": dataTable.columns.quantity } },
+          { data: "total",          "render": { "display": dataTable.columns.total } },
+          { data: "margin_percent", "render": { "display": dataTable.columns.marginPercent } },
+          { data: "margin_total",   "render": { "display": dataTable.columns.marginTotal } },
+          { data: "comments",       "render": { "display": dataTable.columns.comments }, width: '15%' },
+          { data: "id",             "render": { "display": dataTable.columns.id } }
         ],
-        "drawCallback": Budgets.dataTable.callbacks.draw
-      }).on('change', '.js_budget_item_field', Budgets.dataTable.events.formFieldChange)
-        .on('click', '.js_budget_item_remove', Budgets.dataTable.events.removeClick)
-        .on('click', '.js_budget_item_undo', Budgets.dataTable.events.undoClick);
+        "drawCallback": dataTable.callbacks.draw
+      }).on('change', '.js_budget_item_field', dataTable.events.formFieldChange)
+        .on('click', '.js_budget_item_remove', dataTable.events.removeClick)
+        .on('click', '.js_budget_item_undo', dataTable.events.undoClick);
     });
   </script>
 <% end %>

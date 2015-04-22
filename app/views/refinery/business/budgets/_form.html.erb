@@ -1,0 +1,66 @@
+<h2>Budget Details</h2>
+<div class="row">
+  <div class="medium-6 columns">
+    <div class="row">
+      <div class="columns">
+        <label><%= ::Refinery::Business::Budget.human_attribute_name(:description) %>
+          <%= f.text_field :description %>
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="columns">
+        <label><%= ::Refinery::Business::Budget.human_attribute_name(:customer_name) %>
+          <%= f.text_field :customer_name, class: 'js_customer_name_field' %>
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="medium-6 columns">
+        <label>Year
+          <%= f.text_field :year %>
+        </label>
+      </div>
+
+      <div class="medium-6 columns end">
+        <label>Quarter
+          <%= f.select :quarter, ::Refinery::Business::QUARTERS.keys %>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="medium-6 columns">
+    <div class="row">
+      <div class="columns">
+        <label><%= ::Refinery::Business::Budget.human_attribute_name(:comments) %>
+          <%= f.text_area :comments, rows: 10 %>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>Budget Items</h2>
+
+<%= render 'budget_items_form', f: f %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'refinery/ui' %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_from_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_to_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_customer_name_field').autocomplete({
+        source: <%= contact_references.html_safe %>
+      });
+    });
+  </script>
+<% end %>

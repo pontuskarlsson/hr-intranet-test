@@ -6,7 +6,7 @@ module Refinery
       belongs_to :customer_contact, class_name: '::Refinery::Marketing::Contact'
       has_many :budget_items, dependent: :destroy
 
-      attr_accessible :description, :position, :customer_name, :from_date, :to_date, :year, :time_period,
+      attr_accessible :description, :position, :customer_name, :from_date, :to_date,
                       :no_of_products, :no_of_skus, :price, :quantity, :margin, :comments
 
       validates :description,   presence: true, uniqueness: true

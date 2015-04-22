@@ -99,8 +99,6 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
     t.string   "description",                                            :default => "",  :null => false
     t.string   "customer_name",                                          :default => "",  :null => false
     t.integer  "customer_contact_id"
-    t.integer  "year"
-    t.string   "time_period",                                            :default => "",  :null => false
     t.date     "from_date"
     t.date     "to_date"
     t.string   "account_manager_name",                                   :default => "",  :null => false
@@ -119,7 +117,6 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
   add_index "refinery_business_budgets", ["account_manager_user_id"], :name => "index_refinery_business_budgets_on_account_manager_user_id"
   add_index "refinery_business_budgets", ["customer_contact_id"], :name => "index_refinery_business_budgets_on_customer_contact_id"
   add_index "refinery_business_budgets", ["description"], :name => "index_refinery_business_budgets_on_description"
-  add_index "refinery_business_budgets", ["year"], :name => "index_refinery_business_budgets_on_year"
 
   create_table "refinery_business_order_items", :force => true do |t|
     t.integer  "sales_order_id",                                                              :null => false

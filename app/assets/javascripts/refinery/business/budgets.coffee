@@ -2,120 +2,138 @@ window.Refinery ?= {}
 Refinery.Business ?= {}
 Refinery.Business.Budgets =
 
-  dataTable:
+  # Helper methods called from within this file only
+  _wrapInSuffix: (suffix, $node) ->
+    $cont = $("<div class=\"row collapse\"><div class=\"small-9 columns\"></div><div class=\"small-3 columns\"><span class=\"postfix\" style=\"font-size: 0.6rem;\">#{suffix}</span></div></div>")
+    $('.small-9', $cont).append($node)
+    $cont.prop 'outerHTML'
 
-    _wrapInSuffix: (suffix, $node) ->
-      $cont = $("<div class=\"row collapse\"><div class=\"small-9 columns\"></div><div class=\"small-3 columns\"><span class=\"postfix\" style=\"font-size: 0.6rem;\">#{suffix}</span></div></div>")
-      $('.small-9', $cont).append($node)
-      $cont.prop 'outerHTML'
+  _formatCurrency: (data) ->
+    parseFloat(data).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 
-    _formatCurrency: (data) ->
-      parseFloat(data).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 
+  # Functiona and callbacks related to the DataTable for Budgets
+  budgetDataTable:
     columns:
-
       description: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
-        else
-          $('<input>',
-            name: "budget[budget_items_attributes][#{meta.row}][description]"
-            value: data
-            type: 'text'
-            class: "js_budget_item_field"
-            'data-row': meta.row
-            'data-col': meta.col
-          ).prop 'outerHTML'
+        "<a href=\"/business/budgets/#{row.id}\">#{data}</a>"
 
-      noOfProducts: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
+      customerName: (data, type, row, meta) ->
+        if row.customer_contact_id?
+          "<a href=\"/marketing/contacts/#{row.customer_contact_id}\">#{data}</a>"
         else
-          $('<input>',
-            name: "budget[budget_items_attributes][#{meta.row}][no_of_products]"
-            value: data
-            type: 'text'
-            class: "js_budget_item_field"
-            'data-row': meta.row
-            'data-col': meta.col
-          ).prop 'outerHTML'
-
-      noOfSkus: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
           data
-        else
-          $('<input>',
-            name: "budget[budget_items_attributes][#{meta.row}][no_of_skus]"
-            value: data
-            type: 'text'
-            class: "js_budget_item_field"
-            'data-row': meta.row
-            'data-col': meta.col
-          ).prop 'outerHTML'
 
       price: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
-        else
-          Refinery.Business.Budgets.dataTable._wrapInSuffix '$', $('<input>',
-            name: "budget[budget_items_attributes][#{meta.row}][price]"
-            value: data
-            type: 'text'
-            class: "js_budget_item_field"
-            'data-row': meta.row
-            'data-col': meta.col
-          )
-
-      quantity: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
-        else
-          $('<input>',
-            name: "budget[budget_items_attributes][#{meta.row}][quantity]"
-            value: data
-            type: 'text'
-            class: "js_budget_item_field"
-            'data-row': meta.row
-            'data-col': meta.col
-          ).prop 'outerHTML'
+        Refinery.Business.Budgets._formatCurrency(data)
 
       total: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
-        else
-          $('<span class="js_budget_item_total"></span>').html( Refinery.Business.Budgets.dataTable._formatCurrency(data) ).prop('outerHTML')
+        Refinery.Business.Budgets._formatCurrency(data)
 
       marginPercent: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
-        else
-          Refinery.Business.Budgets.dataTable._wrapInSuffix '%', $('<input>',
-            name: "budget[budget_items_attributes][#{meta.row}][margin_percent]"
-            value: data
-            type: 'text'
-            class: "js_budget_item_field"
-            'data-row': meta.row
-            'data-col': meta.col
-          )
+        "#{data}%"
 
       marginTotal: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
-        else
-          $('<span class="js_budget_item_margin_total"></span>').html( Refinery.Business.Budgets.dataTable._formatCurrency(data) ).prop('outerHTML')
+        Refinery.Business.Budgets._formatCurrency(data)
+
+    callbacks:
+      draw: ->
+        api = @api()
+
+        products_col = api.column(4, { page: 'current' })
+        $(products_col.footer()).html('Sum: '+products_col.data().sum())
+
+        skus_col = api.column(5, { page: 'current' })
+        $(skus_col.footer()).html('Sum: '+skus_col.data().sum())
+
+        qty_col = api.column(7, { page: 'current' })
+        $(qty_col.footer()).html('Sum: '+qty_col.data().sum())
+
+        total_col = api.column(8, { page: 'current' })
+        $(total_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum()))
+
+        mar_tot_col = api.column(10, { page: 'current' })
+        $(mar_tot_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(mar_tot_col.data().sum()))
+
+
+  # Functiona and callbacks related to the DataTable for BudgetItems
+  budgetItemsDataTable:
+    columns:
+      description: (data, type, row, meta) ->
+        $('<input>',
+          name: "budget[budget_items_attributes][#{meta.row}][description]"
+          value: data
+          type: 'text'
+          class: "js_budget_item_field"
+          'data-row': meta.row
+          'data-col': meta.col
+        ).prop 'outerHTML'
+
+      noOfProducts: (data, type, row, meta) ->
+        $('<input>',
+          name: "budget[budget_items_attributes][#{meta.row}][no_of_products]"
+          value: data
+          type: 'text'
+          class: "js_budget_item_field"
+          'data-row': meta.row
+          'data-col': meta.col
+        ).prop 'outerHTML'
+
+      noOfSkus: (data, type, row, meta) ->
+        $('<input>',
+          name: "budget[budget_items_attributes][#{meta.row}][no_of_skus]"
+          value: data
+          type: 'text'
+          class: "js_budget_item_field"
+          'data-row': meta.row
+          'data-col': meta.col
+        ).prop 'outerHTML'
+
+      price: (data, type, row, meta) ->
+        Refinery.Business.Budgets._wrapInSuffix '$', $('<input>',
+          name: "budget[budget_items_attributes][#{meta.row}][price]"
+          value: data
+          type: 'text'
+          class: "js_budget_item_field"
+          'data-row': meta.row
+          'data-col': meta.col
+        )
+
+      quantity: (data, type, row, meta) ->
+        $('<input>',
+          name: "budget[budget_items_attributes][#{meta.row}][quantity]"
+          value: data
+          type: 'text'
+          class: "js_budget_item_field"
+          'data-row': meta.row
+          'data-col': meta.col
+        ).prop 'outerHTML'
+
+      total: (data, type, row, meta) ->
+        $('<span class="js_budget_item_total"></span>').html( Refinery.Business.Budgets._formatCurrency(data) ).prop('outerHTML')
+
+      marginPercent: (data, type, row, meta) ->
+        Refinery.Business.Budgets._wrapInSuffix '%', $('<input>',
+          name: "budget[budget_items_attributes][#{meta.row}][margin_percent]"
+          value: data
+          type: 'text'
+          class: "js_budget_item_field"
+          'data-row': meta.row
+          'data-col': meta.col
+        )
+
+      marginTotal: (data, type, row, meta) ->
+        $('<span class="js_budget_item_margin_total"></span>').html( Refinery.Business.Budgets._formatCurrency(data) ).prop('outerHTML')
 
       comments: (data, type, row, meta) ->
-        if type == 'sort' or type == 'filter'
-          data
-        else
-          $('<input>',
-            name: "budget[budget_items_attributes][#{meta.row}][comments]"
-            value: data
-            type: 'text'
-            class: "js_budget_item_field"
-            'data-row': meta.row
-            'data-col': meta.col
-          ).prop 'outerHTML'
+        $('<input>',
+          name: "budget[budget_items_attributes][#{meta.row}][comments]"
+          value: data
+          type: 'text'
+          class: "js_budget_item_field"
+          'data-row': meta.row
+          'data-col': meta.col
+        ).prop 'outerHTML'
 
       id: (data, type, row, meta) ->
         if data == null
@@ -127,7 +145,6 @@ Refinery.Business.Budgets =
 
 
     events:
-
       formFieldChange: (evt) ->
         $field = $(evt.target)
         row = $field.data('row')
@@ -140,7 +157,6 @@ Refinery.Business.Budgets =
         api.cell(row, 7).data(parseFloat(api.cell(row, 4).data()) * parseFloat(api.cell(row, 3).data()) * parseFloat(api.cell(row, 2).data()) * parseFloat(api.cell(row, 6).data()) / 100.0);
 
         api.draw()
-
 
       removeClick: (evt) ->
         evt.preventDefault()
@@ -162,7 +178,6 @@ Refinery.Business.Budgets =
 
 
     callbacks:
-
       draw: ->
         api = @api()
 
@@ -176,7 +191,7 @@ Refinery.Business.Budgets =
         $(qty_col.footer()).html('Sum: '+qty_col.data().sum())
 
         total_col = api.column(5, { page: 'current' })
-        $(total_col.footer()).html('Sum: '+ Refinery.Business.Budgets.dataTable._formatCurrency(total_col.data().sum()))
+        $(total_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum()))
 
         mar_tot_col = api.column(7, { page: 'current' })
-        $(mar_tot_col.footer()).html('Sum: '+ Refinery.Business.Budgets.dataTable._formatCurrency(mar_tot_col.data().sum()))
+        $(mar_tot_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(mar_tot_col.data().sum()))
