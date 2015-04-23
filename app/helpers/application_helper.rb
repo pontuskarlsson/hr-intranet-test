@@ -12,4 +12,12 @@ module ApplicationHelper
     presenter
   end
 
+  def foundation_form_field(label, field, errors = [])
+    if errors.any?
+      "<label class=\"error\">#{label}#{field.html_safe}</label><small class=\"error\">#{ errors.join(', ') }</small>".html_safe
+    else
+      "<label>#{label}#{field.html_safe}</label>".html_safe
+    end
+  end
+
 end

@@ -19,9 +19,7 @@
 
     <div class="row">
       <div class="medium-6 columns">
-        <label>Year
-          <%= f.text_field :year %>
-        </label>
+        <%= foundation_form_field 'Year', f.text_field(:year), f.object.errors[:year] %>
       </div>
 
       <div class="medium-6 columns end">

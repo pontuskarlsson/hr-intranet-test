@@ -23,17 +23,6 @@ module Refinery
         margin * 100
       end
 
-      # The methods +total+ and +margin_total+ is calculated values based
-      # on the other columns. It would be unnecessary to store this data
-      # as well since they are always relative to the other columns.
-      def total
-        price * quantity
-      end
-
-      def margin_total
-        total * margin
-      end
-
     end
   end
 end

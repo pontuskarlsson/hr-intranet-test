@@ -11,7 +11,7 @@
       <th>Styles</th>
       <th>SKU's</th>
       <th>Price $</th>
-      <th>Quantity</th>
+      <th>Qty per SKU</th>
       <th>Total $</th>
       <th>Margin %</th>
       <th>Margin $</th>
@@ -64,8 +64,8 @@
         "order":          [[ 0, "asc" ]],
         "data":           <%= @budgets.to_json(methods: [:year, :quarter, :total, :margin_total, :margin_percent]).html_safe %>,
         "columns": [
-          { data: "description",      "render": { "display": dataTable.columns.description, width: '15%' } },
-          { data: "customer_name",    "render": { "display": dataTable.columns.customerName, width: '15%' } },
+          { data: "description",      "render": { "display": dataTable.columns.description }, width: '15%' },
+          { data: "customer_name",    "render": { "display": dataTable.columns.customerName }, width: '15%' },
           { data: "year" },
           { data: "quarter" },
           { data: "no_of_products" },

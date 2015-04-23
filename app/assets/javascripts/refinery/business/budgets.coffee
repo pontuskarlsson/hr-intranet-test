@@ -9,7 +9,10 @@ Refinery.Business.Budgets =
     $cont.prop 'outerHTML'
 
   _formatCurrency: (data) ->
-    parseFloat(data).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    val = parseFloat(data).toFixed(2).toString()
+    if val.substr(-2, 2) == '00'
+      val = val.substr(0, val.length - 3)
+    val.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 
 
   # Functiona and callbacks related to the DataTable for Budgets
@@ -31,7 +34,7 @@ Refinery.Business.Budgets =
         Refinery.Business.Budgets._formatCurrency(data)
 
       marginPercent: (data, type, row, meta) ->
-        "#{data}%"
+        "#{Refinery.Business.Budgets._formatCurrency(data)}%"
 
       marginTotal: (data, type, row, meta) ->
         Refinery.Business.Budgets._formatCurrency(data)
@@ -54,6 +57,18 @@ Refinery.Business.Budgets =
 
         mar_tot_col = api.column(10, { page: 'current' })
         $(mar_tot_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(mar_tot_col.data().sum()))
+
+        price_col = api.column(6, { page: 'current' })
+        qty = 0
+        for val, i in skus_col.data()
+          qty += val * qty_col.data()[i]
+        $(price_col.footer()).html('Avg: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum() / qty))
+
+        margin_col = api.column(9, { page: 'current' })
+        if total_col.data().sum() == 0
+          $(margin_col.footer()).html('Avg: 0%')
+        else
+          $(margin_col.footer()).html('Avg: '+ Refinery.Business.Budgets._formatCurrency(100.0 * mar_tot_col.data().sum() / total_col.data().sum()) + '%')
 
 
   # Functiona and callbacks related to the DataTable for BudgetItems

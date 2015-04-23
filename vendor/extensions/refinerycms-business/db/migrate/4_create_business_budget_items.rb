@@ -6,7 +6,7 @@ class CreateBusinessBudgetItems < ActiveRecord::Migration
       t.string :description
       t.integer :no_of_products, null: false, default: 0
       t.integer :no_of_skus, null: false, default: 0
-      t.decimal :price, null: false, default: 0
+      t.decimal :price, null: false, default: 0, precision: 8, scale: 2
       t.integer :quantity, null: false, default: 0
       t.decimal :margin, null: false, default: 0, precision: 6, scale: 5
       t.text :comments, null: false, default: ''

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150415095760) do
+ActiveRecord::Schema.define(:version => 20150423012926) do
 
   create_table "refinery_amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -82,36 +82,38 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
   create_table "refinery_business_budget_items", :force => true do |t|
     t.integer  "budget_id"
     t.string   "description"
-    t.integer  "no_of_products",                                :default => 0,   :null => false
-    t.integer  "no_of_skus",                                    :default => 0,   :null => false
-    t.decimal  "price",          :precision => 10, :scale => 0, :default => 0,   :null => false
-    t.integer  "quantity",                                      :default => 0,   :null => false
-    t.decimal  "margin",         :precision => 6,  :scale => 5, :default => 0.0, :null => false
-    t.text     "comments",                                                       :null => false
+    t.integer  "no_of_products",                               :default => 0,   :null => false
+    t.integer  "no_of_skus",                                   :default => 0,   :null => false
+    t.decimal  "price",          :precision => 8, :scale => 2, :default => 0.0, :null => false
+    t.integer  "quantity",                                     :default => 0,   :null => false
+    t.decimal  "margin",         :precision => 6, :scale => 5, :default => 0.0, :null => false
+    t.text     "comments",                                                      :null => false
     t.integer  "position"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
   end
 
   add_index "refinery_business_budget_items", ["budget_id"], :name => "index_refinery_business_budget_items_on_budget_id"
 
   create_table "refinery_business_budgets", :force => true do |t|
-    t.string   "description",                                            :default => "",  :null => false
-    t.string   "customer_name",                                          :default => "",  :null => false
+    t.string   "description",                                           :default => "",  :null => false
+    t.string   "customer_name",                                         :default => "",  :null => false
     t.integer  "customer_contact_id"
     t.date     "from_date"
     t.date     "to_date"
-    t.string   "account_manager_name",                                   :default => "",  :null => false
+    t.string   "account_manager_name",                                  :default => "",  :null => false
     t.integer  "account_manager_user_id"
-    t.integer  "no_of_products",                                         :default => 0,   :null => false
-    t.integer  "no_of_skus",                                             :default => 0,   :null => false
-    t.decimal  "price",                   :precision => 10, :scale => 0, :default => 0,   :null => false
-    t.integer  "quantity",                                               :default => 0,   :null => false
-    t.decimal  "margin",                  :precision => 6,  :scale => 5, :default => 0.0, :null => false
+    t.integer  "no_of_products",                                        :default => 0,   :null => false
+    t.integer  "no_of_skus",                                            :default => 0,   :null => false
+    t.decimal  "price",                   :precision => 8, :scale => 2, :default => 0.0, :null => false
+    t.integer  "quantity",                                              :default => 0,   :null => false
+    t.decimal  "margin",                  :precision => 6, :scale => 5, :default => 0.0, :null => false
     t.text     "comments"
     t.integer  "position"
-    t.datetime "created_at",                                                              :null => false
-    t.datetime "updated_at",                                                              :null => false
+    t.datetime "created_at",                                                             :null => false
+    t.datetime "updated_at",                                                             :null => false
+    t.decimal  "total",                   :precision => 8, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "margin_total",            :precision => 8, :scale => 2, :default => 0.0, :null => false
   end
 
   add_index "refinery_business_budgets", ["account_manager_user_id"], :name => "index_refinery_business_budgets_on_account_manager_user_id"
@@ -395,10 +397,10 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
     t.string   "full_name"
     t.string   "id_no"
     t.string   "title"
-    t.string   "xero_guid"
     t.integer  "position"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.string   "xero_guid"
     t.text     "default_tracking_options"
   end
 
@@ -999,5 +1001,9 @@ ActiveRecord::Schema.define(:version => 20150415095760) do
 
   add_index "seo_meta", ["id"], :name => "index_seo_meta_on_id"
   add_index "seo_meta", ["seo_meta_id", "seo_meta_type"], :name => "id_type_index_on_seo_meta"
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
+  end
 
 end

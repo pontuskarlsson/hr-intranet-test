@@ -75,8 +75,10 @@ module Refinery
               expect( Budget.last.no_of_products ).to eq attr[:budget_items_attributes].values.map { |v| v[:no_of_products].to_i }.sum
               expect( Budget.last.no_of_skus ).to eq attr[:budget_items_attributes].values.map { |v| v[:no_of_skus].to_i }.sum
               expect( Budget.last.quantity ).to eq attr[:budget_items_attributes].values.map { |v| v[:quantity].to_i }.sum
-              expect( Budget.last.price).to eq (600 * 9.5 + 300 * 14.5 + 100 * 28) / (600 + 300 + 100) # Average
-              expect( Budget.last.margin).to eq (600 * 0.3 + 300 * 0.15 + 100 * 0.4) / (600 + 300 + 100) # Average
+              expect( Budget.last.total ).to eq (20 * 600 * 9.5 + 30 * 300 * 14.5 + 12 * 100 * 28)
+              # expect( Budget.last.price ).to eq (Budget.last.total / (Budget.last.no_of_skus * Budget.last.quantity)).round(2) # Average
+              # expect( Budget.last.margin_total ).to eq
+              # expect( Budget.last.margin ).to eq (600 * 0.3 + 300 * 0.15 + 100 * 0.4) / (600 + 300 + 100) # Average
             end
           end
 

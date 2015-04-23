@@ -25,24 +25,27 @@ module Refinery
         budget.no_of_products = budget.budget_items.map(&:no_of_products).sum
         budget.no_of_skus = budget.budget_items.map(&:no_of_skus).sum
         budget.quantity = budget.budget_items.map(&:quantity).sum
+        budget.total = budget.budget_items.map(&:total).sum
+        budget.margin_total = budget.budget_items.map(&:margin_total).sum
 
         # Sets average price
-        if budget.quantity.zero? # Makes sure that there are quantities to calculate with
+        if budget.quantity.zero? || budget.no_of_skus.zero? # Makes sure that there are quantities to calculate with
           budget.price = 0
+        else
+          budget.price = budget.total / (budget.quantity * budget.no_of_skus)
+        end
+
+        if budget.total.zero?
           budget.margin = 0
         else
-          total_price = budget.budget_items.inject(0) { |sum_price, budget_item| sum_price + budget_item.quantity * budget_item.price }
-          budget.price = total_price / budget.quantity
-
-          total_margin = budget.budget_items.inject(0.0) { |sum_margin, budget_item| sum_margin + budget_item.quantity * budget_item.margin }
-          budget.margin = total_margin / budget.quantity
+          budget.margin = budget.margin_total / budget.total
         end
 
         budget.save!
       end
 
       private
-      def update_budget_items!
+      def update_budget_items!(allowed_attributes = %w(description no_of_products no_of_skus price quantity margin_percent comments))
         # Loops through the supplied attributes for BudgetItems and creates if it's valid
         each_nested_hash_for budget_items_attributes do |attr|
           attr['margin'] = attr.delete('margin_percent').to_f / 100.0 if attr.has_key?('margin_percent')
@@ -52,7 +55,7 @@ module Refinery
             if attr['_destroy'] == '1'
               budget_item.destroy
             else
-              budget_item.attributes = attr
+              budget_item.attributes = attr.reject { |k, _| !allowed_attributes.include?(k) }
               budget_item.save!
             end
           elsif valid_item_attr?(attr)

@@ -1,7 +1,7 @@
 Refinery::Business::BudgetForm.class_eval do
 
-  attribute :year,        Integer
-  attribute :quarter,     String
+  attribute :year,        Integer, default: proc { |f| f.budget.year }
+  attribute :quarter,     String, default: proc { |f| f.budget.quarter }
 
   validates :year,      presence: true,
                         format: { with: /^(19|20)\d{2}$/i, message: 'should be a four-digit year' }

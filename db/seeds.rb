@@ -32,9 +32,3 @@ Refinery::Store::Engine.load_seed
 
 # Added by Refinery CMS CustomLists extension
 Refinery::CustomLists::Engine.load_seed
-
-# Added by Refinery CMS Calendar extension
-Refinery::Calendar::Engine.load_seed
-
-# Added by Refinery CMS Business extension
-Refinery::Business::Engine.load_seed
