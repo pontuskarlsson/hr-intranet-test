@@ -7,7 +7,12 @@ module Refinery
       helper_method :active_tracking_categories
 
       def new
-        @xero_receipt = @xero_expense_claim.xero_receipts.build
+        @xero_receipt =
+            if (last_receipt = @xero_expense_claim.xero_receipts.last).present?
+              @xero_expense_claim.xero_receipts.build(date: last_receipt.date)
+            else
+              @xero_expense_claim.xero_receipts.build
+            end
       end
 
       def create
