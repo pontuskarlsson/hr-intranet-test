@@ -155,7 +155,12 @@
           } },
           { data: "no_of_items" },
           { data: "status" },
-          { data: "total", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } }
+          { data: "total", "render": {
+            "display": function (data, type, row) {
+              return "$HK " + parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            },
+            "sort": function(data, type, row){ parseFloat(data) }
+          } }
         ]
       });
     });
