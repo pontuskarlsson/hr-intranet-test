@@ -121,15 +121,27 @@ module Refinery
         if xero_contacts.any?
           # Loops through each contact and include it in a batch save to Xero
           built_contacts = []
-          client.Contact.batch_save do
+          result = client.Contact.batch_save do
             xero_contacts.each do |xero_contact|
               built_contacts << client.Contact.build(name: xero_contact.name)
             end
           end
 
+          # If the Batch Save was unsuccessful, then it might be because one of
+          # the contacts had already been created previously. The Batch Save does
+          # not seem to do a +find_or_create+ call, that's why it can fail. But
+          # if we call +save+ directly on the contacts that failed to be created,
+          # then it does seem to perform a +find_or_create+.
+          unless result
+            built_contacts.each do |contact|
+              # This contact id is an indication that it could not be created
+              contact.save if contact.contact_id == '00000000-0000-0000-0000-000000000000'
+            end
+          end
+
           # Goes through the created records to associate the new guids
           built_contacts.each do |contact|
-            if contact.contact_id.present?
+            if contact.contact_id.present? && contact.contact_id != '00000000-0000-0000-0000-000000000000'
               xero_contact = ::Refinery::Employees::XeroContact.find_by_name!(contact.name)
               xero_contact.guid = contact.contact_id
               xero_contact.save!
