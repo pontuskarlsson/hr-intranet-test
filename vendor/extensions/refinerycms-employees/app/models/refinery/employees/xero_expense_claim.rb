@@ -41,7 +41,8 @@ module Refinery
       end
 
       def submittable_by?(refinery_user)
-        (employee.user_id == refinery_user.id || added_by_id == refinery_user.id) && submittable?
+        submittable?
+        #(employee.user_id == refinery_user.id || added_by_id == refinery_user.id) && submittable?
       end
 
       def destroyable_by?(refinery_user)

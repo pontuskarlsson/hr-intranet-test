@@ -96,7 +96,8 @@ module Refinery
       end
 
       def find_expense_claim
-        @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_refinery_user).find(params[:id])
+        #@xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_refinery_user).find(params[:id])
+        @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         redirect_to refinery.employees_expense_claims_path
       end

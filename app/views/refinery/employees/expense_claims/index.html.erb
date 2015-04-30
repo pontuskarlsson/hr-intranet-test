@@ -116,7 +116,7 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 3, "desc" ]],
-        "data":           <%= current_refinery_user.xero_expense_claims.where('employee_id <> ?', current_refinery_user.employee.try(:id) || -1).to_json(methods: [:date, :employee_full_name]).html_safe %>,
+        "data":           <%= ::Refinery::Employees::XeroExpenseClaim.where('employee_id <> ?', current_refinery_user.employee.try(:id) || -1).to_json(methods: [:date, :employee_full_name]).html_safe %>,
         "columns": [
           { data: "employee_full_name" },
           { data: "description", "render": function(data, type, row){
