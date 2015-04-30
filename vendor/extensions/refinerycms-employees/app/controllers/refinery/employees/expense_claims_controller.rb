@@ -139,6 +139,11 @@ module Refinery
         true
 
       rescue ::StandardError => e
+        Rails.logger.error('Something went wrong while verifying Contacts')
+        Rails.logger.error e.message
+        e.backtrace.each do |row|
+          Rails.logger.error row
+        end
         flash[:alert] = 'Something went wrong while verifying Contacts'
         false
       end
@@ -190,6 +195,11 @@ module Refinery
         @xero_expense_claim.xero_receipts(true).all? { |xr| xr.guid.present? }
 
       rescue ::StandardError => e
+        Rails.logger.error('Something went wrong while submitting Receipts')
+        Rails.logger.error e.message
+        e.backtrace.each do |row|
+          Rails.logger.error row
+        end
         flash[:alert] = 'Something went wrong while submitting Receipts'
         false
       end
@@ -239,6 +249,11 @@ module Refinery
         true
 
       rescue ::StandardError => e
+        Rails.logger.error('Something went wrong while submitting Expense Claim')
+        Rails.logger.error e.message
+        e.backtrace.each do |row|
+          Rails.logger.error row
+        end
         flash[:alert] = 'Something went wrong while submitting Expense Claims'
         false
       end
