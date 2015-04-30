@@ -81,6 +81,15 @@ module Refinery
         redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
       end
 
+      def destroy_resource
+        if destroy_attachment_and_resource
+          flash[:notice] = 'Successfully removed Receipt'
+        else
+          flash[:alert] = 'Failed to remove Receipt'
+        end
+        redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
+      end
+
       protected
       def find_all_expense_claims
         @xero_expense_claims = current_refinery_user.employee.xero_expense_claims
@@ -246,6 +255,19 @@ module Refinery
 
             @xero_expense_claim.xero_expense_claim_attachments.create!(resource_id: @resource.id)
 
+            true
+          end
+        rescue ::ActiveRecord::RecordNotSaved
+          false
+        end
+      end
+
+      def destroy_attachment_and_resource
+        begin
+          XeroExpenseClaimAttachment.transaction do
+            xero_expense_claim_attachment = @xero_expense_claim.xero_expense_claim_attachments.find params[:resource_id]
+            xero_expense_claim_attachment.resource.destroy
+            xero_expense_claim_attachment.destroy
             true
           end
         rescue ::ActiveRecord::RecordNotSaved

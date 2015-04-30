@@ -17,6 +17,7 @@ Refinery::Core::Engine.routes.draw do
       member do
         get :add_resource
         post :create_resource, :submit
+        delete 'resource/:resource_id', to: 'expense_claims#destroy_resource', as: :destroy_resource
       end
     end
   end

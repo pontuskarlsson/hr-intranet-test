@@ -108,7 +108,11 @@
   <h4>Scanned Receipts</h4>
   <% if @xero_expense_claim.xero_expense_claim_attachments.any? %>
     <% @xero_expense_claim.xero_expense_claim_attachments.each do |xero_expense_claim_attachment| %>
-      <p><%= link_to "Download #{ xero_expense_claim_attachment.resource.file_name }", xero_expense_claim_attachment.resource.url %></p>
+      <p><%= link_to "Download #{ xero_expense_claim_attachment.resource.file_name }", xero_expense_claim_attachment.resource.url %>
+        <% if @xero_expense_claim.editable? %>
+          <%= link_to 'Remove', refinery.destroy_resource_employees_expense_claim_path(@xero_expense_claim, xero_expense_claim_attachment), method: :delete %>
+        <% end %>
+      </p>
     <% end %>
   <% else %>
     <p class="italic">No Scanned Receipts attached yet.</p>
