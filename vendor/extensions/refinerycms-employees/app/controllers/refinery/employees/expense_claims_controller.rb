@@ -113,7 +113,8 @@ module Refinery
         xero_contacts = []
         @xero_expense_claim.xero_receipts.includes(:xero_contact).each do |xero_receipt|
           if xero_receipt.xero_contact.guid.blank?
-            xero_contacts << xero_receipt.xero_contact
+            # Make sure that the same contact is not added more than once, will cause batch_save to fail.
+            xero_contacts << xero_receipt.xero_contact unless xero_contacts.include?(xero_receipt.xero_contact)
           end
         end
 
