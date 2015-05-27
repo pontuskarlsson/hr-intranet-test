@@ -1,26 +1,44 @@
 module Refinery
   module Parcels
     class Shipment < Refinery::Core::BaseModel
-      COURIERS = ['SF Express', 'UPS', 'DHL']
+
+      COURIERS = { 'SF Express' => { easypost: false,
+                                     parcels: %w() },
+                   'UPS'        => { easypost: true,
+                                     parcels: %w(UPSLetter UPSExpressBox UPS25kgBox UPS10kgBox Tube Pak Pallet SmallExpressBox MediumExpressBox LargeExpressBox) },
+                   'DHLExpress' => { easypost: true,
+                                     service: 'ExpressWorldwideNonDoc',
+                                     parcels: %w(JumboDocument JumboParcel Document DHLFlyer Domestic ExpressDocument DHLExpressEnvelope JumboBox JumboJuniorDocument JuniorJumboBox JumboJuniorParcel OtherDHLPackaging Parcel YourPackaging) }
+      }.freeze
+
+      BILL_TO = ['Sender', 'Receiver', '3rd Party']
+
+      STATUSES = %w(not_shipped manually_shipped unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
 
       self.table_name = 'refinery_parcels_shipments'
 
       belongs_to :from_contact,         class_name: '::Refinery::Marketing::Contact'
-      belongs_to :from_address,         class_name: '::Refinery::Parcels::ShipmentAddress'
+      belongs_to :from_address,         class_name: '::Refinery::Parcels::ShipmentAddress', dependent: :destroy
       belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact'
-      belongs_to :to_address,           class_name: '::Refinery::Parcels::ShipmentAddress'
+      belongs_to :to_address,           class_name: '::Refinery::Parcels::ShipmentAddress', dependent: :destroy
       belongs_to :created_by,           class_name: '::Refinery::User'
       belongs_to :assigned_to,          class_name: '::Refinery::User'
+      belongs_to :bill_to_account,      class_name: '::Refinery::Parcels::ShipmentAccount'
       has_many :shipment_parcels,       dependent: :destroy
-      has_many :shipment_customs_items, dependent: :destroy
+
+      serialize :rates_content, Array
 
       attr_writer :from_contact_name, :to_contact_name, :assign_to
 
-      attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id
+      attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id
 
-      validates :created_by_id,   presence: true
-      validates :assigned_to_id,  presence: true
-      validates :courier,         inclusion: COURIERS
+      validates :created_by_id,           presence: true
+      validates :assigned_to_id,          presence: true
+      validates :from_address_id,         uniqueness: true, allow_nil: true
+      validates :to_address_id,           uniqueness: true, allow_nil: true
+      validates :bill_to,                 inclusion: BILL_TO
+      validates :status,                  inclusion: STATUSES
+      validates :easypost_object_id,      uniqueness: true, allow_blank: true
 
       delegate :name, to: :from_contact,  prefix: true, allow_nil: true
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
@@ -28,9 +46,13 @@ module Refinery
       delegate :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email, to: :to_address,   prefix: true, allow_nil: true
 
       before_validation do
-        # Makes sure there is always address object present to assign values to.
+        # Makes sure there is always address object present to assign values to. Even though it is
+        # the same address for two different Shipments, we create uniq ShipmentAddress records for each
+        # shipments.
         self.from_address ||= ShipmentAddress.new
         self.to_address ||= ShipmentAddress.new
+
+        self.status ||= STATUSES.first
 
         # Try to find a contact to assign address values from
         if @from_contact_name.present?
@@ -73,7 +95,40 @@ module Refinery
       end
 
       def courier_predefined_packages
-        ShipmentParcel::PREDEFINED_PACKAGES[courier] || []
+        (COURIERS[courier] || {})[:parcels] || []
+      end
+
+      def international?
+        from_address.country != to_address.country
+      end
+
+      def available_accounts
+        if bill_to == 'Receiver'
+          if to_contact.present?
+            if courier.blank?
+              to_contact.shipment_accounts
+            else
+              to_contact.shipment_accounts.where(courier: courier)
+            end
+          else
+            []
+          end
+        elsif bill_to == '3rd Party'
+          ShipmentAccount.all
+        else
+          []
+        end
+      end
+
+
+      def shippable?
+        status == 'not_shipped' && shipment_parcels.exists?
+      end
+
+      class << self
+        def easypost_couriers
+          COURIERS.select { |_,v| v[:easypost] }.keys
+        end
       end
 
     end

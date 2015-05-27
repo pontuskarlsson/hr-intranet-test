@@ -1,0 +1,39 @@
+<h4>Parcels</h4>
+<% if shipment.shipment_parcels.any? %>
+  <table>
+    <thead>
+    <tr>
+      <th style="width: 75%;">Description</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% shipment.shipment_parcels.each do |shipment_parcel| %>
+      <tr>
+        <td><%= shipment_parcel.description %></td>
+        <td><%= link_to 'Remove', refinery.parcels_shipment_parcel_path(shipment, shipment_parcel), method: :delete, confirm: 'Are you sure you want to Remove this Parcel?' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="italic">No parcels added yet</p>
+<% end %>
+
+<% if shipment.status == 'not_shipped' %>
+  <%= form_for shipment.shipment_parcels.build, url: refinery.parcels_shipment_parcels_path(shipment) do |f| %>
+    <div class="row">
+      <div class="medium-4 columns end">
+        <label>Add Parcel
+          <%= f.text_field :description, placeholder: 'Description' %>
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="medium-2 columns end">
+        <p><%= f.submit 'Add', class: 'button tiny' %></p>
+      </div>
+    </div>
+  <% end %>
+<% end %>

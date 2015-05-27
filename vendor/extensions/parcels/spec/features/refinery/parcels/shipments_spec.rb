@@ -30,7 +30,7 @@ describe Refinery do
 
             fill_in 'From', with: 'Lisa'
             fill_in 'Address To', with: 'Ted'
-            fill_in 'Courier', with: Refinery::Parcels::Shipment::COURIERS.first
+            select Refinery::Parcels::Shipment::BILL_TO.first, from: 'Bill To'
             click_button 'Add'
 
             page.should have_content('Lisa')
@@ -49,7 +49,7 @@ describe Refinery do
           it 'can update Shipment addresses' do
             visit refinery.parcels_shipment_path(Refinery::Parcels::Shipment.first)
 
-            click_link 'Edit Addresses'
+            click_link 'Edit Details'
 
             fill_in 'shipment_address_updater[from_address_name]',    with: 'Ken'
             fill_in 'shipment_address_updater[from_address_street1]', with: '1 First Road'
@@ -97,21 +97,26 @@ describe Refinery do
         end
       end
 
-      describe 'adding ShipmentParcels to Shipment' do
-        context 'when entering information for a Custom Sized Parcel' do
-          before { FactoryGirl.create(:shipment) }
+      describe 'shipping a Shipment' do
+        context 'when shipment has no ShipmentParcels registered' do
+          let(:shipment) { FactoryGirl.create(:shipment) }
+          before { shipment }
 
-          it 'can add a new parcel' do
-            visit refinery.parcels_shipment_path(Refinery::Parcels::Shipment.first)
+          it 'cannot click button Send Shipment' do
+            visit refinery.parcels_shipment_path(shipment)
 
-            fill_in 'shipment_parcel[length]',    with: 20
-            fill_in 'shipment_parcel[width]',     with: 10
-            fill_in 'shipment_parcel[height]',    with: 5
-            fill_in 'shipment_parcel[weight]',    with: 2
+            expect{ click_button 'Send Shipment' }.to raise Capybara::ElementNotFound
+          end
+        end
 
-            click_button 'Add'
+        context 'when shipment has one ShipmentParcel registered' do
+          let(:shipment) { FactoryGirl.create(:shipment) }
+          before { FactoryGirl.create(:shipment_parcel, shipment: shipment) }
 
-            Refinery::Parcels::ShipmentParcel.count.should eq 1
+          it 'can click button Send Shipment' do
+            visit refinery.parcels_shipment_path(shipment)
+
+            expect{ click_button 'Send Shipment' }.not_to raise Capybara::ElementNotFound
           end
         end
       end

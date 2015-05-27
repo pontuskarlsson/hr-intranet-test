@@ -8,7 +8,11 @@ Refinery::Core::Engine.routes.draw do
       end
     end
 
-    resources :shipments, :only => [:index, :create, :show, :edit, :update] do
+    resources :shipments, :only => [:index, :create, :show, :edit, :update, :destroy] do
+      member do
+        put :manual_ship
+        put :easypost_ship
+      end
       resources :shipment_parcels, path: 'parcels', as: :parcels
     end
   end
@@ -28,6 +32,12 @@ Refinery::Core::Engine.routes.draw do
       end
 
       resources :shipment_parcels, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :shipment_accounts, :except => :show do
         collection do
           post :update_positions
         end

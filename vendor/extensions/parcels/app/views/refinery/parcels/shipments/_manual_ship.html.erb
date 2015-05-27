@@ -1,0 +1,23 @@
+<%= form_for @manual_shipper ||= ::Refinery::Parcels::ManualShipper.new(shipment: shipment), url: refinery.manual_ship_parcels_shipment_path(shipment) do |f| %>
+  <div class="row">
+    <div class="columns">
+      <label>Courier
+        <%= f.text_field :courier %>
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns">
+      <label>Tracking Number
+        <%= f.text_field :tracking_number %>
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="columns">
+      <p><%= f.submit t('.ship'), class: 'button tiny' %></p>
+    </div>
+  </div>
+<% end %>

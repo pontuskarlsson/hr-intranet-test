@@ -10,6 +10,7 @@ en:
             manage_parcels: Manage Parcels
             manage_shipments: Manage Shipments
             manage_shipment_parcels: Manage Shipment Parcels
+            manage_shipment_accounts: Manage Shipment Accounts
         parcels:
           actions:
             create_new: Add New Parcel
@@ -24,6 +25,34 @@ en:
             edit: Edit this parcel
             delete: Remove this parcel forever
             preview: 'From: %{from_name}, To: %{to_name}, Received: %{parcel_date}'
+        shipment_accounts:
+          actions:
+            create_new: Add New Shipment Account
+            reorder: Reorder Shipment Accounts
+            reorder_done: Done Reordering Shipment Accounts
+          records:
+            title: Shipment Accounts
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Shipment Accounts yet. Click "Add New Shipment Account" to add your first shipment account.
+          shipment_account:
+            view_live_html: View this shipment account live <br/><em>(opens in a new window)</em>
+            edit: Edit this shipment account
+            delete: Remove this shipment account forever
+            preview: '%{account_no}'
+        shipments:
+          actions:
+            create_new: Add New Shipment
+            reorder: Reorder Shipment
+            reorder_done: Done Reordering Shipment
+          records:
+            title: Shipment
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Shipment yet. Click "Add New Shipment" to add your first shipment.
+          shipment:
+            view_live_html: View this shipment live <br/><em>(opens in a new window)</em>
+            edit: Edit this shipment
+            delete: Remove this shipment forever
+            preview: 'From %{from_address_name}, Bill To: %{bill_to}, Status: %{status}'
       parcels:
         show:
           other: Other Parcels
@@ -33,7 +62,12 @@ en:
           save: Save
         show:
           add: Add
-          edit_addresses: Edit Addresses
+          edit_details: Edit Details
+          remove: Remove
+          confirm_remove: Are you sure you want to remove this Shipment?
+          ship: Ship
+          send_shipment: Send Shipment
+          send_easypost_shipment: Send by EasyPost
   activerecord:
     attributes:
       'refinery/parcels/parcel':
@@ -45,6 +79,22 @@ en:
         to_name: To Name
         to_user_id: To User
         shipping_document_id: Shipping Document
+
+      'refinery/parcels/shipment':
+        assigned_to_id: Assigned To
+        bill_to: Bill To
+        bill_to_account_id: Bill To Account
+        created_by_id: Created By
+        courier: Courier
+        from_contact_name: From Contact
+        to_contact_name: To Contact
+
+      'refinery/parcels/shipment_account':
+        account_no: Account No
+        contact_name: Contact
+        courier: Courier
+        description: Description
+
   activemodel:
     attributes:
       'refinery/parcels/shipment_address_updater':

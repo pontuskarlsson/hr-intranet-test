@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="medium-6 columns">
+    <label>Content Type
+      <%= f.select :contents_type, options_for_select(Refinery::Parcels::ShipmentParcel::DEFAULT_CONTENTS_TYPES) %>
+    </label>
+  </div>
+
+  <div class="medium-6 columns">
+    <label>Country of Origin
+      <%= f.text_field :origin_country, placeholder: 'US, HK, CN, etc' %>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="medium-6 columns">
+    <div class="row collapse">
+      <%= f.label :quantity %>
+      <div class="small-9 columns">
+        <%= f.number_field :quantity, step: 'any' %>
+      </div>
+      <div class="small-3 columns">
+        <span class="postfix">pcs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="medium-6 columns">
+    <div class="row collapse">
+      <%= f.label :value, 'Value' %>
+      <div class="small-9 columns">
+        <%= f.number_field :value, step: 'any' %>
+      </div>
+      <div class="small-3 columns">
+        <span class="postfix">USD</span>
+      </div>
+    </div>
+  </div>
+</div>

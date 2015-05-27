@@ -1,0 +1,20 @@
+<% if shipment.courier.blank? %>
+  <label>Courier
+    <%= f.select :courier, options_for_select(::Refinery::Parcels::Shipment.easypost_couriers), include_blank: true %>
+  </label>
+
+  <div class="row">
+    <div class="columns">
+      <p><%= f.submit 'Select', class: 'button tiny' %></p>
+    </div>
+  </div>
+
+<% elsif shipment.easypost_object_id.blank? %>
+
+  <%= render 'easypost_parcels', f: f, shipment: shipment %>
+
+<% else %>
+
+  <%= render 'easypost_rates', f: f, shipment: shipment %>
+
+<% end %>

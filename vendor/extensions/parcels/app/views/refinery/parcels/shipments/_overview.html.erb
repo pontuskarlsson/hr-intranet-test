@@ -1,0 +1,33 @@
+<h4>Bill to</h4>
+<p>
+  <%= shipment.bill_to %>
+  <% if shipment.bill_to_account.present? %>
+    <br/><%= shipment.bill_to_account.account_no %>
+  <% end %>
+</p>
+
+<h4>Status</h4>
+<p><%= shipment.status %></p>
+
+<% if shipment.tracking_number.present? %>
+  <h4>Tracking number</h4>
+  <p>
+    <%= shipment.tracking_number %>
+
+    <% if shipment.courier == 'UPS' %>
+      <br /><%= link_to 'Track Shipment', "http://wwwapps.ups.com/etracking/tracking.cgi?track.x=0&track.y=0&InquiryNumber1=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
+
+    <% elsif shipment.courier == 'Fedex' %>
+      <br /><%= link_to 'Track Shipment', "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
+
+    <% elsif shipment.courier == 'DHLExpress' %>
+      <br /><%= link_to 'Track Shipment', "http://www.dhl.com.hk/en/express/tracking.html?AWB=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
+
+    <% end %>
+  </p>
+<% end %>
+
+<% if shipment.label_url.present? %>
+  <h4>Shipping Label</h4>
+  <p><%= link_to 'Download', shipment.label_url, target: :_blank %></p>
+<% end %>

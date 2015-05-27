@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150423012926) do
+ActiveRecord::Schema.define(:version => 20150512023452) do
 
   create_table "refinery_amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -574,6 +574,22 @@ ActiveRecord::Schema.define(:version => 20150423012926) do
   add_index "refinery_parcels", ["shipping_document_id"], :name => "index_refinery_parcels_on_shipping_document_id"
   add_index "refinery_parcels", ["to_user_id"], :name => "index_refinery_parcels_on_to_user_id"
 
+  create_table "refinery_parcels_shipment_accounts", :force => true do |t|
+    t.integer  "contact_id"
+    t.string   "description"
+    t.string   "courier"
+    t.string   "account_no"
+    t.text     "comments"
+    t.integer  "position"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "refinery_parcels_shipment_accounts", ["account_no"], :name => "index_refinery_parcels_shipment_accounts_on_account_no"
+  add_index "refinery_parcels_shipment_accounts", ["contact_id"], :name => "index_refinery_parcels_shipment_accounts_on_contact_id"
+  add_index "refinery_parcels_shipment_accounts", ["courier"], :name => "index_refinery_parcels_shipment_accounts_on_courier"
+  add_index "refinery_parcels_shipment_accounts", ["position"], :name => "index_refinery_parcels_shipment_accounts_on_position"
+
   create_table "refinery_parcels_shipment_addresses", :force => true do |t|
     t.string   "easy_post_id"
     t.string   "name"
@@ -594,21 +610,6 @@ ActiveRecord::Schema.define(:version => 20150423012926) do
   add_index "refinery_parcels_shipment_addresses", ["easy_post_id"], :name => "index_refinery_parcels_shipment_addresses_on_easy_post_id"
   add_index "refinery_parcels_shipment_addresses", ["position"], :name => "index_refinery_parcels_shipment_addresses_on_position"
 
-  create_table "refinery_parcels_shipment_customs_items", :force => true do |t|
-    t.integer  "shipment_id"
-    t.string   "description"
-    t.integer  "quantity"
-    t.integer  "value"
-    t.integer  "weight"
-    t.integer  "hs_tariff_number"
-    t.string   "origin_country"
-    t.integer  "position"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
-
-  add_index "refinery_parcels_shipment_customs_items", ["position"], :name => "index_refinery_parcels_shipment_customs_items_on_position"
-
   create_table "refinery_parcels_shipment_parcels", :force => true do |t|
     t.integer  "shipment_id"
     t.integer  "length"
@@ -617,8 +618,13 @@ ActiveRecord::Schema.define(:version => 20150423012926) do
     t.integer  "weight"
     t.string   "predefined_package"
     t.integer  "position"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                                                      :null => false
+    t.datetime "updated_at",                                                      :null => false
+    t.string   "description"
+    t.integer  "quantity",                                         :default => 0, :null => false
+    t.decimal  "value",              :precision => 8, :scale => 2
+    t.string   "origin_country"
+    t.string   "contents_type"
   end
 
   add_index "refinery_parcels_shipment_parcels", ["position"], :name => "index_refinery_parcels_shipment_parcels_on_position"
@@ -631,21 +637,33 @@ ActiveRecord::Schema.define(:version => 20150423012926) do
     t.integer  "created_by_id"
     t.integer  "assigned_to_id"
     t.string   "courier"
-    t.string   "eel_pfc"
-    t.boolean  "customs_certify"
-    t.string   "customs_signer"
-    t.string   "contents_type"
-    t.string   "contents_explanation"
     t.integer  "position"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
+    t.integer  "bill_to_account_id"
+    t.string   "bill_to"
+    t.string   "description"
+    t.string   "label_url"
+    t.string   "tracking_number"
+    t.string   "tracking_status"
+    t.string   "status"
+    t.string   "easypost_object_id"
+    t.text     "rates_content"
+    t.string   "rate_object_id"
+    t.string   "rate_service"
+    t.decimal  "rate_amount",        :precision => 8, :scale => 2
+    t.string   "rate_currency"
+    t.date     "shipping_date"
   end
 
   add_index "refinery_parcels_shipments", ["assigned_to_id"], :name => "index_refinery_parcels_shipments_on_assigned_to_id"
+  add_index "refinery_parcels_shipments", ["bill_to_account_id"], :name => "index_refinery_parcels_shipments_on_bta_id"
   add_index "refinery_parcels_shipments", ["created_by_id"], :name => "index_refinery_parcels_shipments_on_created_by_id"
+  add_index "refinery_parcels_shipments", ["easypost_object_id"], :name => "index_refinery_parcels_shipments_on_eo_id"
   add_index "refinery_parcels_shipments", ["from_address_id"], :name => "index_refinery_parcels_shipments_on_from_address_id"
   add_index "refinery_parcels_shipments", ["from_contact_id"], :name => "index_refinery_parcels_shipments_on_from_contact_id"
   add_index "refinery_parcels_shipments", ["position"], :name => "index_refinery_parcels_shipments_on_position"
+  add_index "refinery_parcels_shipments", ["status"], :name => "index_refinery_parcels_shipments_on_status"
   add_index "refinery_parcels_shipments", ["to_address_id"], :name => "index_refinery_parcels_shipments_on_to_address_id"
   add_index "refinery_parcels_shipments", ["to_contact_id"], :name => "index_refinery_parcels_shipments_on_to_contact_id"
 

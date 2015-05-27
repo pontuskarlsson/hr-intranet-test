@@ -1,0 +1,30 @@
+<p>
+  <% if shipment_address.name.present? %>
+    <%= shipment_address.name %>
+  <% end %>
+
+  <% if shipment_address.street1.present? %>
+    <br/><%= shipment_address.street1 %>
+  <% end %>
+  <% if shipment_address.street2.present? %>
+    <br/><%= shipment_address.street2 %>
+  <% end %>
+  <% if shipment_address.city.present? %>
+    <br/><%= shipment_address.city %>
+  <% end %>
+  <% if shipment_address.state.present? %>
+    <br/><%= shipment_address.state %>
+  <% end %>
+  <% if shipment_address.zip.present? %>
+    <br/><%= shipment_address.zip %>
+  <% end %>
+  <% if shipment_address.country.present? %>
+    <br/><%= shipment_address.country %>
+  <% end %>
+  <% if shipment_address.phone.present? %>
+    <br/><%= shipment_address.phone %>
+  <% end %>
+  <% if shipment_address.email.present? %>
+    <br/><%= shipment_address.email %>
+  <% end %>
+</p>

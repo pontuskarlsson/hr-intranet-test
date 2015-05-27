@@ -3,7 +3,7 @@ module Refinery
     class ShipmentParcelsController < ::ApplicationController
       before_filter :authenticate_refinery_user!
       before_filter :find_shipment
-      before_filter :find_shipment_parcel, only: [:show, :update]
+      before_filter :find_shipment_parcel, only: [:show, :update, :destroy]
       before_filter :find_page
 
       def index
@@ -39,6 +39,15 @@ module Refinery
           present(@page)
           render action: :index
         end
+      end
+
+      def destroy
+        if @shipment_parcel.destroy
+          flash[:notice] = 'Parcel successfully removed.'
+        else
+          flash[:alert] = 'Failed to remove Parcel.'
+        end
+        redirect_to refinery.parcels_shipment_path(@shipment)
       end
 
       protected

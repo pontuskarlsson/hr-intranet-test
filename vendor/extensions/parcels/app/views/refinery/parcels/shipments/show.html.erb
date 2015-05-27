@@ -4,190 +4,69 @@
       <%= link_to t('.go_back', default: 'Go Back'), refinery.parcels_shipments_path, class: 'button tiny' %>
     </div>
 
-    <div class="medium-2 columns end">
-      <%= link_to t('.edit_addresses'), refinery.edit_parcels_shipment_path(@shipment), class: 'button tiny' %>
-    </div>
+    <% if @shipment.status == 'not_shipped' %>
+      <div class="medium-2 columns">
+        <%= link_to t('.edit_details'), refinery.edit_parcels_shipment_path(@shipment), class: 'button tiny' %>
+      </div>
+
+      <% if @shipment.shippable? %>
+        <div class="medium-2 columns">
+          <%= link_to t('.send_shipment'), '#', class: 'button tiny', 'data-reveal-id' => 'send-shipment-modal' %>
+
+          <div id="send-shipment-modal" class="reveal-modal tiny" data-reveal>
+            <a class="close-reveal-modal">&#215;</a>
+
+            <%= render 'manual_ship', shipment: @shipment %>
+          </div>
+        </div>
+
+        <div class="medium-2 columns">
+          <%= link_to t('.send_easypost_shipment'), '#', class: 'button tiny', 'data-reveal-id' => 'send-easypost-modal' %>
+
+          <div id="send-easypost-modal" class="reveal-modal tiny" data-reveal>
+            <a class="close-reveal-modal">&#215;</a>
+            <%= render 'easypost', shipment: @shipment %>
+          </div>
+        </div>
+
+      <% else %>
+        <%= link_to t('.send_shipment'), '#', class: 'button tiny disabled' %>
+      <% end %>
+
+      <div class="medium-2 columns end">
+        <%= link_to t('.remove'), refinery.parcels_shipment_path(@shipment), class: 'button tiny alert', method: :delete, confirm: t('.confirm_remove') %>
+      </div>
+
+    <% else %>
+
+    <% end %>
   </div>
 
   <div class="row">
-    <div class="medium-6 columns">
-      <h2>From</h2>
-
-      <p>
-        <% if @shipment.from_address_name.present? %>
-          <%= @shipment.from_address_name %>
+    <div class="medium-4 columns">
+      <h4>From
+        <% if @shipment.from_address.missing_for_shipment.any? %>
+          <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.from_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
         <% end %>
-
-        <% if @shipment.from_address_street1.present? %>
-          <br/><%= @shipment.from_address_street1 %>
-        <% end %>
-        <% if @shipment.from_address_street2.present? %>
-          <br/><%= @shipment.from_address_street2 %>
-        <% end %>
-        <% if @shipment.from_address_city.present? %>
-          <br/><%= @shipment.from_address_city %>
-        <% end %>
-        <% if @shipment.from_address_state.present? %>
-          <br/><%= @shipment.from_address_state %>
-        <% end %>
-        <% if @shipment.from_address_zip.present? %>
-          <br/><%= @shipment.from_address_zip %>
-        <% end %>
-        <% if @shipment.from_address_country.present? %>
-          <br/><%= @shipment.from_address_country %>
-        <% end %>
-        <% if @shipment.from_address_phone.present? %>
-          <br/><%= @shipment.from_address_phone %>
-        <% end %>
-        <% if @shipment.from_address_email.present? %>
-          <br/><%= @shipment.from_address_email %>
-        <% end %>
-      </p>
+      </h4>
+      <%= render 'address_card', shipment_address: @shipment.from_address %>
     </div>
 
-    <div class="medium-6 columns">
-      <h2>To</h2>
+    <div class="medium-4 columns">
+      <h4>To
+        <% if @shipment.to_address.missing_for_shipment.any? %>
+          <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.to_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
+        <% end %>
+      </h4>
+      <%= render 'address_card', shipment_address: @shipment.to_address %>
+    </div>
 
-      <p>
-        <% if @shipment.to_address_name.present? %>
-          <%= @shipment.to_address_name %>
-        <% end %>
-
-        <% if @shipment.to_address_street1.present? %>
-          <br/><%= @shipment.to_address_street1 %>
-        <% end %>
-        <% if @shipment.to_address_street2.present? %>
-          <br/><%= @shipment.to_address_street2 %>
-        <% end %>
-        <% if @shipment.to_address_city.present? %>
-          <br/><%= @shipment.to_address_city %>
-        <% end %>
-        <% if @shipment.to_address_state.present? %>
-          <br/><%= @shipment.to_address_state %>
-        <% end %>
-        <% if @shipment.to_address_zip.present? %>
-          <br/><%= @shipment.to_address_zip %>
-        <% end %>
-        <% if @shipment.to_address_country.present? %>
-          <br/><%= @shipment.to_address_country %>
-        <% end %>
-        <% if @shipment.to_address_phone.present? %>
-          <br/><%= @shipment.to_address_phone %>
-        <% end %>
-        <% if @shipment.to_address_email.present? %>
-          <br/><%= @shipment.to_address_email %>
-        <% end %>
-      </p>
+    <div class="medium-4 columns">
+      <%= render 'overview', shipment: @shipment %>
     </div>
   </div>
 
-  <h4>Parcels</h4>
-  <% if @shipment.shipment_parcels.any? %>
-    <table>
-      <thead>
-      <tr>
-        <th>Type</th>
-        <th>Length</th>
-        <th>Width</th>
-        <th>Height</th>
-        <th>Oz</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @shipment.shipment_parcels.each do |shipment_parcel| %>
-        <% if shipment_parcel.predefined_package.present? %>
-          <tr>
-            <td><%= shipment_parcel.predefined_package %></td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td><%= shipment_parcel.weight %> Oz</td>
-          </tr>
-        <% else %>
-          <tr>
-            <td>Custom</td>
-            <td><%= shipment_parcel.length %> In</td>
-            <td><%= shipment_parcel.width %> In</td>
-            <td><%= shipment_parcel.height %> In</td>
-            <td><%= shipment_parcel.weight %> Oz</td>
-          </tr>
-        <% end %>
-      <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p class="italic">No parcels added yet</p>
-  <% end %>
-  <% if @shipment.courier_predefined_packages.any? %>
-    <div class="medium-2 columns">
-      <%= link_to "Add #{ @shipment.courier } Parcel", '#', class: 'button tiny', 'data-reveal-id' => 'courier-parcel-modal' %>
-
-      <div id="courier-parcel-modal" class="reveal-modal tiny" data-reveal>
-        <a class="close-reveal-modal">&#215;</a>
-        <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels_path(@shipment) do |f| %>
-
-
-          <p><%= f.submit t('.add'), class: 'button tiny' %></p>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-
-  <div class="medium-2 columns end">
-    <%= link_to t('.add_custom_parcel', default: 'Add Parcel'), '#', class: 'button tiny', 'data-reveal-id' => 'custom-parcel-modal' %>
-
-    <div id="custom-parcel-modal" class="reveal-modal tiny" data-reveal>
-      <a class="close-reveal-modal">&#215;</a>
-      <%= form_for ::Refinery::Parcels::ShipmentParcel.new, url: refinery.parcels_shipment_parcels_path(@shipment) do |f| %>
-        <div class="row collapse">
-          <%= f.label :length %>
-          <div class="small-9 columns">
-            <%= f.number_field :length %>
-          </div>
-          <div class="small-3 columns">
-            <span class="postfix">Inches</span>
-          </div>
-        </div>
-
-        <div class="row collapse">
-          <%= f.label :width %>
-          <div class="small-9 columns">
-            <%= f.number_field :width %>
-          </div>
-          <div class="small-3 columns">
-            <span class="postfix">Inches</span>
-          </div>
-        </div>
-
-        <div class="row collapse">
-          <%= f.label :height %>
-          <div class="small-9 columns">
-            <%= f.number_field :height %>
-          </div>
-          <div class="small-3 columns">
-            <span class="postfix">Inches</span>
-          </div>
-        </div>
-
-        <div class="row collapse">
-          <%= f.label :weight %>
-          <div class="small-9 columns">
-            <%= f.number_field :weight %>
-          </div>
-          <div class="small-3 columns">
-            <span class="postfix">Ounces</span>
-          </div>
-        </div>
-
-        <p><%= f.submit t('.add'), class: 'button tiny' %></p>
-      <% end %>
-    </div>
-  </div>
-
-  <% if @shipment.from_address.country != @shipment.to_address.country %>
-    <%= render 'customs_items', shipment: @shipment %>
-  <% end %>
-
+  <%= render 'parcels', shipment: @shipment %>
 <% end %>
 
 <%= render '/refinery/content_page' %>

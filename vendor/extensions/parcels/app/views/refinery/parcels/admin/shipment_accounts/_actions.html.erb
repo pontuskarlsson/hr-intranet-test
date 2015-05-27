@@ -1,0 +1,27 @@
+<ul>
+  <% if ::Refinery::Parcels::Admin::ShipmentAccountsController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.parcels_admin_shipment_accounts_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_parcels_admin_shipment_account_path,
+                 :class => "add_icon" %>
+  </li>
+  <%= render '/refinery/parcels/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::Parcels::Admin::ShipmentAccountsController.sortable? && ::Refinery::Parcels::ShipmentAccount.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Shipment Accounts"),
+                 refinery.parcels_admin_shipment_accounts_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Shipment Accounts"),
+                 refinery.parcels_admin_shipment_accounts_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

@@ -15,9 +15,17 @@ module Refinery
         self.zip      = contact.zip
         self.city     = contact.city
         self.country  = contact.country
-        self.phone    = contact.phone
+        self.phone    = [contact.phone, contact.mobile].reject(&:blank?).first
         self.email    = contact.email
         self.company  = contact.organisation_name
+      end
+
+      def missing_for_shipment
+        %w(name street1 city country phone).map { |attr|
+          if send(attr).blank?
+            "#{attr} is missing"
+          end
+        }.compact
       end
 
     end

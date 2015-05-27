@@ -72,6 +72,12 @@ module TransForms
             attr_names = attributes.map(&:to_s)
             proxy_columns main_class.columns.reject(&REJECT_COLUMN_PROC).select { |c| attr_names.include?(c.name) }
           end
+
+        rescue ActiveRecord::StatementInvalid => e
+          # If this is being loaded in a rake task (i.e. db:migrate) then it will
+          # raise an error if the table does not exist. So we ignore this error
+          # here and assume that this is being verified at a later stage in the
+          # actual implementation specs.
         end
 
         # Given a set of ActiveRecord Columns, will setup attributes according
