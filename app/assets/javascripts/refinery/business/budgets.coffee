@@ -27,48 +27,66 @@ Refinery.Business.Budgets =
         else
           data
 
+      no_of_products: (data, type, row, meta) ->
+        $('<div style="text-align: right;"></div>').text(Refinery.Business.Budgets._formatCurrency(data)).prop 'outerHTML'
+
+      no_of_skus: (data, type, row, meta) ->
+        $('<div style="text-align: right;"></div>').text(Refinery.Business.Budgets._formatCurrency(data)).prop 'outerHTML'
+
       price: (data, type, row, meta) ->
-        Refinery.Business.Budgets._formatCurrency(data)
+        $('<div style="text-align: right;"></div>').text(Refinery.Business.Budgets._formatCurrency(data)).prop 'outerHTML'
+
+      quantity: (data, type, row, meta) ->
+        $('<div style="text-align: right;"></div>').text(Refinery.Business.Budgets._formatCurrency(data)).prop 'outerHTML'
+
+      total_quantity: (data, type, row, meta) -> # data here is same as for quantity, so we calculate this column manually
+        $('<div style="text-align: right;"></div>').text(Refinery.Business.Budgets._formatCurrency(data * row.no_of_skus)).prop 'outerHTML'
 
       total: (data, type, row, meta) ->
-        Refinery.Business.Budgets._formatCurrency(data)
+        $('<div style="text-align: right;"></div>').text(Refinery.Business.Budgets._formatCurrency(data)).prop 'outerHTML'
 
       marginPercent: (data, type, row, meta) ->
-        "#{Refinery.Business.Budgets._formatCurrency(data)}%"
+        $('<div style="text-align: right;"></div>').text("#{Refinery.Business.Budgets._formatCurrency(data)}%").prop 'outerHTML'
 
       marginTotal: (data, type, row, meta) ->
-        Refinery.Business.Budgets._formatCurrency(data)
+        $('<div style="text-align: right;"></div>').text(Refinery.Business.Budgets._formatCurrency(data)).prop 'outerHTML'
 
     callbacks:
       draw: ->
         api = @api()
 
         products_col = api.column(4, { page: 'current' })
-        $(products_col.footer()).html('Sum: '+products_col.data().sum())
+        $(products_col.footer()).html($('<div style="text-align: right;"></div>').text('Sum: '+products_col.data().sum()).prop('outerHTML'))
 
         skus_col = api.column(5, { page: 'current' })
-        $(skus_col.footer()).html('Sum: '+skus_col.data().sum())
+        $(skus_col.footer()).html($('<div style="text-align: right;"></div>').text('Sum: '+skus_col.data().sum()).prop('outerHTML'))
+
+        total_col = api.column(9, { page: 'current' })
+        $(total_col.footer()).html($('<div style="text-align: right;"></div>').text('Sum: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum())).prop('outerHTML'))
+
+        mar_tot_col = api.column(11, { page: 'current' })
+        $(mar_tot_col.footer()).html($('<div style="text-align: right;"></div>').text('Sum: '+Refinery.Business.Budgets._formatCurrency(mar_tot_col.data().sum())).prop('outerHTML'))
 
         qty_col = api.column(7, { page: 'current' })
-        $(qty_col.footer()).html('Sum: '+qty_col.data().sum())
-
-        total_col = api.column(8, { page: 'current' })
-        $(total_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum()))
-
-        mar_tot_col = api.column(10, { page: 'current' })
-        $(mar_tot_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(mar_tot_col.data().sum()))
-
         price_col = api.column(6, { page: 'current' })
         qty = 0
         for val, i in skus_col.data()
           qty += val * qty_col.data()[i]
-        $(price_col.footer()).html('Avg: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum() / qty))
+        $(price_col.footer()).html($('<div style="text-align: right;"></div>').text('Avg: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum() / qty)).prop('outerHTML'))
 
-        margin_col = api.column(9, { page: 'current' })
+        tot_qty_col = api.column(8, { page: 'current' })
+        $(tot_qty_col.footer()).html($('<div style="text-align: right;"></div>').text('Sum: '+Refinery.Business.Budgets._formatCurrency(qty)).prop('outerHTML'))
+
+        margin_col = api.column(10, { page: 'current' })
         if total_col.data().sum() == 0
-          $(margin_col.footer()).html('Avg: 0%')
+          $(margin_col.footer()).html($('<div style="text-align: right;"></div>').text('Avg: 0%').prop('outerHTML'))
         else
-          $(margin_col.footer()).html('Avg: '+ Refinery.Business.Budgets._formatCurrency(100.0 * mar_tot_col.data().sum() / total_col.data().sum()) + '%')
+          $(margin_col.footer()).html($('<div style="text-align: right;"></div>').text('Avg: '+ Refinery.Business.Budgets._formatCurrency(100.0 * mar_tot_col.data().sum() / total_col.data().sum()) + '%').prop('outerHTML'))
+
+        if skus_col.data().sum() == 0
+          $(qty_col.footer()).html($('<div style="text-align: right;"></div>').text('Avg: N/A').prop('outerHTML'))
+        else
+          $(qty_col.footer()).html($('<div style="text-align: right;"></div>').text('Avg: '+Refinery.Business.Budgets._formatCurrency(qty / skus_col.data().sum())).prop('outerHTML'))
 
 
   # Functiona and callbacks related to the DataTable for BudgetItems

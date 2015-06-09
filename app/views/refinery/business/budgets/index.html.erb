@@ -12,6 +12,7 @@
       <th>SKU's</th>
       <th>Price $</th>
       <th>Qty per SKU</th>
+      <th>Tot Qty</th>
       <th>Total $</th>
       <th>Margin %</th>
       <th>Margin $</th>
@@ -20,12 +21,13 @@
 
     <tbody>
     <tr>
-      <td colspan="11">Loading, please wait...</td>
+      <td colspan="12">Loading, please wait...</td>
     </tr>
     </tbody>
 
     <tfoot>
     <tr>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -64,14 +66,15 @@
         "order":          [[ 0, "asc" ]],
         "data":           <%= @budgets.to_json(methods: [:year, :quarter, :total, :margin_total, :margin_percent]).html_safe %>,
         "columns": [
-          { data: "description",      "render": { "display": dataTable.columns.description }, width: '15%' },
-          { data: "customer_name",    "render": { "display": dataTable.columns.customerName }, width: '15%' },
+          { data: "description",      "render": { "display": dataTable.columns.description }, width: '12%' },
+          { data: "customer_name",    "render": { "display": dataTable.columns.customerName }, width: '12%' },
           { data: "year" },
           { data: "quarter" },
-          { data: "no_of_products" },
-          { data: "no_of_skus" },
+          { data: "no_of_products",   "render": { "display": dataTable.columns.no_of_products } },
+          { data: "no_of_skus",       "render": { "display": dataTable.columns.no_of_skus } },
           { data: "price",            "render": { "display": dataTable.columns.price } },
-          { data: "quantity" },
+          { data: "quantity",         "render": { "display": dataTable.columns.quantity } },
+          { data: "quantity",         "render": { "display": dataTable.columns.total_quantity } },
           { data: "total",            "render": { "display": dataTable.columns.total } },
           { data: "margin_percent",   "render": { "display": dataTable.columns.marginPercent } },
           { data: "margin_total",     "render": { "display": dataTable.columns.marginTotal } }
