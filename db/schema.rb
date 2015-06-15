@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150512023452) do
+ActiveRecord::Schema.define(:version => 20150612081744) do
 
   create_table "refinery_amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -654,6 +654,7 @@ ActiveRecord::Schema.define(:version => 20150512023452) do
     t.decimal  "rate_amount",        :precision => 8, :scale => 2
     t.string   "rate_currency"
     t.date     "shipping_date"
+    t.text     "tracking_info"
   end
 
   add_index "refinery_parcels_shipments", ["assigned_to_id"], :name => "index_refinery_parcels_shipments_on_assigned_to_id"

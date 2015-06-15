@@ -27,6 +27,7 @@ module Refinery
       has_many :shipment_parcels,       dependent: :destroy
 
       serialize :rates_content, Array
+      serialize :tracking_info, Array
 
       attr_writer :from_contact_name, :to_contact_name, :assign_to
 
@@ -38,7 +39,7 @@ module Refinery
       validates :to_address_id,           uniqueness: true, allow_nil: true
       validates :bill_to,                 inclusion: BILL_TO
       validates :status,                  inclusion: STATUSES
-      validates :easypost_object_id,      uniqueness: true, allow_blank: true
+      validates :easypost_object_id,      uniqueness: true, allow_nil: true
 
       delegate :name, to: :from_contact,  prefix: true, allow_nil: true
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
@@ -128,6 +129,10 @@ module Refinery
       class << self
         def easypost_couriers
           COURIERS.select { |_,v| v[:easypost] }.keys
+        end
+
+        def shipped_manually_not_delivered
+          where("#{table_name}.easypost_object_id IS NULL AND #{table_name}.status IN (?)", %w(manually_shipped))
         end
       end
 

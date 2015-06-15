@@ -41,6 +41,20 @@ describe Refinery do
         end
       end
 
+      describe 'showing a Shipment' do
+        context 'when the Shipment is manually shipped and have tracking_info' do
+          before(:each) do
+            FactoryGirl.create(:shipment, status: 'manually_shipped', tracking_number: '123456789', tracking_info: [{ 'date' => DateTime.yesterday, 'message' => 'It was in transit here.' }])
+
+            it 'show the details of the Shipment' do
+              visit refinery.parcels_shipment_path(Refinery::Parcels::Shipment.first)
+
+              page.should have_content 'It was in transit here.'
+            end
+          end
+        end
+      end
+
       describe 'updating addresses of Shipment' do
         context 'when entering new address information' do
           before(:each) do
