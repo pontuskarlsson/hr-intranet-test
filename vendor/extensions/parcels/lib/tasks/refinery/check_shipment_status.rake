@@ -35,7 +35,7 @@ namespace :refinery do
               entry = response.first
 
               shipment.tracking_info = entry['routes'].map { |route|
-                { 'date' => DateTime.parse(route['scanDateTime']) - 8.hours, 'message' => Nokogiri::HTML.parse(entry['remark']).text }
+                { 'date' => DateTime.parse(route['scanDateTime']) - 8.hours, 'message' => Nokogiri::HTML.parse(route['remark']).text }
               }
 
               shipment.status = 'delivered' if entry['delivered']
@@ -52,7 +52,7 @@ namespace :refinery do
               entry = response['results'].first
 
               shipment.tracking_info = entry['checkpoints'].reverse.map { |route|
-                { 'date' => DateTime.parse(route['data'] + route['time']) - 8.hours, 'message' => Nokogiri::HTML.parse(entry['remark']).text }
+                { 'date' => DateTime.parse(route['data'] + route['time']) - 8.hours, 'message' => Nokogiri::HTML.parse(route['description']).text }
               }
 
               shipment.status = 'delivered' if entry['delivery']['status'] == 'delivered'
