@@ -37,7 +37,7 @@
       <tbody>
       <% shipment.tracking_info.each do |tracking| %>
         <tr>
-          <td><%= DateTime.new(tracking['date']).in_time_zone(8) %></td>
+          <td><%= tracking['date'].in_time_zone(8) %></td>
           <td><%= tracking['message'] %></td>
         </tr>
       <% end %>
