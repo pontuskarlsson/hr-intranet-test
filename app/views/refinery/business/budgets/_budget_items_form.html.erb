@@ -7,6 +7,7 @@
       <th>SKU's</th>
       <th>Price $</th>
       <th>Qty per SKU</th>
+      <th>Tot. Qty.</th>
       <th>Total $</th>
       <th>Margin %</th>
       <th>Margin $</th>
@@ -27,12 +28,13 @@
       <th></th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
     </tfoot>
 
     <tbody>
     <tr>
-      <td colspan="10">Loading, please wait...</td>
+      <td colspan="11">Loading, please wait...</td>
     </tr>
     </tbody>
   </table>
@@ -58,13 +60,14 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [],
-        "data":           <%= f.object.budget_items_for_list.to_json(methods: [:total, :margin_total, :margin_percent]).html_safe %>,
+        "data":           <%= f.object.budget_items_for_list.to_json(methods: [:total, :margin_total, :margin_percent, :total_qty]).html_safe %>,
         "columns": [
-          { data: "description",    "render": { "display": dataTable.columns.description }, width: '20%' },
+          { data: "description",    "render": { "display": dataTable.columns.description }, width: '15%' },
           { data: "no_of_products", "render": { "display": dataTable.columns.noOfProducts } },
           { data: "no_of_skus",     "render": { "display": dataTable.columns.noOfSkus } },
           { data: "price",          "render": { "display": dataTable.columns.price } },
           { data: "quantity",       "render": { "display": dataTable.columns.quantity } },
+          { data: "total_qty",      "render": { "display": dataTable.columns.total_qty } },
           { data: "total",          "render": { "display": dataTable.columns.total } },
           { data: "margin_percent", "render": { "display": dataTable.columns.marginPercent } },
           { data: "margin_total",   "render": { "display": dataTable.columns.marginTotal } },

@@ -10,8 +10,12 @@ module Refinery
       validates :budget_id,     presence: true
       validates :description,   presence: true
 
+      def total_qty
+        no_of_skus * quantity
+      end
+
       def total
-        no_of_skus * quantity * price
+        total_qty * price
       end
 
       def margin_total

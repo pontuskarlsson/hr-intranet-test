@@ -142,6 +142,9 @@ Refinery.Business.Budgets =
           'data-col': meta.col
         ).prop 'outerHTML'
 
+      total_qty: (data, type, row, meta) ->
+        $('<span class="js_budget_item_total_qty"></span>').html( Refinery.Business.Budgets._formatCurrency(data) ).prop('outerHTML')
+
       total: (data, type, row, meta) ->
         $('<span class="js_budget_item_total"></span>').html( Refinery.Business.Budgets._formatCurrency(data) ).prop('outerHTML')
 
@@ -186,8 +189,14 @@ Refinery.Business.Budgets =
         val = $field.prop('value')
         api.cell(row, col).data(val)
 
-        api.cell(row, 5).data(parseFloat(api.cell(row, 4).data()) * parseFloat(api.cell(row, 3).data()) * parseFloat(api.cell(row, 2).data()));
-        api.cell(row, 7).data(parseFloat(api.cell(row, 4).data()) * parseFloat(api.cell(row, 3).data()) * parseFloat(api.cell(row, 2).data()) * parseFloat(api.cell(row, 6).data()) / 100.0);
+        # Calculate Total Qty based on SKU's and Qty per SKU
+        api.cell(row, 5).data(parseFloat(api.cell(row, 4).data()) * parseFloat(api.cell(row, 2).data()));
+
+        # Calculate Total based on Total Qty and Price
+        api.cell(row, 6).data(parseFloat(api.cell(row, 5).data()) * parseFloat(api.cell(row, 3).data()));
+
+        # Calculate the Margin $ based on Total and Margin %
+        api.cell(row, 8).data(parseFloat(api.cell(row, 6).data()) * parseFloat(api.cell(row, 7).data()) / 100.0);
 
         api.draw()
 
@@ -220,11 +229,17 @@ Refinery.Business.Budgets =
         skus_col = api.column(2, { page: 'current' })
         $(skus_col.footer()).html('Sum: '+skus_col.data().sum())
 
-        qty_col = api.column(4, { page: 'current' })
-        $(qty_col.footer()).html('Sum: '+qty_col.data().sum())
+        tot_qty_col = api.column(5, { page: 'current' })
+        $(tot_qty_col.footer()).html('Sum: '+tot_qty_col.data().sum())
 
-        total_col = api.column(5, { page: 'current' })
+        total_col = api.column(6, { page: 'current' })
         $(total_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum()))
 
-        mar_tot_col = api.column(7, { page: 'current' })
+        price_col = api.column(3, { page: 'current' })
+        $(price_col.footer()).html('Avg: '+ Refinery.Business.Budgets._formatCurrency(total_col.data().sum() / tot_qty_col.data().sum()))
+
+        qty_col = api.column(4, { page: 'current' })
+        $(qty_col.footer()).html('Avg: '+ Refinery.Business.Budgets._formatCurrency(tot_qty_col.data().sum() / skus_col.data().sum()))
+
+        mar_tot_col = api.column(8, { page: 'current' })
         $(mar_tot_col.footer()).html('Sum: '+ Refinery.Business.Budgets._formatCurrency(mar_tot_col.data().sum()))
