@@ -51,6 +51,9 @@ module Refinery
 
       def find_page
         @page = ::Refinery::Page.where(:link_url => '/business/budgets').first
+        if defined?(Refinery::PageRoles) && @page && !@page.user_authorized?(current_refinery_user)
+          error_404
+        end
       end
 
       def find_budget

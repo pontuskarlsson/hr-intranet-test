@@ -32,3 +32,6 @@ Refinery::Store::Engine.load_seed
 
 # Added by Refinery CMS CustomLists extension
 Refinery::CustomLists::Engine.load_seed
+
+# Added by Refinery CMS PageRoles extension
+Refinery::PageRoles::Engine.load_seed

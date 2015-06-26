@@ -1,0 +1,6 @@
+es:
+  activerecord:
+    attributes:
+      'refinery/page_roles/page_role':
+        page: Page
+        role: Role

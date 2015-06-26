@@ -1,0 +1,26 @@
+<% if current_refinery_user.has_role?(:superuser) && Refinery::Authentication.superuser_can_assign_roles %>
+  <div class='field role_access'>
+      <span class='label_with_help'>
+        <%= f.label :role_access, t('.role_access'), :class => "title_label" %>
+      </span>
+    <ul id='roles' class='checkboxes'>
+      <% @available_roles.each do |role|
+        downcased_title = (title = role[:title]).downcase -%>
+        <li>
+          <%= check_box_tag 'page[roles][]', downcased_title, @page.has_role?(title),
+                            :id => "roles_#{downcased_title}" %>
+          <%= f.label 'page[roles][]',
+                      t(downcased_title, :scope => 'refinery.roles', :default => title),
+                      :class => 'stripped',
+                      :for => "roles_#{downcased_title}" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <div class='field role_access'>
+      <span class='label_with_help'>
+        <p>You cannot set Roles for this Page</p>
+      </span>
+  </div>
+<% end %>

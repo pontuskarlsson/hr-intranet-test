@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150612081744) do
+ActiveRecord::Schema.define(:version => 20150626083737) do
 
   create_table "refinery_amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -508,6 +508,15 @@ ActiveRecord::Schema.define(:version => 20150612081744) do
 
   add_index "refinery_page_parts", ["id"], :name => "index_refinery_page_parts_on_id"
   add_index "refinery_page_parts", ["refinery_page_id"], :name => "index_refinery_page_parts_on_refinery_page_id"
+
+  create_table "refinery_page_roles", :force => true do |t|
+    t.integer  "page_id"
+    t.integer  "role_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "refinery_page_roles", ["page_id", "role_id"], :name => "index_refinery_page_roles_on_page_id_and_role_id"
 
   create_table "refinery_page_translations", :force => true do |t|
     t.integer  "refinery_page_id"

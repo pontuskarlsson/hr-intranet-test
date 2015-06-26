@@ -280,9 +280,13 @@ module Refinery
         begin
           XeroExpenseClaimAttachment.transaction do
             @resources = ::Refinery::Resource.create_resources(params[:resource])
-            @resource = @resources.detect { |r| r.valid? } || (raise ::ActiveRecord::RecordNotSaved)
+            (resources = @resources.select(&:valid?)).any? || (raise ::ActiveRecord::RecordNotSaved)
 
-            @xero_expense_claim.xero_expense_claim_attachments.create!(resource_id: @resource.id)
+            resources.each do |resource|
+              @xero_expense_claim.xero_expense_claim_attachments.create!(resource_id: resource.id)
+            end
+
+            @resource = resources.first
 
             true
           end
