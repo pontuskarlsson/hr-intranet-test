@@ -21,6 +21,16 @@ namespace :refinery do
 
     end
 
+
+    namespace :base do
+
+      desc 'Synchronise Contacts with Base'
+      task :synchronise => :environment do
+        Refinery::Marketing::BaseSynchroniser.new.synchronise
+      end
+
+    end
+
   end
 
 end
