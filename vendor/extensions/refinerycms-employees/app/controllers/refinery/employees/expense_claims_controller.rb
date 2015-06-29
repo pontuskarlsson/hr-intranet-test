@@ -223,7 +223,7 @@ module Refinery
           if xero_expense_claim_attachment.guid.blank? # Has not been submitted yet
             attachment = client.Receipt.attach_file(
                 receipt_guid,
-                xero_expense_claim_attachment.resource.file.name,
+                "attachment-#{xero_expense_claim_attachment.id}.pdf", # Easiest way to workaround any strange characters in filename
                 xero_expense_claim_attachment.resource.file.tempfile.path,
                 xero_expense_claim_attachment.resource.file.mime_type)
             if attachment.attachment_id.present? && attachment.attachment_id != '00000000-0000-0000-0000-000000000000'
