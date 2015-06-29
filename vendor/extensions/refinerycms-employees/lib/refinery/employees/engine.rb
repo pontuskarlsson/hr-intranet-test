@@ -25,6 +25,9 @@ module Refinery
 
       config.after_initialize do
         Refinery.register_extension(Refinery::Employees)
+
+        Xeroizer::Logging::Log = Rails.logger
+        Xeroizer::Record::BaseModel::DEFAULT_RECORDS_PER_BATCH_SAVE = 50
       end
     end
   end
