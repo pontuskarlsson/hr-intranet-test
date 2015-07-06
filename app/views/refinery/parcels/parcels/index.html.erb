@@ -14,6 +14,7 @@
     <table class="display js_parcels_data_table" cellspacing="0" style="width: 100%;">
       <thead>
       <tr>
+        <th style="width: 7%;">&nbsp;</th>
         <th>Parcel Date</th>
         <th>From</th>
         <th>Courier</th>
@@ -27,6 +28,7 @@
 
       <tfoot>
       <tr>
+        <th>&nbsp;</th>
         <th>Parcel Date</th>
         <th>From</th>
         <th>Courier</th>
@@ -40,7 +42,7 @@
 
       <tbody>
       <tr>
-        <td colspan="7">Loading, please wait...</td>
+        <td colspan="8">Loading, please wait...</td>
       </tr>
       </tbody>
     </table>
@@ -56,18 +58,22 @@
 
   <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
   <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+  <%= javascript_include_tag 'refinery/parcels/parcels' %>
 
   <script type="text/javascript">
     $(function(){
+      var dataTable = Refinery.Parcels.Parcels.parcelsDataTable;
+
       $('.js_parcels_data_table').dataTable({
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
-        "order":          [[ 0, "desc" ]],
+        "order":          [[ 1, "desc" ]],
         "data":           <%= @parcels.to_json(methods: [:given_to]).html_safe %>,
         "columns": [
-          { data: "parcel_date", "render": function(data, type, row){ return ('<a href="<%= refinery.parcels_parcel_path('%%parcel_id%%') %>">'+data+'</a>').replace('%%parcel_id%%', row.id); } },
-          { data: "from_name" },
+          { data: "id",           "render": { "display": dataTable.columns.id }, width: '7%' },
+          { data: "parcel_date" },
+          { data: "from_name",    "render": { "display": dataTable.columns.from_name } },
           { data: "courier" },
           { data: "air_waybill_no" },
           { data: "to_name" },
