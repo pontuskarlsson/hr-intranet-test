@@ -1,8 +1,8 @@
 <li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(employment_contract) -%>">
   <span class='title'>
-    <%= employment_contract.start_date %>
+    <%= employment_contract.employee.full_name %>
     <span class="preview">
-      <%= employment_contract.employee.full_name %>
+      <%= t('.preview', start_date: employment_contract.start_date, end_date: employment_contract.end_date) %>
     </span>
   </span>
   <span class='actions'>
