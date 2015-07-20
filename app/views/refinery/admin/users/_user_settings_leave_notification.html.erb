@@ -40,7 +40,7 @@
     <div class="js_sick_leave_employees" style="display: <%= user_setting.content['receive_for'] != 'employees' ? 'none' : 'block' %>;">
       <%- employees_hash = user_setting.content['employees'] || {} -%>
       <%= c_form.fields_for :employees do |e_form| %>
-        <% Refinery::Employees::Employee.where('user_id <> ?', user.id).each do |employee| %>
+        <% Refinery::Employees::Employee.current.where('user_id <> ?', user.id).each do |employee| %>
 
           <label for="user_user_settings_0_content_employees_employee_<%= employee.id %>" style="margin: 0;">
             <%= e_form.check_box :"employee_#{employee.id}", { checked: employees_hash["employee_#{employee.id}"] == '1', disabled: user_setting.content['receive_for'] != 'employees' ? 'disabled' : nil } %>
