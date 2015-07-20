@@ -1,6 +1,9 @@
 Refinery::User.class_eval do
+  has_many :user_settings, dependent: :destroy
 
-  attr_accessible :full_name, :password_has_expired
+  accepts_nested_attributes_for :user_settings
+
+  attr_accessible :full_name, :password_has_expired, :user_settings_attributes
 
   validates :full_name, presence: true
 
@@ -20,6 +23,21 @@ Refinery::User.class_eval do
 
   def password_has_expired
     @password_has_expired ||= need_change_password?
+  end
+
+  def wants_notification_for?(other_employee)
+    return false if other_employee.user_id == id
+
+    user_setting = user_settings.find_by_identifier('sick_leave_notification') || user_settings.build(identifier: 'sick_leave_notification', content: { 'receive_for' => 'all' })
+    content = user_setting.content || {}
+    case content['receive_for']
+      when 'all' then true
+      when 'none' then false
+      when 'employees' then content['employees']["employee_#{other_employee.id}"] == '1'
+      when 'offices'
+        employment_contract = other_employee.employment_contracts.current_contracts.first
+        employment_contract.present? && content['offices']["office_#{ employment_contract.country }"] == '1'
+    end
   end
 
 end

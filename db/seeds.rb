@@ -6,6 +6,20 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+# Adding a default Page for the MyProfiles controller
+url = '/my_profile'
+if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
+  page = Refinery::Page.create(
+      :title => 'My Profile',
+      :link_url => url,
+      :deletable => false,
+      :menu_match => "^#{url}(\/|\/.+?|)$"
+  )
+  Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
+    page.parts.create(:title => default_page_part, :body => nil, :position => index)
+  end
+end
+
 # Added by Refinery CMS Pages extension
 Refinery::Pages::Engine.load_seed
 

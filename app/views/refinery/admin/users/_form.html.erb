@@ -33,6 +33,15 @@
     <%= f.check_box :password_has_expired %>
   </div>
 
+  <h2>User Settings</h2>
+  <%- user_setting = @user.user_settings.detect { |us| us.identifier == 'sick_leave_notification' } || @user.user_settings.build(identifier: 'sick_leave_notification', content: { 'receive_for' => 'all' }) -%>
+  <%= f.fields_for :user_settings, user_setting, child_index: '0' do |us_form| %>
+    <%= us_form.hidden_field :identifier %>
+
+    <%= render 'user_settings_leave_notification', f: us_form, user_setting: user_setting, user: @user %>
+
+  <% end %>
+
   <div class='field plugin_access'>
     <span class='label_with_help'>
       <%= f.label :plugin_access, t('.plugin_access'), :class => "title_label" %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150626083737) do
+ActiveRecord::Schema.define(:version => 20150714093647) do
 
   create_table "refinery_amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -1033,5 +1033,16 @@ ActiveRecord::Schema.define(:version => 20150626083737) do
   create_table "tags", :force => true do |t|
     t.string "name"
   end
+
+  create_table "user_settings", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "identifier"
+    t.text     "content"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "user_settings", ["identifier"], :name => "index_user_settings_on_identifier"
+  add_index "user_settings", ["user_id"], :name => "index_user_settings_on_user_id"
 
 end

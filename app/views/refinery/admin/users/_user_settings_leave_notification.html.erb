@@ -1,0 +1,94 @@
+<p>Leave notification email</p>
+
+<%= f.fields_for :content do |c_form| %>
+  <div class="js_sick_leave_notifications">
+    <div class='field'>
+      <label for="receive_for_all" style="margin: 0;">
+        <%= c_form.radio_button :receive_for, 'all', checked: user_setting.content['receive_for'] == 'all', id: 'receive_for_all' %>
+        For all Employees
+      </label>
+    </div>
+
+    <div class='field'>
+      <label for="receive_for_offices" style="margin: 0;">
+        <%= c_form.radio_button :receive_for, 'offices', checked: user_setting.content['receive_for'] == 'offices', id: 'receive_for_offices' %>
+        Only for Employees in selected Offices
+      </label>
+    </div>
+
+    <div class="js_sick_leave_offices" style="display: <%= user_setting.content['receive_for'] != 'offices' ? 'none' : 'block' %>;">
+      <%- offices_hash = user_setting.content['offices'] || {} -%>
+      <%= c_form.fields_for :offices do |o_form| %>
+        <% Refinery::Employees::Countries::COUNTRIES.each do |country_code| %>
+
+          <label for="user_user_settings_0_content_offices_office_<%= country_code %>" style="margin: 0;">
+            <%= o_form.check_box :"office_#{country_code}", { checked: offices_hash["office_#{country_code}"] == '1', disabled: user_setting.content['receive_for'] != 'offices' ? 'disabled' : nil } %>
+            <%= country_code %>
+          </label>
+
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class='field'>
+      <label for="receive_for_employees" style="margin: 0;">
+        <%= c_form.radio_button :receive_for, 'employees', checked: user_setting.content['receive_for'] == 'employees', id: 'receive_for_employees' %>
+        Only for selected Employees
+      </label>
+    </div>
+
+    <div class="js_sick_leave_employees" style="display: <%= user_setting.content['receive_for'] != 'employees' ? 'none' : 'block' %>;">
+      <%- employees_hash = user_setting.content['employees'] || {} -%>
+      <%= c_form.fields_for :employees do |e_form| %>
+        <% Refinery::Employees::Employee.where('user_id <> ?', user.id).each do |employee| %>
+
+          <label for="user_user_settings_0_content_employees_employee_<%= employee.id %>" style="margin: 0;">
+            <%= e_form.check_box :"employee_#{employee.id}", { checked: employees_hash["employee_#{employee.id}"] == '1', disabled: user_setting.content['receive_for'] != 'employees' ? 'disabled' : nil } %>
+            <%= employee.full_name %>
+          </label>
+
+        <% end %>
+      <% end %>
+      <p style="font-style: italic;">Note that new Employees will not be added automatically with this option. It is recommended to use the setting 'Only for Employees in selected Offices' instead.</p>
+    </div>
+
+    <div class='field'>
+      <label for="receive_for_none" style="margin: 0;">
+        <%= c_form.radio_button :receive_for, 'none', checked: user_setting.content['receive_for'] == 'none', id: 'receive_for_none' %>
+        Never Receive email
+      </label>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script>
+    $(document).ready(function() {
+      $('#receive_for_all').click(function(e){
+        $('div.js_sick_leave_offices').css('display', 'none');
+        $('div.js_sick_leave_employees').css('display', 'none');
+        $('div.js_sick_leave_notifications input:checkbox').attr('disabled', true);
+      });
+
+      $('#receive_for_offices').click(function(e){
+        $('div.js_sick_leave_offices').css('display', 'block');
+        $('div.js_sick_leave_employees').css('display', 'none');
+        $('div.js_sick_leave_notifications input:checkbox').attr('disabled', true);
+        $('div.js_sick_leave_offices input:checkbox').attr('disabled', false);
+      });
+
+      $('#receive_for_employees').click(function(e){
+        $('div.js_sick_leave_offices').css('display', 'none');
+        $('div.js_sick_leave_employees').css('display', 'block');
+        $('div.js_sick_leave_notifications input:checkbox').attr('disabled', true);
+        $('div.js_sick_leave_employees input:checkbox').attr('disabled', false);
+      });
+
+      $('#receive_for_none').click(function(e){
+        $('div.js_sick_leave_offices').css('display', 'none');
+        $('div.js_sick_leave_employees').css('display', 'none');
+        $('div.js_sick_leave_notifications input:checkbox').attr('disabled', true);
+      });
+    });
+  </script>
+<% end %>

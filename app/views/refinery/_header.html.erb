@@ -43,6 +43,8 @@
             <li class="has-dropdown">
               <a href="#"><%= current_refinery_user.employee.present? ? current_refinery_user.employee.full_name : current_refinery_user.email %></a>
               <ul class="dropdown">
+
+                <li><%= link_to 'My Profile', '/my_profile' %></li>
                 <li><%= link_to 'Refinery', '/refinery' %></li>
                 <% if current_refinery_user.has_role?(:superuser) %>
                   <% if @page.present? %>

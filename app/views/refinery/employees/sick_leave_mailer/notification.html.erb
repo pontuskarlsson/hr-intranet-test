@@ -231,29 +231,10 @@
           <tr>
             <td>
 
-              <h2 align="center" class="header_text">Unsigned Parcels Waiting</h2>
-              <p>You have the following Parcels waiting to be signed:</p>
+              <h2 align="center" class="header_text">Sick Leave Notification</h2>
+              <p><%= @sick_leave.employee.full_name %> has reported sick leave today.</p>
 
-              <table>
-                <tr>
-                  <th>From</th>
-                  <th>Addressed To</th>
-                  <th>Delivered by</th>
-                  <th>Received at</th>
-                  <th>Waybill no</th>
-                </tr>
-                <% @parcels.each do |parcel| %>
-                  <tr>
-                    <td><%= parcel.from %></td>
-                    <td><%= parcel.to %></td>
-                    <td><%= parcel.courier %></td>
-                    <td><%= parcel.parcel_date %></td>
-                    <td><%= parcel.air_waybill_no %></td>
-                  </tr>
-                <% end %>
-              </table>
-
-              <p><%=raw link_to 'Click here to view Parcels', refinery.parcels_parcels_url -%></p>
+              <p><%=raw link_to 'Click here', "#{refinery.root_url}my_profile" -%> to change the settings for whom to get these notifications for.</p>
 
             </td>
           </tr>

@@ -25,6 +25,12 @@ module Refinery
         @employee_name ||= employee.try(:full_name)
       end
 
+      class << self
+        def current_contracts
+          where("#{table_name}.start_date <= :today AND (#{table_name}.end_date IS NULL OR #{table_name}.end_date >= :today)", today: Date.today)
+        end
+      end
+
     end
   end
 end
