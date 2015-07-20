@@ -28,7 +28,7 @@ Refinery::User.class_eval do
   def wants_notification_for?(other_employee)
     return false if other_employee.user_id == id
 
-    user_setting = user_settings.find_by_identifier('sick_leave_notification') || user_settings.build(identifier: 'sick_leave_notification', content: { 'receive_for' => 'all' })
+    user_setting = user_settings.find_by_identifier('leave_notification') || user_settings.build(identifier: 'leave_notification', content: { 'receive_for' => 'all' })
     content = user_setting.content || {}
     case content['receive_for']
       when 'all' then true

@@ -34,7 +34,7 @@
   </div>
 
   <h2>User Settings</h2>
-  <%- user_setting = @user.user_settings.detect { |us| us.identifier == 'sick_leave_notification' } || @user.user_settings.build(identifier: 'sick_leave_notification', content: { 'receive_for' => 'all' }) -%>
+  <%- user_setting = @user.user_settings.detect { |us| us.identifier == 'leave_notification' } || @user.user_settings.build(identifier: 'leave_notification', content: { 'receive_for' => 'all' }) -%>
   <%= f.fields_for :user_settings, user_setting, child_index: '0' do |us_form| %>
     <%= us_form.hidden_field :identifier %>
 
