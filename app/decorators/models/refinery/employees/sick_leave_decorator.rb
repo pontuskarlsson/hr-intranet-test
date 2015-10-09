@@ -4,7 +4,9 @@ Refinery::Employees::SickLeave.class_eval do
   # until root cause is discovered
 
   unless respond_to?(:_sl_notif_added)
-    after_create do
+    after_create :notify_other_employees
+
+    def notify_other_employees
       # Currently, this is static timezone for HK, this could be changed
       # to Office setting, when Employment Contract has more info than
       # only the country code
@@ -18,6 +20,8 @@ Refinery::Employees::SickLeave.class_eval do
 
       end
     end
+    handle_asynchronously :notify_other_employees
+
 
     class_attribute :_sl_notif_added
   end

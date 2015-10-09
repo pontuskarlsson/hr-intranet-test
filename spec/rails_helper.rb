@@ -13,6 +13,9 @@ require 'rspec/rails'
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+# Makes sure that delayed methods are executed at once in test env
+Delayed::Worker.delay_jobs = false
+
 RSpec.configure do |config|
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

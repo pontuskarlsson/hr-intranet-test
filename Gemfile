@@ -27,6 +27,9 @@ end
 gem 'jquery-rails'
 gem 'foundation-rails', '~> 5.2'
 
+# Background worker
+gem 'delayed_job_active_record'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
