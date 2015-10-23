@@ -28,7 +28,7 @@ gem 'jquery-rails'
 gem 'foundation-rails', '~> 5.2'
 
 # Background worker
-gem 'daemon'
+gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.0'
 gem 'delayed_job', '~> 3.0.5'
 
