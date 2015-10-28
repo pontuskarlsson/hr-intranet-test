@@ -8,7 +8,8 @@ module Refinery
       STATUS_AUTHORISED     = 'AUTHORISED'
       STATUS_PAID           = 'PAID'
       STATUS_DELETED        = 'DELETED'
-      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED]
+      STATUS_VOIDED         = 'VOIDED'
+      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED, STATUS_VOIDED]
 
       belongs_to :added_by,                     class_name: '::Refinery::User'
       belongs_to :employee
