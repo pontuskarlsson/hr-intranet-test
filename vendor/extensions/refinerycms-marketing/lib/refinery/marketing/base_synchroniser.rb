@@ -6,7 +6,7 @@ module Refinery
     class BaseSynchroniser
       BASE_TOKEN = ENV['BASE_TOKEN']
 
-      MAPPED_ATTR = %w(name first_name last_name address city skype zip country title private contact_id is_organisation mobile fax website phone description linked_in facebook industry twitter email organisation_name tags_joined_by_comma is_sales_account customer_status prospect_status custom_fields)
+      MAPPED_ATTR = %w(name first_name last_name address city skype zip state country title private contact_id is_organisation mobile fax website phone description linked_in facebook industry twitter email organisation_name tags_joined_by_comma is_sales_account customer_status prospect_status custom_fields)
 
       attr_accessor :error
 

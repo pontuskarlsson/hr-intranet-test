@@ -12,7 +12,7 @@ module Refinery
       serialize :custom_fields, Hash
 
       attr_accessible :base_id, :name, :first_name, :last_name, :address,
-                      :city, :skype, :zip, :country, :title, :private,
+                      :city, :skype, :zip, :state, :country, :title, :private,
                       :contact_id, :is_organisation, :mobile, :fax,
                       :website, :phone, :description, :linked_in, :facebook,
                       :industry, :twitter, :email, :organisation_name,

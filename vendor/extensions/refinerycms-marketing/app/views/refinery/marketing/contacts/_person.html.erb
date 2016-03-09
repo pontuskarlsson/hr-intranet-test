@@ -35,6 +35,18 @@
     <p class="cc-attribute cc-missing">City</p>
   <% end %>
 
+  <% if contact.zip.present? %>
+    <p class="cc-attribute cc-city"><%= contact.zip %></p>
+  <% else %>
+    <p class="cc-attribute cc-missing">Zip</p>
+  <% end %>
+
+  <% if contact.state.present? %>
+    <p class="cc-attribute cc-city"><%= contact.state %></p>
+  <% else %>
+    <p class="cc-attribute cc-missing">State</p>
+  <% end %>
+
   <% if contact.country.present? %>
     <p class="cc-attribute cc-country"><%= contact.country %></p>
   <% else %>
