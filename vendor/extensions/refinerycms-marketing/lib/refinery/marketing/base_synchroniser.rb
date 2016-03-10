@@ -58,6 +58,13 @@ module Refinery
           # Use [attr] method instead of send(attr) because zip attribute is calling Enumerable zip method
           contact.send("#{attr}=", base_contact[attr])
         end
+
+        if base_contact.address.is_a? Hash
+          ADDRESS_KEYS.each do |key|
+            contact.send("#{key}=", base_contact.address[key.to_sym])
+          end
+        end
+
         if (o = base_contact.organisation).present? && (c = o['contact']).present? && (c_id = c['id']).present?
           contact.organisation_id = c_id
         end
