@@ -36,6 +36,16 @@ module Refinery
         end
       end
 
+
+      # Setters from Base Sync
+      def line1=(address)
+        self.address = address
+      end
+
+      def postal_code=(zip)
+        self.zip = zip
+      end
+
     end
   end
 end

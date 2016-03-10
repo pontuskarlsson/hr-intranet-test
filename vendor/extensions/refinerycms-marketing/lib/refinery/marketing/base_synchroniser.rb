@@ -6,7 +6,8 @@ module Refinery
     class BaseSynchroniser
       BASE_TOKEN = ENV['BASE_TOKEN']
 
-      MAPPED_ATTR = %w(name first_name last_name address city skype zip state country title private contact_id is_organisation mobile fax website phone description linked_in facebook industry twitter email organisation_name tags_joined_by_comma is_sales_account customer_status prospect_status custom_fields)
+      MAPPED_ATTR = %w(name first_name last_name skype title private contact_id is_organisation mobile fax website phone description linked_in facebook industry twitter email organisation_name tags_joined_by_comma is_sales_account customer_status prospect_status custom_fields)
+      ADDRESS_KEYS = %w(line1 city postal_code state country)
 
       attr_accessor :error
 
@@ -21,7 +22,10 @@ module Refinery
           Refinery::Marketing::Contact.transaction do
             # Loops through all contacts from Base and updates the ones already
             # present in the database and creates the ones that are not
-            each_base_contact do |base_contact|
+            @all_base_ids = []
+            client.each do |base_contact|
+              @all_base_ids << base_contact.id
+
               if (contact = Refinery::Marketing::Contact.find_by_base_id(base_contact.id)).present?
                 sync_contact contact, base_contact
               else
@@ -43,28 +47,9 @@ module Refinery
       end
 
       private
-      def session
-        @session ||= BaseCrm::Session.new(BASE_TOKEN)
-      end
 
-      # Loads all contacts from base in batches and yields them one at a time. This
-      # way we avoid to load all contacts into memory at the same time. And we only
-      # store the retrieved ids so that we can look for any existing contacts that
-      # was not found in base, later on.
-      def each_base_contact(&block)
-        @all_base_ids = []
-
-        page = 1 # Contacts uses 1 as first page number
-        while (contacts = session.contacts.params(page: page).all).any?
-          contacts.each do |contact|
-            @all_base_ids << contact.id
-            block.call contact
-          end
-          page += 1
-        end
-
-        # Everything okay
-        true
+      def client
+        @client ||= BaseCRM::Client.new(access_token: BASE_TOKEN)
       end
 
       # Copies all information from the base contact into the refinery contact.
