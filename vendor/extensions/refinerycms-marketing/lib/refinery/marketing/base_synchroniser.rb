@@ -23,7 +23,7 @@ module Refinery
             # Loops through all contacts from Base and updates the ones already
             # present in the database and creates the ones that are not
             @all_base_ids = []
-            client.contacts.each do |base_contact|
+            client.contacts.all.each do |base_contact|
               @all_base_ids << base_contact.id
 
               if (contact = Refinery::Marketing::Contact.find_by_base_id(base_contact.id)).present?
