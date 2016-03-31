@@ -75,4 +75,4 @@ group :development, :test do
 end
 
 # Workaround to get the latest version of xeroizer that is not available from rubygems yet
-gem 'xeroizer', path: 'vendor/extensions'
+gem 'xeroizer', '~> 2.16'

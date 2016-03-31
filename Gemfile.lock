@@ -36,13 +36,6 @@ PATH
       activemodel (>= 3.1.0)
       activesupport (>= 3.1.0)
       virtus
-    xeroizer (2.15.8)
-      activesupport
-      builder (>= 2.1.2)
-      i18n
-      nokogiri
-      oauth (>= 0.4.5)
-      tzinfo
 
 GEM
   remote: https://rubygems.org/
@@ -201,7 +194,7 @@ GEM
       treetop (~> 1.4.8)
     method_source (0.8.2)
     mime-types (1.25.1)
-    mini_portile (0.6.0)
+    mini_portile2 (2.0.0)
     multi_json (1.11.2)
     multipart-post (2.0.0)
     mysql2 (0.3.16)
@@ -209,9 +202,9 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
     netrc (0.10.2)
-    nokogiri (1.6.3.1)
-      mini_portile (= 0.6.0)
-    oauth (0.4.7)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
+    oauth (0.5.1)
     orm_adapter (0.5.0)
     polyglot (0.3.5)
     pry (0.10.1)
@@ -346,7 +339,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     truncate_html (0.9.3)
-    tzinfo (0.3.41)
+    tzinfo (0.3.48)
     uglifier (2.5.3)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
@@ -358,6 +351,13 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
+    xeroizer (2.16.4)
+      activesupport
+      builder (>= 2.1.2)
+      i18n
+      nokogiri
+      oauth (>= 0.4.5)
+      tzinfo
 
 PLATFORMS
   ruby
@@ -393,7 +393,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   trans_forms!
   uglifier (>= 1.0.3)
-  xeroizer!
+  xeroizer (~> 2.16)
 
 BUNDLED WITH
    1.11.2
