@@ -7,6 +7,8 @@ en:
         title: Sick Leave
       annual_leaves:
         title: Annual Leave
+      leave_of_absences:
+        title: Leave Of Absence
       employment_contracts:
         title: Employment Contract
       public_holidays:
@@ -18,6 +20,7 @@ en:
             manage_employees: Manage Employees
             manage_sick_leaves: Manage Sick Leaves
             manage_annual_leaves: Manage Annual Leaves
+            manage_leave_of_absences: Manage Leave of Absences
             manage_employment_contracts: Manage Employment Contracts
             manage_public_holidays: Manage Public Holidays
             manage_xero_accounts: Manage Xero Accounts
@@ -63,6 +66,20 @@ en:
             edit: Edit this annual leave
             delete: Remove this annual leave forever
             preview: '(%{number_of_days} days) Started at %{start_date}'
+        leave_of_absences:
+          actions:
+            create_new: Add New Leave Of Absence
+            reorder: Reorder Leave Of Absences
+            reorder_done: Done Reordering Leave Of Absences
+          records:
+            title: Leave Of Absences
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Leave Of Absences yet. Click "Add New Leave Of Absence" to add your first leave of absence.
+          leave_of_absence:
+            view_live_html: View this leave of absence live <br/><em>(opens in a new window)</em>
+            edit: Edit this leave of absence
+            delete: Remove this leave of absence forever
+            preview: 'Started at %{start_date}, type: %{type}, status: %{status}'
         employment_contracts:
           actions:
             create_new: Add New Employment Contract

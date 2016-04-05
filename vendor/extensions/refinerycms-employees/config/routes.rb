@@ -10,7 +10,11 @@ Refinery::Core::Engine.routes.draw do
         put :extend
       end
     end
-    resources :annual_leaves, :only => [:index, :create, :edit, :update, :destroy]
+    resources :annual_leaves, :only => [:index, :create, :edit, :update, :destroy] do
+      member do
+        put :approve, :reject
+      end
+    end
     resources :employees, :only => [:index, :show]
     resources :expense_claims do
       resources :receipts, only: [:new, :create, :show, :edit, :update, :destroy]
@@ -41,6 +45,12 @@ Refinery::Core::Engine.routes.draw do
       end
 
       resources :annual_leaves, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :leave_of_absences, :except => :show do
         collection do
           post :update_positions
         end

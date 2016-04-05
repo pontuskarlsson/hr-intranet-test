@@ -1,0 +1,16 @@
+<%= render 'refinery/admin/search_header', :url => refinery.employees_admin_leave_of_absences_path %>
+<div class='pagination_container'>
+  <% if @leave_of_absences.any? %>
+    <%= render 'leave_of_absences' %>
+  <% else %>
+    <p>
+      <% unless searching? %>
+        <strong>
+          <%= t('.no_items_yet') %>
+        </strong>
+      <% else %>
+        <%= t('no_results', :scope => 'refinery.admin.search') %>
+      <% end %>
+    </p>
+  <% end %>
+</div>

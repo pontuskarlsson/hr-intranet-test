@@ -1,7 +1,7 @@
 <% content_for :body do %>
   <h4>Register Sick Leave</h4>
 
-  <%= render 'quick_form', sick_leave: ::Refinery::Employees::SickLeave.new %>
+  <%= render 'quick_form', sick_leave: ::Refinery::Employees::LeaveOfAbsence.new %>
 
   <h4 class="t2">All of your registered Sick Leave occasions</h4>
 
@@ -10,7 +10,6 @@
     <tr>
       <th>Start</th>
       <th>End</th>
-      <th>No. of sick days</th>
       <th>Doctor's Note</th>
       <th>Action</th>
     </tr>
@@ -20,7 +19,6 @@
     <tr>
       <th>Start</th>
       <th>End</th>
-      <th>No. of sick days</th>
       <th>Doctor's Note</th>
       <th>Action</th>
     </tr>
@@ -28,7 +26,7 @@
 
     <tbody>
     <tr>
-      <td colspan="5">Loading, please wait...</td>
+      <td colspan="4">Loading, please wait...</td>
     </tr>
     </tbody>
   </table>
@@ -50,11 +48,10 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 0, "desc" ]],
-        "data":           <%= @sick_leaves.to_json(only: [:start_date, :end_date, :number_of_days, :id], include: { doctors_note: { only: [], methods: [:url] } }).html_safe %>,
+        "data":           <%= @leave_of_absences.to_json(only: [:start_date, :end_date, :id], include: { doctors_note: { only: [], methods: [:url] } }).html_safe %>,
         "columns": [
           { data: "start_date" },
           { data: "end_date" },
-          { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
           { data: "doctors_note", "render": function(data, type, row){ return (data === null || typeof data == 'undefined' ? '<a href="/employees/sick_leaves/'+row.id+'/add_note" data-remote="true">Add Note</a>' : '<a href="'+data.url+'">Download</a>'); } },
           { data: "id", "render": function(data, type, row){
             var strDate = (row.end_date ? row.end_date : row.start_date);

@@ -5,9 +5,12 @@ module Refinery
 
       belongs_to :profile_image,      class_name: '::Refinery::Image'
       belongs_to :user,               class_name: '::Refinery::User'
-      has_many :sick_leaves,          dependent: :destroy
-      has_many :annual_leaves,        dependent: :destroy
-      has_many :annual_leave_records, dependent: :destroy
+      belongs_to :reporting_manager,  class_name: '::Refinery::Employees::Employee'
+      has_many :employees,            dependent: :nullify, foreign_key: :reporting_manager_id
+      has_many :leave_of_absences,    dependent: :destroy
+      #has_many :sick_leaves,          dependent: :destroy
+      #has_many :annual_leaves,        dependent: :destroy
+      #has_many :annual_leave_records, dependent: :destroy
       has_many :employment_contracts, dependent: :destroy
       has_many :xero_expense_claims,  dependent: :destroy
       has_many :xero_receipts,        dependent: :destroy
@@ -16,7 +19,7 @@ module Refinery
 
       attr_writer :user_name, :xero_guid_field
       attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position,
-                      :xero_guid, :xero_guid_field, :user_name, :default_tracking_options
+                      :xero_guid, :xero_guid_field, :user_name, :default_tracking_options, :reporting_manager_id
 
       validates :employee_no, presence: true, uniqueness: true
       validates :full_name,   presence: true
@@ -59,7 +62,7 @@ module Refinery
           search_weekdays -= 1 unless d.saturday? or d.sunday?
         end
 
-        @_rsl = sick_leaves.where('(end_date IS NOT NULL AND end_date >= :date) OR start_date >= :date', date: d).order('start_date DESC').first
+        @_rsl = leave_of_absences.sick_leaves.where('(end_date IS NOT NULL AND end_date >= :date) OR start_date >= :date', date: d).order('start_date DESC').first
       end
 
       class << self

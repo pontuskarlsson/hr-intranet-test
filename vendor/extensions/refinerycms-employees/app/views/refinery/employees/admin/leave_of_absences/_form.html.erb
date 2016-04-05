@@ -1,0 +1,76 @@
+<%= form_for [refinery, :employees_admin, @leave_of_absence] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @leave_of_absence,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :employee_name -%>
+    <%= f.text_field :employee_name, class: 'js_employee_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :absence_type_id %>
+    <%= f.select :absence_type_id, options_for_select(::Refinery::Employees::LeaveOfAbsence::TYPES_OF_LEAVE.map { |k,v| [v[:label], k] }, f.object.absence_type_id), {  }, :class => 'chzn-select', :'data-placeholder' => 'Search Types', :style => 'width: 300px;' %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :absence_type_description -%>
+    <%= f.text_field :absence_type_description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :status %>
+    <%= f.select :status, options_for_select(::Refinery::Employees::LeaveOfAbsence::STATUSES.map { |k,v| [v[:label], k] }, f.object.status), {  }, :class => 'chzn-select', :'data-placeholder' => 'Search Status', :style => 'width: 300px;' %>
+  </div>
+
+  <div class='field'>
+    <%= f.label :start_date -%>
+    <%= f.text_field :start_date, class: 'js_date_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :start_half_day -%>
+    <%= f.check_box :start_half_day -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_date -%>
+    <%= f.text_field :end_date, class: 'js_date_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_half_day -%>
+    <%= f.check_box :end_half_day -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :doctors_note_id -%>
+    <%= render '/refinery/admin/resource_picker',
+               :f => f,
+               :field => :doctors_note_id,
+               :resource => @leave_of_absence.doctors_note -%>
+  </div>
+
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.employees.admin.leave_of_absences.leave_of_absence'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @leave_of_absence.start_date) -%>
+<% end -%>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_employee_field').autocomplete({
+        source: <%= ::Refinery::Employees::Employee.select(:full_name).map(&:full_name).to_json.html_safe %>
+      });
+    });
+  </script>
+<% end %>

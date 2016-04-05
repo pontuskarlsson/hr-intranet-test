@@ -13,8 +13,8 @@ module Refinery
       end
 
       def create
-        @sick_leave = @employee.sick_leaves.build(params[:sick_leave])
-        if @sick_leave.save
+        @leave_of_absence = @employee.leave_of_absences.sick_leaves.build(params[:leave_of_absence])
+        if @leave_of_absence.save
           flash[:notice] = 'Sick Leave successfully registered.'
           redirect_to refinery.employees_sick_leaves_path
         else
@@ -31,7 +31,7 @@ module Refinery
       end
 
       def update
-        if @sick_leave.update_attributes(params[:sick_leave])
+        if @leave_of_absence.update_attributes(params[:leave_of_absence])
           flash[:notice] = 'Sick Leave successfully updated.'
           redirect_to refinery.employees_sick_leaves_path
         else
@@ -41,7 +41,7 @@ module Refinery
       end
 
       def extend
-        if @sick_leave.update_attributes(end_date: Date.today)
+        if @leave_of_absence.update_attributes(end_date: Date.today)
           flash[:notice] = 'Sick Leave successfully extended.'
         else
           flash[:alert] = 'Failed to extend Sick Leave.'
@@ -50,7 +50,7 @@ module Refinery
       end
 
       def destroy
-        if @sick_leave.destroy
+        if @leave_of_absence.destroy
           flash[:notice] = 'Successfully removed the Sick Leave'
         else
           flash[:alert] = 'Failed to remove the Sick Leave'
@@ -59,7 +59,7 @@ module Refinery
       end
 
       def add_note
-        @resource = @sick_leave.build_doctors_note
+        @resource = @leave_of_absence.build_doctors_note
       end
 
       def create_note
@@ -78,13 +78,13 @@ module Refinery
       end
 
       def find_sick_leave
-        @sick_leave = @employee.sick_leaves.find(params[:id])
+        @leave_of_absence = @employee.leave_of_absences.sick_leaves.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         redirect_to '/'
       end
 
       def find_all_sick_leaves
-        @sick_leaves = @employee.sick_leaves.includes(:doctors_note).order('start_date ASC')
+        @leave_of_absences = @employee.leave_of_absences.sick_leaves.includes(:doctors_note).order('start_date ASC')
       end
 
       def find_page
@@ -97,8 +97,8 @@ module Refinery
             @resources = ::Refinery::Resource.create_resources(params[:resource])
             @resource = @resources.detect { |r| r.valid? } || (raise ::ActiveRecord::RecordNotSaved)
 
-            @sick_leave.doctors_note = @resource
-            @sick_leave.save!
+            @leave_of_absence.doctors_note = @resource
+            @leave_of_absence.save!
 
             true
           end

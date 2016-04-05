@@ -1,7 +1,7 @@
 <% content_for :body do %>
   <h4>Register Sick Leave</h4>
 
-  <%= render 'quick_form', sick_leave: ::Refinery::Employees::SickLeave.new %>
+  <%= render 'quick_form', leave_of_absence: ::Refinery::Employees::LeaveOfAbsence.new %>
 
   <h4 class="t2">All of your registered Sick Leave occasions</h4>
 
@@ -10,28 +10,26 @@
       <tr>
         <th>Start</th>
         <th>End</th>
-        <th>No. of sick days</th>
         <th>Doctor's Note</th>
         <th>Action</th>
       </tr>
     </thead>
 
     <tbody>
-      <% @sick_leaves.each do |sick_leave| %>
+      <% @leave_of_absences.each do |leave_of_absence| %>
         <tr>
-          <td><%= sick_leave.start_date %></td>
-          <td><%= sick_leave.end_date %></td>
-          <td><%= sick_leave.number_of_days %></td>
+          <td><%= leave_of_absence.start_date %></td>
+          <td><%= leave_of_absence.end_date %></td>
           <td>
-            <% if sick_leave.doctors_note.present? %>
-              <%= link_to 'Download', sick_leave.doctors_note.url %>
+            <% if leave_of_absence.doctors_note.present? %>
+              <%= link_to 'Download', leave_of_absence.doctors_note.url %>
             <% else %>
-              <%= link_to 'Add Note', refinery.add_note_employees_sick_leave_path(sick_leave) %>
+              <%= link_to 'Add Note', refinery.add_note_employees_sick_leave_path(leave_of_absence) %>
             <% end %>
           </td>
           <td>
-            <%= link_to 'Edit', refinery.edit_employees_sick_leave_path(sick_leave) %>
-            <%= link_to 'Remove', refinery.employees_sick_leave_path(sick_leave), method: :delete %>
+            <%= link_to 'Edit', refinery.edit_employees_sick_leave_path(leave_of_absence) %>
+            <%= link_to 'Remove', refinery.employees_sick_leave_path(leave_of_absence), method: :delete %>
           </td>
         </tr>
       <% end %>
@@ -41,7 +39,6 @@
       <tr>
         <th>Start</th>
         <th>End</th>
-        <th>No. of sick days</th>
         <th>Doctor's Note</th>
         <th>Action</th>
       </tr>

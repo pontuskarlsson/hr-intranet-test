@@ -3,18 +3,20 @@ module Refinery
     class AnnualLeavesController < ::ApplicationController
       before_filter :find_employee
       before_filter :find_all_annual_leaves,    only: [:index]
-      before_filter :find_annual_leave,         except: [:index, :create]
+      before_filter :find_annual_leave,         except: [:index, :create, :approve, :reject]
+      before_filter :find_approvable_loa,       only: [:approve, :reject]
       before_filter :find_page
 
       def index
+        @leave_of_absence = @employee.leave_of_absences.build
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @employee in the line below:
         present(@page)
       end
 
       def create
-        @annual_leave = @employee.annual_leaves.build(params[:annual_leave])
-        if @annual_leave.save
+        @leave_of_absence = @employee.leave_of_absences.build({ status: ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL }.reverse_merge(params[:leave_of_absence] || {}))
+        if @leave_of_absence.save
           flash[:notice] = 'Annual Leave successfully registered.'
           redirect_to refinery.employees_annual_leaves_path
         else
@@ -31,7 +33,7 @@ module Refinery
       end
 
       def update
-        if @annual_leave.update_attributes(params[:annual_leave])
+        if @leave_of_absence.update_attributes(params[:leave_of_absence])
           flash[:notice] = 'Annual Leave successfully updated.'
           redirect_to refinery.employees_annual_leaves_path
         else
@@ -40,8 +42,26 @@ module Refinery
         end
       end
 
+      def approve
+        if @leave_of_absence.update_attributes(status: ::Refinery::Employees::LeaveOfAbsence::STATUS_APPROVED)
+          flash[:notice] = 'Leave of Absence successfully approved.'
+        else
+          flash[:notice] = 'Leave of Absence could not be approved.'
+        end
+        redirect_to refinery.employees_annual_leaves_path
+      end
+
+      def reject
+        if @leave_of_absence.update_attributes(status: ::Refinery::Employees::LeaveOfAbsence::STATUS_REJECTED)
+          flash[:notice] = 'Leave of Absence successfully rejected.'
+        else
+          flash[:notice] = 'Leave of Absence could not be rejected.'
+        end
+        redirect_to refinery.employees_annual_leaves_path
+      end
+
       def destroy
-        if @annual_leave.destroy
+        if @leave_of_absence.destroy
           flash[:notice] = 'Successfully removed the Annual Leave'
         else
           flash[:alert] = 'Failed to remove the Annual Leave'
@@ -56,11 +76,16 @@ module Refinery
       end
 
       def find_all_annual_leaves
-        @annual_leaves = @employee.annual_leaves.order('start_date ASC')
+        @leave_of_absences = @employee.leave_of_absences.non_sick_leaves.order('start_date DESC')
+        @employee_loas = ::Refinery::Employees::LeaveOfAbsence.approvable_by(@employee).order('status ASC, start_date DESC').includes(:employee)
       end
 
       def find_annual_leave
-        @annual_leave = @employee.annual_leaves.find(params[:id])
+        @leave_of_absence = @employee.leave_of_absences.non_sick_leaves.find(params[:id])
+      end
+
+      def find_approvable_loa
+        @leave_of_absence = ::Refinery::Employees::LeaveOfAbsence.approvable_by(@employee).find(params[:id])
       end
 
       def find_page

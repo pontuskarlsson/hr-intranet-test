@@ -110,17 +110,19 @@
       </div>
 
       <%- employee = Refinery::Employees::Employee.current.random.first -%>
-      <% if employee.profile_image.present? %>
-        <%= image_tag(employee.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
-      <% else %>
-        <%= image_tag('user_unknown.png', class: 'profile-picture') %>
-      <% end %>
-      <h5>
-        <%= employee.full_name %><br />
-        <% if employee.title.present? %>
-          <%= employee.title.upcase %><br />
+      <% if employee %>
+        <% if employee.profile_image.present? %>
+          <%= image_tag(employee.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
+        <% else %>
+          <%= image_tag('user_unknown.png', class: 'profile-picture') %>
         <% end %>
-      </h5>
+        <h5>
+          <%= employee.full_name %><br />
+          <% if employee.title.present? %>
+            <%= employee.title.upcase %><br />
+          <% end %>
+        </h5>
+      <% end %>
     </section>
 
     <section class="page-part">

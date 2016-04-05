@@ -1,33 +1,47 @@
-<h4>Register Annual Leave</h4>
+<h4>Apply for Annual Leave</h4>
 
-<%= form_for annual_leave, url: [refinery, :employees, annual_leave] do |f| %>
+<%= form_for leave_of_absence, url: refinery.employees_annual_leaves_path do |f| %>
 
   <div class="row">
-    <div class="medium-3 columns">
+    <div class="medium-2 columns">
       <div class='field'>
         <%= f.label :start_date -%>
-        <%= f.text_field :start_date, value: annual_leave.start_date || Date.today, class: 'js_date_field' -%>
+        <%= f.text_field :start_date, value: leave_of_absence.start_date || Date.today, class: 'js_date_field' -%>
       </div>
     </div>
 
-    <div class="medium-2 columns">
+    <div class="medium-1 columns">
       <div class='field'>
         <%= f.label :start_half_day, 'Half day?' -%>
         <%= f.check_box :start_half_day -%>
       </div>
     </div>
 
-    <div class="medium-3 columns">
+    <div class="medium-2 columns">
       <div class='field'>
         <%= f.label :end_date -%>
         <%= f.text_field :end_date, class: 'js_date_field' -%>
       </div>
     </div>
 
-    <div class="medium-2 columns">
+    <div class="medium-1 columns">
       <div class='field'>
         <%= f.label :end_half_day, 'Half day?' -%>
         <%= f.check_box :end_half_day -%>
+      </div>
+    </div>
+
+    <div class="medium-2 columns">
+      <div class='field'>
+        <%= f.label :absence_type_id, 'Kind of Absence' -%>
+        <%= f.select :absence_type_id, options_for_select(::Refinery::Employees::LeaveOfAbsence::TYPES_OF_LEAVE.select{ |k ,v| v[:apply] }.map { |k,v| [v[:label], k] }, f.object.absence_type_id || ::Refinery::Employees::LeaveOfAbsence::TYPE_ANNUAL_LEAVE), {}, class: 'js_absence_type_selector' -%>
+      </div>
+    </div>
+
+    <div class="medium-2 columns">
+      <div class='field'>
+        <%= f.label :absence_type_description, 'Description' -%>
+        <%= f.text_field :absence_type_description, class: 'js_absence_type_field', disabled: f.object.absence_type_id != ::Refinery::Employees::LeaveOfAbsence::TYPE_OTHER -%>
       </div>
     </div>
 
@@ -47,6 +61,9 @@
   <script type="text/javascript">
     $(function(){
       $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_absence_type_selector').on('change', function(evt){
+        $('.js_absence_type_field').attr('disabled', $( "option:selected", this ).attr('value') != '10');
+      });
     });
   </script>
 <% end %>

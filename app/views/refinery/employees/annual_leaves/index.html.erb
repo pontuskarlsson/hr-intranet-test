@@ -1,6 +1,6 @@
 <% content_for :body do %>
 
-  <%= render 'form', annual_leave: ::Refinery::Employees::AnnualLeave.new %>
+  <%= render 'form', leave_of_absence: ::Refinery::Employees::LeaveOfAbsence.new %>
 
   <h4 class="t2">Registered Annual Leave</h4>
 
@@ -9,7 +9,8 @@
     <tr>
       <th>Start</th>
       <th>End</th>
-      <th>No. of days</th>
+      <th>Type of Absence</th>
+      <th>Status</th>
       <th>Action</th>
     </tr>
     </thead>
@@ -18,48 +19,60 @@
     <tr>
       <th>Start</th>
       <th>End</th>
-      <th>No. of days</th>
+      <th>Type of Absence</th>
+      <th>Status</th>
       <th>Action</th>
     </tr>
     </tfoot>
 
     <tbody>
     <tr>
-      <td colspan="4">Loading, please wait...</td>
+      <td colspan="5">Loading, please wait...</td>
     </tr>
     </tbody>
   </table>
+
+
+  <% if @employee.employees.any? %>
+    <h4 class="t2">Your Employee's Leave of Absence</h4>
+
+    <table class="display js_employees_annual_leaves_data_table" cellspacing="0" style="width: 100%;">
+      <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Type of Absence</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+
+      <tfoot>
+      <tr>
+        <th>Employee</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Type of Absence</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+      </tfoot>
+
+      <tbody>
+      <tr>
+        <td colspan="6">Loading, please wait...</td>
+      </tr>
+      </tbody>
+    </table>
+  <% end %>
+
+
 <% end %>
 
 
 <% content_for :side_body do %>
-  <h4>Vacation Summary</h4>
 
-  <% if (employee = current_refinery_user.employee).present? && (employment_contract = employee.current_employment_contract).present? %>
-    <section>
-      <% if employment_contract.vacation_days_per_year > 0 %>
-        <% if employment_contract.start_date.year == Date.today.year %>
-          <p>No. of vacation days this year: <%= ((employment_contract.start_date.end_of_year - employment_contract.start_date).to_f / 365 * employment_contract.vacation_days_per_year).ceil %> days</p>
-          <% if employment_contract.days_carried_over > 0 %>
-            <p><%= employment_contract.days_carried_over %> days carried over from previous contract.</p>
-          <% end %>
-        <% else %>
-          <p>No. of vacation days this year: <%= employment_contract.vacation_days_per_year %></p>
-        <% end %>
-      <% end %>
-
-      <p>Used this year: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year, Date.today.end_of_year).sum(&:record_value) %></p>
-
-      <% if employment_contract.start_date.year < Date.today.year %>
-        <p>Used last year: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year - 1.year, Date.today.end_of_year - 1.year).sum(&:record_value) %></p>
-      <% end %>
-
-    </section>
-  <% else %>
-
-    <p class="italic">No employment contract registered. Contact HR and ask them to register the contract on the Intranet.</p>
-
-  <% end %>
 <% end %>
 
 
@@ -78,14 +91,14 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 0, "desc" ]],
-        "data":           <%= @annual_leaves.to_json.html_safe %>,
+        "data":           <%= @leave_of_absences.to_json(only: [:id, :start_date, :end_date, :status], methods: [:display_type_of_absence, :display_status]).html_safe %>,
         "columns": [
           { data: "start_date" },
           { data: "end_date" },
-          { data: "number_of_days", "render": function(data, type, row){ var val = parseFloat(data); return val + (val <= 1 ? ' day' : ' days'); } },
+          { data: "display_type_of_absence" },
+          { data: "display_status" },
           { data: "id", "render": function(data, type, row){
-            var strDate = (row.end_date ? row.end_date : row.start_date);
-            if((Date.now() - Date.parse(strDate)) / (1000*60*60*24) < 21){
+            if (row.status == <%= ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL %>){
               return '<a href="/employees/annual_leaves/'+data+'/edit">Edit</a>, <a href="/employees/annual_leaves/'+data+'" data-method="delete">Remove</a>';
             } else {
               return '<span style="font-style: italic; color: #999;">Cannot edit</span>';
@@ -93,6 +106,29 @@
           } }
         ]
       });
+
+      <% if @employee.employees.any? %>
+      var token = $('meta[name=csrf-token]').attr('content');
+      $('.js_employees_annual_leaves_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= @employee_loas.to_json(only: [:id, :start_date, :end_date], methods: [:display_employee, :display_type_of_absence, :display_status]).html_safe %>,
+        "columns": [
+          { data: "display_employee" },
+          { data: "start_date" },
+          { data: "end_date" },
+          { data: "display_type_of_absence" },
+          { data: "display_status" },
+          { data: "id", "render": function(data, type, row){
+            return '<span style="float:left; margin-right: 5px;"><form action="/employees/annual_leaves/'+data+'/approve" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Approve</a></form></span>'+
+                   '<span style="float: left;"><form action="/employees/annual_leaves/'+data+'/reject" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Reject</a></form></span>';
+
+          } }
+        ]
+      });
+      <% end %>
     });
   </script>
 <% end %>

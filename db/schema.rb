@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151009040922) do
+ActiveRecord::Schema.define(:version => 20160405060452) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
@@ -162,11 +162,11 @@ ActiveRecord::Schema.define(:version => 20151009040922) do
     t.datetime "updated_at",                                                                  :null => false
   end
 
-  add_index "refinery_business_order_items", ["active"], :name => "index_refinery_order_items_on_active"
-  add_index "refinery_business_order_items", ["order_detail_id"], :name => "index_refinery_order_items_on_order_detail_id"
-  add_index "refinery_business_order_items", ["order_id"], :name => "index_refinery_order_items_on_order_id"
-  add_index "refinery_business_order_items", ["position"], :name => "index_refinery_order_items_on_position"
-  add_index "refinery_business_order_items", ["sales_order_id"], :name => "index_refinery_order_items_on_sales_order_id"
+  add_index "refinery_business_order_items", ["active"], :name => "index_refinery_business_order_items_on_active"
+  add_index "refinery_business_order_items", ["order_detail_id"], :name => "index_refinery_business_order_items_on_order_detail_id"
+  add_index "refinery_business_order_items", ["order_id"], :name => "index_refinery_business_order_items_on_order_id"
+  add_index "refinery_business_order_items", ["position"], :name => "index_refinery_business_order_items_on_position"
+  add_index "refinery_business_order_items", ["sales_order_id"], :name => "index_refinery_business_order_items_on_sales_order_id"
 
   create_table "refinery_business_sales_orders", :force => true do |t|
     t.string   "order_id",                                            :default => "",    :null => false
@@ -230,9 +230,9 @@ ActiveRecord::Schema.define(:version => 20151009040922) do
     t.datetime "updated_at",                                                             :null => false
   end
 
-  add_index "refinery_business_sales_orders", ["active"], :name => "index_refinery_sales_orders_on_active"
-  add_index "refinery_business_sales_orders", ["order_id"], :name => "index_refinery_sales_orders_on_order_id"
-  add_index "refinery_business_sales_orders", ["position"], :name => "index_refinery_sales_orders_on_position"
+  add_index "refinery_business_sales_orders", ["active"], :name => "index_refinery_business_sales_orders_on_active"
+  add_index "refinery_business_sales_orders", ["order_id"], :name => "index_refinery_business_sales_orders_on_order_id"
+  add_index "refinery_business_sales_orders", ["position"], :name => "index_refinery_business_sales_orders_on_position"
 
   create_table "refinery_calendar_calendars", :force => true do |t|
     t.string   "title"
@@ -356,12 +356,14 @@ ActiveRecord::Schema.define(:version => 20151009040922) do
     t.datetime "created_at",                              :null => false
     t.datetime "updated_at",                              :null => false
     t.integer  "user_id"
+    t.string   "state"
   end
 
   add_index "refinery_contacts", ["base_id"], :name => "index_refinery_contacts_on_base_id"
   add_index "refinery_contacts", ["base_modified_at"], :name => "index_refinery_contacts_on_base_modified_at"
   add_index "refinery_contacts", ["organisation_id"], :name => "index_refinery_contacts_on_organisation_id"
   add_index "refinery_contacts", ["removed_from_base"], :name => "index_refinery_contacts_on_removed_from_base"
+  add_index "refinery_contacts", ["state"], :name => "index_refinery_contacts_on_state"
   add_index "refinery_contacts", ["user_id"], :name => "index_refinery_contacts_on_user_id"
 
   create_table "refinery_custom_lists_custom_lists", :force => true do |t|
@@ -413,16 +415,18 @@ ActiveRecord::Schema.define(:version => 20151009040922) do
     t.string   "full_name"
     t.string   "id_no"
     t.string   "title"
+    t.string   "xero_guid"
     t.integer  "position"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.string   "xero_guid"
     t.text     "default_tracking_options"
+    t.integer  "reporting_manager_id"
   end
 
   add_index "refinery_employees", ["employee_no"], :name => "index_refinery_employees_on_employee_no"
   add_index "refinery_employees", ["position"], :name => "index_refinery_employees_on_position"
   add_index "refinery_employees", ["profile_image_id"], :name => "index_refinery_employees_on_profile_image_id"
+  add_index "refinery_employees", ["reporting_manager_id"], :name => "index_refinery_employees_on_reporting_manager_id"
   add_index "refinery_employees", ["user_id"], :name => "index_refinery_employees_on_user_id"
   add_index "refinery_employees", ["xero_guid"], :name => "index_refinery_employees_on_xero_guid"
 
@@ -473,6 +477,29 @@ ActiveRecord::Schema.define(:version => 20151009040922) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  create_table "refinery_leave_of_absences", :force => true do |t|
+    t.integer  "employee_id"
+    t.integer  "event_id"
+    t.integer  "doctors_note_id"
+    t.integer  "absence_type_id"
+    t.string   "absence_type_description"
+    t.integer  "status"
+    t.date     "start_date"
+    t.boolean  "start_half_day",           :default => false, :null => false
+    t.date     "end_date"
+    t.boolean  "end_half_day",             :default => false, :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+  end
+
+  add_index "refinery_leave_of_absences", ["absence_type_id"], :name => "index_refinery_leave_of_absences_on_absence_type_id"
+  add_index "refinery_leave_of_absences", ["doctors_note_id"], :name => "index_refinery_leave_of_absences_on_doctors_note_id"
+  add_index "refinery_leave_of_absences", ["employee_id"], :name => "index_refinery_leave_of_absences_on_employee_id"
+  add_index "refinery_leave_of_absences", ["end_date"], :name => "index_refinery_leave_of_absences_on_end_date"
+  add_index "refinery_leave_of_absences", ["event_id"], :name => "index_refinery_leave_of_absences_on_event_id"
+  add_index "refinery_leave_of_absences", ["start_date"], :name => "index_refinery_leave_of_absences_on_start_date"
+  add_index "refinery_leave_of_absences", ["status"], :name => "index_refinery_leave_of_absences_on_status"
 
   create_table "refinery_news_item_translations", :force => true do |t|
     t.integer  "refinery_news_item_id"
@@ -1045,10 +1072,6 @@ ActiveRecord::Schema.define(:version => 20151009040922) do
 
   add_index "seo_meta", ["id"], :name => "index_seo_meta_on_id"
   add_index "seo_meta", ["seo_meta_id", "seo_meta_type"], :name => "id_type_index_on_seo_meta"
-
-  create_table "tags", :force => true do |t|
-    t.string "name"
-  end
 
   create_table "user_settings", :force => true do |t|
     t.integer  "user_id"

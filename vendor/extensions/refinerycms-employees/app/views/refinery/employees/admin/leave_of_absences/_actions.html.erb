@@ -1,0 +1,27 @@
+<ul>
+  <% if ::Refinery::Employees::Admin::LeaveOfAbsencesController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.employees_admin_leave_of_absences_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_employees_admin_leave_of_absence_path,
+                :class => "add_icon" %>
+  </li>
+  <%= render '/refinery/employees/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::Employees::Admin::LeaveOfAbsencesController.sortable? && ::Refinery::Employees::LeaveOfAbsence.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Leave of Absence"),
+                 refinery.employees_admin_leave_of_absences_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Leave of Absence"),
+                 refinery.employees_admin_leave_of_absences_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

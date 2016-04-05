@@ -1,6 +1,6 @@
 <% content_for :body do %>
 
-  <%= render 'form', annual_leave: ::Refinery::Employees::AnnualLeave.new %>
+  <%= render 'form', leave_of_absence: @leave_of_absence %>
 
   <h4 class="t2">Registered Annual Leave</h4>
 
@@ -9,20 +9,22 @@
       <tr>
         <th>Start</th>
         <th>End</th>
-        <th>No. of days</th>
+        <th>Type of Absence</th>
+        <th>Status</th>
         <th>Action</th>
       </tr>
     </thead>
 
     <tbody>
-      <% @annual_leaves.each do |annual_leave| %>
+      <% @leave_of_absences.each do |leave_of_absence| %>
         <tr>
-          <td><%= annual_leave.start_date %></td>
-          <td><%= annual_leave.end_date %></td>
-          <td><%= annual_leave.number_of_days %> day(s)</td>
+          <td><%= leave_of_absence.start_date %></td>
+          <td><%= leave_of_absence.end_date %></td>
+          <td><%= leave_of_absence.display_type_of_absence %></td>
+          <td><%= leave_of_absence.display_status %></td>
           <td>
-            <%= link_to 'Edit', refinery.edit_employees_annual_leave_path(annual_leave) %>
-            <%= link_to 'Remove', refinery.employees_annual_leave_path(annual_leave), method: :delete %>
+            <%= link_to 'Edit', refinery.edit_employees_annual_leave_path(leave_of_absence) %>
+            <%= link_to 'Remove', refinery.employees_annual_leave_path(leave_of_absence), method: :delete %>
           </td>
         </tr>
       <% end %>
@@ -32,7 +34,8 @@
       <tr>
         <th>Start</th>
         <th>End</th>
-        <th>No. of days</th>
+        <th>Type of Absence</th>
+        <th>Status</th>
         <th>Action</th>
       </tr>
     </tfoot>
@@ -41,33 +44,7 @@
 
 
 <% content_for :side_body do %>
-  <h4>Vacation Summary</h4>
 
-  <% if (employee = current_refinery_user.employee).present? && (employment_contract = employee.current_employment_contract).present? %>
-    <section>
-      <% if employment_contract.vacation_days_per_year > 0 %>
-        <% if employment_contract.start_date.year == Date.today.year %>
-          <p>No. of vacation days this year: <%= ((employment_contract.start_date.end_of_year - employment_contract.start_date).to_f / 365 * employment_contract.vacation_days_per_year).ceil %> days</p>
-          <% if employment_contract.days_carried_over > 0 %>
-            <p><%= employment_contract.days_carried_over %> days carried over from previous contract.</p>
-          <% end %>
-        <% else %>
-          <p>No. of vacation days this year: <%= employment_contract.vacation_days_per_year %></p>
-        <% end %>
-      <% end %>
-
-      <p>Used this year: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year, Date.today.end_of_year).sum(&:record_value) %></p>
-
-      <% if employment_contract.start_date.year < Date.today.year %>
-        <p>Used last year: <%= employee.annual_leave_records.where('record_date >= ? AND record_date <= ?', Date.today.beginning_of_year - 1.year, Date.today.end_of_year - 1.year).sum(&:record_value) %></p>
-      <% end %>
-
-    </section>
-  <% else %>
-
-    <p class="italic">No employment contract registered. Contact HR and ask them to register the contract on the Intranet.</p>
-
-  <% end %>
 <% end %>
 
 <%= render '/refinery/content_page' %>

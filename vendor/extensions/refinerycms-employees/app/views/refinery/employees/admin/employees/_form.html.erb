@@ -29,6 +29,11 @@
   </div>
 
   <div class='field'>
+    <%= f.label :reporting_manager_id -%>
+    <%= f.select :reporting_manager_id, options_from_collection_for_select(::Refinery::Employees::Employee.where('id NOT IN (?)', [-1, f.object.id].compact), :id, :full_name, f.object.reporting_manager_id), include_blank: true -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :xero_guid_field do %>
       Xero Guid <small><%= link_to 'Cache Guids from Xero', '#', class: 'js_load_guids_link' %></small>
     <% end %>
