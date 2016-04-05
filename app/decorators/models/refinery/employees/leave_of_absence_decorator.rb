@@ -14,6 +14,11 @@ Refinery::Employees::LeaveOfAbsence.class_eval do
         if employee.try(:reporting_manager).present? && start_date == DateTime.now.in_time_zone(8).to_date
           ::Refinery::Employees::SickLeaveMailer.notification(employee.reporting_manager.user, self).deliver
         end
+
+      elsif absence_type[:apply]
+        if employee.try(:reporting_manager).present?
+          ::Refinery::Employees::ApplyLeaveMailer.notification(employee.reporting_manager.user, self).deliver
+        end
       end
     end
     handle_asynchronously :notify_manager
