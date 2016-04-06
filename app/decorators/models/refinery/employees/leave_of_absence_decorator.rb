@@ -15,7 +15,7 @@ Refinery::Employees::LeaveOfAbsence.class_eval do
           ::Refinery::Employees::SickLeaveMailer.notification(employee.reporting_manager.user, self).deliver
         end
 
-      elsif absence_type[:apply]
+      elsif absence_type[:apply] && status == ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL
         if employee.try(:reporting_manager).present?
           ::Refinery::Employees::ApplyLeaveMailer.notification(employee.reporting_manager.user, self).deliver
         end
