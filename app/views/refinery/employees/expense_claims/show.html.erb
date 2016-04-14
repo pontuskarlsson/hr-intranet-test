@@ -8,7 +8,7 @@
       <% if @xero_expense_claim.submittable_by?(current_refinery_user) %>
         <div class="medium-3 columns">
           <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
-            <%= submit_tag 'Submit Expense Claim', class: 'button round tiny', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
+            <%= submit_tag 'Submit Expense Claim', class: 'button round tiny js_click_loader', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
           <% end %>
         </div>
       <% else %>

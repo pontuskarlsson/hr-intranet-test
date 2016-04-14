@@ -170,7 +170,7 @@ module Refinery
             if xero_receipt.guid.blank? # Has not been submitted yet
               receipt = client.Receipt.build( date: xero_receipt.date )
               receipt.contact = client.Contact.build(name: xero_receipt.xero_contact.name)
-              receipt.user = client.User.build(user_id: xero_receipt.employee.xero_guid)
+              receipt.user = client.User.build(user_id: @xero_expense_claim.employee.xero_guid)
               xero_receipt.xero_line_items.each do |xero_line_item|
                 line_item = receipt.add_line_item(
                     description:  xero_line_item.description,

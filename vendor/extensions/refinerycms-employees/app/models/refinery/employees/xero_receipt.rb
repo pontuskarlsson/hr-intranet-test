@@ -11,7 +11,7 @@ module Refinery
       STATUS_VOIDED         = 'VOIDED'
       STATUSES = [STATUS_DRAFT, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_DECLINED, STATUS_DELETED, STATUS_VOIDED]
 
-      belongs_to :employee
+      belongs_to :employee # Remove, not assigned manually anyway and not used when submitting claim as of 2016-04-14
       belongs_to :xero_expense_claim
       belongs_to :xero_contact
       has_many :xero_line_items, dependent: :destroy
