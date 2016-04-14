@@ -23,10 +23,12 @@ $(function(){
     if ($t.is(':disabled')) {
       evt.preventDefault();
     } else {
-      $t.attr('disabled', 'disabled');
-      if ($t.is('a')) {
-        $t.html(['<img src="/assets/ajax-loader.gif"/>', $t.html()].join(''));
-      }
+      setTimeout(function(){
+        $t.attr('disabled', 'disabled');
+        if ($t.is('a')) {
+          $t.html(['<img src="/assets/ajax-loader.gif"/>', $t.html()].join(''));
+        }
+      }, 1);
     }
   });
 });
