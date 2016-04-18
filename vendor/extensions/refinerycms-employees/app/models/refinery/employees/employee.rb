@@ -24,7 +24,9 @@ module Refinery
       validates :employee_no, presence: true, uniqueness: true
       validates :full_name,   presence: true
       validates :user_id,     uniqueness: true, allow_nil: true
-      validates :xero_guid,   uniqueness: true, allow_blank: true
+
+      # Allow for now
+      #validates :xero_guid,   uniqueness: true, allow_blank: true
 
       before_validation do
         if @user_name.present?
