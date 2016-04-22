@@ -57,22 +57,34 @@ module Refinery
 
         # Try to find a contact to assign address values from
         if @from_contact_name.present?
-          if (contact = ::Refinery::Marketing::Contact.find_by_name(@from_contact_name)).present?
-            self.from_contact = contact
-            from_address.assign_from_contact(contact)
+          if from_contact.try(:name) == @from_contact_name
+            from_address.assign_from_contact(from_contact)
           else
+            self.from_contact = nil
             from_address.name = @from_contact_name
           end
+          # if (contact = ::Refinery::Marketing::Contact.find_by_name(@from_contact_name)).present?
+          #   self.from_contact = contact
+          #   from_address.assign_from_contact(contact)
+          # else
+          #   from_address.name = @from_contact_name
+          # end
         end
 
         # Try to find a contact to assign address values from
         if @to_contact_name.present?
-          if (contact = ::Refinery::Marketing::Contact.find_by_name(@to_contact_name)).present?
-            self.to_contact = contact
-            to_address.assign_from_contact(contact)
+          if to_contact.try(:name) == @to_contact_name
+            to_address.assign_from_contact(to_contact)
           else
+            self.to_contact = nil
             to_address.name = @to_contact_name
           end
+          # if (contact = ::Refinery::Marketing::Contact.find_by_name(@to_contact_name)).present?
+          #   self.to_contact = contact
+          #   to_address.assign_from_contact(contact)
+          # else
+          #   to_address.name = @to_contact_name
+          # end
         end
 
         # Try to find a user to assign the shipment to
