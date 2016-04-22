@@ -48,8 +48,7 @@
         <% if @shipment.from_address.missing_for_shipment.any? %>
           <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.from_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
         <% else %>
-          <small><%= link_to 'View on Google Maps', @shipment.from_address.google_maps_url, _target: 'blank' do %></small>
-          <% end %>
+          <small><%= link_to 'View on Google Maps', @shipment.from_address.google_maps_url, _target: 'blank' %></small>
         <% end %>
       </h4>
       <%= render 'address_card', shipment_address: @shipment.from_address %>
@@ -60,7 +59,7 @@
         <% if @shipment.to_address.missing_for_shipment.any? %>
           <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.to_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
         <% else %>
-          <small><%= link_to 'View on Google Maps', @shipment.to_address.google_maps_url, _target: 'blank' do %></small>
+          <small><%= link_to 'View on Google Maps', @shipment.to_address.google_maps_url, _target: 'blank' %></small>
         <% end %>
       </h4>
       <%= render 'address_card', shipment_address: @shipment.to_address %>
