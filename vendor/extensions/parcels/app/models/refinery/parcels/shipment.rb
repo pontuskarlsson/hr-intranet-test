@@ -31,7 +31,7 @@ module Refinery
 
       attr_writer :from_contact_name, :to_contact_name, :assign_to
 
-      attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id
+      attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id
 
       validates :created_by_id,           presence: true
       validates :assigned_to_id,          presence: true
