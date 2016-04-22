@@ -63,11 +63,12 @@ module Refinery
           ADDRESS_KEYS.each do |key|
             contact.send("#{key}=", base_contact.address[key.to_sym])
           end
+          contact.organisation_id = base_contact.contact_id
         end
 
-        if (o = base_contact.organisation).present? && (c = o['contact']).present? && (c_id = c['id']).present?
-          contact.organisation_id = c_id
-        end
+        # if (o = base_contact.organisation).present? && (c = o['contact']).present? && (c_id = c['id']).present?
+        #   contact.organisation_id = c_id
+        # end
 
         # Set the update date in case we want to only sync selectively later on
         contact.base_modified_at = base_contact.updated_at
