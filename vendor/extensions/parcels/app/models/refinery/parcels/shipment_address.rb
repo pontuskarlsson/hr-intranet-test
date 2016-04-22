@@ -31,7 +31,7 @@ module Refinery
       end
 
       def google_maps_url
-        "http://maps.google.com/?q=#{ [street1, city, zip, state, country].reject(:blank?).join(',') }"
+        "http://maps.google.com/?q=#{ [street1, city, zip, state, country].reject(&:blank?).join(',') }"
       end
 
     end
