@@ -4,10 +4,10 @@
   <%= form_for shipment.shipment_parcels.build, url: refinery.parcels_shipment_parcels_path(shipment) do |f| %>
     <div class="row">
       <div class="medium-4 columns end">
-        <label>Add a parcel to Shipment
+        <label>Register a parcel to Shipment
           <small data-tooltip aria-haspopup="true"
                  class="has-tip"
-                 title="When you send multiple items in one box, only add one parcel to the shipment. But if you send multiple boxes in the same shipment, add one parcel for each box.">
+                 title="When you send multiple items in one box, only register one parcel to the shipment. But if you send multiple boxes in the same shipment, register one parcel for each box.">
             Note!
           </small>
           <%= f.text_field :description, placeholder: 'Description' %>
@@ -17,7 +17,7 @@
 
     <div class="row">
       <div class="medium-2 columns end">
-        <p><%= f.submit 'Add', class: 'button tiny' %></p>
+        <p><%= f.submit 'Register', class: 'button tiny' %></p>
       </div>
     </div>
   <% end %>
@@ -41,5 +41,5 @@
     </tbody>
   </table>
 <% else %>
-  <p class="italic">No parcels added yet</p>
+  <p class="italic">No parcels registered yet</p>
 <% end %>
