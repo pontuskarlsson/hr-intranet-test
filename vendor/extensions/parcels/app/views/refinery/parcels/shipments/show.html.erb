@@ -43,34 +43,42 @@
   </div>
 
   <div class="row">
-    <div class="medium-4 columns">
-      <h4>From
-        <% if @shipment.from_address.missing_for_shipment.any? %>
-          <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.from_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
-        <% else %>
-          <small><%= link_to 'View on Google Maps', @shipment.from_address.google_maps_url, target: '_blank' %></small>
-        <% end %>
-      </h4>
-      <%= render 'address_card', shipment_address: @shipment.from_address %>
-    </div>
+    <div class="medium-8 columns">
+      <div class="row">
+        <div class="medium-6 columns">
+          <h4>From
+            <% if @shipment.from_address.missing_for_shipment.any? %>
+              <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.from_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
+            <% else %>
+              <small><%= link_to 'View on Google Maps', @shipment.from_address.google_maps_url, target: '_blank' %></small>
+            <% end %>
+          </h4>
+          <%= render 'address_card', shipment_address: @shipment.from_address %>
+        </div>
 
-    <div class="medium-4 columns">
-      <h4>To
-        <% if @shipment.to_address.missing_for_shipment.any? %>
-          <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.to_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
-        <% else %>
-          <small><%= link_to 'View on Google Maps', @shipment.to_address.google_maps_url, target: '_blank' %></small>
-        <% end %>
-      </h4>
-      <%= render 'address_card', shipment_address: @shipment.to_address %>
+        <div class="medium-6 columns">
+          <h4>To
+            <% if @shipment.to_address.missing_for_shipment.any? %>
+              <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.to_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
+            <% else %>
+              <small><%= link_to 'View on Google Maps', @shipment.to_address.google_maps_url, target: '_blank' %></small>
+            <% end %>
+          </h4>
+          <%= render 'address_card', shipment_address: @shipment.to_address %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="columns">
+          <%= render 'parcels', shipment: @shipment %>
+        </div>
+      </div>
     </div>
 
     <div class="medium-4 columns">
       <%= render 'overview', shipment: @shipment %>
     </div>
   </div>
-
-  <%= render 'parcels', shipment: @shipment %>
 <% end %>
 
 <%= render '/refinery/content_page' %>

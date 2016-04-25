@@ -1,4 +1,28 @@
 <h4>Parcels</h4>
+
+<% if shipment.status == 'not_shipped' %>
+  <%= form_for shipment.shipment_parcels.build, url: refinery.parcels_shipment_parcels_path(shipment) do |f| %>
+    <div class="row">
+      <div class="medium-4 columns end">
+        <label>Add a parcel to Shipment
+          <small data-tooltip aria-haspopup="true"
+                 class="has-tip"
+                 title="When you send multiple items in one box, only add one parcel to the shipment. But if you send multiple boxes in the same shipment, add one parcel for each box.">
+            Note!
+          </small>
+          <%= f.text_field :description, placeholder: 'Description' %>
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="medium-2 columns end">
+        <p><%= f.submit 'Add', class: 'button tiny' %></p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <% if shipment.shipment_parcels.any? %>
   <table>
     <thead>
@@ -18,22 +42,4 @@
   </table>
 <% else %>
   <p class="italic">No parcels added yet</p>
-<% end %>
-
-<% if shipment.status == 'not_shipped' %>
-  <%= form_for shipment.shipment_parcels.build, url: refinery.parcels_shipment_parcels_path(shipment) do |f| %>
-    <div class="row">
-      <div class="medium-4 columns end">
-        <label>Add Parcel
-          <%= f.text_field :description, placeholder: 'Description' %>
-        </label>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="medium-2 columns end">
-        <p><%= f.submit 'Add', class: 'button tiny' %></p>
-      </div>
-    </div>
-  <% end %>
 <% end %>
