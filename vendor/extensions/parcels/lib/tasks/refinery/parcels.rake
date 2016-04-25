@@ -11,9 +11,10 @@ namespace :refinery do
 
     task :notify_about_parcels => :environment do
 
-      ::Refinery::Parcels::Parcel.unsigned.group_by(&:assigned_to).each do |user, parcels|
-        ::Refinery::Parcels::UnsignedParcelsMailer.notification(user, parcels).deliver
-      end
+      # Temporarily removed 2016-04-25
+      # ::Refinery::Parcels::Parcel.unsigned.group_by(&:assigned_to).each do |user, parcels|
+      #   ::Refinery::Parcels::UnsignedParcelsMailer.notification(user, parcels).deliver
+      # end
 
     end
 
