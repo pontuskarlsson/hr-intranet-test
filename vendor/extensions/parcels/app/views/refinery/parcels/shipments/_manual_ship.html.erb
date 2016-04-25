@@ -2,7 +2,7 @@
   <div class="row">
     <div class="columns">
       <label>Courier
-        <%= f.text_field :courier %>
+        <%= f.text_field :courier, class: 'js_courier_field' %>
       </label>
     </div>
   </div>
@@ -17,7 +17,18 @@
 
   <div class="row">
     <div class="columns">
-      <p><%= f.submit t('.ship'), class: 'button tiny' %></p>
+      <p><%= f.submit 'Ship', class: 'button tiny' %></p>
     </div>
   </div>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_courier_field').autocomplete({
+        source: <%= Refinery::Parcels::Shipment::COURIERS.keys.html_safe %>
+      });
+    });
+  </script>
 <% end %>
