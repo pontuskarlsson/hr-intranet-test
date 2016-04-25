@@ -23,7 +23,7 @@
   <% end %>
 <% end %>
 
-<% if shipment.shipment_parcels.any? %>
+<% if (shipment_parcels = shipment.shipment_parcels.select(&:persisted?)).any? %>
   <table>
     <thead>
     <tr>
@@ -32,7 +32,7 @@
     </tr>
     </thead>
     <tbody>
-    <% shipment.shipment_parcels.each do |shipment_parcel| %>
+    <% shipment_parcels.each do |shipment_parcel| %>
       <tr>
         <td><%= shipment_parcel.description %></td>
         <td><%= link_to 'Remove', refinery.parcels_shipment_parcel_path(shipment, shipment_parcel), method: :delete, confirm: 'Are you sure you want to Remove this Parcel?' %></td>
