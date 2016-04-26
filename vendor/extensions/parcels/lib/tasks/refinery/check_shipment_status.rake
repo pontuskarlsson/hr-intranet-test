@@ -52,10 +52,12 @@ namespace :refinery do
               entry = response['results'].first
 
               shipment.tracking_info = entry['checkpoints'].reverse.map { |route|
-                { 'date' => DateTime.parse(route['data'] + route['time']) - 8.hours, 'message' => Nokogiri::HTML.parse(route['description']).text }
-              }
+                if route['date'] && route['time']
+                  { 'date' => DateTime.parse(route['date'] + route['time']) - 8.hours, 'message' => Nokogiri::HTML.parse(route['description']).text }
+                end
+              }.compact
 
-              shipment.status = 'delivered' if entry['delivery']['status'] == 'delivered'
+              shipment.status = 'delivered' if entry['delivery'] && entry['delivery']['status'] == 'delivered'
               shipment.save
             end
 
