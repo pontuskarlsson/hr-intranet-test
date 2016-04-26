@@ -1,1 +1,1 @@
-00 2,3,4,5,6,7,8,9,10,11 * * * root /bin/bash /hr-intranet/scripts/sync_shipment_status.sh
+00 02,03,04,05,06,07,08,09,10,11 * * * root /bin/bash /hr-intranet/scripts/sync_shipment_status.sh
