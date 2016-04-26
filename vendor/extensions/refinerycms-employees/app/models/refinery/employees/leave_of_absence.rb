@@ -33,9 +33,9 @@ module Refinery
       belongs_to :event,          class_name: '::Refinery::Calendar::Event', dependent: :destroy
       belongs_to :doctors_note,   class_name: '::Refinery::Resource'
 
-      attr_writer :employee_name
+      attr_writer :employee_name, :i_am_sick_today
       attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :doctors_note_id, :employee_name,
-                      :absence_type_id, :absence_type_description, :status
+                      :absence_type_id, :absence_type_description, :status, :i_am_sick_today
 
       validates :employee_id,               presence: true
       validates :event_id,                  uniqueness: true, allow_nil: true
@@ -54,6 +54,9 @@ module Refinery
           if (employee = Employee.find_by_full_name(@employee_name)).present?
             self.employee = employee
           end
+        end
+        if @i_am_sick_today == '1'
+          self.start_date = Date.today
         end
       end
 

@@ -3,7 +3,7 @@
 
   <%= render 'quick_form', leave_of_absence: ::Refinery::Employees::LeaveOfAbsence.new %>
 
-  <h4 class="t2">All of your registered Sick Leave occasions</h4>
+  <h4 class="t2">All of your registered Sick Leave occasions <small><%= link_to 'Register Past/upcoming Sick Leave', refinery.new_employees_sick_leave_path %></small></h4>
 
   <table>
     <thead>

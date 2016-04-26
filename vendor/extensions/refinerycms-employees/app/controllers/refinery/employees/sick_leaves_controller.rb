@@ -3,10 +3,17 @@ module Refinery
     class SickLeavesController < ::ApplicationController
       before_filter :find_employee
       before_filter :find_all_sick_leaves,  only: [:index]
-      before_filter :find_sick_leave,       except: [:index, :create]
+      before_filter :find_sick_leave,       except: [:index, :new, :create]
       before_filter :find_page
 
       def index
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @employee in the line below:
+        present(@page)
+      end
+
+      def new
+        @leave_of_absence = @employee.leave_of_absences.sick_leaves.build
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @employee in the line below:
         present(@page)

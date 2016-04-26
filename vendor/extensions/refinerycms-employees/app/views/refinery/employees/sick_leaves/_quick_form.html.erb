@@ -15,7 +15,7 @@
   <% end %>
 <% else %>
   <%= form_for ::Refinery::Employees::LeaveOfAbsence.new, url: refinery.employees_sick_leaves_path do |f| %>
-    <%= f.hidden_field :start_date, value: Date.today %>
+    <%= f.hidden_field :i_am_sick_today, value: '1' %>
     <p><%= f.submit 'I am sick today', class: 'button round tiny' %></p>
   <% end %>
 <% end %>
