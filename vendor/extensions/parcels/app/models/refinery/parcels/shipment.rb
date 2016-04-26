@@ -4,6 +4,8 @@ module Refinery
 
       COURIERS = { 'SF Express' => { easypost: false,
                                      parcels: %w() },
+                   'Fedex' =>      { easypost: false,
+                                     parcels: %w() },
                    'UPS'        => { easypost: true,
                                      parcels: %w(UPSLetter UPSExpressBox UPS25kgBox UPS10kgBox Tube Pak Pallet SmallExpressBox MediumExpressBox LargeExpressBox) },
                    'DHLExpress' => { easypost: true,
