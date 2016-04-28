@@ -1,11 +1,12 @@
 require 'open-uri'
 require 'net/http'
+require 'uri'
 require 'json'
 require 'nokogiri'
 
 SF_URI = 'http://www.sf-express.com/sf-service-web/service/bills/%WAYBILL%/routes?app=bill&lang=en&region=hk'
 DHL_URI = 'http://www.dhl.com.hk/shipmentTracking?AWB=%WAYBILL%&countryCode=hk&languageCode=en'
-UPS_HOST = 'wwwapps.ups.com'
+UPS_HOST = 'https://wwwapps.ups.com'
 UPS_URI = '/WebTracking/track'
 UPS_BODY = 'loc=en_US&HTMLVersion=5.0&trackNums=%WAYBILL%&track.x=Track'
 
@@ -66,9 +67,12 @@ namespace :refinery do
             # The UPS tracking page does not respond to JSON request and can
             # only return HTML responses. So we have to use Nokogiri to parse
             # the reply and see if we can find any status about the Shipment.
+            uri = URI.parse(UPS_HOST)
             req = Net::HTTP::Post.new(UPS_URI)
             req.body = UPS_BODY.gsub('%WAYBILL%', shipment.tracking_number.gsub(' ', ''))
-            response = Net::HTTP.new(UPS_HOST, '80').start{ |http| http.request(req) }
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.use_ssl = true
+            response = http.start{ |http| http.request(req) }
 
             doc = Nokogiri::HTML.parse response.body
 
