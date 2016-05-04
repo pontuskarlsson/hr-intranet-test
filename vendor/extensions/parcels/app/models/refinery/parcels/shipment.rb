@@ -2,15 +2,20 @@ module Refinery
   module Parcels
     class Shipment < Refinery::Core::BaseModel
 
-      COURIERS = { 'SF Express' => { easypost: false,
-                                     parcels: %w() },
-                   'Fedex' =>      { easypost: false,
-                                     parcels: %w() },
-                   'UPS'        => { easypost: true,
-                                     parcels: %w(UPSLetter UPSExpressBox UPS25kgBox UPS10kgBox Tube Pak Pallet SmallExpressBox MediumExpressBox LargeExpressBox) },
-                   'DHLExpress' => { easypost: true,
-                                     service: 'ExpressWorldwideNonDoc',
-                                     parcels: %w(JumboDocument JumboParcel Document DHLFlyer Domestic ExpressDocument DHLExpressEnvelope JumboBox JumboJuniorDocument JuniorJumboBox JumboJuniorParcel OtherDHLPackaging Parcel YourPackaging) }
+      COURIER_SF = 'SF'
+      COURIER_FEDEX = 'Fedex'
+      COURIER_UPS = 'UPS'
+      COURIER_DHL = 'DHLExpress'
+
+      COURIERS = { COURIER_SF    => { easypost: false,
+                                      parcels: %w() },
+                   COURIER_FEDEX => { easypost: false,
+                                      parcels: %w() },
+                   COURIER_UPS   => { easypost: true,
+                                      parcels: %w(UPSLetter UPSExpressBox UPS25kgBox UPS10kgBox Tube Pak Pallet SmallExpressBox MediumExpressBox LargeExpressBox) },
+                   COURIER_DHL   => { easypost: true,
+                                      service: 'ExpressWorldwideNonDoc',
+                                      parcels: %w(JumboDocument JumboParcel Document DHLFlyer Domestic ExpressDocument DHLExpressEnvelope JumboBox JumboJuniorDocument JuniorJumboBox JumboJuniorParcel OtherDHLPackaging Parcel YourPackaging) }
       }.freeze
 
       BILL_TO = ['Sender', 'Receiver', '3rd Party']
@@ -133,6 +138,10 @@ module Refinery
         else
           []
         end
+      end
+
+      def display_status
+        ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
       end
 
 

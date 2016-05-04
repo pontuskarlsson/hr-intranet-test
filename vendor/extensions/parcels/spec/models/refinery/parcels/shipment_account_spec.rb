@@ -25,7 +25,7 @@ module Refinery
         end
 
         context 'when :courier is not a valid EasyPost courier' do
-          before { shipment_account.courier = 'SF Express' }
+          before { shipment_account.courier = ::Refinery::Parcels::Shipment::COURIER_SF }
           it { is_expected.not_to be_valid }
         end
 

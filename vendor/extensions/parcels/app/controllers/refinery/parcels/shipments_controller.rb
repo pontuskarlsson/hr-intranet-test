@@ -86,6 +86,9 @@ module Refinery
 
       def find_all_shipments
         @shipments = Shipment.includes(:from_contact, :to_contact, :assigned_to).order('updated_at DESC, id DESC')
+        unless params[:view_all] == '1'
+          @shipments = @shipments.where('created_at > ?', DateTime.now - 3.months)
+        end
       end
 
       def find_shipment

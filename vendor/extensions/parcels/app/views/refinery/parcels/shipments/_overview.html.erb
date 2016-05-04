@@ -7,20 +7,20 @@
 </p>
 
 <h4>Status</h4>
-<p><%= shipment.status %></p>
+<p><%= shipment.display_status %></p>
 
 <% if shipment.tracking_number.present? %>
   <h4>Tracking number</h4>
   <p>
     <%= shipment.tracking_number %>
 
-    <% if shipment.courier == 'UPS' %>
+    <% if shipment.courier == ::Refinery::Parcels::Shipment::COURIER_UPS %>
       <br /><%= link_to 'Track Shipment', "http://wwwapps.ups.com/etracking/tracking.cgi?track.x=0&track.y=0&InquiryNumber1=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
 
-    <% elsif shipment.courier == 'Fedex' %>
+    <% elsif shipment.courier == ::Refinery::Parcels::Shipment::COURIER_FEDEX %>
       <br /><%= link_to 'Track Shipment', "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
 
-    <% elsif shipment.courier == 'DHLExpress' %>
+    <% elsif shipment.courier == ::Refinery::Parcels::Shipment::COURIER_DHL %>
       <br /><%= link_to 'Track Shipment', "http://www.dhl.com.hk/en/express/tracking.html?AWB=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
 
     <% end %>

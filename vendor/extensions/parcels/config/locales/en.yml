@@ -87,6 +87,17 @@ en:
         created_by_id: Created By
         courier: Courier
         from_contact_name: From Contact
+        statuses:
+          not_shipped: Not Shipped
+          manually_shipped: Shipped
+          unknown: Unknown
+          pre_transit: Pre-Transit
+          in_transit: In Transit
+          out_for_delivery: Out for Delivery
+          return_to_sender: Return to Sender
+          delivered: Delivered
+          failure: Failure
+          cancelled: Canceled
         to_contact_name: To Contact
 
       'refinery/parcels/shipment_account':

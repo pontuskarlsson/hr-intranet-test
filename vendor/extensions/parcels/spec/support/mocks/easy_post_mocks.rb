@@ -8,8 +8,8 @@ class OrderMock < BaseMock
 
   def rates
     @rates ||= [
-        RatesMock.new(id: 'rates_123456', rate: '500', currency: 'HKD', delivery_days: '1', service: 'NoNameExpressService', carrier: 'DHLExpress'),
-        RatesMock.new(id: 'rates_123457', rate: '400', currency: 'HKD', delivery_days: '2', service: 'NoNameService', carrier: 'DHLExpress')
+        RatesMock.new(id: 'rates_123456', rate: '500', currency: 'HKD', delivery_days: '1', service: 'NoNameExpressService', carrier: ::Refinery::Parcels::Shipment::COURIER_DHL),
+        RatesMock.new(id: 'rates_123457', rate: '400', currency: 'HKD', delivery_days: '2', service: 'NoNameService', carrier: ::Refinery::Parcels::Shipment::COURIER_DHL)
     ]
   end
 end

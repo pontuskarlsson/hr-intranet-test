@@ -45,7 +45,7 @@ module Refinery
       describe '#save' do
         context 'when :bill_to is Sender and choosing courier' do
           let(:shipment) { FactoryGirl.create(:shipment, bill_to: 'Sender') }
-          let(:attr) { { courier: 'DHLExpress' } }
+          let(:attr) { { courier: ::Refinery::Parcels::Shipment::COURIER_DHL } }
 
           it { expect( form.save ).to eq true }
 
@@ -89,7 +89,7 @@ module Refinery
         context 'when adding courier specific details to ShipmentParcels' do
           let(:shipment) { FactoryGirl.create(:shipment, bill_to: 'Sender') }
           let(:shipment_parcel) { FactoryGirl.create(:shipment_parcel, shipment: shipment) }
-          let(:attr) { { courier: 'DHLExpress', shipment_parcels_attributes: {
+          let(:attr) { { courier: ::Refinery::Parcels::Shipment::COURIER_DHL, shipment_parcels_attributes: {
               '0' => { id: shipment_parcel.id, predefined_package: 'JumboParcel', weight: '1' }
           } } }
 

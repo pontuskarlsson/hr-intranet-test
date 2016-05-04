@@ -5,6 +5,12 @@
     <%= render 'quick_form', shipment: @shipment %>
   </section>
 
+  <% if params[:view_all] == '1' %>
+    <p>Currently showing all shipments. <%= link_to 'View only recent', refinery.parcels_shipments_path %>.</p>
+  <% else %>
+    <p>Currently showing recent shipments. <%= link_to 'View all', refinery.parcels_shipments_path(view_all: '1') %>.</p>
+  <% end %>
+
   <section>
     <table class="display js_shipments_data_table" cellspacing="0" style="width: 100%;">
       <thead>
@@ -57,14 +63,14 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 6, "desc" ]],
-        "data":           <%= @shipments.to_json(methods: [:from_contact_name, :to_contact_name]).html_safe %>,
+        "data":           <%= @shipments.to_json(methods: [:from_contact_name, :to_contact_name, :display_status]).html_safe %>,
         "columns": [
           { data: "id", "width": 60, "render": function(data, type, row){ return ('<a href="<%= refinery.parcels_shipment_path('%%shipment_id%%') %>">View</a>').replace('%%shipment_id%%', data); } },
           { data: "from_contact_name" },
           { data: "to_contact_name" },
           { data: "courier", "width": 150 },
           { data: "tracking_number", "width": 150 },
-          { data: "status", "width": 150 },
+          { data: "display_status", "width": 150 },
           { data: "shipping_date", "width": 150, "render": { "sort": function(data, type, row){ if(data){ return data; }else{ return new Date('2099-01-01') } } } }
         ]
       });

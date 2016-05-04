@@ -29,7 +29,7 @@ FactoryGirl.define do
         { id: "rate_qwerty#{n}",
           object: 'Rate',
           mode: 'Test',
-          carrier: 'DHLExpress',
+          carrier: ::Refinery::Parcels::Shipment::COURIER_DHL,
           service: 'SomeDeliveryService',
           currency: 'HKD',
           rate: '500',

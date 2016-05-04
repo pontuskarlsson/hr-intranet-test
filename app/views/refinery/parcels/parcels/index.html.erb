@@ -10,6 +10,12 @@
     <%= render 'sign_parcel_list', parcels: @my_unsigned_parcels, allow_sign: true %>
   <% end %>
 
+  <% if params[:view_all] == '1' %>
+    <p>Currently showing all parcels. <%= link_to 'View only recent', refinery.parcels_parcels_path %>.</p>
+  <% else %>
+    <p>Currently showing recent parcels. <%= link_to 'View all', refinery.parcels_parcels_path(view_all: '1') %>.</p>
+  <% end %>
+
   <section>
     <table class="display js_parcels_data_table" cellspacing="0" style="width: 100%;">
       <thead>

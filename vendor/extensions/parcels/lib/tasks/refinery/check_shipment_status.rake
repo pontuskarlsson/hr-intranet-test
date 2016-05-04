@@ -21,7 +21,7 @@ namespace :refinery do
 
       Refinery::Parcels::Shipment.shipped_manually_not_delivered.each do |shipment|
         begin
-          if shipment.courier == 'SF Express'
+          if shipment.courier == Refinery::Parcels::Shipment::COURIER_SF
 
             io = open(SF_URI.gsub('%WAYBILL%', shipment.tracking_number.gsub(' ', '')))
             response = JSON.parse(io.readline)
@@ -44,7 +44,7 @@ namespace :refinery do
 
             end
 
-          elsif shipment.courier == 'DHLExpress'
+          elsif shipment.courier == Refinery::Parcels::Shipment::COURIER_DHL
 
             io = open(DHL_URI.gsub('%WAYBILL%', shipment.tracking_number.gsub(' ', '')))
             response = JSON.parse(io.read)
@@ -62,7 +62,7 @@ namespace :refinery do
               shipment.save
             end
 
-          elsif shipment.courier == 'UPS'
+          elsif shipment.courier == Refinery::Parcels::Shipment::COURIER_UPS
 
             # The UPS tracking page does not respond to JSON request and can
             # only return HTML responses. So we have to use Nokogiri to parse
@@ -81,6 +81,9 @@ namespace :refinery do
               shipment.save
             end
 
+          else
+            shipment.status = 'unknown'
+            shipment.save
           end
 
 

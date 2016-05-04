@@ -52,6 +52,9 @@ module Refinery
 
       def find_all_parcels
         @parcels = Parcel.order('parcel_date DESC, id DESC')
+        unless params[:view_all] == '1'
+          @parcels = @parcels.where('created_at > ?', DateTime.now - 3.months)
+        end
 
         @my_unsigned_parcels = current_refinery_user.assigned_parcels.unsigned.order('parcel_date ASC')
       end

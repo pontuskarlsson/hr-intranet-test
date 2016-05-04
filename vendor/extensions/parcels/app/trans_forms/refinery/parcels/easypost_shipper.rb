@@ -110,7 +110,7 @@ module Refinery
         elsif shipment.bill_to == '3rd Party'
           if shipment.bill_to_account.present?
             order_hash[:options] = { bill_third_party_account: shipment.bill_to_account.account_no }
-            if shipment.courier == 'UPS'
+            if shipment.courier == ::Refinery::Parcels::Shipment::COURIER_UPS
               order_hash[:options][:bill_third_party_country] = shipment.to_address.country
               order_hash[:options][:bill_third_party_postal_code] = shipment.to_address.zip
             end
