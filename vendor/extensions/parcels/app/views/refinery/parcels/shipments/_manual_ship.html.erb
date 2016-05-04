@@ -33,14 +33,6 @@
       $('.js_courier_field').autocomplete({
         source: <%= Refinery::Parcels::Shipment::COURIERS.keys.to_json.html_safe %>,
         change: function(event, ui) {
-          console.log({
-            t: this,
-            source: $(this).data('uiAutocomplete').options.source,
-            value: $(this).prop('value')
-          })
-
-
-
           if ($(this).data('uiAutocomplete').options.source.indexOf($(this).prop('value')) >= 0) {
             $('.js_courier_label').text('');
           } else {
