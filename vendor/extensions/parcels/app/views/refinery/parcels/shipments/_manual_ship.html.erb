@@ -1,7 +1,7 @@
 <%= form_for @manual_shipper ||= ::Refinery::Parcels::ManualShipper.new(shipment: shipment), url: refinery.manual_ship_parcels_shipment_path(shipment) do |f| %>
   <div class="row">
     <div class="columns">
-      <label>Courier
+      <label>Courier <small class="js_courier_label" style="color: #f00;"></small>
         <%= f.text_field :courier, class: 'js_courier_field' %>
       </label>
     </div>
@@ -31,7 +31,22 @@
   <script type="text/javascript">
     $(function(){
       $('.js_courier_field').autocomplete({
-        source: <%= Refinery::Parcels::Shipment::COURIERS.keys.to_json.html_safe %>
+        source: <%= Refinery::Parcels::Shipment::COURIERS.keys.to_json.html_safe %>,
+        change: function(event, ui) {
+          console.log({
+            t: this,
+            source: $(this).data('uiAutocomplete').options.source,
+            value: $(this).prop('value')
+          })
+
+
+
+          if ($(this).data('uiAutocomplete').options.source.indexOf($(this).prop('value')) >= 0) {
+            $('.js_courier_label').text('');
+          } else {
+            $('.js_courier_label').text('Courier not found');
+          }
+        }
       });
     });
   </script>
