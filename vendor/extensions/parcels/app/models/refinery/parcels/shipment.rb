@@ -47,6 +47,8 @@ module Refinery
       validates :bill_to,                 inclusion: BILL_TO
       validates :status,                  inclusion: STATUSES
       validates :easypost_object_id,      uniqueness: true, allow_nil: true
+      validates :from_address_id,         presence: true, unless: proc { @from_contact_name.present? }
+      validates :to_address_id,           presence: true, unless: proc { @to_contact_name.present? }
 
       delegate :name, to: :from_contact,  prefix: true, allow_nil: true
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
