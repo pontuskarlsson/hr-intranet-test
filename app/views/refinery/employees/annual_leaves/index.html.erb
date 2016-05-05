@@ -114,7 +114,7 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 0, "desc" ]],
-        "data":           <%= @employee_loas.to_json(only: [:id, :start_date, :end_date], methods: [:display_employee, :display_type_of_absence, :display_status]).html_safe %>,
+        "data":           <%= @employee_loas.to_json(only: [:id, :start_date, :end_date, :status], methods: [:display_employee, :display_type_of_absence, :display_status]).html_safe %>,
         "columns": [
           { data: "display_employee" },
           { data: "start_date" },
@@ -122,9 +122,10 @@
           { data: "display_type_of_absence" },
           { data: "display_status" },
           { data: "id", "render": function(data, type, row){
-            return '<span style="float:left; margin-right: 5px;"><form action="/employees/annual_leaves/'+data+'/approve" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Approve</a></form></span>'+
-                   '<span style="float: left;"><form action="/employees/annual_leaves/'+data+'/reject" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Reject</a></form></span>';
-
+            if (row.status === 1) {
+              return '<span style="float:left; margin-right: 5px;"><form action="/employees/annual_leaves/'+data+'/approve" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Approve</a></form></span>'+
+                     '<span style="float: left;"><form action="/employees/annual_leaves/'+data+'/reject" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Reject</a></form></span>';
+            }
           } }
         ]
       });
