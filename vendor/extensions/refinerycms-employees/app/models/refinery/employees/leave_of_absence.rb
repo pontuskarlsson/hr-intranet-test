@@ -90,10 +90,14 @@ module Refinery
       scope :non_sick_leaves, where("#{table_name}.absence_type_id <> ?", TYPE_SICK_LEAVE)
 
       def self.approvable_by(manager)
-        where(
-            absence_type_id: TYPES_OF_LEAVE.map { |k,v| k if v[:apply] }.compact,
-            employee_id: manager.employee_ids + [-1]
-        )
+        if manager.user.present? && manager.user.plugins.where(name: 'refinerycms-employees').exists?
+          scoped
+        else
+          where(
+              absence_type_id: TYPES_OF_LEAVE.map { |k,v| k if v[:apply] }.compact,
+              employee_id: manager.employee_ids + [-1]
+          )
+        end
       end
 
       def employee_name
