@@ -86,17 +86,15 @@ module Refinery
         errors.empty? # Rollback if any errors are present
       end
 
-      scope :sick_leaves, where(absence_type_id: TYPE_SICK_LEAVE)
+      scope :sick_leaves,     where(absence_type_id: TYPE_SICK_LEAVE)
       scope :non_sick_leaves, where("#{table_name}.absence_type_id <> ?", TYPE_SICK_LEAVE)
+      scope :approvable,      where(absence_type_id: TYPES_OF_LEAVE.map { |k,v| k if v[:apply] }.compact)
 
       def self.approvable_by(manager)
         if manager.user.present? && manager.user.plugins.where(name: 'refinerycms-employees').exists?
-          scoped
+          approvable
         else
-          where(
-              absence_type_id: TYPES_OF_LEAVE.map { |k,v| k if v[:apply] }.compact,
-              employee_id: manager.employee_ids + [-1]
-          )
+          approvable.where(employee_id: manager.employee_ids + [-1])
         end
       end
 
