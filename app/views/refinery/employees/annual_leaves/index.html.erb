@@ -122,9 +122,11 @@
           { data: "display_type_of_absence" },
           { data: "display_status" },
           { data: "id", "render": function(data, type, row){
-            if (row.status === 1) {
+            if (row.status === <%= ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL %>) {
               return '<span style="float:left; margin-right: 5px;"><form action="/employees/annual_leaves/'+data+'/approve" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Approve</a></form></span>'+
                      '<span style="float: left;"><form action="/employees/annual_leaves/'+data+'/reject" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Reject</a></form></span>';
+            } else {
+              return '';
             }
           } }
         ]
