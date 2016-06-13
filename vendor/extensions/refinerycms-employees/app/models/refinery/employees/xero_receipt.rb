@@ -30,7 +30,7 @@ module Refinery
       before_validation do
         self.status ||= STATUS_DRAFT
         if @contact_name.present?
-          self.xero_contact = XeroContact.find_or_create_by_name!(@contact_name)
+          self.xero_contact = XeroContact.find_or_create_by_name!(@contact_name.strip)
         end
       end
 
