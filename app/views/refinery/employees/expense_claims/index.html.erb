@@ -91,19 +91,25 @@
             return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'">'+data+'</a>';
           } },
           { data: "status" },
-          { data: "date", "render": function(data, type, row){
-            if(data){
-              return (new Date(data)).format('yyyy/mm/dd');
-            } else {
-              return '';
-            }
+          { data: "date", "render": {
+            "display": function(data, type, row){
+              if(data){
+                return (new Date(data)).format('dd/mm/yyyy');
+              } else {
+                return '';
+              }
+            },
+            "sort": function(data, type, row) { return new Date(data); }
           } },
-          { data: "payment_due_date", "render": function(data, type, row){
-            if(data){
-              return (new Date(data)).format('yyyy/mm/dd');
-            } else {
-              return '';
-            }
+          { data: "payment_due_date", "render": {
+            "display": function(data, type, row){
+              if(data){
+                return (new Date(data)).format('dd/mm/yyyy');
+              } else {
+                return '';
+              }
+            },
+            "sort": function(data, type, row) { return new Date(data); }
           } },
           { data: "amount_paid", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } },
           { data: "amount_due", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } },
@@ -123,12 +129,15 @@
             return '<a href="<%= refinery.employees_expense_claims_path %>/'+row.id+'">'+data+'</a>';
           } },
           { data: "status" },
-          { data: "date", "render": function(data, type, row){
-            if(data){
-              return (new Date(data)).format('yyyy/mm/dd');
-            } else {
-              return '';
-            }
+          { data: "date", "render": {
+            "display": function(data, type, row){
+              if(data){
+                return (new Date(data)).format('dd/mm/yyyy');
+              } else {
+                return '';
+              }
+            },
+            "sort": function(data, type, row) { return new Date(data); }
           } },
           { data: "total", "render": function(data, type, row){ return "$HK "+parseFloat(data).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); } }
         ]
