@@ -219,7 +219,7 @@ module Refinery
 
       def attach_scanned_receipts
         @xero_expense_claim.xero_expense_claim_attachments.each_with_index do |xero_expense_claim_attachment, i|
-          receipt_guid = @xero_expense_claim.xero_receipts[i / 10].try(:guid)
+          receipt_guid = @xero_expense_claim.xero_receipts[i / 5].try(:guid)
           if xero_expense_claim_attachment.guid.blank? # Has not been submitted yet
             attachment = client.Receipt.attach_file(
                 receipt_guid,
