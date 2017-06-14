@@ -113,7 +113,7 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
-        "order":          [[ 0, "desc" ]],
+        "order":          [[ 1, "desc" ]],
         "data":           <%= @employee_loas.to_json(only: [:id, :start_date, :end_date, :status], methods: [:display_employee, :display_type_of_absence, :display_status]).html_safe %>,
         "columns": [
           { data: "display_employee" },
