@@ -13,7 +13,6 @@ Gem::Specification.new do |s|
 
   # Runtime dependencies
   s.add_dependency             'refinerycms-core',    '~> 2.1.2'
-  s.add_dependency             'amqp'
   s.add_dependency             'basecrm',             '~> 1.1.3'
 
   # Development dependencies (usually used for testing)
