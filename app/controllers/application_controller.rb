@@ -1,4 +1,9 @@
 class ApplicationController < ActionController::Base
+
+  # Forcing all communication over SSL
+  def self.force_ssl; super unless Rails.env == 'test'; end
+  force_ssl
+
   protect_from_forgery
 
   before_filter :authenticate_refinery_user!
