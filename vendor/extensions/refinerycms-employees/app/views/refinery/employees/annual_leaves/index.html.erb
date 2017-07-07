@@ -9,6 +9,7 @@
       <tr>
         <th>Start</th>
         <th>End</th>
+        <th>No. of days</th>
         <th>Type of Absence</th>
         <th>Status</th>
         <th>Action</th>
@@ -20,6 +21,7 @@
         <tr>
           <td><%= leave_of_absence.start_date %></td>
           <td><%= leave_of_absence.end_date %></td>
+          <td><%= leave_of_absence.no_of_days %></td>
           <td><%= leave_of_absence.display_type_of_absence %></td>
           <td><%= leave_of_absence.display_status %></td>
           <td>
@@ -34,6 +36,7 @@
       <tr>
         <th>Start</th>
         <th>End</th>
+        <th>No. of days</th>
         <th>Type of Absence</th>
         <th>Status</th>
         <th>Action</th>
@@ -44,6 +47,7 @@
 
 
 <% content_for :side_body do %>
+  <h4>Summary</h4>
 
 <% end %>
 

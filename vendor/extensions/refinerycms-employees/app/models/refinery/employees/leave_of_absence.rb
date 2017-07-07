@@ -123,6 +123,56 @@ module Refinery
         (STATUSES[status] || {})[:label]
       end
 
+      def no_of_days
+
+        if end_date.present?
+          # We can calculate the entire leave
+
+          # Start by retrieving all public holidays that are in between the starting and ending dates of
+          # the leave and is not a half day. Those days should not count as annual leave at all.
+          # Then retrieve all the public holidays that are half days, since they should count, but only
+          # as half a day of annual leave.
+          if (country = employee.current_employment_contract.try(:country)).present?
+            ph_dates = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date >= ? AND holiday_date <= ? AND half_day = ?', country, start_date, end_date, false).map(&:holiday_date)
+            half_day_ph_dates = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date >= ? AND holiday_date <= ? AND half_day = ?', country, start_date, end_date, true).map(&:holiday_date)
+          else
+            ph_dates = []
+            half_day_ph_dates = []
+          end
+
+          # Set the number of days to the amount of dates in the leave that are neither a weekend nor
+          # a public holiday.
+          number_of_days = (start_date..end_date).to_a.reject { |d| d.saturday? || d.sunday? || ph_dates.include?(d) }.count.to_f
+
+          # Then deduct half a day for each date that was a half day public holiday
+          number_of_days -= 0.5 * half_day_ph_dates.count
+
+          # Then deduct half a day if the leave was starting or ending as a half day annual leave (unless
+          # the starting or ending days was a half dau public holiday in which case it has already been
+          # accounted for).
+          number_of_days -= 0.5 if start_half_day && !half_day_ph_dates.include?(start_date)
+          number_of_days -= 0.5 if end_half_day && !half_day_ph_dates.include?(end_date)
+          number_of_days
+        else
+          # Check that start_date is not on a weekend or whole-day public holiday
+          if start_date.saturday? || start_date.sunday?
+            errors.add(:start_date, 'Cannot start annual leave on non-working day')
+          end
+
+          if (country = employee.current_employment_contract.try(:country)).present? &&
+              (ph = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date = ?', country, start_date).first).present?
+            if ph.half_day
+              0.5
+            else
+              0
+            end
+          else
+            # We assume it is only one day leave
+            (start_half_day ? 0.5 : 1 )
+          end
+        end
+      end
+
       def display_employee
         employee.full_name
       end

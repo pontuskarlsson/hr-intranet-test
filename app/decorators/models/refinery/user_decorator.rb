@@ -25,6 +25,10 @@ Refinery::User.class_eval do
     @password_has_expired ||= need_change_password?
   end
 
+  def remember_me
+    (super == nil) ? '1' : super
+  end
+
   def wants_notification_for?(other_employee)
     return false if other_employee.user_id == id
 

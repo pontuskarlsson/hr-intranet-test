@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160405060452) do
+ActiveRecord::Schema.define(:version => 20170427025652) do
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0, :null => false
@@ -421,8 +421,10 @@ ActiveRecord::Schema.define(:version => 20160405060452) do
     t.datetime "updated_at",               :null => false
     t.text     "default_tracking_options"
     t.integer  "reporting_manager_id"
+    t.integer  "contact_id"
   end
 
+  add_index "refinery_employees", ["contact_id"], :name => "index_refinery_employees_on_contact_id"
   add_index "refinery_employees", ["employee_no"], :name => "index_refinery_employees_on_employee_no"
   add_index "refinery_employees", ["position"], :name => "index_refinery_employees_on_position"
   add_index "refinery_employees", ["profile_image_id"], :name => "index_refinery_employees_on_profile_image_id"

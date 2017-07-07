@@ -6,11 +6,9 @@ module Refinery
       belongs_to :profile_image,      class_name: '::Refinery::Image'
       belongs_to :user,               class_name: '::Refinery::User'
       belongs_to :reporting_manager,  class_name: '::Refinery::Employees::Employee'
+      belongs_to :contact,            class_name: '::Refinery::Marketing::Contact'
       has_many :employees,            dependent: :nullify, foreign_key: :reporting_manager_id
       has_many :leave_of_absences,    dependent: :destroy
-      #has_many :sick_leaves,          dependent: :destroy
-      #has_many :annual_leaves,        dependent: :destroy
-      #has_many :annual_leave_records, dependent: :destroy
       has_many :employment_contracts, dependent: :destroy
       has_many :xero_expense_claims,  dependent: :destroy
       has_many :xero_receipts,        dependent: :destroy
@@ -21,7 +19,7 @@ module Refinery
       attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position,
                       :xero_guid, :xero_guid_field, :user_name, :default_tracking_options, :reporting_manager_id
 
-      validates :employee_no, presence: true, uniqueness: true
+      validates :employee_no, uniqueness: true, allow_blank: true
       validates :full_name,   presence: true
       validates :user_id,     uniqueness: true, allow_nil: true
 
