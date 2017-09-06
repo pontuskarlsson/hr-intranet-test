@@ -32,6 +32,9 @@ gem 'daemons'
 gem 'delayed_job_active_record', '~> 4.0'
 gem 'delayed_job', '~> 3.0.5'
 
+# Workaround for strange missing dependency behaviour
+gem 'eventmachine', '1.0.9.1'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
