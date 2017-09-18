@@ -21,6 +21,6 @@
   <% end %>
 </table>
 
-<p><%=raw link_to('Click here to view Parcels', refinery.parcels_parcels_url, protocol: 'https') -%></p>
+<p><%=raw link_to('Click here to view Parcels', refinery.parcels_parcels_url(protocol: 'https')) -%></p>
 
 <p><%=raw Refinery::Core.site_name %></p>
