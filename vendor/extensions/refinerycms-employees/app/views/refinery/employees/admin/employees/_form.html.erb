@@ -100,7 +100,7 @@
         source: <%= ::Refinery::User.select(:username).map(&:username).to_json.html_safe %>
       });
       $('.js_contact_field').autocomplete({
-        source: <%= ::Refinery::Marketing::Contact.where(is_organisation: false).select([:id, :first_name, :last_name]).map { |c| [c.first_name, c.last_name, c.id].join ' ' }.to_json.html_safe %>
+        source: <%= ::Refinery::Marketing::Contact.employees_for('Happy Rabbit Limited').select([:id, :first_name, :last_name]).map { |c| [c.first_name, c.last_name, c.id].join ' ' }.to_json.html_safe %>
       });
       $('.js_xero_guid_field').autocomplete({
         source: <%= (session[:xero_guids] || []).to_json.html_safe %>

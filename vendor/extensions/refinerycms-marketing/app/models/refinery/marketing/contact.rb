@@ -23,7 +23,7 @@ module Refinery
       validates :user_id, uniqueness: true, allow_nil: true
 
       def self.employees_for(organisation)
-        if (org = where(name: organisation, is_organisation: true).first).present?
+        if (org = where(name: organisation).first).present?
           org.employees
         else
           where('1=0')
