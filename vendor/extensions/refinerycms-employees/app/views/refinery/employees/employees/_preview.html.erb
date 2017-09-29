@@ -5,10 +5,10 @@
     <%= image_tag('user_unknown.png', class: 'profile-picture') %>
   <% end %>
   <h5 class="name"><%= link_to employee.full_name, refinery.employees_employee_path(employee) %></h5>
-  <% if employee.title.present? %>
-    <p><%= employee.title.upcase %></p>
-  <% end %>
   <% if employee.contact.present? %>
+    <% if employee.contact.title.present? %>
+      <p><%= employee.contact.title %></p>
+    <% end %>
     <% if employee.contact.phone.present? %>
       <p><%= employee.contact.phone %></p>
     <% end %>

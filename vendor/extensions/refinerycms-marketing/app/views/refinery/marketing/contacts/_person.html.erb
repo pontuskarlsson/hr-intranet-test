@@ -89,9 +89,4 @@
   <% if contact.linked_in.present? %>
     <p class="cc-attribute cc-linked_in">LinkedIn: <%= contact.linked_in %></p>
   <% end %>
-
-  <% if contact.tags_joined_by_comma.present? %>
-    <h3>Tags</h3>
-    <p class="cc-attribute cc-tags"><%= contact.tags_joined_by_comma.split(', ').map(&:capitalize).join(', ') %></p>
-  <% end %>
 </section>

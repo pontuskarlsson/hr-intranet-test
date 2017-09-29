@@ -44,6 +44,10 @@ module Refinery
         end
       end
 
+      def zip
+        attributes[:zip]
+      end
+
 
       # Setters from Base Sync
       def line1=(address)
