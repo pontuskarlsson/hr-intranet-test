@@ -22,6 +22,14 @@ module Refinery
       validates :name,    presence: true
       validates :user_id, uniqueness: true, allow_nil: true
 
+      def self.employees_for(organisation)
+        if (org = where(name: organisation, is_organisation: true).first).present?
+          org.employees
+        else
+          where('1=0')
+        end
+      end
+
       def contacts_with_same_tags(limit = 20)
         if tags_joined_by_comma.present?
           cond = (tags_joined_by_comma || '').split(', ').inject([[]]) { |acc, tag|

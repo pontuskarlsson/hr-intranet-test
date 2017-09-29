@@ -1,0 +1,22 @@
+<div class="employee-preview">
+  <% if employee.profile_image.present? %>
+    <%= image_tag(employee.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
+  <% else %>
+    <%= image_tag('user_unknown.png', class: 'profile-picture') %>
+  <% end %>
+  <h5 class="name"><%= link_to employee.full_name, refinery.employees_employee_path(employee) %></h5>
+  <% if employee.title.present? %>
+    <p><%= employee.title.upcase %></p>
+  <% end %>
+  <% if employee.contact.present? %>
+    <% if employee.contact.phone.present? %>
+      <p><%= employee.contact.phone %></p>
+    <% end %>
+    <% if employee.contact.mobile.present? %>
+      <p><%= employee.contact.mobile %></p>
+    <% end %>
+    <% if employee.contact.email.present? %>
+      <p><%= employee.contact.email %></p>
+    <% end %>
+  <% end %>
+</div>

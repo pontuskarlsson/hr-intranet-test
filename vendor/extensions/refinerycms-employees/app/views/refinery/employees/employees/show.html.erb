@@ -1,27 +1,41 @@
 <% content_for :body do %>
-  <section>
-    <h4>Employee No</h4>
-    <p>
-      <%=raw @employee.employee_no %>
-    </p>
-  </section>
-  <section>
-    <h4>Full Name</h4>
-    <p>
-      <%=raw @employee.full_name %>
-    </p>
-  </section>
-  <section>
-    <h4>Id No</h4>
-    <p>
-      <%=raw @employee.id_no %>
-    </p>
-  </section>
-  <section>
-    <h4>Title</h4>
-    <p>
-      <%=raw @employee.title %>
-    </p>
+  <section class="employee">
+    <% if @employee.profile_image.present? %>
+      <%= image_tag(@employee.profile_image.thumbnail(geometry: '270x270#c').url, class: 'profile-picture') %>
+    <% else %>
+      <%= image_tag('user_unknown.png', class: 'profile-picture') %>
+    <% end %>
+
+    <% if @employee.contact.present? %>
+      <h5>Contact Details</h5>
+      <% if @employee.contact.phone.present? %>
+        <p><%= @employee.contact.phone %></p>
+      <% end %>
+      <% if @employee.contact.mobile.present? %>
+        <p><%= @employee.contact.mobile %></p>
+      <% end %>
+      <% if @employee.contact.email.present? %>
+        <p><%= @employee.contact.email %></p>
+      <% end %>
+
+    <% else %>
+      <h5>Name</h5>
+      <p class="name"><%= @employee.full_name %></p>
+    <% end %>
+
+    <% if @employee.title.present? %>
+      <h5>Title</h5>
+      <p><%= @employee.title.upcase %></p>
+    <% end %>
+
+    <h5>Employee No</h5>
+    <p><%= @employee.employee_no %></p>
+
+    <h5>Emergency Contact</h5>
+    <p><%= @employee.emergency_contact %></p>
+
+    <h5>Birthday</h5>
+    <p><%= @employee.birthday && @employee.birthday.strftime("%b #{@employee.birthday.day.ordinalize}") %></p>
   </section>
 <% end %>
 

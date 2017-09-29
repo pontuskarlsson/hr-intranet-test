@@ -15,9 +15,10 @@ module Refinery
 
       serialize :default_tracking_options, Hash
 
-      attr_writer :user_name, :xero_guid_field
+      attr_writer :user_name, :xero_guid_field, :contact_ref
       attr_accessible :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position,
-                      :xero_guid, :xero_guid_field, :user_name, :default_tracking_options, :reporting_manager_id
+                      :xero_guid, :xero_guid_field, :user_name, :default_tracking_options, :reporting_manager_id,
+                      :contact_ref, :birthday, :emergency_contact
 
       validates :employee_no, uniqueness: true, allow_blank: true
       validates :full_name,   presence: true
@@ -32,6 +33,18 @@ module Refinery
             self.user = user
           end
         end
+
+        # If a form was submitted and assigned values, then contact_ref will never
+        # be nil. So if an empty value was submitted and a contact is present, we
+        # want to make sure we don't ignore that, but instead remove the contact.
+        unless contact_ref.nil?
+          if contact_ref.blank?
+            self.contact = nil
+          else
+            self.contact = ::Refinery::Marketing::Contact.find_by_id(contact_ref.split(' ').last)
+          end
+        end
+
         if @xero_guid_field.present?
           # To make it easier to select in the form, this field might contain
           # the name of the person the guid belongs to appended at the end of
@@ -47,6 +60,15 @@ module Refinery
 
       def xero_guid_field
         @xero_guid_field ||= xero_guid
+      end
+
+      # Contact Ref will take the following format:
+      #
+      #   "[first_name] [last_name] [id]"
+      #   "John Doe 123"
+      #   "Jane Dear 124"
+      def contact_ref
+        @contact_ref ||= contact && [contact.first_name, contact.last_name, contact.id].join(' ')
       end
 
       def current_employment_contract
@@ -65,6 +87,14 @@ module Refinery
         @_rsl = leave_of_absences.sick_leaves.where('(end_date IS NOT NULL AND end_date >= :date) OR start_date >= :date', date: d).order('start_date DESC').first
       end
 
+      def next_birthday
+        year = Date.today.year
+        mmdd = birthday.strftime('%m%d')
+        year += 1 if mmdd < Date.today.strftime('%m%d')
+        mmdd = '0301' if mmdd == '0229' && !Date.parse("#{year}0101").leap?
+        return Date.parse("#{year}#{mmdd}")
+      end
+
       class << self
         # Scope to get all employees with active employment contracts
         def current
@@ -75,6 +105,10 @@ module Refinery
 
         def alphabetical
           order(:full_name)
+        end
+
+        def upcoming_birthdays(within_days = 7)
+          where('birthday IS NOT NULL').sort_by(&:next_birthday).select { |e| e.next_birthday - Date.today < within_days }
         end
       end
 

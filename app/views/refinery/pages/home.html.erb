@@ -104,26 +104,32 @@
       </section>
     <% end %>
 
-    <section class="page-part">
-      <div class="page-part-header">
-        EMPLOYEE FOCUS
-      </div>
-
-      <%- employee = Refinery::Employees::Employee.current.random.first -%>
-      <% if employee %>
-        <% if employee.profile_image.present? %>
-          <%= image_tag(employee.profile_image.thumbnail(geometry: '135x135#c').url, class: 'profile-picture') %>
-        <% else %>
-          <%= image_tag('user_unknown.png', class: 'profile-picture') %>
+    <% if (employees = Refinery::Employees::Employee.upcoming_birthdays).any? %>
+      <section class="page-part">
+        <div class="page-part-header">
+          BIRTHDAYS
+        </div>
+        <% employees.each do |employee| %>
+          <p>
+            <%= link_to employee.full_name, refinery.employees_employee_path(employee) %>
+            <% if employee.next_birthday == Date.today %>
+              <i class="fa fa-birthday-cake" style="color: #ff755f;"></i> Today
+            <% else %>
+              in <%= (employee.next_birthday - Date.today).to_i %> day(s)
+            <% end %>
+          </p>
         <% end %>
-        <h5>
-          <%= employee.full_name %><br />
-          <% if employee.title.present? %>
-            <%= employee.title.upcase %><br />
-          <% end %>
-        </h5>
-      <% end %>
-    </section>
+      </section>
+    <% end %>
+
+    <% if (employee = Refinery::Employees::Employee.current.random.first).present? %>
+      <section class="page-part">
+        <div class="page-part-header">
+          EMPLOYEE FOCUS
+        </div>
+        <%= render '/refinery/employees/employees/preview', employee: employee %>
+      </section>
+    <% end %>
 
     <section class="page-part">
       <div class="page-part-header">

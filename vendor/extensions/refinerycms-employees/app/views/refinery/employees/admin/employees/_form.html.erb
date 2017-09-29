@@ -9,6 +9,11 @@
   </div>
 
   <div class='field'>
+    <%= f.label :contact_ref -%>
+    <%= f.text_field :contact_ref, class: 'js_contact_field' -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :employee_no -%>
     <%= f.text_field :employee_no -%>
   </div>
@@ -31,6 +36,20 @@
   <div class='field'>
     <%= f.label :reporting_manager_id -%>
     <%= f.select :reporting_manager_id, options_from_collection_for_select(::Refinery::Employees::Employee.where('id NOT IN (?)', [-1, f.object.id].compact), :id, :full_name, f.object.reporting_manager_id), include_blank: true -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :emergency_contact do %>
+      Emergency Contact <small>I.e. "+852-5555 1234 Jon Doe (Spouse)"</small>
+    <% end %>
+    <%= f.text_field :emergency_contact -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :birthday do %>
+      Birthday <small>I.e. "1970-01-01"</small>
+    <% end %>
+    <%= f.text_field :birthday  -%>
   </div>
 
   <div class='field'>
@@ -79,6 +98,9 @@
     $(function(){
       $('.js_user_field').autocomplete({
         source: <%= ::Refinery::User.select(:username).map(&:username).to_json.html_safe %>
+      });
+      $('.js_contact_field').autocomplete({
+        source: <%= ::Refinery::Marketing::Contact.employees_for('Happy Rabbit Limited').select([:id, :first_name, :last_name]).map { |c| [c.first_name, c.last_name, c.id].join ' ' }.to_json.html_safe %>
       });
       $('.js_xero_guid_field').autocomplete({
         source: <%= (session[:xero_guids] || []).to_json.html_safe %>
