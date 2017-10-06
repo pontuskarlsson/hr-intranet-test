@@ -6,7 +6,7 @@ module Refinery
         @sick_leave = sick_leave
         mail :subject => "Sick leave: #{ sick_leave.employee.full_name }",
              :to => to_user.email,
-             :from => "\"#{Refinery::Core.site_name}\" <#{ Refinery::Parcels.mailer_from_address }>"
+             :from => "\"#{Refinery::Core.site_name}\" <#{ Refinery::Employees.mailer_from_address }>"
       end
 
     end

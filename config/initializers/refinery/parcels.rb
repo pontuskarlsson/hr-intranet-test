@@ -13,5 +13,5 @@ Refinery::Parcels.configure do |config|
   #
   config.user_attribute_reference = :full_name
 
-  config.mailer_from_address = 'info@happyrabbit.com'
+  config.mailer_from_address = 'noreply@happyrabbit.com'
 end
