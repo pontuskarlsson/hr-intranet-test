@@ -69,7 +69,7 @@ module Refinery
           end
 
           event.title = employee.full_name
-          if ends_at.nil? && start_half_day
+          if end_date.nil? && start_half_day
             event.excerpt = "#{absence_type[:label]} (Half day)"
           else
             event.excerpt = absence_type[:label]
