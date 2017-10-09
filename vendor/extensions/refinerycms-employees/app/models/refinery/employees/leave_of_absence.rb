@@ -68,8 +68,12 @@ module Refinery
             self.event = calendar.events.build
           end
 
-          event.title = "#{ absence_type[:abbreviation] }: #{ employee.full_name }"
-          event.excerpt = absence_type[:label]
+          event.title = employee.full_name
+          if ends_at.nil? && start_half_day
+            event.excerpt = "#{absence_type[:label]} (Half day)"
+          else
+            event.excerpt = absence_type[:label]
+          end
           event.starts_at = start_date.beginning_of_day  + (start_half_day ? 14.hours : 0)
           event.ends_at =  (end_half_day   ? end_date.beginning_of_day + 14.hours : end_date.end_of_day) if end_date.present?
 
