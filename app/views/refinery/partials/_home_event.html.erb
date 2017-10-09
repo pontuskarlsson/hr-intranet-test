@@ -10,6 +10,7 @@
       <% end %>
       <%= link_to event.title, refinery.calendar_event_path(event.id), 'data-reveal-id' => "event-modal-#{event.id}", 'data-reveal-ajax' => true %>
       <div id="event-modal-<%= event.id %>" class="reveal-modal" data-reveal></div>
+      <div><%= event.excerpt %></div>
       <div><%= event.calendar.title %></div>
     </td>
   </tr>

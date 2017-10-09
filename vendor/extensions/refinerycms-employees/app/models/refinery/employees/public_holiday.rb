@@ -22,7 +22,7 @@ module Refinery
         end
 
         event.title = title
-        event.excerpt = 'Public Holiday' << (half_day ? ' (Half Day)' : '')
+        event.excerpt = half_day ? ' Half Day' : ''
         event.starts_at = half_day ? holiday_date.beginning_of_day + 14.hours : holiday_date.beginning_of_day
         event.ends_at = holiday_date.end_of_day
 
