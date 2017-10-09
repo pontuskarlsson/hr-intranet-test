@@ -25,6 +25,14 @@ module Refinery
         @employee_name ||= employee.try(:full_name)
       end
 
+      def applicable_public_holidays
+        if end_date.present?
+          ::Refinery::Employees::PublicHoliday.where(country: country).where('holiday_date >= ?', start_date).where('holiday_date <=', end_date)
+        else
+          ::Refinery::Employees::PublicHoliday.where(country: country).where('holiday_date >= ?', start_date)
+        end
+      end
+
       class << self
         def current_contracts
           where("#{table_name}.start_date <= :today AND (#{table_name}.end_date IS NULL OR #{table_name}.end_date >= :today)", today: Date.today)

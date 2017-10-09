@@ -2,71 +2,86 @@
 
   <%= render 'form', leave_of_absence: ::Refinery::Employees::LeaveOfAbsence.new %>
 
-  <h4 class="t2">Registered Annual Leave</h4>
+  <div class="row">
+    <div class="columns medium-8">
+      <h4 class="t2">Registered Annual Leave</h4>
 
-  <table class="display js_annual_leaves_data_table" cellspacing="0" style="width: 100%;">
-    <thead>
-    <tr>
-      <th>Start</th>
-      <th>End</th>
-      <th>Type of Absence</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-    </thead>
+      <table class="display js_annual_leaves_data_table" cellspacing="0" style="width: 100%;">
+        <thead>
+        <tr>
+          <th>Start</th>
+          <th>End</th>
+          <th>Type of Absence</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        </thead>
 
-    <tfoot>
-    <tr>
-      <th>Start</th>
-      <th>End</th>
-      <th>Type of Absence</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-    </tfoot>
+        <tfoot>
+        <tr>
+          <th>Start</th>
+          <th>End</th>
+          <th>Type of Absence</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        </tfoot>
 
-    <tbody>
-    <tr>
-      <td colspan="5">Loading, please wait...</td>
-    </tr>
-    </tbody>
-  </table>
+        <tbody>
+        <tr>
+          <td colspan="5">Loading, please wait...</td>
+        </tr>
+        </tbody>
+      </table>
 
 
-  <% if @employee.employees.any? %>
-    <h4 class="t2">Your Employee's Leave of Absence</h4>
+      <% if @employee.employees.any? %>
+        <h4 class="t2">Your Employee's Leave of Absence</h4>
 
-    <table class="display js_employees_annual_leaves_data_table" cellspacing="0" style="width: 100%;">
-      <thead>
-      <tr>
-        <th>Employee</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Type of Absence</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-      </thead>
+        <table class="display js_employees_annual_leaves_data_table" cellspacing="0" style="width: 100%;">
+          <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Type of Absence</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+          </thead>
 
-      <tfoot>
-      <tr>
-        <th>Employee</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Type of Absence</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-      </tfoot>
+          <tfoot>
+          <tr>
+            <th>Employee</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Type of Absence</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+          </tfoot>
 
-      <tbody>
-      <tr>
-        <td colspan="6">Loading, please wait...</td>
-      </tr>
-      </tbody>
-    </table>
-  <% end %>
+          <tbody>
+          <tr>
+            <td colspan="6">Loading, please wait...</td>
+          </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
 
+    <div class="columns medium-4">
+      <h4 class="t2">Annual Leave Summary</h4>
+      <% @employee.grouped_loas do |year, types_and_days_hash| %>
+        <h5><%= year %></h5>
+        <p>
+          <% types_and_days_hash.each_pair do |type, days| %>
+            <%= type %>: <%= days %> <%= days > 1 ? 'days' : 'day' %><br/>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
 
 <% end %>
 
