@@ -9,14 +9,16 @@ module Refinery
       TYPE_ANNUAL_LEAVE = 2
       TYPE_COMPENSATION_LEAVE = 3
       TYPE_MATERNITY_LEAVE = 4
+      TYPE_NON_PAID_LEAVE = 5
       TYPE_OTHER = 10
 
       TYPES_OF_LEAVE = {
-          TYPE_SICK_LEAVE           => { label: 'Sick Leave',           abbreviation: 'SL',  apply: false },
-          TYPE_ANNUAL_LEAVE         => { label: 'Annual Leave',         abbreviation: 'AL',  apply: true },
-          TYPE_COMPENSATION_LEAVE   => { label: 'Compensation Leave',   abbreviation: 'CL',  apply: true },
-          TYPE_MATERNITY_LEAVE      => { label: 'Maternity Leave',      abbreviation: 'ML',  apply: true },
-          TYPE_OTHER                => { label: 'Other',                abbreviation: 'O',   apply: true }
+          TYPE_SICK_LEAVE           => { label: 'Sick Leave',           abbreviation: 'SL',  apply: false,  all_days: false },
+          TYPE_ANNUAL_LEAVE         => { label: 'Annual Leave',         abbreviation: 'AL',  apply: true,   all_days: false },
+          TYPE_COMPENSATION_LEAVE   => { label: 'Compensation Leave',   abbreviation: 'CL',  apply: true,   all_days: false },
+          TYPE_MATERNITY_LEAVE      => { label: 'Maternity Leave',      abbreviation: 'ML',  apply: true,   all_days: true },
+          TYPE_NON_PAID_LEAVE       => { label: 'Non Paid Leave',       abbreviation: 'NPL', apply: true,   all_days: true },
+          TYPE_OTHER                => { label: 'Other',                abbreviation: 'O',   apply: true,   all_days: false }
       }.freeze
 
       STATUS_WAITING_FOR_APPROVAL = 1
@@ -47,9 +49,16 @@ module Refinery
         if end_date.present?
           errors.add(:end_date) unless end_date > start_date
         end
+        if absence_type[:all_days]
+          errors.add(:start_half_day, 'is not allowed for this type of leave') if start_half_day
+          errors.add(:end_half_day, 'is not allowed for this type of leave') if end_half_day
+        end
       end
 
       before_validation do
+        if end_date == start_date
+          self.end_date = nil
+        end
         if @employee_name.present?
           if (employee = Employee.find_by_full_name(@employee_name)).present?
             self.employee = employee
@@ -127,53 +136,53 @@ module Refinery
         (STATUSES[status] || {})[:label]
       end
 
-      def no_of_days
+      def no_of_days(group_by_year = false)
+        duration = (start_date..(end_date || start_date)).to_a
+        days_per_year = {}
 
-        if end_date.present?
-          # We can calculate the entire leave
+        # We can calculate the entire leave
 
-          # Start by retrieving all public holidays that are in between the starting and ending dates of
-          # the leave and is not a half day. Those days should not count as annual leave at all.
-          # Then retrieve all the public holidays that are half days, since they should count, but only
-          # as half a day of annual leave.
-          if (country = employee.current_employment_contract.try(:country)).present?
-            ph_dates = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date >= ? AND holiday_date <= ? AND half_day = ?', country, start_date, end_date, false).map(&:holiday_date)
-            half_day_ph_dates = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date >= ? AND holiday_date <= ? AND half_day = ?', country, start_date, end_date, true).map(&:holiday_date)
-          else
-            ph_dates = []
-            half_day_ph_dates = []
+        # Start by retrieving all public holidays that are in between the starting and ending dates of
+        # the leave and is not a half day. Those days should not count as annual leave at all.
+        # Then retrieve all the public holidays that are half days, since they should count, but only
+        # as half a day of annual leave.
+        if (country = employee.current_employment_contract.try(:country)).present?
+          ph_dates = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date >= ? AND holiday_date <= ? AND half_day = ?', country, start_date, end_date, false).map(&:holiday_date)
+          half_day_ph_dates = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date >= ? AND holiday_date <= ? AND half_day = ?', country, start_date, end_date, true).map(&:holiday_date)
+        else
+          ph_dates = []
+          half_day_ph_dates = []
+        end
+
+        # Certain types of absence should count all days, no matter if they include weekends and
+        # public holidays
+        if absence_type[:all_days]
+          duration.each do |date|
+            days_per_year[date.year] ||= 0.0
+            days_per_year[date.year] += 1.0
           end
 
+        else
           # Set the number of days to the amount of dates in the leave that are neither a weekend nor
           # a public holiday.
-          number_of_days = (start_date..end_date).to_a.reject { |d| d.saturday? || d.sunday? || ph_dates.include?(d) }.count.to_f
+          duration = duration.reject { |d| d.saturday? || d.sunday? || ph_dates.include?(d) }
 
-          # Then deduct half a day for each date that was a half day public holiday
-          number_of_days -= 0.5 * half_day_ph_dates.count
+          duration.each do |date|
+            days_per_year[date.year] ||= 0.0
 
-          # Then deduct half a day if the leave was starting or ending as a half day annual leave (unless
-          # the starting or ending days was a half dau public holiday in which case it has already been
-          # accounted for).
-          number_of_days -= 0.5 if start_half_day && !half_day_ph_dates.include?(start_date)
-          number_of_days -= 0.5 if end_half_day && !half_day_ph_dates.include?(end_date)
-          number_of_days
-        else
-          # Check that start_date is not on a weekend or whole-day public holiday
-          if start_date.saturday? || start_date.sunday?
-            errors.add(:start_date, 'Cannot start annual leave on non-working day')
-          end
-
-          if (country = employee.current_employment_contract.try(:country)).present? &&
-              (ph = ::Refinery::Employees::PublicHoliday.where('country = ? AND holiday_date = ?', country, start_date).first).present?
-            if ph.half_day
-              0.5
+            if half_day_ph_dates.include?(date) || (date == start_date && start_half_day) || (date == end_date && end_half_day)
+              days_per_year[date.year] += 0.5
             else
-              0
+              days_per_year[date.year] += 1.0
             end
-          else
-            # We assume it is only one day leave
-            (start_half_day ? 0.5 : 1 )
           end
+        end
+
+        if group_by_year
+          days_per_year
+
+        else
+          days_per_year.inject(0) { |acc, (year, days)| acc + days }
         end
       end
 

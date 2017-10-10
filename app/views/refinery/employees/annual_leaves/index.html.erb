@@ -11,6 +11,7 @@
         <tr>
           <th>Start</th>
           <th>End</th>
+          <th>No. of days</th>
           <th>Type of Absence</th>
           <th>Status</th>
           <th>Action</th>
@@ -21,6 +22,7 @@
         <tr>
           <th>Start</th>
           <th>End</th>
+          <th>No. of days</th>
           <th>Type of Absence</th>
           <th>Status</th>
           <th>Action</th>
@@ -44,6 +46,7 @@
             <th>Employee</th>
             <th>Start</th>
             <th>End</th>
+            <th>No. of days</th>
             <th>Type of Absence</th>
             <th>Status</th>
             <th>Action</th>
@@ -55,6 +58,7 @@
             <th>Employee</th>
             <th>Start</th>
             <th>End</th>
+            <th>No. of days</th>
             <th>Type of Absence</th>
             <th>Status</th>
             <th>Action</th>
@@ -71,12 +75,17 @@
     </div>
 
     <div class="columns medium-4">
-      <h4 class="t2">Annual Leave Summary</h4>
+      <h4 class="t2">
+        Leave Summary
+        <span data-tooltip aria-haspopup="true" class="has-tip"
+              title="The number of days automatically exclude weekends, public holidays and handles half days.<br/>
+                     The exception is Maternity Leave and Non Paid Leave that counts all days from start to end." style="font-weight: normal; font-size: 0.8rem;">Explanation</span>
+      </h4>
       <% @employee.grouped_loas do |year, types_and_days_hash| %>
         <h5><%= year %></h5>
         <p>
           <% types_and_days_hash.each_pair do |type, days| %>
-            <%= type %>: <%= days %> <%= days > 1 ? 'days' : 'day' %><br/>
+            <%= type %>: <%= '%g' % days %> <%= days > 1 ? 'days' : 'day' %><br/>
           <% end %>
         </p>
       <% end %>
@@ -106,10 +115,11 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 0, "desc" ]],
-        "data":           <%= @leave_of_absences.to_json(only: [:id, :start_date, :end_date, :status], methods: [:display_type_of_absence, :display_status]).html_safe %>,
+        "data":           <%= @leave_of_absences.to_json(only: [:id, :start_date, :end_date, :status], methods: [:display_type_of_absence, :display_status, :no_of_days]).html_safe %>,
         "columns": [
           { data: "start_date" },
           { data: "end_date" },
+          { data: "no_of_days" },
           { data: "display_type_of_absence" },
           { data: "display_status" },
           { data: "id", "render": function(data, type, row){
@@ -129,11 +139,12 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 1, "desc" ]],
-        "data":           <%= @employee_loas.to_json(only: [:id, :start_date, :end_date, :status], methods: [:display_employee, :display_type_of_absence, :display_status]).html_safe %>,
+        "data":           <%= @employee_loas.to_json(only: [:id, :start_date, :end_date, :status], methods: [:display_employee, :display_type_of_absence, :display_status, :no_of_days]).html_safe %>,
         "columns": [
           { data: "display_employee" },
           { data: "start_date" },
           { data: "end_date" },
+          { data: "no_of_days" },
           { data: "display_type_of_absence" },
           { data: "display_status" },
           { data: "id", "render": function(data, type, row){

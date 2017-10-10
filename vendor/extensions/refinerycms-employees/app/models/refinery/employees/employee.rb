@@ -96,31 +96,15 @@ module Refinery
       end
 
       def grouped_loas(&block)
-        phs = current_employment_contract.applicable_public_holidays
-
         leave_of_absences.reject(&:new_record?).inject({}) { |acc, loa|
-          (loa.start_date..(loa.end_date || loa.start_date)).each do |d|
-            ph = phs.detect { |p| p.holiday_date == d }
-
-            if d.cwday <= 5  && (ph.nil? || ph.half_day)
-
-              acc[d.year] ||= {}
-              acc[d.year][loa.display_type_of_absence] ||= 0
-
-              if ph && ph.half_day ||
-                  (loa.start_date == d && loa.start_half_day) ||
-                  (loa.end_date == d && loa.end_half_day)
-
-                acc[d.year][loa.display_type_of_absence] += 0.5
-
-              else
-                acc[d.year][loa.display_type_of_absence] += 1
-              end
-            end
+          loa.no_of_days(true).each_pair do |year, days|
+            acc[year] ||= {}
+            acc[year][loa.display_type_of_absence] ||= 0.0
+            acc[year][loa.display_type_of_absence] += days
           end
           acc
-        }.each_pair do |year, acc|
-          block.call year, acc
+        }.each_pair do |year, hash|
+          block.call year, hash
         end
       end
 
