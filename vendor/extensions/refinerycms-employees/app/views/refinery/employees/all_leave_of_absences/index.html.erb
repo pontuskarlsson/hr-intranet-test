@@ -1,0 +1,31 @@
+<% content_for :body do %>
+
+  <% @employees.each do |employee| %>
+    <h2><%= employee.full_name %></h2>
+  <% end %>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Year</th>
+      <th>Type</th>
+      <th>No. of Days</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% employee.grouped_loas do |year, types_and_days_hash| %>
+      <% types_and_days_hash.each_pair do |type, days| %>
+        <tr>
+          <td><%= year %></td>
+          <td><%= type %></td>
+          <td><%= days %></td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+  </table>
+
+<% end %>
+
+
+<%= render '/refinery/content_page' %>

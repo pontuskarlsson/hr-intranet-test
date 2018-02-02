@@ -16,6 +16,7 @@ Refinery::Core::Engine.routes.draw do
       end
     end
     resources :employees, :only => [:index, :show]
+    resources :all_leave_of_absences, :only => [:index]
     resources :expense_claims do
       resources :receipts, only: [:new, :create, :show, :edit, :update, :destroy]
       member do
