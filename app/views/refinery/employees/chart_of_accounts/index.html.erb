@@ -55,9 +55,9 @@
         "order":          [[ 0, "desc" ]],
         "data":           <%= @xero_accounts.to_json(only: [:code, :name, :account_type, :description, :when_to_use]).html_safe %>,
         "columns": [
-          { data: "code" },
+          { data: "code", width: '10%' },
           { data: "name" },
-          { data: "account_type" },
+          { data: "account_type", width: '10%' },
           { data: "description" },
           { data: "when_to_use" }
         ]
