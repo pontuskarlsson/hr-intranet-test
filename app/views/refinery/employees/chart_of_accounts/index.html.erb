@@ -1,0 +1,69 @@
+<% content_for :body do %>
+
+  <h4 class="t2">Chart of Accounts</h4>
+
+  <table class="display js_chart_of_accounts_data_table" cellspacing="0" style="width: 100%;">
+    <thead>
+    <tr>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Account Type</th>
+      <th>Description</th>
+      <th>When to use</th>
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Account Type</th>
+      <th>Description</th>
+      <th>When to use</th>
+    </tr>
+    </tfoot>
+
+    <tbody>
+    <tr>
+      <td colspan="5">Loading, please wait...</td>
+    </tr>
+    </tbody>
+  </table>
+
+<% end %>
+
+
+<% content_for :side_body do %>
+
+<% end %>
+
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
+  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_chart_of_accounts_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "order":          [[ 0, "desc" ]],
+        "data":           <%= @xero_accounts.to_json(only: [:code, :name, :account_type, :description, :when_to_use]).html_safe %>,
+        "columns": [
+          { data: "code" },
+          { data: "name" },
+          { data: "account_type" },
+          { data: "description" },
+          { data: "when_to_use" }
+        ]
+      });
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>
