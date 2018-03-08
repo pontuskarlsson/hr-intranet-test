@@ -75,7 +75,7 @@ module Refinery
 
     private
       def all_accounts
-        @all_accounts ||= client.Account.all(where: { show_in_expense_claims: true })
+        @all_accounts ||= client.Account.all
       end
 
       def all_contacts

@@ -3,11 +3,11 @@ module Refinery
     module ReceiptsHelper
 
       def featured_xero_accounts
-        @_featured_xero_accounts ||= ::Refinery::Employees::XeroAccount.featured.order('code ASC')
+        @_featured_xero_accounts ||= ::Refinery::Employees::XeroAccount.where(show_in_expense_claims: true).featured.order('code ASC')
       end
 
       def all_xero_accounts
-        @_all_xero_accounts ||= ::Refinery::Employees::XeroAccount.order('code ASC')
+        @_all_xero_accounts ||= ::Refinery::Employees::XeroAccount.where(show_in_expense_claims: true).order('code ASC')
       end
 
     end
