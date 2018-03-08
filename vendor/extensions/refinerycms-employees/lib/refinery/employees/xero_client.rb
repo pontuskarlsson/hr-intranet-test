@@ -75,7 +75,7 @@ module Refinery
 
     private
       def all_accounts
-        @all_accounts ||= client.Account.all
+        @all_accounts ||= client.Account.all(where: 'type != "BANK"')
       end
 
       def all_contacts
