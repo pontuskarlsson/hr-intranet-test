@@ -84,6 +84,9 @@ namespace :hr_intranet do
       xero_expense_claim.save
     end
 
+    puts 'Synchronising Accounts'
+    client.sync_accounts
+
     puts 'Done Synchronising'
   end
 
