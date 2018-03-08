@@ -19,6 +19,7 @@ module Refinery
 
           all_accounts.each do |account|
             xero_account = ::Refinery::Employees::XeroAccount.find_or_initialize_by_guid(account.account_id)
+            xero_account.account_type = account.type
             account.attributes.each_pair do |attr, value|
               xero_account.send("#{attr}=", value) if xero_account.respond_to?("#{attr}=")
             end
