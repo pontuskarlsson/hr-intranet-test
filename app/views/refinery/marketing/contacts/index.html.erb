@@ -45,7 +45,7 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
-        "data":           <%= @contacts.to_json(only: [:id, :name, :is_organisation, :organisation_name, :email, :phone, :mobile, :country], include: { organisation: { only: [:id, :name] } }).html_safe %>,
+        "data":           <%= @contacts.to_json(only: [:id, :name, :is_organisation, :organisation_name, :organisation_id, :email, :phone, :mobile, :country]).html_safe %>,
         "columns": [
           { data: "name", "render": function(data, type, row){ return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+data+'</a>').replace('%%contact_id%%', row.id); } },
           { data: "is_organisation", "render": function(data, type, row) {
@@ -53,7 +53,7 @@
               return row.name;
             }else{
               if(row.organisation){
-                return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+row.organisation.name+'</a>').replace('%%contact_id%%', row.organisation.id);
+                return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+row.organisation_name+'</a>').replace('%%contact_id%%', row.organisation_id);
               }else{
                 return row.organisation_name;
               }

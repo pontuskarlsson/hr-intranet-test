@@ -1,0 +1,1 @@
+00 1,4,7,10 * * * root /bin/bash /hr-intranet/scripts/sync_crm_contacts.sh

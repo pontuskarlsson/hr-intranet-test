@@ -18,6 +18,15 @@ namespace :refinery do
 
     end
 
+    namespace :insightly do
+
+      desc 'Synchronise Contacts with Insightly'
+      task :synchronise => :environment do
+        Refinery::Marketing::InsightlySynchroniser.new.synchronise
+      end
+
+    end
+
   end
 
 end
