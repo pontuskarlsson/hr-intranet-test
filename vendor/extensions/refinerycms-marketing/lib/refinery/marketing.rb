@@ -7,6 +7,7 @@ module Refinery
     require 'refinery/marketing/configuration'
     require 'refinery/marketing/engine'
     require 'refinery/marketing/base_synchroniser'
+    require 'refinery/marketing/insightly_synchroniser'
 
     class << self
       attr_writer :root
