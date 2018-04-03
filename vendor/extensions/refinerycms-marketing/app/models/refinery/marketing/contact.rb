@@ -3,7 +3,7 @@ module Refinery
     class Contact < Refinery::Core::BaseModel
       self.table_name = 'refinery_contacts'
 
-      acts_as_indexed :fields => [:name]
+      #acts_as_indexed :fields => [:name]
 
       belongs_to :user,         class_name: '::Refinery::User'
       belongs_to :organisation, class_name: 'Contact'
