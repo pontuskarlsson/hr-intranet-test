@@ -40,7 +40,7 @@ module Refinery
             acc
           }
           cond[0] = cond[0].join(' AND ')
-          Contact.where(cond).order(:name).limit(limit)
+          Contact.where(cond).where('id <> ?', id).order(:name).limit(limit)
         else
           []
         end

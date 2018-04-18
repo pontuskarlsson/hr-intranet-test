@@ -1,104 +1,122 @@
 <section class="contact-card">
   <h1 class="cc-attribute cc-name">
     <%=raw contact.name %>
+    <i class="fa fa-building"></i>
   </h1>
 
-  <% if contact.industry.present? %>
-    <p class="cc-attribute cc-industry">Industry: <%= contact.industry %></p>
-  <% end %>
-
-  <h3>Address</h3>
-  <% if contact.address.present? %>
-    <p class="cc-attribute cc-address"><%= contact.address %></p>
-  <% else %>
-    <p class="cc-attribute cc-missing">Street Address</p>
-  <% end %>
-
-  <% if contact.city.present? %>
-    <p class="cc-attribute cc-city"><%= contact.city %></p>
-  <% else %>
-    <p class="cc-attribute cc-missing">City</p>
-  <% end %>
-
-  <% if contact.zip.present? %>
-    <p class="cc-attribute cc-city"><%= contact.zip %></p>
-  <% else %>
-    <p class="cc-attribute cc-missing">Zip</p>
-  <% end %>
-
-  <% if contact.state.present? %>
-    <p class="cc-attribute cc-city"><%= contact.state %></p>
-  <% else %>
-    <p class="cc-attribute cc-missing">State</p>
-  <% end %>
-
-  <% if contact.country.present? %>
-    <p class="cc-attribute cc-country"><%= contact.country %></p>
-  <% else %>
-    <p class="cc-attribute cc-missing">Country</p>
+  <% if contact.tags_joined_by_comma.present? %>
+    <p class="cc-attribute cc-tags">
+      <% contact.tags_joined_by_comma.split(',').each do |tag| %>
+        <span class="cc-tag"><%= tag %></span>
+      <% end %>
+    </p>
   <% end %>
 
   <h3>Contact Info</h3>
-  <% if contact.phone.present? %>
-    <p class="cc-attribute cc-phone">Main: <%= contact.phone %></p>
-  <% end %>
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th>Phone</th>
+      <td><%= contact.phone %></td>
+    </tr>
+    <% if contact.mobile.present? %>
+      <tr>
+        <th>Mobile</th>
+        <td><%= contact.mobile %></td>
+      </tr>
+    <% end %>
+    <% if contact.fax.present? %>
+      <tr>
+        <th>Fax</th>
+        <td><%= contact.fax %></td>
+      </tr>
+    <% end %>
+    <% if contact.skype.present? %>
+      <tr>
+        <th>Skype</th>
+        <td><%= contact.skype %></td>
+      </tr>
+    <% end %>
+    <% if contact.email.present? %>
+      <tr>
+        <th>Email</th>
+        <td><%= mail_to contact.email  %></td>
+      </tr>
+    <% end %>
+    <% if contact.website.present? %>
+      <tr>
+        <th>Website</th>
+        <td><%=link_to contact.website.gsub(/http:\/\/|https:\/\//, ''), contact.website %></td>
+      </tr>
+    <% end %>
+    <% if contact.facebook.present? %>
+      <tr>
+        <th>Facebook</th>
+        <td><%= link_to contact.facebook.gsub(/http:\/\/|https:\/\//, ''), contact.facebook %></td>
+      </tr>
+    <% end %>
+    <% if contact.twitter.present? %>
+      <tr>
+        <th>Twitter</th>
+        <td><%= link_to 'twitter.com/'<<contact.twitter, 'https://twitter.com/'<<contact.twitter %></td>
+      </tr>
+    <% end %>
+    <% if contact.linked_in.present? %>
+      <tr>
+        <th>LinkedIn</th>
+        <td><%= contact.linked_in %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 
-  <% if contact.mobile.present? %>
-    <p class="cc-attribute cc-mobile">Mobile<%= contact.mobile %></p>
-  <% end %>
-
-  <% if contact.fax.present? %>
-    <p class="cc-attribute cc-fax">Fax: <%= contact.fax %></p>
-  <% end %>
-
-  <% if contact.skype.present? %>
-    <p class="cc-attribute cc-skype">Skype: <%= contact.skype %></p>
-  <% end %>
-
-  <% if contact.email.present? %>
-    <p class="cc-attribute cc-email"><%= mail_to contact.email  %></p>
-  <% end %>
-
-  <% if contact.website.present? %>
-    <p class="cc-attribute cc-website"><%=link_to contact.website.gsub(/http:\/\/|https:\/\//, ''), contact.website %></p>
-  <% end %>
-
-  <% if contact.facebook.present? %>
-    <p class="cc-attribute cc-facebook"><%= link_to contact.facebook.gsub(/http:\/\/|https:\/\//, ''), contact.facebook %></p>
-  <% end %>
-
-  <% if contact.twitter.present? %>
-    <p class="cc-attribute cc-twitter"><%= link_to 'twitter.com/'<<contact.twitter, 'https://twitter.com/'<<contact.twitter %></p>
-  <% end %>
-
-  <% if contact.linked_in.present? %>
-    <p class="cc-attribute cc-linked_in">LinkedIn: <%= contact.linked_in %></p>
-  <% end %>
+  <h3>Address</h3>
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th>Street</th>
+      <td><%= contact.address %></td>
+    </tr>
+    <tr>
+      <th>City</th>
+      <td><%= contact.city %></td>
+    </tr>
+    <tr>
+      <th>Zip</th>
+      <td><%= contact.zip %></td>
+    </tr>
+    <tr>
+      <th>State</th>
+      <td><%= contact.state %></td>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <td><%= contact.country %></td>
+    </tr>
+    </tbody>
+  </table>
 
   <h3>Courier Details</h3>
-  <p class="cc-attribute cc-linked_in">Company: <%= contact.courier_company %></p>
-  <p class="cc-attribute cc-linked_in">Account: <%= contact.courier_account_no %></p>
-
-  <% if contact.tags_joined_by_comma.present? %>
-    <h3>Tags</h3>
-    <p class="cc-attribute cc-tags"><%= contact.tags_joined_by_comma.split(', ').map(&:capitalize).join(', ') %></p>
-  <% end %>
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th>Company</th>
+      <td><%= contact.courier_company %></td>
+    </tr>
+    <tr>
+      <th>Account No.</th>
+      <td><%= contact.courier_account_no %></td>
+    </tr>
+    </tbody>
+  </table>
 
   <h3>Employees</h3>
   <% if contact.employees.any? %>
-    <% contact.employees.each do |employee| %>
-      <p class="cc-attribute cc-employee">
-        <%= link_to employee.name, refinery.marketing_contact_path(employee) %>
-        <% if employee.phone.present? %>
-          - <%= employee.phone %>
-        <% elsif employee.mobile.present? %>
-          - <%= employee.mobile %>
-        <% end %>
-        <% if employee.email.present? %>
-          - <%= mail_to employee.email %>
-        <% end %>
-      </p>
-    <% end %>
+    <ul class="business-cards bc-grid">
+      <% contact.employees.each do |employee| %>
+        <%= render 'refinery/marketing/contacts/business_card', contact: employee %>
+      <% end %>
+    </ul>
   <% else %>
     <p class="cc-attribute italic">No Employees registered</p>
   <% end %>

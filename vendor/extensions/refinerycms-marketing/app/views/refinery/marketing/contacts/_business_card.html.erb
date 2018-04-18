@@ -1,0 +1,10 @@
+<li class="business-card">
+  <h4>
+    <%= link_to contact.name, refinery.marketing_contact_path(contact) %>
+    <i class="fa fa-<%= contact.is_organisation ? 'building' : 'user' %>"></i>
+  </h4>
+  <p class="bc-attribute"><%= contact.email %></p>
+  <p class="bc-attribute"><%= contact.phone %></p>
+
+  <p class="bc-attribute"><%= contact.country %></p>
+</li>

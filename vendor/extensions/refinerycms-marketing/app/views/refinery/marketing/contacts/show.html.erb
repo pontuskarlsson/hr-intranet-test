@@ -8,12 +8,10 @@
 
 <% content_for :side_body do %>
   <aside>
-    <h2><%= t('.similar') %></h2>
-    <ul id="contacts">
-      <% @contact.contacts_with_same_tags.each do |contact| %>
-        <li>
-          <%= link_to contact.name, refinery.marketing_contact_path(contact) %>
-        </li>
+    <h3><%= t('.similar') %></h3>
+    <ul class="business-cards">
+      <% @contact.contacts_with_same_tags(10).each do |contact| %>
+        <%= render 'refinery/marketing/contacts/business_card', contact: contact %>
       <% end %>
     </ul>
   </aside>
