@@ -28,7 +28,8 @@ module Refinery
           skype: 'Skype',
           twitter: 'Twitter',
           courier_company: 'Courier Company',
-          courier_account_no: 'Courier Company A/C No.'
+          courier_account_no: 'Courier Company A/C No.',
+          code: 'Company Code'
       }.freeze
 
 

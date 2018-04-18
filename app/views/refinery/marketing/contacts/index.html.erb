@@ -5,7 +5,7 @@
     <thead>
     <tr>
       <th>Name</th>
-      <th>Organisation</th>
+      <th>Code</th>
       <th>Email</th>
       <th>Phone</th>
       <th>Country</th>
@@ -15,7 +15,7 @@
     <tfoot>
     <tr>
       <th>Name</th>
-      <th>Organisation</th>
+      <th>Code</th>
       <th>Email</th>
       <th>Phone</th>
       <th>Country</th>
@@ -45,20 +45,12 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
-        "data":           <%= @contacts.to_json(only: [:id, :name, :is_organisation, :organisation_name, :organisation_id, :email, :phone, :mobile, :country]).html_safe %>,
+        "data":           <%= @contacts.to_json(only: [:id, :name, :code, :is_organisation, :organisation_name, :organisation_id, :email, :phone, :mobile, :country]).html_safe %>,
         "columns": [
-          { data: "name", "render": function(data, type, row){ return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+data+'</a>').replace('%%contact_id%%', row.id); } },
-          { data: "is_organisation", "render": function(data, type, row) {
-            if(data){
-              return row.name;
-            }else{
-              if(row.organisation){
-                return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>">'+row.organisation_name+'</a>').replace('%%contact_id%%', row.organisation_id);
-              }else{
-                return row.organisation_name;
-              }
-            }
-          } },
+          { data: "name", "width": '30%', "render": function(data, type, row) {
+            return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>"><i class="fa fa-'+(row.is_organisation ? 'building' : 'user')+'"></i> '+data+'</a>').replace('%%contact_id%%', row.id); }
+          },
+          { data: "code", "width": '10%' },
           { data: "email" },
           { data: "phone", "render": function(data, type, row){
             if(typeof data == 'undefined' || data === null || data == ''){
@@ -67,7 +59,7 @@
               return data;
             }
           } },
-          { data: "country" }
+          { data: "country", "width": '15%' }
         ]
       }).fnSetFilteringDelay();
     });

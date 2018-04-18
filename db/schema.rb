@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180403004420) do
+ActiveRecord::Schema.define(:version => 20180418032515) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -322,10 +322,12 @@ ActiveRecord::Schema.define(:version => 20180403004420) do
     t.string   "courier_company"
     t.string   "courier_account_no"
     t.string   "image_url"
+    t.string   "code"
   end
 
   add_index "refinery_contacts", ["base_id"], :name => "index_refinery_contacts_on_base_id"
   add_index "refinery_contacts", ["base_modified_at"], :name => "index_refinery_contacts_on_base_modified_at"
+  add_index "refinery_contacts", ["code"], :name => "index_refinery_contacts_on_code"
   add_index "refinery_contacts", ["courier_company"], :name => "index_refinery_contacts_on_courier_company"
   add_index "refinery_contacts", ["insightly_id"], :name => "index_refinery_contacts_on_insightly_id"
   add_index "refinery_contacts", ["organisation_id"], :name => "index_refinery_contacts_on_organisation_id"
