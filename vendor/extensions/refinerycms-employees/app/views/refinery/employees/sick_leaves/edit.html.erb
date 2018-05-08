@@ -2,7 +2,7 @@
 
   <h4>Update Sick Leave Information</h4>
 
-  <%= form_for @leave_of_absence, url: refinery.employees_sick_leave_path(leave_of_absence) do |f| %>
+  <%= form_for @leave_of_absence, url: refinery.employees_sick_leave_path(@leave_of_absence) do |f| %>
     <%= render 'form', f: f, leave_of_absence: @leave_of_absence %>
 
   <% end %>
