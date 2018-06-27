@@ -135,11 +135,17 @@
         </div>
         <% events.each do |event| %>
           <div title="<%= event.description %>" style="border-bottom: 1px solid #ccc;">
-            <h5>
-              <%= event.title %>
-              <span data-tooltip aria-haspopup="true" class="has-tip" title="<%= event.description %>"><i class="fa fa-info"></i></span>
+            <h5 style="margin-bottom: 0;">
+              <i class="fa fa-user"></i>
+              <%= event.title.split(':').first %>
+              <span data-tooltip aria-haspopup="true" class="has-tip" title="<%= event.description %>">
+                <%= event.title.split(':').last %>
+              </span>
             </h5>
-            <p><%= event.excerpt %></p>
+            <p>
+              <i class="fa fa-industry"></i>
+              <%= event.excerpt.split('@').last %>
+            </p>
           </div>
         <% end %>
 
