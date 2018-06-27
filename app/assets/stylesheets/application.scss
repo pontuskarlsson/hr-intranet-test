@@ -486,6 +486,10 @@ ul.latest-news {
                 text-overflow: clip;
                 overflow: visible;
                 z-index: 100;
+                background-color: #fff;
+                -webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+                -moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+                box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
             }
 
             a {
