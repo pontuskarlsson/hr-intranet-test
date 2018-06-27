@@ -53,7 +53,10 @@
       </div>
       <div class="medium-6 columns">
 
-        <% if (events = Refinery::Calendar::Event.today.limit(5)).any? %>
+        <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
+          Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
+          *Refinery::Employees::PublicHoliday.all_calendar_functions
+        ).limit(5)).any? %>
           <section class="page-part">
             <div class="page-part-header">
               TODAY IN CALENDAR
@@ -131,7 +134,7 @@
           TODAY'S INSPECTIONS
         </div>
         <% events.each do |event| %>
-          <div title="<%= event.description %>">
+          <div title="<%= event.description %>" style="border-bottom: 1px solid #ccc;">
             <h5>
               <%= event.title %>
               <span data-tooltip aria-haspopup="true" class="has-tip" title="<%= event.description %>"><i class="fa fa-info"></i></span>
@@ -139,6 +142,8 @@
             <p><%= event.excerpt %></p>
           </div>
         <% end %>
+
+        <p><%= link_to 'Go to Calendar', refinery.calendar_events_path %></p>
       </section>
     <% end %>
 
