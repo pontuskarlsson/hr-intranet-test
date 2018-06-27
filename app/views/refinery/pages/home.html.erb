@@ -73,7 +73,10 @@
             UPCOMING IN CALENDAR
           </div>
 
-          <% if (events = Refinery::Calendar::Event.where('starts_at >= ?', Date.tomorrow.beginning_of_day).order('starts_at ASC').limit(5)).any? %>
+          <% if (events = Refinery::Calendar::Event.after_today.for_calendar_functions(
+            Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
+            *Refinery::Employees::PublicHoliday.all_calendar_functions
+          ).limit(5)).any? %>
             <ul class="events">
               <% events.each do |event| %>
                 <li>
@@ -118,6 +121,23 @@
               in <%= (employee.next_birthday - Date.today).to_i %> day(s)
             <% end %>
           </p>
+        <% end %>
+      </section>
+    <% end %>
+
+    <% if (calendar = ::Refinery::Calendar::Calendar.find_by_function(HooksController::CALENDAR_FUNCTION)).present? and (events = calendar.events.today).any? %>
+      <section class="page-part">
+        <div class="page-part-header">
+          TODAY'S INSPECTIONS
+        </div>
+        <% events.each do |event| %>
+          <div title="<%= event.description %>">
+            <h5>
+              <%= event.title %>
+              <span data-tooltip aria-haspopup="true" class="has-tip" title="<%= event.description %>"><i class="fa fa-info"></i></span>
+            </h5>
+            <p><%= event.excerpt %></p>
+          </div>
         <% end %>
       </section>
     <% end %>

@@ -9,6 +9,8 @@ HrIntranet::Application.routes.draw do
   # We ask that you don't use the :as option here, as Refinery relies on it being the default of "refinery"
   mount Refinery::Core::Engine, :at => '/'
 
+  match 'hooks/catch/:webhook_key', to: 'hooks#catch', via: [:post], as: :hooks_catch
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

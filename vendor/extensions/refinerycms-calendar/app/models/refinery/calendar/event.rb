@@ -57,6 +57,15 @@ module Refinery
           between_times t.beginning_of_day, t.end_of_day
         end
 
+        def after_today
+          where('refinery_calendar_events.starts_at >= ?', Date.tomorrow.beginning_of_day).order('refinery_calendar_events.starts_at ASC')
+        end
+
+        def for_calendar_functions(*functions)
+          calendar_ids = ::Refinery::Calendar::Calendar.where(function: functions).pluck(:id)
+          where('refinery_calendar_events.calendar_id IN (?)', calendar_ids << -1)
+        end
+
         def between_times(start_time, end_time)
           where("(#{table_name}.starts_at >= ? AND #{table_name}.starts_at <= ?) OR (#{table_name}.ends_at >= ? AND #{table_name}.ends_at <= ?) OR (#{table_name}.starts_at < ? AND #{table_name}.ends_at > ?)", start_time, end_time, start_time, end_time, start_time, end_time)
         end

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<h1>Status update for QC Schedule</h1>
+<p>
+  The notification message is:<br />
+  <% @msgs.each do |msg| %>
+    <%= msg %><br/>
+  <% end %>
+</p>
+<p>
+  Caused by:<br />
+  <%= @xlsx.instance_variable_get("@filename").split('/').last %>
+</p>
+</body>
+</html>

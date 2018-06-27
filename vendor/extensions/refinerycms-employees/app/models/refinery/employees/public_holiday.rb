@@ -30,6 +30,10 @@ module Refinery
         self.event_id = event.id
       end
 
+      def self.all_calendar_functions
+        ::Refinery::Employees::Countries::COUNTRIES.map { |country| "#{CALENDAR_FUNCTION_PREFIX}#{country}" }
+      end
+
     end
   end
 end

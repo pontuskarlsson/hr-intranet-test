@@ -79,3 +79,5 @@ end
 
 # Workaround to get the latest version of xeroizer that is not available from rubygems yet
 gem 'xeroizer', '~> 2.16'
+
+gem 'roo', '~> 2.7.0'
