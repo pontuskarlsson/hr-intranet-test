@@ -88,19 +88,18 @@ class HooksController < ApplicationController
       end
 
       if msgs.any?
-        ErrorMailer.schedule_notification_email(msgs, @xlsx).deliver
+        ErrorMailer.schedule_notification_email(msgs, params).deliver
       end
 
       render text: 'success', status: :ok
     end
 
   rescue RangeError => e
-    ErrorMailer.schedule_error_email(e, @xlsx).deliver
+    ErrorMailer.schedule_error_email(e, params).deliver
     render text: 'failed', status: '400'
 
   rescue StandardError => e
-    binding.pry
-    ErrorMailer.schedule_error_email(e, @xlsx).deliver
+    ErrorMailer.schedule_error_email(e, params).deliver
     render text: 'failed', status: '400'
   end
 
