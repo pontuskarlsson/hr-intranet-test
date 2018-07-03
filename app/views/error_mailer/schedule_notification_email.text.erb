@@ -1,0 +1,9 @@
+Status update for QC Schedule
+
+The notification message is:
+<% @msgs.each do |msg| %>
+  <%= msg %>
+<% end %>
+
+Caused by:
+<%= @xlsx.instance_variable_get("@filename").split('/').last %>
