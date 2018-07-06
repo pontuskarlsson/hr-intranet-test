@@ -17,11 +17,11 @@ class ErrorMailer < ApplicationMailer
     mail(to: 'daniel@happyrabbit.com', subject: 'QC Schedule: Error')
   end
 
-  def schedule_notification_email(msgs, params)
+  def webhook_notification_email(msgs, params)
     @msgs = msgs
     @params = params
     @filename = params[:file].respond_to?(:original_filename) && params[:file].original_filename || 'N/A'
-    mail(to: 'daniel@happyrabbit.com', subject: 'QC Schedule: Notification')
+    mail(to: 'daniel@happyrabbit.com', subject: 'Webhook Notification')
   end
 
 end
