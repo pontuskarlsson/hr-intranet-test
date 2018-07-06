@@ -115,7 +115,7 @@ class HooksController < ApplicationController
       end
 
       if msgs.any?
-        ErrorMailer.schedule_notification_email(msgs, params).deliver
+        ErrorMailer.webhook_notification_email(msgs, params).deliver
       end
     end
   end
@@ -127,7 +127,7 @@ class HooksController < ApplicationController
       msgs = wip_schedule.update_wip_orders params[:file].tempfile.path
 
       if msgs.any?
-        ErrorMailer.wip_notification_email(msgs, params).deliver
+        ErrorMailer.webhook_notification_email(msgs, params).deliver
       end
     end
   end

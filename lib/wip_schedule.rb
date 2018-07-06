@@ -26,19 +26,19 @@ class WipSchedule
       "Upd: Fabric In-House" => {},
       "Act: Fabric In-House" => {},
 
-      "Orig: Cutting Complete" => {},
+      "Orig: Cutting Complete" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Upd: Cutting Complete" => {},
       "Act: Cutting Complete" => {},
 
-      "Orig: Sewing Complete" => {},
+      "Orig: Sewing Complete" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Upd: Sewing Complete" => {},
       "Act: Sewing Complete" => {},
 
-      "Orig: Final Inspection" => {},
+      "Orig: Final Inspection" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Upd: Final Inspection" => {},
       "Act: Final Inspection" => {},
 
-      "Orig: Shipment Sample Sent" => {},
+      "Orig: Shipment Sample Sent" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Upd: Shipment Sample Sent" => {},
       "Act: Shipment Sample Sent" => {},
 
@@ -58,19 +58,15 @@ class WipSchedule
       "Upd: Fabric In-House",
       "Act: Fabric In-House",
 
-      "Orig: Cutting Complete",
       "Upd: Cutting Complete",
       "Act: Cutting Complete",
 
-      "Orig: Sewing Complete",
       "Upd: Sewing Complete",
       "Act: Sewing Complete",
 
-      "Orig: Final Inspection",
       "Upd: Final Inspection",
       "Act: Final Inspection",
 
-      "Orig: Shipment Sample Sent",
       "Upd: Shipment Sample Sent",
       "Act: Shipment Sample Sent",
 
