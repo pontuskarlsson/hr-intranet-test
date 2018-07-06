@@ -5,7 +5,7 @@ namespace :hr_intranet do
       begin
         msgs = []
 
-        list = Refinery::CustomLists::CustomList.find_by_title('WIP Schedule')
+        list = WipSchedule.custom_list
 
         if list.nil?
           msgs << 'Could not find a list called "WIP Schedule".'
@@ -26,10 +26,10 @@ namespace :hr_intranet do
 
             if data['Status'] == 'Open'
 
-              wip_schedule = WipSchedule.new(data['Airtable App Id'])
+              wip_schedule = WipSchedule.new
 
               # Create an excel file based on the airtable orders
-              book = wip_schedule.create_workbook
+              book = wip_schedule.create_workbook_from(data['Airtable App Id'])
 
               # Save the file
               @path = File.join(ENV['AIRTABLE_TMP_DIR'], "#{data['Description']}-#{Date.today.to_s}.xls".gsub(/[^0-9A-Za-z.\-]/, '_').gsub(/[_]+/, '_'))

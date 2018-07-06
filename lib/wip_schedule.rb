@@ -1,5 +1,7 @@
 class WipSchedule
 
+  CUSTOM_LIST_TITLE = 'WIP Schedule'
+
   COLUMNS = {
       "id" => { column: { hidden: true } },
       "Order Type" => { format: { pattern_fg_color: :silver, pattern: 1 } },
@@ -165,7 +167,11 @@ class WipSchedule
 
     airtable_app_id = sheet[0,0]
 
-    # raise error if app id invalid
+    # Makes sure the airtable app id does exist in our custom list
+    list_cell = Refinery::CustomLists::ListCell.
+        joins(:list_row).
+        where(list_rows: {custom_list_id: custom_list.id}, list_column_id: airtable_app_column.id).
+        find_by_value!(CUSTOM_LIST_TITLE)
 
     client = Airtable::Client.new(ENV['AIRTABLE_KEY'])
     table = client.table(airtable_app_id, AT_ORDER_SHEET)
@@ -190,10 +196,26 @@ class WipSchedule
       end
     end
 
+    # If we got all the way here, we assume it was okay and flag that we received an update today
+    updated_at_cell = list_cell.list_row.list_cells.find_by_list_column_id!(last_updated_at_column.id)
+    updated_at_cell.update_attributes(value: Date.today)
+
     @msgs
 
   rescue StandardError => e
     @msgs << e.message
+  end
+
+  def custom_list
+    @custom_list ||= Refinery::CustomLists::CustomList.find_by_title!(CUSTOM_LIST_TITLE)
+  end
+
+  def airtable_app_column
+    @airtable_app_column ||= custom_list.list_columns.find_by_title!('Airtable App Id')
+  end
+
+  def last_updated_at_column
+    @last_updated_at_column ||= custom_list.list_columns.find_by_title!('Last Updated At')
   end
 
 end
