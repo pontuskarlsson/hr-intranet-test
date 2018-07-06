@@ -167,7 +167,7 @@ class WipSchedule
     list_cell = Refinery::CustomLists::ListCell.
         joins(:list_row).
         where(refinery_custom_lists_list_rows: {custom_list_id: custom_list.id}, list_column_id: airtable_app_column.id).
-        find_by_value!(CUSTOM_LIST_TITLE)
+        find_by_value!(airtable_app_id)
 
     client = Airtable::Client.new(ENV['AIRTABLE_KEY'])
     table = client.table(airtable_app_id, AT_ORDER_SHEET)
