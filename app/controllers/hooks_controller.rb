@@ -5,6 +5,40 @@ class HooksController < ApplicationController
   skip_before_filter :verify_authenticity_token, :authenticate_refinery_user!
 
   def catch
+    if @webhook == 'qc'
+      parse_qc
+    elsif @webhook == 'wip'
+      parse_wip
+    end
+
+  rescue RangeError => e
+    ErrorMailer.schedule_error_email(e, params).deliver
+    render text: 'failed', status: '400'
+
+  rescue StandardError => e
+    ErrorMailer.schedule_error_email(e, params).deliver
+    render text: 'failed', status: '400'
+  end
+
+  protected
+
+  def verify_hook
+    if params[:webhook_key] == ENV['WEBHOOK_SCHEDULE_KEY']
+      @webhook = 'qc'
+
+    elsif params[:webhook_key] == ENV['WEBHOOK_WIP_KEY']
+      @webhook = 'wip'
+
+    else
+      render nothing: true, status: :not_found
+    end
+  end
+
+  def payload_params
+    params.to_unsafe_hash.except('controller', 'action', 'webhook_key')
+  end
+
+  def parse_qc
     ActiveRecord::Base.transaction do
       @xlsx = Roo::Excelx.new(params[:file].tempfile.path, file_warning: :ignore)
       sheet = @xlsx.sheet('SCHEDULE')
@@ -57,7 +91,7 @@ class HooksController < ApplicationController
           title = "#{name}: #{details[:client]}"
           excerpt = "#{details[:client]} @ #{details[:factory]} #{details[:project].present? ? "(#{details[:project]})" : ''}"
           description = "#{name} doing inspections at #{details[:factory]}#{details[:supplier].present? ? " (#{details[:supplier]})" : ''} for the client #{details[:client]}. " <<
-          "PO: #{details[:po]}, Styles: #{details[:styles]}"
+              "PO: #{details[:po]}, Styles: #{details[:styles]}"
 
           if (event = events.detect { |e| e.title == title && e.starts_at.to_date == date }).present?
             updated << event.id
@@ -93,26 +127,10 @@ class HooksController < ApplicationController
 
       render text: 'success', status: :ok
     end
-
-  rescue RangeError => e
-    ErrorMailer.schedule_error_email(e, params).deliver
-    render text: 'failed', status: '400'
-
-  rescue StandardError => e
-    ErrorMailer.schedule_error_email(e, params).deliver
-    render text: 'failed', status: '400'
   end
 
-  protected
-
-  def verify_hook
-    if params[:webhook_key] != ENV['WEBHOOK_SCHEDULE_KEY']
-      render nothing: true, status: :not_found
-    end
-  end
-
-  def payload_params
-    params.to_unsafe_hash.except('controller', 'action', 'webhook_key')
+  def parse_wip
+    ErrorMailer.schedule_notification_email(['At least it triggered'], params).deliver
   end
 
 end

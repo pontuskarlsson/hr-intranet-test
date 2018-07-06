@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/Airtable/airtable-ruby
+  revision: 041a8baf8ae59279630912d6ff329faa64398cb2
+  specs:
+    airtable (0.1.1)
+      activesupport (>= 3.0)
+      httparty (~> 0.14.0)
+
 PATH
   remote: vendor/extensions
   specs:
@@ -181,6 +189,8 @@ GEM
     hashie (3.5.7)
     hike (1.2.3)
     hiredis (0.4.5)
+    httparty (0.14.0)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     ice_nine (0.11.1)
     inflecto (0.0.2)
@@ -198,6 +208,7 @@ GEM
     mime-types (1.25.1)
     mini_portile2 (2.1.0)
     multi_json (1.12.1)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     mysql2 (0.3.16)
     net-scp (1.2.1)
@@ -318,6 +329,7 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.4)
+    ruby-ole (1.2.12.1)
     rubyzip (1.2.1)
     sass (3.2.13)
     sass-rails (3.2.6)
@@ -333,6 +345,8 @@ GEM
       jwt (~> 1.0)
       multi_json (~> 1.10)
     slop (3.6.0)
+    spreadsheet (1.1.7)
+      ruby-ole (>= 1.0)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -370,6 +384,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airtable!
   coffee-rails (~> 3.2.1)
   daemons
   delayed_job (~> 3.0.5)
@@ -400,6 +415,7 @@ DEPENDENCIES
   rspec-rails (~> 3.0.0)
   sass (= 3.2.13)
   sass-rails (~> 3.2.3)
+  spreadsheet
   trans_forms!
   uglifier (>= 1.0.3)
   xeroizer (~> 2.16)

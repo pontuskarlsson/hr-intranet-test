@@ -5,6 +5,11 @@ class ErrorMailer < ApplicationMailer
     mail(to: 'daniel@happyrabbit.com', subject: 'An error occoured on the Intranet')
   end
 
+  def notification_email(msgs)
+    @msgs = msgs
+    mail(to: 'daniel@happyrabbit.com', subject: 'Intranet: Notification')
+  end
+
   def schedule_error_email(error, params)
     @error = error
     @params = params

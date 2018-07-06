@@ -81,3 +81,5 @@ end
 gem 'xeroizer', '~> 2.16'
 
 gem 'roo', '~> 2.7.0'
+gem 'spreadsheet'
+gem 'airtable', git: 'https://github.com/Airtable/airtable-ruby'
