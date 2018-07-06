@@ -5,41 +5,35 @@ namespace :hr_intranet do
       begin
         msgs = []
 
-        list = WipSchedule.custom_list
+        wip_schedule = WipSchedule.new
+        list = wip_schedule.custom_list
 
-        if list.nil?
-          msgs << 'Could not find a list called "WIP Schedule".'
+        list.list_rows.includes(list_cells: :list_column).each do |list_row|
 
-        else
-          list.list_rows.includes(list_cells: :list_column).each do |list_row|
+          # Building up a Hash with the following structure
+          #
+          # data = {
+          #     'Airtable App Id' => 'app12345',
+          #     'Recipients' => 'john@doe.com'
+          # }
+          #
+          data = list_row.list_cells.inject({}) { |acc, list_cell|
+            acc.merge(list_cell.list_column.title => list_cell.value)
+          }
 
-            # Building up a Hash with the following structure
-            #
-            # data = {
-            #     'Airtable App Id' => 'app12345',
-            #     'Recipients' => 'john@doe.com'
-            # }
-            #
-            data = list_row.list_cells.inject({}) { |acc, list_cell|
-              acc.merge(list_cell.list_column.title => list_cell.value)
-            }
+          if data['Status'] == 'Open'
 
-            if data['Status'] == 'Open'
+            # Create an excel file based on the airtable orders
+            book = wip_schedule.create_workbook_from(data['Airtable App Id'])
 
-              wip_schedule = WipSchedule.new
+            # Save the file
+            @path = File.join(ENV['AIRTABLE_TMP_DIR'], "#{data['Description']}-#{Date.today.to_s}.xls".gsub(/[^0-9A-Za-z.\-]/, '_').gsub(/[_]+/, '_'))
+            book.write(@path)
 
-              # Create an excel file based on the airtable orders
-              book = wip_schedule.create_workbook_from(data['Airtable App Id'])
+            HappyRabbitMailer.wip_schedule_email(data, @path).deliver
 
-              # Save the file
-              @path = File.join(ENV['AIRTABLE_TMP_DIR'], "#{data['Description']}-#{Date.today.to_s}.xls".gsub(/[^0-9A-Za-z.\-]/, '_').gsub(/[_]+/, '_'))
-              book.write(@path)
-
-              HappyRabbitMailer.wip_schedule_email(data, @path).deliver
-
-              if msgs.any?
-                msgs << "The above came from the Airtable #{data['Airtable App Id']}."
-              end
+            if msgs.any?
+              msgs << "The above came from the Airtable #{data['Airtable App Id']}."
             end
           end
         end
