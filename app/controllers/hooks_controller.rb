@@ -14,11 +14,11 @@ class HooksController < ApplicationController
     render text: 'success', status: :ok
 
   rescue RangeError => e
-    ErrorMailer.schedule_error_email(e, params).deliver
+    ErrorMailer.webhook_error_email(e, params).deliver
     render text: 'failed', status: '400'
 
   rescue StandardError => e
-    ErrorMailer.schedule_error_email(e, params).deliver
+    ErrorMailer.webhook_error_email(e, params).deliver
     render text: 'failed', status: '400'
   end
 

@@ -166,7 +166,7 @@ class WipSchedule
     # Makes sure the airtable app id does exist in our custom list
     list_cell = Refinery::CustomLists::ListCell.
         joins(:list_row).
-        where(list_rows: {custom_list_id: custom_list.id}, list_column_id: airtable_app_column.id).
+        where(refinery_custom_lists_list_rows: {custom_list_id: custom_list.id}, list_column_id: airtable_app_column.id).
         find_by_value!(CUSTOM_LIST_TITLE)
 
     client = Airtable::Client.new(ENV['AIRTABLE_KEY'])
