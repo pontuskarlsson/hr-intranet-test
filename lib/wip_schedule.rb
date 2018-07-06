@@ -141,6 +141,8 @@ class WipSchedule
       end
     end
 
+    sheet1[0,0] = airtable_app_id
+
     # Set column settings last, otherwise they seem to be ignored
     COLUMNS.each_pair.each_with_index do |(column, options), column_i|
       sheet1[0, column_i] = column
