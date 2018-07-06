@@ -124,7 +124,7 @@ class HooksController < ApplicationController
     ActiveRecord::Base.transaction do
       wip_schedule = WipSchedule.new
 
-      msgs = WipSchedule.update_wip_orders params[:file].tempfile.path
+      msgs = wip_schedule.update_wip_orders params[:file].tempfile.path
 
       if msgs.any?
         ErrorMailer.wip_notification_email(msgs, params).deliver
