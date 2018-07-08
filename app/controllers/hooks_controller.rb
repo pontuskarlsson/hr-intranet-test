@@ -43,9 +43,18 @@ class HooksController < ApplicationController
   def parse_qc
     ActiveRecord::Base.transaction do
       @xlsx = Roo::Excelx.new(params[:file].tempfile.path, file_warning: :ignore)
-      sheet = @xlsx.sheet('Orders')
+      sheet = @xlsx.sheet('SCHEDULE')
+
+      calendar = ::Refinery::Calendar::Calendar.find_or_create_by_function!(CALENDAR_FUNCTION, {
+          title: 'QC Schedule',
+          private: false,
+          activate_on_create: true,
+          default_rgb_code: '00ccff'
+      })
 
       msgs = []
+      names = []
+      dates = {}
 
       benchmark = Date.today - 30.days
 
