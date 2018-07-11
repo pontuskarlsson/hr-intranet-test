@@ -18,7 +18,7 @@ namespace :hr_intranet do
             @path = File.join(ENV['AIRTABLE_TMP_DIR'], "#{row['Description']}-#{Date.today.to_s}.xls".gsub(/[^0-9A-Za-z.\-]/, '_').gsub(/[_]+/, '_'))
             book.write(@path)
 
-            HappyRabbitMailer.wip_schedule_email(row, @path).deliver
+#            HappyRabbitMailer.wip_schedule_email(row, @path).deliver
 
             if msgs.any?
               msgs << "The above came from the Airtable #{row['Airtable App Id']}."

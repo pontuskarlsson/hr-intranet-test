@@ -90,14 +90,6 @@ class WipSchedule
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet name: ORDER_WORKSHEET
 
-    # Add column headers and set column formats
-    COLUMNS.each_pair.each_with_index do |(column, options), column_i|
-      sheet1[0, column_i] = column
-      if options[:format]
-        sheet1.format_column column_i, Spreadsheet::Format.new(options[:format])
-      end
-    end
-
     # Load data from Airtable
     client = Airtable::Client.new(ENV['AIRTABLE_KEY'])
     orders = client.table(airtable_app_id, AT_ORDER_SHEET).all(view: AT_WIP_VIEW)
@@ -151,6 +143,9 @@ class WipSchedule
         options[:column].each_pair do |k ,v|
           sheet1.column(column_i).send("#{k}=", v)
         end
+      end
+      if options[:format]
+        sheet1.format_column column_i, Spreadsheet::Format.new(options[:format])
       end
     end
 
