@@ -90,12 +90,8 @@ class WipSchedule
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet name: ORDER_WORKSHEET
 
-    # Load data from Airtable
-    client = Airtable::Client.new(ENV['AIRTABLE_KEY'])
-    orders = client.table(airtable_app_id, AT_ORDER_SHEET).all(view: AT_WIP_VIEW)
-
     # Add order data
-    orders.select { |order| filter.blank? || order['Supplier'][0] == filter }.each_with_index do |order, order_i|
+    airtable_orders_for(airtable_app_id, filter).each_with_index do |order, order_i|
       COLUMNS.each_pair.each_with_index do |(column, options), column_i|
         if order[column].is_a? Array
           sheet1[order_i+1, column_i] = order[column].join(', ')
@@ -168,9 +164,9 @@ class WipSchedule
         where(refinery_custom_lists_list_rows: {custom_list_id: custom_list.id}, list_column_id: airtable_app_column.id).
         find_by_value!(airtable_app_id)
 
-    client = Airtable::Client.new(ENV['AIRTABLE_KEY'])
-    table = client.table(airtable_app_id, AT_ORDER_SHEET)
-    orders = table.all(view: AT_WIP_VIEW)
+    row_data = list_cell.list_row.data_for(custom_list.list_columns)
+
+    orders = airtable_orders_for(airtable_app_id, row_data['Filter'])
 
     if orders.empty?
       raise "Could not find any orders in the Airtable app #{airtable_app_id}."
@@ -192,7 +188,7 @@ class WipSchedule
             changed_fields['Comments At'] = Date.today.to_s
           end
           @msgs << "Order #{order["HR PO#"]} was updated with: #{changed_fields.map { |k,v| "#{k}: #{v}" }.join(', ')}"
-          table.update_record_fields(order.id, changed_fields)
+          wip_airtable(airtable_app_id).update_record_fields(order.id, changed_fields)
         end
 
         if excel_order["Act: Ex. Fact."].blank?
@@ -210,7 +206,7 @@ class WipSchedule
     updated_at_cell.update_attributes(value: Date.today)
 
     if all_shipped
-      description = list_cell.list_row.data_for(custom_list.list_columns)['Description']
+      description = row_data['Description']
       @msgs << "All orders have been shipped for #{description}."
       updated_at_cell = list_cell.list_row.list_cells.find_by_list_column_id!(status_column.id)
       updated_at_cell.update_attributes(value: 'All Shipped')
@@ -238,6 +234,17 @@ class WipSchedule
 
   def status_column
     @status_column ||= custom_list.list_columns.find_by_title!('Status')
+  end
+
+  def airtable_orders_for(airtable_app_id, filter)
+    orders = wip_airtable(airtable_app_id).all(view: AT_WIP_VIEW)
+
+    # Add order data
+    orders.select { |order| filter.blank? || order['Supplier'][0] == filter }
+  end
+
+  def wip_airtable(airtable_app_id)
+    @table ||= Airtable::Client.new(ENV['AIRTABLE_KEY']).table(airtable_app_id, AT_ORDER_SHEET)
   end
 
 end
