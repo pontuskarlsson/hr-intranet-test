@@ -6,4 +6,20 @@ class HappyRabbitMailer < ApplicationMailer
     mail(from: 'wip_status@happyrabbit.com', to: data['Recipients'], subject: "WIP Status update: #{data['Description']}")
   end
 
+  def services_notification_email(msgs)
+    @msgs = msgs
+    mail(to: emails_for_role('Services'), subject: "Services Notification - #{Date.today.to_s}")
+  end
+
+  protected
+
+  def emails_for_role(title)
+    role = Refinery::Role.find_by_title(title)
+    if role.present?
+      role.users.pluck(:email).join(', ')
+    else
+      ''
+    end
+  end
+
 end

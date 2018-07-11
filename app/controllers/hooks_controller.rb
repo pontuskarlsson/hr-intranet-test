@@ -133,10 +133,10 @@ class HooksController < ApplicationController
     ActiveRecord::Base.transaction do
       wip_schedule = WipSchedule.new
 
-      msgs = wip_schedule.update_wip_orders params[:file].tempfile.path
+      msgs = wip_schedule.update_wip_orders params
 
       if msgs.any?
-        ErrorMailer.webhook_notification_email(msgs, params).deliver
+        HappyRabbitMailer.services_notification_email(msgs).deliver
       end
     end
   end

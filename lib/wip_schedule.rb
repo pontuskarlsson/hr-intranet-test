@@ -153,7 +153,8 @@ class WipSchedule
   end
 
 
-  def update_wip_orders(filename)
+  def update_wip_orders(params)
+    filename = params[:file].tempfile.path
     book = Spreadsheet.open filename
     sheet = book.worksheet ORDER_WORKSHEET
 
@@ -170,6 +171,12 @@ class WipSchedule
     client = Airtable::Client.new(ENV['AIRTABLE_KEY'])
     table = client.table(airtable_app_id, AT_ORDER_SHEET)
     orders = table.all(view: AT_WIP_VIEW)
+
+    if orders.empty?
+      raise "Could not find any orders in the Airtable app #{airtable_app_id}."
+    end
+
+    all_shipped = true
 
     orders.each do |order|
       if (excel_order = sheet.rows.detect { |row| row[0] == order['id'] }).present?
@@ -188,7 +195,12 @@ class WipSchedule
           table.update_record_fields(order.id, changed_fields)
         end
 
+        if excel_order["Act: Ex. Fact."].blank?
+          all_shipped = false
+        end
+
       else
+        all_shipped = false
         @msgs << "Could not find the order #{order["HR PO#"]} in the excel file."
       end
     end
@@ -197,10 +209,19 @@ class WipSchedule
     updated_at_cell = list_cell.list_row.list_cells.find_by_list_column_id!(last_updated_at_column.id)
     updated_at_cell.update_attributes(value: Date.today)
 
+    if all_shipped
+      description = list_cell.list_row.data_for(custom_list.list_columns)['Description']
+      @msgs << "All orders have been shipped for #{description}."
+      updated_at_cell = list_cell.list_row.list_cells.find_by_list_column_id!(status_column.id)
+      updated_at_cell.update_attributes(value: 'All Shipped')
+    end
+
     @msgs
 
   rescue StandardError => e
     @msgs << e.message
+    ErrorMailer.webhook_notification_email(@msgs, params).deliver
+    []
   end
 
   def custom_list
@@ -213,6 +234,10 @@ class WipSchedule
 
   def last_updated_at_column
     @last_updated_at_column ||= custom_list.list_columns.find_by_title!('Last Updated At')
+  end
+
+  def status_column
+    @status_column ||= custom_list.list_columns.find_by_title!('Status')
   end
 
 end

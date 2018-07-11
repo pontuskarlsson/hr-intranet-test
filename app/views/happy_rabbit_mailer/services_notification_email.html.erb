@@ -1,0 +1,8 @@
+<h2>Services Notification - <%= Date.today.to_s %></h2>
+<p>The notification message is:</p>
+
+<ul>
+  <% @msgs.each do |msg| %>
+    <li><%= msg %></li>
+  <% end %>
+</ul>
