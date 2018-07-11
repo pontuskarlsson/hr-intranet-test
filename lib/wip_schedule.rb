@@ -109,9 +109,7 @@ class WipSchedule
             sheet1.row(order_i+1).set_format(column_i, Spreadsheet::Format.new((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
           end
 
-        elsif column == 'Orig: Ex. Fact.'
-          # Ignore the Orig: Ex. Fact. because it is read only
-        elsif column[/^Orig: /]
+        elsif ["Orig: Trims In-House", "Orig: Fabric In-House"].include?(column)
           value = order[column]
           if value.blank?
             sheet1.row(order_i+1).set_format(column_i, Spreadsheet::Format.new((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
