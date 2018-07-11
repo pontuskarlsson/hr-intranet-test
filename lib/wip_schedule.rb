@@ -15,36 +15,37 @@ class WipSchedule
       "HR PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Ship To" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
 
-      "Req. Ex. Fact. Date" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "1st Conf. Ex. Fact. Date" => {},
+      "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "1st Conf. Ex. Fact. Date" => { column: { width: '15' } },
 
-      "Orig: Trims In-House" => {},
-      "Upd: Trims In-House" => {},
-      "Act: Trims In-House" => {},
+      "Orig: Trims In-House" => { column: { width: '15' } },
+      "Upd: Trims In-House" => { column: { width: '15' } },
+      "Act: Trims In-House" => { column: { width: '15' } },
 
-      "Orig: Fabric In-House" => {},
-      "Upd: Fabric In-House" => {},
-      "Act: Fabric In-House" => {},
+      "Orig: Fabric In-House" => { column: { width: '15' } },
+      "Upd: Fabric In-House" => { column: { width: '15' } },
+      "Act: Fabric In-House" => { column: { width: '15' } },
 
-      "Orig: Cutting Complete" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Cutting Complete" => {},
-      "Act: Cutting Complete" => {},
+      "Orig: Cutting Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Upd: Cutting Complete" => { column: { width: '15' } },
+      "Act: Cutting Complete" => { column: { width: '15' } },
 
-      "Orig: Sewing Complete" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Sewing Complete" => {},
-      "Act: Sewing Complete" => {},
+      "Orig: Sewing Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Upd: Sewing Complete" => { column: { width: '15' } },
+      "Act: Sewing Complete" => { column: { width: '15' } },
 
-      "Orig: Final Inspection" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Final Inspection" => {},
-      "Act: Final Inspection" => {},
+      "Orig: Final Inspection" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Upd: Final Inspection" => { column: { width: '15' } },
+      "Act: Final Inspection" => { column: { width: '15' } },
 
-      "Orig: Shipment Sample Sent" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Shipment Sample Sent" => {},
-      "Act: Shipment Sample Sent" => {},
+      "Orig: Shipment Sample Sent" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Upd: Shipment Sample Sent" => { column: { width: '15' } },
+      "Act: Shipment Sample Sent" => { column: { width: '15' } },
 
-      "Orig: Ex. Fact." => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Ex. Fact." => {},
-      "Act: Ex. Fact." => {}
+      "Orig: Ex. Fact." => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Upd: Ex. Fact." => { column: { width: '15' } },
+      "Act: Ex. Fact." => { column: { width: '15' } },
+      "Comments" => { column: { width: '30' } },
   }.freeze
 
   ALLOW_UPDATES = [
@@ -71,7 +72,9 @@ class WipSchedule
       "Act: Shipment Sample Sent",
 
       "Upd: Ex. Fact.",
-      "Act: Ex. Fact."
+      "Act: Ex. Fact.",
+
+      "Comments"
   ]
 
   ORDER_WORKSHEET = 'Orders'
@@ -83,7 +86,7 @@ class WipSchedule
 
   end
 
-  def create_workbook_from(airtable_app_id)
+  def create_workbook_from(airtable_app_id, filter)
     book = Spreadsheet::Workbook.new
     sheet1 = book.create_worksheet name: ORDER_WORKSHEET
 
@@ -100,7 +103,7 @@ class WipSchedule
     orders = client.table(airtable_app_id, AT_ORDER_SHEET).all(view: AT_WIP_VIEW)
 
     # Add order data
-    orders.each_with_index do |order, order_i|
+    orders.select { |order| filter.blank? || order['Supplier'][0] == filter }.each_with_index do |order, order_i|
       COLUMNS.each_pair.each_with_index do |(column, options), column_i|
         if order[column].is_a? Array
           sheet1[order_i+1, column_i] = order[column].join(', ')
@@ -185,6 +188,9 @@ class WipSchedule
           end
         end
         if changed_fields.any?
+          if changed_fields['Comments']
+            changed_fields['Comments At'] = Date.today.to_s
+          end
           @msgs << "Order #{order["HR PO#"]} was updated with: #{changed_fields.map { |k,v| "#{k}: #{v}" }.join(', ')}"
           table.update_record_fields(order.id, changed_fields)
         end

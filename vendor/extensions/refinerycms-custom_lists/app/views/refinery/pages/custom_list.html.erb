@@ -5,7 +5,7 @@
       <h1><%= custom_list.title %></h1>
       <%= form_for ::Refinery::CustomLists::ListRowCreator.new, url: refinery.custom_lists_custom_list_list_rows_path(custom_list) do |f| %>
         <%= hidden_field_tag :originating_page_id, @page.id %>
-        <table>
+        <table class="refinery-custom-list">
           <thead>
           <tr>
             <% custom_list.list_columns.each do |list_column| %>
@@ -15,14 +15,13 @@
           </tr>
           </thead>
           <tbody>
-          <% custom_list.list_rows.includes(:list_cells).each do |list_row| %>
+          <% custom_list.data.each do |row| %>
             <tr>
               <% custom_list.list_columns.each do |list_column| %>
-                <%- list_cell = list_row.cell_for_column(list_column) -%>
-                <td><%= list_cell.value %></td>
+                <td><%= row[list_column.title] %></td>
               <% end %>
               <td>
-                <%= link_to 'Edit', refinery.edit_custom_lists_custom_list_list_row_path(custom_list, list_row, originating_page_id: @page.id) %>
+                <%= link_to 'Edit', refinery.edit_custom_lists_custom_list_list_row_path(custom_list, row['list_row_id'], originating_page_id: @page.id) %>
               </td>
             </tr>
           <% end %>

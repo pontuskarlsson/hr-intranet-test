@@ -14,6 +14,15 @@ module Refinery
         list_cells.detect { |list_cell| list_cell.list_column_id == list_column.id }
       end
 
+      def data_for(list_columns)
+        list_columns.inject({'list_row_id' => id}) { |acc, list_column|
+          unless (list_cell = list_cells.detect { |lc| lc.list_column_id == list_column.id })
+            list_cell = list_cells.create(list_column_id: list_column.id)
+          end
+          acc.merge(list_column.title => list_cell.value)
+        }
+      end
+
     end
   end
 end

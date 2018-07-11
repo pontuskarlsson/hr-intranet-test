@@ -14,7 +14,7 @@
       <tbody>
       <tr>
         <% @custom_list.list_columns.each_with_index do |list_column, i| %>
-          <%- list_cell = @list_row.cell_for_column(list_column) -%>
+          <%- list_cell = @list_row.cell_for_column(list_column) || Refinery::CustomLists::ListCell.new(list_column_id: list_column.id) -%>
           <%= f.fields_for :list_cells, list_cell, child_index: i do |cell_form| %>
             <%= cell_form.hidden_field :list_column_id %>
             <td><%= cell_form.text_field :value %></td>

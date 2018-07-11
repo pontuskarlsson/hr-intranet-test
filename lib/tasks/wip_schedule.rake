@@ -8,32 +8,20 @@ namespace :hr_intranet do
         wip_schedule = WipSchedule.new
         list = wip_schedule.custom_list
 
-        list.list_rows.includes(list_cells: :list_column).each do |list_row|
-
-          # Building up a Hash with the following structure
-          #
-          # data = {
-          #     'Airtable App Id' => 'app12345',
-          #     'Recipients' => 'john@doe.com'
-          # }
-          #
-          data = list_row.list_cells.inject({}) { |acc, list_cell|
-            acc.merge(list_cell.list_column.title => list_cell.value)
-          }
-
-          if data['Status'] == 'Open'
+        list.data.each do |row|
+          if row['Status'] == 'Open'
 
             # Create an excel file based on the airtable orders
-            book = wip_schedule.create_workbook_from(data['Airtable App Id'])
+            book = wip_schedule.create_workbook_from(row['Airtable App Id'], row['Filter'])
 
             # Save the file
-            @path = File.join(ENV['AIRTABLE_TMP_DIR'], "#{data['Description']}-#{Date.today.to_s}.xls".gsub(/[^0-9A-Za-z.\-]/, '_').gsub(/[_]+/, '_'))
+            @path = File.join(ENV['AIRTABLE_TMP_DIR'], "#{row['Description']}-#{Date.today.to_s}.xls".gsub(/[^0-9A-Za-z.\-]/, '_').gsub(/[_]+/, '_'))
             book.write(@path)
 
-            HappyRabbitMailer.wip_schedule_email(data, @path).deliver
+            HappyRabbitMailer.wip_schedule_email(row, @path).deliver
 
             if msgs.any?
-              msgs << "The above came from the Airtable #{data['Airtable App Id']}."
+              msgs << "The above came from the Airtable #{row['Airtable App Id']}."
             end
           end
         end
