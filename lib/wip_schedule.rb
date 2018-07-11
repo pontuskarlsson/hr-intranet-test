@@ -191,7 +191,7 @@ class WipSchedule
           wip_airtable(airtable_app_id).update_record_fields(order.id, changed_fields)
         end
 
-        if excel_order["Act: Ex. Fact."].blank?
+        if excel_order[COLUMNS.keys.index("Act: Ex. Fact.")].blank?
           all_shipped = false
         end
 
