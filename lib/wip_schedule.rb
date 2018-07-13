@@ -186,8 +186,8 @@ class WipSchedule
               # Will raise an error if the value is not a date (and column is not Comments)
               column_value.to_date if column_value.present? && col != 'Comments'
 
-              order[col] = column_value
-              changed_fields[col] = column_value
+              #order[col] = column_value.blank? ? nil : column_value
+              changed_fields[col] = column_value.blank? ? nil : column_value
             rescue StandardError => e
               @msgs << "The column \"#{col}\" has an invalid value: #{column_value}"
             end
@@ -197,8 +197,12 @@ class WipSchedule
           if changed_fields['Comments']
             changed_fields['Comments At'] = Date.today.to_s
           end
-          @msgs << "Order #{order["HR PO#"]} was updated with: #{changed_fields.map { |k,v| "#{k}: #{v}" }.join(', ')}"
-          wip_airtable(airtable_app_id).update_record_fields(order.id, changed_fields)
+          begin
+            wip_airtable(airtable_app_id).update_record_fields(order.id, changed_fields)
+            @msgs << "Order #{order["HR PO#"]} was updated with: #{changed_fields.map { |k,v| "#{k}: #{v}" }.join(', ')}"
+          rescue StandardError => e
+            @msgs << "Failed to update the order #{order["HR PO#"]} with: #{changed_fields.map { |k,v| "#{k}: #{v}" }.join(', ')}, reason: #{e.message}"
+          end
         end
 
         if excel_order[COLUMNS.keys.index("Act: Ex. Fact.")].blank?
