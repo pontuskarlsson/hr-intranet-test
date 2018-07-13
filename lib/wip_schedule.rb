@@ -17,6 +17,7 @@ class WipSchedule
 
       "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "1st Conf. Ex. Fact. Date" => { column: { width: '15' } },
+      "Re-Negoti. Ex. Fact. Date" => { column: { width: '15' } },
 
       "Orig: Trims In-House" => { column: { width: '15' } },
       "Upd: Trims In-House" => { column: { width: '15' } },
@@ -50,6 +51,7 @@ class WipSchedule
 
   ALLOW_UPDATES = [
       "1st Conf. Ex. Fact. Date",
+      "Re-Negoti. Ex. Fact. Date",
 
       "Orig: Trims In-House",
       "Upd: Trims In-House",
@@ -178,9 +180,17 @@ class WipSchedule
       if (excel_order = sheet.rows.detect { |row| row[0] == order['id'] }).present?
         changed_fields = {}
         ALLOW_UPDATES.each do |col|
-          if order[col].to_s != excel_order[COLUMNS.keys.index(col)].to_s
-            order[col] = excel_order[COLUMNS.keys.index(col)].to_s
-            changed_fields[col] = excel_order[COLUMNS.keys.index(col)].to_s
+          column_value = excel_order[COLUMNS.keys.index(col)].to_s
+          if order[col].to_s != column_value
+            begin
+              # Will raise an error if the value is not a date (and column is not Comments)
+              column_value.to_date if column_value.present? && col != 'Comments'
+
+              order[col] = column_value
+              changed_fields[col] = column_value
+            rescue StandardError => e
+              @msgs << "The column \"#{col}\" has an invalid value: #{column_value}"
+            end
           end
         end
         if changed_fields.any?
