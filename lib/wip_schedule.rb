@@ -258,7 +258,8 @@ class WipSchedule
   end
 
   def wip_airtable(airtable_app_id)
-    @table ||= Airtable::Client.new(ENV['AIRTABLE_KEY']).table(airtable_app_id, AT_ORDER_SHEET)
+    @wip_airtables ||= {}
+    @wip_airtables[airtable_app_id] ||= Airtable::Client.new(ENV['AIRTABLE_KEY']).table(airtable_app_id, AT_ORDER_SHEET)
   end
 
 end
