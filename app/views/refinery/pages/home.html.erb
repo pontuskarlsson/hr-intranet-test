@@ -110,7 +110,7 @@
       </section>
     <% end %>
 
-    <% if (employees = Refinery::Employees::Employee.upcoming_birthdays).any? %>
+    <% if (employees = Refinery::Employees::Employee.current.upcoming_birthdays).any? %>
       <section class="page-part">
         <div class="page-part-header">
           BIRTHDAYS
