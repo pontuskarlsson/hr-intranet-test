@@ -28,7 +28,7 @@
       <% end %>
     <% else %>
       <div class="medium-3 columns">
-        <%= link_to 'Submitted', '#', class: 'button round tiny disabled' %>
+        <%= link_to @xero_expense_claim.status.capitalize, '#', class: 'button round tiny disabled' %>
       </div>
       <div class="medium-6 columns">
         <%= link_to 'Cannot Delete a submitted claim', '#', class: 'button alert tiny disabled' %>
