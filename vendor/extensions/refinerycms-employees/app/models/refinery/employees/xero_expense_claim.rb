@@ -4,12 +4,13 @@ module Refinery
       self.table_name = 'refinery_xero_expense_claims'
 
       STATUS_NOT_SUBMITTED  = 'NOT-SUBMITTED' # Not represented in Xero
+      STATUS_SUBMITTING     = 'SUBMITTING' # Not represented in Xero, indicating that a background job has been queued
       STATUS_SUBMITTED      = 'SUBMITTED'
       STATUS_AUTHORISED     = 'AUTHORISED'
       STATUS_PAID           = 'PAID'
       STATUS_DELETED        = 'DELETED'
       STATUS_VOIDED         = 'VOIDED'
-      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED, STATUS_VOIDED]
+      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTING, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED, STATUS_VOIDED]
 
       belongs_to :added_by,                     class_name: '::Refinery::User'
       belongs_to :employee
@@ -52,6 +53,18 @@ module Refinery
 
       def date
         updated_date_utc || updated_at
+      end
+
+      def submit!
+        self.class.transaction do
+          # Triggers a background job
+          ::Refinery::Employees::XeroSubmitJob.new(id).submit
+
+          self.status = STATUS_SUBMITTING
+          save!
+        end
+      rescue ActiveRecord::RecordNotSaved => e
+        false
       end
 
       class << self

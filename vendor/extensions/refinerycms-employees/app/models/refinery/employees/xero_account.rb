@@ -20,6 +20,15 @@ module Refinery
         def featured
           where(featured: true)
         end
+
+        def sync_from_xero!(account)
+          xero_account = find_or_initialize_by_guid(account.account_id)
+          xero_account.account_type = account.type
+          account.attributes.each_pair do |attr, value|
+            xero_account.send("#{attr}=", value) if xero_account.respond_to?("#{attr}=")
+          end
+          xero_account.save!
+        end
       end
 
     end

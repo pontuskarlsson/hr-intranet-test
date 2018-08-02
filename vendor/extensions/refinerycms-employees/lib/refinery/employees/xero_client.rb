@@ -10,27 +10,17 @@ module Refinery
 
       def sync_accounts
         begin
-          # Start with removing XeroAccounts that do not exist in Xero, otherwise we might
-          # validation errors for duplicated names if a new Account has been added with the
-          # same name as a previous Account.
+          # Flag all removed accounts, as inactive.
           ::Refinery::Employees::XeroAccount.
               where('inactive = ? AND guid NOT IN (?)', false, all_accounts.map(&:account_id)<<-1).
               update_all({ inactive: true })
 
-          all_accounts.each do |account|
-            xero_account = ::Refinery::Employees::XeroAccount.find_or_initialize_by_guid(account.account_id)
-            xero_account.account_type = account.type
-            account.attributes.each_pair do |attr, value|
-              xero_account.send("#{attr}=", value) if xero_account.respond_to?("#{attr}=")
-            end
-            xero_account.save!
+          all_accounts.all? do |account|
+            ::Refinery::Employees::XeroAccount.sync_from_xero! account
           end
 
-          true # Returns true if everything went okay
-
         rescue StandardError => e
-          binding.pry if binding.respond_to?(:pry) && Rails.env.development?
-          false # Returns false if something went wrong
+          false
         end
       end
 
@@ -40,27 +30,19 @@ module Refinery
               where('inactive = ? AND guid IS NOT NULL AND guid <> "" AND guid NOT IN (?)', false, all_contacts.map(&:contact_id)<<-1).
               update_all({ inactive: true })
 
-          all_contacts.each do |contact|
-            xero_contact = ::Refinery::Employees::XeroContact.find_or_initialize_by_guid(contact.contact_id)
-            contact.attributes.each_pair do |attr, value|
-              xero_contact.send("#{attr}=", value) if xero_contact.respond_to?("#{attr}=")
-            end
-            xero_contact.save!
+          all_contacts.all? do |contact|
+            ::Refinery::Employees::XeroContact.sync_from_xero! contact
           end
+
         rescue StandardError => e
-          binding.pry if binding.respond_to?(:pry) && Rails.env.development?
+          false
         end
       end
 
       def load_xero_guids
         begin
-          guids = []
-          all_users.each do |user|
-            guids << "#{user.user_id} (#{user.first_name} #{user.last_name})"
-          end
-          guids
+          all_users.map { |user| "#{user.user_id} (#{user.first_name} #{user.last_name})" }
         rescue StandardError => e
-          binding.pry if binding.respond_to?(:pry) && Rails.env.development?
           []
         end
       end

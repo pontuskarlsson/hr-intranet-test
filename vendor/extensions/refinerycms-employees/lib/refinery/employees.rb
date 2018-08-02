@@ -8,6 +8,7 @@ module Refinery
     require 'refinery/employees/configuration'
     require 'refinery/employees/countries'
     require 'refinery/employees/xero_client'
+    require 'refinery/employees/xero_submit_job'
 
     class << self
       attr_writer :root
