@@ -258,7 +258,7 @@ class WipSchedule
     orders = wip_airtable(airtable_app_id).all(view: AT_WIP_VIEW)
 
     # Add order data
-    orders.select { |order| filter.blank? || order['Supplier'][0] == filter }
+    orders.select { |order| order['Order Status'] != 'CANCELLED' && (filter.blank? || order['Supplier'][0] == filter) }
   end
 
   def wip_airtable(airtable_app_id)
