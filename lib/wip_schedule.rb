@@ -199,9 +199,9 @@ class WipSchedule
           end
           begin
             wip_airtable(airtable_app_id).update_record_fields(order.id, changed_fields)
-            @msgs << "Order #{order["HR PO#"]} was updated with: #{changed_fields.map { |k,v| "#{k}: #{v}" }.join(', ')}"
+            @msgs << "Order #{order["HR PO#"]} was updated with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}"
           rescue StandardError => e
-            @msgs << "Failed to update the order #{order["HR PO#"]} with: #{changed_fields.map { |k,v| "#{k}: #{v}" }.join(', ')}, reason: #{e.message}"
+            @msgs << "Failed to update the order #{order["HR PO#"]} with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}\nReason: #{e.message}"
           end
         end
 

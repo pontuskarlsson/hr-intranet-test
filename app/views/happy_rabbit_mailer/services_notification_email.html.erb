@@ -3,6 +3,10 @@
 
 <ul>
   <% @msgs.each do |msg| %>
-    <li><%= msg %></li>
+    <li>
+      <% msg.split("\n").each do |line| %>
+        <p><%= line %></p>
+      <% end %>
+    </li>
   <% end %>
 </ul>
