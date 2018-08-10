@@ -171,7 +171,7 @@ class WipSchedule
     orders = airtable_orders_for(airtable_app_id, row_data['Filter'])
 
     if orders.empty?
-      raise "Could not find any orders in the Airtable app #{airtable_app_id}."
+      raise "Could not find any orders in the Airtable app #{airtable_app_id} for #{row_data['Description']}."
     end
 
     all_shipped = true
@@ -226,7 +226,11 @@ class WipSchedule
       updated_at_cell.update_attributes(value: 'All Shipped')
     end
 
-    @msgs
+    if @msgs.any?
+      @msgs.prepend "WIP Updated for #{row_data['Description']}"
+    else
+      []
+    end
 
   rescue StandardError => e
     @msgs << e.message
