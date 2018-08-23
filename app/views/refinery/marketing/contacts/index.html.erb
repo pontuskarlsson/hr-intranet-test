@@ -71,8 +71,8 @@
             return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>"><i class="fa fa-'+(row.is_organisation ? 'building' : 'user')+'"></i> '+data+'</a>').replace('%%contact_id%%', row.id); }
           },
           { data: "code", "width": '10%' },
-          { data: "email", "width": '20%', "render": function(data, type, row) { return ['<span style="white-space: pre-wrap; word-wrap: break-word;">',data ? data : '','</span>'].join('') } },
-          { data: "phone", "width": '20%', "render": function(data, type, row){
+          { data: "email", "width": '25%', "render": function(data, type, row) { return ['<span style="white-space: pre-wrap; word-wrap: break-word;">',data ? data : '','</span>'].join('') } },
+          { data: "phone", "width": '15%', "render": function(data, type, row){
             if(typeof data == 'undefined' || data === null || data == ''){
               return row.mobile;
             }else{
