@@ -9,6 +9,7 @@
       <th>Email</th>
       <th>Phone</th>
       <th>Country</th>
+      <th>Tags</th>
     </tr>
     </thead>
 
@@ -19,12 +20,13 @@
       <th>Email</th>
       <th>Phone</th>
       <th>Country</th>
+      <th>Tags</th>
     </tr>
     </tfoot>
 
     <tbody>
     <tr>
-      <td colspan="5">Loading, please wait...</td>
+      <td colspan="6">Loading, please wait...</td>
     </tr>
     </tbody>
   </table>
@@ -32,6 +34,24 @@
 
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+
+  <style type="text/css">
+    .tagDT {
+      background-color: rgba(224,234,241,0.57);
+      color: #4e6b82;
+      padding: 3px 4px;
+      border-radius: 2px;
+      margin-right: 2px;
+      margin-top: 3px;
+      font-size: 10px;
+      text-overflow: ellipsis;
+      max-width: 200px;
+      overflow: hidden;
+      white-space: nowrap;
+      display: inline-block;
+      line-height: 1.5em;
+    }
+  </style>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -45,21 +65,36 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         false,
-        "data":           <%= @contacts.to_json(only: [:id, :name, :code, :is_organisation, :organisation_name, :organisation_id, :email, :phone, :mobile, :country]).html_safe %>,
+        "data":           <%= @contacts.to_json(only: [:id, :name, :code, :is_organisation, :organisation_name, :organisation_id, :email, :phone, :mobile, :country, :tags_joined_by_comma]).html_safe %>,
         "columns": [
-          { data: "name", "width": '30%', "render": function(data, type, row) {
+          { data: "name", "width": '20%', "render": function(data, type, row) {
             return ('<a href="<%= refinery.marketing_contact_path('%%contact_id%%') %>"><i class="fa fa-'+(row.is_organisation ? 'building' : 'user')+'"></i> '+data+'</a>').replace('%%contact_id%%', row.id); }
           },
           { data: "code", "width": '10%' },
-          { data: "email" },
-          { data: "phone", "render": function(data, type, row){
+          { data: "email", "width": '20%', "render": function(data, type, row) { return ['<span style="white-space: pre-wrap; word-wrap: break-word;">',data ? data : '','</span>'].join('') } },
+          { data: "phone", "width": '20%', "render": function(data, type, row){
             if(typeof data == 'undefined' || data === null || data == ''){
               return row.mobile;
             }else{
               return data;
             }
           } },
-          { data: "country", "width": '15%' }
+          { data: "country", "width": '15%' },
+          { data: "tags_joined_by_comma", "width": '15%', "render": function(data, type, row) {
+            if (typeof data == 'string') {
+              var tags = data.split(',');
+              var list = [];
+              for (var i = 0; i < tags.length; i++) {
+                // Ignore import tags
+                if (!tags[i].match(/^import/)) {
+                  list.push(['<span class="tagDT">',tags[i],'</span>'].join(''))
+                }
+              }
+              return list.join(' ');
+            } else {
+              return '';
+            }
+          } }
         ]
       }).fnSetFilteringDelay();
     });
