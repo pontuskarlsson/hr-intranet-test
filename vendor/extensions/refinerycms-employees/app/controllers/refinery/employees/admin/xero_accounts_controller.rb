@@ -10,7 +10,8 @@ module Refinery
                 order: 'featured DESC, code ASC'
 
         def sync_accounts
-          if ::Refinery::Employees::XeroClient.new.sync_accounts
+          xero_api_key_file = Refinery::Employees::XeroApiKeyfile.find_by_organisation('Happy Rabbit Limited')
+          if ::Refinery::Employees::XeroClient.new(xero_api_key_file).sync_accounts
             flash[:notice] = 'Xero Accounts successfully synchronised'
           else
             flash[:alert] = 'Something went wrong while synchronising Xero Accounts'

@@ -3,10 +3,13 @@ require 'xeroizer'
 module Refinery
   module Employees
     class XeroClient
-      YOUR_OAUTH_CONSUMER_KEY     = ENV['XERO_CONSUMER_KEY']
-      YOUR_OAUTH_CONSUMER_SECRET  = ENV['XERO_CONSUMER_SECRET']
       YOUR_OAUTH_KEYFILE_PATH     = ENV['XERO_KEYFILE_PATH']
 
+      def initialize(xero_api_key_file)
+        raise 'No Api Key File present' if xero_api_key_file.nil?
+
+        @xero_api_key_file = xero_api_key_file
+      end
 
       def sync_accounts
         begin
@@ -50,7 +53,7 @@ module Refinery
       def client
         @client ||=
           if pem_file_path.present?
-            Xeroizer::PrivateApplication.new(YOUR_OAUTH_CONSUMER_KEY, YOUR_OAUTH_CONSUMER_SECRET, pem_file_path)
+            Xeroizer::PrivateApplication.new(@xero_api_key_file.decrypted_consumer_key, @xero_api_key_file.decrypted_consumer_secret, pem_file_path)
           else
             raise StandardError, 'Pem File missing'
           end
@@ -70,17 +73,13 @@ module Refinery
       end
 
       def pem_file_path
-        @pem_file_path ||=
-            if YOUR_OAUTH_KEYFILE_PATH.present?
-              YOUR_OAUTH_KEYFILE_PATH[0] == '/' ? YOUR_OAUTH_KEYFILE_PATH : File.join(Rails.root, YOUR_OAUTH_KEYFILE_PATH)
-            else
-              if (xero_api_keyfile = ::Refinery::Employees::XeroApiKeyfile.first).present?
-                @pem = Tempfile.new(['privatekey', '.pem'])
-                @pem.write xero_api_keyfile.key_content
-                @pem.rewind
-                @pem.path
-              end
-            end
+        return @pem_file_path if @pem_file_path.present?
+
+        @pem = Tempfile.new(['privatekey', '.pem'])
+        @pem.write @xero_api_key_file.key_content
+        @pem.rewind
+
+        @pem_file_path = @pem.path
       end
 
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180418032515) do
+ActiveRecord::Schema.define(:version => 20180904071111) do
 
   create_table "amqp_messages", :force => true do |t|
     t.string   "queue",       :null => false
@@ -1008,8 +1008,11 @@ ActiveRecord::Schema.define(:version => 20180418032515) do
   create_table "refinery_xero_api_keyfiles", :force => true do |t|
     t.string   "organisation"
     t.text     "key_content"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "consumer_key"
+    t.string   "consumer_secret"
+    t.string   "encryption_key"
   end
 
   add_index "refinery_xero_api_keyfiles", ["organisation"], :name => "index_refinery_xero_api_keyfiles_on_organisation"
