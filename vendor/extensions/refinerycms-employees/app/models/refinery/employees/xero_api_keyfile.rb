@@ -11,54 +11,42 @@ module Refinery
       validates :consumer_secret, presence: true
       validates :encryption_key,  presence: true
 
-      def encrypt_consumer_key=(val)
-        s = encrypt_cipher.update(val) + encrypt_cipher.final
-        self.consumer_key = s.unpack('H*')[0].upcase
+      def encrypt_consumer_key(val)
+        self.consumer_key = encrypt(val)
       end
 
-      def encrypt_consumer_secret=(val)
-        s = encrypt_cipher.update(val) + encrypt_cipher.final
-        self.consumer_secret = s.unpack('H*')[0].upcase
+      def encrypt_consumer_secret(val)
+        self.consumer_secret = encrypt(val)
       end
 
       def decrypt_consumer_key
-        s = [consumer_key].pack("H*").unpack("C*").pack("c*")
-        decrypt_cipher.update(s) + decrypt_cipher.final
+        decrypt consumer_key
       end
 
       def decrypt_consumer_secret
-        s = [consumer_secret].pack("H*").unpack("C*").pack("c*")
-        decrypt_cipher.update(s) + decrypt_cipher.final
+        decrypt consumer_secret
       end
 
       private
 
-      def encrypt_cipher
-        return @encrypt_cipher if @encrypt_cipher.present?
+      def encrypt(plain_text)
+        cipher = OpenSSL::Cipher.new('DES-EDE3-CBC').encrypt
 
-        @encrypt_cipher = OpenSSL::Cipher.new('DES-EDE3-CBC').encrypt
+        self.encryption_key = Digest::SHA1.hexdigest(cipher.random_key) if encryption_key.blank?
+        cipher.key = encryption_key
 
-        if encryption_key.blank?
-          self.encryption_key = @encrypt_cipher.random_key # Also assigns it to @ciper
-        else
-          @encrypt_cipher.key = encryption_key
-        end
-
-        @encrypt_cipher
+        s = cipher.update(plain_text) + cipher.final
+        s.unpack('H*')[0].upcase
       end
 
-      def decrypt_cipher
-        return @decrypt_cipher if @decrypt_cipher.present?
+      def decrypt(cipher_text)
+        cipher = OpenSSL::Cipher.new('DES-EDE3-CBC').decrypt
 
-        @decrypt_cipher = OpenSSL::Cipher.new('DES-EDE3-CBC').decrypt
+        self.encryption_key = Digest::SHA1.hexdigest(cipher.random_key) if encryption_key.blank?
+        cipher.key = encryption_key
 
-        if encryption_key.blank?
-          self.encryption_key = @decrypt_cipher.random_key # Also assigns it to @ciper
-        else
-          @decrypt_cipher.key = encryption_key
-        end
-
-        @decrypt_cipher
+        s = [cipher_text].pack("H*").unpack("C*").pack("c*")
+        cipher.update(s) + cipher.final
       end
 
     end
