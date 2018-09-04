@@ -53,7 +53,7 @@ module Refinery
       def client
         @client ||=
           if pem_file_path.present?
-            Xeroizer::PrivateApplication.new(@xero_api_key_file.decrypted_consumer_key, @xero_api_key_file.decrypted_consumer_secret, pem_file_path)
+            Xeroizer::PrivateApplication.new(@xero_api_key_file.decrypt_consumer_key, @xero_api_key_file.decrypt_consumer_secret, pem_file_path)
           else
             raise StandardError, 'Pem File missing'
           end
