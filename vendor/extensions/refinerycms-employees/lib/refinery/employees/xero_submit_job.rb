@@ -160,9 +160,7 @@ module Refinery
       end
 
       def client
-        @xero_client ||= ::Refinery::Employees::XeroClient.new(
-            Refinery::Employees::XeroApiKeyfile.find_by_organisation('Happy Rabbit Limited')
-        )
+        @xero_client ||= ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited')
         @xero_client.client
       end
 

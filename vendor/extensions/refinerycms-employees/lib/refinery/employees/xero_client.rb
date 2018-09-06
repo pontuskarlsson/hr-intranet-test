@@ -3,12 +3,11 @@ require 'xeroizer'
 module Refinery
   module Employees
     class XeroClient
-      YOUR_OAUTH_KEYFILE_PATH     = ENV['XERO_KEYFILE_PATH']
 
-      def initialize(xero_api_key_file)
-        raise 'No Api Key File present' if xero_api_key_file.nil?
+      def initialize(organisation)
+        @xero_api_key_file = Refinery::Employees::XeroApiKeyfile.find_by_organisation(organisation)
 
-        @xero_api_key_file = xero_api_key_file
+        raise 'Organisation not found' if @xero_api_key_file.nil?
       end
 
       def sync_accounts

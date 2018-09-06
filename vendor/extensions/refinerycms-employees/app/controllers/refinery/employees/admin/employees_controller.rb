@@ -11,16 +11,19 @@ module Refinery
         helper_method :active_tracking_categories
 
         def load_xero_guids
-          xero_api_key_file = Refinery::Employees::XeroApiKeyfile.find_by_organisation('Happy Rabbit Limited')
-          if (xero_guids = ::Refinery::Employees::XeroClient.new(xero_api_key_file).load_xero_guids).any?
-            session[:xero_guids] = xero_guids
-          end
+          session[:xero_guids] = load_xero_guids
           redirect_to refinery.edit_employees_admin_employee_path(params[:id])
         end
 
         protected
         def active_tracking_categories
           @_active_tracking_categories ||= ::Refinery::Employees::XeroTrackingCategory.active
+        end
+
+        def load_xero_guids
+          ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited').load_xero_guids
+        rescue StandardError => e
+          []
         end
 
       end
