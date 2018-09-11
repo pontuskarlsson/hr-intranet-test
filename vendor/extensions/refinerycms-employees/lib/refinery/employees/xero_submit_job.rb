@@ -11,13 +11,14 @@ module Refinery
 
         begin
           verify_contacts && batch_create_receipt && attach_scanned_receipts && submit_expense_claim
-        rescue StandardError => e
+        rescue ::StandardError => e
+          log_error e, 'submitting expense claim'
           @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_ERROR
           @xero_expense_claim.error_reason = e.message
           @xero_expense_claim.save
         end
 
-      rescue ActiveRecord::RecordNotFound => e
+      rescue ::ActiveRecord::RecordNotFound => e
         # Record has been removed. No need to fail the job, just let it complete and be cleared out.
       end
       handle_asynchronously :submit
@@ -67,10 +68,6 @@ module Refinery
         end
 
         true
-
-      rescue ::StandardError => e
-        log_error e, 'verifying Contacts'
-        false
       end
 
       def batch_create_receipt
@@ -118,10 +115,6 @@ module Refinery
 
         # Only return true if all receipts have a guid
         @xero_expense_claim.xero_receipts(true).all? { |xr| xr.guid.present? }
-
-      rescue ::StandardError => e
-        log_error e, 'submitting Receipts'
-        false
       end
 
       def attach_scanned_receipts
@@ -141,10 +134,6 @@ module Refinery
         end
 
         @xero_expense_claim.xero_expense_claim_attachments(true).all? { |a| a.guid.present? }
-
-      rescue ::StandardError => e
-        log_error e, 'attaching scanned receipts'
-        false
       end
 
       def submit_expense_claim
@@ -160,9 +149,6 @@ module Refinery
           @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_SUBMITTED
           @xero_expense_claim.save!
         end
-
-      rescue ::StandardError => e
-        log_error e, 'submitting Expense Claim'
       end
 
       def client
