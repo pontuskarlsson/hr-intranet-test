@@ -5,12 +5,13 @@ module Refinery
 
       STATUS_NOT_SUBMITTED  = 'NOT-SUBMITTED' # Not represented in Xero
       STATUS_SUBMITTING     = 'SUBMITTING' # Not represented in Xero, indicating that a background job has been queued
+      STATUS_ERROR     = 'ERROR' # Not represented in Xero, indicating that something went wrong during the submission
       STATUS_SUBMITTED      = 'SUBMITTED'
       STATUS_AUTHORISED     = 'AUTHORISED'
       STATUS_PAID           = 'PAID'
       STATUS_DELETED        = 'DELETED'
       STATUS_VOIDED         = 'VOIDED'
-      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTING, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED, STATUS_VOIDED]
+      STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTING, STATUS_ERROR, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED, STATUS_VOIDED]
 
       belongs_to :added_by,                     class_name: '::Refinery::User'
       belongs_to :employee
@@ -35,7 +36,7 @@ module Refinery
       # discovered until after it was approved, then it can be deleted from Xero, edited
       # here and then re-submitted again with minimum amount of work needed.
       def editable?
-        (status == STATUS_NOT_SUBMITTED || status == STATUS_DELETED)
+        (status == STATUS_NOT_SUBMITTED || status == STATUS_DELETED || status == STATUS_ERROR)
       end
 
       def submittable?
@@ -61,6 +62,7 @@ module Refinery
           ::Refinery::Employees::XeroSubmitJob.new(id).submit
 
           self.status = STATUS_SUBMITTING
+          self.error_reason = nil
           save!
         end
       rescue ActiveRecord::RecordNotSaved => e

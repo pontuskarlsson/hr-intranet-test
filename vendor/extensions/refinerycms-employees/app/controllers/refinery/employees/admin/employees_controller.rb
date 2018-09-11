@@ -11,7 +11,7 @@ module Refinery
         helper_method :active_tracking_categories
 
         def load_xero_guids
-          session[:xero_guids] = load_xero_guids
+          session[:xero_guids] = load_xero_guids_from_xero
           redirect_to refinery.edit_employees_admin_employee_path(params[:id])
         end
 
@@ -20,7 +20,7 @@ module Refinery
           @_active_tracking_categories ||= ::Refinery::Employees::XeroTrackingCategory.active
         end
 
-        def load_xero_guids
+        def load_xero_guids_from_xero
           ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited').load_xero_guids
         rescue StandardError => e
           []

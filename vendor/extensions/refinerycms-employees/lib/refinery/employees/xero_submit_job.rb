@@ -9,7 +9,13 @@ module Refinery
       def submit
         @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.find @xero_expense_claim_id
 
-        verify_contacts && batch_create_receipt && attach_scanned_receipts && submit_expense_claim
+        begin
+          verify_contacts && batch_create_receipt && attach_scanned_receipts && submit_expense_claim
+        rescue StandardError => e
+          @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_ERROR
+          @xero_expense_claim.error_reason = e.message
+          @xero_expense_claim.save
+        end
 
       rescue ActiveRecord::RecordNotFound => e
         # Record has been removed. No need to fail the job, just let it complete and be cleared out.

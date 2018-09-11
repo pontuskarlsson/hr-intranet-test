@@ -48,6 +48,9 @@
     <div class="medium-3 columns">
       <h5>Status</h5>
       <p><%= @xero_expense_claim.status %></p>
+      <% if @xero_expense_claim.error_reason.present? %>
+        <p style="color: red;"><%= @xero_expense_claim.error_reason %></p>
+      <% end %>
     </div>
 
     <div class="medium-2 columns">
