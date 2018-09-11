@@ -10,9 +10,35 @@ module Refinery
         @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.find @xero_expense_claim_id
 
         begin
-          verify_contacts && batch_create_receipt && attach_scanned_receipts && submit_expense_claim
+          if verify_contacts
+            if batch_create_receipt
+              if attach_scanned_receipts
+                unless submit_expense_claim
+                  @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_ERROR
+                  @xero_expense_claim.error_reason = 'Failed to Submit Expense Claim'
+                  @xero_expense_claim.save
+                end
+
+              else
+                @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_ERROR
+                @xero_expense_claim.error_reason = 'Failed to attach scanned receipts'
+                @xero_expense_claim.save
+              end
+
+            else
+              @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_ERROR
+              @xero_expense_claim.error_reason = 'Failed to create receipts'
+              @xero_expense_claim.save
+            end
+
+          else
+            @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_ERROR
+            @xero_expense_claim.error_reason = 'Failed to verify contacts'
+            @xero_expense_claim.save
+          end
+
         rescue ::StandardError => e
-          log_error e, 'submitting expense claim'
+          log_error e, 'Something went wrong'
           @xero_expense_claim.status = ::Refinery::Employees::XeroExpenseClaim::STATUS_ERROR
           @xero_expense_claim.error_reason = e.message
           @xero_expense_claim.save
@@ -157,10 +183,9 @@ module Refinery
       end
 
       def log_error(e, phase)
-        Rails.logger.error("Something went wrong while #{phase}")
-        Rails.logger.error e.message
+        puts e.message
         e.backtrace.each do |row|
-          Rails.logger.error row
+          puts row
         end
       end
 
