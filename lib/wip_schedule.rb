@@ -8,11 +8,13 @@ class WipSchedule
       "Style No" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Style Name" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Description" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Theme" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Colour Name" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Order Date" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Qty" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Customer PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "HR PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Vendor PI#" => { column: { width: '15' } },
       "Ship To" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
 
       "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
@@ -50,6 +52,8 @@ class WipSchedule
   }.freeze
 
   ALLOW_UPDATES = [
+      "Vendor PI#",
+
       "1st Conf. Ex. Fact. Date",
       "Re-Negoti. Ex. Fact. Date",
 
