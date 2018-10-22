@@ -156,11 +156,11 @@ class WipSchedule
 
 
   def update_wip_orders(params)
+    @msgs = []
+
     filename = params[:file].tempfile.path
     book = Spreadsheet.open filename
     sheet = book.worksheet ORDER_WORKSHEET
-
-    @msgs = []
 
     airtable_app_id = sheet[0,0]
 
