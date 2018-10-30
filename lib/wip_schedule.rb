@@ -151,6 +151,8 @@ class WipSchedule
 
     sheet1[0,0] = [airtable_app_id, filter].reject(&:blank?).join(',')
 
+    sheet1.freeze! 0, 7
+
     book
   end
 
