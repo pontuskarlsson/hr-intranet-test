@@ -151,9 +151,6 @@ class WipSchedule
 
     sheet1[0,0] = [airtable_app_id, filter].reject(&:blank?).join(',')
 
-    # Explicitly state that columns and rows should not be frozen
-    sheet1.freeze! 0, 0
-
     book
   end
 
