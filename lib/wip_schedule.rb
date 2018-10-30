@@ -149,7 +149,7 @@ class WipSchedule
       end
     end
 
-    sheet1[0,0] = airtable_app_id
+    sheet1[0,0] = [airtable_app_id, filter].reject(&:blank?).join(',')
 
     book
   end
@@ -162,24 +162,23 @@ class WipSchedule
     book = Spreadsheet.open filename
     sheet = book.worksheet ORDER_WORKSHEET
 
-    airtable_app_id = sheet[0,0]
+    airtable_app_id, filter = sheet[0,0].to_s.split(',')
+    raise 'Could not detect any +airtable_app_id+ in the order worksheet.' if airtable_app_id.blank?
 
     # Makes sure the airtable app id does exist in our custom list
-    list_cell = Refinery::CustomLists::ListCell.
-        joins(:list_row).
-        where(refinery_custom_lists_list_rows: {custom_list_id: custom_list.id}, list_column_id: airtable_app_column.id).
-        find_by_value!(airtable_app_id)
+    list_row = custom_list.list_rows.includes(:list_cells).detect { |lr|
+      lr.list_cells.detect { |lc| lc.list_column_id == airtable_app_column.id && lc.value == airtable_app_id } &&
+          lr.list_cells.detect { |lc| lc.list_column_id == filter_column.id && lc.value == filter.to_s }
+    }
+    raise "Could not find any matching row for app id: #{airtable_app_id} with filter: #{filter}." if list_row.blank?
 
-    row_data = list_cell.list_row.data_for(custom_list.list_columns)
-
+    # Retrieve orders from Airtable
+    row_data = list_row.data_for(custom_list.list_columns)
     orders = airtable_orders_for(airtable_app_id, row_data['Filter'])
+    raise "Could not find any orders in the Airtable app #{airtable_app_id} for #{row_data['Description']}." if orders.empty?
 
-    if orders.empty?
-      raise "Could not find any orders in the Airtable app #{airtable_app_id} for #{row_data['Description']}."
-    end
-
+    # Scan order detail for any changes and update if necessary
     all_shipped = true
-
     orders.each do |order|
       if (excel_order = sheet.rows.detect { |row| row[0] == order['id'] }).present?
         changed_fields = {}
@@ -220,13 +219,13 @@ class WipSchedule
     end
 
     # If we got all the way here, we assume it was okay and flag that we received an update today
-    updated_at_cell = list_cell.list_row.list_cells.find_by_list_column_id!(last_updated_at_column.id)
+    updated_at_cell = list_row.list_cells.find_by_list_column_id!(last_updated_at_column.id)
     updated_at_cell.update_attributes(value: Date.today)
 
     if all_shipped
       description = row_data['Description']
       @msgs << "All orders have been shipped for #{description}."
-      updated_at_cell = list_cell.list_row.list_cells.find_by_list_column_id!(status_column.id)
+      updated_at_cell = list_row.list_cells.find_by_list_column_id!(status_column.id)
       updated_at_cell.update_attributes(value: 'All Shipped')
     end
 
@@ -248,6 +247,10 @@ class WipSchedule
 
   def airtable_app_column
     @airtable_app_column ||= custom_list.list_columns.find_by_title!('Airtable App Id')
+  end
+
+  def filter_column
+    @filter_column ||= custom_list.list_columns.find_by_title!('Filter')
   end
 
   def last_updated_at_column
