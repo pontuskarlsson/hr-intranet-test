@@ -46,7 +46,7 @@ class AirtableRemittances
 
   def sync_invoices(xero_invoices)
     xero_invoices.each do |xero_invoice|
-      at_contact = update_or_create_record(AT_CONTACT_SHEET, 'ContactID', xero_invoice.contact.contact_id, { 'Name' => xero_invoice.contact.name })
+      at_contact = update_or_create_record(AT_CONTACT_SHEET, 'ContactID', xero_invoice.contact.contact_id, address_for(xero_invoice.contact))
 
       invoice_attributes = INV_COL_MAP.each_pair.inject({ 'Contact' => [at_contact.id] }) do |acc, (xero_attr, at_col)|
         acc.merge(at_col[0] => parse_value(xero_invoice[xero_attr], at_col[1]))
@@ -110,6 +110,21 @@ class AirtableRemittances
 
     # Assign record to cache and return it
     cache[value] = record
+  end
+
+  def address_for(contact)
+    address = contact.addresses.detect { |a| a.type == 'STREET' }
+    {
+        'Name' => contact.name,
+        'Address Line 1' => address.address_line1,
+        'Address Line 2' => address.address_line2,
+        'City' => address.city,
+        'Region' => address.region,
+        'Postal Code' => address.postal_code,
+        'Country' => address.country
+    }
+  rescue StandardError => e
+    {}
   end
 
   def parse_value(value, type)
