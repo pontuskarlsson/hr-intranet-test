@@ -164,7 +164,8 @@ class WipSchedule
     book = Spreadsheet.open filename
     sheet = book.worksheet ORDER_WORKSHEET
 
-    airtable_app_id, filter = sheet[0,0].to_s.split(',')
+    airtable_app_id, *filter = sheet[0,0].to_s.split(',')
+    filter = filter.join(',')
     raise 'Could not detect any +airtable_app_id+ in the order worksheet.' if airtable_app_id.blank?
 
     # Makes sure the airtable app id does exist in our custom list
