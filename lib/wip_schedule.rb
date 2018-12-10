@@ -290,7 +290,7 @@ class WipSchedule
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
         if f.name[/\.xls$/]
-          zip_file.extract(f, extracted_file)
+          zip_file.extract(f, extracted_file) { true } # True to replace file if exists. Safe to do since it's a Tempfile
         end
       end
     end
