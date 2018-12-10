@@ -67,6 +67,8 @@ gem 'refinerycms-page_roles',   path: 'vendor/extensions'
 # Needed for S3 storage
 gem 'fog'
 
+gem 'rubyzip'
+
 # Need for password expiration
 gem 'devise_security_extension'
 gem 'trans_forms', path: 'vendor/extensions'

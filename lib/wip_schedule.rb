@@ -1,3 +1,5 @@
+require 'zip'
+
 class WipSchedule
 
   CUSTOM_LIST_TITLE = 'WIP Schedule'
@@ -160,7 +162,13 @@ class WipSchedule
   def update_wip_orders(params)
     @msgs = []
 
-    filename = params[:file].tempfile.path
+    if params[:file].content_type == 'application/zip'
+      filename = extract_zip params[:file].tempfile.path
+    else
+      filename = params[:file].tempfile.path
+    end
+
+
     book = Spreadsheet.open filename
     sheet = book.worksheet ORDER_WORKSHEET
 
@@ -274,6 +282,20 @@ class WipSchedule
   def wip_airtable(airtable_app_id)
     @wip_airtables ||= {}
     @wip_airtables[airtable_app_id] ||= Airtable::Client.new(ENV['AIRTABLE_KEY']).table(airtable_app_id, AT_ORDER_SHEET)
+  end
+
+  def extract_zip(file)
+    extracted_file = Tempfile.new(File.basename(file))
+
+    Zip::File.open(file) do |zip_file|
+      zip_file.each do |f|
+        if f.filename[/\.xls$/]
+          zip_file.extract(f, extracted_file) unless File.exist?(extracted_file)
+        end
+      end
+    end
+
+    extracted_file.path
   end
 
 end

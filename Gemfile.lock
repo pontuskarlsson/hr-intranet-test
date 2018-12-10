@@ -415,6 +415,7 @@ DEPENDENCIES
   refinerycms-store!
   roo (~> 2.7.0)
   rspec-rails (~> 3.0.0)
+  rubyzip
   sass (= 3.2.13)
   sass-rails (~> 3.2.3)
   spreadsheet
