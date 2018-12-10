@@ -163,13 +163,13 @@ class WipSchedule
     @msgs = []
 
     if params[:file].content_type == 'application/zip'
-      filename = extract_zip params[:file].tempfile.path
+      file = extract_zip params[:file].tempfile.path
     else
-      filename = params[:file].tempfile.path
+      file = params[:file].tempfile
     end
 
 
-    book = Spreadsheet.open filename
+    book = Spreadsheet.open file.path
     sheet = book.worksheet ORDER_WORKSHEET
 
     airtable_app_id, *filter = sheet[0,0].to_s.split(',')
@@ -290,12 +290,12 @@ class WipSchedule
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
         if f.name[/\.xls$/]
-          zip_file.extract(f, extracted_file) unless File.exist?(extracted_file)
+          zip_file.extract(f, extracted_file)
         end
       end
     end
 
-    extracted_file.path
+    extracted_file
   end
 
 end
