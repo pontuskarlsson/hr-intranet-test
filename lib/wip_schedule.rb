@@ -289,7 +289,7 @@ class WipSchedule
 
     Zip::File.open(file) do |zip_file|
       zip_file.each do |f|
-        if f.filename[/\.xls$/]
+        if f.name[/\.xls$/]
           zip_file.extract(f, extracted_file) unless File.exist?(extracted_file)
         end
       end
