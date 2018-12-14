@@ -113,11 +113,13 @@ class AirtableRemittances
   end
 
   def address_for(contact)
-    address = contact.addresses.detect { |a| a.type == 'STREET' }
+    address =
+        contact.addresses.detect { |a| a.type == 'POBOX' && a.line1.present? } ||
+        contact.addresses.detect { |a| a.line1.present? }
     {
         'Name' => contact.name,
-        'Address Line 1' => address.address_line1,
-        'Address Line 2' => address.address_line2,
+        'Address Line 1' => address.line1,
+        'Address Line 2' => [address.line2, address.line3, address.line4].reject(&:blank?).join(', '),
         'City' => address.city,
         'Region' => address.region,
         'Postal Code' => address.postal_code,
