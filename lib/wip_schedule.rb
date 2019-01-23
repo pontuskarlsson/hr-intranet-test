@@ -51,7 +51,7 @@ class WipSchedule
       "Upd: Ex. Fact." => { column: { width: '15' } },
       "Act: Ex. Fact." => { column: { width: '15' } },
       "Comments" => { column: { width: '30' } },
-      "Project" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } }
+      "Project Code" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } }
   }.freeze
 
   ALLOW_UPDATES = [
@@ -111,13 +111,13 @@ class WipSchedule
         if column == '1st Conf. Ex. Fact. Date'
           value = order[column]
           if value.blank?
-            sheet1.row(order_i+1).set_format(column_i, Spreadsheet::Format.new((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
+            sheet1.row(order_i+1).set_format(column_i, formats_for((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
           end
 
         elsif ["Orig: Trims In-House", "Orig: Fabric In-House"].include?(column)
           value = order[column]
           if value.blank?
-            sheet1.row(order_i+1).set_format(column_i, Spreadsheet::Format.new((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
+            sheet1.row(order_i+1).set_format(column_i, formats_for((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
           end
 
 
@@ -129,11 +129,11 @@ class WipSchedule
 
           if value.blank?
             if act_value.blank? && orig_value.present? && orig_value.to_date < Date.today
-              sheet1.row(order_i+1).set_format(column_i, Spreadsheet::Format.new((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
+              sheet1.row(order_i+1).set_format(column_i, formats_for((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
             end
 
           elsif act_value.blank? && value.to_date < Date.today
-            sheet1.row(order_i+1).set_format(column_i, Spreadsheet::Format.new((options[:format] || {}).merge(color: :red)))
+            sheet1.row(order_i+1).set_format(column_i, formats_for((options[:format] || {}).merge(color: :red)))
           end
         end
       end
@@ -148,7 +148,7 @@ class WipSchedule
         end
       end
       if options[:format]
-        sheet1.format_column column_i, Spreadsheet::Format.new(options[:format])
+        sheet1.format_column column_i, formats_for(options[:format])
       end
     end
 
@@ -297,6 +297,11 @@ class WipSchedule
     end
 
     extracted_file
+  end
+
+  def formats_for(hash)
+    @formats ||= {}
+    @formats[hash] ||= Spreadsheet::Format.new(hash)
   end
 
 end
