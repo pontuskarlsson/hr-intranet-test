@@ -51,6 +51,7 @@ class WipSchedule
       "Upd: Ex. Fact." => { column: { width: '15' } },
       "Act: Ex. Fact." => { column: { width: '15' } },
       "Comments" => { column: { width: '30' } },
+      "Project" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } }
   }.freeze
 
   ALLOW_UPDATES = [
