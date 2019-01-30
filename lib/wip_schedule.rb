@@ -128,7 +128,9 @@ class WipSchedule
           sheet1[order_i+1, column_i] = order[column]
         end
 
-        if column == '1st Conf. Ex. Fact. Date'
+        if order['Order Status'] == 'DRAFT' or order['Act: Ex. Fact.'].present?
+          # Do not flag anything in red
+        elsif column == '1st Conf. Ex. Fact. Date'
           value = order[column]
           if value.blank?
             sheet1.row(order_i+1).set_format(column_i, formats_for((options[:format] || {}).merge(pattern_fg_color: :red, pattern: 1)))
