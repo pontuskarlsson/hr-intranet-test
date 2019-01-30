@@ -2,7 +2,7 @@
 <p><%= @notice %></p>
 
 <%- updated_columns = @orders.values.map { |updates| updates.keys }.flatten.uniq -%>
-<%- columns_in_order = WipSchedule::COLUMNS.keys.reject { |c| !updated_columns.include? c } -%>
+<%- columns_in_order = WipSchedule::ALLOW_UPDATES.reject { |c| !updated_columns.include? c } -%>
 <table>
   <thead>
   <tr>
@@ -14,13 +14,13 @@
   </tr>
   </thead>
   <tbody>
-  <% @orders.each_pair do |order_id, order_updates| %>
-    <% if order_updates.any? %>
+  <% @orders.each_pair do |order_id, order| %>
+    <% if order[:updates].any? %>
       <tr>
-        <td><%= order_id %></td>
+        <td><%= order[:title] %></td>
         <% columns_in_order.each do |col| %>
           <td>
-            <% if (col_updates = order_updates[col]) %>
+            <% if (col_updates = order[:updates][col]) %>
               <% if col_updates[:error] %>
                 <span style="color: red;">
                   <%= col_updates[:error] %>
@@ -35,9 +35,9 @@
           </td>
         <% end %>
         <td>
-          <% if order_updates[:error] %>
+          <% if order[:error] %>
             <span style="color: red;">
-              <%= order_updates[:error] %>
+              <%= order[:error] %>
             </span>
           <% end %>
         </td>

@@ -6,18 +6,30 @@ class WipSchedule
 
   COLUMNS = {
       "id" => { column: { hidden: true } },
+      "Project Code" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Customer PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+      "HR PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Order Date" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Order Type" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Order Status" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+
       "Style No" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Style Name" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Description" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Theme" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Colour Name" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Order Date" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Qty" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Customer PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "HR PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Vendor PI#" => { column: { width: '15' } },
+
+      "Orig. Qty" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Rev. Qty" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Act. Qty" => { column: { width: '10' } },
+
+      "Customer PO Currency" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Customer PO Price / SKU" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Customer PO Total Cost" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+
       "Ship To" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Ship Mode" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Vendor PI#" => { column: { width: '15' } },
 
       "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "1st Conf. Ex. Fact. Date" => { column: { width: '15' } },
@@ -39,6 +51,13 @@ class WipSchedule
       "Upd: Sewing Complete" => { column: { width: '15' } },
       "Act: Sewing Complete" => { column: { width: '15' } },
 
+      "Orig: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Upd: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Act: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Freight Forwarder" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Shipment Reference" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "FOB INCO Terms (Quotation)" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+
       "Orig: Final Inspection" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Upd: Final Inspection" => { column: { width: '15' } },
       "Act: Final Inspection" => { column: { width: '15' } },
@@ -50,11 +69,12 @@ class WipSchedule
       "Orig: Ex. Fact." => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Upd: Ex. Fact." => { column: { width: '15' } },
       "Act: Ex. Fact." => { column: { width: '15' } },
-      "Comments" => { column: { width: '30' } },
-      "Project Code" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } }
+      "Comments" => { column: { width: '30' } }
   }.freeze
 
   ALLOW_UPDATES = [
+      "Act. Qty",
+
       "Vendor PI#",
 
       "1st Conf. Ex. Fact. Date",
@@ -121,7 +141,7 @@ class WipSchedule
           end
 
 
-        elsif column[/^Upd: /]
+        elsif column[/^Upd: /] && !column['Shipping Booked']
           oper = column.gsub('Upd: ', '')
           orig_value = order["Orig: #{oper}"]
           act_value = order["Act: #{oper}"]
@@ -161,8 +181,6 @@ class WipSchedule
 
 
   def update_wip_orders(params)
-    @msgs = []
-
     if params[:file].content_type == 'application/zip'
       file = extract_zip params[:file].tempfile.path
     else
@@ -194,8 +212,9 @@ class WipSchedule
     # Scan order detail for any changes and update if necessary
     all_shipped = true
     orders.each do |order|
-      order_id = [order['Customer PO#'], order['HR PO#']].reject(&:blank?).join ' / '
-      @results[:orders][order_id] = {}
+      order_id = order.id
+      title = [order['Customer PO#'], order['HR PO#']].reject(&:blank?).join ' / '
+      @results[:orders][order.id] = { title: title, updates: {} }
 
       if (excel_order = sheet.rows.detect { |row| row[0] == order['id'] }).present?
         changed_fields = {}
@@ -206,12 +225,10 @@ class WipSchedule
               # Will raise an error if the value is not a date (and column is not Comments)
               column_value.to_date if column_value.present? && col != 'Comments'
 
-              #order[col] = column_value.blank? ? nil : column_value
               changed_fields[col] = column_value.blank? ? nil : column_value
-              @results[:orders][order_id][col] = { from: order[col].to_s, to: changed_fields[col] }
+              @results[:orders][order_id][:updates][col] = { from: order[col].to_s, to: changed_fields[col] }
             rescue StandardError => e
-              #@msgs << "The column \"#{col}\" has an invalid value: #{column_value}"
-              @results[:orders][order_id][col] = { error: "Invalid value: #{column_value}" }
+              @results[:orders][order_id][:updates][col] = { error: "Invalid value: #{column_value}" }
             end
           end
         end
@@ -221,9 +238,7 @@ class WipSchedule
           end
           begin
             wip_airtable(airtable_app_id).update_record_fields(order.id, changed_fields)
-            #@msgs << "Order #{order["HR PO#"]} was updated with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}"
           rescue StandardError => e
-            #@msgs << "Failed to update the order #{order["HR PO#"]} with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}\nReason: #{e.message}"
             @results[:orders][order_id][:error] = "Failed to update, Reason: #{e.message}"
           end
         end
@@ -234,7 +249,6 @@ class WipSchedule
 
       else
         all_shipped = false
-        #@msgs << "Could not find the order #{order["HR PO#"]} in the excel file."
         @results[:orders][order_id][:error] = 'Could not find the order in the excel file.'
       end
     end
@@ -245,17 +259,11 @@ class WipSchedule
 
     if all_shipped
       description = row_data['Description']
-      #@msgs << "All orders have been shipped for #{description}."
       @results[:notice] = "All orders have been shipped for #{description}."
       updated_at_cell = list_row.list_cells.find_by_list_column_id!(status_column.id)
       updated_at_cell.update_attributes(value: 'All Shipped')
     end
 
-    # if @msgs.any?
-    #   @msgs.prepend "WIP Updated for #{row_data['Description']}"
-    # else
-    #   []
-    # end
     @results
 
   rescue StandardError => e
