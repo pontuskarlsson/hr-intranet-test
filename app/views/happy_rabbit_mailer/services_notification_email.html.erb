@@ -2,7 +2,7 @@
 <p><%= @notice %></p>
 
 <%- updated_columns = @orders.values.map { |updates| updates.keys }.flatten.uniq -%>
-<%- columns_in_order = WipSchedule::COLUMNS.reject { |c| !updated_columns.include? c } -%>
+<%- columns_in_order = WipSchedule::COLUMNS.keys.reject { |c| !updated_columns.include? c } -%>
 <table>
   <thead>
   <tr>
@@ -15,32 +15,34 @@
   </thead>
   <tbody>
   <% @orders.each_pair do |order_id, order_updates| %>
-    <tr>
-      <td><%= order_id %></td>
-      <% columns_in_order.each do |col| %>
-        <td>
-          <% if (col_updates = order_updates[col]) %>
-            <% if col_updates[:error] %>
-              <span style="color: red;">
-                <%= col_updates[:error] %>
-              </span>
+    <% if order_updates.any? %>
+      <tr>
+        <td><%= order_id %></td>
+        <% columns_in_order.each do |col| %>
+          <td>
+            <% if (col_updates = order_updates[col]) %>
+              <% if col_updates[:error] %>
+                <span style="color: red;">
+                  <%= col_updates[:error] %>
+                </span>
+              <% else %>
+                From: <%= col_updates[:from] %><br/>
+                To: <%= col_updates[:to] %>
+              <% end %>
             <% else %>
-              From: <%= col_updates[:from] %><br/>
-              To: <%= col_updates[:to] %>
+              &nbsp;
             <% end %>
-          <% else %>
-            &nbsp;
+          </td>
+        <% end %>
+        <td>
+          <% if order_updates[:error] %>
+            <span style="color: red;">
+              <%= order_updates[:error] %>
+            </span>
           <% end %>
         </td>
-      <% end %>
-      <td>
-        <% if order_updates[:error] %>
-          <span style="color: red;">
-            <%= order_updates[:error] %>
-          </span>
-        <% end %>
-      </td>
-    </tr>
+      </tr>
+    <% end %>
   <% end %>
   </tbody>
 </table>
