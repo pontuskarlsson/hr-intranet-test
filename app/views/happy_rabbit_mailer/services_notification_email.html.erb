@@ -3,7 +3,7 @@
 
 <%- updated_columns = @orders.values.map { |updates| updates.keys }.flatten.uniq -%>
 <%- columns_in_order = WipSchedule::ALLOW_UPDATES.reject { |c| !updated_columns.include? c } -%>
-<table>
+<table border="1">
   <thead>
   <tr>
     <th>Order</th>
