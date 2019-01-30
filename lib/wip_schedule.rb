@@ -189,9 +189,14 @@ class WipSchedule
     orders = airtable_orders_for(airtable_app_id, row_data['Filter'])
     raise "Could not find any orders in the Airtable app #{airtable_app_id} for #{row_data['Description']}." if orders.empty?
 
+    @results = { orders: {}, description: row_data['Description'] }
+
     # Scan order detail for any changes and update if necessary
     all_shipped = true
     orders.each do |order|
+      order_id = [order['Customer PO#'], order['HR PO#']].reject(&:blank?).join ' / '
+      @results[:orders][order_id] = {}
+
       if (excel_order = sheet.rows.detect { |row| row[0] == order['id'] }).present?
         changed_fields = {}
         ALLOW_UPDATES.each do |col|
@@ -203,8 +208,10 @@ class WipSchedule
 
               #order[col] = column_value.blank? ? nil : column_value
               changed_fields[col] = column_value.blank? ? nil : column_value
+              @results[:orders][order_id][col] = { from: order[col].to_s, to: changed_fields[col] }
             rescue StandardError => e
-              @msgs << "The column \"#{col}\" has an invalid value: #{column_value}"
+              #@msgs << "The column \"#{col}\" has an invalid value: #{column_value}"
+              @results[:orders][order_id][col] = { error: "Invalid value: #{column_value}" }
             end
           end
         end
@@ -214,9 +221,10 @@ class WipSchedule
           end
           begin
             wip_airtable(airtable_app_id).update_record_fields(order.id, changed_fields)
-            @msgs << "Order #{order["HR PO#"]} was updated with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}"
+            #@msgs << "Order #{order["HR PO#"]} was updated with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}"
           rescue StandardError => e
-            @msgs << "Failed to update the order #{order["HR PO#"]} with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}\nReason: #{e.message}"
+            #@msgs << "Failed to update the order #{order["HR PO#"]} with:\n- #{changed_fields.map { |k,v| "#{k}: #{v}" }.join("\n")}\nReason: #{e.message}"
+            @results[:orders][order_id][:error] = "Failed to update, Reason: #{e.message}"
           end
         end
 
@@ -226,7 +234,8 @@ class WipSchedule
 
       else
         all_shipped = false
-        @msgs << "Could not find the order #{order["HR PO#"]} in the excel file."
+        #@msgs << "Could not find the order #{order["HR PO#"]} in the excel file."
+        @results[:orders][order_id][:error] = 'Could not find the order in the excel file.'
       end
     end
 
@@ -236,21 +245,23 @@ class WipSchedule
 
     if all_shipped
       description = row_data['Description']
-      @msgs << "All orders have been shipped for #{description}."
+      #@msgs << "All orders have been shipped for #{description}."
+      @results[:notice] = "All orders have been shipped for #{description}."
       updated_at_cell = list_row.list_cells.find_by_list_column_id!(status_column.id)
       updated_at_cell.update_attributes(value: 'All Shipped')
     end
 
-    if @msgs.any?
-      @msgs.prepend "WIP Updated for #{row_data['Description']}"
-    else
-      []
-    end
+    # if @msgs.any?
+    #   @msgs.prepend "WIP Updated for #{row_data['Description']}"
+    # else
+    #   []
+    # end
+    @results
 
   rescue StandardError => e
-    @msgs << e.message
+    @msgs = [e.message]
     ErrorMailer.webhook_notification_email(@msgs, params).deliver
-    []
+    { orders: {} }
   end
 
   def custom_list

@@ -6,9 +6,10 @@ class HappyRabbitMailer < ApplicationMailer
     mail(from: 'wip_status@happyrabbit.com', to: data['Recipients'], subject: "WIP Status update: #{data['Description']}")
   end
 
-  def services_notification_email(msgs)
-    @msgs = msgs
-    mail(to: emails_for_role('Services'), subject: "Services Notification - #{Date.today.to_s}")
+  def services_notification_email(description, notice, orders)
+    @notice = notice
+    @orders = orders
+    mail(to: emails_for_role('Services'), subject: "Services Notification - #{description} - #{Date.today.to_s}")
   end
 
   protected

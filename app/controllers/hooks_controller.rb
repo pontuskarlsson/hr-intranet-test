@@ -133,10 +133,10 @@ class HooksController < ApplicationController
     ActiveRecord::Base.transaction do
       wip_schedule = WipSchedule.new
 
-      msgs = wip_schedule.update_wip_orders params
+      results = wip_schedule.update_wip_orders params
 
-      if msgs.any?
-        HappyRabbitMailer.services_notification_email(msgs).deliver
+      if results[:notice] || results[:orders].any?
+        HappyRabbitMailer.services_notification_email(results[:description], results[:notice], results[:orders]).deliver
       end
     end
   end

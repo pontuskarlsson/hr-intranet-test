@@ -1,12 +1,46 @@
 <h2>Services Notification - <%= Date.today.to_s %></h2>
-<p>The notification message is:</p>
+<p><%= @notice %></p>
 
-<ul>
-  <% @msgs.each do |msg| %>
-    <li>
-      <% msg.split("\n").each do |line| %>
-        <p><%= line %></p>
+<%- updated_columns = @orders.values.map { |updates| updates.keys }.flatten.uniq -%>
+<%- columns_in_order = WipSchedule::COLUMNS.reject { |c| !updated_columns.include? c } -%>
+<table>
+  <thead>
+  <tr>
+    <th>Order</th>
+    <% columns_in_order.each do |col| %>
+      <th><%= col %></th>
+    <% end %>
+    <th>System info</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @orders.each_pair do |order_id, order_updates| %>
+    <tr>
+      <td><%= order_id %></td>
+      <% columns_in_order.each do |col| %>
+        <td>
+          <% if (col_updates = order_updates[col]) %>
+            <% if col_updates[:error] %>
+              <span style="color: red;">
+                <%= col_updates[:error] %>
+              </span>
+            <% else %>
+              From: <%= col_updates[:from] %><br/>
+              To: <%= col_updates[:to] %>
+            <% end %>
+          <% else %>
+            &nbsp;
+          <% end %>
+        </td>
       <% end %>
-    </li>
+      <td>
+        <% if order_updates[:error] %>
+          <span style="color: red;">
+            <%= order_updates[:error] %>
+          </span>
+        <% end %>
+      </td>
+    </tr>
   <% end %>
-</ul>
+  </tbody>
+</table>
