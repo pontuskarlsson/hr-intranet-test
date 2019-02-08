@@ -221,7 +221,7 @@ class WipSchedule
       if (excel_order = sheet.rows.detect { |row| row[0] == order['id'] }).present?
         changed_fields = {}
         ALLOW_UPDATES.each do |col|
-          column_value = excel_order[COLUMNS.keys.index(col)].to_s
+          column_value = value_from_excel excel_order, col
           if order[col].to_s != column_value
             begin
               # Will raise an error if the value is not a date (and column is not Comments)
@@ -323,6 +323,16 @@ class WipSchedule
   def formats_for(hash)
     @formats ||= {}
     @formats[hash] ||= Spreadsheet::Format.new(hash)
+  end
+
+  def value_from_excel(excel_order, col)
+    value = excel_order[COLUMNS.keys.index(col)]
+
+    if value.is_a? DateTime
+      value.to_date.to_s
+    else
+      value.to_s
+    end
   end
 
 end

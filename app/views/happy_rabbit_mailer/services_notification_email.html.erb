@@ -1,7 +1,7 @@
 <h2>Services Notification - <%= Date.today.to_s %></h2>
 <p><%= @notice %></p>
 
-<%- updated_columns = @orders.values.map { |updates| updates.keys }.flatten.uniq -%>
+<%- updated_columns = @orders.values.map { |updates| updates[:updates].keys }.flatten.uniq -%>
 <%- columns_in_order = WipSchedule::ALLOW_UPDATES.reject { |c| !updated_columns.include? c } -%>
 <table border="1">
   <thead>
