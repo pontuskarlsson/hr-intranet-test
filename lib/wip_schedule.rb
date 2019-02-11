@@ -9,7 +9,7 @@ class WipSchedule
       "Project Code" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Customer PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "HR PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Order Date" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Order Date" => { format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
       "Order Type" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Order Status" => { format: { pattern_fg_color: :silver, pattern: 1 } },
 
@@ -31,44 +31,44 @@ class WipSchedule
       "Ship Mode" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Vendor PI#" => { column: { width: '15' } },
 
-      "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "1st Conf. Ex. Fact. Date" => { column: { width: '15' } },
-      "Re-Negoti. Ex. Fact. Date" => { column: { width: '15' } },
+      "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "1st Conf. Ex. Fact. Date" => { column: { width: '15' }, type: :date },
+      "Re-Negoti. Ex. Fact. Date" => { column: { width: '15' }, type: :date },
 
-      "Orig: Trims In-House" => { column: { width: '15' } },
-      "Upd: Trims In-House" => { column: { width: '15' } },
-      "Act: Trims In-House" => { column: { width: '15' } },
+      "Orig: Trims In-House" => { column: { width: '15' }, type: :date },
+      "Upd: Trims In-House" => { column: { width: '15' }, type: :date },
+      "Act: Trims In-House" => { column: { width: '15' }, type: :date },
 
-      "Orig: Fabric In-House" => { column: { width: '15' } },
-      "Upd: Fabric In-House" => { column: { width: '15' } },
-      "Act: Fabric In-House" => { column: { width: '15' } },
+      "Orig: Fabric In-House" => { column: { width: '15' }, type: :date },
+      "Upd: Fabric In-House" => { column: { width: '15' }, type: :date },
+      "Act: Fabric In-House" => { column: { width: '15' }, type: :date },
 
-      "Orig: Cutting Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Cutting Complete" => { column: { width: '15' } },
-      "Act: Cutting Complete" => { column: { width: '15' } },
+      "Orig: Cutting Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "Upd: Cutting Complete" => { column: { width: '15' }, type: :date },
+      "Act: Cutting Complete" => { column: { width: '15' }, type: :date },
 
-      "Orig: Sewing Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Sewing Complete" => { column: { width: '15' } },
-      "Act: Sewing Complete" => { column: { width: '15' } },
+      "Orig: Sewing Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "Upd: Sewing Complete" => { column: { width: '15' }, type: :date },
+      "Act: Sewing Complete" => { column: { width: '15' }, type: :date },
 
-      "Orig: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Act: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+      "Orig: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "Upd: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "Act: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
       "Freight Forwarder" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Shipment Reference" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "FOB INCO Terms (Quotation)" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
 
-      "Orig: Final Inspection" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Final Inspection" => { column: { width: '15' } },
-      "Act: Final Inspection" => { column: { width: '15' } },
+      "Orig: Final Inspection" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "Upd: Final Inspection" => { column: { width: '15' }, type: :date },
+      "Act: Final Inspection" => { column: { width: '15' }, type: :date },
 
-      "Orig: Shipment Sample Sent" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Shipment Sample Sent" => { column: { width: '15' } },
-      "Act: Shipment Sample Sent" => { column: { width: '15' } },
+      "Orig: Shipment Sample Sent" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "Upd: Shipment Sample Sent" => { column: { width: '15' }, type: :date },
+      "Act: Shipment Sample Sent" => { column: { width: '15' }, type: :date },
 
-      "Orig: Ex. Fact." => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Upd: Ex. Fact." => { column: { width: '15' } },
-      "Act: Ex. Fact." => { column: { width: '15' } },
+      "Orig: Ex. Fact." => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
+      "Upd: Ex. Fact." => { column: { width: '15' }, type: :date },
+      "Act: Ex. Fact." => { column: { width: '15' }, type: :date },
       "Comments" => { column: { width: '30' } }
   }.freeze
 
@@ -224,8 +224,8 @@ class WipSchedule
           column_value = value_from_excel excel_order, col
           if order[col].to_s != column_value
             begin
-              # Will raise an error if the value is not a date (and column is not Comments)
-              column_value.to_date if column_value.present? && col != 'Comments'
+              # Will raise an error if the value is not a date (and column is a date type)
+              column_value.to_date if column_value.present? && COLUMNS[col][:type] == :date
 
               changed_fields[col] = column_value.blank? ? nil : column_value
               @results[:orders][order_id][:updates][col] = { from: order[col].to_s, to: changed_fields[col] }
