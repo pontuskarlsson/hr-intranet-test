@@ -21,7 +21,7 @@ class WipSchedule
 
       "Orig. Qty" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
       "Rev. Qty" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-      "Act. Qty" => { column: { width: '10' } },
+      "Act. Qty" => { column: { width: '10' }, type: :number },
 
       "Customer PO Currency" => { format: { pattern_fg_color: :silver, pattern: 1 } },
       "Customer PO Price / SKU" => { format: { pattern_fg_color: :silver, pattern: 1 } },
@@ -224,11 +224,12 @@ class WipSchedule
           column_value = value_from_excel excel_order, col
           if order[col].to_s != column_value
             begin
-              # Will raise an error if the value is not a date (and column is a date type)
-              column_value.to_date if column_value.present? && COLUMNS[col][:type] == :date
+              # Will raise an error if the value is not valid for the column type
+              column_value = column_value.to_date if column_value.present? && COLUMNS[col][:type] == :date
+              column_value = column_value.to_i if column_value.present? && COLUMNS[col][:type] == :number
 
               changed_fields[col] = column_value.blank? ? nil : column_value
-              @results[:orders][order_id][:updates][col] = { from: order[col].to_s, to: changed_fields[col] }
+              @results[:orders][order_id][:updates][col] = { from: order[col].to_s, to: changed_fields[col].to_s }
             rescue StandardError => e
               @results[:orders][order_id][:updates][col] = { error: "Invalid value: #{column_value}" }
             end
