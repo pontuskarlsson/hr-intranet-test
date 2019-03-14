@@ -5,7 +5,7 @@ describe Refinery do
   describe "Marketing" do
     describe "Admin" do
       describe "brands" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "brands list" do
           before do

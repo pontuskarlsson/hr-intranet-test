@@ -100,7 +100,7 @@ module Refinery
 
       def create_and_associate_resource
         begin
-          SickLeave.transaction do
+          LeaveOfAbsence.transaction do
             @resources = ::Refinery::Resource.create_resources(params[:resource])
             @resource = @resources.detect { |r| r.valid? } || (raise ::ActiveRecord::RecordNotSaved)
 

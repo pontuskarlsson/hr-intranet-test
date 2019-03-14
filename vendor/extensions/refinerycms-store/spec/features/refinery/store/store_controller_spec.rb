@@ -46,7 +46,7 @@ describe Refinery do
           end
 
           describe 'As logged in user' do
-            refinery_login_with :refinery_user
+            refinery_login_with :authentication_devise_user
 
             it "does show 'Add to Cart' links when user is signed in" do
               visit refinery.store_root_path

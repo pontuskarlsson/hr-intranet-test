@@ -5,7 +5,7 @@ describe Refinery do
   describe 'Calendar' do
     describe 'Admin' do
       describe 'google_calendars' do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe 'google calendars list' do
           before(:each) do
@@ -21,7 +21,7 @@ describe Refinery do
         end
 
         describe 'create' do
-          let(:user) { FactoryGirl.create(:refinery_user) }
+          let(:user) { FactoryGirl.create(:authentication_devise_user) }
           let(:calendar) { FactoryGirl.create(:calendar, user: user) }
           before(:each) do
             user; calendar

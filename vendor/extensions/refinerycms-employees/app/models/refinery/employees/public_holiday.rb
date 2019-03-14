@@ -17,7 +17,11 @@ module Refinery
       before_save do
         unless event.present?
           # This creates a Calendar for the specific function of displaying Sick Leave events.
-          calendar = ::Refinery::Calendar::Calendar.find_or_create_by_function!(CALENDAR_FUNCTION_PREFIX+country, { title: "Public Holidays (#{country})", private: false, activate_on_create: true })
+          calendar = ::Refinery::Calendar::Calendar.find_or_create_by!(function: CALENDAR_FUNCTION_PREFIX+country) do |calendar|
+            calendar.title = "Public Holidays (#{country})"
+            calendar.private = false
+            calendar.activate_on_create = true
+          end
           self.event = calendar.events.build
         end
 

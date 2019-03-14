@@ -14,12 +14,12 @@ module Refinery
               # Records are Brands
 
               if (name = record_hash.delete('name')).present?
-                brand = ::Refinery::Brands::Brand.find_or_initialize_by_name(name)
+                brand = ::Refinery::Brands::Brand.find_or_initialize_by(name: name)
                 brand.attributes = record_hash
                 brand.save
 
                 if sender.present?
-                  sender.brand_shows.find_or_create_by_brand_id(brand.id)
+                  sender.brand_shows.find_or_create_by(brand_id: brand.id)
                 end
               end
 

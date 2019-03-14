@@ -5,7 +5,7 @@ describe Refinery do
   describe "Employees" do
     describe "Admin" do
       describe "public_holidays" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "public_holidays list" do
           before do

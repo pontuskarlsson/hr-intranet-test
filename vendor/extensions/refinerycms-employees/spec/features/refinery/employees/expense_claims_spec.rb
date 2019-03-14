@@ -4,7 +4,7 @@ require "spec_helper"
 describe Refinery do
   describe "Employees" do
     describe "expense_claims" do
-      refinery_login_with_devise :refinery_user
+      refinery_login_with_devise :authentication_devise_user
       before(:each) do
         FactoryGirl.create(:employee, user: logged_in_user)
       end

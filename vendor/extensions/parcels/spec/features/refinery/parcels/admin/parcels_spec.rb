@@ -5,7 +5,7 @@ describe Refinery do
   describe "Parcels" do
     describe "Admin" do
       describe "parcels" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "parcels list" do
           before do
@@ -21,9 +21,9 @@ describe Refinery do
         end
 
         describe "create" do
-          let(:refinery_user) { FactoryGirl.create(:refinery_user) }
+          let(:authentication_devise_user) { FactoryGirl.create(:authentication_devise_user) }
           before do
-            refinery_user # Creates one record before loading form
+            authentication_devise_user # Creates one record before loading form
 
             visit refinery.parcels_admin_parcels_path
 
@@ -36,7 +36,7 @@ describe Refinery do
               fill_in "Parcel Date", :with => "2014-01-01"
               fill_in "Courier", :with => "Express Courier"
               fill_in "To", :with => "John Doe"
-              select refinery_user.username, :from => "Received by"
+              select authentication_devise_user.username, :from => "Received by"
               click_button "Save"
 
               page.should have_content("'This is a test of the first string field' was successfully added.")

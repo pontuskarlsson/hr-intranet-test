@@ -4,7 +4,7 @@ require "spec_helper"
 describe Refinery do
   describe "Parcels" do
     describe "parcels" do
-      refinery_login_with_devise :refinery_user
+      refinery_login_with_devise :authentication_devise_user
 
       describe "parcels list" do
         before do
@@ -50,7 +50,7 @@ describe Refinery do
 
       describe "update" do
         context "parcel received by current user" do
-          let(:other_user) { FactoryGirl.create(:refinery_user) }
+          let(:other_user) { FactoryGirl.create(:authentication_devise_user) }
           let(:parcel) { FactoryGirl.create(:parcel, received_by: logged_in_user, assigned_to: other_user) }
 
           it "should succeed" do

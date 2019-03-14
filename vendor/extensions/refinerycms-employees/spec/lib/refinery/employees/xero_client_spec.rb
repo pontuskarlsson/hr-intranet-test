@@ -3,16 +3,19 @@ require 'spec_helper'
 module Refinery
   module Employees
     describe XeroClient do
+      let(:xero_api_key_file) { FactoryGirl.create(:xero_api_key_file) }
+      let(:xero_client) { XeroClient.new(xero_api_key_file.organisation) }
 
       describe '#sync_accounts' do
         let(:xero_account) { FactoryGirl.create(:xero_account, guid: "00000000-0000-0000-1234-000000000000", name: 'Travel') }
         let(:account) { Xeroizer::Record::Account.build({ account_id: "00000000-0000-0000-1234-000000000000", name: 'Office Expense', code: '1234' }, nil) }
+
         it 'makes an existing XeroAccount inactive if does not find any matching Account in Xero' do
           XeroClient.any_instance.stub(:all_accounts).and_return([])
 
           expect(xero_account.inactive).to eq false
 
-          expect{ XeroClient.new.sync_accounts }.to_not raise_error
+          expect{ xero_client.sync_accounts }.to_not raise_error
           expect(xero_account.reload.inactive).to eq true
         end
 
@@ -21,7 +24,7 @@ module Refinery
 
           expect( XeroAccount.find_by_guid(account.account_id) ).to be_nil
 
-          expect{ XeroClient.new.sync_accounts }.to_not raise_error
+          expect{ xero_client.sync_accounts }.to_not raise_error
           expect( XeroAccount.find_by_guid(account.account_id) ).to be_present
         end
 
@@ -31,7 +34,7 @@ module Refinery
           expect( xero_account.guid ).to eq account.account_id
           expect( xero_account.name).to_not eq account.name
 
-          expect{ XeroClient.new.sync_accounts }.to_not raise_error
+          expect{ xero_client.sync_accounts }.to_not raise_error
           expect( xero_account.reload.name ).to eq account.name
         end
       end
@@ -44,7 +47,7 @@ module Refinery
 
           expect(xero_contact.inactive).to eq false
 
-          expect{ XeroClient.new.sync_contacts }.to_not raise_error
+          expect{ xero_client.sync_contacts }.to_not raise_error
           expect(xero_contact.reload.inactive).to eq true
         end
 
@@ -53,7 +56,7 @@ module Refinery
 
           expect( XeroContact.find_by_guid(contact.contact_id) ).to be_nil
 
-          expect{ XeroClient.new.sync_contacts }.to_not raise_error
+          expect{ xero_client.sync_contacts }.to_not raise_error
           expect( XeroContact.find_by_guid(contact.contact_id) ).to be_present
         end
 
@@ -63,7 +66,7 @@ module Refinery
           expect( xero_contact.guid ).to eq contact.contact_id
           expect( xero_contact.name).to_not eq contact.name
 
-          expect{ XeroClient.new.sync_contacts }.to_not raise_error
+          expect{ xero_client.sync_contacts }.to_not raise_error
           expect( xero_contact.reload.name ).to eq contact.name
         end
       end

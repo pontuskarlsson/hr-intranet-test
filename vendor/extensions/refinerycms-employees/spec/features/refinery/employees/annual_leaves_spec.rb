@@ -4,7 +4,7 @@ require "spec_helper"
 describe Refinery do
   describe "Employees" do
     describe "annual_leaves" do
-      refinery_login_with_devise :refinery_user
+      refinery_login_with_devise :authentication_devise_user
       let(:employee) { FactoryGirl.create(:employee, user: logged_in_user) }
 
       describe "list of annual leaves" do

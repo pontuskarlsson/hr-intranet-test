@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :user, class: Refinery::Authentication::Devise::User do
+  factory :authentication_devise_user, class: Refinery::Authentication::Devise::User do
     sequence(:email) { |n| "john-#{n}@doe.com" }
     sequence(:username) { |n| "john-#{n}" }
     password 'demo_password'

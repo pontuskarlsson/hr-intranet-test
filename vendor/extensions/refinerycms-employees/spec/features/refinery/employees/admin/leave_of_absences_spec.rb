@@ -4,17 +4,17 @@ require "spec_helper"
 describe Refinery do
   describe "Employees" do
     describe "Admin" do
-      describe "annual_leaves" do
-        refinery_login_with_devise :refinery_user
+      describe "leave_of_absences" do
+        refinery_login_with_devise :authentication_devise_user
 
         describe "annual_leaves list" do
           before do
-            FactoryGirl.create(:annual_leave, :start_date => "2014-10-09")
-            FactoryGirl.create(:annual_leave, :start_date => "2014-10-02")
+            FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-09")
+            FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-02")
           end
 
           it "shows two items" do
-            visit refinery.employees_admin_annual_leaves_path
+            visit refinery.employees_admin_leave_of_abesences_path
             page.should have_content("2014-10-09")
             page.should have_content("2014-10-02")
           end
@@ -23,9 +23,9 @@ describe Refinery do
         describe "create" do
           let(:employee) { FactoryGirl.create(:employee) }
           before do
-            visit refinery.employees_admin_annual_leaves_path
+            visit refinery.employees_admin_leave_of_abesences_path
 
-            click_link "Add New Annual Leave"
+            click_link "Add New Leave Of Absence"
           end
 
           context "valid data" do
@@ -35,7 +35,7 @@ describe Refinery do
               click_button "Save"
 
               page.should have_content("'2014-10-02' was successfully added.")
-              Refinery::Employees::AnnualLeave.count.should == 1
+              Refinery::Employees::LeaveOfAbsence.count.should == 1
             end
           end
 
@@ -44,20 +44,20 @@ describe Refinery do
               click_button "Save"
 
               page.should have_content("Employee can't be blank")
-              Refinery::Employees::AnnualLeave.count.should == 0
+              Refinery::Employees::LeaveOfAbsence.count.should == 0
             end
           end
 
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:annual_leave, :start_date => "2014-10-02") }
+          before { FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-02") }
 
           it "should succeed" do
-            visit refinery.employees_admin_annual_leaves_path
+            visit refinery.employees_admin_leave_of_abesences_path
 
             within ".actions" do
-              click_link "Edit this annual leave"
+              click_link "Edit this leave of absence"
             end
 
             fill_in "Start Date", :with => "2014-10-09"
@@ -69,15 +69,15 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:annual_leave, :start_date => "2014-10-02") }
+          before { FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-02") }
 
           it "should succeed" do
-            visit refinery.employees_admin_annual_leaves_path
+            visit refinery.employees_admin_leave_of_abesences_path
 
-            click_link "Remove this annual leave forever"
+            click_link "Remove this leave of absence forever"
 
             page.should have_content("'2014-10-02' was successfully removed.")
-            Refinery::Employees::AnnualLeave.count.should == 0
+            Refinery::Employees::LeaveOfAbsence.count.should == 0
           end
         end
 

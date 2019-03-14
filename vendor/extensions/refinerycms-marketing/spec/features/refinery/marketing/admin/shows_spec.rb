@@ -5,7 +5,7 @@ describe Refinery do
   describe "Marketing" do
     describe "Admin" do
       describe "shows" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "shows list" do
           before do

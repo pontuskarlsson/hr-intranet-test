@@ -5,7 +5,7 @@ describe Refinery do
   describe "Parcels" do
     describe "Admin" do
       describe "shipments" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "shipments list" do
           let(:shipment1) { FactoryGirl.create(:shipment) }
@@ -24,7 +24,7 @@ describe Refinery do
         describe "create" do
           let(:contact1) { FactoryGirl.create(:contact) }
           let(:contact2) { FactoryGirl.create(:contact) }
-          let(:user) { FactoryGirl.create(:refinery_user) }
+          let(:user) { FactoryGirl.create(:authentication_devise_user) }
           before do
             contact1; contact2; user # Creates records before loading form
 

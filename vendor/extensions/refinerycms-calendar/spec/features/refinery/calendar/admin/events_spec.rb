@@ -5,7 +5,7 @@ describe Refinery do
   describe "Calendar" do
     describe "Admin" do
       describe "events" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "events list" do
           before(:each) do

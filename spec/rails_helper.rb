@@ -12,6 +12,9 @@ require 'rspec/rails'
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+FactoryGirl.definition_file_paths += Dir[Rails.root.join("vendor/extensions/*/spec/support/factories")]
+FactoryGirl.reload
+
 # Makes sure that delayed methods are executed at once in test env
 Delayed::Worker.delay_jobs = false
 

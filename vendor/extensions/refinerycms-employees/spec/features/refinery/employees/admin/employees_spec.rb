@@ -5,7 +5,7 @@ describe Refinery do
   describe "Employees" do
     describe "Admin" do
       describe "employees" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "employees list" do
           before do

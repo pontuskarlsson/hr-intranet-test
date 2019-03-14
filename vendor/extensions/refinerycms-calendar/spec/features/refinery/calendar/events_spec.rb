@@ -5,7 +5,7 @@ describe Refinery do
   describe 'Calendar' do
     describe 'events' do
       before { Refinery::Calendar::Engine.load_seed }
-      refinery_login_with_devise :refinery_user
+      refinery_login_with_devise :authentication_devise_user
 
       describe 'events list' do
         context 'when events are in public calendars' do
@@ -25,7 +25,7 @@ describe Refinery do
           before(:each) do
             calendar = FactoryGirl.create(:calendar, user: logged_in_user, private: true)
             FactoryGirl.create(:event, title: 'UniqueTitleOne', calendar: calendar)
-            calendar = FactoryGirl.create(:calendar, private: true, user: FactoryGirl.create(:refinery_user))
+            calendar = FactoryGirl.create(:calendar, private: true, user: FactoryGirl.create(:authentication_devise_user))
             FactoryGirl.create(:event, title: 'UniqueTitleTwo', calendar: calendar)
           end
 

@@ -1,7 +1,7 @@
 
 FactoryGirl.define do
   factory :xero_expense_claim, :class => Refinery::Employees::XeroExpenseClaim do
-    association :added_by, factory: :refinery_user
+    association :added_by, factory: :authentication_devise_user
     employee
     status Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED
     description 'Expenses'

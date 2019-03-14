@@ -5,7 +5,7 @@ describe Refinery do
   describe "Store" do
     describe "Admin" do
       describe "order_items" do
-        refinery_login_with_devise :refinery_user
+        refinery_login_with_devise :authentication_devise_user
 
         describe "order_items list" do
           before do
