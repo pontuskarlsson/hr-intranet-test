@@ -1,7 +1,7 @@
 module Refinery
   module Parcels
     class ParcelsController < ::ApplicationController
-      before_filter :authenticate_refinery_user!
+      before_filter :authenticate_authentication_devise_user!
       before_filter :find_all_parcels
       before_filter :authorize_for_parcel, only: [:update, :sign, :pass_on]
       before_filter :find_page
@@ -14,7 +14,7 @@ module Refinery
       end
 
       def create
-        @parcel = current_refinery_user.received_parcels.build(params[:parcel])
+        @parcel = current_authentication_devise_user.received_parcels.build(parcel_params)
         if @parcel.save
           flash[:notice] = 'Parcel successfully added.'
           redirect_to refinery.parcels_parcels_path
@@ -56,12 +56,12 @@ module Refinery
           @parcels = @parcels.where('created_at > ?', DateTime.now - 3.months)
         end
 
-        @my_unsigned_parcels = current_refinery_user.assigned_parcels.unsigned.order('parcel_date ASC')
+        @my_unsigned_parcels = current_authentication_devise_user.assigned_parcels.unsigned.order('parcel_date ASC')
       end
 
       def authorize_for_parcel
-        @parcel = current_refinery_user.assigned_parcels.find_by_id(params[:id])
-        @parcel = current_refinery_user.received_parcels.find_by_id(params[:id]) if @parcel.nil?
+        @parcel = current_authentication_devise_user.assigned_parcels.find_by_id(params[:id])
+        @parcel = current_authentication_devise_user.received_parcels.find_by_id(params[:id]) if @parcel.nil?
         if @parcel.nil?
           flash[:alert] = 'You are not authorized to update that parcel'
           redirect_to refinery.parcels_parcels_path
@@ -70,6 +70,10 @@ module Refinery
 
       def find_page
         @page = ::Refinery::Page.where(:link_url => '/parcels/parcels').first
+      end
+
+      def parcel_params
+        params.require(:parcel).permit(:parcel_date, :from, :courier, :air_waybill_no, :to, :shipping_document_id, :position, :received_by, :assigned_to, :description, :given_to, :receiver_signed, :received_by_id)
       end
 
     end

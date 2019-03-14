@@ -100,7 +100,7 @@
   <div class="medium-4 columns">
 
     <!-- Right Side Column -->
-    <% if current_refinery_user.assigned_parcels.unsigned.any? %>
+    <% if current_authentication_devise_user.assigned_parcels.unsigned.any? %>
       <section class="page-part">
         <div class="page-part-header">
           NOTIFICATIONS

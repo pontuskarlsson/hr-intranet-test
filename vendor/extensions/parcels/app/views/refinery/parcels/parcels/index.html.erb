@@ -91,7 +91,7 @@
           { data: "receiver_signed", "render": function(data, type, row) {
             if(data){
               return 'Signed';
-            }else if(row.received_by_id == <%= current_refinery_user.id %> || row.assigned_to_id == <%= current_refinery_user.id %>){
+            }else if(row.received_by_id == <%= current_authentication_devise_user.id %> || row.assigned_to_id == <%= current_authentication_devise_user.id %>){
               return ('<a href="<%= refinery.sign_parcels_parcel_path('%%parcel_id%%') %>" data-remote="true">Sign</a> or <a href="<%= refinery.pass_on_parcels_parcel_path('%%parcel_id%%') %>" data-remote="true">Give to</a>').replace(/%%parcel_id%%/g, row.id);
             }else{
               return 'Not signed';

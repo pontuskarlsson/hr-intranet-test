@@ -8,7 +8,7 @@ module Refinery
       has_many :marketing, through: :brand_shows
       has_many :crawl_web_messages, dependent: :nullify, as: :sender
 
-      attr_accessible :name, :website, :logo_id, :description, :position, :msg_json_struct
+      #attr_accessible :name, :website, :logo_id, :description, :position, :msg_json_struct
 
       validates :name, presence: true, uniqueness: true
 

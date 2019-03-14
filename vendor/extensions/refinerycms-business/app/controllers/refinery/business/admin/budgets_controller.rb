@@ -6,8 +6,14 @@ module Refinery
 
         crudify :'refinery/business/budget',
                 :title_attribute => 'description',
-                :xhr_paging => true,
                 order: 'description ASC'
+
+        def budget_params
+          params.require(:budget).permit(
+              :description, :position, :customer_name, :from_date, :to_date,
+              :no_of_products, :no_of_skus, :price, :quantity, :margin, :comments
+          )
+        end
 
       end
     end

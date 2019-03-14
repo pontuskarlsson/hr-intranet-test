@@ -7,7 +7,7 @@ module Refinery
       has_many :brand_shows, dependent: :destroy
       has_many :shows, through: :brand_shows
 
-      attr_accessible :name, :website, :logo_id, :description, :position
+      #attr_accessible :name, :website, :logo_id, :description, :position
 
       validates :name, presence: true, uniqueness: true
 

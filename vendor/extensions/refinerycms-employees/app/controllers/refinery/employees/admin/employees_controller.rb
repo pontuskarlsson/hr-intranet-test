@@ -5,7 +5,6 @@ module Refinery
 
         crudify :'refinery/employees/employee',
                 :title_attribute => 'employee_no',
-                :xhr_paging => true,
                 order: 'employee_no ASC'
 
         helper_method :active_tracking_categories
@@ -24,6 +23,14 @@ module Refinery
           ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited').load_xero_guids
         rescue StandardError => e
           []
+        end
+
+        def employee_params
+          params.require(:employee).permit(
+              :user_id, :employee_no, :full_name, :id_no, :profile_image_id, :title, :position,
+              :xero_guid, :xero_guid_field, :user_name, :default_tracking_options, :reporting_manager_id,
+              :contact_ref, :birthday, :emergency_contact
+          )
         end
 
       end

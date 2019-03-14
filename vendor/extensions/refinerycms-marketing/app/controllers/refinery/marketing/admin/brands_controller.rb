@@ -5,9 +5,13 @@ module Refinery
 
         crudify :'refinery/marketing/brand',
                 :title_attribute => 'name',
-                :xhr_paging => true,
                 order: 'name ASC'
 
+        def brand_params
+          params.require(:brand).permit(
+              :name, :website, :logo_id, :description, :position
+          )
+        end
       end
     end
   end

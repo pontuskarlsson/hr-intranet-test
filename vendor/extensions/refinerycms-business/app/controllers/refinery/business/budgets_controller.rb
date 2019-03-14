@@ -18,7 +18,7 @@ module Refinery
       end
 
       def create
-        @budget_form = BudgetForm.new_in_model(Budget.new, params[:budget], current_refinery_user)
+        @budget_form = BudgetForm.new_in_model(Budget.new, params[:budget], current_authentication_devise_user)
         if @budget_form.save
           redirect_to refinery.business_budget_path(@budget_form.budget)
         else
@@ -34,7 +34,7 @@ module Refinery
       end
 
       def update
-        if @budget.budget_form(params[:budget], current_refinery_user).save
+        if @budget.budget_form(params[:budget], current_authentication_devise_user).save
           flash[:notice] = 'Successfully updated the Budget'
           redirect_to refinery.business_budget_path(@budget)
         else
@@ -51,7 +51,7 @@ module Refinery
 
       def find_page
         @page = ::Refinery::Page.where(:link_url => '/business/budgets').first
-        if defined?(Refinery::PageRoles) && @page && !@page.user_authorized?(current_refinery_user)
+        if defined?(Refinery::PageRoles) && @page && !@page.user_authorized?(current_authentication_devise_user)
           error_404
         end
       end

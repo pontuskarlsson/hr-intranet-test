@@ -16,7 +16,7 @@ module Refinery
       end
 
       def create
-        @xero_receipt = @xero_expense_claim.xero_receipts.build(params[:xero_receipt])
+        @xero_receipt = @xero_expense_claim.xero_receipts.build(xero_receipt_params)
         @xero_receipt.employee = @xero_expense_claim.employee
         @xero_receipt.total = @xero_receipt.xero_line_items.inject(0) { |sum, li| sum += li.line_total }
         if @xero_receipt.save
@@ -45,7 +45,7 @@ module Refinery
 
       def update
         if @xero_receipt.editable?
-          if @xero_receipt.update_attributes(params[:xero_receipt])
+          if @xero_receipt.update_attributes(xero_receipt_params)
             # Need to update the total in case there was modified line items.
             @xero_receipt.total = @xero_receipt.xero_line_items(true).inject(0) { |sum, li| sum += li.line_total }
             @xero_receipt.save
@@ -77,7 +77,7 @@ module Refinery
 
       protected
       def find_expense_claim
-        @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_refinery_user).find(params[:expense_claim_id])
+        @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_authentication_devise_user).find(params[:expense_claim_id])
       rescue ActiveRecord::RecordNotFound
         redirect_to refinery.employees_expense_claims_path
       end
@@ -90,6 +90,12 @@ module Refinery
 
       def active_tracking_categories
         @_active_tracking_categories ||= ::Refinery::Employees::XeroTrackingCategory.active
+      end
+
+      def xero_receipt_params
+        params.require(:xero_receipt).permit(
+            :xero_contact_id, :contact_name, :date, :line_amount_types, :reference, :status, :sub_total, :total, :xero_line_items_attributes
+        )
       end
 
     end

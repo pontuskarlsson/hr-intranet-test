@@ -5,19 +5,19 @@ module Refinery
 
       #acts_as_indexed :fields => [:name]
 
-      belongs_to :user,         class_name: '::Refinery::User'
+      belongs_to :user,         class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :organisation, class_name: 'Contact'
       has_many :employees,      class_name: 'Contact', foreign_key: :organisation_id
 
       #serialize :custom_fields, Hash
 
-      attr_accessible :base_id, :name, :first_name, :last_name, :address,
-                      :city, :skype, :zip, :state, :country, :title, :private,
-                      :contact_id, :is_organisation, :mobile, :fax,
-                      :website, :phone, :description, :linked_in, :facebook,
-                      :industry, :twitter, :email, :organisation_name,
-                      :tags_joined_by_comma, :position, :user_id, :insightly_id,
-                      :courier_company, :courier_account_no, :image_url
+      #attr_accessible :base_id, :name, :first_name, :last_name, :address,
+      #                :city, :skype, :zip, :state, :country, :title, :private,
+      #                :contact_id, :is_organisation, :mobile, :fax,
+      #                :website, :phone, :description, :linked_in, :facebook,
+      #                :industry, :twitter, :email, :organisation_name,
+      #                :tags_joined_by_comma, :position, :user_id, :insightly_id,
+      #                :courier_company, :courier_account_no, :image_url
 
       validates :base_id, uniqueness: true, allow_nil: true
       validates :insightly_id, uniqueness: true, allow_nil: true
@@ -30,6 +30,10 @@ module Refinery
         else
           where('1=0')
         end
+      end
+
+      def self.to_source
+        where.not(name: nil).pluck(:name).to_json.html_safe
       end
 
       def contacts_with_same_tags(limit = 20)

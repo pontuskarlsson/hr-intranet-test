@@ -5,12 +5,12 @@
 
   <div class='field'>
     <%= f.label :created_by_id -%>
-    <%= f.collection_select :created_by_id, Refinery::User.all, :id, ::Refinery::Parcels.config.user_attribute_reference -%>
+    <%= f.collection_select :created_by_id, ::Refinery::Authentication::Devise::User.all, :id, :full_name -%>
   </div>
 
   <div class='field'>
     <%= f.label :assigned_to_id -%>
-    <%= f.collection_select :assigned_to_id, Refinery::User.all, :id, ::Refinery::Parcels.config.user_attribute_reference, include_blank: true -%>
+    <%= f.collection_select :assigned_to_id, ::Refinery::Authentication::Devise::User.all, :id, :full_name, include_blank: true -%>
   </div>
 
   <div class='field'>

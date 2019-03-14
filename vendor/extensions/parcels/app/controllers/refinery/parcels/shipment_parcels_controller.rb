@@ -1,7 +1,7 @@
 module Refinery
   module Parcels
     class ShipmentParcelsController < ::ApplicationController
-      before_filter :authenticate_refinery_user!
+      before_filter :authenticate_authentication_devise_user!
       before_filter :find_shipment
       before_filter :find_shipment_parcel, only: [:show, :update, :destroy]
       before_filter :find_page
@@ -14,7 +14,7 @@ module Refinery
       end
 
       def create
-        @shipment_parcel = @shipment.shipment_parcels.build(params[:shipment_parcel])
+        @shipment_parcel = @shipment.shipment_parcels.build(shipment_parcel_params)
         if @shipment_parcel.save
           flash[:notice] = 'Parcel successfully added to Shipment.'
         else
@@ -32,7 +32,7 @@ module Refinery
       end
 
       def update
-        if @parcel.update_attributes(params[:parcel])
+        if @parcel.update_attributes(shipment_parcel_params)
           flash[:notice] = 'Parcel successfully updated.'
           redirect_to refinery.parcels_parcels_path
         else
@@ -62,6 +62,10 @@ module Refinery
 
       def find_page
         @page = ::Refinery::Page.where(link_url: '/parcels/shipments').first
+      end
+
+      def shipment_parcel_params
+        params.require(:shipment_parcel).permit(:length, :width, :height, :weight, :predefined_package, :description, :quantity, :value, :origin_country, :contents_type)
       end
 
     end

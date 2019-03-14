@@ -5,9 +5,14 @@ module Refinery
 
         crudify :'refinery/calendar/venue',
                 :title_attribute => 'name',
-                :xhr_paging => true,
                 :sortable => false,
                 :order => 'created_at DESC'
+
+        def venues_params
+          params.require(:venue).permit(
+              :name, :address, :url, :phone, :position
+          )
+        end
       end
     end
   end

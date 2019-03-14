@@ -5,7 +5,7 @@
       <%= link_to 'Back to All Expense Claims', refinery.employees_expense_claims_path, class: 'button tiny round' %>
     </div>
     <% if @xero_expense_claim.editable? %>
-      <% if @xero_expense_claim.submittable_by?(current_refinery_user) %>
+      <% if @xero_expense_claim.submittable_by?(current_authentication_devise_user) %>
         <div class="medium-3 columns">
           <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
             <%= submit_tag 'Submit Expense Claim', class: 'button round tiny js_click_loader', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
@@ -16,7 +16,7 @@
           <%= link_to 'Submit Expense Claim', '#', class: 'button round tiny disabled' %>
         </div>
       <% end %>
-      <% if @xero_expense_claim.destroyable_by?(current_refinery_user) %>
+      <% if @xero_expense_claim.destroyable_by?(current_authentication_devise_user) %>
         <div class="medium-6 columns">
           <%= form_tag refinery.employees_expense_claim_path(@xero_expense_claim), method: :delete do %>
             <%= submit_tag 'Delete Expense Claim', class: 'button alert tiny', confirm: 'Are you sure you want to delete this Expense Claim?' %>

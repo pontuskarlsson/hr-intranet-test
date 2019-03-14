@@ -5,8 +5,8 @@ module Refinery
 
       has_many :xero_line_items, dependent: :nullify
 
-      attr_accessible :featured, :when_to_use
-      attr_accessible :code, :guid, :name, as: :sync_update
+      #attr_accessible :featured, :when_to_use
+      #attr_accessible :code, :guid, :name, as: :sync_update
 
       validates :guid,    presence: true, uniqueness: true
       validates :code,    presence: true, uniqueness: { scope: :inactive }, unless: :inactive

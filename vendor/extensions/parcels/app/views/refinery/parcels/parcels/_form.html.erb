@@ -1,4 +1,4 @@
-<%- disabled = !@parcel.editable_by?(current_refinery_user) -%>
+<%- disabled = !@parcel.editable_by?(current_authentication_devise_user) -%>
 
 <% if disabled %>
   <p class="italic">Can only be edited by <%= @parcel.assigned_to.parcels_user_attribute %> or <%= @parcel.received_by.parcels_user_attribute %></p>
@@ -61,9 +61,9 @@
     $(function(){
       $('.js_parcel_date_field').datepicker({ dateFormat: "yy-mm-dd" });
       $('.js_from_field').autocomplete({
-        source: <%= ::Refinery::Marketing::Contact.select(:name).map(&:name).to_json.html_safe %>
+        source: <%= ::Refinery::Marketing::Contact.pluck(&:name).to_json.html_safe %>
       });
-      <%- users = ::Refinery::User.select(::Refinery::Parcels.config.user_attribute_reference).map(&:"#{Refinery::Parcels.config.user_attribute_reference}").to_json.html_safe -%>
+      <%- users = ::Refinery::Authentication::Devise::User.pluck(:full_name).to_json.html_safe -%>
       $('.js_to_field').autocomplete({
         source: <%= users %>
       });

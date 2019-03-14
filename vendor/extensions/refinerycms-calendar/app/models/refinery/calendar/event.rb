@@ -9,8 +9,8 @@ module Refinery
       validates :calendar_id, presence: true
       validates :starts_at,   presence: true
 
-      attr_accessible :title, :from, :to, :registration_link, :venue_id, :excerpt,
-                      :description, :featured, :position, :calendar_id
+      #attr_accessible :title, :from, :to, :registration_link, :venue_id, :excerpt,
+      #                :description, :featured, :position, :calendar_id
 
       alias_attribute :from, :starts_at
       alias_attribute :to, :ends_at
@@ -20,10 +20,9 @@ module Refinery
                 :prefix => true,
                 :allow_nil => true
 
-      scope :starting_on_day, lambda {|day| where(starts_at: day.beginning_of_day..day.end_of_day) }
-      scope :ending_on_day, lambda {|day| where(ends_at: day.beginning_of_day..day.end_of_day) }
-
-      scope :on_day, lambda {|day|
+      scope :starting_on_day,   -> (day) { where(starts_at: day.beginning_of_day..day.end_of_day) }
+      scope :ending_on_day,     -> (day) { where(ends_at: day.beginning_of_day..day.end_of_day) }
+      scope :on_day,            -> (day) {
         where(
           arel_table[:starts_at].in(day.beginning_of_day..day.end_of_day).
           or(arel_table[:ends_at].in(day.beginning_of_day..day.end_of_day)).

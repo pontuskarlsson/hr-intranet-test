@@ -19,7 +19,7 @@ module Refinery
       accepts_nested_attributes_for :xero_line_items, allow_destroy: true, reject_if: proc { |attr| attr[:description].blank? }
 
       attr_writer :contact_name
-      attr_accessible :xero_contact_id, :contact_name, :date, :line_amount_types, :reference, :status, :sub_total, :total, :xero_line_items_attributes
+      #attr_accessible :xero_contact_id, :contact_name, :date, :line_amount_types, :reference, :status, :sub_total, :total, :xero_line_items_attributes
 
       validates :xero_expense_claim_id,   presence: true
       validates :xero_contact_id,         presence: true

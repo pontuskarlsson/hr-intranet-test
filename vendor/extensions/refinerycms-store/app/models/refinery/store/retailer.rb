@@ -6,7 +6,7 @@ module Refinery
       has_many :products, dependent: :destroy
       has_many :orders, dependent: :destroy
 
-      attr_accessible :name, :default_price_unit, :position
+      #attr_accessible :name, :default_price_unit, :position
 
       validates :name,                presence: true, uniqueness: true
       validates :default_price_unit,  presence: true

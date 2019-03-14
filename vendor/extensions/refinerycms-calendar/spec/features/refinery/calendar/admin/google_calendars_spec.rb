@@ -5,7 +5,7 @@ describe Refinery do
   describe 'Calendar' do
     describe 'Admin' do
       describe 'google_calendars' do
-        refinery_login_with :refinery_user
+        refinery_login_with_devise :refinery_user
 
         describe 'google calendars list' do
           before(:each) do

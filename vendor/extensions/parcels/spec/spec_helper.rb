@@ -24,6 +24,8 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.infer_spec_type_from_file_location!
   config.expose_current_running_example_as :example
+
+  config.extend ::Refinery::Testing::ControllerMacros::Authentication, :type => :controller
 end
 
 # Requires supporting files with custom matchers and macros, etc,

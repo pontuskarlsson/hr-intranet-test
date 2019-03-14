@@ -32,7 +32,7 @@
       <%= link_to refinery.store_cart_path do%>
         <i class="fi-shopping-cart"></i>
         My Cart
-        (<span class="cart-count"><%= current_refinery_user.cart_count %></span>)
+        (<span class="cart-count"><%= current_authentication_devise_user.cart_count %></span>)
       <%end%>
     </p>
   <% end %>

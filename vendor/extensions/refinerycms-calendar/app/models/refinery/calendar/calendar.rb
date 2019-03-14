@@ -1,14 +1,14 @@
 module Refinery
   module Calendar
     class Calendar < Refinery::Core::BaseModel
-      belongs_to :user,     class_name: '::Refinery::User'
+      belongs_to :user,           class_name: '::Refinery::Authentication::Devise::User'
       has_many :user_calendars,   dependent: :destroy
       has_many :users,            through: :user_calendars
       has_many :events,           dependent: :destroy
 
       attr_accessor :activate_on_create
 
-      attr_accessible :default_rgb_code, :private, :activate_on_create, :user_id, :function, :title, :position
+      #attr_accessible :default_rgb_code, :private, :activate_on_create, :user_id, :function, :title, :position
 
       validates :title, presence: true, uniqueness: { scope: [:user_id] }
       validates :function,  uniqueness: true, allow_blank: true
@@ -20,7 +20,7 @@ module Refinery
       after_create do
         if activate_on_create
           unless private
-            ::Refinery::User.all.each do |user|
+            ::Refinery::Authentication::Devise::User.find_each do |user|
               self.users << user
             end
           end

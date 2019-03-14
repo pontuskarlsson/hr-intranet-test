@@ -1,7 +1,7 @@
 <div class="row">
   <div class="small-6 medium-9 columns text-left t1 p1">
     <a href="/">
-      <img data-interchange="[/assets/logo-small.png, (default)], [/assets/logo.png, (medium)]">
+      <img data-interchange="[<%= image_url('logo-small.png') %>, (default)], [<%= image_url('logo.png') %>, (medium)]">
     </a>
   </div>
   <div class="small-6 medium-3 columns text-right">
@@ -21,7 +21,7 @@
       <!-- Left Nav Section -->
       <section class="top-bar-section">
         <ul class="left">
-          <li><a href="/"><img class="header-logo" src="/assets/home.png"/></a></li>
+          <li><a href="/"><img class="header-logo" src="<%= image_path('home.png') %>"/></a></li>
           <% header_menu_items.roots.each do |root| %>
             <% if root.has_children? %>
               <li class="has-dropdown">
@@ -39,24 +39,24 @@
         </ul>
 
         <ul class="right">
-          <% if refinery_user_signed_in? %>
+          <% if authentication_devise_user_signed_in? %>
             <li class="has-dropdown">
-              <a href="#"><%= current_refinery_user.employee.present? ? current_refinery_user.employee.full_name : current_refinery_user.email %></a>
+              <a href="#"><%= current_authentication_devise_user.employee.present? ? current_authentication_devise_user.employee.full_name : current_authentication_devise_user.email %></a>
               <ul class="dropdown">
 
                 <li><%= link_to 'My Profile', '/my_profile' %></li>
                 <li><%= link_to 'Refinery', '/refinery' %></li>
-                <% if current_refinery_user.has_role?(:superuser) %>
+                <% if current_authentication_devise_user.has_role?(:superuser) %>
                   <% if @page.present? %>
                     <li><%= link_to 'Edit this Page', refinery.edit_admin_page_path(@page.id) %></li>
                   <% end %>
                 <% end %>
-                <li><%= link_to 'SIGN OUT', destroy_session_path('refinery_user'), method: 'delete' %></li>
+                <li><%= link_to 'SIGN OUT', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
               </ul>
             </li>
           <% else %>
             <li class="has-form">
-              <%= link_to 'SIGN IN', new_session_path('refinery_user'), class: 'button radius' %>
+              <%= link_to 'SIGN IN', new_session_path('authentication_devise_user'), class: 'button radius' %>
             </li>
           <% end %>
         </ul>

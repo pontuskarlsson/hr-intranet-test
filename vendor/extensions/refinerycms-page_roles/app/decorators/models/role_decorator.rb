@@ -1,4 +1,4 @@
-Refinery::Role.class_eval do
+Refinery::Authentication::Devise::Role.class_eval do
 
   # Associations
   has_many :page_roles, class_name: '::Refinery::PageRoles::PageRole', dependent: :destroy

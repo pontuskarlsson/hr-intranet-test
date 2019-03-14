@@ -6,7 +6,7 @@ module Refinery
       belongs_to :brand
       belongs_to :show
 
-      attr_accessible :brand_id, :show_id
+      #attr_accessible :brand_id, :show_id
 
       validates :brand_id, :show_id, presence: true, uniqueness: true
 

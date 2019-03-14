@@ -1,5 +1,5 @@
 <% content_for :body do %>
-  <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_title('body').try(:body) -%>
+  <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_slug('body').try(:body) -%>
   <% body_content.scan(/\[CustomList:(?<custom_list>[A-Za-z\s]+)\]/) do |_| %>
     <% if (custom_list = ::Refinery::CustomLists::CustomList.find_by_title($~[:custom_list].strip)).present? %>
       <h1><%= custom_list.title %></h1>

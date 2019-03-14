@@ -6,7 +6,6 @@ module Refinery
         # The only actions we use here is index, edit and update
         crudify :'refinery/employees/xero_account',
                 :title_attribute => 'code',
-                :xhr_paging => true,
                 order: 'featured DESC, code ASC'
 
         def sync_accounts
@@ -24,6 +23,12 @@ module Refinery
           ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited').sync_accounts
         rescue StandardError => e
           false
+        end
+
+        def xero_account_params
+          params.require(:xero_account).permit(
+              :featured, :when_to_use
+          )
         end
 
       end

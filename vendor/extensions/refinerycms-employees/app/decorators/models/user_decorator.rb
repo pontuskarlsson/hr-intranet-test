@@ -1,4 +1,4 @@
-Refinery::User.class_eval do
+Refinery::Authentication::Devise::User.class_eval do
 
   # Associations
   has_one :employee,              class_name: '::Refinery::Employees::Employee', dependent: :nullify

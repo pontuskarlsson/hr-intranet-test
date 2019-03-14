@@ -12,8 +12,8 @@ module Refinery
       # guid of the selected Option for that Category.
       serialize :tracking_categories_and_options, Hash
 
-      attr_accessible :xero_account_id, :description, :discount_rate, :item_code, :quantity,
-                      :tax_amount, :tax_type, :unit_amount, :tracking_categories_and_options
+      #attr_accessible :xero_account_id, :description, :discount_rate, :item_code, :quantity,
+      #                :tax_amount, :tax_type, :unit_amount, :tracking_categories_and_options
 
       # Not validating presence of xero_receipt because it is
       # being added through +accepts_nested_attributes_for+ and

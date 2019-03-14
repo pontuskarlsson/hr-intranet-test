@@ -2,10 +2,10 @@ Refinery::Page.class_eval do
 
   # Associations
   has_many :page_roles, class_name: '::Refinery::PageRoles::PageRole', dependent: :destroy
-  has_many :roles,      through: :page_roles
+  has_many :roles,      through: :page_roles, class_name: '::Refinery::Authentication::Devise::Role'
 
   def has_role?(title)
-    raise ArgumentException, 'Role should be the title of the role not a role object.' if title.is_a?(::Refinery::Role)
+    raise ArgumentException, 'Role should be the title of the role not a role object.' if title.is_a?(::Refinery::Authentication::Devise::Role)
     roles.any?{ |r| r.title == title.to_s.camelize }
   end
 

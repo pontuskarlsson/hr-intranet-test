@@ -4,7 +4,7 @@ module Refinery
       self.table_name = 'refinery_page_roles'
 
       belongs_to :page, class_name: '::Refinery::Page'
-      belongs_to :role, class_name: '::Refinery::Role'
+      belongs_to :role, class_name: '::Refinery::Authentication::Devise::Role'
 
     end
   end

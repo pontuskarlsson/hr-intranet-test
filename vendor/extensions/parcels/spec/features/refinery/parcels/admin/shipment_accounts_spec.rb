@@ -5,7 +5,7 @@ describe Refinery do
   describe "Parcels" do
     describe "Admin" do
       describe "shipment_accounts" do
-        refinery_login_with :refinery_user
+        refinery_login_with_devise :refinery_user
 
         describe "shipment_accounts list" do
           before do

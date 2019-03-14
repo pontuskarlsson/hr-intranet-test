@@ -5,7 +5,7 @@ module Refinery
 
       belongs_to :budget
 
-      attr_accessible :budget_id, :description, :no_of_products, :no_of_skus, :price, :quantity, :margin, :comments, :position
+      #attr_accessible :budget_id, :description, :no_of_products, :no_of_skus, :price, :quantity, :margin, :comments, :position
 
       validates :budget_id,     presence: true
       validates :description,   presence: true

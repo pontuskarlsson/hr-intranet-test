@@ -1,9 +1,9 @@
-Refinery::User.class_eval do
+Refinery::Authentication::Devise::User.class_eval do
   has_many :user_settings, dependent: :destroy
 
   accepts_nested_attributes_for :user_settings
 
-  attr_accessible :full_name, :password_has_expired, :user_settings_attributes
+  #attr_accessible :full_name, :password_has_expired, :user_settings_attributes
 
   validates :full_name, presence: true
 

@@ -11,10 +11,6 @@ module Refinery
           plugin.name = "parcels"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.parcels_admin_parcels_path }
           plugin.pathname = root
-          plugin.activity = {
-            :class_name => :'refinery/parcels/parcel',
-            :title => 'from_name'
-          }
           
         end
       end

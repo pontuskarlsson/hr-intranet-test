@@ -5,7 +5,7 @@ describe Refinery do
   describe "Calendar" do
     describe "Admin" do
       describe "venues" do
-        refinery_login_with :refinery_user
+        refinery_login_with_devise :refinery_user
 
         describe "venues list" do
           before(:each) do

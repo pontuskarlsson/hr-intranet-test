@@ -11,12 +11,12 @@ module Refinery
       SYNC_FROM_NOTHING = 2
       SYNC_FROM_SETTINGS = [SYNC_FROM_EVERYTHING, SYNC_FROM_EXCEPT_PRIVATE, SYNC_FROM_NOTHING]
 
-      belongs_to :user,             class_name: '::Refinery::User'
+      belongs_to :user,             class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :primary_calendar, class_name: '::Refinery::Calendar::Calendar'
       has_many :google_events,      dependent: :destroy
 
       attr_reader :access_code
-      attr_accessible :google_calendar_id, :user_id, :access_code, :primary_calendar_id, :sync_to_id, :sync_from_id
+      #attr_accessible :google_calendar_id, :user_id, :access_code, :primary_calendar_id, :sync_to_id, :sync_from_id
 
       validates :user_id,             presence: true
       validates :google_calendar_id,  presence: true, uniqueness: true

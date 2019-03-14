@@ -6,7 +6,7 @@ module Refinery
       belongs_to :custom_list
       has_many :list_cells, dependent: :destroy
 
-      attr_accessible :custom_list_id, :position
+      #attr_accessible :custom_list_id, :position
 
       validates :custom_list_id,     presence: true
 

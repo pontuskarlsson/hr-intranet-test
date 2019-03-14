@@ -13,12 +13,12 @@ module Refinery
       STATUS_VOIDED         = 'VOIDED'
       STATUSES = [STATUS_NOT_SUBMITTED, STATUS_SUBMITTING, STATUS_ERROR, STATUS_SUBMITTED, STATUS_AUTHORISED, STATUS_PAID, STATUS_DELETED, STATUS_VOIDED]
 
-      belongs_to :added_by,                     class_name: '::Refinery::User'
+      belongs_to :added_by,                     class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :employee
       has_many :xero_receipts,                  dependent: :destroy
       has_many :xero_expense_claim_attachments, dependent: :destroy
 
-      attr_accessible :guid, :status, :total, :amount_due, :amount_paid, :payment_due_date, :reporting_date, :updated_date_utc, :description, :employee_id
+      #attr_accessible :guid, :status, :total, :amount_due, :amount_paid, :payment_due_date, :reporting_date, :updated_date_utc, :description, :employee_id
 
       validates :added_by_id,     presence: true
       validates :employee_id,     presence: true

@@ -11,11 +11,6 @@ module Refinery
           plugin.name = "marketing"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.marketing_admin_brands_path }
           plugin.pathname = root
-          plugin.activity = {
-            :class_name => :'refinery/marketing/brand',
-            :title => 'name'
-          }
-          
         end
       end
 

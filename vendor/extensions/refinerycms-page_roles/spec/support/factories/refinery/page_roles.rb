@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :brand, :class => Refinery::PageRoles::PageRole do
+  factory :page_role, :class => Refinery::PageRoles::PageRole do
     page
     role
   end

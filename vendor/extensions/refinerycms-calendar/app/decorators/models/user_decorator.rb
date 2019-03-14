@@ -1,4 +1,4 @@
-Refinery::User.class_eval do
+Refinery::Authentication::Devise::User.class_eval do
   has_many :google_calendars,   class_name: '::Refinery::Calendar::GoogleCalendar', dependent: :destroy
 
   def calendar_user_attribute

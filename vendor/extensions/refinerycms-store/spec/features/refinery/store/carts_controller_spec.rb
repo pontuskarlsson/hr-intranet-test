@@ -4,7 +4,7 @@ require "spec_helper"
 describe Refinery do
   describe "Store" do
     describe "carts" do
-      refinery_login_with :refinery_user
+      refinery_login_with_devise :refinery_user
 
       describe "shopping cart list" do
 

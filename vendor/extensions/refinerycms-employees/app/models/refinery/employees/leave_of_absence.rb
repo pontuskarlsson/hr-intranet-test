@@ -36,8 +36,8 @@ module Refinery
       belongs_to :doctors_note,   class_name: '::Refinery::Resource'
 
       attr_writer :employee_name, :i_am_sick_today
-      attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :doctors_note_id, :employee_name,
-                      :absence_type_id, :absence_type_description, :status, :i_am_sick_today
+      #attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :doctors_note_id, :employee_name,
+      #                :absence_type_id, :absence_type_description, :status, :i_am_sick_today
 
       validates :employee_id,               presence: true
       validates :event_id,                  uniqueness: true, allow_nil: true
@@ -73,7 +73,11 @@ module Refinery
         if add_to_calendar?
           unless event.present?
             # This creates a Calendar for the specific function of displaying Leave of Absence events.
-            calendar = ::Refinery::Calendar::Calendar.find_or_create_by_function!(CALENDAR_FUNCTION, { title: 'Leave of Absence', private: false, activate_on_create: true })
+            calendar = ::Refinery::Calendar::Calendar.find_or_create_by!(function: CALENDAR_FUNCTION) do |calendar|
+              calendar.title = 'Leave of Absence'
+              calendar.private = false
+              calendar.activate_on_create = true
+            end
             self.event = calendar.events.build
           end
 
@@ -99,9 +103,9 @@ module Refinery
         errors.empty? # Rollback if any errors are present
       end
 
-      scope :sick_leaves,     where(absence_type_id: TYPE_SICK_LEAVE)
-      scope :non_sick_leaves, where("#{table_name}.absence_type_id <> ?", TYPE_SICK_LEAVE)
-      scope :approvable,      where(absence_type_id: TYPES_OF_LEAVE.map { |k,v| k if v[:apply] }.compact)
+      scope :sick_leaves,     -> { where(absence_type_id: TYPE_SICK_LEAVE) }
+      scope :non_sick_leaves, -> { where("#{table_name}.absence_type_id <> ?", TYPE_SICK_LEAVE) }
+      scope :approvable,      -> { where(absence_type_id: TYPES_OF_LEAVE.map { |k,v| k if v[:apply] }.compact) }
 
       def self.approvable_by(manager)
         if manager.user.present? && manager.user.plugins.where(name: 'refinerycms-employees').exists?

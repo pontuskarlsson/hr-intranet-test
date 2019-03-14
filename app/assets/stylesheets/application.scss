@@ -11,7 +11,6 @@
  *= require refinery/formatting
  *= require refinery/theme
  *= require_self
- *= require foundation_and_overrides
  *= require refinery/marketing
  *= require refinery/custom_lists
 
@@ -40,7 +39,7 @@ html, body {
 }
 
 
-html {
+body {
     background: image-url('background.jpg') #777 no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -705,4 +704,40 @@ noscript .flash.flash_alert a, noscript .flash.flash_alert a:hover {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     opacity: 1;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.p1 { margin-bottom: 1rem !important; }
+.p2 { margin-bottom: 2rem !important; }
+.p3 { margin-bottom: 3rem !important; }
+.p4 { margin-bottom: 4rem !important; }
+.p5 { margin-bottom: 5rem !important; }
+.p6 { margin-bottom: 6rem !important; }
+.p7 { margin-bottom: 7rem !important; }
+.p8 { margin-bottom: 8rem !important; }
+.p9 { margin-bottom: 9rem !important; }
+.p10 { margin-bottom: 10rem !important; }
+.t1 { padding-top: 1rem !important; }
+.t2 { padding-top: 2rem !important; }
+.t3 { padding-top: 3rem !important; }
+.t4 { padding-top: 4rem !important; }
+.t5 { padding-top: 5rem !important; }
+.t6 { padding-top: 6rem !important; }
+.t7 { padding-top: 7rem !important; }
+.t8 { padding-top: 8rem !important; }
+.t9 { padding-top: 9rem !important; }
+.t10 { padding-top: 10rem !important; }
+
+
+@media only screen and (min-width:40.063em) {
+    .row.calendar-row {
+        width: 171.4%;
+    }
 }

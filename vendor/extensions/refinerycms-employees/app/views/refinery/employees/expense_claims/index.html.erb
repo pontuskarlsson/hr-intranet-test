@@ -48,7 +48,7 @@
       <th>Total</th>
     </tr>
 
-    <% if (expense_claims = current_refinery_user.xero_expense_claims.where('employee_id <> ?', current_refinery_user.employee.try(:id) || -1)).any? %>
+    <% if (expense_claims = current_authentication_devise_user.xero_expense_claims.where('employee_id <> ?', current_authentication_devise_user.employee.try(:id) || -1)).any? %>
       <% expense_claims.each do |expense_claim| %>
 
         <tr>

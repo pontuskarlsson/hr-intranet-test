@@ -6,7 +6,7 @@ module Refinery
       has_many :list_columns, dependent: :destroy
       has_many :list_rows,    dependent: :destroy
 
-      attr_accessible :title, :position
+      #attr_accessible :title, :position
 
       validates :title, :presence => true, :uniqueness => true
 

@@ -6,7 +6,7 @@ module Refinery
       belongs_to :order
       belongs_to :product
 
-      attr_accessible :order_id, :product_id, :product_number, :quantity, :sub_total_price, :position, :comment, :price_per_item
+      #attr_accessible :order_id, :product_id, :product_number, :quantity, :sub_total_price, :position, :comment, :price_per_item
 
       validates :order_id,        presence: true
       validates :product_id,      uniqueness: { scope: :order_id }, allow_nil: true

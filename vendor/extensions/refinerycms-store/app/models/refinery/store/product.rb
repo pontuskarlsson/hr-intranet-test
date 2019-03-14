@@ -6,7 +6,7 @@ module Refinery
       belongs_to :retailer
       belongs_to :image,    class_name: '::Refinery::Image'
 
-      attr_accessible :product_number, :name, :description, :measurement_unit, :price_amount, :image_id, :position, :retailer_id
+      #attr_accessible :product_number, :name, :description, :measurement_unit, :price_amount, :image_id, :position, :retailer_id
 
       validates :retailer_id,       presence: true
       validates :product_number,    presence: true, uniqueness: { scope: :retailer_id }

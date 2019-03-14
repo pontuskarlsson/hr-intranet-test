@@ -15,7 +15,7 @@ module Refinery
       end
 
       def create
-        @leave_of_absence = @employee.leave_of_absences.build({ status: ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL }.reverse_merge(params[:leave_of_absence] || {}))
+        @leave_of_absence = @employee.leave_of_absences.build(annual_leave_params)
         if @leave_of_absence.save
           flash[:notice] = 'Annual Leave successfully registered.'
           redirect_to refinery.employees_annual_leaves_path
@@ -33,7 +33,7 @@ module Refinery
       end
 
       def update
-        if @leave_of_absence.update_attributes(params[:leave_of_absence])
+        if @leave_of_absence.update_attributes(annual_leave_params)
           flash[:notice] = 'Annual Leave successfully updated.'
           redirect_to refinery.employees_annual_leaves_path
         else
@@ -71,7 +71,7 @@ module Refinery
 
       protected
       def find_employee
-        @employee = current_refinery_user.employee
+        @employee = current_authentication_devise_user.employee
         raise ActiveRecord::RecordNotFound if @employee.nil?
       end
 
@@ -90,6 +90,15 @@ module Refinery
 
       def find_page
         @page = ::Refinery::Page.where(:link_url => "/employees/annual_leaves").first
+      end
+
+      def annual_leave_params
+        params.require(:leave_of_absence).permit(
+            :start_date, :start_half_day, :end_date, :end_half_day, :doctors_note_id, :employee_name,
+            :absence_type_id, :absence_type_description, :status, :i_am_sick_today
+        ).to_unsafe_h.merge(
+            { status: ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL }
+        )
       end
 
     end

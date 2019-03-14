@@ -2,10 +2,10 @@
   <div id="mycart" class="small-10 small-centered medium-8 large-8 column">
     <div class="p1 glassy-bg mb1 text-center radius-l1 radius-r1">
       <h4>My Cart</h4>
-      <p class="mb0"> You've selected <span class="cart-count"><%= current_refinery_user.cart_count %></span> products!</p>
+      <p class="mb0"> You've selected <span class="cart-count"><%= current_authentication_devise_user.cart_count %></span> products!</p>
     </div>
 
-    <% if current_refinery_user.cart_count > 0 %>
+    <% if current_authentication_devise_user.cart_count > 0 %>
       <p><%= link_to 'Place Order', refinery.place_order_store_cart_path, class: 'button round tiny', method: :post %></p>
     <% end %>
   

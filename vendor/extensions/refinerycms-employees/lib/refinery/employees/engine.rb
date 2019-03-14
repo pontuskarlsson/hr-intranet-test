@@ -11,11 +11,6 @@ module Refinery
           plugin.name = "employees"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.employees_admin_employees_path }
           plugin.pathname = root
-          plugin.activity = {
-            :class_name => :'refinery/employees/employee',
-            :title => 'employee_no'
-          }
-          
         end
 
         ActiveSupport::Inflector.inflections do |inflect|
@@ -26,8 +21,8 @@ module Refinery
       config.after_initialize do
         Refinery.register_extension(Refinery::Employees)
 
-        Xeroizer::Logging::Log = Rails.logger
-        Xeroizer::Record::BaseModel::DEFAULT_RECORDS_PER_BATCH_SAVE = 50
+        #Xeroizer::Logging::Log = Rails.logger
+        #Xeroizer::Record::BaseModel::DEFAULT_RECORDS_PER_BATCH_SAVE = 50
       end
     end
   end

@@ -6,7 +6,6 @@ module Refinery
         before_filter :find_calendars, :except => [:index, :destroy]
 
         crudify :'refinery/calendar/event',
-                :xhr_paging => true,
                 :sortable => false,
                 :order => "starts_at DESC"
 
@@ -17,6 +16,13 @@ module Refinery
 
         def find_calendars
           @calendars = ::Refinery::Calendar::Calendar.includes(:user).order('title')
+        end
+
+        def event_params
+          params.require(:event).permit(
+              :title, :from, :to, :registration_link, :venue_id, :excerpt,
+              :description, :featured, :position, :calendar_id
+          )
         end
       end
     end

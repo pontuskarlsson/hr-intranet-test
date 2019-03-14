@@ -12,12 +12,12 @@ module Refinery
       end
 
       def new
-        @xero_expense_claim = current_refinery_user.xero_expense_claims.build(employee_id: current_refinery_user.employee.try(:id))
+        @xero_expense_claim = current_authentication_devise_user.xero_expense_claims.build(employee_id: current_authentication_devise_user.employee.try(:id))
         present(@page)
       end
 
       def create
-        @xero_expense_claim = current_refinery_user.xero_expense_claims.build(params[:xero_expense_claim])
+        @xero_expense_claim = current_authentication_devise_user.xero_expense_claims.build(xero_expense_claim_params)
         if @xero_expense_claim.save
           flash[:notice] = "Expense Claim '#{ @xero_expense_claim.description }' has been Added"
           redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
@@ -40,7 +40,7 @@ module Refinery
       end
 
       def update
-        if @xero_expense_claim.update_attributes(params[:xero_expense_claim])
+        if @xero_expense_claim.update_attributes(xero_expense_claim_params)
           flash[:notice] = "Expense Claim '#{ @xero_expense_claim.description }' has been Updated"
           redirect_to refinery.employees_expense_claim_path(@xero_expense_claim)
         else
@@ -50,7 +50,7 @@ module Refinery
       end
 
       def submit
-        if @xero_expense_claim.submittable_by?(current_refinery_user)
+        if @xero_expense_claim.submittable_by?(current_authentication_devise_user)
           if @xero_expense_claim.submit! #verify_contacts && batch_create_receipt && attach_scanned_receipts && submit_expense_claim
             flash[:notice] = 'Expense Claim is being submitted, it can take several minutes to complete.'
           else
@@ -64,7 +64,7 @@ module Refinery
       end
 
       def destroy
-        if @xero_expense_claim.destroyable_by?(current_refinery_user)
+        if @xero_expense_claim.destroyable_by?(current_authentication_devise_user)
           @xero_expense_claim.destroy
           redirect_to refinery.employees_expense_claims_path
         else
@@ -97,11 +97,11 @@ module Refinery
 
       protected
       def find_all_expense_claims
-        @xero_expense_claims = current_refinery_user.employee.xero_expense_claims
+        @xero_expense_claims = current_authentication_devise_user.employee.xero_expense_claims
       end
 
       def find_expense_claim
-        #@xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_refinery_user).find(params[:id])
+        #@xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.accessible_by_user(current_authentication_devise_user).find(params[:id])
         @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         redirect_to refinery.employees_expense_claims_path
@@ -141,6 +141,13 @@ module Refinery
         rescue ::ActiveRecord::RecordNotSaved
           false
         end
+      end
+
+      def xero_expense_claim_params
+        params.require(:xero_expense_clain).permit(
+            :guid, :status, :total, :amount_due, :amount_paid, :payment_due_date, :reporting_date,
+            :updated_date_utc, :description, :employee_id
+        )
       end
 
     end

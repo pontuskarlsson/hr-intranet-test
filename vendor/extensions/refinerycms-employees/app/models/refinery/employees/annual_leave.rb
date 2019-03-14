@@ -10,7 +10,7 @@ module Refinery
       has_many :annual_leave_records,     dependent: :destroy
 
       attr_writer :employee_name
-      attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :employee_name
+      #attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :employee_name
 
       validates :employee_id,   presence: true
       validates :event_id,      uniqueness: true, allow_nil: true

@@ -7,7 +7,7 @@ module Refinery
 
       belongs_to :event,          class_name: '::Refinery::Calendar::Event', dependent: :destroy
 
-      attr_accessible :holiday_date, :half_day, :country, :title
+      #attr_accessible :holiday_date, :half_day, :country, :title
 
       validates :title,         presence: true
       validates :event_id,      uniqueness: true, allow_nil: true

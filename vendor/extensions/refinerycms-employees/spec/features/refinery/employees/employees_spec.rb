@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Refinery do
   describe 'Employees' do
     describe 'employees' do
-      refinery_login_with :refinery_user
+      refinery_login_with_devise :refinery_user
 
       describe 'employee directory' do
         context 'when only two out of three employees has active employment contract' do

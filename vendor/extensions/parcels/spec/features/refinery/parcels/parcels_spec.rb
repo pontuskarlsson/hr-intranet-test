@@ -4,7 +4,7 @@ require "spec_helper"
 describe Refinery do
   describe "Parcels" do
     describe "parcels" do
-      refinery_login_with :refinery_user
+      refinery_login_with_devise :refinery_user
 
       describe "parcels list" do
         before do

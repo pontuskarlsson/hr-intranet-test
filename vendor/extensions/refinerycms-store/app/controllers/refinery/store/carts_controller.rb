@@ -1,7 +1,7 @@
 module Refinery
   module Store
     class CartsController < ::ApplicationController
-      before_filter :authenticate_refinery_user!
+      before_filter :authenticate_authentication_devise_user!
       before_filter :find_page, only: [:show]
 
       def show
@@ -15,12 +15,12 @@ module Refinery
 
       def add
         $redis.sadd current_user_cart, params[:product_id]
-        render json: current_refinery_user.cart_count, status: 200
+        render json: current_authentication_devise_user.cart_count, status: 200
       end
 
       def remove
         $redis.srem current_user_cart, params[:product_id]
-        render json: current_refinery_user.cart_count, status: 200
+        render json: current_authentication_devise_user.cart_count, status: 200
       end
 
       def place_order
@@ -36,7 +36,7 @@ module Refinery
       protected
 
       def current_user_cart
-        "cart#{current_refinery_user.id}"
+        "cart#{current_authentication_devise_user.id}"
       end
 
       def find_page
@@ -49,7 +49,7 @@ module Refinery
           @cart_products = Product.find(cart_ids).group_by(&:retailer_id)
 
           @cart_products.each do |retailer_id, products|
-            order = current_refinery_user.store_orders.create!(retailer_id: retailer_id)
+            order = current_authentication_devise_user.store_orders.create!(retailer_id: retailer_id)
             products.each do |product|
               order.order_items.create!(product_id: product.id, quantity: 1)
             end

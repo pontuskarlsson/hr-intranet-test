@@ -8,7 +8,7 @@ module Refinery
 
       attr_writer :contact_name
 
-      attr_accessible :contact_id, :courier, :description, :account_no, :contact_name, :position
+      #attr_accessible :contact_id, :courier, :description, :account_no, :contact_name, :position
 
       validates :contact_id,    presence: true
       validates :description,   presence: true

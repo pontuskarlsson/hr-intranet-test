@@ -4,7 +4,7 @@ module Refinery
       belongs_to :google_calendar
       belongs_to :event
 
-      attr_accessible :google_event_id, :last_synced_at, :event_id
+      #attr_accessible :google_event_id, :last_synced_at, :event_id
 
       validates :google_calendar_id,  presence: true
       validates :event_id,            presence: true, uniqueness: { scope: :google_calendar_id }

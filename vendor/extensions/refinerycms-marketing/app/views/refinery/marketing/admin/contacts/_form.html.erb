@@ -5,7 +5,7 @@
 
   <div class='field'>
     <%= f.label :user_id -%>
-    <%= f.select :user_id, options_from_collection_for_select(::Refinery::User.all, :id, ::Refinery::Parcels.config.user_attribute_reference, @contact.user_id), include_blank: true -%>
+    <%= f.select :user_id, options_from_collection_for_select(::Refinery::Authentication::Devise::User.all, :id, :full_name, @contact.user_id), include_blank: true -%>
   </div>
 
   <div class='field'>

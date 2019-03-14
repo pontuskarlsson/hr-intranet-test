@@ -24,7 +24,9 @@ module Refinery
 
         budget.no_of_products = budget.budget_items.map(&:no_of_products).sum
         budget.no_of_skus = budget.budget_items.map(&:no_of_skus).sum
-        budget.quantity = budget.budget_items.map(&:total_qty).sum / budget.no_of_skus
+        unless budget.no_of_skus.zero?
+          budget.quantity = budget.budget_items.map(&:total_qty).sum / budget.no_of_skus
+        end
         budget.total = budget.budget_items.map(&:total).sum
         budget.margin_total = budget.budget_items.map(&:margin_total).sum
 

@@ -13,7 +13,7 @@ module Refinery
       belongs_to :shipment
 
       attr_reader :_validate_easypost, :_validate_international
-      attr_accessible :length, :width, :height, :weight, :predefined_package, :description, :quantity, :value, :origin_country, :contents_type
+      #attr_accessible :length, :width, :height, :weight, :predefined_package, :description, :quantity, :value, :origin_country, :contents_type
 
       validates :shipment_id,         presence: true
       validates :description,         presence: true

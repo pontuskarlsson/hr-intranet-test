@@ -11,10 +11,6 @@ module Refinery
           plugin.name = "custom_lists"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.custom_lists_admin_custom_lists_path }
           plugin.pathname = root
-          plugin.activity = {
-            :class_name => :'refinery/custom_lists/custom_list'
-          }
-          
         end
       end
 

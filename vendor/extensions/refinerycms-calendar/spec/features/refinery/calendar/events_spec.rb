@@ -5,7 +5,7 @@ describe Refinery do
   describe 'Calendar' do
     describe 'events' do
       before { Refinery::Calendar::Engine.load_seed }
-      refinery_login_with :refinery_user
+      refinery_login_with_devise :refinery_user
 
       describe 'events list' do
         context 'when events are in public calendars' do

@@ -97,7 +97,7 @@
   <script type="text/javascript">
     $(function(){
       $('.js_user_field').autocomplete({
-        source: <%= ::Refinery::User.select(:username).map(&:username).to_json.html_safe %>
+        source: <%= ::Refinery::Authentication::Devise::User.pluck(:username).to_json.html_safe %>
       });
       $('.js_contact_field').autocomplete({
         source: <%= ::Refinery::Marketing::Contact.employees_for('Happy Rabbit Limited').select([:id, :first_name, :last_name]).map { |c| [c.first_name, c.last_name, c.id].join ' ' }.to_json.html_safe %>

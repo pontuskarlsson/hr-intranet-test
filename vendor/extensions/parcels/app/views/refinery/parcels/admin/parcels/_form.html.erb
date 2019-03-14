@@ -5,7 +5,7 @@
 
   <div class='field'>
     <%= f.label :received_by_id -%>
-    <%= f.collection_select :received_by_id, Refinery::User.all, :id, ::Refinery::Parcels.config.user_attribute_reference -%>
+    <%= f.collection_select :received_by_id, ::Refinery::Authentication::Devise::User.all, :id, :full_name -%>
   </div>
 
   <div class='field'>
@@ -65,7 +65,7 @@
         source: <%= ::Refinery::Marketing::Contact.select(:name).map(&:name).to_json.html_safe %>
       });
       $('.js_to_field').autocomplete({
-        source: <%= ::Refinery::User.select(::Refinery::Parcels.config.user_attribute_reference).map(&:"#{ ::Refinery::Parcels.config.user_attribute_reference }").to_json.html_safe %>
+        source: <%= ::Refinery::Authentication::Devise::User.pluck(:full_name).to_json.html_safe %>
       });
     });
   </script>

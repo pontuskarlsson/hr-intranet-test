@@ -7,7 +7,6 @@ module Refinery
 
         crudify :'refinery/calendar/google_calendar',
                 :title_attribute => 'google_calendar_id',
-                :xhr_paging => true,
                 :sortable => false,
                 :order => 'created_at DESC'
 
@@ -31,6 +30,12 @@ module Refinery
 
         def find_calendars
           @calendars = ::Refinery::Calendar::Calendar.order('title')
+        end
+
+        def google_calendar_params
+          params.require(:google_calendar).permit(
+              :google_calendar_id, :user_id, :access_code, :primary_calendar_id, :sync_to_id, :sync_from_id
+          )
         end
       end
     end

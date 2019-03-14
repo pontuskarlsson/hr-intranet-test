@@ -11,10 +11,6 @@ module Refinery
           plugin.name = "business"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.business_admin_sales_orders_path }
           plugin.pathname = root
-          plugin.activity = {
-            :class_name => :'refinery/business/sales_order',
-            :title => 'order_id'
-          }
           
         end
       end

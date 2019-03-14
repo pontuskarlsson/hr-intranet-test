@@ -4,7 +4,7 @@ Refinery::Business::BudgetForm.class_eval do
   attribute :quarter,     String, default: proc { |f| f.budget.quarter }
 
   validates :year,      presence: true,
-                        format: { with: /^(19|20)\d{2}$/i, message: 'should be a four-digit year' }
+                        format: { with: /\A(19|20)\d{2}\z/i, message: 'should be a four-digit year' }
   validates :quarter,   inclusion: ::Refinery::Business::QUARTERS.keys
 
   before_save do

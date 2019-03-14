@@ -1,6 +1,4 @@
-spec/dummy
-*.gem# Rails
-spec/dummy
+# Rails
 .bundle
 db/*.sqlite3
 db/*.sqlite3-journal
@@ -22,6 +20,7 @@ public/themes/*
 # Public Cache
 public/javascripts/cache
 public/stylesheets/cache
+public/refinery/*
 
 # Vendor Cache
 vendor/cache
@@ -62,14 +61,6 @@ nbproject
 # E-texteditor
 .eprj
 
-# Vagrant
-Vagrantfile
-.vagrant
-
-# Foreman
-.env
-.env.test
-
 # Backup
 *~
 
@@ -87,7 +78,13 @@ capybara-*html
 # vendor/extensions dummy applications.
 vendor/extensions/**/spec/dummy
 
-Gemfile.lock
+# Vagrant
+Vagrantfile
+.vagrant
+
+# Foreman
+.env
+.env.test
 
 # Dev or Test pem-file folder
 .pem
@@ -97,3 +94,6 @@ Gemfile.lock
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Vendor extensions Gemfile.lock files
+vendor/**/Gemfile.lock

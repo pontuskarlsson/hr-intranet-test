@@ -10,7 +10,7 @@ module Refinery
       belongs_to :doctors_note,   class_name: '::Refinery::Resource'
 
       attr_writer :employee_name
-      attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :doctors_note_id, :employee_name
+      #attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :doctors_note_id, :employee_name
 
       validates :employee_id,   presence: true
       validates :event_id,      uniqueness: true, allow_nil: true

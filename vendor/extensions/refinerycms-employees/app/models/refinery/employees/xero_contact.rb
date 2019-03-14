@@ -5,7 +5,7 @@ module Refinery
 
       has_many :xero_receipts, dependent: :nullify
 
-      attr_accessible :guid, :name
+      #attr_accessible :guid, :name
 
       validates :guid,    uniqueness: true, allow_blank: true
       validates :name,    presence: true, uniqueness: { scope: :inactive }, unless: :inactive

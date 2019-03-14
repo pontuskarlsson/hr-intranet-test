@@ -3,11 +3,11 @@ module Refinery
     class Order < Refinery::Core::BaseModel
       self.table_name = 'refinery_store_orders'
 
-      belongs_to :user,     class_name: '::Refinery::User'
+      belongs_to :user,     class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :retailer
       has_many :order_items,    dependent: :destroy
 
-      attr_accessible :order_number, :reference, :total_price, :user_id, :status, :position, :retailer_id
+      #attr_accessible :order_number, :reference, :total_price, :user_id, :status, :position, :retailer_id
 
       validates :retailer_id,   presence: true
       validates :order_number,  presence: true, uniqueness: { scope: :retailer_id }

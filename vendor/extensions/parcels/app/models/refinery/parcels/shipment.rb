@@ -28,8 +28,8 @@ module Refinery
       belongs_to :from_address,         class_name: '::Refinery::Parcels::ShipmentAddress', dependent: :destroy
       belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact'
       belongs_to :to_address,           class_name: '::Refinery::Parcels::ShipmentAddress', dependent: :destroy
-      belongs_to :created_by,           class_name: '::Refinery::User'
-      belongs_to :assigned_to,          class_name: '::Refinery::User'
+      belongs_to :created_by,           class_name: '::Refinery::Authentication::Devise::User'
+      belongs_to :assigned_to,          class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :bill_to_account,      class_name: '::Refinery::Parcels::ShipmentAccount'
       has_many :shipment_parcels,       dependent: :destroy
 
@@ -38,7 +38,7 @@ module Refinery
 
       attr_writer :from_contact_name, :to_contact_name, :assign_to
 
-      attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id
+      #attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id
 
       validates :created_by_id,           presence: true
       validates :assigned_to_id,          presence: true
@@ -98,13 +98,13 @@ module Refinery
 
         # Try to find a user to assign the shipment to
         if @assign_to.present?
-          self.assigned_to = ::Refinery::User.send("find_by_#{ Refinery::Parcels.config.user_attribute_reference }", @assign_to)
+          self.assigned_to = ::Refinery::Authentication::Devise::User.find_by_full_name(@assign_to)
         end
         self.assigned_to ||= created_by
       end
 
       def assign_to
-        @to ||= assigned_to.try(:"#{ Refinery::Parcels.config.user_attribute_reference }")
+        @to ||= assigned_to.try(:full_name)
       end
 
       # Method used to check whether a particular user has the right to update the

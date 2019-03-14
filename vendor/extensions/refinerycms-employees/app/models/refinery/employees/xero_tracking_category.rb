@@ -9,7 +9,7 @@ module Refinery
 
       serialize :options, Array
 
-      attr_accessible :name, :status, :guid, :options
+      #attr_accessible :name, :status, :guid, :options
 
       validates :guid,    presence: true, uniqueness: true
       validates :name,    presence: true

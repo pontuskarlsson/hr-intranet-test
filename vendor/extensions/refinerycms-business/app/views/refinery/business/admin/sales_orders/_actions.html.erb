@@ -8,9 +8,6 @@
     <%= link_to t('.create_new'), refinery.new_business_admin_sales_order_path,
                  :class => "add_icon" %>
   </li>
-  <li>
-    <%= link_to t('.import_cin7'), refinery.import_business_admin_sales_orders_path, method: :post, confirm: t('.confirm_import_cin7') %>
-  </li>
   <%= render '/refinery/business/admin/shared/links' %>
 
 <% if !searching? && ::Refinery::Business::Admin::SalesOrdersController.sortable? && ::Refinery::Business::SalesOrder.many? %>

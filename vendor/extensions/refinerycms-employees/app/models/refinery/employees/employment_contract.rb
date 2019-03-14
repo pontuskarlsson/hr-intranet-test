@@ -6,7 +6,7 @@ module Refinery
       belongs_to :employee
 
       attr_writer :employee_name
-      attr_accessible :start_date, :end_date, :vacation_days_per_year, :employee_name, :country, :days_carried_over
+      #attr_accessible :start_date, :end_date, :vacation_days_per_year, :employee_name, :country, :days_carried_over
 
       validates :employee_id,   presence: true
       validates :start_date,    presence: true

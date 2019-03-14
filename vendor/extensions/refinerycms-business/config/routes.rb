@@ -12,7 +12,6 @@ Refinery::Core::Engine.routes.draw do
       resources :sales_orders, :except => :show do
         collection do
           post :update_positions
-          post :import
         end
       end
 

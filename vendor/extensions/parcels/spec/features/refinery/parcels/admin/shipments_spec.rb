@@ -5,7 +5,7 @@ describe Refinery do
   describe "Parcels" do
     describe "Admin" do
       describe "shipments" do
-        refinery_login_with :refinery_user
+        refinery_login_with_devise :refinery_user
 
         describe "shipments list" do
           let(:shipment1) { FactoryGirl.create(:shipment) }

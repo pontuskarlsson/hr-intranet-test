@@ -8,7 +8,7 @@ module Refinery
 
       belongs_to :sender, polymorphic: true
 
-      attr_accessible :queue, :message
+      #attr_accessible :queue, :message
 
       validates :queue, :message,     presence: true
 

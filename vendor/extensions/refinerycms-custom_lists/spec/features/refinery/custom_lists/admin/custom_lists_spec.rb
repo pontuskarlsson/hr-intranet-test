@@ -5,7 +5,7 @@ describe Refinery do
   describe "CustomLists" do
     describe "Admin" do
       describe "custom_lists" do
-        refinery_login_with :refinery_user
+        refinery_login_with_devise :refinery_user
 
         describe "custom_lists list" do
           before do

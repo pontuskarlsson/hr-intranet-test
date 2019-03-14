@@ -20,7 +20,7 @@ module Refinery
       end
 
       def create
-        @leave_of_absence = @employee.leave_of_absences.sick_leaves.build(params[:leave_of_absence])
+        @leave_of_absence = @employee.leave_of_absences.sick_leaves.build(leave_of_absence_param)
         if @leave_of_absence.save
           flash[:notice] = 'Sick Leave successfully registered.'
           redirect_to refinery.employees_sick_leaves_path
@@ -38,7 +38,7 @@ module Refinery
       end
 
       def update
-        if @leave_of_absence.update_attributes(params[:leave_of_absence])
+        if @leave_of_absence.update_attributes(leave_of_absence_param)
           flash[:notice] = 'Sick Leave successfully updated.'
           redirect_to refinery.employees_sick_leaves_path
         else
@@ -80,7 +80,7 @@ module Refinery
 
       protected
       def find_employee
-        @employee = current_refinery_user.employee
+        @employee = current_authentication_devise_user.employee
         raise ActiveRecord::RecordNotFound if @employee.nil?
       end
 
@@ -112,6 +112,10 @@ module Refinery
         rescue ::ActiveRecord::RecordNotSaved
           false
         end
+      end
+
+      def leave_of_absence_param
+        params.require(:leave_of_absence).permit(:start_date, :start_half_day, :end_date, :end_half_day, :i_am_sick_today)
       end
 
     end

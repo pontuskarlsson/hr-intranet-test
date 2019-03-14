@@ -5,7 +5,7 @@ describe Refinery do
   describe "Business" do
     describe "Admin" do
       describe "budgets" do
-        refinery_login_with :refinery_user
+        refinery_login_with_devise :refinery_user
 
         describe "budgets list" do
           before do
