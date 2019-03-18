@@ -1,3 +1,5 @@
+require "#{Rails.root}/app/decorators/models/refinery/business/budget_decorator"
+
 Refinery::Business::BudgetForm.class_eval do
 
   attribute :year,        Integer, default: proc { |f| f.budget.year }
