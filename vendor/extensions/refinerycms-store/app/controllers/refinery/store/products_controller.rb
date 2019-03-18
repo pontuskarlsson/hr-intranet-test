@@ -18,7 +18,9 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.where(:link_url => "/store/products").first
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/store/products', current_authentication_devise_user)
+      rescue ::ActiveRecord::RecordNotFound
+        error_404
       end
 
     end

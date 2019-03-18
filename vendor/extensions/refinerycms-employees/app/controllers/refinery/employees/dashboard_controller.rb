@@ -12,7 +12,9 @@ module Refinery
       protected
 
       def find_page
-        @page = ::Refinery::Page.where(:link_url => "/employees").first
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees', current_authentication_devise_user)
+      rescue ::ActiveRecord::RecordNotFound
+        error_404
       end
 
     end

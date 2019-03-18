@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   # Runtime dependencies
   s.add_dependency             'refinerycms-core',    '>= 2.1.2'
   s.add_dependency             'refinerycms-marketing'
+  s.add_dependency             'refinerycms-page_roles',  '>= 1.0'
   s.add_dependency             'trans_forms'
 
   # Development dependencies (usually used for testing)

@@ -89,7 +89,9 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.where(:link_url => "/employees/annual_leaves").first
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/annual_leaves', current_authentication_devise_user)
+      rescue ::ActiveRecord::RecordNotFound
+        error_404
       end
 
       def annual_leave_params

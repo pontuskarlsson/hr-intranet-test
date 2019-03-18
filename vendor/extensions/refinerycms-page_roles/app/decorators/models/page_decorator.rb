@@ -26,6 +26,12 @@ Refinery::Page.class_eval do
       includes(:page_roles).where(refinery_page_roles: { role_id: roles.map(&:id) << nil })
     end
 
+    def find_authorized_by_link_url!(link_url, refinery_user = nil)
+      find_by!(link_url: link_url).tap do |page|
+        raise ::ActiveRecord::RecordNotFound unless page.user_authorized?(refinery_user)
+      end
+    end
+
   end
 
 end

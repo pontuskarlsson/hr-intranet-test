@@ -26,10 +26,9 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.find_by!(link_url: '/employees/employees')
-        redirect_to '/' unless @page.user_authorized?(current_authentication_devise_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/employees', current_authentication_devise_user)
       rescue ::ActiveRecord::RecordNotFound
-        redirect_to '/'
+        error_404
       end
 
     end

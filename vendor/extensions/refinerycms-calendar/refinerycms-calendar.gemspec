@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
 
   # Runtime dependencies
   s.add_dependency              'refinerycms-core',   '>= 2.1.0'
+  s.add_dependency              'refinerycms-page_roles', '>= 1.0'
   s.add_dependency              'google_calendar',    '~> 0.4'
 
   # Development dependencies (usually used for testing)

@@ -108,7 +108,9 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.where(:link_url => '/employees/expense_claims').first
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/expense_claims', current_authentication_devise_user)
+      rescue ::ActiveRecord::RecordNotFound
+        error_404
       end
 
       def create_and_associate_resource
