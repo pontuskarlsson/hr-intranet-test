@@ -13,8 +13,7 @@ Refinery::Page.class_eval do
     return true unless roles.exists?
     return false if refinery_user.nil?
 
-    user_roles = refinery_user.roles.select(:title).map(&:title)
-    roles.any?{ |r| user_roles.include?(r.title) }
+    (role_ids & refinery_user.role_ids).any?
   end
 
   class << self

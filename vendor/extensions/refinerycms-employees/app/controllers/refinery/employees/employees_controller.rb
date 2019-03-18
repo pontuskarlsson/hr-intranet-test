@@ -26,7 +26,10 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.where(:link_url => "/employees/employees").first
+        @page = ::Refinery::Page.find_by!(link_url: '/employees/employees')
+        redirect_to '/' unless @page.user_authorized?(current_authentication_devise_user)
+      rescue ::ActiveRecord::RecordNotFound
+        redirect_to '/'
       end
 
     end

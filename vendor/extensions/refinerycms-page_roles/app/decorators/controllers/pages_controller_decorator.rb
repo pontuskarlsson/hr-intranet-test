@@ -10,7 +10,7 @@ Refinery::Admin::PagesController.class_eval do
   end
 
   def user_can_assign_roles?
-    Refinery::Authentication.superuser_can_assign_roles &&
+    Refinery::Authentication::Devise.superuser_can_assign_roles &&
         current_authentication_devise_user.has_role?(:superuser)
   end
 
