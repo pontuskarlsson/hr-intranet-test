@@ -7,11 +7,6 @@ module Refinery
 
       ENDPOINT = 'https://api.insight.ly/v2.2/'
 
-      HEADERS = {
-          'Authorization' => "Basic #{Base64.encode64(ENV['INSIGHTLY_TOKEN'])}",
-          'Accept' => 'application/json'
-      }.freeze
-
       CONTACT_ATTR = %w(first_name last_name image_url)
 
       CUSTOM_CONTACT_ATTR = {
@@ -39,10 +34,8 @@ module Refinery
       attr_accessor :error
 
       def initialize(token = ENV['INSIGHTLY_TOKEN'])
-        @headers = {
-            'Authorization' => "Basic #{Base64.encode64(token)}",
-            'Accept' => 'application/json'
-        }
+        @headers = { 'Accept' => 'application/json' }
+        @headers['Authorization'] = "Basic #{Base64.encode64(token)}" if token.present?
       end
 
       def synchronise
