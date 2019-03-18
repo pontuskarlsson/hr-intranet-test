@@ -505,8 +505,5 @@ DEPENDENCIES
   uglifier (= 4.1.20)
   xeroizer (= 2.16.5)
 
-RUBY VERSION
-   ruby 2.3.4p301
-
 BUNDLED WITH
    1.17.3
