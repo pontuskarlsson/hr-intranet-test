@@ -18,9 +18,8 @@
   </div>
 
   <div class="medium-4 columns">
-    <% if ::Refinery::Pages.default_parts.many? -%>
-      <%= raw @page.content_for(:side_body) %>
-    <% end  -%>
+    <%= raw @page.content_for(:side_body) %>
+
     <%= render '/refinery/news/shared/body_content_right' %>
   </div>
 </div>
