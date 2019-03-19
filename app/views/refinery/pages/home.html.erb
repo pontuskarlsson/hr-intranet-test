@@ -38,7 +38,7 @@
                     <%= link_to item.title, refinery.news_item_path(item) %><br/>
                     <small><%= item.publish_date.strftime('%d %b - %I:%M %P') %></small>
                   </h5>
-                  <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 200,
+                  <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 200, escape: false,
                                                 omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
                   <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
                 </li>
