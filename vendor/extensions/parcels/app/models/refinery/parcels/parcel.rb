@@ -44,11 +44,11 @@ module Refinery
       end
 
       def to
-        @to ||= to_user.present? ? to_user.send(Refinery::Parcels.config.user_attribute_reference) : to_name
+        @to ||= to_user.present? ? to_user.full_name : to_name
       end
 
       def given_to
-        @given_to ||= assigned_to.try(Refinery::Parcels.config.user_attribute_reference)
+        @given_to ||= assigned_to.try(:full_name)
       end
 
       # Method used to check whether a particular user has the right to update the

@@ -1,7 +1,7 @@
 <%- disabled = !@parcel.editable_by?(current_authentication_devise_user) -%>
 
 <% if disabled %>
-  <p class="italic">Can only be edited by <%= @parcel.assigned_to.parcels_user_attribute %> or <%= @parcel.received_by.parcels_user_attribute %></p>
+  <p class="italic">Can only be edited by <%= @parcel.assigned_to.full_name %> or <%= @parcel.received_by.full_name %></p>
 <% end %>
 
 <%= form_for @parcel, url: refinery.parcels_parcel_path(@parcel) do |f| %>
@@ -10,7 +10,7 @@
 
       <div class="fields">
         <%= f.label :received_by_id %>
-        <%= f.text_field :received_by_id, value: @parcel.received_by.parcels_user_attribute, disabled: true %>
+        <%= f.text_field :received_by_id, value: @parcel.received_by.full_name, disabled: true %>
       </div>
 
       <div class="fields">
