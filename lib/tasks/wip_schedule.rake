@@ -1,3 +1,5 @@
+require "#{Rails.root}/lib/wip_schedule"
+
 namespace :hr_intranet do
   namespace :wip_schedule do
 
