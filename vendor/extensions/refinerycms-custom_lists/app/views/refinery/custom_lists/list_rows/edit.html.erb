@@ -1,6 +1,6 @@
 <% content_for :body do %>
   <h1><%= @custom_list.title %></h1>
-  <%= form_for @list_row_updater, url: refinery.custom_lists_custom_list_list_row_path(@custom_list), html: { method: :put } do |f| %>
+  <%= form_for @list_row_updater, url: refinery.custom_lists_custom_list_list_row_path(@custom_list, @list_row), html: { method: :put } do |f| %>
     <%= hidden_field_tag :originating_page_id, @page.id %>
     <table>
       <thead>
