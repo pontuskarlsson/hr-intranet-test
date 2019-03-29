@@ -131,14 +131,39 @@ class HooksController < ApplicationController
 
   def parse_wip
     ActiveRecord::Base.transaction do
-      wip_schedule = WipSchedule.new
+      updater = WipSchedule::Updater.new(params_file)
 
-      results = wip_schedule.update_wip_orders params
+      results = updater.update_wip_orders
 
       if results[:notice] || results[:orders].any?
         HappyRabbitMailer.services_notification_email(results[:description], results[:notice], results[:orders]).deliver
       end
     end
+
+  rescue StandardError => e
+    ErrorMailer.webhook_notification_email([e.message], params).deliver
+  end
+
+  def params_file
+    if params[:file].content_type == 'application/zip'
+      extract_zip params[:file].tempfile.path
+    else
+      params[:file].tempfile
+    end
+  end
+
+  def extract_zip(file)
+    extracted_file = Tempfile.new(File.basename(file))
+
+    Zip::File.open(file) do |zip_file|
+      zip_file.each do |f|
+        if f.name[/\.xls$/]
+          zip_file.extract(f, extracted_file) { true } # True to replace file if exists. Safe to do since it's a Tempfile
+        end
+      end
+    end
+
+    extracted_file
   end
 
 end

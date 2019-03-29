@@ -1,0 +1,31 @@
+module WipSchedule
+  class Airtable
+
+    AT_ORDER_SHEET = 'Requests / Orders'
+    AT_WIP_VIEW = 'WIP'
+
+    STATUS_CANCELLED = 'CANCELLED'
+
+    def initialize(app_id)
+      @app_id = app_id
+    end
+
+    def orders_for(filter = nil)
+      order_table.all(view: AT_WIP_VIEW).select do |order|
+        order['Order Status'] != STATUS_CANCELLED && (filter.blank? || order['Supplier'][0] == filter)
+      end
+
+    rescue StandardError => e
+      raise AirtableError.new(e.message)
+    end
+
+    private
+
+    def order_table
+      @airtable ||= ::Airtable::Client.new(ENV['AIRTABLE_KEY']).table(@app_id, AT_ORDER_SHEET)
+    end
+
+    class AirtableError < StandardError
+    end
+  end
+end
