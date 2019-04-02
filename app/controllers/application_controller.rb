@@ -22,6 +22,10 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
+  def not_found
+    render '404', layout: 'public'
+  end
+
   private
   def set_user_time_zone
     Time.zone = 'Hong Kong'
