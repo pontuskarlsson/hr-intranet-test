@@ -5,6 +5,8 @@ HrIntranet::Application.routes.draw do
   get 'about', to: 'home#about'
   get 'contact', to: 'home#contact'
   get 'careers', to: 'home#careers'
+  get 'privacy-policy', to: 'home#privacy_policy'
+  get 'terms-conditions', to: 'home#terms_conditions'
 
   post 'zendesk/submit', to: 'zendesk#submit'
 
