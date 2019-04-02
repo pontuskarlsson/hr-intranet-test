@@ -9,7 +9,11 @@ Rails.application.config.assets.precompile += %w(
   calendars.js
   chosen.css
   chosen.jquery.min.js
+  foundation_and_overrides
+  foundation_and_overrides_portal
   jquery-ui.css
   jquery.ui.timepicker.addon.js
+  public.js
+  public.scss
   refinery/calendar.css
 )

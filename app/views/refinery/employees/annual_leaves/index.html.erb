@@ -2,8 +2,8 @@
 
   <%= render 'form', leave_of_absence: ::Refinery::Employees::LeaveOfAbsence.new %>
 
-  <div class="row">
-    <div class="columns medium-8">
+  <div class="grid-x grid-padding-x">
+    <div class="cell medium-8">
       <h4 class="t2">Registered Annual Leave</h4>
 
       <table class="display js_annual_leaves_data_table" cellspacing="0" style="width: 100%;">
@@ -74,7 +74,7 @@
       <% end %>
     </div>
 
-    <div class="columns medium-4">
+    <div class="cell medium-4">
       <h4 class="t2">
         Leave Summary
         <span data-tooltip aria-haspopup="true" class="has-tip"
@@ -124,7 +124,7 @@
           { data: "display_status" },
           { data: "id", "render": function(data, type, row){
             if (row.status == <%= ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL %>){
-              return '<a href="/employees/annual_leaves/'+data+'/edit">Edit</a>, <a href="/employees/annual_leaves/'+data+'" data-method="delete">Remove</a>';
+              return '<a href="/portal/employees/annual_leaves/'+data+'/edit">Edit</a>, <a href="/portal/employees/annual_leaves/'+data+'" data-method="delete">Remove</a>';
             } else {
               return '<span style="font-style: italic; color: #999;">Cannot edit</span>';
             }
@@ -149,8 +149,8 @@
           { data: "display_status" },
           { data: "id", "render": function(data, type, row){
             if (row.status === <%= ::Refinery::Employees::LeaveOfAbsence::STATUS_WAITING_FOR_APPROVAL %>) {
-              return '<span style="float:left; margin-right: 5px;"><form action="/employees/annual_leaves/'+data+'/approve" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Approve</a></form></span>'+
-                     '<span style="float: left;"><form action="/employees/annual_leaves/'+data+'/reject" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Reject</a></form></span>';
+              return '<span style="float:left; margin-right: 5px;"><form action="/portal/employees/annual_leaves/'+data+'/approve" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Approve</a></form></span>'+
+                     '<span style="float: left;"><form action="/portal/employees/annual_leaves/'+data+'/reject" method="post"><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="'+token+'" /><a href="#" onClick="this.parentNode.submit();">Reject</a></form></span>';
             } else {
               return '';
             }

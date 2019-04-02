@@ -2,8 +2,8 @@
 
 <% if shipment.status == 'not_shipped' %>
   <%= form_for shipment.shipment_parcels.build, url: refinery.parcels_shipment_parcels_path(shipment) do |f| %>
-    <div class="row">
-      <div class="medium-4 columns end">
+    <div class="grid-x grid-padding-x">
+      <div class="medium-4 cell end">
         <label>Register a parcel to Shipment
           <small data-tooltip aria-haspopup="true"
                  class="has-tip"
@@ -15,8 +15,8 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="medium-2 columns end">
+    <div class="grid-x grid-padding-x">
+      <div class="medium-2 cell end">
         <p><%= f.submit 'Register', class: 'button tiny' %></p>
       </div>
     </div>

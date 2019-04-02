@@ -1,5 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 require_relative '../lib/calendar_layout'
+require_relative '../lib/portal'
 
 # Pick the frameworks you want:
 # require "active_record/railtie"

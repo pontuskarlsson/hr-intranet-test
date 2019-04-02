@@ -1,8 +1,48 @@
-<div class="row">
-  <div class="columns">
-    <p class="copyright">
-      <%= t('.copyright', :year => Time.now.year,
-                          :site_name => 'Happy Rabbit Limited') %>
-    </p>
+<div class="grid-container">
+  <div class="grid-x">
+    <div class="cell medium-4">
+      <h5>Contact Info</h5>
+      <hr>
+      <p>Phone <a href="tel:+85258043980">+852-5804 3980</a></p>
+      <p>Email <a href="mailto:info@happyrabbit.com">info@happyrabbit.com</a></p>
+      <p><span>Address</span><br/>
+        2104, Wai Wah Commercial Centre,<br/>
+        6 Wilmer Street<br/>
+        Sai Ying Pun<br/>
+        Hong Kong
+      </p>
+    </div>
+
+    <div class="cell medium-4">
+      <h5>Site Map</h5>
+      <hr>
+      <p><%= link_to 'Services', '/services' %></p>
+      <p><%= link_to 'Company', '/about-us' %></p>
+      <p><%= link_to 'Contact Us', '/contact' %></p>
+      <p><%= link_to 'Careers', '/careers' %></p>
+    </div>
+
+    <div class="cell medium-4">
+      <h5>Social Media</h5>
+      <hr>
+      <p><a href="https://www.facebook.com/happyrabbitlimited">Facebook</a></p>
+      <p><a href="https://www.linkedin.com/company/happy-rabbit-limited/">LinkedIn</a></p>
+      <p><a href="https://twitter.com/happyrabbitltd">Twitter</a></p>
+    </div>
+
+    <hr>
+
+    <div class="cell">
+      <div class="footer-left">
+        <span><%= link_to 'Privacy Policy', '/privacy-policy' %></span>
+        <span><%= link_to 'Terms & Conditions', '/terms-conditions' %></span>
+      </div>
+
+      <div class="footer-right">
+        <p class="copyright">
+          Copyright © <%= Time.now.year %> Happy Rabbit Limited
+        </p>
+      </div>
+    </div>
   </div>
 </div>

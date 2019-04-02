@@ -4,8 +4,8 @@
       <%= f.select :bill_to_account_id, options_from_collection_for_select(shipment.available_accounts, :id, :account_and_description) %>
     </label>
 
-    <div class="row">
-      <div class="columns">
+    <div class="grid-x grid-padding-x">
+      <div class="cell">
         <p><%= f.submit 'Select', class: 'button tiny' %></p>
       </div>
     </div>

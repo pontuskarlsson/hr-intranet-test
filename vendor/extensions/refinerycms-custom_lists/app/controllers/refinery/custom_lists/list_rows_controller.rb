@@ -18,7 +18,7 @@ module Refinery
       def update
         @list_row_updater = ListRowUpdater.new({ list_row: @list_row }.reverse_merge(params[:list_row_updater]))
         @list_row_updater.save
-        redirect_to "/#{ @page.url[:path].join('/') }"
+        redirect_to "#{refinery.root_path}#{@page.url[:path].join('/')}"
       end
 
       def destroy

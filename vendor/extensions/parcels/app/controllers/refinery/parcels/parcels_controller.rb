@@ -33,7 +33,7 @@ module Refinery
       end
 
       def update
-        if @parcel.update_attributes(params[:parcel])
+        if @parcel.update_attributes(parcel_params)
           flash[:notice] = 'Parcel successfully updated.'
           redirect_to refinery.parcels_parcels_path
         else

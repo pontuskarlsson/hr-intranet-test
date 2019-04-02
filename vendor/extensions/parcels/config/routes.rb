@@ -10,8 +10,8 @@ Refinery::Core::Engine.routes.draw do
 
     resources :shipments, :only => [:index, :create, :show, :edit, :update, :destroy] do
       member do
-        put :manual_ship
-        put :easypost_ship
+        patch :manual_ship
+        patch :easypost_ship
       end
       resources :shipment_parcels, path: 'parcels', as: :parcels
     end

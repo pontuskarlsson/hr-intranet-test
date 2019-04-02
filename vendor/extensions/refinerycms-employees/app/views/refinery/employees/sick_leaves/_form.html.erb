@@ -3,37 +3,37 @@
   was sick in the morning but got better and came in to work during the day. It should
   not be used if you were sick on a day with reduced working hours.">Important Information!</span>
 
-<div class="row">
-  <div class="medium-2 columns">
+<div class="grid-x grid-padding-x">
+  <div class="medium-2 cell">
     <div class='field'>
       <%= f.label :start_date -%>
       <%= f.text_field :start_date, value: leave_of_absence.start_date || Date.today, class: 'js_date_field' -%>
     </div>
   </div>
 
-  <div class="medium-3 columns">
+  <div class="medium-3 cell">
     <div class='field'>
       <%= f.label :start_half_day -%>
       <%= f.check_box :start_half_day -%>
     </div>
   </div>
 
-  <div class="medium-2 columns">
+  <div class="medium-2 cell">
     <div class='field'>
       <%= f.label :end_date -%>
       <%= f.text_field :end_date, class: 'js_date_field' -%>
     </div>
   </div>
 
-  <div class="medium-3 columns">
+  <div class="medium-3 cell">
     <div class='field'>
       <%= f.label :end_half_day -%>
       <%= f.check_box :end_half_day -%>
     </div>
   </div>
 
-  <div class="medium-2 columns">
-    <%= f.submit 'Save', class: 'button round tiny' %>
+  <div class="medium-2 cell">
+    <%= f.submit 'Save', class: 'button round' %>
   </div>
 </div>
 

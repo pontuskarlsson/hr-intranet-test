@@ -1,7 +1,7 @@
 <% content_for :body do %>
   <%= form_for @shipment_address_updater, url: refinery.parcels_shipment_path(@shipment) do |f| %>
-    <div class="row">
-      <div class="medium-6 columns">
+    <div class="grid-x grid-padding-x">
+      <div class="medium-6 cell">
         <h2>From
           <% if @shipment.from_address.missing_for_shipment.any? %>
             <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.from_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
@@ -53,7 +53,7 @@
         </p>
       </div>
 
-      <div class="medium-6 columns">
+      <div class="medium-6 cell">
         <h2>To
           <% if @shipment.to_address.missing_for_shipment.any? %>
             <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.to_address.missing_for_shipment.join('<br/>') %>">Missing information</small>

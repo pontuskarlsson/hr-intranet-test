@@ -1,34 +1,34 @@
 <% content_for :body do %>
 
-  <div class="row">
-    <div class="medium-3 columns">
+  <div class="grid-x grid-padding-x">
+    <div class="medium-3 cell">
       <%= link_to 'Back to All Expense Claims', refinery.employees_expense_claims_path, class: 'button tiny round' %>
     </div>
     <% if @xero_expense_claim.editable? %>
       <% if @xero_expense_claim.submittable_by?(current_authentication_devise_user) %>
-        <div class="medium-3 columns">
+        <div class="medium-3 cell">
           <%= form_tag refinery.submit_employees_expense_claim_path(@xero_expense_claim) do %>
             <%= submit_tag 'Submit Expense Claim', class: 'button round tiny js_click_loader', confirm: 'You cannot add additional Receipts after the Claim has been submitted. Continue?' %>
           <% end %>
         </div>
       <% else %>
-        <div class="medium-3 columns">
+        <div class="medium-3 cell">
           <%= link_to 'Submit Expense Claim', '#', class: 'button round tiny disabled' %>
         </div>
       <% end %>
       <% if @xero_expense_claim.destroyable_by?(current_authentication_devise_user) %>
-        <div class="medium-6 columns">
+        <div class="medium-6 cell">
           <%= form_tag refinery.employees_expense_claim_path(@xero_expense_claim), method: :delete do %>
             <%= submit_tag 'Delete Expense Claim', class: 'button alert tiny', confirm: 'Are you sure you want to delete this Expense Claim?' %>
           <% end %>
         </div>
       <% else %>
-        <div class="medium-6 columns">
+        <div class="medium-6 cell">
           <%= link_to 'Delete Expense Claim', '#', class: 'button round tiny disabled' %>
         </div>
       <% end %>
     <% else %>
-      <div class="medium-3 columns">
+      <div class="medium-3 cell">
         <%= link_to 'Submitted', '#', class: 'button round tiny disabled' %>
       </div>
       <div class="medium-6 columns">
@@ -44,8 +44,8 @@
   <h5>For: <%= @xero_expense_claim.employee.full_name %></h5>
   <div class="p1">&nbsp;</div>
 
-  <div class="row">
-    <div class="medium-3 columns">
+  <div class="grid-x grid-padding-x">
+    <div class="medium-3 cell">
       <h5>Status</h5>
       <p><%= @xero_expense_claim.status %></p>
       <% if @xero_expense_claim.error_reason.present? %>
@@ -53,22 +53,22 @@
       <% end %>
     </div>
 
-    <div class="medium-2 columns">
+    <div class="medium-2 cell">
       <h5>Total</h5>
       <p><%= number_to_currency @xero_expense_claim.total, unit: '$HK ' %></p>
     </div>
 
-    <div class="medium-2 columns">
+    <div class="medium-2 cell">
       <h5>Amount Due</h5>
       <p><%= number_to_currency @xero_expense_claim.amount_due, unit: '$HK ' %></p>
     </div>
 
-    <div class="medium-2 columns">
+    <div class="medium-2 cell">
       <h5>Amount Paid</h5>
       <p><%= number_to_currency @xero_expense_claim.amount_paid, unit: '$HK ' %></p>
     </div>
 
-    <div class="medium-3 columns">
+    <div class="medium-3 cell">
       <h5>Payment Due Date</h5>
       <p><%= @xero_expense_claim.payment_due_date %></p>
     </div>

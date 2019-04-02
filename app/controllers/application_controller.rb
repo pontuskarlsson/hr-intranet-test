@@ -14,6 +14,14 @@ class ApplicationController < ActionController::Base
   # engines while password is expired.
   delegate :refinery_user_password_expired_path, to: :refinery
 
+  def signed_in_root_path(resource_or_scope)
+    refinery.root_path
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    root_path
+  end
+
   private
   def set_user_time_zone
     Time.zone = 'Hong Kong'

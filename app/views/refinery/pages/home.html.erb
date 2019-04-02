@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="medium-8 columns">
+<div class="grid-x grid-padding-x">
+  <div class="medium-8 cell">
 
     <!-- Main Content -->
     <% if @page.images.any? %>
@@ -7,22 +7,33 @@
         <div class="page-part-header">
           HIGHLIGHTS
         </div>
-        <ul class="home-orbit" data-orbit data-options="pause_on_hover: false; slide_number: false">
-          <% @page.images.each_with_index do |image, image_i| %>
-            <li>
-              <%= image_tag(image.thumbnail(geometry: '637x300^').url) %>
-              <div class="orbit-caption">
-                <%=raw @page.caption_for_image_index(image_i) %>
-              </div>
-            </li>
-          <% end %>
-        </ul>
+        <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit data-options="animInFromLeft:fade-in; animInFromRight:fade-in; animOutToLeft:fade-out; animOutToRight:fade-out;">
+          <div class="orbit-wrapper">
+            <div class="orbit-controls">
+              <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
+              <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
+            </div>
+            <ul class="orbit-container">
+              <% @page.images.each_with_index do |image, image_i| %>
+                <li class="<% if image_i.zero? %>is-active <% end %>orbit-slide">
+                  <figure class="orbit-figure">
+                    <img class="orbit-image" src="https://loremflickr.com/637/300/<%= image_i %>" alt="Space">
+                    <% if false %>
+                    <%= image_tag(image.thumbnail(geometry: '637x300^').url, class: 'orbit-image') %>
+                      <% end %>
+                    <figcaption class="orbit-caption"><%=raw @page.caption_for_image_index(image_i) %></figcaption>
+                  </figure>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
       </section>
     <% end %>
 
 
-    <div class="row">
-      <div class="medium-6 columns">
+    <div class="grid-x grid-padding-x">
+      <div class="medium-6 cell">
 
         <section class="page-part">
           <div class="page-part-header">
@@ -51,7 +62,7 @@
         </section>
 
       </div>
-      <div class="medium-6 columns">
+      <div class="medium-6 cell">
 
         <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
           Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
@@ -97,7 +108,7 @@
 
 
   </div>
-  <div class="medium-4 columns">
+  <div class="medium-4 cell">
 
     <!-- Right Side Column -->
     <% if current_authentication_devise_user.assigned_parcels.unsigned.any? %>

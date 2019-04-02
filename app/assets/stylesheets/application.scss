@@ -14,38 +14,28 @@
  *= require refinery/marketing
  *= require refinery/custom_lists
 
- *= require_tree .
+ *= require_tree ./additional
  */
 
-html, body {
-    height: 100%;
-}
-
-#page-container {
-    height: auto !important;
-    min-height: 100%;
+html, body, #wrap {height: 100%;}
+body > #wrap {height: auto; min-height: 100%;}
+main {padding-bottom: 385px;}
+footer {
     position: relative;
-
-    #page {
-        margin-bottom: 3rem;
-    }
-
-    footer {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 3rem;
-    }
+    margin-top: -385px; /* negative value of footer height */
+    height: 385px;
+    clear:both;
 }
-
-
-body {
-    background: image-url('background.jpg') #777 no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-}
+.clearfix:after {content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
 
 #page {
     background-color: #fff;
@@ -61,31 +51,6 @@ body.login {
         h1 {
             color: #fff;
         }
-    }
-}
-
-
-/* HEADER */
-a.social-media {
-    display: inline-block;
-    width: 3rem;
-    height: 3rem;
-
-    margin: 0.6rem 0.4rem 0;
-
-    background-image: image-url('social-media.png');
-
-    &.facebook {
-        background-position: 0 0;
-        &:hover { background-position: 0 -48px; }
-    }
-    &.twitter {
-        background-position: -48px 0;
-        &:hover { background-position: -48px -48px; }
-    }
-    &.instagram {
-        background-position: -96px 0;
-        &:hover { background-position: -96px -48px; }
     }
 }
 
@@ -551,65 +516,6 @@ ul.latest-news {
 .ui-dialog-titlebar {
     height: inherit !important;
 }
-
-
-/* Flash Message */
-#message .flash {
-    padding: 8px 30px;
-    margin-bottom: 5px;
-    position: relative;
-}
-.flash_notice, .flash_message {
-    border: 1px solid #00A017;
-    color: #00A017;
-    background: 7px 7px no-repeat image_url('refinery/icons/accept.png') #E0F5E0;
-}
-.flash_notice, .flash_notice * {
-    color: #00A017;
-}
-.flash_error, .flash_alert {
-    border: 1px solid #A00027;
-    color: #A00027;
-    background: 7px 7px no-repeat image_url('refinery/icons/cancel.png') #FFB1B1;
-}
-.flash.flash_notice #flash_close, .flash.flash_error #flash_close, .flash.flash_alert #flash_close {
-    text-transform: lowercase;
-}
-.flash.flash_message {
-    background: #E0F5E0;
-    padding: 9px;
-    position: relative;
-    margin-bottom: 32px;
-    h2 {
-        margin-top: 12px;
-    }
-}
-.flash.flash_message.flash_message, .flash_message * {
-    color: #262719;
-    font-size: 14px;
-}
-.flash a, .flash a:hover {
-    color: #e20003;
-    border-bottom-color: #e20003;
-}
-.flash.flash_error a, .flash.flash_error a:hover,
-.flash.flash_alert a, .flash.flash_alert a:hover {
-    display: none;
-}
-noscript .flash.flash_error a, noscript .flash.flash_error a:hover,
-noscript .flash.flash_alert a, noscript .flash.flash_alert a:hover {
-    display: inline;
-    font-weight: bold;
-}
-.flash a#flash_close {
-    position: absolute;
-    right: 9px;
-    top: 7px;
-}
-.flash.flash_message a#flash_close {
-    top: 21px;
-}
-
 
 /* ROUNDED ONE */
 .roundedOne {

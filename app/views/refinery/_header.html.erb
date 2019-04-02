@@ -1,68 +1,53 @@
-<div class="row">
-  <div class="small-6 medium-9 columns text-left t1 p1">
-    <a href="/">
-      <img data-interchange="[<%= image_url('logo-small.png') %>, (default)], [<%= image_url('logo.png') %>, (medium)]">
-    </a>
-  </div>
-  <div class="small-6 medium-3 columns text-right">
-    <a href="https://www.facebook.com/happyrabbitlimited" class="social-media facebook"></a>
-    <a href="https://twitter.com/happyrabbitltd" class="social-media twitter"></a>
-  </div>
+<div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="medium">
+  <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
+  <div class="title-bar-title">Menu</div>
 </div>
 
-<div class="row">
-  <div class="contain-to-grid">
-    <nav class="top-bar" data-topbar>
-      <ul class="title-area">
-        <li class="name"></li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-      </ul>
+<div class="top-bar" id="responsive-menu">
+  <div class="top-bar-left">
+    <ul class="dropdown menu" data-dropdown-menu>
+      <li class="menu-logo">
+        <%= link_to '/' do %>
+          <%= image_tag 'happy-rabbit' %>
+        <% end %>
+      </li>
+      <li><a href="/portal">Dashboard</a></li>
 
-      <!-- Left Nav Section -->
-      <section class="top-bar-section">
-        <ul class="left">
-          <li><a href="/"><img class="header-logo" src="<%= image_path('home.png') %>"/></a></li>
-          <% header_menu_items.roots.each do |root| %>
-            <% if root.has_children? %>
-              <li class="has-dropdown">
-                <%= link_to root.title, refinery.url_for(root.url) %>
-                <ul class="dropdown">
-                  <% root.children.each do |child| %>
-                    <li><%= link_to child.title, refinery.url_for(child.url) %></li>
-                  <% end %>
-                </ul>
-              </li>
-            <% else %>
-              <li><%= link_to root.title, refinery.url_for(root.url) %></li>
+      <% header_menu_items.roots.each do |root| %>
+        <% if root.has_children? %>
+          <li class="has-submenu">
+            <%= link_to root.title, refinery.url_for(root.url) %>
+            <ul class="submenu menu vertical">
+              <% root.children.each do |child| %>
+                <li><%= link_to child.title, refinery.url_for(child.url) %></li>
+              <% end %>
+            </ul>
+          </li>
+        <% else %>
+          <li><%= link_to root.title, refinery.url_for(root.url) %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="top-bar-right">
+    <ul class="dropdown menu" data-dropdown-menu>
+      <% if authentication_devise_user_signed_in? %>
+        <li class="has-submenu">
+          <a href="#"><%= current_authentication_devise_user.full_name %></a>
+          <ul class="submenu menu vertical">
+            <li><%= link_to 'My Profile', '/my_profile' %></li>
+            <% if current_authentication_devise_user.has_role?(:superuser) %>
+              <li><%= link_to 'Refinery', '/portal/refinery' %></li>
             <% end %>
-          <% end %>
-        </ul>
-
-        <ul class="right">
-          <% if authentication_devise_user_signed_in? %>
-            <li class="has-dropdown">
-              <a href="#"><%= current_authentication_devise_user.employee.present? ? current_authentication_devise_user.employee.full_name : current_authentication_devise_user.email %></a>
-              <ul class="dropdown">
-
-                <li><%= link_to 'My Profile', '/my_profile' %></li>
-                <li><%= link_to 'Refinery', '/refinery' %></li>
-                <% if current_authentication_devise_user.has_role?(:superuser) %>
-                  <% if @page.present? %>
-                    <li><%= link_to 'Edit this Page', refinery.edit_admin_page_path(@page.id) %></li>
-                  <% end %>
-                <% end %>
-                <li><%= link_to 'SIGN OUT', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
-              </ul>
-            </li>
-          <% else %>
-            <li class="has-form">
-              <%= link_to 'SIGN IN', new_session_path('authentication_devise_user'), class: 'button radius' %>
-            </li>
-          <% end %>
-        </ul>
-      </section>
-
-
-    </nav>
+            <li><%= link_to 'SIGN OUT', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
+          </ul>
+        </li>
+      <% else %>
+        <li class="has-form">
+          <%= link_to 'SIGN IN', new_session_path('authentication_devise_user'), class: 'button radius' %>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </div>

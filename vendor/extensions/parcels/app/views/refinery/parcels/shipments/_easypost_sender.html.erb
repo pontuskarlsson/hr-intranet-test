@@ -3,8 +3,8 @@
     <%= f.select :courier, options_for_select(::Refinery::Parcels::Shipment.easypost_couriers), include_blank: true %>
   </label>
 
-  <div class="row">
-    <div class="columns">
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
       <p><%= f.submit 'Select', class: 'button tiny' %></p>
     </div>
   </div>

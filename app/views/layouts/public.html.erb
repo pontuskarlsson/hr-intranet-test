@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<%= render '/refinery/html_tag' %>
+<% site_bar = render('/refinery/site_bar', :head => true) -%>
+<head>
+  <meta charset='<%= Rails.application.config.encoding %>' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><![endif]-->
+  <title><%= browser_title(yield(:title)) %></title>
+  <%= raw %(<meta name="description" content="#{@meta.meta_description}" />) if @meta.meta_description.present? -%>
+  <%= raw %(<link rel="canonical" content="#{@canonical}" />) if @canonical.present? -%>
+  <%= csrf_meta_tags if Refinery::Core.authenticity_token_on_frontend -%>
+  <%= yield :meta %>
+
+  <%= stylesheet_link_tag 'foundation_and_overrides' %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css" />
+  <%= stylesheet_link_tag 'public' %>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <%= yield :stylesheets %>
+
+  <%= render '/refinery/google_analytics' %>
+
+  <%= javascript_include_tag 'modernizr-min' %>
+
+</head>
+<body>
+<div id="wrap">
+
+<div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="medium">
+  <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
+  <div class="title-bar-title">Menu</div>
+</div>
+
+<div class="top-bar" id="responsive-menu">
+  <div class="top-bar-left">
+    <ul class="dropdown menu" data-dropdown-menu>
+      <li class="menu-logo">
+        <%= link_to '/' do %>
+          <%= image_tag 'happy-rabbit' %>
+        <% end %>
+      </li>
+      <li class="has-submenu">
+        <%= link_to 'Services', '/services' %>
+        <ul class="submenu menu vertical" data-submenu>
+          <li><%= link_to 'Overview', '/services' %></li>
+          <li><%= link_to 'Consulting Services', '/services#consulting' %></li>
+          <li><%= link_to 'Sourcing Services', '/services#sourcing' %></li>
+          <li><%= link_to 'Quality Assurance', '/services#quality-assurance' %></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <%= link_to 'Company', '/about' %>
+        <ul class="submenu menu vertical" data-submenu>
+          <li><%= link_to 'About Us', '/about' %></li>
+          <li><%= link_to 'Our Team', '/about#our-team' %></li>
+        </ul>
+      </li>
+      <li>
+        <%= link_to 'Contact Us', '/contact' %>
+      </li>
+      <li>
+        <%= link_to 'Careers', '/careers' %>
+      </li>
+    </ul>
+  </div>
+  <div class="top-bar-right">
+    <% if authentication_devise_user_signed_in? %>
+      <ul class="dropdown menu" data-dropdown-menu>
+        <li class="has-submenu">
+          <a href="#"><%= current_authentication_devise_user.full_name %></a>
+          <ul class="submenu menu vertical">
+            <li><%= link_to 'My Profile', '/my_profile' %></li>
+            <% if current_authentication_devise_user.has_role?(:superuser) %>
+              <li><%= link_to 'Refinery', '/portal/refinery' %></li>
+            <% end %>
+            <li><%= link_to 'Logout', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
+          </ul>
+        </li>
+        <li><%= link_to 'PORTAL', '/portal', class: 'button' %></li>
+      </ul>
+    <% else %>
+      <ul class="menu">
+        <li><%= link_to 'Login', new_session_path('authentication_devise_user'), class: 'button' %></li>
+      </ul>
+    <% end %>
+  </div>
+</div>
+
+<% if flash.any? %>
+  <div id="message">
+    <% flash.each do |key, value| %>
+      <div id='flash' class="flash flash_<%= key %>" >
+        <%= value %>
+        <%= link_to 'X', '', id: 'flash_close' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+
+<main>
+  <%= yield %>
+</main>
+
+</div>
+
+<footer>
+  <%= render '/refinery/footer' -%>
+</footer>
+
+<%= javascript_include_tag 'public' %>
+</body>
+</html>

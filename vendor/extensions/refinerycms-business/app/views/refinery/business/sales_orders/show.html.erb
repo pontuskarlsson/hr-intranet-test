@@ -1,12 +1,12 @@
-<div class="row">
+<div class="grid-x grid-padding-x">
 
-  <div class="medium-9 columns">
+  <div class="medium-9 cell">
     <section>
       <h1>Order Id: <%=raw @sales_order.order_id %></h1>
     </section>
 
-    <div class="row">
-      <div class="medium-4 columns">
+    <div class="grid-x grid-padding-x">
+      <div class="medium-4 cell">
         <h3>Contact</h3>
 
         <h4><small>First Name</small></h4>
@@ -29,7 +29,7 @@
 
       </div>
 
-      <div class="medium-4 columns">
+      <div class="medium-4 cell">
         <h3>Delivery Address</h3>
 
         <h4><small>First Name</small></h4>
@@ -60,7 +60,7 @@
         <p><%= @sales_order.delivery_country %></p>
       </div>
 
-      <div class="medium-4 columns">
+      <div class="medium-4 cell">
         <h3>Billing Address</h3>
 
         <h4><small>First Name</small></h4>
@@ -123,7 +123,7 @@
     <% end %>
   </div>
 
-  <div class="medium-3 columns">
+  <div class="medium-3 cell">
     <aside>
       <h2><%= t('.other') %></h2>
       <ul id="sales_orders">

@@ -14,7 +14,7 @@ gem 'coffee-rails', '4.2.2'
 gem 'uglifier', '4.1.20'
 
 gem 'jquery-rails', '4.3.3'
-gem 'foundation-rails', '5.4.3.0'
+gem 'foundation-rails', '6.5.3.0'
 
 # Background worker
 gem 'daemons'
@@ -64,6 +64,9 @@ gem 'xeroizer', '2.16.5'
 gem 'roo', '2.7.1'
 gem 'spreadsheet', '1.1.7'
 gem 'airtable', git: 'https://github.com/Airtable/airtable-ruby'
+
+# Zendesk
+gem 'zendesk_api', '1.17'
 
 group :development do
   gem 'thin', '1.7.2'

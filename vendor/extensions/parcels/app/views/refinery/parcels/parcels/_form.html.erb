@@ -5,8 +5,8 @@
 <% end %>
 
 <%= form_for @parcel, url: refinery.parcels_parcel_path(@parcel) do |f| %>
-  <div class="row">
-    <div class="medium-6 columns end">
+  <div class="grid-x grid-padding-x">
+    <div class="medium-6 cell end">
 
       <div class="fields">
         <%= f.label :received_by_id %>

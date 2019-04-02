@@ -2,8 +2,8 @@
 
   <h4>Edit Expense Claim</h4>
 
-  <div class="row">
-    <div class="large-8 columns">
+  <div class="grid-x grid-padding-x">
+    <div class="large-8 cell">
 
       <%= form_for @xero_expense_claim, url: refinery.employees_expense_claim_path(@xero_expense_claim) do |f| %>
         <%= render 'form', f: f %>

@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="medium-8 columns">
+<div class="grid-x grid-padding-x">
+  <div class="medium-8 cell">
     <%=raw @page.content_for(:body) unless params[:page] %>
 
     <% if @items.any? %>
@@ -21,7 +21,7 @@
     <% end %>
   </div>
 
-  <div class="medium-4 columns">
+  <div class="medium-4 cell">
     <%= raw @page.content_for(:side_body) %>
 
     <%= render '/refinery/news/shared/body_content_right' %>

@@ -3,8 +3,8 @@
     <%- @calendar = CalendarLayout.new(@events, params[:year], params[:month]) -%>
     <%- active_calendar_ids = @active_calendars.map(&:id) -%>
 
-    <div class="row">
-      <div class="medium-3 columns">
+    <div class="grid-x grid-padding-x">
+      <div class="medium-3 cell">
         <button data-dropdown="select-calendars" aria-controls="select-calendars" aria-expanded="false" class="small">Calendars</button>
         <div id="select-calendars" data-dropdown-content class="f-dropdown content wider-dropdown" aria-hidden="true" tabindex="-1">
           <div style="min-width: 20rem;">
@@ -22,7 +22,7 @@
           </div>
         </div>
       </div>
-      <div class="medium-6 columns end">
+      <div class="medium-6 cell end">
         <h3 style="text-align: center;"><%= @calendar.date.strftime('%Y') %></h3>
       </div>
     </div>
@@ -32,18 +32,18 @@
       <span style="float: right;"><small><%= link_to @calendar.next_month.strftime('%^B >>'), refinery.calendar_events_path(year: @calendar.next_month.year, month: @calendar.next_month.month) %></small></span>
     </h1>
 
-    <div class="row calendar-row header show-for-medium-up">
+    <div class="grid-x grid-padding-x calendar-row header show-for-medium-up">
       <% @calendar.headers.each_with_index do |day, day_i| %>
-        <div class="medium-1 columns<% if day_i%7 == 6 %> end<% end %>">
+        <div class="medium-1 cell<% if day_i%7 == 6 %> end<% end %>">
           <%= day %>
         </div>
       <% end %>
     </div>
 
     <% @calendar.each_row do %>
-      <div class="row calendar-row">
+      <div class="grid-x grid-padding-x calendar-row">
         <% @calendar.each_cell do |cell_idx, cell_date, events| %>
-          <div class="medium-1 columns<% if cell_idx%7 == 6 %> end<% end %>">
+          <div class="medium-1 cell<% if cell_idx%7 == 6 %> end<% end %>">
             <div class="calendar-day<% if cell_date == @calendar.today %> today<% end %><% if cell_date.month != @calendar.date.month %> show-for-medium-up different-month<% end %>">
               <%= link_to '+', refinery.new_calendar_event_path('event[from]' => cell_date + 9.hours), remote: true, class: 'add-event' %>
               <p class="show-for-medium-up <%= cell_date.strftime('%A').downcase %>"><%= cell_date.day %></p>

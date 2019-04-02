@@ -2,13 +2,13 @@
   <h1>Employee Directory</h1>
   <div class="employees">
 
-    <ul class="medium-block-grid-3">
+    <div class="grid-x grid-padding-x grid-padding-y">
       <% @employees.each do |employee| %>
-        <li>
+        <div class="medium-3 cell">
           <%= render '/refinery/employees/employees/preview', employee: employee %>
-        </li>
+        </div>
       <% end %>
-    </ul>
+    </div>
 
   </div>
 <% end %>

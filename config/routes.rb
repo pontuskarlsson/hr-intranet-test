@@ -1,13 +1,24 @@
 HrIntranet::Application.routes.draw do
 
+  root :to => 'home#index'
+  get 'services', to: 'home#services'
+  get 'about', to: 'home#about'
+  get 'contact', to: 'home#contact'
+  get 'careers', to: 'home#careers'
+
+  post 'zendesk/submit', to: 'zendesk#submit'
+
   resource :my_profile
+
+  # Workaround for incorrect redirect from somewhere
+  get '/refinery/users/login', to: redirect('/portal/refinery/users/login')
 
   # This line mounts Refinery's routes at the root of your application.
   # This means, any requests to the root URL of your application will go to Refinery::PagesController#home.
   # If you would like to change where this extension is mounted, simply change the :at option to something different.
   #
   # We ask that you don't use the :as option here, as Refinery relies on it being the default of "refinery"
-  mount Refinery::Core::Engine, :at => '/'
+  mount Refinery::Core::Engine, :at => '/portal'
 
   match 'hooks/catch/:webhook_key', to: 'hooks#catch', via: [:post], as: :hooks_catch
 
