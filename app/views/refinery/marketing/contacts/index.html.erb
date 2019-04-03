@@ -33,39 +33,22 @@
 <% end %>
 
 <% content_for :stylesheets do %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
-
-  <style type="text/css">
-    .tagDT {
-      background-color: rgba(224,234,241,0.57);
-      color: #4e6b82;
-      padding: 3px 4px;
-      border-radius: 2px;
-      margin-right: 2px;
-      margin-top: 3px;
-      font-size: 10px;
-      text-overflow: ellipsis;
-      max-width: 200px;
-      overflow: hidden;
-      white-space: nowrap;
-      display: inline-block;
-      line-height: 1.5em;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.css"/>
 <% end %>
 
 <% content_for :javascripts do %>
-  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
-  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
-  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/f2c75b7247b/api/fnSetFilteringDelay.js' %>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
 
   <script type="text/javascript">
     $(function(){
       $('.js_contacts_data_table').dataTable({
         "scrollY":        "600px",
         "scrollCollapse": true,
-        "paging":         false,
+        "paging":         true,
+        <% if false %>
         "data":           <%= @contacts.to_json(only: [:id, :name, :code, :is_organisation, :organisation_name, :organisation_id, :email, :phone, :mobile, :country, :tags_joined_by_comma]).html_safe %>,
+        <% end %>
+        "ajax": "<%= refinery.marketing_contacts_path %>",
         "columns": [
           { data: "name", "width": '20%', "render": function(data, type, row) {
             const href = ["<%= refinery.marketing_contacts_path %>", row.id].join('/');
@@ -101,7 +84,7 @@
             }
           } }
         ]
-      }).fnSetFilteringDelay();
+      });
     });
   </script>
 <% end %>

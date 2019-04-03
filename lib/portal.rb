@@ -1,4 +1,4 @@
-Dir[File.dirname(__FILE__) + '/portal/**/*.rb'].each { |f| puts f; require f }
+Dir[File.dirname(__FILE__) + '/portal/**/*.rb'].each { |f| require f }
 
 module Portal
 

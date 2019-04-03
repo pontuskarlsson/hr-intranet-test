@@ -15,7 +15,7 @@
 //= require foundation
 //= require date.format
 
-$(function(){ $(document).foundation(); });
+$(function(){ console.log('1'); $(document).foundation(); });
 
 $(function(){
   $(document.body).delegate('.js_click_loader', 'click', function(evt){

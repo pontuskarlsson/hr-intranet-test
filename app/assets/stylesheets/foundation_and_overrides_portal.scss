@@ -82,3 +82,19 @@
 main {
     margin: 1rem 0;
 }
+
+.tagDT {
+    background-color: rgba(224,234,241,0.57);
+    color: #4e6b82;
+    padding: 3px 4px;
+    border-radius: 2px;
+    margin-right: 2px;
+    margin-top: 3px;
+    font-size: 10px;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    line-height: 1.5em;
+}
