@@ -17,10 +17,11 @@
               <% @page.images.each_with_index do |image, image_i| %>
                 <li class="<% if image_i.zero? %>is-active <% end %>orbit-slide">
                   <figure class="orbit-figure">
-                    <img class="orbit-image" src="https://loremflickr.com/637/300/<%= image_i %>" alt="Space">
-                    <% if false %>
-                    <%= image_tag(image.thumbnail(geometry: '637x300^').url, class: 'orbit-image') %>
-                      <% end %>
+                    <% if Rails.env.development? %>
+                      <img class="orbit-image" src="https://loremflickr.com/637/300/<%= image_i %>" alt="Space">
+                    <% else %>
+                      <%= image_tag(image.thumbnail(geometry: '637x300^').url, class: 'orbit-image') %>
+                    <% end %>
                     <figcaption class="orbit-caption"><%=raw @page.caption_for_image_index(image_i) %></figcaption>
                   </figure>
                 </li>
