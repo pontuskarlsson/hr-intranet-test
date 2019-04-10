@@ -94,8 +94,13 @@ module Refinery
 
       def xero_receipt_params
         params.require(:xero_receipt).permit(
-            :xero_contact_id, :contact_name, :date, :line_amount_types, :reference, :status, :sub_total, :total, :xero_line_items_attributes
-        )
+            :xero_contact_id, :contact_name, :date, :line_amount_types, :reference, :status, :sub_total, :total
+        ).to_unsafe_h.merge(xero_line_items_attributes: xero_line_items_params)
+      end
+
+      def xero_line_items_params
+        params[:xero_receipt] && params[:xero_receipt][:xero_line_items_attributes] &&
+            params[:xero_receipt][:xero_line_items_attributes].to_unsafe_h
       end
 
     end
