@@ -146,7 +146,7 @@ module Refinery
       end
 
       def xero_expense_claim_params
-        params.require(:xero_expense_clain).permit(
+        params.require(:xero_expense_claim).permit(
             :guid, :status, :total, :amount_due, :amount_paid, :payment_due_date, :reporting_date,
             :updated_date_utc, :description, :employee_id
         )
