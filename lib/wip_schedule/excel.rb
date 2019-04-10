@@ -5,6 +5,7 @@ module WipSchedule
         "id" => { column: { hidden: true } },
         "Project Code" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } },
         "Customer PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+        "PO Line Item" => { format: { pattern_fg_color: :silver, pattern: 1 } },
         "HR PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
         "Order Date" => { format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
         "Order Type" => { format: { pattern_fg_color: :silver, pattern: 1 } },
@@ -27,6 +28,7 @@ module WipSchedule
         "Ship To" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
         "Ship Mode" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
         "Vendor PI#" => { column: { width: '15' } },
+        "Vendor Invoice#" => { column: { width: '15' } },
 
         "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
         "1st Conf. Ex. Fact. Date" => { column: { width: '15' }, type: :date },
@@ -73,6 +75,7 @@ module WipSchedule
         "Act. Qty",
 
         "Vendor PI#",
+        "Vendor Invoice#",
 
         "1st Conf. Ex. Fact. Date",
         "Re-Negoti. Ex. Fact. Date",
