@@ -14,6 +14,9 @@
 //= require jquery_ujs
 //= require foundation
 //= require date.format
+//= require Chart.bundle
+//= require chartkick
+
 
 $(function(){ console.log('1'); $(document).foundation(); });
 

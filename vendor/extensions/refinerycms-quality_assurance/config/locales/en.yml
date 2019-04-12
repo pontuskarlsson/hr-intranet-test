@@ -1,0 +1,78 @@
+en:
+  refinery:
+    plugins:
+      quality_assurance:
+        title: Quality Assurance
+    quality_assurance:
+      admin:
+        defects:
+          actions:
+            create_new: Add New Defect
+            reorder: Reorder Defects
+            reorder_done: Done Reordering Defects
+          records:
+            title: Defects
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Defects yet. Click "Add New Defect" to add your first defect.
+          defect:
+            view_live_html: View this defect live <br/><em>(opens in a new window)</em>
+            edit: Edit this defect
+            delete: Remove this defect forever
+
+        inspections:
+          actions:
+            create_new: Add New Inspection
+            reorder: Reorder Inspections
+            reorder_done: Done Reordering Inspections
+          records:
+            title: Inspections
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Inspections yet. Click "Add New Inspection" to add your first inspection.
+          inspection:
+            view_live_html: View this inspection live <br/><em>(opens in a new window)</em>
+            edit: Edit this inspection
+            delete: Remove this inspection forever
+
+      defects:
+        show:
+          other: Other Defects
+
+      inspections:
+        show:
+          other: Other Inspections
+
+  activerecord:
+    attributes:
+      'refinery/quality_assurance/defect':
+        category_code: Category Code
+        category_name: Category Name
+        defect_code: Defect Code
+        defect_name: Defect Name
+
+      'refinery/quality_assurance/inspection':
+        company_id: Company
+        supplier_id: Supplier
+        supplier_label: Supplier Label
+        business_section_id: Business Section
+        business_product_id: Business Product
+        assigned_to_id: Assigned To
+        resource_id: Resource
+        inspected_by_id: Inspected By
+        document_id: Document
+        result: Result
+        inspection_date: Inspection Date
+        inspection_sample_size: Inspection Sample Size
+        inspection_type: Inspection Type
+        po_number: Po Number
+        po_type: Po Type
+        po_qty: Po Qty
+        available_qty: Available Qty
+        product_code: Product Code
+        product_description: Product Description
+        product_colour_variants: Product Colour Variants
+        acc_critical: Acc Critical
+        acc_major: Acc Major
+        acc_minor: Acc Minor
+        total_critical: Total Critical
+        total_major: Total Major
+        total_minor: Total Minor

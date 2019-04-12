@@ -32,7 +32,7 @@ Refinery::Calendar::Engine.load_seed
 # Added by Refinery CMS Marketing extension
 Refinery::Marketing::Engine.load_seed
 
-# Added by Refinery CMS SalesOrders extension
+# Added by Refinery CMS Business extension
 Refinery::Business::Engine.load_seed
 
 # Added by Refinery CMS Parcels extension
@@ -49,3 +49,6 @@ Refinery::CustomLists::Engine.load_seed
 
 # Added by Refinery CMS PageRoles extension
 Refinery::PageRoles::Engine.load_seed
+
+# Added by Refinery CMS QualityAssurance extension
+Refinery::QualityAssurance::Engine.load_seed

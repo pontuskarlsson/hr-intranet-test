@@ -54,6 +54,10 @@ PATH
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing
       trans_forms
+    refinerycms-quality_assurance (1.0)
+      acts_as_indexed (~> 0.8.0)
+      refinerycms-business (~> 1.0.0)
+      refinerycms-core (~> 3.0.6)
     refinerycms-store (1.0)
       hiredis (~> 0.4.5)
       redis (~> 3.0.1)
@@ -135,6 +139,7 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    chartkick (3.0.2)
     coderay (1.1.2)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
@@ -486,6 +491,7 @@ PLATFORMS
 
 DEPENDENCIES
   airtable!
+  chartkick
   coffee-rails (= 4.2.2)
   daemons
   delayed_job (= 4.1.5)
@@ -513,6 +519,7 @@ DEPENDENCIES
   refinerycms-page-images (= 3.0.0)
   refinerycms-page_roles!
   refinerycms-parcels!
+  refinerycms-quality_assurance!
   refinerycms-store!
   refinerycms-testing (= 3.0.6)
   refinerycms-wymeditor (= 1.1.0)

@@ -106,4 +106,6 @@ Refinery::I18n.frontend_locales.each do |lang|
       page.parts.create(:title => default_page_part, :body => nil, :position => index)
     end
   end
+
+  Refinery::Authentication::Devise::Role.where(title: 'Employees:Employee').first_or_create
 end

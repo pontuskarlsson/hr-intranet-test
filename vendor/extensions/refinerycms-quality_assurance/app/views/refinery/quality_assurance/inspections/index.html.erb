@@ -1,0 +1,11 @@
+<% content_for :body do %>
+  <ul id="inspections">
+    <% @inspections.each do |inspection| %>
+      <li>
+        <%= link_to inspection, refinery.quality_assurance_inspection_path(inspection) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render '/refinery/content_page' %>

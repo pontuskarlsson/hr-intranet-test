@@ -1,0 +1,177 @@
+<% content_for :body_content_title do %>
+  <%= @inspection.label %>
+<% end %>
+
+<% content_for :body do %>
+  <section>
+    <h1>Company</h1>
+    <p>
+      <%=raw @inspection.company_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Supplier</h1>
+    <p>
+      <%=raw @inspection.supplier_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Supplier Label</h1>
+    <p>
+      <%=raw @inspection.supplier_label %>
+    </p>
+  </section>
+  <section>
+    <h1>Business Section</h1>
+    <p>
+      <%=raw @inspection.business_section_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Business Product</h1>
+    <p>
+      <%=raw @inspection.business_product_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Assigned To</h1>
+    <p>
+      <%=raw @inspection.assigned_to_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Resource</h1>
+    <p>
+      <%=raw @inspection.resource_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Inspected By</h1>
+    <p>
+      <%=raw @inspection.inspected_by_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Document</h1>
+    <p>
+      <%=raw @inspection.document_id %>
+    </p>
+  </section>
+  <section>
+    <h1>Result</h1>
+    <p>
+      <%=raw @inspection.result %>
+    </p>
+  </section>
+  <section>
+    <h1>Inspection Date</h1>
+    <p>
+      <%=raw @inspection.inspection_date %>
+    </p>
+  </section>
+  <section>
+    <h1>Inspection Sample Size</h1>
+    <p>
+      <%=raw @inspection.inspection_sample_size %>
+    </p>
+  </section>
+  <section>
+    <h1>Inspection Type</h1>
+    <p>
+      <%=raw @inspection.inspection_type %>
+    </p>
+  </section>
+  <section>
+    <h1>Po Number</h1>
+    <p>
+      <%=raw @inspection.po_number %>
+    </p>
+  </section>
+  <section>
+    <h1>Po Type</h1>
+    <p>
+      <%=raw @inspection.po_type %>
+    </p>
+  </section>
+  <section>
+    <h1>Po Qty</h1>
+    <p>
+      <%=raw @inspection.po_qty %>
+    </p>
+  </section>
+  <section>
+    <h1>Available Qty</h1>
+    <p>
+      <%=raw @inspection.available_qty %>
+    </p>
+  </section>
+  <section>
+    <h1>Product Code</h1>
+    <p>
+      <%=raw @inspection.product_code %>
+    </p>
+  </section>
+  <section>
+    <h1>Product Description</h1>
+    <p>
+      <%=raw @inspection.product_description %>
+    </p>
+  </section>
+  <section>
+    <h1>Product Colour Variants</h1>
+    <p>
+      <%=raw @inspection.product_colour_variants %>
+    </p>
+  </section>
+  <section>
+    <h1>Acc Critical</h1>
+    <p>
+      <%=raw @inspection.acc_critical %>
+    </p>
+  </section>
+  <section>
+    <h1>Acc Major</h1>
+    <p>
+      <%=raw @inspection.acc_major %>
+    </p>
+  </section>
+  <section>
+    <h1>Acc Minor</h1>
+    <p>
+      <%=raw @inspection.acc_minor %>
+    </p>
+  </section>
+  <section>
+    <h1>Total Critical</h1>
+    <p>
+      <%=raw @inspection.total_critical %>
+    </p>
+  </section>
+  <section>
+    <h1>Total Major</h1>
+    <p>
+      <%=raw @inspection.total_major %>
+    </p>
+  </section>
+  <section>
+    <h1>Total Minor</h1>
+    <p>
+      <%=raw @inspection.total_minor %>
+    </p>
+  </section>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="inspections">
+      <% @inspections.each do |inspection| %>
+        <li>
+          <%= link_to inspection.label, refinery.quality_assurance_inspection_path(inspection) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

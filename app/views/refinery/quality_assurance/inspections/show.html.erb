@@ -1,0 +1,118 @@
+<% content_for :body_content_title do %>
+
+<% end %>
+
+<% content_for :body do %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <section class="contact-card">
+        <h1 class="cc-attribute cc-name">
+          <%=raw @inspection.label %>
+          <span style="color: <%= @inspection.result == 'Pass' ? 'green' : @inspection.result == 'Reject' ? 'red' : 'black' %>"><%= @inspection.result %></span>
+        </h1>
+
+        <h3>Inspection Details</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Date</th>
+            <td><%= @inspection.inspection_date %></td>
+          </tr>
+          <tr>
+            <th>Type</th>
+            <td><%= @inspection.inspection_type %></td>
+          </tr>
+          <tr>
+            <th>Supplier</th>
+            <td><%= @inspection.supplier_label %></td>
+          </tr>
+          <tr>
+            <th>Inspected By</th>
+            <td><%= @inspection.inspected_by_name %></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3>Order / Product</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">PO Number</th>
+            <td><%= @inspection.po_number %></td>
+          </tr>
+          <tr>
+            <th>PO Qty</th>
+            <td><%= @inspection.po_qty %></td>
+          </tr>
+          <tr>
+            <th>Type</th>
+            <td><%= @inspection.po_type %></td>
+          </tr>
+          <tr>
+            <th>Style / Product</th>
+            <td><%= @inspection.product_code %> <%= @inspection.product_description %></td>
+          </tr>
+          <tr>
+            <th>Colours / Variants</th>
+            <td><%= @inspection.product_colour_variants %></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3>Inspection Result</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Inspection Standard</th>
+            <td colspan="3"><%= @inspection.inspection_standard %></td>
+          </tr>
+          <tr>
+            <th>Available Qty</th>
+            <td colspan="3"><%= @inspection.available_qty %></td>
+          </tr>
+          <tr>
+            <th></th>
+            <th style="text-align: center;">Critical</th>
+            <th style="text-align: center;">Major</th>
+            <th style="text-align: center;">Minor</th>
+          </tr>
+          <tr>
+            <th>Accepted</th>
+            <td style="text-align: center;"><%= @inspection.acc_critical %></td>
+            <td style="text-align: center;"><%= @inspection.acc_major %></td>
+            <td style="text-align: center;"><%= @inspection.acc_minor %></td>
+          </tr>
+          <tr>
+            <th>Found</th>
+            <td style="text-align: center;"><%= @inspection.total_critical %></td>
+            <td style="text-align: center;"><%= @inspection.total_major %></td>
+            <td style="text-align: center;"><%= @inspection.total_minor %></td>
+          </tr>
+          <tr>
+            <th>Result</th>
+            <td colspan="3" style="color: <%= @inspection.result == 'Pass' ? 'green' : @inspection.result == 'Reject' ? 'red' : 'black' %>"><%= @inspection.result %></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3>Defects</h3>
+      </section>
+      <%= column_chart @inspection.chart_defects, stacked: true %>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="inspections">
+      <% @inspections.each do |inspection| %>
+        <li>
+          <%= link_to inspection.label, refinery.quality_assurance_inspection_path(inspection) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

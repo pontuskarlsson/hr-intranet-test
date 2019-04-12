@@ -1,0 +1,54 @@
+zh-CN:
+  refinery:
+    plugins:
+      quality_assurances:
+        title: Quality Assurances
+    quality_assurances:
+      admin:
+        quality_assurances:
+          actions:
+            create_new: 建立新的 Quality Assurance
+            reorder: 对 Quality Assurances 重新排序
+            reorder_done: 对 Quality Assurances 的重新排序结束
+          records:
+            title: Quality Assurances
+            sorry_no_results: 对不起，未找到结果。 #Sorry! There are no results found.
+
+            # There are no Quality Assurances yet. Click "Add New Quality Assurance" to add your first quality assurance.
+            no_items_yet: 目前没有 Quality Assurances . 点击 "Add New Quality Assurance" 创建一个quality assurance.
+          quality_assurance:
+            view_live_html: 查看 quality assurance 的最新内容.<br/><em>(新窗口中打开)</em>
+            edit: 编辑 quality assurance
+            delete: 永久删除 quality assurance
+      quality_assurances:
+        show:
+          other: 其他 Quality Assurances
+  activerecord:
+    attributes:
+      'refinery/quality_assurances/quality_assurance':
+        company_id: Company
+        supplier_id: Supplier
+        supplier_label: Supplier Label
+        business_section_id: Business Section
+        business_product_id: Business Product
+        assigned_to_id: Assigned To
+        resource_id: Resource
+        inspected_by_id: Inspected By
+        document_id: Document
+        result: Result
+        inspection_date: Inspection Date
+        inspection_sample_size: Inspection Sample Size
+        inspection_type: Inspection Type
+        po_number: Po Number
+        po_type: Po Type
+        po_qty: Po Qty
+        available_qty: Available Qty
+        product_code: Product Code
+        product_description: Product Description
+        product_colour_variants: Product Colour Variants
+        acc_critical: Acc Critical
+        acc_major: Acc Major
+        acc_minor: Acc Minor
+        total_critical: Total Critical
+        total_major: Total Major
+        total_minor: Total Minor

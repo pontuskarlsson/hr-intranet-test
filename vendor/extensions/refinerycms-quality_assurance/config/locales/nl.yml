@@ -1,0 +1,52 @@
+nl:
+  refinery:
+    plugins:
+      quality_assurances:
+        title: Quality Assurances
+    quality_assurances:
+      admin:
+        quality_assurances:
+          actions:
+            create_new: Nieuwe Quality Assurance toevoegen
+            reorder: De volgorde van de Quality Assurances wijzigen
+            reorder_done: Klaar met het wijzingen van de van de Quality Assurance-volgorde
+          records:
+            title: Quality Assurances
+            sorry_no_results: Helaas! Er zijn geen resultaten gevonden.
+            no_items_yet: Er zijn nog geen Quality Assurances. Druk op 'Nieuwe Quality Assurance toevoegen' om de eerste toe te voegen.
+          quality_assurance:
+            view_live_html: Deze quality assurance op de website bekijken <br/><em>(opent in een nieuw venster)</em>
+            edit: Bewerk deze quality assurance
+            delete: Deze quality assurance definitief verwijderen
+      quality_assurances:
+        show:
+          other: Andere Quality Assurances
+  activerecord:
+    attributes:
+      'refinery/quality_assurances/quality_assurance':
+        company_id: Company
+        supplier_id: Supplier
+        supplier_label: Supplier Label
+        business_section_id: Business Section
+        business_product_id: Business Product
+        assigned_to_id: Assigned To
+        resource_id: Resource
+        inspected_by_id: Inspected By
+        document_id: Document
+        result: Result
+        inspection_date: Inspection Date
+        inspection_sample_size: Inspection Sample Size
+        inspection_type: Inspection Type
+        po_number: Po Number
+        po_type: Po Type
+        po_qty: Po Qty
+        available_qty: Available Qty
+        product_code: Product Code
+        product_description: Product Description
+        product_colour_variants: Product Colour Variants
+        acc_critical: Acc Critical
+        acc_major: Acc Major
+        acc_minor: Acc Minor
+        total_critical: Total Critical
+        total_major: Total Major
+        total_minor: Total Minor

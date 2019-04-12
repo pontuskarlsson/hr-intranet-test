@@ -10,29 +10,28 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = '/business/sales_orders'
-  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
-    page = Refinery::Page.create(
-      :title => 'Sales Orders',
-      :link_url => url,
-      :deletable => false,
-      :menu_match => "^#{url}(\/|\/.+?|)$"
-    )
-    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
-      page.parts.create(:title => default_page_part, :body => nil, :position => index)
+  [
+      ['/business/budgets', 'Budgets'],
+      ['/business/companies', 'Companies'],
+      ['/business/projects', 'Projects'],
+      ['/business/sales_orders', 'Sales Orders'],
+      ['/business/sections', 'Sections']
+  ].each do |url, title|
+
+    if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
+      page = Refinery::Page.create(
+          :title => title,
+          :link_url => url,
+          :deletable => false,
+          :menu_match => "^#{url}(\/|\/.+?|)$"
+      )
+      Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
+        page.parts.create(:title => default_page_part, :body => nil, :position => index)
+      end
     end
+
   end
 
-  url = '/business/budgets'
-  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
-    page = Refinery::Page.create(
-        :title => 'Budgets',
-        :link_url => url,
-        :deletable => false,
-        :menu_match => "^#{url}(\/|\/.+?|)$"
-    )
-    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
-      page.parts.create(:title => default_page_part, :body => nil, :position => index)
-    end
-  end
+  Refinery::Authentication::Devise::Role.where(title: 'Business:External').first_or_create
+
 end

@@ -2,20 +2,41 @@ Refinery::Core::Engine.routes.draw do
 
   # Frontend routes
   namespace :business do
-    resources :sales_orders, :only => [:index, :show]
     resources :budgets, :only => [:index, :show, :new, :create, :update]
+    resources :companies, :only => [:index, :show]
+    resources :projects, :only => [:index, :show]
+    resources :sales_orders, :only => [:index, :show]
+    resources :sections, :only => [:index, :show]
   end
 
   # Admin routes
   namespace :business, :path => '' do
     namespace :admin, :path => "#{Refinery::Core.backend_route}/business" do
+      resources :budgets, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :companies, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :projects, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
       resources :sales_orders, :except => :show do
         collection do
           post :update_positions
         end
       end
 
-      resources :budgets, :except => :show do
+      resources :sections, :except => :show do
         collection do
           post :update_positions
         end

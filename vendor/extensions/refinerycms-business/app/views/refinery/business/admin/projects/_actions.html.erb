@@ -1,0 +1,27 @@
+<ul>
+  <% if ::Refinery::Business::Admin::ProjectsController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.business_admin_projects_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_business_admin_project_path,
+                 :class => "add_icon" %>
+  </li>
+  <%= render '/refinery/business/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::Business::Admin::ProjectsController.sortable? && ::Refinery::Business::Project.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Projects"),
+                 refinery.business_admin_projects_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Projects"),
+                 refinery.business_admin_projects_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

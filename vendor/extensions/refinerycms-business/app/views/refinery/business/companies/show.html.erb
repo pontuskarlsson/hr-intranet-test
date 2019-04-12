@@ -1,0 +1,47 @@
+<div class="grid-x grid-padding-x">
+  <div class="cell">
+    <h2><%= @company.name %></h2>
+  </div>
+
+  <div class="cell medium-6">
+    <h4>Top Defects</h4>
+
+    <%= pie_chart @company.top_defects %>
+  </div>
+
+  <div class="cell medium-3">
+    <h4>Pass rate (by qty)</h4>
+
+    <%= pie_chart @company.pass_rate_qty %>
+  </div>
+
+  <div class="cell medium-3">
+    <h4>Pass rate (by number of inspections)</h4>
+
+    <%= pie_chart @company.pass_rate_inspections %>
+  </div>
+
+  <hr>
+
+  <div class="cell medium-6">
+    <h3>Open Projects</h3>
+
+    <% @company.projects.current.each do |project| %>
+      <%= render 'project_summary', project: project %>
+    <% end %>
+  </div>
+
+  <div class="cell medium-6">
+    <%= render 'inspections', inspections: @company.inspections.recent(10) %>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'charts' %>
+
+  <script type="text/javascript">
+    $(function(){
+
+    });
+  </script>
+<% end %>

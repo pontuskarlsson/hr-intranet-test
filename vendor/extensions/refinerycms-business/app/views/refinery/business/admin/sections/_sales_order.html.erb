@@ -1,0 +1,22 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(section) -%>">
+  <span class='title'>
+    <%= section.description %>
+    <span class="preview">
+      <%= t('.preview', total: section.total, currency_name: section.currency_name, :modified_date => (section.modified_date.present? ? l(section.modified_date, :format => :short) : nil)) %>
+    </span>
+  </span>
+  <span class='actions'>
+    
+    <%= link_to refinery_icon_tag("application_go.png"), refinery.business_section_path(section),
+        :title => t('.view_live_html'),
+        :target => "_blank" %>
+    
+    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_business_admin_section_path(section),
+         :title => t('.edit') %>
+    <%= link_to refinery_icon_tag("delete.png"), refinery.business_admin_section_path(section),
+        :class => "cancel confirm-delete",
+        :title => t('.delete'),
+        :confirm => t('message', :scope => 'refinery.admin.delete', :title => section.description),
+        :method => :delete %>
+  </span>
+</li>

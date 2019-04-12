@@ -1,0 +1,34 @@
+<h3>Recent Inspections</h3>
+
+<% if inspections.any? %>
+
+  <table>
+    <thead>
+    <tr>
+      <th></th>
+      <th>Inspected</th>
+      <th>Result</th>
+      <th>PO</th>
+      <th>Style</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% inspections.each do |inspection| %>
+      <tr>
+        <td>
+          <%= link_to refinery.quality_assurance_inspection_path(inspection) do %>
+            <i class="fa fa-arrow-right"></i>
+          <% end %>
+        </td>
+        <td><%= time_ago_in_words inspection.inspection_date %> ago</td>
+        <td style="color: <%= inspection.result == 'Pass' ? 'green' : inspection.result == 'Reject' ? 'red' : 'black' %>"><%= inspection.result %></td>
+        <td><%= inspection.po_number %></td>
+        <td><%= inspection.product_label %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <p>No inspections yet.</p>
+<% end %>

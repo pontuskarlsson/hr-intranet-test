@@ -15,6 +15,7 @@ gem 'uglifier', '4.1.20'
 
 gem 'jquery-rails', '4.3.3'
 gem 'foundation-rails', '6.5.3.0'
+gem 'chartkick'
 
 # Background worker
 gem 'daemons'
@@ -44,6 +45,7 @@ gem 'refinerycms-employees',    path: 'vendor/extensions'
 gem 'refinerycms-store',        path: 'vendor/extensions'
 gem 'refinerycms-custom_lists', path: 'vendor/extensions'
 gem 'refinerycms-page_roles',   path: 'vendor/extensions'
+gem 'refinerycms-quality_assurance', path: 'vendor/extensions'
 
 # Specify specific version to prevent deprecation messages from 5.1 version
 gem 'globalize', '5.0.1'

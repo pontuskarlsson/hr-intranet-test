@@ -1,0 +1,13 @@
+<% if @companies.any? %>
+
+  <h2>Select which company to view.</h2>
+  <% @companies.each do |company| %>
+    <p><%= link_to company.label, refinery.business_company_path(company) %></p>
+  <% end %>
+
+<% else %>
+  <p class="not_present">
+    You do not have access to any company details, please contact
+    Happy Rabbit Support team if you think this is incorrect.
+  </p>
+<% end %>

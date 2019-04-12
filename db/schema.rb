@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190307043535) do
+ActiveRecord::Schema.define(version: 20190412035345) do
 
   create_table "amqp_messages", force: :cascade do |t|
     t.string   "queue",       limit: 255,   null: false
@@ -239,6 +239,149 @@ ActiveRecord::Schema.define(version: 20190307043535) do
   add_index "refinery_business_budgets", ["account_manager_user_id"], name: "index_refinery_business_budgets_on_account_manager_user_id", using: :btree
   add_index "refinery_business_budgets", ["customer_contact_id"], name: "index_refinery_business_budgets_on_customer_contact_id", using: :btree
   add_index "refinery_business_budgets", ["description"], name: "index_refinery_business_budgets_on_description", using: :btree
+
+  create_table "refinery_business_companies", force: :cascade do |t|
+    t.integer  "contact_id", limit: 4
+    t.string   "code",       limit: 255
+    t.string   "name",       limit: 255
+    t.integer  "position",   limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_companies", ["code"], name: "index_refinery_business_companies_on_code", using: :btree
+  add_index "refinery_business_companies", ["contact_id"], name: "index_refinery_business_companies_on_contact_id", using: :btree
+  add_index "refinery_business_companies", ["name"], name: "index_refinery_business_companies_on_name", using: :btree
+  add_index "refinery_business_companies", ["position"], name: "index_refinery_business_companies_on_position", using: :btree
+
+  create_table "refinery_business_company_users", force: :cascade do |t|
+    t.integer  "company_id", limit: 4
+    t.integer  "user_id",    limit: 4
+    t.string   "role",       limit: 255
+    t.integer  "position",   limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_company_users", ["company_id"], name: "index_refinery_business_company_users_on_company_id", using: :btree
+  add_index "refinery_business_company_users", ["position"], name: "index_refinery_business_company_users_on_position", using: :btree
+  add_index "refinery_business_company_users", ["role"], name: "index_refinery_business_company_users_on_role", using: :btree
+  add_index "refinery_business_company_users", ["user_id"], name: "index_refinery_business_company_users_on_user_id", using: :btree
+
+  create_table "refinery_business_number_series", force: :cascade do |t|
+    t.string   "identifier",   limit: 255
+    t.integer  "last_counter", limit: 4
+    t.integer  "position",     limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_number_series", ["identifier"], name: "index_refinery_business_number_series_on_identifier", using: :btree
+  add_index "refinery_business_number_series", ["last_counter"], name: "index_refinery_business_number_series_on_last_counter", using: :btree
+  add_index "refinery_business_number_series", ["position"], name: "index_refinery_business_number_series_on_position", using: :btree
+
+  create_table "refinery_business_projects", force: :cascade do |t|
+    t.integer  "company_id",  limit: 4
+    t.string   "code",        limit: 255
+    t.text     "description", limit: 65535
+    t.string   "status",      limit: 255
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "position",    limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_projects", ["code"], name: "index_refinery_business_projects_on_code", using: :btree
+  add_index "refinery_business_projects", ["company_id"], name: "index_refinery_business_projects_on_company_id", using: :btree
+  add_index "refinery_business_projects", ["end_date"], name: "index_refinery_business_projects_on_end_date", using: :btree
+  add_index "refinery_business_projects", ["position"], name: "index_refinery_business_projects_on_position", using: :btree
+  add_index "refinery_business_projects", ["start_date"], name: "index_refinery_business_projects_on_start_date", using: :btree
+  add_index "refinery_business_projects", ["status"], name: "index_refinery_business_projects_on_status", using: :btree
+
+  create_table "refinery_business_sales_orders", force: :cascade do |t|
+    t.string   "order_id",             limit: 255,                default: "",    null: false
+    t.string   "order_session_id",     limit: 255,                default: "",    null: false
+    t.string   "order_ref",            limit: 255,                default: "",    null: false
+    t.datetime "created_date"
+    t.datetime "modified_date"
+    t.boolean  "active",                                          default: false, null: false
+    t.string   "transaction_type",     limit: 255,                default: "",    null: false
+    t.string   "member_id",            limit: 255,                default: "",    null: false
+    t.string   "member_email",         limit: 255,                default: "",    null: false
+    t.string   "member_cost_center",   limit: 255,                default: "",    null: false
+    t.string   "member_session_id",    limit: 255,                default: "",    null: false
+    t.string   "sales_person_id",      limit: 255,                default: "",    null: false
+    t.string   "sales_person_email",   limit: 255,                default: "",    null: false
+    t.decimal  "product_total",                    precision: 10, default: 0,     null: false
+    t.decimal  "freight_total",                    precision: 10, default: 0,     null: false
+    t.string   "freight_description",  limit: 255,                default: "",    null: false
+    t.decimal  "discount_total",                   precision: 10, default: 0,     null: false
+    t.string   "discount_description", limit: 255,                default: "",    null: false
+    t.decimal  "total",                            precision: 10, default: 0,     null: false
+    t.decimal  "currency_rate",                    precision: 10, default: 0,     null: false
+    t.string   "currency_name",        limit: 255,                default: "",    null: false
+    t.string   "currency_symbol",      limit: 255,                default: "",    null: false
+    t.string   "tax_status",           limit: 255,                default: "",    null: false
+    t.decimal  "tax_rate",                         precision: 10, default: 0,     null: false
+    t.string   "first_name",           limit: 255,                default: "",    null: false
+    t.string   "last_name",            limit: 255,                default: "",    null: false
+    t.string   "company",              limit: 255,                default: "",    null: false
+    t.string   "phone",                limit: 255,                default: "",    null: false
+    t.string   "mobile",               limit: 255,                default: "",    null: false
+    t.string   "email",                limit: 255,                default: "",    null: false
+    t.string   "delivery_first_name",  limit: 255,                default: "",    null: false
+    t.string   "delivery_last_name",   limit: 255,                default: "",    null: false
+    t.string   "delivery_company",     limit: 255,                default: "",    null: false
+    t.string   "delivery_address",     limit: 255,                default: "",    null: false
+    t.string   "delivery_suburb",      limit: 255,                default: "",    null: false
+    t.string   "delivery_city",        limit: 255,                default: "",    null: false
+    t.string   "delivery_postal_code", limit: 255,                default: "",    null: false
+    t.string   "delivery_state",       limit: 255,                default: "",    null: false
+    t.string   "delivery_country",     limit: 255,                default: "",    null: false
+    t.string   "billing_first_name",   limit: 255,                default: "",    null: false
+    t.string   "billing_last_name",    limit: 255,                default: "",    null: false
+    t.string   "billing_company",      limit: 255,                default: "",    null: false
+    t.string   "billing_address",      limit: 255,                default: "",    null: false
+    t.string   "billing_suburb",       limit: 255,                default: "",    null: false
+    t.string   "billing_city",         limit: 255,                default: "",    null: false
+    t.string   "billing_postal_code",  limit: 255,                default: "",    null: false
+    t.string   "billing_state",        limit: 255,                default: "",    null: false
+    t.string   "billing_country",      limit: 255,                default: "",    null: false
+    t.string   "comments",             limit: 255,                default: "",    null: false
+    t.string   "voucher_code",         limit: 255,                default: "",    null: false
+    t.string   "branch_id",            limit: 255,                default: "",    null: false
+    t.string   "branch_email",         limit: 255,                default: "",    null: false
+    t.string   "stage",                limit: 255,                default: "",    null: false
+    t.string   "cost_center",          limit: 255,                default: "",    null: false
+    t.string   "tracking_code",        limit: 255,                default: "",    null: false
+    t.string   "payment_terms",        limit: 255,                default: "",    null: false
+    t.integer  "position",             limit: 4
+    t.datetime "created_at",                                                      null: false
+    t.datetime "updated_at",                                                      null: false
+  end
+
+  add_index "refinery_business_sales_orders", ["active"], name: "index_refinery_sales_orders_on_active", using: :btree
+  add_index "refinery_business_sales_orders", ["order_id"], name: "index_refinery_sales_orders_on_order_id", using: :btree
+  add_index "refinery_business_sales_orders", ["position"], name: "index_refinery_sales_orders_on_position", using: :btree
+
+  create_table "refinery_business_sections", force: :cascade do |t|
+    t.integer  "project_id",         limit: 4
+    t.string   "section_type",       limit: 255
+    t.text     "description",        limit: 65535
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "budgeted_resources", limit: 255
+    t.integer  "position",           limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_sections", ["end_date"], name: "index_refinery_business_sections_on_end_date", using: :btree
+  add_index "refinery_business_sections", ["position"], name: "index_refinery_business_sections_on_position", using: :btree
+  add_index "refinery_business_sections", ["project_id"], name: "index_refinery_business_sections_on_project_id", using: :btree
+  add_index "refinery_business_sections", ["section_type"], name: "index_refinery_business_sections_on_section_type", using: :btree
+  add_index "refinery_business_sections", ["start_date"], name: "index_refinery_business_sections_on_start_date", using: :btree
 
   create_table "refinery_calendar_calendars", force: :cascade do |t|
     t.string   "title",            limit: 255
@@ -799,6 +942,86 @@ ActiveRecord::Schema.define(version: 20190307043535) do
   add_index "refinery_public_holidays", ["event_id"], name: "index_refinery_public_holidays_on_event_id", using: :btree
   add_index "refinery_public_holidays", ["holiday_date"], name: "index_refinery_public_holidays_on_holiday_date", using: :btree
 
+  create_table "refinery_quality_assurance_defects", force: :cascade do |t|
+    t.integer  "category_code", limit: 4
+    t.string   "category_name", limit: 255
+    t.integer  "defect_code",   limit: 4
+    t.string   "defect_name",   limit: 255
+    t.integer  "position",      limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_quality_assurance_defects", ["category_code"], name: "index_qa_defects_on_category_code", using: :btree
+  add_index "refinery_quality_assurance_defects", ["category_name"], name: "index_qa_defects_on_category_name", using: :btree
+  add_index "refinery_quality_assurance_defects", ["defect_code"], name: "index_qa_defects_on_defect_code", using: :btree
+  add_index "refinery_quality_assurance_defects", ["defect_name"], name: "index_qa_defects_on_defect_name", using: :btree
+
+  create_table "refinery_quality_assurance_inspection_defects", force: :cascade do |t|
+    t.integer  "inspection_id", limit: 4
+    t.integer  "defect_id",     limit: 4
+    t.integer  "critical",      limit: 4,   default: 0, null: false
+    t.integer  "major",         limit: 4,   default: 0, null: false
+    t.integer  "minor",         limit: 4,   default: 0, null: false
+    t.string   "comments",      limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_quality_assurance_inspection_defects", ["defect_id"], name: "index_qa_inspection_defects_on_defect_id", using: :btree
+  add_index "refinery_quality_assurance_inspection_defects", ["inspection_id"], name: "index_qa_inspection_defects_on_inspection_id", using: :btree
+
+  create_table "refinery_quality_assurance_inspections", force: :cascade do |t|
+    t.integer  "company_id",              limit: 4
+    t.integer  "supplier_id",             limit: 4
+    t.string   "supplier_label",          limit: 255
+    t.integer  "business_section_id",     limit: 4
+    t.integer  "business_product_id",     limit: 4
+    t.integer  "assigned_to_id",          limit: 4
+    t.integer  "resource_id",             limit: 4
+    t.integer  "inspected_by_id",         limit: 4
+    t.string   "inspected_by_name",       limit: 255
+    t.string   "document_id",             limit: 255
+    t.string   "result",                  limit: 255
+    t.date     "inspection_date"
+    t.integer  "inspection_sample_size",  limit: 4
+    t.string   "inspection_type",         limit: 255
+    t.string   "po_number",               limit: 255
+    t.string   "po_type",                 limit: 255
+    t.integer  "po_qty",                  limit: 4
+    t.integer  "available_qty",           limit: 4
+    t.string   "product_code",            limit: 255
+    t.string   "product_description",     limit: 255
+    t.string   "product_colour_variants", limit: 255
+    t.string   "inspection_standard",     limit: 255
+    t.integer  "acc_critical",            limit: 4
+    t.integer  "acc_major",               limit: 4
+    t.integer  "acc_minor",               limit: 4
+    t.integer  "total_critical",          limit: 4,   default: 0, null: false
+    t.integer  "total_major",             limit: 4,   default: 0, null: false
+    t.integer  "total_minor",             limit: 4,   default: 0, null: false
+    t.integer  "position",                limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_quality_assurance_inspections", ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["business_product_id"], name: "index_qa_inspections_on_business_product_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["business_section_id"], name: "index_qa_inspections_on_business_section_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["company_id"], name: "index_qa_inspections_on_company_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["document_id"], name: "index_qa_inspections_on_document_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["inspection_date"], name: "index_qa_inspections_on_inspection_date", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["inspection_type"], name: "index_qa_inspections_on_inspection_type", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["po_number"], name: "index_qa_inspections_on_po_number", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["po_qty"], name: "index_qa_inspections_on_po_qty", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["po_type"], name: "index_qa_inspections_on_po_type", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["position"], name: "index_qa_inspections_on_position", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["product_code"], name: "index_qa_inspections_on_product_code", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["product_description"], name: "index_qa_inspections_on_product_description", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["resource_id"], name: "index_qa_inspections_on_resource_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["result"], name: "index_qa_inspections_on_result", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["supplier_id"], name: "index_qa_inspections_on_supplier_id", using: :btree
+
   create_table "refinery_resource_translations", force: :cascade do |t|
     t.integer  "refinery_resource_id", limit: 4,   null: false
     t.string   "locale",               limit: 255, null: false
@@ -819,72 +1042,6 @@ ActiveRecord::Schema.define(version: 20190307043535) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
-
-  create_table "refinery_sales_orders", force: :cascade do |t|
-    t.string   "order_id",             limit: 255,                default: "",    null: false
-    t.string   "order_session_id",     limit: 255,                default: "",    null: false
-    t.string   "order_ref",            limit: 255,                default: "",    null: false
-    t.datetime "created_date"
-    t.datetime "modified_date"
-    t.boolean  "active",                                          default: false, null: false
-    t.string   "transaction_type",     limit: 255,                default: "",    null: false
-    t.string   "member_id",            limit: 255,                default: "",    null: false
-    t.string   "member_email",         limit: 255,                default: "",    null: false
-    t.string   "member_cost_center",   limit: 255,                default: "",    null: false
-    t.string   "member_session_id",    limit: 255,                default: "",    null: false
-    t.string   "sales_person_id",      limit: 255,                default: "",    null: false
-    t.string   "sales_person_email",   limit: 255,                default: "",    null: false
-    t.decimal  "product_total",                    precision: 10, default: 0,     null: false
-    t.decimal  "freight_total",                    precision: 10, default: 0,     null: false
-    t.string   "freight_description",  limit: 255,                default: "",    null: false
-    t.decimal  "discount_total",                   precision: 10, default: 0,     null: false
-    t.string   "discount_description", limit: 255,                default: "",    null: false
-    t.decimal  "total",                            precision: 10, default: 0,     null: false
-    t.decimal  "currency_rate",                    precision: 10, default: 0,     null: false
-    t.string   "currency_name",        limit: 255,                default: "",    null: false
-    t.string   "currency_symbol",      limit: 255,                default: "",    null: false
-    t.string   "tax_status",           limit: 255,                default: "",    null: false
-    t.decimal  "tax_rate",                         precision: 10, default: 0,     null: false
-    t.string   "first_name",           limit: 255,                default: "",    null: false
-    t.string   "last_name",            limit: 255,                default: "",    null: false
-    t.string   "company",              limit: 255,                default: "",    null: false
-    t.string   "phone",                limit: 255,                default: "",    null: false
-    t.string   "mobile",               limit: 255,                default: "",    null: false
-    t.string   "email",                limit: 255,                default: "",    null: false
-    t.string   "delivery_first_name",  limit: 255,                default: "",    null: false
-    t.string   "delivery_last_name",   limit: 255,                default: "",    null: false
-    t.string   "delivery_company",     limit: 255,                default: "",    null: false
-    t.string   "delivery_address",     limit: 255,                default: "",    null: false
-    t.string   "delivery_suburb",      limit: 255,                default: "",    null: false
-    t.string   "delivery_city",        limit: 255,                default: "",    null: false
-    t.string   "delivery_postal_code", limit: 255,                default: "",    null: false
-    t.string   "delivery_state",       limit: 255,                default: "",    null: false
-    t.string   "delivery_country",     limit: 255,                default: "",    null: false
-    t.string   "billing_first_name",   limit: 255,                default: "",    null: false
-    t.string   "billing_last_name",    limit: 255,                default: "",    null: false
-    t.string   "billing_company",      limit: 255,                default: "",    null: false
-    t.string   "billing_address",      limit: 255,                default: "",    null: false
-    t.string   "billing_suburb",       limit: 255,                default: "",    null: false
-    t.string   "billing_city",         limit: 255,                default: "",    null: false
-    t.string   "billing_postal_code",  limit: 255,                default: "",    null: false
-    t.string   "billing_state",        limit: 255,                default: "",    null: false
-    t.string   "billing_country",      limit: 255,                default: "",    null: false
-    t.string   "comments",             limit: 255,                default: "",    null: false
-    t.string   "voucher_code",         limit: 255,                default: "",    null: false
-    t.string   "branch_id",            limit: 255,                default: "",    null: false
-    t.string   "branch_email",         limit: 255,                default: "",    null: false
-    t.string   "stage",                limit: 255,                default: "",    null: false
-    t.string   "cost_center",          limit: 255,                default: "",    null: false
-    t.string   "tracking_code",        limit: 255,                default: "",    null: false
-    t.string   "payment_terms",        limit: 255,                default: "",    null: false
-    t.integer  "position",             limit: 4
-    t.datetime "created_at",                                                      null: false
-    t.datetime "updated_at",                                                      null: false
-  end
-
-  add_index "refinery_sales_orders", ["active"], name: "index_refinery_sales_orders_on_active", using: :btree
-  add_index "refinery_sales_orders", ["order_id"], name: "index_refinery_sales_orders_on_order_id", using: :btree
-  add_index "refinery_sales_orders", ["position"], name: "index_refinery_sales_orders_on_position", using: :btree
 
   create_table "refinery_settings", force: :cascade do |t|
     t.string   "name",            limit: 255

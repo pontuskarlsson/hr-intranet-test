@@ -1,177 +1,205 @@
 <div class="grid-x grid-padding-x">
   <div class="medium-8 cell">
 
-    <!-- Main Content -->
-    <% if @page.images.any? %>
-      <section class="page-part">
-        <div class="page-part-header">
-          HIGHLIGHTS
-        </div>
-        <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit data-options="animInFromLeft:fade-in; animInFromRight:fade-in; animOutToLeft:fade-out; animOutToRight:fade-out;">
-          <div class="orbit-wrapper">
-            <div class="orbit-controls">
-              <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
-              <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
+    <% if current_authentication_devise_user.has_role?('Business:External') %>
+      <h4>Welcome <%= current_authentication_devise_user.full_name %>!</h4>
+
+      <% if current_authentication_devise_user.companies.any? %>
+        <% current_authentication_devise_user.companies.each do |company| %>
+          <div class="card">
+            <div class="card-divider">
+              <h4><%= link_to company.name, refinery.business_company_path(company) %></h4>
             </div>
-            <ul class="orbit-container">
-              <% @page.images.each_with_index do |image, image_i| %>
-                <li class="<% if image_i.zero? %>is-active <% end %>orbit-slide">
-                  <figure class="orbit-figure">
-                    <% if Rails.env.development? %>
-                      <img class="orbit-image" src="https://loremflickr.com/637/300/<%= image_i %>" alt="Space">
-                    <% else %>
-                      <%= image_tag(image.thumbnail(geometry: '637x300^').url, class: 'orbit-image') %>
-                    <% end %>
-                    <figcaption class="orbit-caption"><%=raw @page.caption_for_image_index(image_i) %></figcaption>
-                  </figure>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-        </div>
-      </section>
-    <% end %>
 
-
-    <div class="grid-x grid-padding-x">
-      <div class="medium-6 cell">
-
-        <section class="page-part">
-          <div class="page-part-header">
-            NEWS
+            <div class="card-section data-fields">
+              <h5>Projects</h5>
+              <p><%= company.projects.count %></p>
+            </div>
           </div>
 
-          <% @items = Refinery::News::Item.latest(2) %>
-          <% if @items.any? %>
-            <ul class="latest-news">
-              <% @items.each do |item| %>
-                <li>
-                  <h5>
-                    <%= link_to item.title, refinery.news_item_path(item) %><br/>
-                    <small><%= item.publish_date.strftime('%d %b - %I:%M %P') %></small>
-                  </h5>
-                  <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 200, escape: false,
-                                                omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
-                  <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p class="italic">No News Items</p>
-          <% end %>
-
-        </section>
-
-      </div>
-      <div class="medium-6 cell">
-
-        <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
-          Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
-          *Refinery::Employees::PublicHoliday.all_calendar_functions
-        ).limit(5)).any? %>
-          <section class="page-part">
-            <div class="page-part-header">
-              TODAY IN CALENDAR
-            </div>
-            <ul class="events">
-              <% events.each do |event| %>
-                <li>
-                  <%= render 'refinery/partials/home_event', event: event %>
-                </li>
-              <% end %>
-            </ul>
-          </section>
         <% end %>
 
+      <% else %>
+        <p>You do not currently have access to any company details, please contact Happy Rabbit Support if you think this is incorrect.</p>
+      <% end %>
+    <% end %>
+
+    <% if current_authentication_devise_user.has_role?('Employees:Employee') %>
+
+      <!-- Main Content -->
+      <% if @page.images.any? %>
         <section class="page-part">
           <div class="page-part-header">
-            UPCOMING IN CALENDAR
+            HIGHLIGHTS
           </div>
+          <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit data-options="animInFromLeft:fade-in; animInFromRight:fade-in; animOutToLeft:fade-out; animOutToRight:fade-out;">
+            <div class="orbit-wrapper">
+              <div class="orbit-controls">
+                <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
+                <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
+              </div>
+              <ul class="orbit-container">
+                <% @page.images.each_with_index do |image, image_i| %>
+                  <li class="<% if image_i.zero? %>is-active <% end %>orbit-slide">
+                    <figure class="orbit-figure">
+                      <% if Rails.env.development? %>
+                        <img class="orbit-image" src="https://loremflickr.com/637/300/<%= image_i %>" alt="Space">
+                      <% else %>
+                        <%= image_tag(image.thumbnail(geometry: '637x300^').url, class: 'orbit-image') %>
+                      <% end %>
+                      <figcaption class="orbit-caption"><%=raw @page.caption_for_image_index(image_i) %></figcaption>
+                    </figure>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </section>
+      <% end %>
 
-          <% if (events = Refinery::Calendar::Event.after_today.for_calendar_functions(
+
+      <div class="grid-x grid-padding-x">
+        <div class="medium-6 cell">
+
+          <section class="page-part">
+            <div class="page-part-header">
+              NEWS
+            </div>
+
+            <% @items = Refinery::News::Item.latest(2) %>
+            <% if @items.any? %>
+              <ul class="latest-news">
+                <% @items.each do |item| %>
+                  <li>
+                    <h5>
+                      <%= link_to item.title, refinery.news_item_path(item) %><br/>
+                      <small><%= item.publish_date.strftime('%d %b - %I:%M %P') %></small>
+                    </h5>
+                    <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 200, escape: false,
+                                                  omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
+                    <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p class="italic">No News Items</p>
+            <% end %>
+
+          </section>
+
+        </div>
+        <div class="medium-6 cell">
+
+          <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
             Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
             *Refinery::Employees::PublicHoliday.all_calendar_functions
           ).limit(5)).any? %>
-            <ul class="events">
-              <% events.each do |event| %>
-                <li>
-                  <%= render 'refinery/partials/home_event', event: event %>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p class="italic">No Upcoming Events</p>
+            <section class="page-part">
+              <div class="page-part-header">
+                TODAY IN CALENDAR
+              </div>
+              <ul class="events">
+                <% events.each do |event| %>
+                  <li>
+                    <%= render 'refinery/partials/home_event', event: event %>
+                  </li>
+                <% end %>
+              </ul>
+            </section>
           <% end %>
-        </section>
 
+          <section class="page-part">
+            <div class="page-part-header">
+              UPCOMING IN CALENDAR
+            </div>
+
+            <% if (events = Refinery::Calendar::Event.after_today.for_calendar_functions(
+              Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
+              *Refinery::Employees::PublicHoliday.all_calendar_functions
+            ).limit(5)).any? %>
+              <ul class="events">
+                <% events.each do |event| %>
+                  <li>
+                    <%= render 'refinery/partials/home_event', event: event %>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p class="italic">No Upcoming Events</p>
+            <% end %>
+          </section>
+
+        </div>
       </div>
-    </div>
+    <% end %>
 
 
   </div>
   <div class="medium-4 cell">
 
-    <!-- Right Side Column -->
-    <% if current_authentication_devise_user.assigned_parcels.unsigned.any? %>
-      <section class="page-part">
-        <div class="page-part-header">
-          NOTIFICATIONS
-        </div>
-
-        <p><%= link_to 'You have unsigned Parcels waiting!', refinery.parcels_parcels_path %></p>
-      </section>
-    <% end %>
-
-    <% if (employees = Refinery::Employees::Employee.current.upcoming_birthdays).any? %>
-      <section class="page-part">
-        <div class="page-part-header">
-          BIRTHDAYS
-        </div>
-        <% employees.each do |employee| %>
-          <p>
-            <%= link_to employee.full_name, refinery.employees_employee_path(employee) %>
-            <% if employee.next_birthday == Date.today %>
-              <i class="fa fa-birthday-cake" style="color: #ff755f;"></i> Today
-            <% else %>
-              in <%= (employee.next_birthday - Date.today).to_i %> day(s)
-            <% end %>
-          </p>
-        <% end %>
-      </section>
-    <% end %>
-
-    <% if (calendar = ::Refinery::Calendar::Calendar.find_by_function(HooksController::CALENDAR_FUNCTION)).present? and (events = calendar.events.today).any? %>
-      <section class="page-part">
-        <div class="page-part-header">
-          TODAY'S INSPECTIONS
-        </div>
-        <% events.each do |event| %>
-          <div title="<%= event.description %>" style="border-bottom: 1px solid #ccc;">
-            <h5 style="margin-bottom: 0;">
-              <i class="fa fa-user"></i>
-              <%= event.title.split(':').first %>
-              <span data-tooltip aria-haspopup="true" class="has-tip" title="<%= event.description %>">
-                <%= event.title.split(':').last %>
-              </span>
-            </h5>
-            <p>
-              <i class="fa fa-industry"></i>
-              <%= event.excerpt.split('@').last %>
-            </p>
+    <% if current_authentication_devise_user.has_role?('Employees:Employee') %>
+      <!-- Right Side Column -->
+      <% if current_authentication_devise_user.assigned_parcels.unsigned.any? %>
+        <section class="page-part">
+          <div class="page-part-header">
+            NOTIFICATIONS
           </div>
-        <% end %>
 
-        <p><%= link_to 'Go to Calendar', refinery.calendar_events_path %></p>
-      </section>
-    <% end %>
+          <p><%= link_to 'You have unsigned Parcels waiting!', refinery.parcels_parcels_path %></p>
+        </section>
+      <% end %>
 
-    <% if (employee = Refinery::Employees::Employee.current.random.first).present? %>
-      <section class="page-part">
-        <div class="page-part-header">
-          EMPLOYEE FOCUS
-        </div>
-        <%= render '/refinery/employees/employees/preview', employee: employee %>
-      </section>
+      <% if (employees = Refinery::Employees::Employee.current.upcoming_birthdays).any? %>
+        <section class="page-part">
+          <div class="page-part-header">
+            BIRTHDAYS
+          </div>
+          <% employees.each do |employee| %>
+            <p>
+              <%= link_to employee.full_name, refinery.employees_employee_path(employee) %>
+              <% if employee.next_birthday == Date.today %>
+                <i class="fa fa-birthday-cake" style="color: #ff755f;"></i> Today
+              <% else %>
+                in <%= (employee.next_birthday - Date.today).to_i %> day(s)
+              <% end %>
+            </p>
+          <% end %>
+        </section>
+      <% end %>
+
+      <% if (calendar = ::Refinery::Calendar::Calendar.find_by_function(HooksController::CALENDAR_FUNCTION)).present? and (events = calendar.events.today).any? %>
+        <section class="page-part">
+          <div class="page-part-header">
+            TODAY'S INSPECTIONS
+          </div>
+          <% events.each do |event| %>
+            <div title="<%= event.description %>" style="border-bottom: 1px solid #ccc;">
+              <h5 style="margin-bottom: 0;">
+                <i class="fa fa-user"></i>
+                <%= event.title.split(':').first %>
+                <span data-tooltip aria-haspopup="true" class="has-tip" title="<%= event.description %>">
+                  <%= event.title.split(':').last %>
+                </span>
+              </h5>
+              <p>
+                <i class="fa fa-industry"></i>
+                <%= event.excerpt.split('@').last %>
+              </p>
+            </div>
+          <% end %>
+
+          <p><%= link_to 'Go to Calendar', refinery.calendar_events_path %></p>
+        </section>
+      <% end %>
+
+      <% if (employee = Refinery::Employees::Employee.current.random.first).present? %>
+        <section class="page-part">
+          <div class="page-part-header">
+            EMPLOYEE FOCUS
+          </div>
+          <%= render '/refinery/employees/employees/preview', employee: employee %>
+        </section>
+      <% end %>
     <% end %>
 
     <section class="page-part">

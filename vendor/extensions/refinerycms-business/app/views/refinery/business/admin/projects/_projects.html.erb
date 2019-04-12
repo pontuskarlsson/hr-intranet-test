@@ -1,0 +1,2 @@
+<%= will_paginate @projects if Refinery::Business::Admin::ProjectsController.pageable? %>
+<%= render 'sortable_list' %>

@@ -1,8 +1,20 @@
 <li>
+  <%= link_to t('.manage_budgets'), refinery.business_admin_budgets_path,
+              :class => "manage_icon" %>
+</li>
+<li>
+  <%= link_to t('.manage_companies'), refinery.business_admin_companies_path,
+              :class => "manage_icon" %>
+</li>
+<li>
+  <%= link_to t('.manage_projects'), refinery.business_admin_projects_path,
+              :class => "manage_icon" %>
+</li>
+<li>
   <%= link_to t('.manage_sales_orders'), refinery.business_admin_sales_orders_path,
               :class => "manage_icon" %>
 </li>
 <li>
-  <%= link_to t('.manage_budgets'), refinery.business_admin_budgets_path,
+  <%= link_to t('.manage_sections'), refinery.business_admin_sections_path,
               :class => "manage_icon" %>
 </li>

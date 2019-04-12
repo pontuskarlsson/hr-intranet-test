@@ -1,0 +1,53 @@
+es:
+  refinery:
+    plugins:
+      quality_assurances:
+        title: Quality Assurances
+#        article: masculino/femenino
+    quality_assurances:
+      admin:
+        quality_assurances:
+          actions:
+            create_new: Crear nuevo quality assurance
+            reorder: Reordenar quality assurances
+            reorder_done: Reordenación de quality assurances completada
+          records:
+            title: Quality Assurances
+            sorry_no_results: Lo siento, no hay resultados
+            no_items_yet: No hay quality assurances todavía. Pulsa en "Crear nuevo Quality Assurance" para crear tu primer quality assurance.
+          quality_assurance:
+            view_live_html: Ver este quality assurance como abierto al público <br/><em>(abre en ventana nueva)</em>
+            edit: Editar este quality assurance
+            delete: Borrar este quality assurance para siempre
+      quality_assurances:
+        show:
+          other: Otros quality assurances
+  activerecord:
+    attributes:
+      'refinery/quality_assurances/quality_assurance':
+        company_id: Company
+        supplier_id: Supplier
+        supplier_label: Supplier Label
+        business_section_id: Business Section
+        business_product_id: Business Product
+        assigned_to_id: Assigned To
+        resource_id: Resource
+        inspected_by_id: Inspected By
+        document_id: Document
+        result: Result
+        inspection_date: Inspection Date
+        inspection_sample_size: Inspection Sample Size
+        inspection_type: Inspection Type
+        po_number: Po Number
+        po_type: Po Type
+        po_qty: Po Qty
+        available_qty: Available Qty
+        product_code: Product Code
+        product_description: Product Description
+        product_colour_variants: Product Colour Variants
+        acc_critical: Acc Critical
+        acc_major: Acc Major
+        acc_minor: Acc Minor
+        total_critical: Total Critical
+        total_major: Total Major
+        total_minor: Total Minor

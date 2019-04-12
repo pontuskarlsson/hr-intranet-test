@@ -3,8 +3,54 @@ en:
     plugins:
       business:
         title: Business
+
     business:
       admin:
+        budgets:
+          actions:
+            create_new: Add New Budget
+            reorder: Reorder Budgets
+            reorder_done: Done Reordering Budgets
+          records:
+            title: Budgets
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Budgets yet. Click "Add New Budget" to add your first budget.
+          budget:
+            view_live_html: View this budget live <br/><em>(opens in a new window)</em>
+            edit: Edit this budget
+            delete: Remove this budget forever
+            preview: 'Customer: %{customer}'
+            
+        companies:
+          actions:
+            create_new: Add New Company
+            reorder: Reorder Companies
+            reorder_done: Done Reordering Companies
+          records:
+            title: Companies
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Companies yet. Click "Add New Company" to add your first company.
+          company:
+            view_live_html: View this company live <br/><em>(opens in a new window)</em>
+            edit: Edit this company
+            delete: Remove this company forever
+            preview: '%{name}'
+            
+        projects:
+          actions:
+            create_new: Add New Project
+            reorder: Reorder Projects
+            reorder_done: Done Reordering Projects
+          records:
+            title: Projects
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Projects yet. Click "Add New Project" to add your first project.
+          project:
+            view_live_html: View this project live <br/><em>(opens in a new window)</em>
+            edit: Edit this project
+            delete: Remove this project forever
+            preview: '%{description}, Company: %{company_label}'
+            
         sales_orders:
           actions:
             create_new: Add New Sales Order
@@ -21,29 +67,63 @@ en:
             edit: Edit this sales order
             delete: Remove this sales order forever
             preview: 'Order total: %{total} %{currency_name}, Last modified at %{modified_date}'
-        budgets:
+            
+        sections:
           actions:
-            create_new: Add New Budget
-            reorder: Reorder Budgets
-            reorder_done: Done Reordering Budgets
+            create_new: Add New Section
+            reorder: Reorder Sections
+            reorder_done: Done Reordering Sections
           records:
-            title: Budgets
+            title: Sections
             sorry_no_results: Sorry! There are no results found.
-            no_items_yet: There are no Budgets yet. Click "Add New Budget" to add your first budget.
-          budget:
-            view_live_html: View this budget live <br/><em>(opens in a new window)</em>
-            edit: Edit this budget
-            delete: Remove this budget forever
-            preview: 'Customer: %{customer}'
+            no_items_yet: There are no Sections yet. Click "Add New Section" to add your first section.
+          section:
+            view_live_html: View this section live <br/><em>(opens in a new window)</em>
+            edit: Edit this section
+            delete: Remove this section forever
+            preview: 'Project: %{project}'
+            
         shared:
           links:
             manage_budgets: Manage Budgets
+            manage_companies: Manage Companies
+            manage_projects: Manage Projects
             manage_sales_orders: Manage Sales Orders
+            manage_sections: Manage Sections
+
+      budgets:
+        show:
+          other: Other Budgets
+
+      companies:
+        show:
+          other: Other Companies
+
+      projects:
+        show:
+          other: Other Projects
+
       sales_orders:
         show:
           other: Other Sales Orders
+
+      sections:
+        show:
+          other: Other Sections
+
   activerecord:
     attributes:
+      'refinery/business/budget':
+        description: Description
+
+      'refinery/business/company':
+        code: Code
+        name: Name
+
+      'refinery/business/project':
+        code: Code
+        description: Description
+
       'refinery/business/sales_order':
         order_ref: Order Ref
         order_id: Po Order ID
@@ -53,5 +133,6 @@ en:
         modified_date: Modified Date
         total: Total
         currency_name: Currency
-      'refinery/business/budget':
+
+      'refinery/business/section':
         description: Description

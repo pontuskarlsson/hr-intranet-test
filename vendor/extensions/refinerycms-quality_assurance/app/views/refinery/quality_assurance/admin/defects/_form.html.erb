@@ -1,0 +1,140 @@
+<%= form_for [refinery, :quality_assurance_admin, @defect] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @defect,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :company_id -%>
+    <%= f.number_field :company_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :supplier_id -%>
+    <%= f.number_field :supplier_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :supplier_label -%>
+    <%= f.text_field :supplier_label -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :business_section_id -%>
+    <%= f.number_field :business_section_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :business_product_id -%>
+    <%= f.number_field :business_product_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :assigned_to_id -%>
+    <%= f.number_field :assigned_to_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :resource_id -%>
+    <%= f.number_field :resource_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :inspected_by_id -%>
+    <%= f.number_field :inspected_by_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :document_id -%>
+    <%= f.text_field :document_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :result -%>
+    <%= f.text_field :result -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :defect_date -%>
+    <%= f.date_select :defect_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :defect_sample_size -%>
+    <%= f.number_field :defect_sample_size -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :defect_type -%>
+    <%= f.text_field :defect_type -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :po_number -%>
+    <%= f.text_field :po_number -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :po_type -%>
+    <%= f.text_field :po_type -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :po_qty -%>
+    <%= f.number_field :po_qty -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :available_qty -%>
+    <%= f.number_field :available_qty -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :product_code -%>
+    <%= f.text_field :product_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :product_description -%>
+    <%= f.text_field :product_description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :product_colour_variants -%>
+    <%= f.text_field :product_colour_variants -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :acc_critical -%>
+    <%= f.number_field :acc_critical -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :acc_major -%>
+    <%= f.number_field :acc_major -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :acc_minor -%>
+    <%= f.number_field :acc_minor -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :total_critical -%>
+    <%= f.number_field :total_critical -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :total_major -%>
+    <%= f.number_field :total_major -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :total_minor -%>
+    <%= f.number_field :total_minor -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.quality_assurance.admin.defects.defect'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete') -%>
+<% end -%>
