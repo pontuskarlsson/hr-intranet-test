@@ -2,7 +2,7 @@ class HooksController < ApplicationController
   CALENDAR_FUNCTION = 'QCSchedule'
 
   before_filter :verify_hook
-  skip_before_filter :verify_authenticity_token, :authenticate_refinery_user!
+  skip_before_filter :verify_authenticity_token, :authenticate_authentication_devise_user!
 
   def catch
     if @webhook == 'qc'
