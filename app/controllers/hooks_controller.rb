@@ -1,3 +1,5 @@
+require 'wip_schedule'
+
 class HooksController < ApplicationController
   CALENDAR_FUNCTION = 'QCSchedule'
 
