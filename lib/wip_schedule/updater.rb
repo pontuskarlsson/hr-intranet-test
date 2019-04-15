@@ -23,12 +23,6 @@ module WipSchedule
       @results[:description] = row_data['Description']
 
       each_airtable_order do |id, at_order, excel_order|
-        title = [at_order['Customer PO#'], at_order['HR PO#']].reject(&:blank?).join ' / '
-        @results[:orders][id] = {
-            title: title,
-            updates: {}
-        }
-
         changed_fields = changes_from(at_order, excel_order)
 
         if changed_fields.any?
@@ -59,12 +53,18 @@ module WipSchedule
       raise "Could not find any orders in the Airtable app #{airtable_app_id} for #{@results[:description]}." if orders.empty?
 
       orders.each do |order|
+        title = [order['Customer PO#'], order['HR PO#']].reject(&:blank?).join ' / '
+        @results[:orders][order.id] = {
+            title: title,
+            updates: {}
+        }
+
         excel_row = @excel.find_row(order.id)
 
         if excel_row
           block.call order.id, order, excel_row
         else
-          @results[:orders][order.id][:error] = 'Could not find the order in the excel file.'
+          @results[:orders][order.id][:error] = 'Order not included in WIP Excel file.'
         end
       end
     end

@@ -19,6 +19,10 @@ module WipSchedule
       raise AirtableError.new(e.message)
     end
 
+    def update_record_fields(id, changed_fields)
+      order_table.update_record_fields(id, changed_fields)
+    end
+
     private
 
     def order_table
