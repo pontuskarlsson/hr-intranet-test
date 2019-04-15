@@ -15,7 +15,7 @@ class HappyRabbitMailer < ApplicationMailer
   protected
 
   def emails_for_role(title)
-    role = Refinery::Role.find_by_title(title)
+    role = Refinery::Authentication::Devise::Role.find_by_title(title)
     if role.present?
       role.users.pluck(:email).join(', ')
     else
