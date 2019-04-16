@@ -1,0 +1,44 @@
+<table class="display js_companies_data_table" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Name</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Name</th>
+  </tr>
+  </tfoot>
+</table>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_companies_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "data":           <%= companies.to_json(only: [:id, :code, :name]).html_safe %>,
+        "columns": [
+          { data: "id", "width": '10%', "render": function(data, type, row) {
+            const href = ["<%= refinery.business_companies_path %>", row.id].join('/');
+            const className = 'fa fa-arrow-right';
+            return $('<a></a>')
+              .attr('href', href)
+              .html('<i class="' + className + '"></i>')
+              .prop('outerHTML');
+          } },
+          { data: "code", "width": '25%' },
+          { data: "name", "width": '65%' }
+        ]
+      });
+    });
+  </script>
+<% end %>

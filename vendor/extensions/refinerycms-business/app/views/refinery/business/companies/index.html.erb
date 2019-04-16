@@ -3,41 +3,7 @@
 
   <% if @companies.any? %>
 
-    <table class="display js_contacts_data_table" cellspacing="0" style="width: 100%;">
-      <thead>
-      <tr>
-        <th></th>
-        <th>Code</th>
-        <th>Name</th>
-      </tr>
-      </thead>
-
-      <tfoot>
-      <tr>
-        <th></th>
-        <th>Code</th>
-        <th>Name</th>
-      </tr>
-      </tfoot>
-
-      <tbody>
-      <% @companies.each do |company| %>
-        <tr>
-          <td>
-            <%= link_to refinery.business_company_path(company) do %>
-              <i class="fa fa-arrow-right"></i>
-            <% end %>
-          </td>
-          <td>
-            <%= company.code %>
-          </td>
-          <td>
-            <%= company.name %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
+    <%= render 'table', companies: @companies %>
 
   <% else %>
     <p class="not_present">

@@ -1,0 +1,17 @@
+<div class="grid-x grid-padding-x">
+  <div class="cell">
+    <h2><%= @project.code %></h2>
+    <h5><%= @project.company_label %></h5>
+    <h5><%= @project.description %></h5>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'charts' %>
+
+  <script type="text/javascript">
+    $(function(){
+
+    });
+  </script>
+<% end %>
