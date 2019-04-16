@@ -1,0 +1,43 @@
+<%= form_for [refinery, :business, project] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+             :object => project,
+             :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :company_label, 'Company' -%>
+    <%= f.text_field :company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_field :description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :start_date -%>
+    <%= f.date_field :start_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_date -%>
+    <%= f.date_field :end_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.submit 'Save' -%>
+  </div>
+<% end -%>
+
+<% content_for :stylesheets do -%>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.to_source %>
+      });
+    });
+  </script>
+<% end -%>

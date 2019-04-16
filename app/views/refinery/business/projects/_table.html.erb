@@ -1,0 +1,62 @@
+<table class="display js_projects_data_table" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Company</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Company</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Status</th>
+  </tr>
+  </tfoot>
+</table>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_projects_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "data":           <%= projects.includes(:company).to_json(only: [:id, :code, :description, :company_id, :start_date, :end_date, :status], methods: [:company_label]).html_safe %>,
+        "columns": [
+          { data: "id", "width": '20%', "render": function(data, type, row) {
+            const href = ["<%= refinery.business_projects_path %>", row.id].join('/');
+            const className = 'fa fa-arrow-right';
+            return $('<a></a>')
+              .attr('href', href)
+              .html('<i class="' + className + '"></i>')
+              .prop('outerHTML');
+          } },
+          { data: "code", "width": '10%' },
+          { data: "description", "width": '25%' },
+          { data: "company_label", "width": '15%', "render": function(data, type, row) {
+            const href = ["<%= refinery.business_companies_path %>", row.company_id].join('/');
+            return $('<a></a>')
+              .attr('href', href)
+              .text(data)
+              .prop('outerHTML');
+          } },
+          { data: "start_date", "width": '15%' },
+          { data: "end_date", "width": '15%' },
+          { data: "status", "width": '15%' }
+        ]
+      });
+    });
+  </script>
+<% end %>

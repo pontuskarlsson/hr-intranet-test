@@ -1,0 +1,24 @@
+<% content_for :body do %>
+  <h1>Projects</h1>
+
+  <% if @projects.any? %>
+
+    <%= render 'table', projects: @projects %>
+
+  <% else %>
+    <p class="not_present">
+      You do not have access to any project details, please contact
+      Happy Rabbit Support team if you think this is incorrect.
+    </p>
+  <% end %>
+<% end %>
+
+<% if page_role? Refinery::Business::ROLE_INTERNAL %>
+  <% content_for :side_body do %>
+    <h2>Add Project</h2>
+
+    <%= render 'form', project: @project %>
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

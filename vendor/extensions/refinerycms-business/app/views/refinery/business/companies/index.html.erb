@@ -1,13 +1,58 @@
-<% if @companies.any? %>
+<% content_for :body do %>
+  <h1>Companies</h1>
 
-  <h2>Select which company to view.</h2>
-  <% @companies.each do |company| %>
-    <p><%= link_to company.label, refinery.business_company_path(company) %></p>
+  <% if @companies.any? %>
+
+    <table class="display js_contacts_data_table" cellspacing="0" style="width: 100%;">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Code</th>
+        <th>Name</th>
+      </tr>
+      </thead>
+
+      <tfoot>
+      <tr>
+        <th></th>
+        <th>Code</th>
+        <th>Name</th>
+      </tr>
+      </tfoot>
+
+      <tbody>
+      <% @companies.each do |company| %>
+        <tr>
+          <td>
+            <%= link_to refinery.business_company_path(company) do %>
+              <i class="fa fa-arrow-right"></i>
+            <% end %>
+          </td>
+          <td>
+            <%= company.code %>
+          </td>
+          <td>
+            <%= company.name %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  <% else %>
+    <p class="not_present">
+      You do not have access to any company details, please contact
+      Happy Rabbit Support team if you think this is incorrect.
+    </p>
   <% end %>
-
-<% else %>
-  <p class="not_present">
-    You do not have access to any company details, please contact
-    Happy Rabbit Support team if you think this is incorrect.
-  </p>
 <% end %>
+
+<% if page_role? Refinery::Business::ROLE_INTERNAL %>
+  <% content_for :side_body do %>
+    <h2>Add Company</h2>
+
+    <%= render 'form', company: @company %>
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

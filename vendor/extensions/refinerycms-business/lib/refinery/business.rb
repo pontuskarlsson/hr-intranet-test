@@ -5,7 +5,9 @@ module Refinery
 
   module Business
     require 'refinery/business/engine'
-    require 'refinery/business/cin7_importer'
+
+    ROLE_EXTERNAL = 'Business:External'
+    ROLE_INTERNAL = 'Business:Internal'
 
     class << self
       attr_writer :root

@@ -56,8 +56,6 @@ en:
             create_new: Add New Sales Order
             reorder: Reorder Sales Orders
             reorder_done: Done Reordering Sales Orders
-            import_cin7: Import Orders from Cin7
-            confirm_import_cin7: Are you sure you want to Import?
           records:
             title: Sales Orders
             sorry_no_results: Sorry! There are no results found.

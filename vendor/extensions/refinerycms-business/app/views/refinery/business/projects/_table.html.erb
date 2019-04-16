@@ -1,0 +1,55 @@
+<table class="display" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Company</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Description</th>
+    <th>Company</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Status</th>
+  </tr>
+  </tfoot>
+
+  <tbody>
+  <% projects.each do |project| %>
+    <tr>
+      <td>
+        <%= link_to refinery.business_project_path(project) do %>
+          <i class="fa fa-arrow-right"></i>
+        <% end %>
+      </td>
+      <td>
+        <%= project.code %>
+      </td>
+      <td>
+        <%= project.description %>
+      </td>
+      <td>
+        <%= link_to project.company.name, refinery.business_company_path(project.company) %>
+      </td>
+      <td>
+        <%= project.start_date %>
+      </td>
+      <td>
+        <%= project.end_date %>
+      </td>
+      <td>
+        <%= project.status %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

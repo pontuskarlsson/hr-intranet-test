@@ -1,12 +1,17 @@
 module Refinery
   module Business
     class CompaniesController < ::ApplicationController
+      include Refinery::PageRoles::AuthController
 
-      before_filter :find_page
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
+      allow_page_roles ROLE_INTERNAL
+
       before_filter :find_companies, only: [:index]
-      before_filter :find_company,  except: [:index]
+      before_filter :find_company,  except: [:index, :create]
 
       def index
+        @companies = @companies.order(code: :asc)
+        @company = Company.new
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @company in the line below:
         present(@page)
@@ -18,26 +23,54 @@ module Refinery
         present(@page)
       end
 
+      def create
+        @company = Company.new(company_params)
+        if @company.save
+          redirect_to refinery.business_company_path @company
+        else
+          find_companies
+          @companies = @companies.order(code: :asc)
+          present(@page)
+          render :index
+        end
+      end
+
       protected
 
+      def company_scope
+        @companies ||=
+            if page_role? ROLE_INTERNAL
+              Refinery::Business::Company.where(nil)
+            elsif page_role? ROLE_EXTERNAL
+              current_authentication_devise_user.companies
+            else
+              Refinery::Business::Company.where('1=0')
+            end
+      end
+
       def find_companies
-        if current_authentication_devise_user.companies.size == 1
-          redirect_to refinery.business_company_path(current_authentication_devise_user.companies[0])
+        if company_scope.size == 1
+          redirect_to refinery.business_company_path(company_scope[0])
         else
-          @companies = current_authentication_devise_user.companies
+          @companies = company_scope
         end
       end
 
       def find_company
-        @company = current_authentication_devise_user.companies.find(params[:id])
+        @company = company_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end
 
       def find_page
         @page = ::Refinery::Page.find_authorized_by_link_url!('/business/companies', current_authentication_devise_user)
+        @role_titles = @page.user_page_role_titles
       rescue ::ActiveRecord::RecordNotFound
         error_404
+      end
+
+      def company_params
+        params.require(:company).permit(:name)
       end
 
     end

@@ -17,6 +17,7 @@ module Refinery
       validates :user_id, uniqueness: true, allow_nil: true
 
       scope :organisations, -> { where(is_organisation: true) }
+      scope :without_code, -> { where("#{table_name}.code IS NULL OR #{table_name}.code = ''") }
 
       def self.employees_for(organisation)
         if (org = where(name: organisation).first).present?

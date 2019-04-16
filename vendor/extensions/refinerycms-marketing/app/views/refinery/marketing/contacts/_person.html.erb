@@ -131,4 +131,16 @@
     </tr>
     </tbody>
   </table>
+
+  <% if contact.description.present? %>
+    <h3>Additional</h3>
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th>Background</th>
+        <td><%= contact.description %></td>
+      </tr>
+      </tbody>
+    </table>
+  <% end %>
 </section>

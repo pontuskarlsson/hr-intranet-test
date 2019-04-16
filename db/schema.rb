@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190412035345) do
+ActiveRecord::Schema.define(version: 20190416014325) do
 
   create_table "amqp_messages", force: :cascade do |t|
     t.string   "queue",       limit: 255,   null: false
@@ -486,7 +486,7 @@ ActiveRecord::Schema.define(version: 20190412035345) do
     t.string   "fax",                  limit: 255
     t.string   "website",              limit: 255
     t.string   "phone",                limit: 255
-    t.string   "description",          limit: 255
+    t.text     "description",          limit: 65535
     t.string   "linked_in",            limit: 255
     t.string   "facebook",             limit: 255
     t.string   "industry",             limit: 255

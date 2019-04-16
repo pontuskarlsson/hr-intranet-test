@@ -6,6 +6,7 @@ module Refinery
   module PageRoles
     require 'refinery/page_roles/engine'
     require 'refinery/page_roles/configuration'
+    require 'refinery/page_roles/auth_controller'
 
     class << self
       attr_writer :root
