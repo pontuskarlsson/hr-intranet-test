@@ -12,6 +12,7 @@ module Refinery
 
       validates :name,          presence: true, uniqueness: true
       validates :code,          uniqueness: true, allow_blank: true
+      validates :contact_id,    uniqueness: true, allow_blank: true
 
       before_validation(on: :create) do
         if code.blank?
