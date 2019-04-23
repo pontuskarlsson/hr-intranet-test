@@ -31,6 +31,101 @@
     </div>
   <% end %>
 
+  <% if (parcels = @company.parcels.recent).any? %>
+    <div class="cell medium-6">
+      <div class="card">
+        <div class="card-divider">
+          <h4>Recent parcels received by Happy Rabbit</h4>
+        </div>
+
+        <div class="card-section">
+          <table class="display" cellspacing="0" style="width: 100%;">
+            <thead>
+            <tr>
+              <th>Parcel Date</th>
+              <th>Courier</th>
+              <th>Air Waybill No</th>
+              <th>Given To</th>
+              <th>Description</th>
+            </tr>
+            </thead>
+
+            <tfoot>
+            <tr>
+              <th>Parcel Date</th>
+              <th>Courier</th>
+              <th>Air Waybill No</th>
+              <th>Given To</th>
+              <th>Description</th>
+            </tr>
+            </tfoot>
+
+            <tbody>
+            <% parcels.each do |parcel| %>
+              <tr>
+                <td><%= parcel.parcel_date %></td>
+                <td><%= parcel.courier %></td>
+                <td><%= parcel.air_waybill_no %></td>
+                <td><%= parcel.assigned_to.try(:full_name) %></td>
+                <td><%= parcel.description %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if (shipments = @company.to_shipments.shipped.recent).any? %>
+    <div class="cell medium-6">
+      <div class="card">
+        <div class="card-divider">
+          <h4>Recent shipments sent by Happy Rabbit</h4>
+        </div>
+
+        <div class="card-section">
+          <table class="display" cellspacing="0" style="width: 100%;">
+            <thead>
+            <tr>
+              <th>From</th>
+              <th>Date</th>
+              <th>Courier</th>
+              <th>Tracking No.</th>
+              <th>Status</th>
+              <th>Description</th>
+            </tr>
+            </thead>
+
+            <tfoot>
+            <tr>
+              <th>From</th>
+              <th>Date</th>
+              <th>Courier</th>
+              <th>Tracking No.</th>
+              <th>Status</th>
+              <th>Description</th>
+            </tr>
+            </tfoot>
+
+            <tbody>
+            <% shipments.each do |shipment| %>
+              <tr>
+                <td><%= shipment.from_contact_name %></td>
+                <td><%= shipment.shipping_date %></td>
+                <td><%= shipment.courier %></td>
+                <td><%= shipment.tracking_number %></td>
+                <td><%= shipment.status %></td>
+                <td><%= shipment.description %></td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <div class="cell medium-6">
     <div class="card">
       <div class="card-divider">

@@ -1,0 +1,42 @@
+<table class="display" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th>Parcel Date</th>
+    <th>From</th>
+    <th>Courier</th>
+    <th>Air Waybill No</th>
+    <th>Addressed To</th>
+    <th>Given To</th>
+    <th>Description</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th>Parcel Date</th>
+    <th>From</th>
+    <th>Courier</th>
+    <th>Air Waybill No</th>
+    <th>Addressed To</th>
+    <th>Given To</th>
+    <th>Description</th>
+    <th>Status</th>
+  </tr>
+  </tfoot>
+
+  <tbody>
+  <% parcels.each do |parcel| %>
+    <tr>
+      <td><%= parcel.parcel_date %></td>
+      <td><%= parcel.from_name %></td>
+      <td><%= parcel.courier %></td>
+      <td><%= parcel.air_waybill_no %></td>
+      <td><%= parcel.to_name %></td>
+      <td><%= parcel.assigned_to.try(:full_name) %></td>
+      <td><%= parcel.description %></td>
+      <td>&nbsp;</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -7,6 +7,8 @@ module Refinery
 
       belongs_to :contact,      class_name: 'Refinery::Marketing::Contact'
       has_many :company_users,  dependent: :destroy
+      has_many :parcels,        through: :contact
+      has_many :to_shipments,   through: :contact
       has_many :projects,       dependent: :destroy
       has_many :users,          through: :company_users
 
@@ -14,12 +16,14 @@ module Refinery
       validates :code,          uniqueness: true, allow_blank: true
       validates :contact_id,    uniqueness: true, allow_blank: true
 
-      before_validation(on: :create) do
+      before_validation do
         if code.blank?
           self.code = NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0')
         end
 
-        if contact_id.nil? && name.present?
+        if contact_label.present?
+          self.contact = Refinery::Marketing::Contact.organisations.find_by_name(contact_label)
+        elsif new_record? && contact_id.nil? && name.present?
           self.contact = Refinery::Marketing::Contact.organisations.without_code.find_by_name(name)
         end
       end

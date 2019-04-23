@@ -38,8 +38,6 @@ module Refinery
 
       attr_writer :from_contact_name, :to_contact_name, :assign_to
 
-      #attr_accessible :from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id
-
       validates :created_by_id,           presence: true
       validates :assigned_to_id,          presence: true
       validates :from_address_id,         uniqueness: true, allow_nil: true
@@ -102,6 +100,9 @@ module Refinery
         end
         self.assigned_to ||= created_by
       end
+
+      scope :shipped, -> { where(status: STATUSES - %w(not_shipped)) }
+      scope :recent, -> (no_of_records = 10, days_ago = 90) { where('shipping_date > ?', Date.today - days_ago).order(shipping_date: :desc).limit(no_of_records) }
 
       def assign_to
         @to ||= assigned_to.try(:full_name)

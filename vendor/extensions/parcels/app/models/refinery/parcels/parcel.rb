@@ -18,6 +18,7 @@ module Refinery
       validates :received_by_id,  presence: true
       validates :assigned_to_id,  presence: true
 
+      scope :recent, -> (no_of_records = 10, days_ago = 90) { where('parcel_date > ?', Date.today - days_ago).order(parcel_date: :desc).limit(no_of_records) }
       scope :unsigned, -> { where(receiver_signed: false) }
 
       before_validation do

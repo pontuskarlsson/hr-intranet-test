@@ -25,6 +25,7 @@ PATH
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing
       refinerycms-page_roles (>= 1.0)
+      refinerycms-parcels
       trans_forms
     refinerycms-calendar (2.1.0)
       google_calendar (~> 0.4)

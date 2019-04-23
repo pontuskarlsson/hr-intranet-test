@@ -8,7 +8,7 @@ module Refinery
       def create
         @list_row_creator = ListRowCreator.new({ custom_list: @custom_list }.reverse_merge(params[:list_row_creator]))
         @list_row_creator.save
-        redirect_to "/#{ @page.url[:path].join('/') }"
+        redirect_to_page
       end
 
       def edit
@@ -18,11 +18,11 @@ module Refinery
       def update
         @list_row_updater = ListRowUpdater.new({ list_row: @list_row }.reverse_merge(params[:list_row_updater]))
         @list_row_updater.save
-        redirect_to "#{refinery.root_path}#{@page.url[:path].join('/')}"
+        redirect_to_page
       end
 
       def destroy
-
+        redirect_to_page
       end
 
     protected
@@ -39,6 +39,10 @@ module Refinery
         error_404 unless @page.user_authorized?(current_authentication_devise_user)
       rescue ::ActiveRecord::RecordNotFound
         error_404
+      end
+
+      def redirect_to_page
+        redirect_to "#{refinery.root_path}#{@page.url[:path].join('/')}", status: :see_other
       end
 
     end

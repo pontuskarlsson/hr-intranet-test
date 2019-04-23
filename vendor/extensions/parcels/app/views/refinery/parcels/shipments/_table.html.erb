@@ -1,0 +1,27 @@
+<table class="display" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th>&nbsp;</th>
+    <th>From</th>
+    <th>To</th>
+    <th>Courier</th>
+    <th>Tracking No.</th>
+    <th>Status</th>
+    <th>Shipping Date</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% shipments.each do |shipment| %>
+    <tr>
+      <td><%= link_to 'View', refinery.parcels_shipment_path(shipment) %></td>
+      <td><%= shipment.from_address_name %></td>
+      <td><%= shipment.to_address_name %></td>
+      <td><%= shipment.courier %></td>
+      <td><%= shipment.tracking_number %></td>
+      <td><%= shipment.display_status %></td>
+      <td><%= shipment.shipping_date %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

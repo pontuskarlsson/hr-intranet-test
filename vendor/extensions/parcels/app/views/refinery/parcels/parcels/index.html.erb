@@ -17,90 +17,9 @@
   <% end %>
 
   <section>
-    <table class="display js_parcels_data_table" cellspacing="0" style="width: 100%;">
-      <thead>
-      <tr>
-        <th>Parcel Date</th>
-        <th>From</th>
-        <th>Courier</th>
-        <th>Air Waybill No</th>
-        <th>Addressed To</th>
-        <th>Given To</th>
-        <th>Description</th>
-        <th>Status</th>
-      </tr>
-      </thead>
-
-      <tfoot>
-      <tr>
-        <th>Parcel Date</th>
-        <th>From</th>
-        <th>Courier</th>
-        <th>Air Waybill No</th>
-        <th>Addressed To</th>
-        <th>Given To</th>
-        <th>Description</th>
-        <th>Status</th>
-      </tr>
-      </tfoot>
-
-      <tbody>
-      <% @parcels.each do |parcel| %>
-        <tr>
-          <td><%= parcel.parcel_date %></td>
-          <td><%= parcel.from_name %></td>
-          <td><%= parcel.courier %></td>
-          <td><%= parcel.air_waybill_no %></td>
-          <td><%= parcel.to_name %></td>
-          <td><%= parcel.assigned_to.try(:username) %></td>
-          <td><%= parcel.description %></td>
-          <td>&nbsp;</td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
+    <%= render 'table', parcels: @parcels %>
   </section>
 
-<% end %>
-
-<% content_for :stylesheets do %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
-<% end %>
-
-<% content_for :javascripts do %>
-
-  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
-  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
-
-  <script type="text/javascript">
-    $(function(){
-      $('.js_parcels_data_table').dataTable({
-        "scrollY":        "600px",
-        "scrollCollapse": true,
-        "paging":         false,
-        "order":          [[ 0, "desc" ]],
-        "data":           <%= @parcels.to_json(methods: [:given_to]).html_safe %>,
-        "columns": [
-          { data: "parcel_date", "render": function(data, type, row){ return ('<a href="<%= refinery.parcels_parcel_path('%%parcel_id%%') %>">'+data+'</a>').replace('%%parcel_id%%', row.id); } },
-          { data: "from_name" },
-          { data: "courier" },
-          { data: "air_waybill_no" },
-          { data: "to_name" },
-          { data: "given_to" },
-          { data: "description" },
-          { data: "receiver_signed", "render": function(data, type, row) {
-            if(data){
-              return 'Signed';
-            }else if(row.received_by_id == <%= current_authentication_devise_user.id %> || row.assigned_to_id == <%= current_authentication_devise_user.id %>){
-              return ('<a href="<%= refinery.sign_parcels_parcel_path('%%parcel_id%%') %>" data-remote="true">Sign</a> or <a href="<%= refinery.pass_on_parcels_parcel_path('%%parcel_id%%') %>" data-remote="true">Give to</a>').replace(/%%parcel_id%%/g, row.id);
-            }else{
-              return 'Not signed';
-            }
-          } }
-        ]
-      });
-    });
-  </script>
 <% end %>
 
 <%= render '/refinery/content_page' %>

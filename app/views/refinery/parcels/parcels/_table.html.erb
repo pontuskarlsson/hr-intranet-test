@@ -1,60 +1,38 @@
-<% content_for :body do %>
-  <h4>Add Parcel</h4>
+<table class="display js_parcels_data_table" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th style="width: 7%;">&nbsp;</th>
+    <th>Parcel Date</th>
+    <th>From</th>
+    <th>Courier</th>
+    <th>Air Waybill No</th>
+    <th>Addressed To</th>
+    <th>Given To</th>
+    <th>Description</th>
+    <th>Status</th>
+  </tr>
+  </thead>
 
-  <section class="add_parcels">
-    <%= render 'quick_form', parcel: @parcel %>
-  </section>
+  <tfoot>
+  <tr>
+    <th>&nbsp;</th>
+    <th>Parcel Date</th>
+    <th>From</th>
+    <th>Courier</th>
+    <th>Air Waybill No</th>
+    <th>Addressed To</th>
+    <th>Given To</th>
+    <th>Description</th>
+    <th>Status</th>
+  </tr>
+  </tfoot>
 
-  <% if @my_unsigned_parcels.any? %>
-    <h4>You need to sign the following Parcels</h4>
-    <%= render 'sign_parcel_list', parcels: @my_unsigned_parcels, allow_sign: true %>
-  <% end %>
-
-  <% if params[:view_all] == '1' %>
-    <p>Currently showing all parcels. <%= link_to 'View only recent', refinery.parcels_parcels_path %>.</p>
-  <% else %>
-    <p>Currently showing recent parcels. <%= link_to 'View all', refinery.parcels_parcels_path(view_all: '1') %>.</p>
-  <% end %>
-
-  <section>
-    <table class="display js_parcels_data_table" cellspacing="0" style="width: 100%;">
-      <thead>
-      <tr>
-        <th style="width: 7%;">&nbsp;</th>
-        <th>Parcel Date</th>
-        <th>From</th>
-        <th>Courier</th>
-        <th>Air Waybill No</th>
-        <th>Addressed To</th>
-        <th>Given To</th>
-        <th>Description</th>
-        <th>Status</th>
-      </tr>
-      </thead>
-
-      <tfoot>
-      <tr>
-        <th>&nbsp;</th>
-        <th>Parcel Date</th>
-        <th>From</th>
-        <th>Courier</th>
-        <th>Air Waybill No</th>
-        <th>Addressed To</th>
-        <th>Given To</th>
-        <th>Description</th>
-        <th>Status</th>
-      </tr>
-      </tfoot>
-
-      <tbody>
-      <tr>
-        <td colspan="8">Loading, please wait...</td>
-      </tr>
-      </tbody>
-    </table>
-  </section>
-
-<% end %>
+  <tbody>
+  <tr>
+    <td colspan="8">Loading, please wait...</td>
+  </tr>
+  </tbody>
+</table>
 
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
@@ -75,7 +53,7 @@
         "scrollCollapse": true,
         "paging":         false,
         "order":          [[ 1, "desc" ]],
-        "data":           <%= @parcels.to_json(methods: [:given_to]).html_safe %>,
+        "data":           <%= parcels.to_json(methods: [:given_to]).html_safe %>,
         "columns": [
           { data: "id",           "render": { "display": dataTable.columns.id }, width: '7%' },
           { data: "parcel_date" },
@@ -99,5 +77,3 @@
     });
   </script>
 <% end %>
-
-<%= render '/refinery/content_page' %>
