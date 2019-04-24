@@ -11,7 +11,10 @@
     <% end %>
 
     <div class="cell medium-6">
-      <h5>Users</h5>
+      <h5>
+        <i class="fa fa-user"></i>
+        Users
+      </h5>
       <% if @company.users.any? %>
         <% @company.users.each do |user| %>
           <p>
@@ -31,142 +34,38 @@
     </div>
   <% end %>
 
-  <% if (parcels = @company.parcels.recent).any? %>
+  <% if @company.parcels.recent.any? or @company.to_shipments.shipped.recent.any? %>
     <div class="cell medium-6">
-      <div class="card">
+      <div class="card portal-card">
         <div class="card-divider">
-          <h4>Recent parcels received by Happy Rabbit</h4>
+          <h5>
+            <i class="fa fa-truck"></i>
+            Parcels / Shipments
+          </h5>
         </div>
 
         <div class="card-section">
-          <table class="display" cellspacing="0" style="width: 100%;">
-            <thead>
-            <tr>
-              <th>Parcel Date</th>
-              <th>Courier</th>
-              <th>Air Waybill No</th>
-              <th>Given To</th>
-              <th>Description</th>
-            </tr>
-            </thead>
+          <p><%= @company.parcels.recent.count %> incoming parcels recently received by Happy Rabbit.</p>
+          <p><%= @company.to_shipments.shipped.recent.count %> outgoing shipments recently sent out by Happy Rabbit.</p>
+        </div>
 
-            <tfoot>
-            <tr>
-              <th>Parcel Date</th>
-              <th>Courier</th>
-              <th>Air Waybill No</th>
-              <th>Given To</th>
-              <th>Description</th>
-            </tr>
-            </tfoot>
-
-            <tbody>
-            <% parcels.each do |parcel| %>
-              <tr>
-                <td><%= parcel.parcel_date %></td>
-                <td><%= parcel.courier %></td>
-                <td><%= parcel.air_waybill_no %></td>
-                <td><%= parcel.assigned_to.try(:full_name) %></td>
-                <td><%= parcel.description %></td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
+        <div class="card-footer">
+          <%= link_to 'See more', refinery.shipments_business_company_path(@company) %>
         </div>
       </div>
     </div>
   <% end %>
 
-  <% if (shipments = @company.to_shipments.shipped.recent).any? %>
-    <div class="cell medium-6">
-      <div class="card">
-        <div class="card-divider">
-          <h4>Recent shipments sent by Happy Rabbit</h4>
-        </div>
-
-        <div class="card-section">
-          <table class="display" cellspacing="0" style="width: 100%;">
-            <thead>
-            <tr>
-              <th>From</th>
-              <th>Date</th>
-              <th>Courier</th>
-              <th>Tracking No.</th>
-              <th>Status</th>
-              <th>Description</th>
-            </tr>
-            </thead>
-
-            <tfoot>
-            <tr>
-              <th>From</th>
-              <th>Date</th>
-              <th>Courier</th>
-              <th>Tracking No.</th>
-              <th>Status</th>
-              <th>Description</th>
-            </tr>
-            </tfoot>
-
-            <tbody>
-            <% shipments.each do |shipment| %>
-              <tr>
-                <td><%= shipment.from_contact_name %></td>
-                <td><%= shipment.shipping_date %></td>
-                <td><%= shipment.courier %></td>
-                <td><%= shipment.tracking_number %></td>
-                <td><%= shipment.status %></td>
-                <td><%= shipment.description %></td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+  <% if @company.projects.any? %>
+    <%= render 'projects_list', projects: @company.projects %>
   <% end %>
-
-  <div class="cell medium-6">
-    <div class="card">
-      <div class="card-divider">
-        <h4>Projects</h4>
-      </div>
-
-      <div class="card-section">
-        <table>
-          <thead>
-          <tr>
-            <th></th>
-            <th>Project Code</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% @company.projects.each do |project| %>
-            <tr>
-              <td>
-                <%= link_to refinery.business_project_path(project) do %>
-                  <i class="fa fa-arrow-right"></i>
-                <% end %>
-              </td>
-              <td><%= project.code %></td>
-              <td><%= project.description %></td>
-              <td><%= project.start_date %></td>
-              <td><%= project.end_date %></td>
-              <td><%= project.status %></td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 
   <% if @company.inspections.any? %>
-    <%= render 'inspections_summary', inspections: @company.inspections %>
+    <%= render 'inspections_summary', inspections: @company.inspections.recent(10) %>
+  <% end %>
+
+  <% if @company.inspections.recent(10).any? %>
+    <%= render 'inspections', inspections: @company.inspections.recent(10) %>
   <% end %>
 </div>
 

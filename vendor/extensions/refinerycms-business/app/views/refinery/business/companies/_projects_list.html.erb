@@ -1,0 +1,38 @@
+<div class="cell medium-6">
+  <div class="card portal-card">
+    <div class="card-divider">
+      <h5>Projects</h5>
+    </div>
+
+    <div class="card-section">
+      <table>
+        <thead>
+        <tr>
+          <th></th>
+          <th>Project Code</th>
+          <th>Description</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% projects.each do |project| %>
+          <tr>
+            <td>
+              <%= link_to refinery.business_project_path(project) do %>
+                <i class="fa fa-arrow-right"></i>
+              <% end %>
+            </td>
+            <td><%= project.code %></td>
+            <td><%= project.description %></td>
+            <td><%= project.start_date %></td>
+            <td><%= project.end_date %></td>
+            <td><%= project.status %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

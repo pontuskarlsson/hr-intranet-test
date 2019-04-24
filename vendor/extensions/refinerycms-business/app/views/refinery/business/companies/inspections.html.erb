@@ -1,0 +1,53 @@
+<div class="grid-x grid-padding-x">
+  <div class="cell">
+    <h2>
+      <%= link_to @company.label, refinery.business_company_path(@company) %><br />
+      Inspections
+    </h2>
+  </div>
+
+  <div class="cell">
+    <h4>All inspections</h4>
+
+    <table>
+      <thead>
+      <tr>
+        <th></th>
+        <th>Inspected</th>
+        <th>Type</th>
+        <th>Result</th>
+        <th>PO</th>
+        <th>Style</th>
+      </tr>
+      </thead>
+
+      <tfoot>
+      <tr>
+        <th></th>
+        <th>Inspected</th>
+        <th>Type</th>
+        <th>Result</th>
+        <th>PO</th>
+        <th>Style</th>
+      </tr>
+      </tfoot>
+
+      <tbody>
+      <% @company.inspections.order(inspection_date: :desc).each do |inspection| %>
+        <tr>
+          <td>
+            <%= link_to refinery.quality_assurance_inspection_path(inspection) do %>
+              <i class="fa fa-arrow-right"></i>
+            <% end %>
+          </td>
+          <td><%= time_ago_in_words inspection.inspection_date %> ago</td>
+          <td><%= inspection.inspection_type %></td>
+          <td style="color: <%= inspection.result == 'Pass' ? 'green' : inspection.result == 'Reject' ? 'red' : 'black' %>"><%= inspection.result %></td>
+          <td><%= inspection.po_number %></td>
+          <td><%= inspection.product_label %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

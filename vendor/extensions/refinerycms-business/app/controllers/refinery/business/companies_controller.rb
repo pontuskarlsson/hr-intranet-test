@@ -3,7 +3,7 @@ module Refinery
     class CompaniesController < ::ApplicationController
       include Refinery::PageRoles::AuthController
 
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :show, :inspections, :shipments]
       allow_page_roles ROLE_INTERNAL
 
       before_filter :find_companies, only: [:index]
@@ -24,6 +24,18 @@ module Refinery
       end
 
       def show
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @company in the line below:
+        present(@page)
+      end
+
+      def inspections
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @company in the line below:
+        present(@page)
+      end
+
+      def shipments
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @company in the line below:
         present(@page)

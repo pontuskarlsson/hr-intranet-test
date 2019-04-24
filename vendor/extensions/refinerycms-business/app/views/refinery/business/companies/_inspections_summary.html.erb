@@ -1,38 +1,48 @@
 <div class="cell medium-6">
 
-  <div class="card">
+  <div class="card portal-card">
     <div class="card-divider">
-      <h4>Top Defects</h4>
+      <h5>
+        <i class="fa fa-exclamation-triangle"></i>
+        Top Defects
+      </h5>
     </div>
 
     <div class="card-section">
       <%= pie_chart inspections.top_defects %>
     </div>
+
+    <div class="card-footer">
+      <%= link_to 'See more', refinery.inspections_business_company_path(@company) %>
+    </div>
   </div>
 </div>
 
 <div class="cell medium-6">
-  <div class="card">
+  <div class="card portal-card">
     <div class="card-divider">
-      <h4>Pass rate</h4>
+      <h5>
+        <i class="fa fa-check-circle"></i>
+        Pass rate
+      </h5>
     </div>
 
     <div class="card-section">
       <div class="grid-x grid-padding-x">
         <div class="cell medium-6">
-          <h5>By Qty</h5>
+          <h6>By Qty</h6>
           <%= pie_chart inspections.pass_rate_qty %>
         </div>
 
         <div class="cell medium-6">
-          <h5>By no. of inspections</h5>
+          <h6>By no. of inspections</h6>
           <%= pie_chart inspections.pass_rate_inspections %>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="cell medium-6">
-  <%= render 'inspections', inspections: @company.inspections.recent(10) %>
+    <div class="card-footer">
+      <%= link_to 'See more', refinery.inspections_business_company_path(@company) %>
+    </div>
+  </div>
 </div>
