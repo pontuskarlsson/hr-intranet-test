@@ -11,6 +11,8 @@ class HooksController < ApplicationController
       parse_qc
     elsif @webhook == 'wip'
       parse_wip
+    elsif @webhook == 'topo'
+      parse_topo
     end
 
     render text: 'success', status: :ok
@@ -33,6 +35,14 @@ class HooksController < ApplicationController
     elsif params[:webhook_key] == ENV['WEBHOOK_WIP_KEY']
       @webhook = 'wip'
 
+    elsif params[:webhook_key] == 'topo'
+      valid_auth = "Basic #{ENV['WEBHOOK_TOPO_TOKEN']}"
+      if headers['Authorization'] == valid_auth
+        @webhook = 'topo'
+      else
+        render text: 'access denied', status: '401'
+      end
+
     else
       render nothing: true, status: :not_found
     end
@@ -40,6 +50,10 @@ class HooksController < ApplicationController
 
   def payload_params
     params.to_unsafe_hash.except('controller', 'action', 'webhook_key')
+  end
+
+  def parse_topo
+    ErrorMailer.webhook_notification_email(['Topo webhook received'], params).deliver
   end
 
   def parse_qc
