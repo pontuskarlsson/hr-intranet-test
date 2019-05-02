@@ -36,16 +36,27 @@ class HooksController < ApplicationController
       @webhook = 'wip'
 
     elsif params[:webhook_key] == 'topo'
-      valid_auth = "Basic #{ENV['WEBHOOK_TOPO_TOKEN']}"
-      if headers['Authorization'] == valid_auth
-        @webhook = 'topo'
-      else
-        render text: 'access denied', status: '401'
-      end
+      @webhook = 'topo'
+      authenticate
 
     else
       render nothing: true, status: :not_found
     end
+  end
+
+  def authenticate
+    authenticate_token || render_unauthorized
+  end
+
+  def authenticate_token
+    authenticate_with_http_basic do |user, pass|
+      user == 'topo' && pass == ENV['WEBHOOK_TOPO_PASS']
+    end
+  end
+
+  def render_unauthorized
+    headers['WWW-Authenticate'] = 'Basic realm="Happy Rabbit Portal Webhook"'
+    render nothing: true, status: 401
   end
 
   def payload_params
