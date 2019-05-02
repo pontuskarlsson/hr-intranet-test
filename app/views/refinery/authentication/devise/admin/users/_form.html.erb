@@ -1,4 +1,4 @@
-<%= form_for [refinery, :admin, @user] do |f| %>
+<%= form_for [refinery, :authentication, :devise, :admin, @user] do |f| %>
 
   <%= render '/refinery/admin/error_messages',
              :object => @user,
@@ -33,15 +33,6 @@
     <%= f.check_box :password_has_expired %>
   </div>
 
-  <h2>User Settings</h2>
-  <%- user_setting = @user.user_settings.detect { |us| us.identifier == 'leave_notification' } || @user.user_settings.build(identifier: 'leave_notification', content: { 'receive_for' => 'all' }) -%>
-  <%= f.fields_for :user_settings, user_setting, child_index: '0' do |us_form| %>
-    <%= us_form.hidden_field :identifier %>
-
-    <%= render 'user_settings_leave_notification', f: us_form, user_setting: user_setting, user: @user %>
-
-  <% end %>
-
   <div class='field plugin_access'>
     <span class='label_with_help'>
       <%= f.label :plugin_access, t('.plugin_access'), :class => "title_label" %>
@@ -68,7 +59,7 @@
     </ul>
   </div>
 
-  <% if current_authentication_devise_user.has_role?(:superuser) && Refinery::Authentication.superuser_can_assign_roles %>
+  <% if current_authentication_devise_user.has_role?(:superuser) && Refinery::Authentication::Devise.superuser_can_assign_roles %>
     <div class='field role_access'>
       <span class='label_with_help'>
         <%= f.label :role_access, t('.role_access'), :class => "title_label" %>
@@ -80,7 +71,7 @@
             <%= check_box_tag 'user[roles][]', downcased_title, @user.has_role?(title),
                               :id => "roles_#{downcased_title}" %>
             <%= f.label 'user[roles][]',
-                        t(downcased_title, :scope => 'refinery.roles', :default => title),
+                        t(downcased_title, :scope => 'refinery.authentication.devise.roles', :default => title),
                         :class => 'stripped',
                         :for => "roles_#{downcased_title}" %>
           </li>
@@ -92,8 +83,8 @@
   <%= render '/refinery/admin/form_actions', :f => f,
              :continue_editing => false,
              :hide_delete => !current_authentication_devise_user.can_delete?(@user),
-             :delete_title => t('delete', :scope => 'refinery.admin.users'),
-             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @user.username) %>
+             :delete_title => t('delete', :scope => 'refinery.authentication.devise.admin.users'),
+             :delete_confirmation => t('message', :scope => 'refinery.authentication.devise.admin.delete', :title => @user.username) %>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -105,6 +96,4 @@
       });
     });
   </script>
-
-  <%= javascript_include_tag 'refinery/profile_image_added' %>
 <% end %>
