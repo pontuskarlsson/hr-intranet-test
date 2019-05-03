@@ -1,3 +1,5 @@
+require "#{Rails.root}/lib/airtable_remittances"
+
 namespace :hr_intranet do
   namespace :xero do
 
@@ -46,6 +48,8 @@ namespace :hr_intranet do
     task set_logger: :environment do
       if Rails.env.development?
         Rails.logger = Logger.new(STDOUT)
+      else
+        Rails.logger = "#{Rails.root}/log/xero.log"
       end
     end
 
