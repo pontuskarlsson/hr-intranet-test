@@ -15,8 +15,6 @@ namespace :hr_intranet do
     task set_logger: :environment do
       if Rails.env.development?
         Rails.logger = Logger.new(STDOUT)
-      else
-        Rails.logger = Logger.new("#{Rails.root}/log/insightly.log")
       end
     end
 

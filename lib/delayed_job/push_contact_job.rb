@@ -22,7 +22,7 @@ class PushContactJob < Struct.new(:contact_id, :changes)
         if Rails.env.development?
           Rails.logger = Logger.new(STDOUT)
         else
-          Rails.logger = Logger.new("#{Rails.root}/log/delayed_job.log")
+          Rails.logger
         end
   end
 
