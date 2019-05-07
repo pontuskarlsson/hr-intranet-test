@@ -21,6 +21,12 @@ namespace :hr_intranet do
 
           syncer = Refinery::Business::Xero::Syncer.new account
           syncer.sync_invoices invoices
+
+          contacts = invoices.each_with_object({}) { |invoice, acc|
+            acc[invoice.attributes[:contact].contact_id] ||= invoice.contact
+          }.values
+
+          syncer.sync_contacts contacts
         end
 
       rescue StandardError => e
@@ -32,13 +38,15 @@ namespace :hr_intranet do
       begin
         Refinery::Business::Account.find_each do |account|
           xero_client = Refinery::Business::Xero::Client.new(account)
-          params = { order: 'UpdatedDateUTC' }
+          syncer = Refinery::Business::Xero::Syncer.new account
 
+          params = { order: 'UpdatedDateUTC' }
           invoices = xero_client.client.Invoice.all(params)
           Rails.logger.info "Found #{invoices.length} Invoices in Xero"
-
-          syncer = Refinery::Business::Xero::Syncer.new account
           syncer.sync_invoices invoices
+
+          contacts = xero_client.client.Contact.all(where: { account_number_is_not: nil })
+          syncer.sync_contacts contacts
         end
 
       rescue StandardError => e

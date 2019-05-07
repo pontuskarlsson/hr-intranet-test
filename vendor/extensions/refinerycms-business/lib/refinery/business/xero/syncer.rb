@@ -28,17 +28,15 @@ module Refinery
         def sync_invoices(xero_invoices)
           xero_invoices.each do |xero_invoice|
             sync_invoice xero_invoice
-
-            # Calling the getter +contact+ will make another API call to load additional
-            # contact data, but using attributes[:contact] will not do that.
-            #
-            sync_contact xero_invoice.attributes[:contact]
           end
         end
 
         def sync_invoice(xero_invoice)
           invoice = account.invoices.find_or_initialize_by(invoice_id: xero_invoice.invoice_id)
 
+          # Calling the getter +contact+ will make another API call to load additional
+          # contact data, but using attributes[:contact] will not do that.
+          #
           invoice.contact_id = xero_invoice.attributes[:contact].contact_id
 
           invoice.attributes = SYNC_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
@@ -46,6 +44,12 @@ module Refinery
           }
 
           invoice.save!
+        end
+
+        def sync_contacts(xero_contacts)
+          xero_contacts.each do |xero_contact|
+            sync_contact xero_contact
+          end
         end
 
         def sync_contact(xero_contact)
