@@ -12,10 +12,10 @@ module Refinery
         synchroniser.push contact, changes
 
         if synchroniser.error
-          ErrorMailer.new(synchroniser.error).deliver
+          ErrorMailer.error_email(synchroniser.error).deliver
         end
       rescue StandardError => e
-        ErrorMailer.new(e).deliver
+        ErrorMailer.error_email(e).deliver
       end
       handle_asynchronously :push_changes_to_insightly
 
