@@ -81,7 +81,6 @@ module Refinery
         end
 
         def push(contact, changes)
-          binding.pry
           return unless Insightly.configuration.updates_allowed
 
           begin
