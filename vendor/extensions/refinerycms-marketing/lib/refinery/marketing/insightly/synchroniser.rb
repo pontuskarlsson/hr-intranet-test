@@ -81,6 +81,7 @@ module Refinery
         end
 
         def push(contact, changes)
+          binding.pry
           return unless Insightly.configuration.updates_allowed
 
           begin
@@ -95,8 +96,6 @@ module Refinery
         end
 
         def pull_all
-          return nil
-
           begin
             Refinery::Marketing::Contact.transaction do
               # Loops through all contacts from Base and updates the ones already
@@ -269,12 +268,14 @@ module Refinery
             end
           }
 
-          if contact.insightly_id
-            client.put('Organisations', params.merge(organisation_id: contact.insightly_id))
-          else
-            res = client.post('Organisations', params)
-            contact.insightly_id = res['ORGANISATION_ID']
-            contact.save!
+          if params.any?
+            if contact.insightly_id
+              client.put('Organisations', params.merge(organisation_id: contact.insightly_id))
+            else
+              res = client.post('Organisations', params)
+              contact.insightly_id = res['ORGANISATION_ID']
+              contact.save!
+            end
           end
 
           custom_fields.each do |custom_field_params|

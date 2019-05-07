@@ -50,7 +50,7 @@ namespace :hr_intranet do
       if Rails.env.development?
         Rails.logger = Logger.new(STDOUT)
       else
-        Rails.logger = "#{Rails.root}/log/xero.log"
+        Rails.logger = Logger.new("#{Rails.root}/log/xero.log")
       end
     end
 
