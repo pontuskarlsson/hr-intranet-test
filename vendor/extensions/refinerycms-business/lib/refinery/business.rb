@@ -5,6 +5,8 @@ module Refinery
 
   module Business
     require 'refinery/business/engine'
+    require 'refinery/business/xero/client'
+    require 'refinery/business/xero/syncer'
 
     ROLE_EXTERNAL = 'Business:External'
     ROLE_INTERNAL = 'Business:Internal'

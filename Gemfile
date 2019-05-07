@@ -22,9 +22,6 @@ gem 'daemons'
 gem 'delayed_job_active_record', '4.1.3'
 gem 'delayed_job', '4.1.5'
 
-# Workaround for strange missing dependency behaviour
-#gem 'eventmachine', '1.0.9.1' # Not needed anymore????
-
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 

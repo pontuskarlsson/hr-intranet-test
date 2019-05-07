@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190416014325) do
+ActiveRecord::Schema.define(version: 20190506081501) do
 
   create_table "amqp_messages", force: :cascade do |t|
     t.string   "queue",       limit: 255,   null: false
@@ -199,6 +199,20 @@ ActiveRecord::Schema.define(version: 20190416014325) do
     t.datetime "updated_at",                null: false
   end
 
+  create_table "refinery_business_accounts", force: :cascade do |t|
+    t.string   "organisation",    limit: 255
+    t.text     "key_content",     limit: 65535
+    t.string   "consumer_key",    limit: 255
+    t.string   "consumer_secret", limit: 255
+    t.string   "encryption_key",  limit: 255
+    t.integer  "position",        limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_accounts", ["organisation"], name: "index_refinery_business_accounts_on_organisation", using: :btree
+  add_index "refinery_business_accounts", ["position"], name: "index_refinery_business_accounts_on_position", using: :btree
+
   create_table "refinery_business_budget_items", force: :cascade do |t|
     t.integer  "budget_id",      limit: 4
     t.string   "description",    limit: 255
@@ -267,6 +281,39 @@ ActiveRecord::Schema.define(version: 20190416014325) do
   add_index "refinery_business_company_users", ["position"], name: "index_refinery_business_company_users_on_position", using: :btree
   add_index "refinery_business_company_users", ["role"], name: "index_refinery_business_company_users_on_role", using: :btree
   add_index "refinery_business_company_users", ["user_id"], name: "index_refinery_business_company_users_on_user_id", using: :btree
+
+  create_table "refinery_business_invoices", force: :cascade do |t|
+    t.integer  "account_id",       limit: 4
+    t.string   "invoice_id",       limit: 255
+    t.string   "contact_id",       limit: 255
+    t.string   "invoice_number",   limit: 255
+    t.string   "invoice_type",     limit: 255
+    t.string   "reference",        limit: 255
+    t.string   "invoice_url",      limit: 255
+    t.date     "invoice_date"
+    t.date     "due_date"
+    t.string   "status",           limit: 255
+    t.decimal  "total_amount",                 precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_due",                   precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_paid",                  precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_credited",              precision: 8,  scale: 2, default: 0.0
+    t.string   "currency_code",    limit: 255
+    t.decimal  "currency_rate",                precision: 12, scale: 6, default: 1.0
+    t.datetime "updated_date_utc"
+    t.integer  "position",         limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_invoices", ["account_id"], name: "index_refinery_business_invoices_on_account_id", using: :btree
+  add_index "refinery_business_invoices", ["contact_id"], name: "index_refinery_business_invoices_on_contact_id", using: :btree
+  add_index "refinery_business_invoices", ["invoice_date"], name: "index_refinery_business_invoices_on_invoice_date", using: :btree
+  add_index "refinery_business_invoices", ["invoice_id"], name: "index_refinery_business_invoices_on_invoice_id", using: :btree
+  add_index "refinery_business_invoices", ["invoice_number"], name: "index_refinery_business_invoices_on_invoice_number", using: :btree
+  add_index "refinery_business_invoices", ["invoice_type"], name: "index_refinery_business_invoices_on_invoice_type", using: :btree
+  add_index "refinery_business_invoices", ["position"], name: "index_refinery_business_invoices_on_position", using: :btree
+  add_index "refinery_business_invoices", ["status"], name: "index_refinery_business_invoices_on_status", using: :btree
+  add_index "refinery_business_invoices", ["total_amount"], name: "index_refinery_business_invoices_on_total_amount", using: :btree
 
   create_table "refinery_business_number_series", force: :cascade do |t|
     t.string   "identifier",   limit: 255
@@ -511,6 +558,9 @@ ActiveRecord::Schema.define(version: 20190416014325) do
     t.string   "courier_account_no",   limit: 255
     t.string   "image_url",            limit: 255
     t.string   "code",                 limit: 255
+    t.string   "xero_hr_id",           limit: 255
+    t.string   "xero_hrt_id",          limit: 255
+    t.string   "mailchimp_id",         limit: 255
   end
 
   add_index "refinery_contacts", ["base_id"], name: "index_refinery_contacts_on_base_id", using: :btree
@@ -518,10 +568,13 @@ ActiveRecord::Schema.define(version: 20190416014325) do
   add_index "refinery_contacts", ["code"], name: "index_refinery_contacts_on_code", using: :btree
   add_index "refinery_contacts", ["courier_company"], name: "index_refinery_contacts_on_courier_company", using: :btree
   add_index "refinery_contacts", ["insightly_id"], name: "index_refinery_contacts_on_insightly_id", using: :btree
+  add_index "refinery_contacts", ["mailchimp_id"], name: "index_refinery_contacts_on_mailchimp_id", using: :btree
   add_index "refinery_contacts", ["organisation_id"], name: "index_refinery_contacts_on_organisation_id", using: :btree
   add_index "refinery_contacts", ["removed_from_base"], name: "index_refinery_contacts_on_removed_from_base", using: :btree
   add_index "refinery_contacts", ["state"], name: "index_refinery_contacts_on_state", using: :btree
   add_index "refinery_contacts", ["user_id"], name: "index_refinery_contacts_on_user_id", using: :btree
+  add_index "refinery_contacts", ["xero_hr_id"], name: "index_refinery_contacts_on_xero_hr_id", using: :btree
+  add_index "refinery_contacts", ["xero_hrt_id"], name: "index_refinery_contacts_on_xero_hrt_id", using: :btree
 
   create_table "refinery_custom_lists_custom_lists", force: :cascade do |t|
     t.string   "title",      limit: 255

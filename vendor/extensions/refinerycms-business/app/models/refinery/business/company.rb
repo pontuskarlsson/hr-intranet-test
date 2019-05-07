@@ -13,8 +13,8 @@ module Refinery
       has_many :users,          through: :company_users
 
       validates :name,          presence: true, uniqueness: true
-      validates :code,          uniqueness: true, allow_blank: true
-      validates :contact_id,    uniqueness: true, allow_blank: true
+      validates :code,          presence: true, uniqueness: true
+      validates :contact_id,    presence: true, uniqueness: true
 
       before_validation do
         if code.blank?
@@ -23,8 +23,24 @@ module Refinery
 
         if contact_label.present?
           self.contact = Refinery::Marketing::Contact.organisations.find_by_name(contact_label)
-        elsif new_record? && contact_id.nil? && name.present?
-          self.contact = Refinery::Marketing::Contact.organisations.without_code.find_by_name(name)
+        elsif contact_id.nil? && name.present?
+          self.contact = Refinery::Marketing::Contact.organisations.where(name: name).first_or_create!(code: code)
+        end
+      end
+
+      # +after_save+ callback to handle propagation of +code+ to Contact. It
+      # handles removing the code from any contact that has the same code
+      # but is not assigned as the contact for this Company.
+      #
+      # It also handles assigning the code to the linked contact.
+      #
+      after_save do
+        Refinery::Marketing::Contact.where(code: code).where.not(id: contact_id).each do |c|
+          c.update_attributes code: nil
+        end
+
+        if contact && contact.code != code
+          contact.update_attributes code: code
         end
       end
 

@@ -8,25 +8,6 @@ namespace :refinery do
     #   # add your logic here
     # end
 
-
-    namespace :base do
-
-      desc 'Synchronise Contacts with Base'
-      task :synchronise => :environment do
-        Refinery::Marketing::BaseSynchroniser.new.synchronise
-      end
-
-    end
-
-    namespace :insightly do
-
-      desc 'Synchronise Contacts with Insightly'
-      task :synchronise => :environment do
-        Refinery::Marketing::InsightlySynchroniser.new.synchronise
-      end
-
-    end
-
   end
 
 end
