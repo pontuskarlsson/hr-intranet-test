@@ -95,6 +95,8 @@ module Refinery
         end
 
         def pull_all
+          return nil
+
           begin
             Refinery::Marketing::Contact.transaction do
               # Loops through all contacts from Base and updates the ones already
