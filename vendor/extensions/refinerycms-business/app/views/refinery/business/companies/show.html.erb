@@ -32,6 +32,12 @@
         <p class="not_present">There are no users with access to this company</p>
       <% end %>
     </div>
+
+    <% if @company.invoices.any? %>
+      <div class="cell">
+        <%= render 'invoices_list', invoices: @company.invoices.includes(:account) %>
+      </div>
+    <% end %>
   <% end %>
 
   <% if @company.parcels.recent.any? or @company.to_shipments.shipped.recent.any? %>

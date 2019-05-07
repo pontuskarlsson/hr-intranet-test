@@ -52,6 +52,15 @@ module Refinery
         find_by_code label.split(' ').first
       end
 
+      def invoices
+        @invoices ||=
+            if contact
+              Invoice.where(contact_id: [contact.xero_hr_id, contact.xero_hrt_id].reject(&:blank?))
+            else
+              Invoice.where('1=0')
+            end
+      end
+
       def label
         PROC_LABEL.call(code, name)
       end

@@ -11,6 +11,10 @@ module Refinery
       validates :invoice_type,  inclusion: %w(ACCREC ACCPAY)
       validates :status,        inclusion: %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
 
+      def display_total
+        "#{total_amount} #{currency_code}"
+      end
+
     end
   end
 end
