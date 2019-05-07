@@ -21,7 +21,7 @@ module Refinery
             # Iterate the total number of records and load them in batches from Insightly
             res.headers['x-total-count'].to_i.times do |i|
               if i % @batch_size == 0
-                @records += @client.params(skip: i, top: @batch_size).get(@resource).map { |r| Refinery::Marketing::Resource.new r }
+                @records += @client.params(skip: i, top: @batch_size).get(@resource).map { |r| Refinery::Marketing::Insightly::Resource.new r }
               end
               block.call @records[i]
             end
