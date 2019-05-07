@@ -80,14 +80,14 @@ module Refinery
           @client = client
         end
 
-        def push(contact)
+        def push(contact, changes)
           return unless Insightly.configuration.updates_allowed
 
           begin
             if contact.is_organisation
-              push_organisation contact
+              push_organisation contact, changes
             else
-              push_contact contact
+              push_contact contact, changes
             end
           rescue StandardError => e
             self.error = error
@@ -249,21 +249,21 @@ module Refinery
           end
         end
 
-        def push_organisation(contact)
+        def push_organisation(contact, changes)
           return unless Insightly.configuration.updates_allowed
 
-          attr = (DEFAULT_ORG_ATTR.values + CUSTOM_ORG_ATTR.values) & contact.changes.keys.map(&:to_sym)
+          attr = (DEFAULT_ORG_ATTR.values + CUSTOM_ORG_ATTR.values) & changes.keys.map(&:to_sym)
           return if attr.empty?
 
           params = DEFAULT_ORG_ATTR.each_with_object({}) { |(remote, local), acc|
-            if contact.changes[local.to_s]
-              acc[remote] = contact.changes[local.to_s][1]
+            if changes[local.to_s]
+              acc[remote] = changes[local.to_s][1]
             end
           }
 
           custom_fields = CUSTOM_ORG_ATTR.each_with_object([]) { |(remote, local), acc|
-            if local && contact.changes[local.to_s]
-              acc << { custom_field_id: remote, field_value: contact.changes[local.to_s][1] }
+            if local && changes[local.to_s]
+              acc << { custom_field_id: remote, field_value: changes[local.to_s][1] }
             end
           }
 
@@ -280,7 +280,7 @@ module Refinery
           end
         end
 
-        def push_contact(contact)
+        def push_contact(contact, changes)
           return unless Insightly.configuration.updates_allowed
 
         end
