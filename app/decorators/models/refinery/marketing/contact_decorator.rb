@@ -3,7 +3,7 @@ module Refinery
     Contact.class_eval do
 
       after_save do
-        push_changes_to_insightly contact_id, changes
+        push_changes_to_insightly id, changes
       end
 
       def push_changes_to_insightly(contact_id, changes)
