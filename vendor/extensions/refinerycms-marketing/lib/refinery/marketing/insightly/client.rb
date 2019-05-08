@@ -5,7 +5,7 @@ module Refinery
     module Insightly
       class Client
 
-        ENDPOINT = 'https://api.insightly.com/v3.1/'
+        ENDPOINT = 'https://api.insight.ly/v2.2/'
 
         def initialize(token = ENV['INSIGHTLY_TOKEN'])
           @headers = { 'Accept' => 'application/json' }

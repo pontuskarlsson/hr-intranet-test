@@ -7,7 +7,7 @@ module Refinery
 
         CONTACT_ATTR = %w(first_name last_name image_url)
 
-        DEFAULT_ORG_ATTR = { organisation_name: :name }.freeze
+        DEFAULT_ORG_ATTR = { 'ORGANISATION_NAME' => :name }.freeze
 
         ## Custom Fields ###
         #
@@ -267,7 +267,8 @@ module Refinery
 
           if params.any?
             if contact.insightly_id
-              client.put('Organisations', params.merge(organisation_id: contact.insightly_id))
+              remote_contact = client.get("Organisations/#{contact.insightly_id}")
+              client.put('Organisations', remote_contact.merge(params))
             else
               res = client.post('Organisations', params)
               contact.insightly_id = res['ORGANISATION_ID']
