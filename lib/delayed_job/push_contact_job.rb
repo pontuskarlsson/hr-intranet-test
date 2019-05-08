@@ -1,6 +1,8 @@
 class PushContactJob < Struct.new(:contact_id, :changes)
 
   def perform
+    return
+
     contact = Refinery::Marketing::Contact.find(contact_id)
     synchroniser = Refinery::Marketing::Insightly::Synchroniser.new
     synchroniser.push contact, changes
