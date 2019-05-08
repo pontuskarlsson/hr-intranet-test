@@ -5,7 +5,8 @@ module Refinery
     module Insightly
       class Synchroniser
 
-        ENDPOINT = 'https://api.insight.ly/v2.2/'
+        #ENDPOINT = 'https://api.insight.ly/v2.2/'
+        ENDPOINT = 'https://api.insightly.com/v3.1/'
 
         CONTACT_ATTR = %w(first_name last_name image_url)
 
