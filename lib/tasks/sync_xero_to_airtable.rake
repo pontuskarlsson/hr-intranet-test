@@ -4,6 +4,8 @@ namespace :hr_intranet do
     API_KEY_ORGANISATION = 'Happy Rabbit Trading Limited'
 
     task sync_updated_invoices: [:set_logger, :environment] do
+      return
+
       begin
         Refinery::Business::Account.find_each do |account|
           xero_client = Refinery::Business::Xero::Client.new(account)
@@ -35,6 +37,8 @@ namespace :hr_intranet do
     end
 
     task sync_all_invoices: [:set_logger, :environment] do
+      return
+
       begin
         Refinery::Business::Account.find_each do |account|
           xero_client = Refinery::Business::Xero::Client.new(account)

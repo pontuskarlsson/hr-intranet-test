@@ -3,6 +3,8 @@ namespace :hr_intranet do
 
     desc 'Synchronise Contacts with Insightly'
     task :synchronise => [:set_logger, :environment] do
+      return
+
       synchroniser = Refinery::Marketing::Insightly::Synchroniser.new
       synchroniser.pull_all
 
