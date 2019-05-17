@@ -32,3 +32,19 @@ Refinery::Resources.configure do |config|
   # config.custom_backend_opts = {}
 
 end
+
+
+Dragonfly::S3DataStore.class_eval do
+  def initialize(opts={})
+    @bucket_name = opts[:bucket_name]
+    @access_key_id = opts[:access_key_id]
+    @secret_access_key = opts[:secret_access_key]
+    @region = opts[:region]
+    @storage_headers = opts[:storage_headers] || {'x-amz-acl' => 'private'}
+    @url_scheme = opts[:url_scheme] || 'http'
+    @url_host = opts[:url_host]
+    @use_iam_profile = opts[:use_iam_profile]
+    @root_path = opts[:root_path]
+    @fog_storage_options = opts[:fog_storage_options] || {}
+  end
+end
