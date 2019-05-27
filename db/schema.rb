@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190506081501) do
+ActiveRecord::Schema.define(version: 20190527064811) do
 
   create_table "amqp_messages", force: :cascade do |t|
     t.string   "queue",       limit: 255,   null: false
@@ -303,15 +303,19 @@ ActiveRecord::Schema.define(version: 20190506081501) do
     t.integer  "position",         limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "company_id",       limit: 4
+    t.integer  "project_id",       limit: 4
   end
 
   add_index "refinery_business_invoices", ["account_id"], name: "index_refinery_business_invoices_on_account_id", using: :btree
+  add_index "refinery_business_invoices", ["company_id"], name: "index_refinery_business_invoices_on_company_id", using: :btree
   add_index "refinery_business_invoices", ["contact_id"], name: "index_refinery_business_invoices_on_contact_id", using: :btree
   add_index "refinery_business_invoices", ["invoice_date"], name: "index_refinery_business_invoices_on_invoice_date", using: :btree
   add_index "refinery_business_invoices", ["invoice_id"], name: "index_refinery_business_invoices_on_invoice_id", using: :btree
   add_index "refinery_business_invoices", ["invoice_number"], name: "index_refinery_business_invoices_on_invoice_number", using: :btree
   add_index "refinery_business_invoices", ["invoice_type"], name: "index_refinery_business_invoices_on_invoice_type", using: :btree
   add_index "refinery_business_invoices", ["position"], name: "index_refinery_business_invoices_on_position", using: :btree
+  add_index "refinery_business_invoices", ["project_id"], name: "index_refinery_business_invoices_on_project_id", using: :btree
   add_index "refinery_business_invoices", ["status"], name: "index_refinery_business_invoices_on_status", using: :btree
   add_index "refinery_business_invoices", ["total_amount"], name: "index_refinery_business_invoices_on_total_amount", using: :btree
 
@@ -694,17 +698,20 @@ ActiveRecord::Schema.define(version: 20190506081501) do
   add_index "refinery_image_translations", ["refinery_image_id"], name: "index_refinery_image_translations_on_refinery_image_id", using: :btree
 
   create_table "refinery_images", force: :cascade do |t|
-    t.string   "image_mime_type", limit: 255
-    t.string   "image_name",      limit: 255
-    t.integer  "image_size",      limit: 4
-    t.integer  "image_width",     limit: 4
-    t.integer  "image_height",    limit: 4
-    t.string   "image_uid",       limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "image_title",     limit: 255
-    t.string   "image_alt",       limit: 255
+    t.string   "image_mime_type",       limit: 255
+    t.string   "image_name",            limit: 255
+    t.integer  "image_size",            limit: 4
+    t.integer  "image_width",           limit: 4
+    t.integer  "image_height",          limit: 4
+    t.string   "image_uid",             limit: 255
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "image_title",           limit: 255
+    t.string   "image_alt",             limit: 255
+    t.string   "authorizations_access", limit: 255
   end
+
+  add_index "refinery_images", ["authorizations_access"], name: "index_refinery_images_on_authorizations_access", using: :btree
 
   create_table "refinery_leave_of_absences", force: :cascade do |t|
     t.integer  "employee_id",              limit: 4
@@ -1087,14 +1094,17 @@ ActiveRecord::Schema.define(version: 20190506081501) do
   add_index "refinery_resource_translations", ["refinery_resource_id"], name: "index_refinery_resource_translations_on_refinery_resource_id", using: :btree
 
   create_table "refinery_resources", force: :cascade do |t|
-    t.string   "file_mime_type", limit: 255
-    t.string   "file_name",      limit: 255
-    t.integer  "file_size",      limit: 4
-    t.string   "file_uid",       limit: 255
-    t.string   "file_ext",       limit: 255
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.string   "file_mime_type",        limit: 255
+    t.string   "file_name",             limit: 255
+    t.integer  "file_size",             limit: 4
+    t.string   "file_uid",              limit: 255
+    t.string   "file_ext",              limit: 255
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.string   "authorizations_access", limit: 255
   end
+
+  add_index "refinery_resources", ["authorizations_access"], name: "index_refinery_resources_on_authorizations_access", using: :btree
 
   create_table "refinery_settings", force: :cascade do |t|
     t.string   "name",            limit: 255

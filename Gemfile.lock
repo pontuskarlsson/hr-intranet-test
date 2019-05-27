@@ -26,6 +26,7 @@ PATH
       refinerycms-marketing
       refinerycms-page_roles (>= 1.0)
       refinerycms-parcels
+      refinerycms-resource_authorizations
       trans_forms
     refinerycms-calendar (2.1.0)
       google_calendar (~> 0.4)
@@ -59,6 +60,10 @@ PATH
       acts_as_indexed (~> 0.8.0)
       refinerycms-business (~> 1.0.0)
       refinerycms-core (~> 3.0.6)
+    refinerycms-resource_authorizations (1.0)
+      refinerycms-core (~> 3.0.6)
+      refinerycms-images (~> 3.0.6)
+      refinerycms-resources (~> 3.0.6)
     refinerycms-store (1.0)
       hiredis (~> 0.4.5)
       redis (~> 3.0.1)
@@ -521,6 +526,7 @@ DEPENDENCIES
   refinerycms-page_roles!
   refinerycms-parcels!
   refinerycms-quality_assurance!
+  refinerycms-resource_authorizations!
   refinerycms-store!
   refinerycms-testing (= 3.0.6)
   refinerycms-wymeditor (= 1.1.0)

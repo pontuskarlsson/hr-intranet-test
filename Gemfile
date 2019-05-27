@@ -42,6 +42,7 @@ gem 'refinerycms-employees',    path: 'vendor/extensions'
 gem 'refinerycms-store',        path: 'vendor/extensions'
 gem 'refinerycms-custom_lists', path: 'vendor/extensions'
 gem 'refinerycms-page_roles',   path: 'vendor/extensions'
+gem 'refinerycms-resource_authorizations', path: 'vendor/extensions'
 gem 'refinerycms-quality_assurance', path: 'vendor/extensions'
 
 # Specify specific version to prevent deprecation messages from 5.1 version

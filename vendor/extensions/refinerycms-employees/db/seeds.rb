@@ -107,5 +107,5 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  Refinery::Authentication::Devise::Role.where(title: 'Employees:Employee').first_or_create
+  Refinery::Authentication::Devise::Role.where(title: Refinery::Employees::ROLE_EMPLOYEE).first_or_create
 end

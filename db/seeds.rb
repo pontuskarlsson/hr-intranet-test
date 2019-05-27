@@ -52,3 +52,6 @@ Refinery::PageRoles::Engine.load_seed
 
 # Added by Refinery CMS QualityAssurance extension
 Refinery::QualityAssurance::Engine.load_seed
+
+# Added by Refinery CMS ResourceAuthorizations extension
+Refinery::ResourceAuthorizations::Engine.load_seed

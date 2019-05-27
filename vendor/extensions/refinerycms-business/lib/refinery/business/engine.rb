@@ -6,6 +6,10 @@ module Refinery
 
       engine_name :refinery_business
 
+      initializer 'resource-authorization-hooks-for-business-engine' do |app|
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Business::ROLE_INTERNAL
+      end
+
       before_inclusion do
         Refinery::Plugin.register do |plugin|
           plugin.name = "business"

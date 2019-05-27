@@ -116,7 +116,7 @@ module Refinery
       def create_and_associate_resource
         begin
           XeroExpenseClaimAttachment.transaction do
-            @resources = ::Refinery::Resource.create_resources(params[:resource])
+            @resources = ::Refinery::Resource.create_resources_with_access(params[:resource], Refinery::Employees::ROLE_EMPLOYEE => {})
             (resources = @resources.select(&:valid?)).any? || (raise ::ActiveRecord::RecordNotSaved)
 
             resources.each do |resource|

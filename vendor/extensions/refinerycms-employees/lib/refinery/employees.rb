@@ -10,6 +10,8 @@ module Refinery
     require 'refinery/employees/xero_client'
     require 'refinery/employees/xero_submit_job'
 
+    ROLE_EMPLOYEE = 'Employees:Employee'
+
     class << self
       attr_writer :root
 
