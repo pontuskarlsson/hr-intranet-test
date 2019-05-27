@@ -1,0 +1,13 @@
+<a class="button js_company_form_button">Add new Company</a>
+
+<div class="js_company_form" style="display: <%= company.errors.any? ? 'block' : 'none' %>;">
+  <%= render 'form', company: @company %>
+</div>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      $('.js_company_form_button').on('click', function() { $('.js_company_form').show() })
+    });
+  </script>
+<% end -%>

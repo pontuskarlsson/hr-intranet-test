@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
   end
 
   def not_found
-    render '404', layout: 'public'
+    error_404
+    #render '404', layout: 'public'
   end
 
   private

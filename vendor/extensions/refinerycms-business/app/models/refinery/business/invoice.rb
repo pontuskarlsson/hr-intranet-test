@@ -4,6 +4,8 @@ module Refinery
       self.table_name = 'refinery_business_invoices'
 
       belongs_to :account
+      belongs_to :company
+      belongs_to :project
 
       validates :account_id,    presence: true
       validates :invoice_id,    presence: true, uniqueness: true

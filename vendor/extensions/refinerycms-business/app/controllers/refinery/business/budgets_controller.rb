@@ -57,6 +57,8 @@ module Refinery
 
       def find_budget
         @budget = Budget.find(params[:id])
+      rescue ::ActiveRecord::RecordNotFound
+        error_404
       end
 
     end

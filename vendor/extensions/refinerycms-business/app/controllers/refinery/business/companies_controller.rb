@@ -11,12 +11,6 @@ module Refinery
 
       def index
         @companies = @companies.order(code: :asc)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @company in the line below:
-        present(@page)
-      end
-
-      def new
         @company = Company.new
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @company in the line below:
@@ -46,8 +40,10 @@ module Refinery
         if @company.save
           redirect_to refinery.business_company_path @company
         else
+          find_companies
+          @companies = @companies.order(code: :asc)
           present(@page)
-          render :new
+          render :index
         end
       end
 

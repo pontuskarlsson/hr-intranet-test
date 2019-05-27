@@ -15,9 +15,7 @@
 
 <% if page_role? Refinery::Business::ROLE_INTERNAL %>
   <% content_for :side_body do %>
-    <h2>Add Project</h2>
-
-    <%= render 'form', project: @project %>
+    <%= render 'add_project', project: @project %>
   <% end %>
 <% end %>
 

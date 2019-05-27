@@ -10,6 +10,7 @@ module Refinery
 
     ROLE_EXTERNAL = 'Business:External'
     ROLE_INTERNAL = 'Business:Internal'
+    ROLE_INTERNAL_FINANCE = 'Business:Internal:Finance'
 
     class << self
       attr_writer :root

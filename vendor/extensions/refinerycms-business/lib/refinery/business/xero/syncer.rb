@@ -39,9 +39,15 @@ module Refinery
           #
           invoice.contact_id = xero_invoice.attributes[:contact].contact_id
 
+          if (contact = find_contact_by_xero_id(invoice.contact_id)).present? && contact.company.present?
+            invoice.company = contact.company
+          end
+
           invoice.attributes = SYNC_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
             acc[local] = xero_invoice.attributes[remote]
           }
+
+
 
           invoice.save!
         end
@@ -69,6 +75,15 @@ module Refinery
 
           elsif account.organisation == 'Happy Rabbit Trading Limited'
             contact.update_attributes xero_hrt_id: xero_id
+          end
+        end
+
+        def find_contact_by_xero_id(xero_id)
+          if account.organisation == 'Happy Rabbit Limited'
+            Refinery::Marketing::Contact.where(xero_hr_id: xero_id).first
+
+          elsif account.organisation == 'Happy Rabbit Trading Limited'
+            Refinery::Marketing::Contact.where(xero_hrt_id: xero_id).first
           end
         end
 

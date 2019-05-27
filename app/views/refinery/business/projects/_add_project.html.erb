@@ -1,0 +1,13 @@
+<a class="button js_project_form_button">Add new Project</a>
+
+<div class="js_project_form" style="display: <%= project.errors.any? ? 'block' : 'none' %>;">
+  <%= render 'form', project: @project %>
+</div>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      $('.js_project_form_button').on('click', function() { $('.js_project_form').show() })
+    });
+  </script>
+<% end -%>

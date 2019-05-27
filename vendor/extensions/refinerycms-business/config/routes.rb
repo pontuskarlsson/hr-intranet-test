@@ -3,7 +3,7 @@ Refinery::Core::Engine.routes.draw do
   # Frontend routes
   namespace :business do
     resources :budgets, :only => [:index, :show, :new, :create, :update]
-    resources :companies, :only => [:index, :show, :new, :create] do
+    resources :companies, :only => [:index, :show, :create] do
       member do
         get :shipments
         get :inspections

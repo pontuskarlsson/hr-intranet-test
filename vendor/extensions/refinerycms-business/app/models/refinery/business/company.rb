@@ -8,6 +8,7 @@ module Refinery
       belongs_to :contact,      class_name: 'Refinery::Marketing::Contact'
       has_many :company_users,  dependent: :destroy
       has_many :parcels,        through: :contact
+      has_many :invoices,       dependent: :nullify
       has_many :to_shipments,   through: :contact
       has_many :projects,       dependent: :destroy
       has_many :users,          through: :company_users
@@ -50,15 +51,6 @@ module Refinery
 
       def self.find_by_label(label)
         find_by_code label.split(' ').first
-      end
-
-      def invoices
-        @invoices ||=
-            if contact
-              Invoice.where(contact_id: [contact.xero_hr_id, contact.xero_hrt_id].reject(&:blank?))
-            else
-              Invoice.where('1=0')
-            end
       end
 
       def label

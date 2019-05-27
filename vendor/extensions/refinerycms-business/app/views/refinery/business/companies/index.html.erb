@@ -15,7 +15,7 @@
 
 <% if page_role? Refinery::Business::ROLE_INTERNAL %>
   <% content_for :side_body do %>
-    <%= link_to 'Add a new Company', refinery.new_business_company_path %>
+    <%= render 'add_company', company: @company %>
   <% end %>
 <% end %>
 

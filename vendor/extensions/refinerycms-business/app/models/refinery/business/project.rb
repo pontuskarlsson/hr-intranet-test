@@ -6,7 +6,8 @@ module Refinery
       STATUSES = %w(Draft Proposed InProgress Open Completed Cancelled Closed Archived)
 
       belongs_to :company
-      has_many :sections, dependent: :destroy
+      has_many :invoices,       dependent: :nullify
+      has_many :sections,       dependent: :destroy
 
       validates :company_id,    presence: true
       validates :code,          uniqueness: true, allow_blank: true

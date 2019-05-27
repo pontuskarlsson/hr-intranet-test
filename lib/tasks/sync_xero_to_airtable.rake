@@ -9,8 +9,10 @@ namespace :hr_intranet do
       begin
         Refinery::Business::Account.find_each do |account|
           xero_client = Refinery::Business::Xero::Client.new(account)
-          params = { order: 'UpdatedDateUTC' }
+          syncer = Refinery::Business::Xero::Syncer.new account
 
+
+          params = { order: 'UpdatedDateUTC' }
           if (latest_modified_at = account.invoices.maximum(:updated_date_utc)).present?
             Rails.logger.info "Last modified invoice in #{account.organisation} at #{latest_modified_at}"
             params[:modified_since] = latest_modified_at
@@ -18,17 +20,20 @@ namespace :hr_intranet do
             Rails.logger.info 'No previous Invoice found'
           end
 
+          # Load all Invoices that have been updated since last registered Invoice was updated
           invoices = xero_client.client.Invoice.all(params)
           Rails.logger.info "Found #{invoices.length} Invoices in Xero"
 
-          syncer = Refinery::Business::Xero::Syncer.new account
-          syncer.sync_invoices invoices
-
+          # Load the unique Contacts used in those invoices
           contacts = invoices.each_with_object({}) { |invoice, acc|
             acc[invoice.attributes[:contact].contact_id] ||= invoice.contact
           }.values
 
+          # Sync Contacts first
           syncer.sync_contacts contacts
+
+          # Sync Invoices
+          syncer.sync_invoices invoices
         end
 
       rescue StandardError => e
@@ -44,13 +49,15 @@ namespace :hr_intranet do
           xero_client = Refinery::Business::Xero::Client.new(account)
           syncer = Refinery::Business::Xero::Syncer.new account
 
-          params = { order: 'UpdatedDateUTC' }
-          invoices = xero_client.client.Invoice.all(params)
+          # Sync Contacts first so that we can cross-reference the contact ids later when syncing Invoices
+          contacts = xero_client.client.Contact.all(where: { account_number_is_not: nil })
+          Rails.logger.info "Found #{contacts.length} Contacts with account numbers in Xero"
+          syncer.sync_contacts contacts
+
+          # Sync Invoices
+          invoices = xero_client.client.Invoice.all({ order: 'UpdatedDateUTC' })
           Rails.logger.info "Found #{invoices.length} Invoices in Xero"
           syncer.sync_invoices invoices
-
-          contacts = xero_client.client.Contact.all(where: { account_number_is_not: nil })
-          syncer.sync_contacts contacts
         end
 
       rescue StandardError => e
