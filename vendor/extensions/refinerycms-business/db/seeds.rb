@@ -31,9 +31,8 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
 
   end
-
-  Refinery::Authentication::Devise::Role.where(title: Refinery::Business::ROLE_EXTERNAL).first_or_create
-  Refinery::Authentication::Devise::Role.where(title: Refinery::Business::ROLE_INTERNAL).first_or_create
-  Refinery::Authentication::Devise::Role.where(title: Refinery::Business::ROLE_INTERNAL_FINANCE).first_or_create
-
 end
+
+Refinery::Authentication::Devise::Role.where(title: Refinery::Business::ROLE_EXTERNAL).first_or_create
+Refinery::Authentication::Devise::Role.where(title: Refinery::Business::ROLE_INTERNAL).first_or_create
+Refinery::Authentication::Devise::Role.where(title: Refinery::Business::ROLE_INTERNAL_FINANCE).first_or_create

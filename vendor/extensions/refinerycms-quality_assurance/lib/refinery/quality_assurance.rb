@@ -6,6 +6,9 @@ module Refinery
   module QualityAssurance
     require 'refinery/quality_assurance/engine'
 
+    ROLE_INTERNAL = 'QualityAssurance:Internal'
+    ROLE_EXTERNAL = 'QualityAssurance:External'
+
     class << self
       attr_writer :root
 

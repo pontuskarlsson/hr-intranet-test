@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190527064811) do
+ActiveRecord::Schema.define(version: 20190528040510) do
 
   create_table "amqp_messages", force: :cascade do |t|
     t.string   "queue",       limit: 255,   null: false
@@ -1026,10 +1026,27 @@ ActiveRecord::Schema.define(version: 20190527064811) do
     t.string   "comments",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "defect_label",  limit: 255
+    t.boolean  "can_fix"
   end
 
   add_index "refinery_quality_assurance_inspection_defects", ["defect_id"], name: "index_qa_inspection_defects_on_defect_id", using: :btree
   add_index "refinery_quality_assurance_inspection_defects", ["inspection_id"], name: "index_qa_inspection_defects_on_inspection_id", using: :btree
+
+  create_table "refinery_quality_assurance_inspection_photos", force: :cascade do |t|
+    t.integer  "inspection_id",        limit: 4
+    t.integer  "inspection_defect_id", limit: 4
+    t.integer  "image_id",             limit: 4
+    t.string   "file_id",              limit: 255
+    t.text     "fields",               limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_quality_assurance_inspection_photos", ["file_id"], name: "index_qa_inspection_photos_on_file_id", using: :btree
+  add_index "refinery_quality_assurance_inspection_photos", ["image_id"], name: "index_qa_inspection_photos_on_image_id", using: :btree
+  add_index "refinery_quality_assurance_inspection_photos", ["inspection_defect_id"], name: "index_qa_inspection_photos_on_inspection_defect_id", using: :btree
+  add_index "refinery_quality_assurance_inspection_photos", ["inspection_id"], name: "index_qa_inspection_photos_on_inspection_id", using: :btree
 
   create_table "refinery_quality_assurance_inspections", force: :cascade do |t|
     t.integer  "company_id",              limit: 4
@@ -1057,12 +1074,15 @@ ActiveRecord::Schema.define(version: 20190527064811) do
     t.integer  "acc_critical",            limit: 4
     t.integer  "acc_major",               limit: 4
     t.integer  "acc_minor",               limit: 4
-    t.integer  "total_critical",          limit: 4,   default: 0, null: false
-    t.integer  "total_major",             limit: 4,   default: 0, null: false
-    t.integer  "total_minor",             limit: 4,   default: 0, null: false
+    t.integer  "total_critical",          limit: 4,     default: 0, null: false
+    t.integer  "total_major",             limit: 4,     default: 0, null: false
+    t.integer  "total_minor",             limit: 4,     default: 0, null: false
     t.integer  "position",                limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "fields",                  limit: 65535
+    t.string   "company_label",           limit: 255
+    t.integer  "inspection_photo_id",     limit: 4
   end
 
   add_index "refinery_quality_assurance_inspections", ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id", using: :btree
@@ -1071,6 +1091,7 @@ ActiveRecord::Schema.define(version: 20190527064811) do
   add_index "refinery_quality_assurance_inspections", ["company_id"], name: "index_qa_inspections_on_company_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["document_id"], name: "index_qa_inspections_on_document_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_date"], name: "index_qa_inspections_on_inspection_date", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["inspection_photo_id"], name: "index_qa_inspections_on_inspection_photo_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_type"], name: "index_qa_inspections_on_inspection_type", using: :btree
   add_index "refinery_quality_assurance_inspections", ["po_number"], name: "index_qa_inspections_on_po_number", using: :btree
   add_index "refinery_quality_assurance_inspections", ["po_qty"], name: "index_qa_inspections_on_po_qty", using: :btree

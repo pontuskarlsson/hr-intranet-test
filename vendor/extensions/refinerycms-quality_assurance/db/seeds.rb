@@ -17,3 +17,6 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end if defined?(Refinery::Page)
 end
+
+Refinery::Authentication::Devise::Role.where(title: Refinery::QualityAssurance::ROLE_INTERNAL).first_or_create
+Refinery::Authentication::Devise::Role.where(title: Refinery::QualityAssurance::ROLE_EXTERNAL).first_or_create

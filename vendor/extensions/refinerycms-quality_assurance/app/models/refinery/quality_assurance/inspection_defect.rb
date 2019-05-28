@@ -5,6 +5,7 @@ module Refinery
 
       belongs_to :inspection
       belongs_to :defect
+      has_many :inspection_photos, dependent: :nullify
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
@@ -12,6 +13,10 @@ module Refinery
 
       validates :inspection_id,   presence: true
       validates :defect_id,       uniqueness: { scope: :inspection_id }, allow_nil: true
+
+      before_save do
+        self.defect_label = defect.label if defect.present?
+      end
 
       after_save do
         inspection.recalculate_defects!

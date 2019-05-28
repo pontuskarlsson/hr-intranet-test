@@ -64,7 +64,14 @@ class HooksController < ApplicationController
   end
 
   def parse_topo
-    ErrorMailer.webhook_notification_email(['Topo webhook received'], params).deliver
+    Delayed::Job.enqueue(TopoWebhookJob.new(params[:hook] && params[:hook].to_unsafe_h))
+
+    ActiveRecord::Base.transaction do
+      Portal::Topo::Syncer.new.run_webhook! params[:hook] && params[:hook].to_unsafe_h
+    end
+  rescue StandardError => e
+    ErrorMailer.webhook_notification_email([e.message], params).deliver
+    #ErrorMailer.webhook_notification_email(['Topo webhook received'], params).deliver
   end
 
   def parse_qc

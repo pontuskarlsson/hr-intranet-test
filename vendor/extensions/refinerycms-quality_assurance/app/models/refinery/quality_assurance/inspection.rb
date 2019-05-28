@@ -7,17 +7,20 @@ module Refinery
       INSPECTION_TYPES = %w(In-line Final Re-Final)
       PO_TYPES = %w(Bulk SMS Other)
 
+      serialize :fields, Hash
+
       belongs_to :company,  class_name: 'Refinery::Business::Company'
-      belongs_to :supplier,  class_name: 'Refinery::Business::Company'
+      belongs_to :inspection_photo
       belongs_to :resource, class_name: 'Refinery::Resource'
+      belongs_to :supplier,  class_name: 'Refinery::Business::Company'
       has_many :inspection_defects, dependent: :destroy
       has_many :defects, through: :inspection_defects
+      has_many :inspection_photos, dependent: :destroy
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
       #   acts_as_indexed :fields => [:title]
 
-      validates :company_id,      presence: true
       validates :result,          inclusion: RESULTS, allow_blank: true
       validates :inspection_type, inclusion: INSPECTION_TYPES, allow_blank: true
       validates :po_type,         inclusion: PO_TYPES, allow_blank: true
@@ -29,7 +32,7 @@ module Refinery
         inspection_ids = where(nil).pluck(:id)
         res = Refinery::QualityAssurance::InspectionDefect
                   .where(inspection_id: inspection_ids)
-                  .where('defect_id IS NOT NULL')
+                  .where.not(defect_id: nil)
                   .group(:defect_id)
                   .order('COUNT(defect_id) DESC')
                   .select('COUNT(defect_id) as no_of_defects, defect_id')

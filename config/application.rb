@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 require_relative '../lib/calendar_layout'
 require_relative '../lib/portal'
+require_relative '../lib/delayed_job/topo_webhook_job'
 
 # Pick the frameworks you want:
 # require "active_record/railtie"
