@@ -1,5 +1,5 @@
 <p>
-  Dear <%= @user.name %>,
+  Dear <%= @user.full_name.presence || 'Sir / Madam' %>,
 </p>
 
 <p>
