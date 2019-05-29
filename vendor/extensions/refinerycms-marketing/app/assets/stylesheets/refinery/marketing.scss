@@ -55,6 +55,8 @@
         width: auto;
         border: none;
 
+        tbody { background: none; }
+
         tr {
             background: none;
         }
@@ -92,7 +94,6 @@
         border-radius: 2px;
 
         h4 {
-            background: #fff;
             font-size: 0.8rem;
             font-weight: bold;
             line-height: 14px;

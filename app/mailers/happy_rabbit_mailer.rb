@@ -9,9 +9,13 @@ class HappyRabbitMailer < ApplicationMailer
   end
 
   def inspection_result_email(inspection)
-    @header = 'Inspection Summary'
+    @header = 'QC Inspection Report'
     @inspection = inspection
-    mail(to: emails_for_role('Services'), subject: "#{@header} - #{Date.today.to_s}")
+
+    users_for_role('Services').each do |user|
+      @user = user
+      mail(to: user.email, subject: "#{@header} - #{Date.today.to_s}")
+    end
   end
 
   def services_notification_email(description, notice, orders)
@@ -28,6 +32,15 @@ class HappyRabbitMailer < ApplicationMailer
       role.users.pluck(:email).join(', ')
     else
       ''
+    end
+  end
+
+  def users_for_role(title)
+    role = Refinery::Authentication::Devise::Role.find_by_title(title)
+    if role.present?
+      role.users
+    else
+      []
     end
   end
 
