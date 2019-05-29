@@ -8,11 +8,11 @@ class HappyRabbitMailer < ApplicationMailer
     mail(from: 'wip_status@happyrabbit.com', to: data['Recipients'], subject: "WIP Status update: #{data['Description']}")
   end
 
-  def inspection_result_email
+  def inspection_result_email(user, inspection)
     @header = 'QC Inspection Report'
 
-    @inspection = params[:inspection]
-    @user = params[:user]
+    @inspection = inspection
+    @user = user
     mail(to: user.email, subject: "#{@header} - #{Date.today.to_s}")
   end
 
