@@ -11,6 +11,8 @@
   The Happy Rabbit Team
 </p>
 
+<div style="margin: 10px 0 20px; border-top: 1px solid #000; height: 1px;"></div>
+
 <table>
   <tbody>
   <tr>
@@ -46,6 +48,14 @@
           <td><%= @inspection.inspected_by_name %></td>
         </tr>
         <tr>
+          <th>Order Qty</th>
+          <td><%= @inspection.po_qty %></td>
+        </tr>
+        <tr>
+          <th>Available Qty</th>
+          <td><%= @inspection.available_qty %></td>
+        </tr>
+        <tr>
           <th>Result</th>
           <td>
             <% if @inspection.result == 'Pass' %>
@@ -74,15 +84,21 @@
     <tbody>
     <tr>
       <td style="width: 100px;">Total Critical</td>
-      <td><%= @inspection.total_critical %></td>
+      <td style="width: 50px;"><%= @inspection.total_critical %></td>
+      <td style="width: 100px;">Accepted Critical</td>
+      <td style="width: 50px;"><%= @inspection.acc_critical %></td>
     </tr>
     <tr>
       <td>Total Major</td>
       <td><%= @inspection.total_major %></td>
+      <td>Accepted Major</td>
+      <td><%= @inspection.acc_major %></td>
     </tr>
     <tr>
       <td>Total Minor</td>
       <td><%= @inspection.total_minor %></td>
+      <td>Accepted Minor</td>
+      <td><%= @inspection.acc_minor %></td>
     </tr>
     </tbody>
   </table>
@@ -100,7 +116,7 @@
     </tr>
     <tr>
       <td>
-        <div style="margin-top: 20px;">
+        <div style="margin-top: 10px;">
           <table>
             <tbody>
             <tr>

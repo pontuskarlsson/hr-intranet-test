@@ -1,7 +1,7 @@
 module EmailHelper
 
   def dragonfly_image_tag(image, **options)
-    attachments[image.name] ||= image.thumb('100x100#').data
+    attachments[image.name] ||= image.thumb('190x190#').data
     image_tag attachments[image.name].url, **options
   end
 
