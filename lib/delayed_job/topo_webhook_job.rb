@@ -8,7 +8,9 @@ class TopoWebhookJob < Struct.new(:payload)
       if syncer.error
         ErrorMailer.error_email(syncer.error).deliver
       elsif syncer.inspection
-        HappyRabbitMailer.inspection_result_email(syncer.inspection).deliver_now
+        users_for_role('Services').each do |user|
+          HappyRabbitMailer.with(user: user, inspection: syncer.inspection).inspection_result_email.deliver_now
+        end
       end
 
     end
@@ -28,6 +30,15 @@ class TopoWebhookJob < Struct.new(:payload)
         else
           Rails.logger
         end
+  end
+
+  def users_for_role(title)
+    role = Refinery::Authentication::Devise::Role.find_by_title(title)
+    if role.present?
+      role.users
+    else
+      []
+    end
   end
 
 end
