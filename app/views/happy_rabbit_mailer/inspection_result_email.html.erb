@@ -11,7 +11,7 @@
   The Happy Rabbit Team
 </p>
 
-<div style="margin: 10px 0 20px; border-top: 1px solid #000; height: 1px;"></div>
+<div style="margin: 20px 0; border-top: 1px solid #000; height: 1px;"></div>
 
 <table>
   <tbody>
@@ -20,7 +20,7 @@
       <table>
         <tbody>
         <tr>
-          <th>PO#</th>
+          <th style="width: 100px;">PO#</th>
           <td><%= @inspection.po_number %></td>
         </tr>
         <tr>
@@ -56,6 +56,10 @@
           <td><%= @inspection.available_qty %></td>
         </tr>
         <tr>
+          <th>Sample Size</th>
+          <td><%= @inspection.inspection_sample_size %></td>
+        </tr>
+        <tr>
           <th>Result</th>
           <td>
             <% if @inspection.result == 'Pass' %>
@@ -71,7 +75,7 @@
       </table>
     </td>
     <% if @inspection.inspection_photo %>
-      <td style="width: 100px;">
+      <td style="width: 190px;">
         <%= dragonfly_image_tag @inspection.inspection_photo.image.image %>
       </td>
     <% end %>
@@ -148,7 +152,7 @@
     <% if inspection_defect.inspection_photos.any? %>
       <tr>
         <td colspan="2">
-          <div style="margin-top: 20px;">
+          <div style="margin-top: 10px;">
             <% inspection_defect.inspection_photos.each do |inspection_photo| %>
               <%= dragonfly_image_tag inspection_photo.image.image %>
             <% end %>
