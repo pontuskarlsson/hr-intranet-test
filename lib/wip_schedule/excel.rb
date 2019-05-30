@@ -175,24 +175,34 @@ module WipSchedule
     end
 
     def should_alert(order, column)
-      # Do not alert anything unless order status is ORDERED
-      return false if value(order, 'Order Status') == 'DRAFT' or value(order, 'Act: Ex. Fact.').present?
+      # Do not alert anything if order already have an Act. Ex. Fact date
+      return false if value(order, 'Act: Ex. Fact.').present?
       return false unless ALLOW_UPDATES.include?(column)
 
-      if column == '1st Conf. Ex. Fact. Date'
-        value(order, column).blank?
-
-      elsif /Orig: (Trims In-House|Fabric In-House)/.match(column)
-        # Original columns should only be flagged when they are empty, since
-        # if the date is outdated and nothing is entered into the Upd column,
-        # then it is the Upd column that should be flagged
-        value(order, column).blank?
-
-      elsif (res = /Upd: (.*$)/.match(column)).present?
-        res[0] != 'Shipping Booked' && operation_outdated?(res[0], order)
+      if value(order, 'Order Status') == 'REQUESTED'
+        # If the order status is requested, then we only
+        if column == '1st Conf. Ex. Fact. Date'
+          value(order, column).blank?
+        else
+          false
+        end
 
       else
-        false
+        if column == '1st Conf. Ex. Fact. Date'
+          value(order, column).blank?
+
+        elsif /Orig: (Trims In-House|Fabric In-House)/.match(column)
+          # Original columns should only be flagged when they are empty, since
+          # if the date is outdated and nothing is entered into the Upd column,
+          # then it is the Upd column that should be flagged
+          value(order, column).blank?
+
+        elsif (res = /Upd: (.*$)/.match(column)).present?
+          res[0] != 'Shipping Booked' && operation_outdated?(res[0], order)
+
+        else
+          false
+        end
       end
     end
 

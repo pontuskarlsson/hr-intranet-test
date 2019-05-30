@@ -19,6 +19,7 @@ class HappyRabbitMailer < ApplicationMailer
   def services_notification_email(description, notice, orders)
     @header = 'Services Notification'
     @notice = notice
+    @orders = orders
     mail(to: emails_for_role('Services'), subject: "#{@header} - #{description} - #{Date.today.to_s}")
   end
 

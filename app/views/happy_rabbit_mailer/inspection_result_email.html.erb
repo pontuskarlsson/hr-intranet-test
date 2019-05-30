@@ -6,12 +6,10 @@
   We have just completed an inspection. Please see below.
 </p>
 
-<p>
+<p style="margin-bottom: 30px;">
   Best regards<br/>
   The Happy Rabbit Team
 </p>
-
-<div style="margin: 20px 0; border-top: 1px solid #000; height: 1px;"></div>
 
 <table>
   <tbody>
@@ -88,32 +86,40 @@
     <tbody>
     <tr>
       <td style="width: 100px;">Total Critical</td>
-      <td style="width: 50px;"><%= @inspection.total_critical %></td>
+      <td style="width: 50px; text-align: center;"><%= @inspection.total_critical %></td>
+      <td style="width: 50px;">&nbsp;</td>
       <td style="width: 100px;">Accepted Critical</td>
-      <td style="width: 50px;"><%= @inspection.acc_critical %></td>
+      <td style="width: 50px; text-align: center;"><%= @inspection.acc_critical %></td>
+      <td style="width: 50px;">&nbsp;</td>
     </tr>
     <tr>
       <td>Total Major</td>
-      <td><%= @inspection.total_major %></td>
+      <td style="text-align: center;"><%= @inspection.total_major %></td>
+      <td>&nbsp;</td>
       <td>Accepted Major</td>
-      <td><%= @inspection.acc_major %></td>
+      <td style="text-align: center;"><%= @inspection.acc_major %></td>
+      <td>&nbsp;</td>
     </tr>
     <tr>
       <td>Total Minor</td>
-      <td><%= @inspection.total_minor %></td>
+      <td style="text-align: center;"><%= @inspection.total_minor %></td>
+      <td>&nbsp;</td>
       <td>Accepted Minor</td>
-      <td><%= @inspection.acc_minor %></td>
+      <td style="text-align: center;"><%= @inspection.acc_minor %></td>
+      <td>&nbsp;</td>
     </tr>
     </tbody>
   </table>
 </div>
+
+<div style="margin: 20px 0; border-top: 1px solid #000; height: 1px;"></div>
 
 <table>
   <tbody>
   <% @inspection.inspection_defects.each do |inspection_defect| %>
     <tr>
       <th style="text-align: left;" colspan="2">
-        <div style="margin-top: 30px;">
+        <div style="margin-top: 30px; border-bottom: 1px solid #000;">
           <%= inspection_defect.defect_label %>
         </div>
       </th>
@@ -124,10 +130,10 @@
           <table>
             <tbody>
             <tr>
-              <td style="width: 100px;">Critical</td>
-              <td style="width: 100px;">Major</td>
-              <td style="width: 100px;">Minor</td>
-              <td style="width: 100px;">Can Fix?</td>
+              <th style="width: 100px;">Critical</th>
+              <th style="width: 100px;">Major</th>
+              <th style="width: 100px;">Minor</th>
+              <th style="width: 100px;">Can Fix?</th>
             </tr>
             <tr>
               <td><%= inspection_defect.critical %></td>
