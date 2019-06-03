@@ -11,11 +11,11 @@ Refinery::I18n.frontend_locales.each do |lang|
   end
 
   [
-      ['/business/budgets', 'Budgets'],
-      ['/business/companies', 'Companies'],
-      ['/business/projects', 'Projects'],
-      ['/business/sales_orders', 'Sales Orders'],
-      ['/business/sections', 'Sections']
+      [Refinery::Business::PAGE_BUDGETS_URL, 'Budgets'],
+      [Refinery::Business::PAGE_COMPANIES_URL, 'Companies'],
+      [Refinery::Business::PAGE_PROJECTS_URL, 'Projects'],
+      [Refinery::Business::PAGE_SALES_ORDERS_URL, 'Sales Orders'],
+      [Refinery::Business::PAGE_SECTIONS_URL, 'Sections']
   ].each do |url, title|
 
     if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?

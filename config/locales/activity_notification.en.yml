@@ -1,0 +1,8 @@
+# Additional translations of ActivityNotification
+
+en:
+  notification:
+    default:
+      inspection:
+        default:
+          mail_subject:

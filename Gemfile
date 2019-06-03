@@ -68,6 +68,9 @@ gem 'airtable', git: 'https://github.com/Airtable/airtable-ruby'
 # Zendesk
 gem 'zendesk_api', '1.17'
 
+# Notifications
+gem 'activity_notification'
+
 group :development do
   gem 'thin', '1.7.2'
   gem 'foreman', '0.78.0'

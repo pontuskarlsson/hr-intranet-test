@@ -165,7 +165,7 @@
   <aside>
     <h2><%= t('.other') %></h2>
     <ul id="inspections">
-      <% @inspections.each do |inspection| %>
+      <% @inspections.recent(10).each do |inspection| %>
         <li>
           <%= link_to inspection.label, refinery.quality_assurance_inspection_path(inspection) %>
         </li>

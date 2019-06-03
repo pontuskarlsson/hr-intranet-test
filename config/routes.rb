@@ -11,6 +11,8 @@ HrIntranet::Application.routes.draw do
   post 'zendesk/submit', to: 'zendesk#submit'
 
   resource :my_profile
+  notify_to :users,     controller: 'users/notifications_with_devise'
+  subscribed_by :users, controller: 'users/subscriptions_with_devise'
 
   # Workaround for incorrect redirect from somewhere
   get '/refinery/users/login', to: redirect('/portal/refinery/users/login')
@@ -81,5 +83,5 @@ HrIntranet::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  get '*unmatched_route', to: 'application#not_found'
+  #get '*unmatched_route', to: 'application#not_found'
 end

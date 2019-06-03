@@ -9,6 +9,16 @@ Refinery::Authentication::Devise::User.class_eval do
 
   devise :password_expirable, :expire_password_after => 10.years
 
+  acts_as_target devise_resource: :authentication_devise_user
+
+  def notification_email_allowed?(target, key)
+    email == 'daniel@happyrabbit.com'
+  end
+
+  def printable_name
+    full_name
+  end
+
   after_save do
     if password_has_expired and !need_change_password?
       # Means that the password_has_expired checkbox was clicked on save. We
@@ -16,6 +26,10 @@ Refinery::Authentication::Devise::User.class_eval do
       need_change_password!
     end
   end
+
+  scope :for_role, -> (title) {
+    Refinery::Authentication::Devise::User.joins(:roles).where(refinery_authentication_devise_roles: { title: title })
+  }
 
   def password_has_expired=(val)
     @password_has_expired = val == '1'

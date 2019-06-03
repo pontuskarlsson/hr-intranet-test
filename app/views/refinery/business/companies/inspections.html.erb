@@ -1,0 +1,72 @@
+<div class="grid-x grid-padding-x">
+  <div class="cell">
+    <h2>
+      <%= link_to @company.label, refinery.business_company_path(@company) %><br />
+      Inspections
+    </h2>
+  </div>
+
+  <div class="cell">
+    <h4>All inspections</h4>
+
+    <table class="display js_inspections_data_table" cellspacing="0" style="width: 100%;">
+      <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th>Supplier</th>
+        <th>Manufacturer</th>
+        <th>Inspected</th>
+        <th>Type</th>
+        <th>Result</th>
+        <th>PO</th>
+        <th>Style</th>
+      </tr>
+      </thead>
+
+      <tfoot>
+      <tr>
+        <th>&nbsp;</th>
+        <th>Supplier</th>
+        <th>Manufacturer</th>
+        <th>Inspected</th>
+        <th>Type</th>
+        <th>Result</th>
+        <th>PO</th>
+        <th>Style</th>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_inspections_data_table').dataTable({
+        "scrollY":        "600px",
+        "scrollCollapse": true,
+        "paging":         false,
+        "data":           <%= @company.inspections.order(inspection_date: :desc).to_json(only: [:id, :supplier_label, :manufacturer_label, :inspection_date, :inspection_type, :result, :po_number], methods: [:product_label]).html_safe %>,
+        "columns": [
+          { data: "id", "width": '10%', "render": function(data, type, row) {
+            const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
+            const className = 'fa fa-arrow-right';
+            return $('<a></a>')
+              .attr('href', href)
+              .html('<i class="' + className + '"></i>')
+              .prop('outerHTML');
+          } },
+          { data: "supplier_label", "width": '10%' },
+          { data: "manufacturer_label", "width": '10%' },
+          { data: "inspection_date", "width": '10%' },
+          { data: "inspection_type", "width": '10%' },
+          { data: "result", "width": '10%' },
+          { data: "po_number", "width": '10%' },
+          { data: "product_label", "width": '10%' }
+        ]
+      });
+    });
+  </script>
+<% end %>

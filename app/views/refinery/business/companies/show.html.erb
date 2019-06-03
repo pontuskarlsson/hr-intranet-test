@@ -1,0 +1,89 @@
+<div class="grid-x grid-padding-x">
+  <div class="cell">
+    <h2><%= @company.label %></h2>
+  </div>
+
+  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+    <% if @company.contact.present? %>
+      <div class="cell medium-6">
+        <%= render 'refinery/marketing/contacts/organisation', contact: @company.contact %>
+      </div>
+    <% end %>
+
+    <div class="cell medium-6">
+      <h5>
+        <i class="fa fa-user"></i>
+        Users
+      </h5>
+      <% if @company.users.any? %>
+        <% @company.users.each do |user| %>
+          <p>
+            <%= user.full_name %>
+            <span style="color: #999; font-size: 10px;">
+              <% if user.current_sign_in_at.nil? %>
+                has never signed in
+              <% else %>
+                last signed in <%= time_ago_in_words user.current_sign_in_at %> ago
+              <% end %>
+            </span>
+          </p>
+        <% end %>
+      <% else %>
+        <p class="not_present">There are no users with access to this company</p>
+      <% end %>
+    </div>
+
+  <% end %>
+
+  <% if page_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
+    <% if @company.invoices.any? %>
+      <div class="cell">
+        <%= render 'invoices_list', invoices: @company.invoices.includes(:account) %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <% if @company.parcels.recent.any? or @company.to_shipments.shipped.recent.any? %>
+    <div class="cell medium-6">
+      <div class="card portal-card">
+        <div class="card-divider">
+          <h5>
+            <i class="fa fa-truck"></i>
+            Parcels / Shipments
+          </h5>
+        </div>
+
+        <div class="card-section">
+          <p><%= @company.parcels.recent.count %> incoming parcels recently received by Happy Rabbit.</p>
+          <p><%= @company.to_shipments.shipped.recent.count %> outgoing shipments recently sent out by Happy Rabbit.</p>
+        </div>
+
+        <div class="card-footer">
+          <%= link_to 'See more', refinery.shipments_business_company_path(@company) %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @company.projects.any? %>
+    <%= render 'projects_list', projects: @company.projects %>
+  <% end %>
+
+  <% if @company.inspections.any? %>
+    <%= render 'inspections_summary', inspections: @company.inspections.recent(10) %>
+  <% end %>
+
+  <% if @company.inspections.recent(10).any? %>
+    <%= render 'inspections', inspections: @company.inspections.recent(10) %>
+  <% end %>
+</div>
+
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'charts' %>
+
+  <script type="text/javascript">
+    $(function(){
+
+    });
+  </script>
+<% end %>

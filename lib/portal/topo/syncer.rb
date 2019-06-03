@@ -12,17 +12,21 @@ module Portal
 #          "AQLMinor"=>"4.0",
           available_qty: 'AvailableQty',
           product_colour_variants: 'Color',
-#          "Customer"=>"BJÖRN BORG",
+          customer_code: 'CustomerCode',
+          customer_label: 'Customer',
           inspection_date: 'InspDate',
           inspected_by_name: 'InspectorName',
           inspection_standard: 'InspStandard',
           inspection_type: 'InspType',
+          manufacturer_code: 'ManufacturerCode',
+          manufacturer_label: 'Manufacturer',
           po_qty: 'OrderQty',
           po_type: 'OrderType',
           po_number: 'PO',
           result: 'Result',
           inspection_sample_size: 'SampleSize',
           product_code: 'StyleNr',
+          supplier_code: 'SupplierCode',
           supplier_label: 'Supplier'
       }.freeze
 
@@ -39,25 +43,56 @@ module Portal
           acc[local] = data[remote]
         }
 
-        if payload['Customer'] && (match = /(^[0-9]{3}[0-9]*)/.match(payload['Customer'])).present? &&
-            (company = ::Refinery::Business::Company.find_by(code: match[1].rjust(5, '0'))).present?
-          inspection.company = company
-        elsif (company = ::Refinery::Business::Company.find_by(name: payload['Customer'])).present?
-          inspection.company = company
-        else
-          inspection.company_label = payload['Customer']
-        end
-
         inspection.fields = payload
+
+        set_company!
+        set_supplier!
+        set_manufacturer!
 
         inspection.save!
 
+        handle_exports!(inspection, payload['exports'])
         handle_defects!(inspection, data['Defect'])
-
         handle_photos!(inspection, payload['files'])
 
         inspection.inspection_photo = inspection.inspection_photos.detect { |inspection_photo| inspection_photo.fields['key'] == 'd' }
         inspection.save!
+      end
+
+      def set_company!
+        if company.company_code.present? && (company = ::Refinery::Business::Company.find_by(code: company.company_code)).present?
+          inspection.company = company
+
+        elsif company.company_label.present? && (company = ::Refinery::Business::Company.find_by(name: company.company_label)).present?
+          inspection.company = company
+
+        else
+          inspection.company = nil
+        end
+      end
+      
+      def set_manufacturer!
+        if manufacturer.manufacturer_code.present? && (manufacturer = ::Refinery::Business::Company.find_by(code: manufacturer.manufacturer_code)).present?
+          inspection.manufacturer = manufacturer
+
+        elsif manufacturer.manufacturer_label.present? && (manufacturer = ::Refinery::Business::Company.find_by(name: manufacturer.manufacturer_label)).present?
+          inspection.manufacturer = manufacturer
+
+        else
+          inspection.manufacturer = nil
+        end
+      end
+
+      def set_supplier!
+        if supplier.supplier_code.present? && (supplier = ::Refinery::Business::Company.find_by(code: supplier.supplier_code)).present?
+          inspection.supplier = supplier
+
+        elsif supplier.supplier_label.present? && (supplier = ::Refinery::Business::Company.find_by(name: supplier.supplier_label)).present?
+          inspection.supplier = supplier
+
+        else
+          inspection.supplier = nil
+        end
       end
 
       def handle_defects!(inspection, topo_defects)
@@ -113,6 +148,14 @@ module Portal
         inspection.inspection_photos.where.not(id: @inspection_photos.map(&:id)).each(&:destroy)
       end
 
+      def handle_exports!(inspection, topo_exports)
+        raise 'Inspection must be saved before creating a resource' unless inspection.persisted?
+
+        @resource = Array(topo_exports).select { |te| te['type'] == 'application/pdf' }.each do |topo_export|
+          inspection.resource = create_resource!(inspection, topo_export['url'], topo_export['name'])
+        end
+      end
+
       def defect_for(defect_list)
         category_code, defect_code = defect_list.split('.')
 
@@ -124,6 +167,8 @@ module Portal
       end
 
       def create_image!(inspection, url, file_name)
+        raise 'Inspection must be saved before creating an image' unless inspection.persisted?
+
         file = Tempfile.new([File.basename(file_name, File.extname(file_name)), File.extname(file_name)]).tap do |file|
           file.binmode
           file.write(open(url).read)
@@ -134,9 +179,26 @@ module Portal
         file.original_filename = file_name
 
         ::Refinery::Image.create_with_access({ image: file }, {
-            Refinery::QualityAssurance::ROLE_INTERNAL => {},
+            Refinery::QualityAssurance::ROLE_INTERNAL => { inspection_id: inspection.id },
             Refinery::QualityAssurance::ROLE_EXTERNAL => { inspection_id: inspection.id }
         })
+      end
+
+      def create_resource!(inspection, url, file_name)
+        file = Tempfile.new([File.basename(file_name, File.extname(file_name)), File.extname(file_name)]).tap do |file|
+          file.binmode
+          file.write(open(url).read)
+          file.close
+        end
+
+        file.class.class_eval { attr_accessor :original_filename }
+        file.original_filename = file_name
+
+        resources = ::Refinery::Resource.create_resources_with_access({ file: file }, {
+            Refinery::QualityAssurance::ROLE_INTERNAL => { inspection_id: inspection.id },
+            Refinery::QualityAssurance::ROLE_EXTERNAL => { inspection_id: inspection.id }
+        })
+        resources[0]
       end
 
     end

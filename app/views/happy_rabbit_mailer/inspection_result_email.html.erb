@@ -1,10 +1,6 @@
-<p>
-  Dear <%= @user.full_name.presence || 'Sir / Madam' %>,
-</p>
+<p>Dear <%= @user.full_name.presence || 'Sir / Madam' %>,</p>
 
-<p>
-  We have just completed an inspection. Please see below.
-</p>
+<p>We have just completed an inspection. Please see a summary below.</p>
 
 <p style="margin-bottom: 30px;">
   Best regards<br/>
@@ -18,16 +14,24 @@
       <table>
         <tbody>
         <tr>
-          <th style="width: 100px;">PO#</th>
+          <th style="width: 100px;">Customer</th>
+          <td><%= @inspection.customer_label %></td>
+        </tr>
+        <tr>
+          <th>Supplier</th>
+          <td><%= @inspection.supplier_label %></td>
+        </tr>
+        <tr>
+          <th>Manufacturer</th>
+          <td><%= @inspection.manufacturer_label %></td>
+        </tr>
+        <tr>
+          <th>PO#</th>
           <td><%= @inspection.po_number %></td>
         </tr>
         <tr>
           <th>Order Type</th>
           <td><%= @inspection.po_type %></td>
-        </tr>
-        <tr>
-          <th>Supplier</th>
-          <td><%= @inspection.supplier_label %></td>
         </tr>
         <tr>
           <th>Style</th>
@@ -47,15 +51,15 @@
         </tr>
         <tr>
           <th>Order Qty</th>
-          <td><%= @inspection.po_qty %></td>
+          <td><%= number_with_delimiter @inspection.po_qty %></td>
         </tr>
         <tr>
           <th>Available Qty</th>
-          <td><%= @inspection.available_qty %></td>
+          <td><%= number_with_delimiter @inspection.available_qty %></td>
         </tr>
         <tr>
           <th>Sample Size</th>
-          <td><%= @inspection.inspection_sample_size %></td>
+          <td><%= number_with_delimiter @inspection.inspection_sample_size %></td>
         </tr>
         <tr>
           <th>Result</th>

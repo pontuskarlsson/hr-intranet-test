@@ -9,16 +9,9 @@
       <%= f.text_field :full_name %>
     </div>
 
-    <h2>User Settings</h2>
-    <%- user_setting = current_authentication_devise_user.user_settings.detect { |us| us.identifier == 'leave_notification' } || current_authentication_devise_user.user_settings.build(identifier: 'leave_notification', content: { 'receive_for' => 'all' }) -%>
-    <%= f.fields_for :user_settings, user_setting, child_index: '0' do |us_form| %>
-      <%= us_form.hidden_field :identifier %>
-
-      <%= render 'refinery/admin/users/user_settings_leave_notification', f: us_form, user_setting: user_setting, user: current_authentication_devise_user %>
-
-    <% end %>
-
     <%= f.submit 'Save Changes' %>
+
+    <%= render_notifications current_authentication_devise_user.notifications, fallback: :default %>
 
   <% end %>
 <% end %>

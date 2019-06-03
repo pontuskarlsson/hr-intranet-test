@@ -11,6 +11,7 @@ module Refinery
 
       belongs_to :company,  class_name: 'Refinery::Business::Company'
       belongs_to :inspection_photo
+      belongs_to :manufacturer,  class_name: 'Refinery::Business::Company'
       belongs_to :resource, class_name: 'Refinery::Resource'
       belongs_to :supplier,  class_name: 'Refinery::Business::Company'
       has_many :inspection_defects, dependent: :destroy
@@ -25,8 +26,24 @@ module Refinery
       validates :inspection_type, inclusion: INSPECTION_TYPES, allow_blank: true
       validates :po_type,         inclusion: PO_TYPES, allow_blank: true
       validates :document_id,     uniqueness: true, allow_blank: true
-
+      
+      before_save do
+        if company.present?
+          self.company_code = company.code
+          self.company_label = company.name
+        end
+        if manufacturer.present?
+          self.manufacturer_code = manufacturer.code
+          self.manufacturer_label = manufacturer.name
+        end
+        if supplier.present?
+          self.supplier_code = supplier.code
+          self.supplier_label = supplier.name
+        end
+      end
+      
       scope :recent, -> (no_of_records) { order(inspection_date: :desc).limit(no_of_records) }
+      scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
 
       def self.top_defects
         inspection_ids = where(nil).pluck(:id)

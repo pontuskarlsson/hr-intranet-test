@@ -3,6 +3,7 @@ module Refinery
     class CompaniesController < ::ApplicationController
       include Refinery::PageRoles::AuthController
 
+      set_page PAGE_COMPANIES_URL
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show, :inspections, :shipments]
       allow_page_roles ROLE_INTERNAL
 
@@ -70,13 +71,6 @@ module Refinery
 
       def find_company
         @company = company_scope.find(params[:id])
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
-      end
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/business/companies', current_authentication_devise_user)
-        @role_titles = @page.user_page_role_titles
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

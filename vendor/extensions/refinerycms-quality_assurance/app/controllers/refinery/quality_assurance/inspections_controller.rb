@@ -1,8 +1,14 @@
 module Refinery
   module QualityAssurance
     class InspectionsController < ::ApplicationController
+      include Refinery::PageRoles::AuthController
 
-      before_action :find_all_inspections
+      set_page PAGE_INSPECTIONS_URL
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
+      allow_page_roles ROLE_INTERNAL
+
+      before_action :find_all_inspections,  only: [:index]
+      before_action :find_inspection,       except: [:index, :new, :create]
       before_action :find_page
 
       def index
@@ -21,12 +27,31 @@ module Refinery
 
     protected
 
+      def inspections_scope
+        @inspections ||=
+            if page_role? ROLE_INTERNAL
+              Inspection.where(nil)
+            elsif page_role? ROLE_EXTERNAL
+              Inspection.for_companies(current_authentication_devise_user.companies)
+            else
+              Inspection.where('1=0')
+            end
+      end
+
       def find_all_inspections
-        @inspections = Inspection.order('position ASC')
+        @inspections = inspections_scope.order(inspection_date: :desc)
+      end
+
+      def find_inspection
+        @inspection = inspections_scope.find(params[:id])
+      rescue ::ActiveRecord::RecordNotFound
+        error_404
       end
 
       def find_page
-        @page = ::Refinery::Page.where(:link_url => "/quality_assurance").first
+        @page = ::Refinery::Page.find_authorized_by_link_url!(PAGE_INSPECTIONS_URL, current_authentication_devise_user)
+      rescue ::ActiveRecord::RecordNotFound
+        error_404
       end
 
     end

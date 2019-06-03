@@ -6,7 +6,7 @@ module Refinery
       extend ActiveSupport::Concern
 
       included do
-        class_attribute :allowed_page_roles
+        class_attribute :allowed_page_roles, :page_title
         self.allowed_page_roles = {}
 
         before_filter :find_and_auth_page
@@ -15,7 +15,7 @@ module Refinery
       end
 
       def find_and_auth_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/business/companies', current_authentication_devise_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!(page_title, current_authentication_devise_user)
         @auth_role_titles = @page.user_page_role_titles & action_roles
       rescue ::ActiveRecord::RecordNotFound
         error_404
@@ -33,6 +33,10 @@ module Refinery
 
 
       module ClassMethods
+
+        def set_page(title)
+          self.page_title = title
+        end
 
         def allow_page_roles(role, options = {})
           actions = options[:only] || ['*']

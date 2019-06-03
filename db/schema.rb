@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190528040510) do
+ActiveRecord::Schema.define(version: 20190603071414) do
+
+  create_table "activity_notifications", force: :cascade do |t|
+    t.integer  "target_id",       limit: 4,     null: false
+    t.string   "target_type",     limit: 255,   null: false
+    t.integer  "notifiable_id",   limit: 4,     null: false
+    t.string   "notifiable_type", limit: 255,   null: false
+    t.string   "key",             limit: 255,   null: false
+    t.integer  "group_id",        limit: 4
+    t.string   "group_type",      limit: 255
+    t.integer  "group_owner_id",  limit: 4
+    t.integer  "notifier_id",     limit: 4
+    t.string   "notifier_type",   limit: 255
+    t.text     "parameters",      limit: 65535
+    t.datetime "opened_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "activity_notifications", ["group_owner_id"], name: "index_activity_notifications_on_group_owner_id", using: :btree
+  add_index "activity_notifications", ["group_type", "group_id"], name: "index_notifications_on_group_id_and_type", using: :btree
+  add_index "activity_notifications", ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_id_and_type", using: :btree
+  add_index "activity_notifications", ["notifier_type", "notifier_id"], name: "index_notifications_on_notifier_id_and_type", using: :btree
+  add_index "activity_notifications", ["target_type", "target_id"], name: "index_notifications_on_target_id_and_type", using: :btree
 
   create_table "amqp_messages", force: :cascade do |t|
     t.string   "queue",       limit: 255,   null: false
@@ -42,6 +65,25 @@ ActiveRecord::Schema.define(version: 20190528040510) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "notifications_subscriptions", force: :cascade do |t|
+    t.integer  "target_id",                limit: 4,                    null: false
+    t.string   "target_type",              limit: 255,                  null: false
+    t.string   "key",                      limit: 255,                  null: false
+    t.boolean  "subscribing",                            default: true, null: false
+    t.boolean  "subscribing_to_email",                   default: true, null: false
+    t.datetime "subscribed_at"
+    t.datetime "unsubscribed_at"
+    t.datetime "subscribed_to_email_at"
+    t.datetime "unsubscribed_to_email_at"
+    t.text     "optional_targets",         limit: 65535
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+  end
+
+  add_index "notifications_subscriptions", ["key"], name: "index_notifications_subscriptions_on_key", using: :btree
+  add_index "notifications_subscriptions", ["target_type", "target_id", "key"], name: "index_subscriptions_on_target_id_type_and_key", unique: true, using: :btree
+  add_index "notifications_subscriptions", ["target_type", "target_id"], name: "index_subscriptions_on_target_id_and_type", using: :btree
 
   create_table "refinery_amqp_messages", force: :cascade do |t|
     t.string   "queue",       limit: 255,   null: false
@@ -1083,16 +1125,25 @@ ActiveRecord::Schema.define(version: 20190528040510) do
     t.text     "fields",                  limit: 65535
     t.string   "company_label",           limit: 255
     t.integer  "inspection_photo_id",     limit: 4
+    t.string   "company_code",            limit: 255
+    t.string   "supplier_code",           limit: 255
+    t.integer  "manufacturer_id",         limit: 4
+    t.string   "manufacturer_label",      limit: 255
+    t.string   "manufacturer_code",       limit: 255
   end
 
   add_index "refinery_quality_assurance_inspections", ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["business_product_id"], name: "index_qa_inspections_on_business_product_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["business_section_id"], name: "index_qa_inspections_on_business_section_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["company_code"], name: "index_qa_inspections_on_company_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["company_id"], name: "index_qa_inspections_on_company_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["document_id"], name: "index_qa_inspections_on_document_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_date"], name: "index_qa_inspections_on_inspection_date", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_photo_id"], name: "index_qa_inspections_on_inspection_photo_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_type"], name: "index_qa_inspections_on_inspection_type", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["manufacturer_code"], name: "index_qa_inspections_on_manufacturer_code", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["manufacturer_id"], name: "index_qa_inspections_on_manufacturer_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["manufacturer_label"], name: "index_qa_inspections_on_manufacturer_label", using: :btree
   add_index "refinery_quality_assurance_inspections", ["po_number"], name: "index_qa_inspections_on_po_number", using: :btree
   add_index "refinery_quality_assurance_inspections", ["po_qty"], name: "index_qa_inspections_on_po_qty", using: :btree
   add_index "refinery_quality_assurance_inspections", ["po_type"], name: "index_qa_inspections_on_po_type", using: :btree
@@ -1101,6 +1152,7 @@ ActiveRecord::Schema.define(version: 20190528040510) do
   add_index "refinery_quality_assurance_inspections", ["product_description"], name: "index_qa_inspections_on_product_description", using: :btree
   add_index "refinery_quality_assurance_inspections", ["resource_id"], name: "index_qa_inspections_on_resource_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["result"], name: "index_qa_inspections_on_result", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["supplier_code"], name: "index_qa_inspections_on_supplier_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["supplier_id"], name: "index_qa_inspections_on_supplier_id", using: :btree
 
   create_table "refinery_resource_translations", force: :cascade do |t|
