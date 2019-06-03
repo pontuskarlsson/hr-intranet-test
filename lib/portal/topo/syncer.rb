@@ -60,10 +60,10 @@ module Portal
       end
 
       def set_company!
-        if company.company_code.present? && (company = ::Refinery::Business::Company.find_by(code: company.company_code)).present?
+        if inspection.company_code.present? && (company = ::Refinery::Business::Company.find_by(code: inspection.company_code)).present?
           inspection.company = company
 
-        elsif company.company_label.present? && (company = ::Refinery::Business::Company.find_by(name: company.company_label)).present?
+        elsif inspection.company_label.present? && (company = ::Refinery::Business::Company.find_by(name: inspection.company_label)).present?
           inspection.company = company
 
         else
@@ -72,10 +72,10 @@ module Portal
       end
       
       def set_manufacturer!
-        if manufacturer.manufacturer_code.present? && (manufacturer = ::Refinery::Business::Company.find_by(code: manufacturer.manufacturer_code)).present?
+        if inspection.manufacturer_code.present? && (manufacturer = ::Refinery::Business::Company.find_by(code: inspection.manufacturer_code)).present?
           inspection.manufacturer = manufacturer
 
-        elsif manufacturer.manufacturer_label.present? && (manufacturer = ::Refinery::Business::Company.find_by(name: manufacturer.manufacturer_label)).present?
+        elsif inspection.manufacturer_label.present? && (manufacturer = ::Refinery::Business::Company.find_by(name: inspection.manufacturer_label)).present?
           inspection.manufacturer = manufacturer
 
         else
@@ -84,10 +84,10 @@ module Portal
       end
 
       def set_supplier!
-        if supplier.supplier_code.present? && (supplier = ::Refinery::Business::Company.find_by(code: supplier.supplier_code)).present?
+        if inspection.supplier_code.present? && (supplier = ::Refinery::Business::Company.find_by(code: inspection.supplier_code)).present?
           inspection.supplier = supplier
 
-        elsif supplier.supplier_label.present? && (supplier = ::Refinery::Business::Company.find_by(name: supplier.supplier_label)).present?
+        elsif inspection.supplier_label.present? && (supplier = ::Refinery::Business::Company.find_by(name: inspection.supplier_label)).present?
           inspection.supplier = supplier
 
         else
