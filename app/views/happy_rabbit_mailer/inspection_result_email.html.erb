@@ -14,7 +14,7 @@
       <table>
         <tbody>
         <tr>
-          <th>Result</th>
+          <th style="width: 100px;">Result</th>
           <td style="font-weight: bold;">
             <% if @inspection.result == 'Pass' %>
               <span style="color: green;">Pass</span>
@@ -26,7 +26,17 @@
           </td>
         </tr>
         <tr>
-          <th style="width: 100px;">Customer</th>
+          <th>Inspection Date</th>
+          <td>
+            <% if @inspection.inspection_date.present? %>
+              <%= @inspection.inspection_date.strftime('%b %e, %Y (%a)') %>
+            <% else %>
+              &nbsp;
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <th>Customer</th>
           <td><%= @inspection.company_label %></td>
         </tr>
         <tr>

@@ -126,7 +126,13 @@ module Portal
             inspection_photo
 
           else
-            image = create_image!(inspection, topo_file['url'], topo_file['fileId'])
+            image =
+                begin
+                  create_image!(inspection, topo_file['url'], topo_file['fileId'])
+                rescue Dragonfly::Serializer::MaliciousString => e
+                  # Try again
+                  create_image!(inspection, topo_file['url'], topo_file['fileId'])
+                end
             inspection_photo = inspection.inspection_photos.build(
                 file_id: topo_file['fileId'],
                 image_id:image.id
@@ -152,7 +158,12 @@ module Portal
         raise 'Inspection must be saved before creating a resource' unless inspection.persisted?
 
         @resource = Array(topo_exports).select { |te| te['type'] == 'application/pdf' }.each do |topo_export|
-          inspection.resource = create_resource!(inspection, topo_export['url'], topo_export['name'])
+          begin
+            inspection.resource = create_resource!(inspection, topo_export['url'], topo_export['name'])
+          rescue Dragonfly::Serializer::MaliciousString => e
+            # Try again, this could be caused by a timeout or something similar
+            inspection.resource = create_resource!(inspection, topo_export['url'], topo_export['name'])
+          end
         end
       end
 

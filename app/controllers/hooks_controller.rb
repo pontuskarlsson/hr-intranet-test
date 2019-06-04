@@ -12,7 +12,7 @@ class HooksController < ApplicationController
     elsif @webhook == 'wip'
       parse_wip
     elsif @webhook == 'topo'
-      parse_topo
+      parse_topo unless request.delete?
     end
 
     render text: 'success', status: :ok
