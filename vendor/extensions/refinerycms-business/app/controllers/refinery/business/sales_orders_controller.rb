@@ -1,9 +1,12 @@
 module Refinery
   module Business
     class SalesOrdersController < ::ApplicationController
+      include Refinery::PageRoles::AuthController
+
+      set_page PAGE_SALES_ORDERS_URL
+      allow_page_roles ROLE_INTERNAL
 
       before_filter :find_all_sales_orders
-      before_filter :find_page
       before_filter :find_sales_order, except: [:index, :new, :create]
 
       def index
@@ -24,12 +27,6 @@ module Refinery
 
       def find_all_sales_orders
         @sales_orders = SalesOrder.order('position ASC')
-      end
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/business/sales_orders', current_authentication_devise_user)
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
       end
 
       def find_sales_order

@@ -1,9 +1,12 @@
 module Refinery
   module Business
     class BudgetsController < ::ApplicationController
+      include Refinery::PageRoles::AuthController
+
+      set_page PAGE_BUDGETS_URL
+      allow_page_roles ROLE_INTERNAL
 
       before_filter :find_all_budgets
-      before_filter :find_page
       before_filter :find_budget, except: [:index, :new, :create]
 
       def index
@@ -47,12 +50,6 @@ module Refinery
 
       def find_all_budgets
         @budgets = Budget.order('position ASC')
-      end
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/business/budgets', current_authentication_devise_user)
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
       end
 
       def find_budget

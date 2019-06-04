@@ -3,6 +3,7 @@ module Refinery
     class ProjectsController < ::ApplicationController
       include Refinery::PageRoles::AuthController
 
+      set_page PAGE_PROJECTS_URL
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL
 
@@ -54,13 +55,6 @@ module Refinery
 
       def find_project
         @project = project_scope.find(params[:id])
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
-      end
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/business/projects', current_authentication_devise_user)
-        @role_titles = @page.user_page_role_titles
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end
