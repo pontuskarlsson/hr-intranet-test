@@ -9,14 +9,16 @@ module Refinery
 
       serialize :fields, Hash
 
-      belongs_to :company,  class_name: 'Refinery::Business::Company'
+      belongs_to :business_product,   class_name: 'Refinery::Business::Product'
+      belongs_to :business_section,   class_name: 'Refinery::Business::Section'
+      belongs_to :company,            class_name: 'Refinery::Business::Company'
       belongs_to :inspection_photo
-      belongs_to :manufacturer,  class_name: 'Refinery::Business::Company'
-      belongs_to :resource, class_name: 'Refinery::Resource'
-      belongs_to :supplier,  class_name: 'Refinery::Business::Company'
-      has_many :inspection_defects, dependent: :destroy
-      has_many :defects, through: :inspection_defects
-      has_many :inspection_photos, dependent: :destroy
+      belongs_to :manufacturer,       class_name: 'Refinery::Business::Company'
+      belongs_to :resource,           class_name: 'Refinery::Resource'
+      belongs_to :supplier,           class_name: 'Refinery::Business::Company'
+      has_many :inspection_defects,   dependent: :destroy
+      has_many :defects,              through: :inspection_defects
+      has_many :inspection_photos,    dependent: :destroy
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
@@ -26,6 +28,14 @@ module Refinery
       validates :inspection_type, inclusion: INSPECTION_TYPES, allow_blank: true
       validates :po_type,         inclusion: PO_TYPES, allow_blank: true
       validates :document_id,     uniqueness: true, allow_blank: true
+
+      validate do
+        if business_section.present?
+          unless company.present? && business_section.try(:company) == company
+            errors.add(:busniess_section_id, :invalid)
+          end
+        end
+      end
       
       before_save do
         if company.present?

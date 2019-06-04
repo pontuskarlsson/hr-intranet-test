@@ -9,9 +9,9 @@ module Refinery
 
       before_action :find_all_inspections,  only: [:index]
       before_action :find_inspection,       except: [:index, :new, :create]
-      before_action :find_page
 
       def index
+        @inspections = @inspections.where(filter_params)
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @quality_assurance in the line below:
         present(@page)
@@ -48,10 +48,8 @@ module Refinery
         error_404
       end
 
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!(PAGE_INSPECTIONS_URL, current_authentication_devise_user)
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
+      def filter_params
+        params.permit([:company_id, :manufacturer_id, :supplier_id, :business_section_id, :business_product_id])
       end
 
     end

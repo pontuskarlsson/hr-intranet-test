@@ -6,7 +6,6 @@ Refinery::Core::Engine.routes.draw do
     resources :companies, :only => [:index, :show, :create] do
       member do
         get :shipments
-        get :inspections
       end
     end
     resources :projects, :only => [:index, :show, :new, :create]

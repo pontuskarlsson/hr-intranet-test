@@ -1,33 +1,111 @@
 <% content_for :body do %>
-  <div class="cell">
-    <table>
-      <thead>
-      <tr>
-        <th></th>
-        <th>Inspected</th>
-        <th>Result</th>
-        <th>PO</th>
-        <th>Style</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @inspections.each do |inspection| %>
-        <tr>
-          <td>
-            <%= link_to refinery.quality_assurance_inspection_path(inspection) do %>
-              <i class="fa fa-arrow-right"></i>
-            <% end %>
-          </td>
-          <td><%= time_ago_in_words inspection.inspection_date %> ago</td>
-          <td style="color: <%= inspection.result == 'Pass' ? 'green' : inspection.result == 'Reject' ? 'red' : 'black' %>"><%= inspection.result %></td>
-          <td><%= inspection.po_number %></td>
-          <td><%= inspection.product_label %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <h2>Inspections</h2>
+    </div>
 
+    <div class="cell medium-6">
+      <div class="card portal-card">
+        <div class="card-divider">
+          <h5>
+            <i class="fa fa-check-circle"></i>
+            Pass rate
+          </h5>
+        </div>
+
+        <div class="card-section">
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-6">
+              <h6>By Qty</h6>
+              <%= pie_chart @inspections.pass_rate_qty, id: 'chart-pass-rate-qty' %>
+            </div>
+
+            <div class="cell medium-6">
+              <h6>By no. of inspections</h6>
+              <%= pie_chart @inspections.pass_rate_inspections, id: 'chart-pass-rate-count' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cell">
+      <h4>All inspections</h4>
+
+      <table class="display js_inspections_data_table" cellspacing="0" style="width: 100%;">
+        <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Customer</th>
+          <th>Supplier</th>
+          <th>Manufacturer</th>
+          <th>Inspected</th>
+          <th>Type</th>
+          <th>Result</th>
+          <th>PO</th>
+          <th>Style</th>
+        </tr>
+        </thead>
+
+        <tfoot>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Customer</th>
+          <th>Supplier</th>
+          <th>Manufacturer</th>
+          <th>Inspected</th>
+          <th>Type</th>
+          <th>Result</th>
+          <th>PO</th>
+          <th>Style</th>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      var $dt = $('.js_inspections_data_table').dataTable({
+        "scrollCollapse": true,
+        "paging":         true,
+        "data":           <%= @inspections.order(inspection_date: :desc).to_json(only: [:id, :company_label, :supplier_label, :manufacturer_label, :inspection_date, :inspection_type, :result, :po_number, :po_qty], methods: [:product_label]).html_safe %>,
+        "columns": [
+          { data: "id", "width": '5%', "render": function(data, type, row) {
+            const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
+            const className = 'fa fa-arrow-right';
+            return $('<a></a>')
+              .attr('href', href)
+              .html('<i class="' + className + '"></i>')
+              .prop('outerHTML');
+          } },
+          { data: "company_label", "width": '10%' },
+          { data: "supplier_label", "width": '10%' },
+          { data: "manufacturer_label", "width": '10%' },
+          { data: "inspection_date", "width": '10%' },
+          { data: "inspection_type", "width": '10%' },
+          { data: "result", "width": '10%' },
+          { data: "po_number", "width": '10%' },
+          { data: "product_label", "width": '10%' }
+        ]
+      }).on('draw.dt', function() {
+        var chart = Chartkick.charts['chart-pass-rate-qty'];
+        var data = $dt.api().data().reduce(function(acc, dataRow) {
+          acc[dataRow.result] = (acc[dataRow.result] || 0) + dataRow.po_qty;
+          return acc;
+        }, {});
+        chart.updateData(data);
+      });
+    });
+  </script>
 <% end %>
 
 <%= render '/refinery/content_page' %>

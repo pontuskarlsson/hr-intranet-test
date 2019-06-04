@@ -14,6 +14,18 @@
       <table>
         <tbody>
         <tr>
+          <th>Result</th>
+          <td style="font-weight: bold;">
+            <% if @inspection.result == 'Pass' %>
+              <span style="color: green;">Pass</span>
+            <% elsif @inspection.result == 'Reject' %>
+              <span style="color: red;">Reject</span>
+            <% else %>
+              <%= @inspection.result %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
           <th style="width: 100px;">Customer</th>
           <td><%= @inspection.company_label %></td>
         </tr>
@@ -60,18 +72,6 @@
         <tr>
           <th>Sample Size</th>
           <td><%= number_with_delimiter @inspection.inspection_sample_size %></td>
-        </tr>
-        <tr>
-          <th>Result</th>
-          <td>
-            <% if @inspection.result == 'Pass' %>
-              <span style="color: green;">Pass</span>
-            <% elsif @inspection.result == 'Reject' %>
-              <span style="color: red;">Reject</span>
-            <% else %>
-              <%= @inspection.result %>
-            <% end %>
-          </td>
         </tr>
         </tbody>
       </table>
