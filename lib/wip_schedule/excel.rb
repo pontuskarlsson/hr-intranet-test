@@ -152,7 +152,7 @@ module WipSchedule
 
       elsif ['1st Conf. Ex. Fact. Date', 'Vendor Conf. PO Price / SKU'].include? column
         # These columns are only allowed to be updated if the row value is blank
-        value(order, column).present?
+        value(order, column).blank?
 
       else
         true
