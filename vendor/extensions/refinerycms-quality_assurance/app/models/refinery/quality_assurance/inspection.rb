@@ -73,7 +73,7 @@ module Refinery
       end
 
       def self.pass_rate_qty
-        select('SUM(po_qty) as sum_qty, result').group('result').each_with_object({}) { |insp, acc|
+        select('SUM(po_qty) as sum_qty, result').group('result').each_with_object({ 'Pass' => 0, 'Reject' => 0, 'Hold' => 0 }) { |insp, acc|
           acc[insp.result] = insp.sum_qty
         }
       end

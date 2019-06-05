@@ -1,74 +1,77 @@
 module WipSchedule
   class Excel
+    
+    PATTERN_READ_ONLY = { pattern_fg_color: :silver, pattern: 1 }.freeze
 
     COLUMNS = {
-        "id" => { column: { hidden: true } },
-        "Project Code" => { column: { width: '30' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Customer PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-        "PO Line Item" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-        "HR PO#" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Order Date" => { format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Order Type" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Order Status" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+        "id" =>                           { column: { hidden: true } },
+        "Project Code" =>                 { column: { width: '30' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Customer PO#" =>                 { column: { width: '15' }, type: :text,     format: PATTERN_READ_ONLY },
+        "PO Line Item" =>                 { column: { width: '15' }, type: :text,     format: PATTERN_READ_ONLY },
+        "HR PO#" =>                       { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Order Date" =>                   { column: { width: '10' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Order Type" =>                   { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Order Status" =>                 { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
 
-        "Style No" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Style Name" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Description" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Theme" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Colour Name" => { column: { width: '20' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+        "Style No" =>                     { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Style Name" =>                   { column: { width: '20' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Description" =>                  { column: { width: '20' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Theme" =>                        { column: { width: '20' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Colour Name" =>                  { column: { width: '20' }, type: :text,     format: PATTERN_READ_ONLY },
 
-        "Orig. Qty" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Rev. Qty" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Act. Qty" => { column: { width: '10' }, type: :number },
+        "Orig. Qty" =>                    { column: { width: '10' }, type: :number,   format: PATTERN_READ_ONLY },
+        "Rev. Qty" =>                     { column: { width: '10' }, type: :number,   format: PATTERN_READ_ONLY },
+        "Act. Qty" =>                     { column: { width: '10' }, type: :number },
 
-        "Customer PO Currency" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Customer PO Price / SKU" => { format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Customer PO Total Cost" => { format: { pattern_fg_color: :silver, pattern: 1 } },
+        "Customer PO Currency" =>         { column: { width: '15' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Customer PO Price / SKU" =>      { column: { width: '15' }, type: :currency, format: PATTERN_READ_ONLY },
+        "Customer PO Total Cost" =>       { column: { width: '15' }, type: :currency, format: PATTERN_READ_ONLY },
+        "Vendor Conf. PO Price / SKU" =>  { column: { width: '15' }, type: :currency },
 
-        "Ship To" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Ship Mode" => { column: { width: '10' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Vendor PI#" => { column: { width: '15' } },
-        "Vendor Invoice#" => { column: { width: '15' } },
+        "Ship To" =>                      { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Ship Mode" =>                    { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Vendor PI#" =>                   { column: { width: '15' }, type: :text },
+        "Vendor Invoice#" =>              { column: { width: '15' }, type: :text },
 
-        "Req. Ex. Fact. Date" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "1st Conf. Ex. Fact. Date" => { column: { width: '15' }, type: :date },
-        "Re-Negoti. Ex. Fact. Date" => { column: { width: '15' }, type: :date },
+        "Req. Ex. Fact. Date" =>          { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "1st Conf. Ex. Fact. Date" =>     { column: { width: '15' }, type: :date },
+        "Re-Negoti. Ex. Fact. Date" =>    { column: { width: '15' }, type: :date },
 
-        "Orig: Trims In-House" => { column: { width: '15' }, type: :date },
-        "Upd: Trims In-House" => { column: { width: '15' }, type: :date },
-        "Act: Trims In-House" => { column: { width: '15' }, type: :date },
+        "Orig: Trims In-House" =>         { column: { width: '15' }, type: :date },
+        "Upd: Trims In-House" =>          { column: { width: '15' }, type: :date },
+        "Act: Trims In-House" =>          { column: { width: '15' }, type: :date },
 
-        "Orig: Fabric In-House" => { column: { width: '15' }, type: :date },
-        "Upd: Fabric In-House" => { column: { width: '15' }, type: :date },
-        "Act: Fabric In-House" => { column: { width: '15' }, type: :date },
+        "Orig: Fabric In-House" =>        { column: { width: '15' }, type: :date },
+        "Upd: Fabric In-House" =>         { column: { width: '15' }, type: :date },
+        "Act: Fabric In-House" =>         { column: { width: '15' }, type: :date },
 
-        "Orig: Cutting Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Upd: Cutting Complete" => { column: { width: '15' }, type: :date },
-        "Act: Cutting Complete" => { column: { width: '15' }, type: :date },
+        "Orig: Cutting Complete" =>       { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Upd: Cutting Complete" =>        { column: { width: '15' }, type: :date },
+        "Act: Cutting Complete" =>        { column: { width: '15' }, type: :date },
 
-        "Orig: Sewing Complete" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Upd: Sewing Complete" => { column: { width: '15' }, type: :date },
-        "Act: Sewing Complete" => { column: { width: '15' }, type: :date },
+        "Orig: Sewing Complete" =>        { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Upd: Sewing Complete" =>         { column: { width: '15' }, type: :date },
+        "Act: Sewing Complete" =>         { column: { width: '15' }, type: :date },
 
-        "Orig: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Upd: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Act: Shipping Booked" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Freight Forwarder" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "Shipment Reference" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
-        "FOB INCO Terms (Quotation)" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 } },
+        "Orig: Shipping Booked" =>        { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Upd: Shipping Booked" =>         { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Act: Shipping Booked" =>         { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Freight Forwarder" =>            { column: { width: '15' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Shipment Reference" =>           { column: { width: '15' }, type: :text,     format: PATTERN_READ_ONLY },
+        "FOB INCO Terms (Quotation)" =>   { column: { width: '15' }, type: :text,     format: PATTERN_READ_ONLY },
 
-        "Orig: Final Inspection" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Upd: Final Inspection" => { column: { width: '15' }, type: :date },
-        "Act: Final Inspection" => { column: { width: '15' }, type: :date },
+        "Orig: Final Inspection" =>       { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Upd: Final Inspection" =>        { column: { width: '15' }, type: :date },
+        "Act: Final Inspection" =>        { column: { width: '15' }, type: :date },
 
-        "Orig: Shipment Sample Sent" => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Upd: Shipment Sample Sent" => { column: { width: '15' }, type: :date },
-        "Act: Shipment Sample Sent" => { column: { width: '15' }, type: :date },
+        "Orig: Shipment Sample Sent" =>   { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Upd: Shipment Sample Sent" =>    { column: { width: '15' }, type: :date },
+        "Act: Shipment Sample Sent" =>    { column: { width: '15' }, type: :date },
 
-        "Orig: Ex. Fact." => { column: { width: '15' }, format: { pattern_fg_color: :silver, pattern: 1 }, type: :date },
-        "Upd: Ex. Fact." => { column: { width: '15' }, type: :date },
-        "Act: Ex. Fact." => { column: { width: '15' }, type: :date },
-        "Comments" => { column: { width: '30' } }
+        "Orig: Ex. Fact." =>              { column: { width: '15' }, type: :date,     format: PATTERN_READ_ONLY },
+        "Upd: Ex. Fact." =>               { column: { width: '15' }, type: :date },
+        "Act: Ex. Fact." =>               { column: { width: '15' }, type: :date },
+        "Comments" =>                     { column: { width: '30' }, type: :text }
     }.freeze
 
     ALLOW_UPDATES = [
@@ -76,6 +79,8 @@ module WipSchedule
 
         "Vendor PI#",
         "Vendor Invoice#",
+
+        "Vendor Conf. PO Price / SKU",
 
         "1st Conf. Ex. Fact. Date",
         "Re-Negoti. Ex. Fact. Date",
@@ -127,14 +132,31 @@ module WipSchedule
 
         format = options[:format] || {}
 
-        if should_alert order, column
-          format = value(order, column).present? ? format.merge(color: :red) : format.merge(pattern_fg_color: :red, pattern: 1)
+        if allow_updates? column, order
+          if should_alert order, column
+            format = value(order, column).present? ? format.merge(color: :red) : format.merge(pattern_fg_color: :red, pattern: 1)
+          end
+        else
+          format = format.merge(PATTERN_READ_ONLY)
         end
 
         set_format column_i, format
       end
 
       @next_row_idx += 1
+    end
+
+    def allow_updates?(column, order)
+      if !ALLOW_UPDATES.include?(column)
+        false
+
+      elsif ['1st Conf. Ex. Fact. Date', 'Vendor Conf. PO Price / SKU'].include? column
+        # These columns are only allowed to be updated if the row value is blank
+        value(order, column).present?
+
+      else
+        true
+      end
     end
     
     def set_value(col_idx, value)
@@ -177,11 +199,10 @@ module WipSchedule
     def should_alert(order, column)
       # Do not alert anything if order already have an Act. Ex. Fact date
       return false if value(order, 'Act: Ex. Fact.').present?
-      return false unless ALLOW_UPDATES.include?(column)
 
       if value(order, 'Order Status') == 'REQUESTED'
-        # If the order status is requested, then we only
-        if column == '1st Conf. Ex. Fact. Date'
+        # If the order status is requested, we only require confirmed ex. factory and PO price from vendor.
+        if ['1st Conf. Ex. Fact. Date', 'Vendor Conf. PO Price / SKU'].include? column
           value(order, column).blank?
         else
           false

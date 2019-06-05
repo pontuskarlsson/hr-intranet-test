@@ -17,12 +17,7 @@
           <div class="grid-x grid-padding-x">
             <div class="cell medium-6">
               <h6>By Qty</h6>
-              <%= pie_chart @inspections.pass_rate_qty, id: 'chart-pass-rate-qty' %>
-            </div>
-
-            <div class="cell medium-6">
-              <h6>By no. of inspections</h6>
-              <%= pie_chart @inspections.pass_rate_inspections, id: 'chart-pass-rate-count' %>
+              <%= pie_chart @inspections.pass_rate_qty, thousands: ',', colors: ['#3adb76', '#cc4b37', '#ffae00'], id: 'chart-pass-rate-qty' %>
             </div>
           </div>
         </div>
@@ -98,10 +93,10 @@
         ]
       }).on('draw.dt', function() {
         var chart = Chartkick.charts['chart-pass-rate-qty'];
-        var data = $dt.api().data().reduce(function(acc, dataRow) {
+        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
           acc[dataRow.result] = (acc[dataRow.result] || 0) + dataRow.po_qty;
           return acc;
-        }, {});
+        }, { 'Pass': 0, 'Reject': 0, 'Hold': 0 });
         chart.updateData(data);
       });
     });
