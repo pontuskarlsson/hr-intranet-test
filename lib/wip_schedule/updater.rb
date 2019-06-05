@@ -77,8 +77,12 @@ module WipSchedule
           column_value = value_from_excel excel_order, col
 
           if column_value != at_order[col]
-            changed_fields[col] = column_value
-            @results[:orders][order_id][:updates][col] = { from: at_order[col].to_s, to: changed_fields[col].to_s }
+            if WipSchedule::Excel::ONLY_IF_BLANK.include?(col) && at_order[col].present?
+              @results[:orders][order_id][:updates][col] = { error: "Tried to change #{col} from #{at_order[col].to_s} to #{changed_fields[col].to_s}. This is not allowed." }
+            else
+              changed_fields[col] = column_value
+              @results[:orders][order_id][:updates][col] = { from: at_order[col].to_s, to: changed_fields[col].to_s }
+            end
           end
         rescue StandardError => e
           @results[:orders][order_id][:updates][col] = { error: "Invalid value: #{excel_order[WipSchedule::Excel::COLUMNS.keys.index(col)]}" }

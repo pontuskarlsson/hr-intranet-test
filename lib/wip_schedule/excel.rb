@@ -111,6 +111,13 @@ module WipSchedule
         "Comments"
     ]
 
+    ONLY_IF_BLANK = [
+        "Vendor Conf. PO Price / SKU",
+        "1st Conf. Ex. Fact. Date",
+        "Orig: Trims In-House",
+        "Orig: Fabric In-House"
+    ]
+
 
     ORDER_WORKSHEET = 'Orders'
 
@@ -147,16 +154,7 @@ module WipSchedule
     end
 
     def allow_updates?(column, order)
-      if !ALLOW_UPDATES.include?(column)
-        false
-
-      elsif ['1st Conf. Ex. Fact. Date', 'Vendor Conf. PO Price / SKU'].include? column
-        # These columns are only allowed to be updated if the row value is blank
-        value(order, column).blank?
-
-      else
-        true
-      end
+      ALLOW_UPDATES.include?(column) && (!ONLY_IF_BLANK.include?(column) || value(order, column).blank?)
     end
     
     def set_value(col_idx, value)
