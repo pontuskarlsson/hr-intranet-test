@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
   layout 'public'
 
-  #skip_before_filter :authenticate_authentication_devise_user!
+  before_filter :redirect_external
 
   def index
 
@@ -29,6 +29,14 @@ class HomeController < ApplicationController
 
   def terms_conditions
 
+  end
+
+  private
+
+  def redirect_external
+    unless current_authentication_devise_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
+      redirect_to refinery.root_path
+    end
   end
 
 end
