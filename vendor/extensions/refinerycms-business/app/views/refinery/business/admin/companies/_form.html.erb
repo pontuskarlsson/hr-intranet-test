@@ -18,6 +18,25 @@
     <%= f.text_field :name -%>
   </div>
 
+  <h5 style="margin-bottom: 0;">Company Users</h5>
+  <% @company.company_users.each_with_index do |company_user, i| %>
+    <%= f.fields_for :company_users, company_user, child_index: i do |cu_form| %>
+      <div class='field'>
+        <%= cu_form.label :_destroy, style: 'margin-top: 0;' do -%>
+          <%= company_user.user.full_name %> (<%= company_user.user.email %>)
+          <%= cu_form.check_box :_destroy -%>
+          Remove
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= f.fields_for :company_users, ::Refinery::Business::CompanyUser.new, child_index: @company.company_users.length do |cu_form| %>
+    <div class='field'>
+      <%= cu_form.text_field :new_user_email, class: 'js_user_field', placeholder: 'Add user' -%>
+    </div>
+  <% end %>
+
   <%= render '/refinery/admin/form_actions', :f => f,
              :continue_editing => false,
              :delete_title => t('delete', :scope => 'refinery.business.admin.companies.company'),
@@ -31,6 +50,10 @@
 
       $('.js_contact_field').autocomplete({
         source: <%= ::Refinery::Marketing::Contact.organisations.to_source %>
+      });
+
+      $('.js_user_field').autocomplete({
+        source: <%= ::Refinery::Authentication::Devise::User.pluck(:email).to_json.html_safe %>
       });
     });
   </script>

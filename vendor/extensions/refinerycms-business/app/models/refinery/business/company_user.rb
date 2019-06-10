@@ -5,12 +5,20 @@ module Refinery
 
       ROLES = %w(Owner Manager)
 
+      attr_accessor :new_user_email
+
       belongs_to :company
       belongs_to :user, class_name: 'Refinery::Authentication::Devise::User'
 
       validates :company_id,    presence: true
       validates :user_id,       presence: true, uniqueness: { scope: :company_id }
       validates :role,          inclusion: ROLES, allow_nil: true
+
+      before_validation(on: :create) do
+        if new_user_email.present?
+          self.user = Refinery::Authentication::Devise::User.find_by(email: new_user_email)
+        end
+      end
 
     end
   end

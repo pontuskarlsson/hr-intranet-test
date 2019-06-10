@@ -1,0 +1,15 @@
+<%- @inspection = @notification.notifiable -%>
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>We have just completed an inspection. Please see a summary below.</p>
+
+<p>For more details, <%= link_to "see inspection on our Portal", move_notification_url_for(@notification, open: true) %>.</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<%= render 'inspection', inspection: @inspection %>
+
+

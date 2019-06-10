@@ -14,7 +14,7 @@
       <li><a href="/portal">Dashboard</a></li>
 
       <% header_menu_items.roots.each do |root| %>
-        <% if root.has_children? %>
+        <% if root.children.any? %>
           <li class="has-submenu">
             <%= link_to root.title, refinery.url_for(root.url) %>
             <ul class="submenu menu vertical">
@@ -31,23 +31,6 @@
   </div>
 
   <div class="top-bar-right">
-    <ul class="dropdown menu" data-dropdown-menu>
-      <% if authentication_devise_user_signed_in? %>
-        <li class="has-submenu">
-          <a href="#"><%= current_authentication_devise_user.full_name %></a>
-          <ul class="submenu menu vertical">
-            <li><%= link_to 'My Profile', '/my_profile' %></li>
-            <% if current_authentication_devise_user.has_role?(:superuser) %>
-              <li><%= link_to 'Refinery', '/portal/refinery' %></li>
-            <% end %>
-            <li><%= link_to 'SIGN OUT', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
-          </ul>
-        </li>
-      <% else %>
-        <li class="has-form">
-          <%= link_to 'SIGN IN', new_session_path('authentication_devise_user'), class: 'button radius' %>
-        </li>
-      <% end %>
-    </ul>
+    <%= render 'refinery/user_menu' %>
   </div>
 </div>

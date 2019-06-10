@@ -7,7 +7,7 @@ module Refinery
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL
 
-      before_action :find_all_inspections,  only: [:index]
+      before_action :find_all_inspections,  only: [:index, :show]
       before_action :find_inspection,       except: [:index, :new, :create]
 
       def index
@@ -18,7 +18,7 @@ module Refinery
       end
 
       def show
-        @inspection = Inspection.find(params[:id])
+        @similar_inspections = @inspections.similar_to(@inspection).recent(10)
 
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @quality_assurance in the line below:

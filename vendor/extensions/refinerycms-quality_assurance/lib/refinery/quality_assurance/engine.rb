@@ -6,6 +6,15 @@ module Refinery
 
       engine_name :refinery_quality_assurance
 
+      initializer 'resource-authorization-hooks-for-business-engine' do |app|
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::QualityAssurance::ROLE_INTERNAL
+
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::QualityAssurance::ROLE_EXTERNAL do |user, conditions|
+          inspection = Inspection.find conditions[:inspection_id]
+          user.company_ids.include? inspection.company_id
+        end
+      end
+
       before_inclusion do
         Refinery::Plugin.register do |plugin|
           plugin.name = "quality_assurance"

@@ -23,6 +23,7 @@ module Refinery
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
       #   acts_as_indexed :fields => [:title]
+      acts_as_indexed :fields => [:company_label, :supplier_label, :manufacturer_label, :po_number, :result, :product_code, :product_description]
 
       validates :result,          inclusion: RESULTS, allow_blank: true
       validates :inspection_type, inclusion: INSPECTION_TYPES, allow_blank: true
@@ -54,6 +55,7 @@ module Refinery
       
       scope :recent, -> (no_of_records) { order(inspection_date: :desc).limit(no_of_records) }
       scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
+      scope :similar_to, -> (inspection) { where.not(id: inspection.id).where(inspection.attributes.slice('company_id', 'supplier_id')) }
 
       def self.top_defects
         inspection_ids = where(nil).pluck(:id)
@@ -105,6 +107,26 @@ module Refinery
         inspection_defects.includes(:defect).each_with_object({}) { |inspection_defect, acc|
           acc[inspection_defect.defect.try(:label) || 'Unknown'] = [inspection_defect.critical, inspection_defect.major, inspection_defect.minor].sum
         }
+      end
+
+      def pass?
+        result == 'Pass'
+      end
+
+      def hold?
+        result == 'Hold'
+      end
+
+      def reject?
+        result == 'Reject'
+      end
+
+      def display_inspection_date(format = '%b %e, %Y (%a)')
+        if inspection_date.present?
+          inspection_date.strftime(format)
+        else
+          '&nbsp;'.html_safe
+        end
       end
 
     end

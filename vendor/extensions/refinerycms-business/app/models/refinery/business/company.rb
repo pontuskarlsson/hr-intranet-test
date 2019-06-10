@@ -13,6 +13,10 @@ module Refinery
       has_many :projects,       dependent: :destroy
       has_many :users,          through: :company_users
 
+      accepts_nested_attributes_for :company_users, reject_if: :all_blank, allow_destroy: true
+
+      acts_as_indexed :fields => [:code, :name]
+
       validates :name,          presence: true, uniqueness: true
       validates :code,          presence: true, uniqueness: true
       validates :contact_id,    presence: true, uniqueness: true

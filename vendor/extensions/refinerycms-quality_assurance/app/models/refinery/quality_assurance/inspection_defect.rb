@@ -26,6 +26,16 @@ module Refinery
         inspection.recalculate_defects!
       end
 
+      def display_can_fix
+        if can_fix.nil?
+          'N/A'
+        elsif can_fix
+          'Yes'
+        else
+          'No'
+        end
+      end
+
     end
   end
 end

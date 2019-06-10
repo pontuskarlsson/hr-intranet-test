@@ -65,25 +65,7 @@
     </ul>
   </div>
   <div class="top-bar-right">
-    <% if authentication_devise_user_signed_in? %>
-      <ul class="dropdown menu" data-dropdown-menu>
-        <li class="has-submenu">
-          <a href="#"><%= current_authentication_devise_user.full_name %></a>
-          <ul class="submenu menu vertical">
-            <li><%= link_to 'My Profile', '/my_profile' %></li>
-            <% if current_authentication_devise_user.has_role?(:superuser) %>
-              <li><%= link_to 'Refinery', '/portal/refinery' %></li>
-            <% end %>
-            <li><%= link_to 'Logout', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
-          </ul>
-        </li>
-        <li><%= link_to 'PORTAL', '/portal', class: 'button' %></li>
-      </ul>
-    <% else %>
-      <ul class="menu">
-        <li><%= link_to 'Login', new_session_path('authentication_devise_user'), class: 'button' %></li>
-      </ul>
-    <% end %>
+    <%= render 'refinery/user_menu' %>
   </div>
 </div>
 

@@ -1,7 +1,13 @@
 <% content_for :notification_content, flush: true do %>
   <div class='notification_list <%= notification.opened? ? "opened" : "unopened" %>'>
     <div class="notification_list_cover"></div>
-    <div class="list_image"></div>
+    <div class="list_image">
+      <% if notification.notifier.present? %>
+
+      <% else %>
+        <%= image_tag 'happy-rabbit' %>
+      <% end %>
+    </div>
     <div class="list_text_wrapper">
       <p class="list_text">
         <strong><%= notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Happy Rabbit' %></strong>
@@ -32,7 +38,7 @@
   </div>
 <% end %>
 
-<div class='<%= "notification_#{notification.id}" %>'>
+<div class='<%= "notification_#{notification.id}" %> notification'>
   <% if notification.unopened? %>
     <%= link_to open_notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :post, remote: true, class: "unopened_wrapper" do %>
       <div class="unopned_circle"></div>
@@ -58,6 +64,8 @@
     <%#= link_to "Open (Ajax)", open_notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :post, remote: true %>
   <%# end %>
   <%#= link_to "Destroy", notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(index_options: @index_options)), method: :delete %>
-  <%#= link_to "Destroy (Ajax)", notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :delete, remote: true %>
+  <%= link_to notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :delete, remote: true, class: "trash_wrapper" do %>
+    <i class="fa fa-trash"></i>
+  <% end %>
 
 </div>

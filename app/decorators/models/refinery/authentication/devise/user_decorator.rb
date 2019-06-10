@@ -9,11 +9,7 @@ Refinery::Authentication::Devise::User.class_eval do
 
   devise :password_expirable, :expire_password_after => 10.years
 
-  acts_as_target devise_resource: :authentication_devise_user
-
-  def notification_email_allowed?(target, key)
-    email == 'daniel@happyrabbit.com'
-  end
+  acts_as_target devise_resource: :authentication_devise_user, email: :email, email_allowed: true
 
   def printable_name
     full_name

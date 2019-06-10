@@ -39,7 +39,7 @@ ActivityNotification.configure do |config|
   # config.mailer = "ActivityNotification::Mailer"
 
   # Configure the parent class responsible to send e-mails.
-  # config.parent_mailer = 'ActionMailer::Base'
+  config.parent_mailer = 'NotificationMailer'
 
   # Configure the parent job class for delayed notifications.
   # config.parent_job = 'ActiveJob::Base'

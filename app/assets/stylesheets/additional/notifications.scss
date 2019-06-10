@@ -1,3 +1,19 @@
+.notification {
+    position: relative;
+}
+
+/* notification_count */
+span.notification_count span{
+    color: #fff;
+    background-color: #e5e5e5;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 4px 8px;
+}
+span.notification_count span.unopened{
+    background-color: #f87880;
+}
+
 /* unopned_circle */
 .unopened_wrapper{
     position: absolute;
@@ -48,6 +64,33 @@
     border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
     z-index: 0;
 }
+
+/* trash_icon */
+.trash_wrapper{
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 20px;
+    margin-right: 26px;
+    display: none;
+}
+.trash_wrapper .fa.fa-trash {
+    display: block;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    border-radius: 50%;
+    color: #818085;
+    z-index: 2;
+
+    &:hover {
+        color: #f30100;
+    }
+}
+.notification:hover .trash_wrapper {
+    display: block;
+}
+
 
 /* list */
 .notification_list {

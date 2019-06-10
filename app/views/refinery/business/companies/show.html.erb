@@ -65,8 +65,10 @@
     </div>
   <% end %>
 
-  <% if @company.projects.any? %>
-    <%= render 'projects_list', projects: @company.projects %>
+  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+    <% if @company.projects.any? %>
+      <%= render 'projects_list', projects: @company.projects %>
+    <% end %>
   <% end %>
 
   <% if @company.inspections.any? %>

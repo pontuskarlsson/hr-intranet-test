@@ -13,7 +13,7 @@ module Refinery
       before_inclusion do
         Refinery::Plugin.register do |plugin|
           plugin.name = "business"
-          plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.business_admin_sales_orders_path }
+          plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.business_admin_companies_path }
           plugin.pathname = root
           
         end

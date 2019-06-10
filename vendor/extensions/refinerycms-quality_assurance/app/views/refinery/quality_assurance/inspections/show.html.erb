@@ -161,17 +161,19 @@
   </section>
 <% end %>
 
-<% content_for :side_body do %>
-  <aside>
-    <h2><%= t('.other') %></h2>
-    <ul id="inspections">
-      <% @inspections.recent(10).each do |inspection| %>
-        <li>
-          <%= link_to inspection.label, refinery.quality_assurance_inspection_path(inspection) %>
-        </li>
-      <% end %>
-    </ul>
-  </aside>
+<% if @similar_inspections.any? %>
+  <% content_for :side_body do %>
+    <aside>
+      <h2><%= t('.other') %></h2>
+      <ul id="inspections">
+        <% @similar_inspections.each do |inspection| %>
+          <li>
+            <%= link_to inspection.label, refinery.quality_assurance_inspection_path(inspection) %>
+          </li>
+        <% end %>
+      </ul>
+    </aside>
+  <% end %>
 <% end %>
 
 <%= render '/refinery/content_page' %>

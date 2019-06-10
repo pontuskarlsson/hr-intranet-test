@@ -1,0 +1,170 @@
+<table>
+  <tbody>
+  <tr>
+    <td>
+      <table>
+        <tbody>
+        <tr>
+          <th style="width: 100px;">Result</th>
+          <td style="font-weight: bold;">
+            <% if inspection.pass? %>
+              <span style="color: green;">Pass</span>
+            <% elsif inspection.reject? %>
+              <span style="color: red;">Reject</span>
+            <% else %>
+              <%= inspection.result %>
+            <% end %>
+          </td>
+        </tr>
+        <tr>
+          <th>Inspection Date</th>
+          <td><%= inspection.display_inspection_date %></td>
+        </tr>
+        <tr>
+          <th>Customer</th>
+          <td><%= inspection.company_label %></td>
+        </tr>
+        <tr>
+          <th>Supplier</th>
+          <td><%= inspection.supplier_label %></td>
+        </tr>
+        <tr>
+          <th>Manufacturer</th>
+          <td><%= inspection.manufacturer_label %></td>
+        </tr>
+        <tr>
+          <th>PO#</th>
+          <td><%= inspection.po_number %></td>
+        </tr>
+        <tr>
+          <th>Order Type</th>
+          <td><%= inspection.po_type %></td>
+        </tr>
+        <tr>
+          <th>Style</th>
+          <td><%= inspection.product_code %> <%= inspection.product_description %></td>
+        </tr>
+        <tr>
+          <th>Variants</th>
+          <td><%= inspection.product_colour_variants %></td>
+        </tr>
+        <tr>
+          <th>Inspection Type</th>
+          <td><%= inspection.inspection_type %></td>
+        </tr>
+        <tr>
+          <th>Inspected By</th>
+          <td><%= inspection.inspected_by_name %></td>
+        </tr>
+        <tr>
+          <th>Order Qty</th>
+          <td><%= number_with_delimiter inspection.po_qty %></td>
+        </tr>
+        <tr>
+          <th>Available Qty</th>
+          <td><%= number_with_delimiter inspection.available_qty %></td>
+        </tr>
+        <tr>
+          <th>Sample Size</th>
+          <td><%= number_with_delimiter inspection.inspection_sample_size %></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+    <% if inspection.inspection_photo %>
+      <td style="width: 190px;">
+        <%= dragonfly_image_tag inspection.inspection_photo.image.image %>
+      </td>
+    <% end %>
+  </tr>
+  </tbody>
+</table>
+
+<div style="margin: 20px 0;">
+  <table>
+    <tbody>
+    <tr>
+      <td style="width: 100px;">Total Critical</td>
+      <td style="width: 50px; text-align: center;"><%= inspection.total_critical %></td>
+      <td style="width: 50px;">&nbsp;</td>
+      <td style="width: 100px;">Accepted Critical</td>
+      <td style="width: 50px; text-align: center;"><%= inspection.acc_critical %></td>
+      <td style="width: 50px;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Total Major</td>
+      <td style="text-align: center;"><%= inspection.total_major %></td>
+      <td>&nbsp;</td>
+      <td>Accepted Major</td>
+      <td style="text-align: center;"><%= inspection.acc_major %></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>Total Minor</td>
+      <td style="text-align: center;"><%= inspection.total_minor %></td>
+      <td>&nbsp;</td>
+      <td>Accepted Minor</td>
+      <td style="text-align: center;"><%= inspection.acc_minor %></td>
+      <td>&nbsp;</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="margin: 20px 0; border-top: 1px solid #000; height: 1px;"></div>
+
+<table>
+  <tbody>
+  <% inspection.inspection_defects.each do |inspection_defect| %>
+    <tr>
+      <th style="text-align: left;" colspan="2">
+        <div style="margin-top: 30px; border-bottom: 1px solid #000;">
+          <%= inspection_defect.defect_label %>
+        </div>
+      </th>
+    </tr>
+    <tr>
+      <td>
+        <div style="margin-top: 10px;">
+          <table>
+            <tbody>
+            <tr>
+              <th style="width: 100px;">Critical</th>
+              <th style="width: 100px;">Major</th>
+              <th style="width: 100px;">Minor</th>
+              <th style="width: 100px;">Can Fix?</th>
+            </tr>
+            <tr>
+              <td><%= inspection_defect.critical %></td>
+              <td><%= inspection_defect.major %></td>
+              <td><%= inspection_defect.minor %></td>
+              <td>
+                <% if inspection_defect.can_fix.nil? %>
+                  N/A
+                <% elsif inspection_defect.can_fix %>
+                  Yes
+                <% else %>
+                  No
+                <% end %>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </td>
+      <td><%= inspection_defect.comments %></td>
+    </tr>
+    <% if inspection_defect.inspection_photos.any? %>
+      <tr>
+        <td colspan="2">
+          <div style="margin-top: 10px;">
+            <% inspection_defect.inspection_photos.each do |inspection_photo| %>
+              <%= dragonfly_image_tag inspection_photo.image.image %>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+  </tbody>
+</table>

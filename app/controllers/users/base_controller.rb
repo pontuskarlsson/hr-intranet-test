@@ -11,7 +11,7 @@ module Users::BaseController
   end
 
   def authenticate_target!
-    unless @target == current_authentication_devise_user
+    unless @target == current_authentication_devise_user || current_authentication_devise_user.has_role?('Superuser')
       render plain: "403 Forbidden: Unauthorized target", status: 403
     end
   end

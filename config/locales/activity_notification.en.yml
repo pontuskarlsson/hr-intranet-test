@@ -6,3 +6,31 @@ en:
       inspection:
         default:
           mail_subject:
+          title: Inspection
+
+        hold:
+          text: 'An inspection has been put on hold'
+          title: Inspection Hold
+
+        pass:
+          text: 'An inspection has passed'
+          title: Inspection Pass
+
+        reject:
+          text: 'An inspection has been rejected'
+          title: Inspection Reject
+
+    user:
+      inspection:
+        default:
+          mail_subject:
+          title: Inspection
+
+        hold:
+          text: 'An inspection has been put on hold'
+
+        pass:
+          text: 'An inspection has passed'
+
+        reject:
+          text: 'An inspection has been rejected'

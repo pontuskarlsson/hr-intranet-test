@@ -25,16 +25,28 @@ module Refinery
             access.scan(CTRL_REG).any? { |(role_title, conditions)|
               if @access.has_key? role_title
                 if role_titles.include? role_title
-                  @access[role_title].nil? || @access[role_title].call(user, conditions)
+                  @access[role_title].nil? || @access[role_title].call(user, parse_conditions(conditions))
                 end
               end
             }
           end
+
+        rescue ActiveRecord::RecordNotFound => e
+          false
         end
 
         def allow!(role_title, &block)
           @access ||= {}
           @access[role_title] = block
+        end
+
+        def parse_conditions(conditions)
+          conditions.split(',').inject({}) { |acc, c|
+            key, value = c.split(':')
+            acc.merge(key.to_sym => value)
+          }
+        rescue StandardError => e
+          {}
         end
       end
 
