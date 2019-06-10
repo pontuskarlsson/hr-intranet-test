@@ -4,103 +4,28 @@
       <h2>Inspections</h2>
     </div>
 
-    <div class="cell medium-6">
-      <div class="card portal-card">
-        <div class="card-divider">
-          <h5>
-            <i class="fa fa-check-circle"></i>
-            Pass rate
-          </h5>
-        </div>
+    <div class="cell medium-3">
+      <h5>
+        <i class="fa fa-check-circle"></i>
+        Pass rate
+      </h5>
+      <%= render 'chart_pass_rate', chart_id: 'chart-pass-rate-qty', source_table_id: 'js_inspections_data_table' %>
+    </div>
 
-        <div class="card-section">
-          <div class="grid-x grid-padding-x">
-            <div class="cell medium-6">
-              <h6>By Qty</h6>
-              <%= pie_chart @inspections.pass_rate_qty, thousands: ',', colors: ['#3adb76', '#cc4b37', '#ffae00'], id: 'chart-pass-rate-qty' %>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="cell medium-9">
+      <h5>
+        <i class="fa fa-exclamation-triangle"></i>
+        Top Defects
+      </h5>
+      <%= render 'chart_top_defects', chart_id: 'chart-top-defects', source_table_id: 'js_inspections_data_table' %>
     </div>
 
     <div class="cell">
       <h4>All inspections</h4>
 
-      <table class="display js_inspections_data_table" cellspacing="0" style="width: 100%;">
-        <thead>
-        <tr>
-          <th>&nbsp;</th>
-          <th>Customer</th>
-          <th>Supplier</th>
-          <th>Manufacturer</th>
-          <th>Inspected</th>
-          <th>Type</th>
-          <th>Result</th>
-          <th>PO</th>
-          <th>Style</th>
-        </tr>
-        </thead>
-
-        <tfoot>
-        <tr>
-          <th>&nbsp;</th>
-          <th>Customer</th>
-          <th>Supplier</th>
-          <th>Manufacturer</th>
-          <th>Inspected</th>
-          <th>Type</th>
-          <th>Result</th>
-          <th>PO</th>
-          <th>Style</th>
-        </tr>
-        </tfoot>
-      </table>
+      <%= render 'table', table_id: 'js_inspections_data_table', options: {} %>
     </div>
   </div>
-<% end %>
-
-<% content_for :stylesheets do %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
-<% end %>
-
-<% content_for :javascripts do %>
-  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
-
-  <script type="text/javascript">
-    $(function(){
-      var $dt = $('.js_inspections_data_table').dataTable({
-        "scrollCollapse": true,
-        "paging":         true,
-        "data":           <%= @inspections.order(inspection_date: :desc).to_json(only: [:id, :company_label, :supplier_label, :manufacturer_label, :inspection_date, :inspection_type, :result, :po_number, :po_qty], methods: [:product_label]).html_safe %>,
-        "columns": [
-          { data: "id", "width": '5%', "render": function(data, type, row) {
-            const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
-            const className = 'fa fa-arrow-right';
-            return $('<a></a>')
-              .attr('href', href)
-              .html('<i class="' + className + '"></i>')
-              .prop('outerHTML');
-          } },
-          { data: "company_label", "width": '10%' },
-          { data: "supplier_label", "width": '10%' },
-          { data: "manufacturer_label", "width": '10%' },
-          { data: "inspection_date", "width": '10%' },
-          { data: "inspection_type", "width": '10%' },
-          { data: "result", "width": '10%' },
-          { data: "po_number", "width": '10%' },
-          { data: "product_label", "width": '10%' }
-        ]
-      }).on('draw.dt', function() {
-        var chart = Chartkick.charts['chart-pass-rate-qty'];
-        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
-          acc[dataRow.result] = (acc[dataRow.result] || 0) + dataRow.po_qty;
-          return acc;
-        }, { 'Pass': 0, 'Reject': 0, 'Hold': 0 });
-        chart.updateData(data);
-      });
-    });
-  </script>
 <% end %>
 
 <%= render '/refinery/content_page' %>

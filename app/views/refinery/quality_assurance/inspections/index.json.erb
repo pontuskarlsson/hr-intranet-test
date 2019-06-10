@@ -1,0 +1,3 @@
+{
+  "data": <%= @inspections.includes(inspection_defects: :defect).order(inspection_date: :desc).to_json(only: [:id, :company_label, :supplier_label, :manufacturer_label, :inspection_date, :inspection_type, :result, :po_number, :po_qty], methods: [:product_label, :chart_defects]).html_safe %>
+}

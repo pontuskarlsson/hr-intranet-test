@@ -1,0 +1,18 @@
+<%= pie_chart @inspections.pass_rate_qty, thousands: ',', colors: ['#3adb76', '#cc4b37', '#ffae00'], id: chart_id %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $(document).on('draw.dt', '#<%= source_table_id %>', function() {
+        var $dt = $('#<%= source_table_id %>').dataTable();
+        var chart = Chartkick.charts['<%= chart_id %>'];
+
+        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
+          acc[dataRow.result] = (acc[dataRow.result] || 0) + dataRow.po_qty;
+          return acc;
+        }, { 'Pass': 0, 'Reject': 0, 'Hold': 0 });
+        chart.updateData(data);
+      });
+    });
+  </script>
+<% end %>

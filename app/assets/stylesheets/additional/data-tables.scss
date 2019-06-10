@@ -1,0 +1,12 @@
+.dataTable {
+    table-layout: fixed;
+
+    tbody, tfoot, thead {
+        th, td {
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            padding: 0.1rem 0.2rem 0.2rem
+        }
+    }
+}

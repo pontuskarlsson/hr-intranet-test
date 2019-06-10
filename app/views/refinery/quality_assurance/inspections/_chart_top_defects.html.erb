@@ -1,0 +1,29 @@
+<%= bar_chart [], stacked: true, id: chart_id %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $(document).on('draw.dt', '#<%= source_table_id %>', function() {
+        var $dt = $('#<%= source_table_id %>').dataTable();
+        var chart = Chartkick.charts['<%= chart_id %>'];
+
+        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
+          _.forEach(dataRow.chart_defects, function(qty, defect) {
+            acc[defect] = (acc[defect] || 0) + qty;
+          });
+
+          return acc;
+        }, {});
+
+        var topData = _.chain(data)
+          .keys()
+          .sortBy(function(a) { return -data[a] })
+          .take(5)
+          .reduce(function(acc, a) { acc[a] = data[a]; return acc; }, {})
+          .value();
+
+        chart.updateData(topData);
+      });
+    });
+  </script>
+<% end %>

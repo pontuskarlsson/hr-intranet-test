@@ -45,9 +45,6 @@
         "scrollY":        "600px",
         "scrollCollapse": true,
         "paging":         true,
-        <% if false %>
-        "data":           <%= @contacts.to_json(only: [:id, :name, :code, :is_organisation, :organisation_name, :organisation_id, :email, :phone, :mobile, :country, :tags_joined_by_comma]).html_safe %>,
-        <% end %>
         "ajax": "<%= refinery.marketing_contacts_path %>",
         "columns": [
           { data: "name", "width": '20%', "render": function(data, type, row) {

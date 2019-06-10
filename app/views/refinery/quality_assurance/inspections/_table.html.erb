@@ -1,0 +1,68 @@
+<table id="<%= table_id %>" class="display" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th>&nbsp;</th>
+    <th>Customer</th>
+    <th>Supplier</th>
+    <th>Manufacturer</th>
+    <th>Inspected</th>
+    <th>Type</th>
+    <th>Result</th>
+    <th>PO</th>
+    <th>Style</th>
+  </tr>
+  </thead>
+
+  <% unless options[:no_footer] %>
+    <tfoot>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Customer</th>
+      <th>Supplier</th>
+      <th>Manufacturer</th>
+      <th>Inspected</th>
+      <th>Type</th>
+      <th>Result</th>
+      <th>PO</th>
+      <th>Style</th>
+    </tr>
+    </tfoot>
+  <% end %>
+</table>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      $('#<%= table_id %>').dataTable({
+        "scrollCollapse": true,
+        "paging":         true,
+        "pageLength":     <%= options[:page_length] || 10 %>,
+        "ajax": "<%= refinery.quality_assurance_inspections_path %>",
+        "columns": [
+          { data: "id", "width": '5%', "render": function(data, type, row) {
+            const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
+            const className = 'fa fa-arrow-right';
+            return $('<a></a>')
+              .attr('href', href)
+              .html('<i class="' + className + '"></i>')
+              .prop('outerHTML');
+          } },
+          { data: "company_label", "width": '10%' },
+          { data: "supplier_label", "width": '10%' },
+          { data: "manufacturer_label", "width": '10%' },
+          { data: "inspection_date", "width": '10%' },
+          { data: "inspection_type", "width": '10%' },
+          { data: "result", "width": '10%' },
+          { data: "po_number", "width": '10%' },
+          { data: "product_label", "width": '10%' }
+        ]
+      });
+    });
+  </script>
+<% end %>
