@@ -49,7 +49,7 @@ en:
             view_live_html: View this project live <br/><em>(opens in a new window)</em>
             edit: Edit this project
             delete: Remove this project forever
-            preview: '%{description}, Company: %{company_label}'
+            preview: '(%{status}) %{description}, Company: %{company_label}'
             
         sales_orders:
           actions:

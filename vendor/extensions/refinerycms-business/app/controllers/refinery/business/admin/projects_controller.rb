@@ -9,7 +9,7 @@ module Refinery
 
         def project_params
           params.require(:project).permit(
-              :code, :company_id, :company_label, :description, :start_date, :end_date
+              :code, :company_id, :company_label, :description, :start_date, :end_date, :status
           )
         end
 

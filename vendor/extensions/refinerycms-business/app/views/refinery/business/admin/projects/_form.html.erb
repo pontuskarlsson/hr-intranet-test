@@ -19,13 +19,18 @@
   </div>
 
   <div class='field'>
+    <%= f.label :status -%>
+    <%= f.select :status, options_for_select(::Refinery::Business::Project::STATUSES, f.object.status) -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :start_date -%>
-    <%= f.date_select :start_date -%>
+    <%= f.date_field :start_date -%>
   </div>
 
   <div class='field'>
     <%= f.label :end_date -%>
-    <%= f.date_select :end_date -%>
+    <%= f.date_field :end_date -%>
   </div>
 
   <%= render '/refinery/admin/form_actions', :f => f,

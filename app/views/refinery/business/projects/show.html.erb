@@ -1,0 +1,37 @@
+<% content_for :body do %>
+  <h3><%= @project.code %></h3>
+  <section class="contact-card">
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th>Code</th>
+        <td><%= @project.code %></td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td><%= @project.description %></td>
+      </tr>
+      <tr>
+        <th>Company</th>
+        <td>
+          <% if @project.company.present? %>
+            <%= link_to @project.company_label, refinery.business_company_path(@project.company) %>
+          <% else %>
+            <%= @project.company_label %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>Timeline</th>
+        <td><%= @project.start_date %> - <%= @project.end_date || 'Current' %></td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td><%= @project.status %></td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+<% end %>
+
+<%= render '/refinery/content_page' %>

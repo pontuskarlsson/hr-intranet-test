@@ -16,18 +16,21 @@
   </tfoot>
 </table>
 
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
 <% content_for :javascripts do %>
   <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
 
   <script type="text/javascript">
     $(function(){
       $('.js_companies_data_table').dataTable({
-        "scrollY":        "600px",
         "scrollCollapse": true,
-        "paging":         false,
-        "data":           <%= companies.to_json(only: [:id, :code, :name]).html_safe %>,
+        "paging":         true,
+        "ajax": "<%= refinery.business_companies_path %>",
         "columns": [
-          { data: "id", "width": '10%', "render": function(data, type, row) {
+          { data: "id", "width": '5%', "render": function(data, type, row) {
             const href = ["<%= refinery.business_companies_path %>", row.id].join('/');
             const className = 'fa fa-arrow-right';
             return $('<a></a>')
@@ -35,8 +38,8 @@
               .html('<i class="' + className + '"></i>')
               .prop('outerHTML');
           } },
-          { data: "code", "width": '25%' },
-          { data: "name", "width": '65%' }
+          { data: "code", "width": '20%' },
+          { data: "name", "width": '75%' }
         ]
       });
     });

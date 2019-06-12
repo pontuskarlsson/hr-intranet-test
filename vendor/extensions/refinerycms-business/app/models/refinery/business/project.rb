@@ -9,6 +9,8 @@ module Refinery
       has_many :invoices,       dependent: :nullify
       has_many :sections,       dependent: :destroy
 
+      acts_as_indexed :fields => [:code, :description, :company_label, :status]
+
       validates :company_id,    presence: true
       validates :code,          uniqueness: true, allow_blank: true
       validates :start_date,    presence: true
@@ -20,9 +22,7 @@ module Refinery
       end
 
       before_validation(on: :create) do
-        if code.blank?
-          self.code = NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0')
-        end
+        self.code = NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0') if code.blank?
       end
 
       scope :current, -> { where(status: %w(Draft Proposed InProgress Open)) }

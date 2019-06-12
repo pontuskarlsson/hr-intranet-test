@@ -1,5 +1,7 @@
 <% content_for :body do %>
-  <h1>Companies</h1>
+  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+    <%= render 'add_company', company: @company %>
+  <% end %>
 
   <% if @companies.any? %>
 
@@ -10,12 +12,6 @@
       You do not have access to any company details, please contact
       Happy Rabbit Support team if you think this is incorrect.
     </p>
-  <% end %>
-<% end %>
-
-<% if page_role? Refinery::Business::ROLE_INTERNAL %>
-  <% content_for :side_body do %>
-    <%= render 'add_company', company: @company %>
   <% end %>
 <% end %>
 
