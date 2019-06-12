@@ -64,8 +64,10 @@
     <%#= link_to "Open (Ajax)", open_notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :post, remote: true %>
   <%# end %>
   <%#= link_to "Destroy", notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(index_options: @index_options)), method: :delete %>
+  <% if false %>
   <%= link_to notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :delete, remote: true, class: "trash_wrapper" do %>
     <i class="fa fa-trash"></i>
+  <% end %>
   <% end %>
 
 </div>

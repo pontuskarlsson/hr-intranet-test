@@ -8,7 +8,6 @@ Refinery::I18n.frontend_locales.each do |lang|
   end if defined?(Refinery::User)
 
   [
-      [Refinery::QualityAssurance::PAGE_DASHBOARD_URL, 'Quality Assurance'],
       [Refinery::QualityAssurance::PAGE_INSPECTIONS_URL, 'Inspections']
   ].each do |url, title|
 

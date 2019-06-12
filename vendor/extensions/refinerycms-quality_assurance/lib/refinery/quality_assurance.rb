@@ -9,7 +9,6 @@ module Refinery
     ROLE_INTERNAL = 'QualityAssurance:Internal'
     ROLE_EXTERNAL = 'QualityAssurance:External'
 
-    PAGE_DASHBOARD_URL = '/quality_assurance'
     PAGE_INSPECTIONS_URL = '/quality_assurance/inspections'
 
     class << self
