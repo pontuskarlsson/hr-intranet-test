@@ -12,14 +12,14 @@ class ApplicationController < ActionController::Base
 
   # Workaround to avoid problem with user accessing other
   # engines while password is expired.
-  delegate :refinery_user_password_expired_path, to: :refinery
+  delegate :authentication_devise_user_password_expired_path, to: :refinery
 
   def signed_in_root_path(resource_or_scope)
     refinery.root_path
   end
 
   def after_sign_out_path_for(resource_or_scope)
-    root_path
+    refinery.login_path
   end
 
   def not_found

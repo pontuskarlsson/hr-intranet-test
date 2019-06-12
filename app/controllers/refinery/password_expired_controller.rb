@@ -24,7 +24,7 @@ class Refinery::PasswordExpiredController < Devise::PasswordExpiredController
 
 private
   def resource_params
-    params[resource_name]
+    params.require(resource_name).permit(:current_password, :password, :password_confirmation)
   end
 
   def scope
