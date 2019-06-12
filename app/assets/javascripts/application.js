@@ -18,7 +18,7 @@
 //= require chartkick
 
 
-$(function(){ console.log('1'); $(document).foundation(); });
+$(function(){ $(document).foundation(); });
 
 $(function(){
   $(document.body).delegate('.js_click_loader', 'click', function(evt){

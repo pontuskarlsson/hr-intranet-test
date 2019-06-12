@@ -19,10 +19,10 @@ Refinery.Parcels.Parcels =
   parcelsDataTable:
     columns:
       id: (data, type, row, meta) ->
-        $("<a href=\"/portal/parcels/parcels/#{row.id}\">View</a>").prop 'outerHTML'
+        $("<a href=\"/parcels/parcels/#{row.id}\">View</a>").prop 'outerHTML'
 
       from_name: (data, type, row, meta) ->
         if row.from_contact_id?
-          $("<a href=\"/portal/marketing/contacts/#{row.from_contact_id}\"></a>").text(data).prop 'outerHTML'
+          $("<a href=\"/marketing/contacts/#{row.from_contact_id}\"></a>").text(data).prop 'outerHTML'
         else
           data

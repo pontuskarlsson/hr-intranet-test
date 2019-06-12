@@ -57,8 +57,13 @@ section.page-part {
 
     .page-part-header {
         margin: -0.5rem -0.5rem 0.5rem -0.5rem;
-        padding: 0.2rem;
+        padding: 0.2rem 0.4rem;
         background-color: #ccc;
+        font-size: 1.4rem;
+
+        small {
+            float: right;
+        }
     }
 }
 

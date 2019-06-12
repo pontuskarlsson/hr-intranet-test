@@ -19,11 +19,11 @@ Refinery.Business.Budgets =
   budgetDataTable:
     columns:
       description: (data, type, row, meta) ->
-        "<a href=\"/portal/business/budgets/#{row.id}\">#{data}</a>"
+        "<a href=\"/business/budgets/#{row.id}\">#{data}</a>"
 
       customerName: (data, type, row, meta) ->
         if row.customer_contact_id?
-          "<a href=\"/portal/marketing/contacts/#{row.customer_contact_id}\">#{data}</a>"
+          "<a href=\"/marketing/contacts/#{row.customer_contact_id}\">#{data}</a>"
         else
           data
 

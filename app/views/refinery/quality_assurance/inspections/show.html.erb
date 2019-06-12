@@ -124,7 +124,7 @@
 
         <h3>Defects</h3>
       </section>
-      <%= column_chart @inspection.chart_defects, stacked: true %>
+      <%= bar_chart @inspection.chart_defects, stacked: true, colors: ['#30384B'] %>
 
       <% @inspection.inspection_defects.each do |inspection_defect| %>
         <h5 style="margin-top: 30px;"><%= inspection_defect.defect_label %></h5>

@@ -3,13 +3,18 @@
     <h2><%= @company.label %></h2>
   </div>
 
-  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
-    <% if @company.contact.present? %>
-      <div class="cell medium-6">
-        <%= render 'refinery/marketing/contacts/organisation', contact: @company.contact %>
-      </div>
-    <% end %>
+  <% if @company.contact.present? %>
+    <div class="cell medium-6">
+      <section class="contact-card">
+        <%= render 'refinery/marketing/contacts/contact_info', contact: @company.contact %>
+        <%= render 'refinery/marketing/contacts/address', contact: @company.contact %>
+        <%= render 'refinery/marketing/contacts/courier_details', contact: @company.contact %>
+        <%= render 'refinery/marketing/contacts/employees', contact: @company.contact %>
+      </section>
+    </div>
+  <% end %>
 
+  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
     <div class="cell medium-6">
       <h5>
         <i class="fa fa-user"></i>
@@ -43,6 +48,7 @@
     <% end %>
   <% end %>
 
+  <% if false %>
   <% if @company.parcels.recent.any? or @company.to_shipments.shipped.recent.any? %>
     <div class="cell medium-6">
       <div class="card portal-card">
@@ -64,19 +70,10 @@
       </div>
     </div>
   <% end %>
-
-  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
-    <% if @company.projects.any? %>
-      <%= render 'projects_list', projects: @company.projects %>
-    <% end %>
   <% end %>
 
-  <% if @company.inspections.any? %>
-    <%= render 'inspections_summary', inspections: @company.inspections.recent(10) %>
-  <% end %>
-
-  <% if @company.inspections.recent(10).any? %>
-    <%= render 'inspections', inspections: @company.inspections.recent(10) %>
+  <% if @company.projects.any? %>
+    <%= render 'projects_list', projects: @company.projects %>
   <% end %>
 </div>
 

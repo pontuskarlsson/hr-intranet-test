@@ -48,89 +48,9 @@
     </table>
   <% end %>
 
-  <h3>Contact Info</h3>
-  <table class="cc-table">
-    <tbody>
-    <tr>
-      <th>Phone</th>
-      <td><%= contact.phone %></td>
-    </tr>
-    <% if contact.mobile.present? %>
-      <tr>
-        <th>Mobile</th>
-        <td><%= contact.mobile %></td>
-      </tr>
-    <% end %>
-    <% if contact.fax.present? %>
-      <tr>
-        <th>Fax</th>
-        <td><%= contact.fax %></td>
-      </tr>
-    <% end %>
-    <% if contact.skype.present? %>
-      <tr>
-        <th>Skype</th>
-        <td><%= contact.skype %></td>
-      </tr>
-    <% end %>
-    <% if contact.email.present? %>
-      <tr>
-        <th>Email</th>
-        <td><%= mail_to contact.email  %></td>
-      </tr>
-    <% end %>
-    <% if contact.website.present? %>
-      <tr>
-        <th>Website</th>
-        <td><%=link_to contact.website.gsub(/http:\/\/|https:\/\//, ''), contact.website %></td>
-      </tr>
-    <% end %>
-    <% if contact.facebook.present? %>
-      <tr>
-        <th>Facebook</th>
-        <td><%= link_to contact.facebook.gsub(/http:\/\/|https:\/\//, ''), contact.facebook %></td>
-      </tr>
-    <% end %>
-    <% if contact.twitter.present? %>
-      <tr>
-        <th>Twitter</th>
-        <td><%= link_to 'twitter.com/'<<contact.twitter, 'https://twitter.com/'<<contact.twitter %></td>
-      </tr>
-    <% end %>
-    <% if contact.linked_in.present? %>
-      <tr>
-        <th>LinkedIn</th>
-        <td><%= contact.linked_in %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
+  <%= render 'refinery/marketing/contacts/contact_info', contact: contact %>
 
-  <h3>Address</h3>
-  <table class="cc-table">
-    <tbody>
-    <tr>
-      <th>Street</th>
-      <td><%= contact.address %></td>
-    </tr>
-    <tr>
-      <th>City</th>
-      <td><%= contact.city %></td>
-    </tr>
-    <tr>
-      <th>Zip</th>
-      <td><%= contact.zip %></td>
-    </tr>
-    <tr>
-      <th>State</th>
-      <td><%= contact.state %></td>
-    </tr>
-    <tr>
-      <th>Country</th>
-      <td><%= contact.country %></td>
-    </tr>
-    </tbody>
-  </table>
+  <%= render 'refinery/marketing/contacts/address', contact: contact %>
 
   <% if contact.description.present? %>
     <h3>Additional</h3>

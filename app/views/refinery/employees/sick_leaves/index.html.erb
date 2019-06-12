@@ -52,11 +52,11 @@
         "columns": [
           { data: "start_date" },
           { data: "end_date" },
-          { data: "doctors_note", "render": function(data, type, row){ return (data === null || typeof data == 'undefined' ? '<a href="/portal/employees/sick_leaves/'+row.id+'/add_note" data-remote="true">Add Note</a>' : '<a href="'+data.url+'">Download</a>'); } },
+          { data: "doctors_note", "render": function(data, type, row){ return (data === null || typeof data == 'undefined' ? '<a href="/employees/sick_leaves/'+row.id+'/add_note" data-remote="true">Add Note</a>' : '<a href="'+data.url+'">Download</a>'); } },
           { data: "id", "render": function(data, type, row){
             var strDate = (row.end_date ? row.end_date : row.start_date);
             if((Date.now() - Date.parse(strDate)) / (1000*60*60*24) < 7){
-              return '<a href="/portal/employees/sick_leaves/'+data+'/edit">Edit</a>, <a href="/portal/employees/sick_leaves/'+data+'" data-method="delete">Remove</a>';
+              return '<a href="/employees/sick_leaves/'+data+'/edit">Edit</a>, <a href="/employees/sick_leaves/'+data+'" data-method="delete">Remove</a>';
             } else {
               return '<span style="font-style: italic; color: #999;">Cannot edit</span>';
             }

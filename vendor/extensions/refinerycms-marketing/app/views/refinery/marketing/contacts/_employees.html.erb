@@ -1,0 +1,10 @@
+<h3>Employees</h3>
+<% if contact.employees.in_crm.any? %>
+  <ul class="business-cards bc-grid">
+    <% contact.employees.in_crm.each do |employee| %>
+      <%= render 'refinery/marketing/contacts/business_card', contact: employee %>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="cc-attribute italic">No Employees registered</p>
+<% end %>

@@ -1,26 +1,22 @@
 <div class="grid-x grid-padding-x">
   <div class="cell">
-    <h4>Welcome <%= current_authentication_devise_user.full_name %>!</h4>
-  </div>
-
-  <div class="medium-8 cell">
     <section class="page-part">
       <div class="page-part-header">
-        <span style="float: right;">
+        <small>
           <%= link_to 'See all', refinery.quality_assurance_inspections_path %>
-        </span>
+        </small>
         Inspections
       </div>
 
       <div style="position: relative; width: 100%; overflow: hidden;">
-        <%= render 'refinery/quality_assurance/inspections/table', table_id: 'dashboard_inspections', options: { page_length: 5, no_footer: true } %>
+        <%= render 'refinery/quality_assurance/inspections/table', table_id: 'dashboard_inspections', options: { no_footer: true } %>
       </div>
     </section>
 
   </div>
 
-  <div class="medium-4 cell">
-
+  <% if false %>
+  <div class="medium-8 cell">
     <section class="page-part">
       <div class="page-part-header">
         NEWS
@@ -44,12 +40,15 @@
         <p class="italic">No News Items</p>
       <% end %>
     </section>
+  </div>
+    <% end %>
 
-    <% if current_authentication_devise_user.has_role?('Employees:Employee') %>
-      <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
-        Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
-        *Refinery::Employees::PublicHoliday.all_calendar_functions
-      ).limit(5)).any? %>
+  <% if current_authentication_devise_user.has_role?('Employees:Employee') %>
+    <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
+      Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
+      *Refinery::Employees::PublicHoliday.all_calendar_functions
+    ).limit(5)).any? %>
+      <div class="medium-4 cell">
         <section class="page-part">
           <div class="page-part-header">
             TODAY IN CALENDAR
@@ -62,8 +61,10 @@
             <% end %>
           </ul>
         </section>
-      <% end %>
+      </div>
+    <% end %>
 
+    <div class="medium-4 cell">
       <section class="page-part">
         <div class="page-part-header">
           UPCOMING IN CALENDAR
@@ -84,8 +85,11 @@
           <p class="italic">No Upcoming Events</p>
         <% end %>
       </section>
-    <% end %>
+    </div>
+  <% end %>
 
+  <% if false %>
+  <div class="medium-4 cell">
     <section class="page-part">
       <div class="page-part-header">
         TWITTER
@@ -93,6 +97,6 @@
       <a class="twitter-timeline" data-height="600" href="https://twitter.com/happyrabbitltd?ref_src=twsrc%5Etfw">Tweets by happyrabbitltd</a>
       <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </section>
-
   </div>
+  <% end %>
 </div>

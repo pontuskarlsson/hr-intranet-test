@@ -16,12 +16,11 @@
             <% end %>
           <% end %></li>
         <% if current_authentication_devise_user.has_role?(:superuser) %>
-          <li><%= link_to 'Refinery', '/portal/refinery' %></li>
+          <li><%= link_to 'Refinery', '/refinery' %></li>
         <% end %>
         <li><%= link_to 'Logout', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
       </ul>
     </li>
-    <li><%= link_to 'PORTAL', '/portal', class: 'button' %></li>
   </ul>
 <% else %>
   <ul class="menu">

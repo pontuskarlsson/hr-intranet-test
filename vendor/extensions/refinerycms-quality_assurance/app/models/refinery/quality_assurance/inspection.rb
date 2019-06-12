@@ -104,7 +104,7 @@ module Refinery
       end
 
       def chart_defects
-        inspection_defects.includes(:defect).each_with_object({}) { |inspection_defect, acc|
+        inspection_defects.each_with_object({}) { |inspection_defect, acc|
           acc[inspection_defect.defect.try(:label) || 'Unknown'] = [inspection_defect.critical, inspection_defect.major, inspection_defect.minor].sum
         }
       end
