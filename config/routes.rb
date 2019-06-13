@@ -1,7 +1,7 @@
 HrIntranet::Application.routes.draw do
 
   #root :to => 'home#index'
-  get 'services', to: 'home#services'
+  #get 'services', to: 'home#services'
   get 'about', to: 'home#about'
   get 'contact', to: 'home#contact'
   get 'careers', to: 'home#careers'
