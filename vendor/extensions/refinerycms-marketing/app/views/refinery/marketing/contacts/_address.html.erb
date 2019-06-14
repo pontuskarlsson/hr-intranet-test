@@ -1,4 +1,4 @@
-<h3>Address</h3>
+<h3>Street Address</h3>
 <table class="cc-table">
   <tbody>
   <tr>
@@ -23,3 +23,31 @@
   </tr>
   </tbody>
 </table>
+
+<% if [contact.other_address, contact.other_city, contact.other_zip, contact.other_state, contact.other_country].any?(&:present?) %>
+  <h3>Postal Address</h3>
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th>Street</th>
+      <td><%= contact.other_address %></td>
+    </tr>
+    <tr>
+      <th>City</th>
+      <td><%= contact.other_city %></td>
+    </tr>
+    <tr>
+      <th>Zip</th>
+      <td><%= contact.other_zip %></td>
+    </tr>
+    <tr>
+      <th>State</th>
+      <td><%= contact.other_state %></td>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <td><%= contact.other_country %></td>
+    </tr>
+    </tbody>
+  </table>
+<% end %>

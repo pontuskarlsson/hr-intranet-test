@@ -1,5 +1,3 @@
-require 'api_client'
-
 module Refinery
   module Marketing
     module Insightly
@@ -39,8 +37,8 @@ module Refinery
           end
         end
 
-        def customfield(custom_field_id)
-          if (cf = customfields.detect { |cf| cf.custom_field_id == custom_field_id }).present?
+        def customfield(field_name)
+          if (cf = customfields.detect { |cf| cf.field_name == field_name }).present?
             cf.field_value
           end
         end

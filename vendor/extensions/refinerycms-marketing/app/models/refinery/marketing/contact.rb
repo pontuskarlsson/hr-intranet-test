@@ -7,6 +7,7 @@ module Refinery
 
       belongs_to :user,         class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :organisation, class_name: 'Contact'
+      belongs_to :image,        class_name: '::Refinery::Image'
       has_many :employees,      class_name: 'Contact', foreign_key: :organisation_id
 
       #serialize :custom_fields, Hash

@@ -1,7 +1,11 @@
 <li class="business-card">
+  <% if contact.image.present? %>
+    <%= image_tag contact.image.image.thumb('40x40#').url, class: 'profile-image' %>
+  <% else %>
+    <i class="fa fa-<%= contact.is_organisation ? 'building' : 'user' %>"></i>
+  <% end %>
   <h4>
     <%= link_to contact.name, refinery.marketing_contact_path(contact) %>
-    <i class="fa fa-<%= contact.is_organisation ? 'building' : 'user' %>"></i>
   </h4>
   <p class="bc-attribute"><%= contact.email %></p>
   <p class="bc-attribute"><%= contact.phone %></p>

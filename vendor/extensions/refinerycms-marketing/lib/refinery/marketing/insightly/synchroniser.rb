@@ -1,5 +1,3 @@
-require 'api_client'
-
 module Refinery
   module Marketing
     module Insightly
@@ -100,7 +98,9 @@ module Refinery
 
               ### Organisations ###
               @all_crm_ids = []
-              client.list_of('Organisations').each do |crm_contact|
+
+              # Smaller batch size to avoid image_url's having expired
+              client.list_of('Organisations', 50).each do |crm_contact|
                 @all_crm_ids << crm_contact.organisation_id
 
                 if (contact = Refinery::Marketing::Contact.organisations.where(insightly_id: crm_contact.organisation_id).first).present?
@@ -110,7 +110,7 @@ module Refinery
                   pull_organisation contact, crm_contact
 
                 else
-                  contact = Refinery::Marketing::Contact.new
+                  contact = Refinery::Marketing::Contact.create! # create instead of new so that id is available for image access
                   pull_organisation contact, crm_contact
                 end
 
@@ -173,29 +173,30 @@ module Refinery
           contact.first_name = crm_contact.first_name
           contact.last_name = crm_contact.last_name
           contact.name = [crm_contact.first_name, crm_contact.last_name].reject(&:blank?).join(' ')
-          contact.image_url = crm_contact.image_url
           contact.description = crm_contact.background
 
+          # Image attributes and resource
+          pull_image contact, crm_contact
+
           # Contact Info
-          contact.phone = crm_contact.contactinfo(:phone, :work)
-          contact.mobile = crm_contact.contactinfo(:phone, :mobile)
-          contact.fax = crm_contact.contactinfo(:phone, :fax)
-          contact.email = crm_contact.contactinfo(:email)
-          contact.website = crm_contact.contactinfo(:website)
+          contact.phone = crm_contact.phone
+          contact.mobile = crm_contact.phone_mobile
+          contact.fax = crm_contact.phone_fax
+          contact.email = crm_contact.email_address
+          #contact.website = crm_contact.contactinfo(:website)
 
           # Link Organisation
-          if crm_contact.default_linked_organisation && (organisation = Refinery::Marketing::Contact.where(is_organisation: true).find_by_insightly_id(crm_contact.default_linked_organisation)).present?
+          if crm_contact.organisation_id && (organisation = Refinery::Marketing::Contact.organisations.find_by_insightly_id(crm_contact.organisation_id)).present?
             contact.organisation = organisation
             contact.organisation_name = organisation.name
-            contact.title = crm_contact.links.detect { |r| r.organisation_id == crm_contact.default_linked_organisation }.try(:role)
           else
             contact.organisation = nil
             contact.organisation_name = nil
-            contact.title = nil
           end
+          contact.title = crm_contact.title
 
           # Sync Address
-          pull_address contact, crm_contact
+          pull_address contact, crm_contact, 'mail', 'other'
 
           # Sync Custom Fields
           pull_custom_fields contact, crm_contact, CUSTOM_CONTACT_ATTR
@@ -212,16 +213,19 @@ module Refinery
           # Standard attributes
           contact.name = crm_contact.organisation_name
           contact.organisation_name = crm_contact.organisation_name
-          contact.image_url = crm_contact.image_url
           contact.description = crm_contact.background
 
+          # Image attributes and resource
+          pull_image contact, crm_contact
+
+
           # Contact Info
-          contact.phone = crm_contact.contactinfo(:phone, :work)
-          contact.fax = crm_contact.contactinfo(:phone, :fax)
-          contact.website = crm_contact.contactinfo(:website)
+          contact.phone = crm_contact.phone
+          contact.fax = crm_contact.phone_fax
+          contact.website = crm_contact.website
 
           # Sync Address
-          pull_address contact, crm_contact
+          pull_address contact, crm_contact, 'ship', 'billing'
 
           # Sync Custom Fields
           pull_custom_fields contact, crm_contact, CUSTOM_ORG_ATTR
@@ -229,13 +233,19 @@ module Refinery
           contact.tags_joined_by_comma = crm_contact.tags.join(',')
         end
 
-        def pull_address(contact, crm_contact)
-          if crm_contact.primary_address
-            contact.address = crm_contact.primary_address.street
-            contact.city = crm_contact.primary_address.city
-            contact.zip = crm_contact.primary_address.postcode
-            contact.state = crm_contact.primary_address.state
-            contact.country = crm_contact.primary_address.country
+        def pull_address(contact, crm_contact, address_type, other_address_type = nil)
+          contact.address = crm_contact.send("address_#{address_type}_street")
+          contact.city =    crm_contact.send("address_#{address_type}_city")
+          contact.zip =     crm_contact.send("address_#{address_type}_postcode")
+          contact.state =   crm_contact.send("address_#{address_type}_state")
+          contact.country = crm_contact.send("address_#{address_type}_country")
+
+          if other_address_type
+            contact.other_address = crm_contact.send("address_#{other_address_type}_street")
+            contact.other_city =    crm_contact.send("address_#{other_address_type}_city")
+            contact.other_zip =     crm_contact.send("address_#{other_address_type}_postcode")
+            contact.other_state =   crm_contact.send("address_#{other_address_type}_state")
+            contact.other_country = crm_contact.send("address_#{other_address_type}_country")
           end
         end
 
@@ -245,6 +255,22 @@ module Refinery
               contact.send("#{mapped_to}=", crm_contact.customfield(custom_field))
             end
           end
+        end
+
+        def pull_image(contact, crm_contact)
+          uri = URI.parse crm_contact.image_url
+          url = "#{uri.scheme}://#{uri.host}#{uri.path}"
+
+          if contact.image_url != url
+            contact.image_url = url
+            contact.image = ::Refinery::Image.create_with_access({ image_url: crm_contact.image_url }, {
+                Refinery::Business::ROLE_INTERNAL => { contact_id: contact.id },
+                Refinery::Business::ROLE_EXTERNAL => { contact_id: contact.id }
+            })
+          end
+        rescue URI::InvalidURIError, Dragonfly::Job::FetchUrl::ErrorResponse => e
+          contact.image_url = nil
+          contact.image_id = nil
         end
 
         def push_organisation(contact, changes)
@@ -261,14 +287,13 @@ module Refinery
 
           custom_fields = CUSTOM_ORG_ATTR.each_with_object([]) { |(remote, local), acc|
             if local && changes[local.to_s]
-              acc << { custom_field_id: remote, field_value: changes[local.to_s][1] }
+              acc << { field_name: remote, field_value: changes[local.to_s][1] }
             end
           }
 
           if params.any?
             if contact.insightly_id
-              remote_contact = client.get("Organisations/#{contact.insightly_id}")
-              client.put('Organisations', remote_contact.merge(params))
+              client.put('Organisations', params)
             else
               res = client.post('Organisations', params)
               contact.insightly_id = res['ORGANISATION_ID']

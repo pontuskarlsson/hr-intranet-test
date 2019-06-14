@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190603071414) do
+ActiveRecord::Schema.define(version: 20190614122730) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -607,12 +607,19 @@ ActiveRecord::Schema.define(version: 20190603071414) do
     t.string   "xero_hr_id",           limit: 255
     t.string   "xero_hrt_id",          limit: 255
     t.string   "mailchimp_id",         limit: 255
+    t.string   "other_address",        limit: 255
+    t.string   "other_city",           limit: 255
+    t.string   "other_zip",            limit: 255
+    t.string   "other_state",          limit: 255
+    t.string   "other_country",        limit: 255
+    t.integer  "image_id",             limit: 4
   end
 
   add_index "refinery_contacts", ["base_id"], name: "index_refinery_contacts_on_base_id", using: :btree
   add_index "refinery_contacts", ["base_modified_at"], name: "index_refinery_contacts_on_base_modified_at", using: :btree
   add_index "refinery_contacts", ["code"], name: "index_refinery_contacts_on_code", using: :btree
   add_index "refinery_contacts", ["courier_company"], name: "index_refinery_contacts_on_courier_company", using: :btree
+  add_index "refinery_contacts", ["image_id"], name: "index_refinery_contacts_on_image_id", using: :btree
   add_index "refinery_contacts", ["insightly_id"], name: "index_refinery_contacts_on_insightly_id", using: :btree
   add_index "refinery_contacts", ["mailchimp_id"], name: "index_refinery_contacts_on_mailchimp_id", using: :btree
   add_index "refinery_contacts", ["organisation_id"], name: "index_refinery_contacts_on_organisation_id", using: :btree
