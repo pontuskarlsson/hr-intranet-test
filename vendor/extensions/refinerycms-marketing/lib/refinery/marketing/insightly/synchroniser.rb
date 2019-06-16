@@ -263,7 +263,7 @@ module Refinery
 
           if contact.image_url != url
             contact.image_url = url
-            contact.image = ::Refinery::Image.create_with_access({ image_url: crm_contact.image_url }, {
+            contact.image = ::Refinery::Image.create_with_access({ image_url: crm_contact['IMAGE_URL'] }, {
                 Refinery::Business::ROLE_INTERNAL => { contact_id: contact.id },
                 Refinery::Business::ROLE_EXTERNAL => { contact_id: contact.id }
             })
@@ -287,22 +287,19 @@ module Refinery
 
           custom_fields = CUSTOM_ORG_ATTR.each_with_object([]) { |(remote, local), acc|
             if local && changes[local.to_s]
-              acc << { field_name: remote, field_value: changes[local.to_s][1] }
+              acc << { 'FIELD_NAME' => remote, 'FIELD_VALUE' => changes[local.to_s][1] }
             end
           }
+          params['CUSTOMFIELDS'] = custom_fields if custom_fields.any?
 
           if params.any?
             if contact.insightly_id
-              client.put('Organisations', params)
+              client.put('Organisations', params.merge('ORGANISATION_ID' => contact.insightly_id))
             else
               res = client.post('Organisations', params)
               contact.insightly_id = res['ORGANISATION_ID']
               contact.save!
             end
-          end
-
-          custom_fields.each do |custom_field_params|
-            client.put("Organisations/#{contact.insightly_id}/CustomFields", custom_field_params)
           end
         end
 
