@@ -1,19 +1,22 @@
 module Refinery
   module Marketing
     class ContactsController < ::ApplicationController
+      include Refinery::PageRoles::AuthController
 
-      before_filter :find_all_contacts, only: [:index]
-      before_filter :find_page
+      set_page PAGE_CONTACTS_URL
+      allow_page_roles ROLE_CRM_MANAGER
+
+      before_filter :find_contacts, only: [:index]
+      before_filter :find_contact,  except: [:index, :new, :create]
 
       def index
+        @contacts = @contacts.order(name: :asc)
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @contact in the line below:
         present(@page)
       end
 
       def show
-        @contact = Contact.find(params[:id])
-
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @contact in the line below:
         present(@page)
@@ -21,12 +24,21 @@ module Refinery
 
       protected
 
-      def find_all_contacts
-        @contacts = Contact.order('name ASC')
+      def contacts_scope
+        @companies ||=
+            if page_role? ROLE_CRM_MANAGER
+              Contact.in_crm
+            else
+              Contact.where('1=0')
+            end
       end
 
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/marketing/contacts', current_authentication_devise_user)
+      def find_contacts
+        @contacts = contacts_scope
+      end
+
+      def find_contact
+        @contact = contacts_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

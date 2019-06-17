@@ -10,44 +10,23 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/marketing"
-  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
-    page = Refinery::Page.create(
-        :title => 'Marketing',
-        :link_url => url,
-        :deletable => false,
-        :menu_match => "^#{url}(\/|\/.+?|)$"
-    )
-    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
-      page.parts.create(:title => default_page_part, :body => nil, :position => index)
-    end
-  end
+  [
+      [Refinery::Marketing::PAGE_CONTACTS_URL, 'Contacts'],
+      [Refinery::Marketing::PAGE_BRANDS_URL, 'Brands']
+  ].each do |url, title|
 
-  url = "/marketing/brands"
-  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
-    page = Refinery::Page.create(
-      :parent_id => Refinery::Page.where(:link_url => '/marketing').first.try(:id),
-      :title => 'Brands',
-      :link_url => url,
-      :deletable => false,
-      :menu_match => "^#{url}(\/|\/.+?|)$"
-    )
-    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
-      page.parts.create(:title => default_page_part, :body => nil, :position => index)
-    end
-  end
-
-  url = "/marketing/contacts"
-  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
-    page = Refinery::Page.create(
-        :parent_id => Refinery::Page.where(:link_url => '/marketing').first.try(:id),
-        :title => 'Contacts',
-        :link_url => url,
-        :deletable => false,
-        :menu_match => "^#{url}(\/|\/.+?|)$"
-    )
-    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
-      page.parts.create(:title => default_page_part, :body => nil, :position => index)
+    if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
+      page = Refinery::Page.create(
+          :title => title,
+          :link_url => url,
+          :deletable => false,
+          :menu_match => "^#{url}(\/|\/.+?|)$"
+      )
+      Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
+        page.parts.create(:title => default_page_part, :body => nil, :position => index)
+      end
     end
   end
 end
+
+Refinery::Authentication::Devise::Role.where(title: Refinery::Marketing::ROLE_CRM_MANAGER).first_or_create

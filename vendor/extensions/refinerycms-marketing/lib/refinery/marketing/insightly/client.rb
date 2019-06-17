@@ -63,7 +63,11 @@ module Refinery
             end
           end
 
-          JSON.parse resp.body
+          # Parse body only if status is :ok, otherwise return nil
+          JSON.parse resp.body if resp.status == 200
+
+        rescue JSON::ParserError => e
+          nil # Always return nil on failure
         end
 
         def client

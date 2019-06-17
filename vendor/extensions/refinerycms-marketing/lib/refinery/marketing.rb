@@ -13,6 +13,11 @@ module Refinery
     require 'refinery/marketing/insightly/resource_list'
     require 'refinery/marketing/insightly/synchroniser'
 
+    ROLE_CRM_MANAGER = 'Marketing:CRM:Manager'
+
+    PAGE_BRANDS_URL = '/marketing/brands'
+    PAGE_CONTACTS_URL = '/marketing/contacts'
+
     class << self
       attr_writer :root
 

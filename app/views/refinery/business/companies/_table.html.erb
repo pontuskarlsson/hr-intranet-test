@@ -4,6 +4,10 @@
     <th></th>
     <th>Code</th>
     <th>Name</th>
+    <th>Website</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Country</th>
   </tr>
   </thead>
 
@@ -12,6 +16,10 @@
     <th></th>
     <th>Code</th>
     <th>Name</th>
+    <th>Website</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Country</th>
   </tr>
   </tfoot>
 </table>
@@ -38,8 +46,12 @@
               .html('<i class="' + className + '"></i>')
               .prop('outerHTML');
           } },
-          { data: "code", "width": '20%' },
-          { data: "name", "width": '75%' }
+          { data: "code", "width": '10%' },
+          { data: "name", "width": '30%' },
+          { data: function(row, type, set, meta) { return row.contact && row.contact.website || null; }, "width": '20%' },
+          { data: function(row, type, set, meta) { return row.contact && row.contact.phone || null; }, "width": '20%' },
+          { data: function(row, type, set, meta) { return row.contact && row.contact.email || null; }, "width": '20%' },
+          { data: function(row, type, set, meta) { return row.contact && row.contact.country || null; }, "width": '15%' }
         ]
       });
     });

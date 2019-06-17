@@ -156,14 +156,6 @@ module Refinery
 
         private
 
-        def custom_field_id(field_for, field_name)
-          @custom_fields ||= client.get('CustomFields')
-
-          if (field = @custom_fields.detect { |f| f['FIELD_FOR'] == field_for.upcase && f['FIELD_NAME'] == field_name.upcase }).present?
-            field['CUSTOM_FIELD_ID']
-          end
-        end
-
         def pull_contact(contact, crm_contact)
           contact.insightly_id = crm_contact.contact_id
           contact.is_organisation = false
@@ -258,7 +250,7 @@ module Refinery
         end
 
         def pull_image(contact, crm_contact)
-          uri = URI.parse crm_contact.image_url
+          uri = URI.parse crm_contact['IMAGE_URL']
           url = "#{uri.scheme}://#{uri.host}#{uri.path}"
 
           if contact.image_url != url
@@ -268,6 +260,8 @@ module Refinery
                 Refinery::Business::ROLE_EXTERNAL => { contact_id: contact.id }
             })
           end
+          contact.save
+
         rescue URI::InvalidURIError, Dragonfly::Job::FetchUrl::ErrorResponse => e
           contact.image_url = nil
           contact.image_id = nil
@@ -295,8 +289,8 @@ module Refinery
           if params.any?
             if contact.insightly_id
               client.put('Organisations', params.merge('ORGANISATION_ID' => contact.insightly_id))
-            else
-              res = client.post('Organisations', params)
+
+            elsif (res = client.post('Organisations', params)).present?
               contact.insightly_id = res['ORGANISATION_ID']
               contact.save!
             end
