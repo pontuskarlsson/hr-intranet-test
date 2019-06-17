@@ -1,7 +1,8 @@
 <h1>An error occoured on the Intranet</h1>
 <p>
   The error message is:<br />
-  <%= @error.message %>
+  <%= @error.message %><br />
+  <%= @error.record.inspect if @error.respond_to? :record %>
 </p>
 <p>
   Backtrace:<br />
@@ -9,3 +10,13 @@
     <%= line %>
   <% end %>
 </p>
+
+<% if @additional.any? %>
+  <h4>Additional</h4>
+  <% @additional.each do |e| %>
+    <p>
+      <%= e.message %><br />
+      <%= e.record.inspect if e.respond_to? :record %>
+    </p>
+  <% end %>
+<% end %>

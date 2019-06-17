@@ -10,6 +10,8 @@ module Refinery
       before_action :find_all_inspections,  only: [:index, :show]
       before_action :find_inspection,       except: [:index, :new, :create]
 
+      helper_method :filter_params
+
       def index
         @inspections = @inspections.where(filter_params)
         # you can use meta fields from your model instead (e.g. browser_title)

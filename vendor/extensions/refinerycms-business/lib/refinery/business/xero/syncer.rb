@@ -19,10 +19,11 @@ module Refinery
             updated_date_utc: :updated_date_utc,
         }.freeze
 
-        attr_reader :account
+        attr_reader :account, :errors
 
         def initialize(account)
           @account = account
+          @errors = []
         end
 
         def sync_invoices(xero_invoices)
@@ -62,6 +63,8 @@ module Refinery
           end
 
           invoice.save!
+        rescue ActiveRecord::RecordNotSaved => e
+          @errors << e
         end
 
         def sync_contacts(xero_contacts)
@@ -79,6 +82,8 @@ module Refinery
               assign_xero_id company.contact, xero_contact.contact_id
             end
           end
+        rescue ActiveRecord::RecordNotSaved => e
+          @errors << e
         end
 
         def assign_xero_id(contact, xero_id)

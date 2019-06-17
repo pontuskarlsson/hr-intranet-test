@@ -35,6 +35,7 @@ namespace :hr_intranet do
         end
 
       rescue StandardError => e
+        ErrorMailer.new(e).deliver
         Rails.logger.error e.message
       end
     end
@@ -54,9 +55,14 @@ namespace :hr_intranet do
           invoices = xero_client.client.Invoice.all({ order: 'UpdatedDateUTC' })
           Rails.logger.info "Found #{invoices.length} Invoices in Xero"
           syncer.sync_invoices invoices
+
+          if syncer.errors.any?
+            ErrorMailer.new(syncer.errors.first, syncer.errors[1..-1]).deliver
+          end
         end
 
       rescue StandardError => e
+        ErrorMailer.new(e).deliver
         Rails.logger.error e.message
       end
     end

@@ -32,6 +32,10 @@
       </tbody>
     </table>
   </section>
+
+  <% if current_authentication_devise_user.has_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
+    <p><%= link_to 'See Project Invoices', refinery.business_invoices_path(project_id: @project) %></p>
+  <% end %>
 <% end %>
 
 <%= render '/refinery/content_page' %>

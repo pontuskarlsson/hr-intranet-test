@@ -43,7 +43,7 @@
         "scrollCollapse": true,
         "paging":         true,
         "pageLength":     <%= options[:page_length] || 10 %>,
-        "ajax": "<%= refinery.quality_assurance_inspections_path %>",
+        "ajax": "<%= refinery.quality_assurance_inspections_path(filter_params) %>",
         "columns": [
           { data: "id", "width": '5%', "render": function(data, type, row) {
             const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
