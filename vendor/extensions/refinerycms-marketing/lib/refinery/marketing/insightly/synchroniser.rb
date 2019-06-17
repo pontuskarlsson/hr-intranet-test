@@ -9,10 +9,6 @@ module Refinery
 
         ## Custom Fields ###
         #
-        # If you need to double check field ids of custom fields
-        #
-        #   list_of('CustomFields')
-        #
         CUSTOM_CONTACT_ATTR = {
             "CONTACT_FIELD_1" => nil, # "Lead Sources",
             "CONTACT_FIELD_2" => nil, # "Lead Status",
