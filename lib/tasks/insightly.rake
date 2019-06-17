@@ -7,7 +7,7 @@ namespace :hr_intranet do
       synchroniser.pull_all
 
       if synchroniser.error.present?
-        ErrorMailer.new(synchroniser.error).deliver
+        ErrorMailer.error_email(synchroniser.error).deliver
       end
     end
 

@@ -32,10 +32,14 @@ namespace :hr_intranet do
 
           # Sync Invoices
           syncer.sync_invoices invoices
+
+          if syncer.errors.any?
+            ErrorMailer.error_email(syncer.errors[0], syncer.errors[1..-1]).deliver
+          end
         end
 
       rescue StandardError => e
-        ErrorMailer.new(e).deliver
+        ErrorMailer.error_email(e).deliver
         Rails.logger.error e.message
       end
     end
@@ -57,12 +61,12 @@ namespace :hr_intranet do
           syncer.sync_invoices invoices
 
           if syncer.errors.any?
-            ErrorMailer.new(syncer.errors.first, syncer.errors[1..-1]).deliver
+            ErrorMailer.error_email(syncer.errors[0], syncer.errors[1..-1]).deliver
           end
         end
 
       rescue StandardError => e
-        ErrorMailer.new(e).deliver
+        ErrorMailer.error_email(e).deliver
         Rails.logger.error e.message
       end
     end
