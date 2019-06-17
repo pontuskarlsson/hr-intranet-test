@@ -8,6 +8,7 @@ Refinery::Core::Engine.routes.draw do
         get :shipments
       end
     end
+    resources :invoices, :only => [:index, :show]
     resources :projects, :only => [:index, :show, :new, :create]
     resources :sales_orders, :only => [:index, :show]
     resources :sections, :only => [:index, :show]

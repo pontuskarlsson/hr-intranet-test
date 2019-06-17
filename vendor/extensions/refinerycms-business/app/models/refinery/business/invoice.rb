@@ -13,8 +13,14 @@ module Refinery
       validates :invoice_type,  inclusion: %w(ACCREC ACCPAY)
       validates :status,        inclusion: %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
 
+      scope :active, -> { where.not(status: %w(DELETED VOIDED)) }
+
       def display_total
         "#{total_amount} #{currency_code}"
+      end
+
+      def label
+        invoice_number
       end
 
     end

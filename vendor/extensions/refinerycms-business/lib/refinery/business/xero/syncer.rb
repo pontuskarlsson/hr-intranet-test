@@ -47,7 +47,19 @@ module Refinery
             acc[local] = xero_invoice.attributes[remote]
           }
 
-
+          # Try to match and associate with Project, but only if it is not already
+          # associated, because we don't want to automatically override a manually
+          # assigned project.
+          #
+          # The Project reference can currently be found either in Invoice Number or
+          # Reference.
+          if invoice.project_id.nil?
+            if (res = /Project ([0-9]{5})/.match(invoice.reference)).present?
+              invoice.project = ::Refinery::Business::Project.find_by code: res[1]
+            elsif (res = /Project ([0-9]{5})/.match(invoice.invoice_number)).present?
+              invoice.project = ::Refinery::Business::Project.find_by code: res[1]
+            end
+          end
 
           invoice.save!
         end
@@ -61,7 +73,7 @@ module Refinery
         def sync_contact(xero_contact)
           if xero_contact.account_number.present?
             code = xero_contact.account_number.rjust(5, '0')
-            company = Refinery::Business::Company.where(code: code).first
+            company = Refinery::Business::Company.find_by(code: code)
 
             if company && company.contact
               assign_xero_id company.contact, xero_contact.contact_id

@@ -1,0 +1,82 @@
+<table class="display js_companies_data_table" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Inv. No.</th>
+    <th>Reference</th>
+    <th>Company</th>
+    <th>Type</th>
+    <th>Inv. Date</th>
+    <th>Due Date</th>
+    <th>Status</th>
+    <th>Cur.</th>
+    <th style="text-align: right;">Tot. Amount</th>
+    <th style="text-align: right;">Paid</th>
+    <th style="text-align: right;">Due</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Inv. No.</th>
+    <th>Reference</th>
+    <th>Company</th>
+    <th>Type</th>
+    <th>Inv. Date</th>
+    <th>Due Date</th>
+    <th>Status</th>
+    <th>Cur.</th>
+    <th style="text-align: right;">Tot. Amount</th>
+    <th style="text-align: right;">Paid</th>
+    <th style="text-align: right;">Due</th>
+  </tr>
+  </tfoot>
+</table>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+
+  <script type="text/javascript">
+    $(function(){
+      var formatCurrency = function(data) {
+        var val = parseFloat(data).toFixed(2).toString();
+
+        return $('<div style="text-align: right;"></div>')
+          .text(val.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
+          .prop('outerHTML');
+      };
+
+      $('.js_companies_data_table').dataTable({
+        "scrollCollapse": true,
+        "paging":         true,
+        "ajax": "<%= refinery.business_invoices_path %>",
+        "columns": [
+          { data: "id", "width": '10%', "render": function(data, type, row) {
+            const href = ["<%= refinery.business_invoices_path %>", row.id].join('/');
+            const className = 'fa fa-arrow-right';
+            return $('<a></a>')
+              .attr('href', href)
+              .html('<i class="' + className + '"></i>')
+              .prop('outerHTML');
+          } },
+          { data: "invoice_number", "width": '30%' },
+          { data: "reference", "width": '30%' },
+          { data: function(row, type, set, meta) { return row.company && row.company.name || null; }, "width": '40%' },
+          { data: "invoice_type", "width": '30%' },
+          { data: "invoice_date", "width": '30%', render: { '_': function(data) { return new Date(data); }, 'display': function(data) { return data; } } },
+          { data: "due_date", "width": '30%' },
+          { data: "status", "width": '30%' },
+          { data: "currency_code", "width": '15%' },
+          { data: "total_amount", "width": '30%', render: formatCurrency },
+          { data: "amount_paid", "width": '30%', render: formatCurrency },
+          { data: "amount_due", "width": '30%', render: formatCurrency }
+        ]
+      });
+    });
+  </script>
+<% end %>
