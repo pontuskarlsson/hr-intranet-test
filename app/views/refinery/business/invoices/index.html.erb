@@ -1,0 +1,14 @@
+<% content_for :body do %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <h5>Accounts Overview</h5>
+      <%= render 'chart_balance', chart_id: 'chart-balance', source_table_id: 'js_invoices_table' %>
+    </div>
+
+  <div class="cell">
+    <%= render 'table', companies: @companies, table_id: 'js_invoices_table' %>
+  </div>
+
+<% end %>
+
+<%= render '/refinery/content_page' %>

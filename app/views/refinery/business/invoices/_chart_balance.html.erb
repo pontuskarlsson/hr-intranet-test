@@ -1,0 +1,29 @@
+<%= column_chart ([]), thousands: ',', colors: ['#30384B', '#cc4b37'], id: chart_id, stacked: true %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $(document).on('draw.dt', '#<%= source_table_id %>', function() {
+        var $dt = $('#<%= source_table_id %>').dataTable();
+        var chart = Chartkick.charts['<%= chart_id %>'];
+
+        // Build an object at first because object keys are easier to manage than array indices.
+        var dataObj = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
+          var colName = [dataRow.invoice_type, dataRow.currency_code].join(' ');
+          acc[dataRow.status] = acc[dataRow.status] || {};
+          acc[dataRow.status][colName] = acc[dataRow.status][colName] || 0;
+          acc[dataRow.status][colName] += parseFloat(dataRow.total_amount);
+          return acc;
+        }, {});
+
+        // Then convert the object into the array format that the chart requires to properly display the series.
+        var dataArr = _.reduce(dataObj, function(acc, data, status) {
+          acc.push({ name: status, data: data });
+          return acc;
+        }, []);
+
+        chart.updateData(dataArr);
+      });
+    });
+  </script>
+<% end %>

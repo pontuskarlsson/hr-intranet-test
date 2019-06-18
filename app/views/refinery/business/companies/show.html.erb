@@ -40,12 +40,11 @@
 
   <% end %>
 
-  <% if page_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
-    <% if @company.invoices.any? %>
-      <div class="cell">
-        <%= render 'invoices_list', invoices: @company.invoices.includes(:account) %>
-      </div>
-    <% end %>
+  <% if current_authentication_devise_user.has_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
+    <div class="cell">
+      <h4>Finance</h4>
+      <p><%= link_to 'See Company Invoices', refinery.business_invoices_path(company_id: @company) %></p>
+    </div>
   <% end %>
 
   <% if false %>

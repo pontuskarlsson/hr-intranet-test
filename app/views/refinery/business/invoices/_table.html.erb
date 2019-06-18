@@ -1,4 +1,4 @@
-<table class="display js_companies_data_table" cellspacing="0" style="width: 100%;">
+<table id="<%= table_id %>" class="display" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
     <th></th>
@@ -51,7 +51,7 @@
           .prop('outerHTML');
       };
 
-      $('.js_companies_data_table').dataTable({
+      $('#<%= table_id %>').dataTable({
         "scrollCollapse": true,
         "paging":         true,
         "ajax": "<%= refinery.business_invoices_path(filter_params) %>",
