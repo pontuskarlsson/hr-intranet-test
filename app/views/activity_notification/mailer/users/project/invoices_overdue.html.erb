@@ -1,0 +1,67 @@
+<%- @project = @notification.notifiable -%>
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>The Project <%= @project.code %> has invoices overdue, see summary below.</p>
+
+<p>For more details, <%= link_to "see #{@notification.notifiable.printable_name} on our Portal", move_notification_url_for(@notification, open: true) %>.</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+
+<table>
+  <tbody>
+  <tr>
+    <th style="width: 100px;">Project</th>
+    <td><%= @project.code %></td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td><%= @project.description %></td>
+  </tr>
+  <tr>
+    <th>Company</th>
+    <td><%= @project.company_label %></td>
+  </tr>
+  <tr>
+    <th>Start Date</th>
+    <td><%= @project.start_date %></td>
+  </tr>
+  <tr>
+    <th>End Date</th>
+    <td><%= @project.end_date %></td>
+  </tr>
+  </tbody>
+</table>
+
+
+<table style="margin-top: 20px;" class="list">
+  <thead>
+  <tr>
+    <th>Inv. No.</th>
+    <th>Ref.</th>
+    <th>Due Date</th>
+    <th>Status</th>
+    <th>Cur.</th>
+    <th class="currency">Total</th>
+    <th class="currency">Paid</th>
+    <th class="currency">Due</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @project.invoices.overdue.each_with_index do |invoice, i| %>
+    <tr class="<%= i.even? ? 'even' : 'odd' %>">
+      <td><%= invoice.invoice_number %></td>
+      <td><%= invoice.reference %></td>
+      <td><%= time_ago_in_words invoice.due_date %> ago</td>
+      <td><%= invoice.status %></td>
+      <td><%= invoice.currency_code %></td>
+      <td class="currency"><%= number_to_currency invoice.total_amount, unit: '' %></td>
+      <td class="currency"><%= number_to_currency invoice.amount_paid, unit: '' %></td>
+      <td class="currency"><%= number_to_currency invoice.amount_due, unit: '' %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

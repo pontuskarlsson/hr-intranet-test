@@ -29,6 +29,10 @@
       text-align: left;
       vertical-align: top;
     }
+    th.number, th.currency, td.number, td.currency {
+      text-align: right;
+    }
+
     td.logo {
       text-align: center;
     }
@@ -161,6 +165,17 @@
       display:block;
       clear:both;
     }
+    table.list {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    table.list tr.even {
+      background-color: #ebe9e8;
+    }
+    table.list td, table.list th {
+      padding: 4px;
+    }
+
     @media only screen and (max-width: 600px){
       a[class=btn]{
         display:block!important;
@@ -215,6 +230,7 @@
         <table>
           <tr>
             <td>
+              <%- binding.pry -%>
               <h2 align="center" class="header_text"><%= @header.presence || 'Notification' %></h2>
               <p align="center">
                 <%= yield %>

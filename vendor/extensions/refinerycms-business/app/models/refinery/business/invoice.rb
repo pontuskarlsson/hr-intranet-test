@@ -14,6 +14,7 @@ module Refinery
       validates :status,        inclusion: %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
 
       scope :active, -> { where.not(status: %w(DELETED VOIDED)) }
+      scope :overdue, -> { active.where('amount_due > 0').where('due_date < ?', Date.today) }
 
       def display_total
         "#{total_amount} #{currency_code}"

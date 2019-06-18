@@ -20,6 +20,11 @@ en:
           text: 'An inspection has been rejected'
           title: Inspection Reject
 
+      project:
+        invoices_overdue:
+          text: A project has overdue invoices
+          title: Project Invoices Overdue
+
     user:
       inspection:
         default:
@@ -34,3 +39,8 @@ en:
 
         reject:
           text: 'An inspection has been rejected'
+
+      project:
+        invoices_overdue:
+          text: A project has overdue invoices
+          title: Project Invoices Overdue
