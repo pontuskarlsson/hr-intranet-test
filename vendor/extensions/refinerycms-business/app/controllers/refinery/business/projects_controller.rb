@@ -11,7 +11,7 @@ module Refinery
       before_filter :find_project,  except: [:index, :create]
 
       def index
-        @projects = @projects.order(code: :asc)
+        @projects = @projects.where(filter_params).order(code: :asc)
         @project = Project.new
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @project in the line below:
@@ -61,6 +61,10 @@ module Refinery
 
       def project_params
         params.require(:project).permit(:company_label, :description, :end_date, :start_date, :status)
+      end
+
+      def filter_params
+        params.permit([:company_id, :status])
       end
 
     end

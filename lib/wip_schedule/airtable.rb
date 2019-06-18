@@ -11,7 +11,7 @@ module WipSchedule
     end
 
     def orders_for(filter = nil)
-      order_table.all(view: AT_WIP_VIEW).select do |order|
+      order_table.all(:sort => ["Customer PO#", :asc], view: AT_WIP_VIEW).select do |order|
         order['Order Status'] != STATUS_CANCELLED && (filter.blank? || order['Supplier'][0] == filter)
       end
 
@@ -22,8 +22,6 @@ module WipSchedule
     def update_record_fields(id, changed_fields)
       order_table.update_record_fields(id, changed_fields)
     end
-
-    private
 
     def order_table
       @airtable ||= ::Airtable::Client.new(ENV['AIRTABLE_KEY']).table(@app_id, AT_ORDER_SHEET)

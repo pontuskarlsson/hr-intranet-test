@@ -9,8 +9,6 @@ module Refinery
       before_filter :find_invoices, only: [:index]
       before_filter :find_invoice,  except: [:index, :new, :create]
 
-      helper_method :filter_params
-
       def index
         @invoices = @invoices.where(filter_params).order(updated_date_utc: :desc)
         # you can use meta fields from your model instead (e.g. browser_title)

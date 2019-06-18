@@ -43,37 +43,14 @@
   <% if current_authentication_devise_user.has_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
     <div class="cell">
       <h4>Finance</h4>
-      <p><%= link_to "See Company Invoices (#{})", refinery.business_invoices_path(company_id: @company) %></p>
+      <p><%= link_to "See Company Invoices (#{@company.invoices.count})", refinery.business_invoices_path(company_id: @company) %></p>
     </div>
   <% end %>
 
-  <% if false %>
-  <% if @company.parcels.recent.any? or @company.to_shipments.shipped.recent.any? %>
-    <div class="cell medium-6">
-      <div class="card portal-card">
-        <div class="card-divider">
-          <h5>
-            <i class="fa fa-truck"></i>
-            Parcels / Shipments
-          </h5>
-        </div>
-
-        <div class="card-section">
-          <p><%= @company.parcels.recent.count %> incoming parcels recently received by Happy Rabbit.</p>
-          <p><%= @company.to_shipments.shipped.recent.count %> outgoing shipments recently sent out by Happy Rabbit.</p>
-        </div>
-
-        <div class="card-footer">
-          <%= link_to 'See more', refinery.shipments_business_company_path(@company) %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-  <% end %>
-
-  <% if @company.projects.any? %>
-    <%= render 'projects_list', projects: @company.projects %>
-  <% end %>
+  <div class="cell">
+    <h4>Projects</h4>
+    <p><%= link_to "See Company Projects (#{@company.projects.count})", refinery.business_projects_path(company_id: @company) %></p>
+  </div>
 </div>
 
 <% content_for :javascripts do %>
