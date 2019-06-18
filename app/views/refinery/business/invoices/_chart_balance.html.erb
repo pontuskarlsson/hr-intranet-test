@@ -9,10 +9,12 @@
 
         // Build an object at first because object keys are easier to manage than array indices.
         var dataObj = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
-          var colName = [dataRow.invoice_type, dataRow.currency_code].join(' ');
-          acc[dataRow.status] = acc[dataRow.status] || {};
-          acc[dataRow.status][colName] = acc[dataRow.status][colName] || 0;
-          acc[dataRow.status][colName] += parseFloat(dataRow.total_amount);
+          if (dataRow.account_id == <%= account_id %>) {
+            var colName = [dataRow.invoice_type, dataRow.currency_code].join(' ');
+            acc[dataRow.status] = acc[dataRow.status] || {};
+            acc[dataRow.status][colName] = acc[dataRow.status][colName] || 0;
+            acc[dataRow.status][colName] += parseFloat(dataRow.total_amount) * (dataRow.invoice_type == 'ACCREC' ? 1 : -1);
+          }
           return acc;
         }, {});
 

@@ -33,7 +33,9 @@ module Refinery
         end
 
         def sync_invoice(xero_invoice)
-          invoice = account.invoices.find_or_initialize_by(invoice_id: xero_invoice.invoice_id)
+          # It is possible that the invoice has been moved between organisations
+          invoice = Refinery::Business::Invoice.find_or_initialize_by(invoice_id: xero_invoice.invoice_id)
+          invoice.account = @account
 
           # Calling the getter +contact+ will make another API call to load additional
           # contact data, but using attributes[:contact] will not do that.
