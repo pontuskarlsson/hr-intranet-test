@@ -4,8 +4,6 @@ namespace :hr_intranet do
     API_KEY_ORGANISATION = 'Happy Rabbit Trading Limited'
 
     task sync_updated_invoices: [:set_logger, :environment] do
-      return
-
       begin
         Refinery::Business::Account.find_each do |account|
           xero_client = Refinery::Business::Xero::Client.new(account)
@@ -24,9 +22,13 @@ namespace :hr_intranet do
           invoices = xero_client.client.Invoice.all(params)
           Rails.logger.info "Found #{invoices.length} Invoices in Xero"
 
-          # Load the unique Contacts used in those invoices
+          # When syncing updated invoices only, we only load Contact details if there is no previous
+          # record of the contact. Any changes in contact details from Xero will be handled during
+          # full sync.
           contacts = invoices.each_with_object({}) { |invoice, acc|
-            acc[invoice.attributes[:contact].contact_id] ||= invoice.contact
+            unless syncer.find_contact_by_xero_id(invoice.attributes[:contact].contact_id).present?
+              acc[invoice.attributes[:contact].contact_id] ||= invoice.contact
+            end
           }.values
 
           # Sync Contacts first
