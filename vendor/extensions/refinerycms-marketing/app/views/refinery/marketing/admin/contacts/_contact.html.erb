@@ -2,7 +2,7 @@
   <span class='title'>
     <%= contact.name %>
     <span class="preview">
-      <%= t('.preview', :created_at => l(contact.created_at, :format => :short)) %>
+      <%= t('.preview', :created_at => l(contact.created_at, :format => :short), email: contact.email.presence || 'No email', organisation_name: contact.is_organisation ? '' : contact.organisation_name) %>
     </span>
   </span>
   <span class='actions'>
