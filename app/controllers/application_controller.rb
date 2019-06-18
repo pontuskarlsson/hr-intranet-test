@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_user_time_zone
 
+  helper_method :filter_params
+
   # Workaround to avoid problem with user accessing other
   # engines while password is expired.
   delegate :authentication_devise_user_password_expired_path, to: :refinery
@@ -25,6 +27,10 @@ class ApplicationController < ActionController::Base
   def not_found
     error_404
     #render '404', layout: 'public'
+  end
+
+  def filter_params
+    {}
   end
 
   private
