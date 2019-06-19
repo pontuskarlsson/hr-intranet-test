@@ -8,11 +8,10 @@ namespace :hr_intranet do
         list = WipSchedule::CustomList.new
 
         list.each_open_row do |row|
-          creator = WipSchedule::Creator.new(row['Airtable App Id'], row['Filter'])
+          creator = WipSchedule::Creator.new(row)
 
           if creator.create_wip_file
-            file_name = "#{row['Description']}-#{Date.today.to_s}.xls"
-            HappyRabbitMailer.wip_schedule_email(row, creator.wip_file_path, file_name).deliver
+            HappyRabbitMailer.wip_schedule_email(row, creator).deliver
           end
 
           # Handle messages

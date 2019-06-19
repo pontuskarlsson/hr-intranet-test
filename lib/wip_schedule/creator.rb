@@ -2,12 +2,13 @@ module WipSchedule
   class Creator
 
     attr_reader :airtable, :app_id, :excel, :filter, :last_error
+    delegate :attentions, to: :excel
 
-    def initialize(airtable_app_id, filter)
-      @app_id = airtable_app_id
-      @airtable = WipSchedule::Airtable.new(airtable_app_id)
+    def initialize(row)
+      @app_id, @filter, @description = row['Airtable App Id'], row['Filter'], row['Description']
+
+      @airtable = WipSchedule::Airtable.new(@app_id)
       @excel = WipSchedule::Excel.blank
-      @filter = filter
       @tempfile = Tempfile.new
     end
 

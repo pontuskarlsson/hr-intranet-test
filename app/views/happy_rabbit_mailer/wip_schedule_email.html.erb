@@ -1,16 +1,36 @@
 <h2>Request for weekly WIP status update</h2>
 
 <p>
-  Please update the attached WIP file with the latest information and reply back to
-  <a href="mailto:wip_status@happyrabbit.com">wip_status@happyrabbit.com</a>
-  by the end of the workweek.
+  Please review the attached WIP file and update the information if necessary. Reply back to
+  <a href="mailto:wip_status@happyrabbit.com">wip_status@happyrabbit.com</a> by the end of the workweek.
 </p>
 
-<p>A few tings to note:</p>
+<h3>Current status of the WIP</h3>
+<ul>
+  <% @creator.attentions.each_pair do |order_status, attentions| %>
+    <% attentions.each_pair.each_with_index do |(attention, orders_and_cols), i| %>
+      <li>
+        There are <%= order_status %> orders where
+        <%= orders[:orders].length %> orders have <%= attention %> information in
+        <% orders_and_cols[:columns][0..2].each_with_index do |column, i| %>
+          <%= i+1 == orders_and_cols[:columns].length ? 'or' : ',' unless i.zero? %>
+          <%= column %>
+        <% end %>
+        <% if orders_and_cols[:columns].length > 3 %>
+          or <%= orders_and_cols[:columns].length - 3 %> other.
+        <% end %>
+        .
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+
+<h3>Instructions on how to update the WIP:</h3>
 
 <ul>
-  <li>Columns in Gray cannot be changed.</li>
-  <li>Cells in red means it is outdated information and needs to be updated.</li>
+  <li>Columns in <span style="background-color: gray;">Gray</span> cannot be changed.</li>
+  <li>Cells in <span style="background-color: red;">Red</span> means it is missing or outdated information and needs to be updated.</li>
   <li>
     <span style="color: red;">DO NOT</span>
     add or remove any rows in this file. If orders are cancelled or have split shipment,

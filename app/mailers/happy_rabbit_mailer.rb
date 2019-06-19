@@ -2,9 +2,11 @@ class HappyRabbitMailer < ApplicationMailer
   layout 'happy_rabbit_mailer'
 
   # data is a Hash where each key is the column from the custom list WIP Schedule
-  def wip_schedule_email(data, file_path, file_name)
+  def wip_schedule_email(data, creator)
     @header = 'WIP Schedule'
-    attachments[file_name] = File.read(file_path)
+    @creator = creator
+    file_name = "#{data['Description']}-#{Date.today.to_s}.xls"
+    attachments[file_name] = File.read(creator.wip_file_path)
     mail(from: 'wip_status@happyrabbit.com', to: data['Recipients'], subject: "WIP Status update: #{data['Description']}")
   end
 

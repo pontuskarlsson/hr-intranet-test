@@ -121,10 +121,13 @@ module WipSchedule
 
     ORDER_WORKSHEET = 'Orders'
 
+    attr_reader :attentions
+
     def initialize(book)
       @book = book
       @sheet = book.worksheet(ORDER_WORKSHEET)
       @next_row_idx = 1
+      @attentions = {}
     end
 
     def self.blank
@@ -201,23 +204,39 @@ module WipSchedule
       if value(order, 'Order Status') == 'REQUESTED'
         # If the order status is requested, we only require confirmed ex. factory and PO price from vendor.
         if ['1st Conf. Ex. Fact. Date', 'Vendor Conf. PO Price / SKU'].include? column
-          value(order, column).blank?
+          if value(order, column).blank?
+            alert 'Requested', 'missing', order['id'], column
+          else
+            false
+          end
         else
           false
         end
 
       else
         if column == '1st Conf. Ex. Fact. Date'
-          value(order, column).blank?
+          if value(order, column).blank?
+            alert 'Ordered', 'missing', order['id'], column
+          else
+            false
+          end
 
         elsif /Orig: (Trims In-House|Fabric In-House)/.match(column)
           # Original columns should only be flagged when they are empty, since
           # if the date is outdated and nothing is entered into the Upd column,
           # then it is the Upd column that should be flagged
-          value(order, column).blank?
+          if value(order, column).blank?
+            alert 'Ordered', 'missing', order['id'], column
+          else
+            false
+          end
 
         elsif (res = /Upd: (.*$)/.match(column)).present?
-          res[0] != 'Shipping Booked' && operation_outdated?(res[0], order)
+          if res[0] != 'Shipping Booked' && operation_outdated?(res[0], order)
+            alert 'Ordered', 'outdated', order['id'], column
+          else
+            false
+          end
 
         else
           false
@@ -256,6 +275,14 @@ module WipSchedule
     def get_filter
       _, *filter = @sheet[0,0].to_s.split(',')
       filter.join(',')
+    end
+
+    def alert(order_status, attention, order_id, column)
+      @attentions[order_status] ||= {}
+      @attentions[order_status][attention] ||= { orders: [], columns: [] }
+      @attentions[order_status][attention][:orders] << order_id
+      @attentions[order_status][attention][:columns] |= [column]
+      true
     end
 
   end

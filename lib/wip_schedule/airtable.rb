@@ -5,6 +5,7 @@ module WipSchedule
     AT_WIP_VIEW = 'WIP'
 
     STATUS_CANCELLED = 'CANCELLED'
+    STATUS_DRAFT = 'DRAFT'
 
     def initialize(app_id)
       @app_id = app_id
@@ -12,7 +13,7 @@ module WipSchedule
 
     def orders_for(filter = nil)
       order_table.all(:sort => ["Customer PO#", :asc], view: AT_WIP_VIEW).select do |order|
-        order['Order Status'] != STATUS_CANCELLED && (filter.blank? || order['Supplier'][0] == filter)
+        ![STATUS_CANCELLED, STATUS_DRAFT].include?(order['Order Status']) && (filter.blank? || order['Supplier'][0] == filter)
       end
 
     rescue StandardError => e
