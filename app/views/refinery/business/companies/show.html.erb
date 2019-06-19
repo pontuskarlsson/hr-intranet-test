@@ -40,17 +40,26 @@
 
   <% end %>
 
-  <% if current_authentication_devise_user.has_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
+  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::Business::PAGE_INVOICES_URL) %>
     <div class="cell">
       <h4>Finance</h4>
       <p><%= link_to "See Company Invoices (#{@company.invoices.count})", refinery.business_invoices_path(company_id: @company) %></p>
     </div>
   <% end %>
 
-  <div class="cell">
-    <h4>Projects</h4>
-    <p><%= link_to "See Company Projects (#{@company.projects.count})", refinery.business_projects_path(company_id: @company) %></p>
-  </div>
+  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::Business::PAGE_PROJECTS_URL) %>
+    <div class="cell">
+      <h4>Projects</h4>
+      <p><%= link_to "See Company Projects (#{@company.projects.count})", refinery.business_projects_path(company_id: @company) %></p>
+    </div>
+  <% end %>
+
+  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
+    <div class="cell">
+      <h4>Finance</h4>
+      <p><%= link_to "See Company Inspections (#{@company.inspections.count})", refinery.quality_assurance_inspections_path(company_id: @company) %></p>
+    </div>
+  <% end %>
 </div>
 
 <% content_for :javascripts do %>
