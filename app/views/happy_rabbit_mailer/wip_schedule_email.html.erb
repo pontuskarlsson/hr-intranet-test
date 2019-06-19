@@ -5,20 +5,18 @@
   <a href="mailto:wip_status@happyrabbit.com">wip_status@happyrabbit.com</a> by the end of the workweek.
 </p>
 
-<h4 style="margin-top: 20px;">WIP Current Status</h4>
+<h4 style="margin-top: 30px;">WIP Current Status</h4>
 
 <% if @creator.attentions.any? %>
-  <p>The following requires your attention this week:</p>
+  <p style="text-decoration: underline;">The following requires your attention this week:</p>
   <ul>
     <% @creator.attentions.each_pair do |order_status, attentions| %>
       <% attentions.each_pair.each_with_index do |(attention, orders_and_cols), i| %>
         <li>
           There are orders with status <%= order_status %> where
           <%= orders_and_cols[:orders].length %> have <span style="text-decoration: underline;"><%= attention %></span> information in
-          <% orders_and_cols[:columns][0..2].each_with_index do |column, i| %>
-            <%= i+1 == orders_and_cols[:columns].length ? 'or' : ',' unless i.zero? %>
-            <span style="font-style: italic;"><%= column %></span>
-          <% end %>
+          <% orders_and_cols[:columns][0..2].each_with_index do |column, i| %><%= i+1 == orders_and_cols[:columns].length ? ' or' : ',' unless i.zero? %>
+            <span style="font-style: italic;"><%= column %></span><% end %>
           <% if orders_and_cols[:columns].length > 3 %>
             or <%= orders_and_cols[:columns].length - 3 %> other
           <% end %>
@@ -31,7 +29,7 @@
   <p>There is nothing explicit that requires your attention this week, but please review and send in your updates if anything has changed.</p>
 <% end %>
 
-<h4 style="margin-top: 20px;">WIP Guidelines:</h4>
+<h4 style="margin-top: 30px;">WIP Guidelines:</h4>
 
 <ul>
   <li>
@@ -48,7 +46,7 @@
   <li><span style="font-style: italic;">Updated</span> dates should be set when a milestone is not yet complete, but the <span style="font-style: italic;">Original</span> date is no longer correct.</li>
   <li><span style="font-style: italic;">Actual</span> dates should only be set when the milestone is complete.</li>
   <li>Columns in <span style="background-color: lightgray;">Gray</span> cannot be changed.</li>
-  <li>Cells in <span style="background-color: red;">Red</span> means it is missing or outdated information and needs to be updated.</li>
+  <li>Cells in <span style="background-color: palevioletred;">Red</span> means it is missing or outdated information and needs to be updated.</li>
   <li>
     <span style="color: red;">DO NOT</span>
     add or remove any rows in this file. If orders are cancelled or have split shipment,
