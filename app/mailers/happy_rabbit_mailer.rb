@@ -15,7 +15,7 @@ class HappyRabbitMailer < ApplicationMailer
 
     @inspection = inspection
     @user = user
-    mail(to: user.email, subject: "#{@header} - #{Date.today.to_s}")
+    mail(to: user.email, bcc: 'daniel.viklund@happyrabbit.com', subject: "#{@header} - #{Date.today.to_s}")
   end
 
   def services_notification_email(description, notice, orders)
