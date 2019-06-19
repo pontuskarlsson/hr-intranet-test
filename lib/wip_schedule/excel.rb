@@ -280,7 +280,7 @@ module WipSchedule
     def alert(order_status, attention, order_id, column)
       @attentions[order_status] ||= {}
       @attentions[order_status][attention] ||= { orders: [], columns: [] }
-      @attentions[order_status][attention][:orders] |= order_id
+      @attentions[order_status][attention][:orders] |= [order_id]
       @attentions[order_status][attention][:columns] |= [column]
       true
     end
