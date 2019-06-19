@@ -47,6 +47,7 @@ PATH
       faraday (~> 0.15.4)
       refinerycms-core (>= 2.1.2)
       refinerycms-page_roles (>= 1.0)
+      refinerycms-resource_authorizations
     refinerycms-page_roles (1.0)
       refinerycms-authentication-devise (~> 1.0.0)
       refinerycms-core (>= 2.1.2)
@@ -60,6 +61,7 @@ PATH
       acts_as_indexed (~> 0.8.0)
       refinerycms-business (~> 1.0.0)
       refinerycms-core (~> 3.0.6)
+      refinerycms-resource_authorizations
     refinerycms-resource_authorizations (1.0)
       refinerycms-core (~> 3.0.6)
       refinerycms-images (~> 3.0.6)

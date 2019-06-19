@@ -1,47 +1,21 @@
 <div class="grid-x grid-padding-x">
-  <div class="cell">
-    <section class="page-part">
-      <div class="page-part-header">
-        <small>
-          <%= link_to 'See all', refinery.quality_assurance_inspections_path %>
-        </small>
-        Inspections
-      </div>
 
-      <div style="position: relative; width: 100%; overflow: hidden;">
-        <%= render 'refinery/quality_assurance/inspections/table', table_id: 'dashboard_inspections', options: { no_footer: true } %>
-      </div>
-    </section>
+  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
+    <div class="cell">
+      <section class="page-part">
+        <div class="page-part-header">
+          <small>
+            <%= link_to 'See all', refinery.quality_assurance_inspections_path %>
+          </small>
+          Inspections
+        </div>
 
-  </div>
-
-  <% if false %>
-  <div class="medium-8 cell">
-    <section class="page-part">
-      <div class="page-part-header">
-        NEWS
-      </div>
-      <% @items = Refinery::News::Item.latest(2) %>
-      <% if @items.any? %>
-        <ul class="latest-news">
-          <% @items.each do |item| %>
-            <li>
-              <h5>
-                <%= link_to item.title, refinery.news_item_path(item) %><br/>
-                <small><%= item.publish_date.strftime('%d %b - %I:%M %P') %></small>
-              </h5>
-              <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 200, escape: false,
-                                             omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
-              <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="italic">No News Items</p>
-      <% end %>
-    </section>
-  </div>
-    <% end %>
+        <div style="position: relative; width: 100%; overflow: hidden;">
+          <%= render 'refinery/quality_assurance/inspections/table', table_id: 'dashboard_inspections', options: { no_footer: true } %>
+        </div>
+      </section>
+    </div>
+  <% end %>
 
   <% if current_authentication_devise_user.has_role?('Employees:Employee') %>
     <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(

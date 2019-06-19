@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   # Runtime dependencies
   s.add_dependency             'refinerycms-core',    '~> 3.0.6'
   s.add_dependency             'refinerycms-business','~> 1.0.0'
+  s.add_dependency             'refinerycms-resource_authorizations'
   s.add_dependency             'acts_as_indexed',     '~> 0.8.0'
 
   # Development dependencies (usually used for testing)
