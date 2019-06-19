@@ -1,0 +1,54 @@
+.field {
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    input[type=tel],
+    input[type=number],
+    textarea,
+    select {
+        width: 100%;
+        box-sizing: border-box;
+
+        border: 1px solid #7f9db9;
+        padding: 0.4% 0.5%;
+        line-height: 20px;
+        height: 30px;
+    }
+
+    input[type=text],
+    input[type=password],
+    input[type=email],
+    input[type=tel],
+    input[type=number],
+    select {
+        height: 30px;
+    }
+
+}
+
+#site_bar {
+    background: #fff;
+    border-bottom: 1px solid #999;
+    box-sizing: border-box;
+
+    #site_bar_content, #site_bar_content a {
+        color: #000;
+    }
+
+    #site_bar_portal_logo {
+        line-height: 24px;
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}
+
+#admin_container {
+    margin-top: 0px;
+}
+
+body {
+    background: #FAF8F7;
+}

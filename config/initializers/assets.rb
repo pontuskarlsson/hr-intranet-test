@@ -15,5 +15,6 @@ Rails.application.config.assets.precompile += %w(
   jquery.ui.timepicker.addon.js
   public.js
   public.scss
+  refinery/backend.scss
   refinery/calendar.css
 )
