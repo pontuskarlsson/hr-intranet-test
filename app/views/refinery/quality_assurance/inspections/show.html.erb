@@ -166,19 +166,21 @@
   <% content_for :side_body do %>
     <aside>
       <h4><%= t('.other') %></h4>
-      <ul id="inspections" class="no-bullet">
+      <ul id="inspections" class="list-with-image">
         <% @similar_inspections.each do |inspection| %>
-          <li>
-            <div>
-              <% if inspection.inspection_photo.present? %>
-              <span style="float: left;">
-                <%= image_tag inspection.inspection_photo.image.image.thumb('45x45#').url %>
-              </span>
-              <% end %>
+          <li class="<%= 'no-image' unless inspection.inspection_photo.present? %>">
+            <i class="list-icon fa <%= inspection.result == 'Pass' ? 'fa-check-circle' : (inspection.result == 'Reject' ? 'fa-times-circle' : 'fa-question-circle') %>"></i>
+            <% if inspection.inspection_photo.present? %>
+                <span class="list-image">
+                  <%= image_tag inspection.inspection_photo.image.image.thumb('45x45#').url %>
+                </span>
+            <% end %>
+            <div class="list-content">
               <%= link_to [inspection.label, inspection.product_code, inspection.product_description, inspection.product_colour_variants].reject(&:blank?).join(', '), refinery.quality_assurance_inspection_path(inspection) %>
             </div>
-            <small style="float: right;"><%= inspection.display_inspection_date %></small>
-            <span class="label <%= inspection.result == 'Pass' ? 'success' : (inspection.result == 'Reject' ? 'alert' : 'secondary') %> round"><%= inspection.result %></span>
+            <div class="list-trailing">
+              <small style="float: right;"><%= time_ago_in_words inspection.display_inspection_date %> ago</small>
+            </div>
           </li>
         <% end %>
       </ul>

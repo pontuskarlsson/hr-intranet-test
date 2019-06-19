@@ -1,0 +1,59 @@
+ul.list-with-image {
+    list-style-type: none;
+
+    li {
+        padding-left: 70px;
+        padding-right: 80px;
+        position: relative;
+        height: 50px;
+        overflow: hidden;
+
+        &.no-image {
+            padding-left: 20px;
+        }
+
+        .list-icon {
+            position: absolute;
+            left: 0;
+            top: 5px;
+
+            &.fa-check-circle {
+                color: green;
+            }
+
+            &.fa-times-circle {
+                color: red;
+            }
+        }
+
+        .list-image {
+            position: absolute;
+            left: 20px;
+            top: 2px;
+            height: 45px;
+            width: 45px;
+
+            &.fa-check-circle {
+                color: green;
+            }
+
+            &.fa-times-circle {
+                color: red;
+            }
+        }
+
+        .list-content {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .list-trailing {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            overflow: hidden;
+            text-align: right;;
+        }
+    }
+}
