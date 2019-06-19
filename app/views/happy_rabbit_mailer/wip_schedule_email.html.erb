@@ -11,7 +11,7 @@
     <% attentions.each_pair.each_with_index do |(attention, orders_and_cols), i| %>
       <li>
         There are <%= order_status %> orders where
-        <%= orders[:orders].length %> orders have <%= attention %> information in
+        <%= orders_and_cols[:orders].length %> orders have <%= attention %> information in
         <% orders_and_cols[:columns][0..2].each_with_index do |column, i| %>
           <%= i+1 == orders_and_cols[:columns].length ? 'or' : ',' unless i.zero? %>
           <%= column %>
@@ -29,6 +29,15 @@
 <h3>Instructions on how to update the WIP:</h3>
 
 <ul>
+  <li>
+    Milestone dates are shown as
+    <span style="font-style: italic;">Orig: </span> (Original),
+    <span style="font-style: italic;">Upd: </span> (Updated) and
+    <span style="font-style: italic;">Act: </span> (Actual).
+  </li>
+  <li><span style="font-style: italic;">Original</span> dates means when they were originally planned to be completed and are calculated based on 1st Confirmed Ex. Factory date.</li>
+  <li><span style="font-style: italic;">Updated</span> dates should be set when a milestone is not yet complete, but the original date is no longer correct.</li>
+  <li><span style="font-style: italic;">Actual</span> dates should only be set when the milestone has been completed for the order.</li>
   <li>Columns in <span style="background-color: gray;">Gray</span> cannot be changed.</li>
   <li>Cells in <span style="background-color: red;">Red</span> means it is missing or outdated information and needs to be updated.</li>
   <li>
