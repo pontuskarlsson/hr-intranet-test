@@ -1,0 +1,45 @@
+<h4>Parcels</h4>
+
+<% if shipment.status == 'not_shipped' %>
+  <%= form_for shipment.shipment_parcels.build, url: refinery.shipping_shipment_parcels_path(shipment) do |f| %>
+    <div class="grid-x grid-padding-x">
+      <div class="medium-4 cell end">
+        <label>Register a parcel to Shipment
+          <small data-tooltip aria-haspopup="true"
+                 class="has-tip"
+                 title="When you send multiple items in one box, only register one parcel to the shipment. But if you send multiple boxes in the same shipment, register one parcel for each box.">
+            Note!
+          </small>
+          <%= f.text_field :description, placeholder: 'Description' %>
+        </label>
+      </div>
+    </div>
+
+    <div class="grid-x grid-padding-x">
+      <div class="medium-2 cell end">
+        <p><%= f.submit 'Register', class: 'button tiny' %></p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if (shipment_parcels = shipment.shipment_parcels.select(&:persisted?)).any? %>
+  <table>
+    <thead>
+    <tr>
+      <th style="width: 75%;">Description</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% shipment_parcels.each do |shipment_parcel| %>
+      <tr>
+        <td><%= shipment_parcel.description %></td>
+        <td><%= link_to 'Remove', refinery.shipping_shipment_parcel_path(shipment, shipment_parcel), method: :delete, confirm: 'Are you sure you want to Remove this Parcel?' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="italic">No parcels registered yet</p>
+<% end %>

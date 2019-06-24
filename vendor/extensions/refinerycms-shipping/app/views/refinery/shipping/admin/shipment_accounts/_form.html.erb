@@ -1,0 +1,47 @@
+<%= form_for [refinery, :shipping_admin, @shipment_account] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @shipment_account,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :contact_name -%>
+    <%= f.text_field :contact_name, class: 'js_contact_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :courier -%>
+    <%= f.text_field :courier, class: 'js_courier_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :account_no -%>
+    <%= f.text_field :account_no -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_field :description -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.shipping.admin.shipment_accounts.shipment_account'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @shipment_account.description) -%>
+<% end -%>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function(){
+      $('.js_contact_field').autocomplete({
+        source: <%= ::Refinery::Marketing::Contact.to_source %>
+      });
+      $('.js_courier_field').autocomplete({
+        source: <%= ::Refinery::Shipping::Shipment.easypost_couriers.to_json.html_safe %>
+      });
+    });
+  </script>
+<% end %>

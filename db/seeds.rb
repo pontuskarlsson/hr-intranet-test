@@ -35,8 +35,8 @@ Refinery::Marketing::Engine.load_seed
 # Added by Refinery CMS Business extension
 Refinery::Business::Engine.load_seed
 
-# Added by Refinery CMS Parcels extension
-Refinery::Parcels::Engine.load_seed
+# Added by Refinery CMS Shipping extension
+Refinery::Shipping::Engine.load_seed
 
 # Added by Refinery CMS Employees extension
 Refinery::Employees::Engine.load_seed

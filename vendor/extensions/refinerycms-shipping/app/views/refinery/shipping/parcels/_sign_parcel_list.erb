@@ -1,0 +1,32 @@
+<section>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>From</th>
+      <th>Courier</th>
+      <th>Air Waybill No</th>
+      <th>Addressed To</th>
+      <th>Actions</th>
+    </tr>
+    <% if parcels.any? %>
+      <% parcels.each do |parcel| %>
+        <tr>
+          <td><%= link_to parcel.parcel_date.strftime('%d %b, %Y'), refinery.shipping_parcel_path(parcel) %></td>
+          <td><%= parcel.from_contact.present? ? link_to(parcel.from_contact.name, refinery.marketing_contact_path(parcel.from_contact)) : parcel.from_name %></td>
+          <td><%= parcel.courier %></td>
+          <td><%= parcel.air_waybill_no %></td>
+          <td><%= parcel.to %></td>
+          <td>
+            <%= link_to 'Sign', refinery.sign_shipping_parcel_path(parcel), remote: true %>
+            or
+            <%= link_to 'Give to', refinery.pass_on_shipping_parcel_path(parcel), remote: true %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="6" class="italic">No parcels found</td>
+      </tr>
+    <% end %>
+  </table>
+</section>

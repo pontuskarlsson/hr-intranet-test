@@ -1,0 +1,25 @@
+<% content_for :body do %>
+  <h4>Add Parcel</h4>
+
+  <section class="add_parcels">
+    <%= render 'quick_form', parcel: @parcel %>
+  </section>
+
+  <% if @my_unsigned_parcels.any? %>
+    <h4>You need to sign the following Parcels</h4>
+    <%= render 'sign_parcel_list', parcels: @my_unsigned_parcels, allow_sign: true %>
+  <% end %>
+
+  <% if params[:view_all] == '1' %>
+    <p>Currently showing all parcels. <%= link_to 'View only recent', refinery.shipping_parcels_path %>.</p>
+  <% else %>
+    <p>Currently showing recent parcels. <%= link_to 'View all', refinery.shipping_parcels_path(view_all: '1') %>.</p>
+  <% end %>
+
+  <section>
+    <%= render 'table', parcels: @parcels %>
+  </section>
+
+<% end %>
+
+<%= render '/refinery/content_page' %>

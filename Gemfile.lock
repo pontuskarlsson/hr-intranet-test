@@ -25,8 +25,8 @@ PATH
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing
       refinerycms-page_roles (>= 1.0)
-      refinerycms-parcels
       refinerycms-resource_authorizations
+      refinerycms-shipping
       trans_forms
     refinerycms-calendar (2.1.0)
       google_calendar (~> 0.4)
@@ -52,11 +52,6 @@ PATH
       refinerycms-authentication-devise (~> 1.0.0)
       refinerycms-core (>= 2.1.2)
       refinerycms-pages (>= 2.1.2)
-    refinerycms-parcels (1.0)
-      easypost (~> 2.1.0)
-      refinerycms-core (>= 2.1.2)
-      refinerycms-marketing
-      trans_forms
     refinerycms-quality_assurance (1.0)
       acts_as_indexed (~> 0.8.0)
       refinerycms-business (~> 1.0.0)
@@ -66,6 +61,12 @@ PATH
       refinerycms-core (~> 3.0.6)
       refinerycms-images (~> 3.0.6)
       refinerycms-resources (~> 3.0.6)
+    refinerycms-shipping (1.0)
+      easypost (~> 2.1.0)
+      refinerycms-core (>= 2.1.2)
+      refinerycms-marketing
+      refinerycms-page_roles (>= 1.0)
+      trans_forms
     refinerycms-store (1.0)
       hiredis (~> 0.4.5)
       redis (~> 3.0.1)
@@ -261,7 +262,7 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.6)
-    jwt (2.1.0)
+    jwt (2.2.1)
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -466,7 +467,7 @@ GEM
       execjs (>= 0.3.0, < 3)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.5)
+    unf_ext (0.0.7.6)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -525,9 +526,9 @@ DEPENDENCIES
   refinerycms-news!
   refinerycms-page-images (= 3.0.0)
   refinerycms-page_roles!
-  refinerycms-parcels!
   refinerycms-quality_assurance!
   refinerycms-resource_authorizations!
+  refinerycms-shipping!
   refinerycms-store!
   refinerycms-testing (= 3.0.6)
   refinerycms-wymeditor (= 1.1.0)

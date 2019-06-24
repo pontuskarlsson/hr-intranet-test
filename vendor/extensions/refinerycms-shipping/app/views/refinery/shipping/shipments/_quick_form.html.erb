@@ -1,0 +1,80 @@
+<%= form_for [refinery, :shipping, shipment] do |f| -%>
+
+  <div class="grid-x grid-padding-x">
+    <div class="medium-3 cell">
+      <div class='field'>
+        <%= f.label :from_contact_name, 'From'  -%>
+        <%= f.hidden_field :from_contact_id, class: 'js_from_contact_id' %>
+        <%= f.text_field :from_contact_name, autofocus: true, class: 'js_from_field' -%>
+      </div>
+    </div>
+
+    <div class="medium-3 cell">
+      <div class='field'>
+        <%= f.label :to_contact_name, 'Address To' -%>
+        <%= f.hidden_field :to_contact_id, class: 'js_to_contact_id' %>
+        <%= f.text_field :to_contact_name, class: 'js_to_field' -%>
+      </div>
+    </div>
+
+    <div class="medium-3 cell">
+      <div class='field'>
+        <%= f.label :bill_to -%>
+        <%= f.select :bill_to, options_for_select(::Refinery::Shipping::Shipment::BILL_TO, f.object.bill_to) -%>
+      </div>
+    </div>
+
+    <div class="medium-3 cell">
+      <div class='field t1'>
+        <%= f.submit 'Add', class: 'tiny button round' %>
+      </div>
+    </div>
+  </div>
+<% end -%>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      var source = <%= contact_references.html_safe %>;
+
+      $('.js_from_field').autocomplete({
+        source: source,
+        focus: function( event, ui ) {
+          $( '.js_from_contact_id' ).val( ui.item.id );
+          return false;
+        },
+        select: function( event, ui ) {
+          $( ".js_from_field" ).val( ui.item.label );
+          $( '.js_from_contact_id' ).val( ui.item.value );
+          return false;
+        }
+      }).data("uiAutocomplete")._renderItem = function( ul, item ) {
+        return $( "<li>" )
+            .append( ["<a>", item.label, " <small>", item.organisation_name, "</small><br><small>", item.address, "</small></a>"].join('') )
+            .appendTo( ul );
+      };
+
+      $('.js_to_field').autocomplete({
+        source: source,
+        focus: function( event, ui ) {
+          $( '.js_to_contact_id' ).val( ui.item.id );
+          return false;
+        },
+        select: function( event, ui ) {
+          $( ".js_to_field" ).val( ui.item.label );
+          $( '.js_to_contact_id' ).val( ui.item.value );
+          return false;
+        }
+      }).data("uiAutocomplete")._renderItem = function( ul, item ) {
+        return $( "<li>" )
+            .append( ["<a>", item.label, " <small>", item.organisation_name, "</small><br><small>", item.address, "</small></a>"].join('') )
+            .appendTo( ul );
+      };
+    });
+  </script>
+<% end %>

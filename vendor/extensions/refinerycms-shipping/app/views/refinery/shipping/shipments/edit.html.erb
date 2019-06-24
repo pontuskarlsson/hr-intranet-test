@@ -1,0 +1,115 @@
+<% content_for :body do %>
+  <%= form_for @shipment_address_updater, url: refinery.shipping_shipment_path(@shipment) do |f| %>
+    <div class="grid-x grid-padding-x">
+      <div class="medium-6 cell">
+        <h2>From
+          <% if @shipment.from_address.missing_for_shipment.any? %>
+            <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.from_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
+          <% end %>
+        </h2>
+        <p>
+          <%= f.label :from_address_name %>
+          <%= f.text_field :from_address_name %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_street1 %>
+          <%= f.text_field :from_address_street1 %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_street2 %>
+          <%= f.text_field :from_address_street2 %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_city %>
+          <%= f.text_field :from_address_city %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_zip %>
+          <%= f.text_field :from_address_zip %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_state %>
+          <%= f.text_field :from_address_state %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_country %>
+          <%= f.text_field :from_address_country %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_phone %>
+          <%= f.text_field :from_address_phone %>
+        </p>
+
+        <p>
+          <%= f.label :from_address_email %>
+          <%= f.text_field :from_address_email %>
+        </p>
+      </div>
+
+      <div class="medium-6 cell">
+        <h2>To
+          <% if @shipment.to_address.missing_for_shipment.any? %>
+            <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= @shipment.to_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
+          <% end %>
+        </h2>
+        <p>
+          <%= f.label :to_address_name %>
+          <%= f.text_field :to_address_name %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_street1 %>
+          <%= f.text_field :to_address_street1 %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_street2 %>
+          <%= f.text_field :to_address_street2 %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_city %>
+          <%= f.text_field :to_address_city %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_zip %>
+          <%= f.text_field :to_address_zip %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_state %>
+          <%= f.text_field :to_address_state %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_country %>
+          <%= f.text_field :to_address_country %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_phone %>
+          <%= f.text_field :to_address_phone %>
+        </p>
+
+        <p>
+          <%= f.label :to_address_email %>
+          <%= f.text_field :to_address_email %>
+        </p>
+      </div>
+    </div>
+
+    <%= f.submit t('.save'), class: 'button tiny' %>
+    <%= link_to t('.cancel'), refinery.shipping_shipment_path(@shipment) %>
+
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>
