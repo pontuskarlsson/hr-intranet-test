@@ -1,5 +1,11 @@
 module ApplicationHelper
 
+  def dragonfly_reveal_tag(image, width = 190, height = 190)
+    content_tag(:div, class: 'reveal', id: "preview-image-modal-#{image.id}", 'data-reveal' => true) do
+      image_tag('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D', 'data-src' => image.image.url, class: 'dragonfly-image-tag')
+    end + image_tag(image.image.thumb("#{width}x#{height}#").url, class: 'dragonfly-thumb-tag', 'data-open' => "preview-image-modal-#{image.id}")
+  end
+
   def header_menu_items
     Refinery::Menu.new(Refinery::Page.fast_access_menu(current_refinery_user.try(:roles) || []))
   end

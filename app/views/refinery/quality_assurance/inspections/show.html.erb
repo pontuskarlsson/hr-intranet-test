@@ -117,7 +117,7 @@
           </div>
           <div class="cell medium-3">
             <% if @inspection.inspection_photo.present? %>
-              <%= image_tag @inspection.inspection_photo.image.image.thumb('190x190#').url %>
+              <%=  dragonfly_reveal_tag @inspection.inspection_photo.image %>
             <% end %>
           </div>
         </div>
@@ -154,7 +154,7 @@
 
         <div style="margin-top: 10px;">
           <% inspection_defect.inspection_photos.each do |inspection_photo| %>
-            <%= image_tag inspection_photo.image.image.thumb('190x190#').url %>
+            <%=  dragonfly_reveal_tag inspection_photo.image %>
           <% end %>
         </div>
       <% end %>

@@ -17,7 +17,8 @@
  *= require_tree ./additional
  */
 
-html, body, #wrap {height: 100%;}
+html { height: 100%; }
+body, #wrap {min-height: 100%;}
 body > #wrap {height: auto; min-height: 100%;}
 main {padding-bottom: 385px;}
 footer {

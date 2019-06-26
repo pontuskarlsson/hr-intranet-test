@@ -1,0 +1,20 @@
+.dragonfly-image-tag {
+
+}
+
+.dragonfly-thumb-tag {
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
+    cursor: zoom-in;
+
+    transition: all 200ms ease-out;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        box-shadow: 0 0 6px #30384B;
+    }
+}

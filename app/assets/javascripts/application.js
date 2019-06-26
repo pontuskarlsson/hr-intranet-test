@@ -34,4 +34,9 @@ $(function(){
       }, 1);
     }
   });
+
+  $(document.body).on('open.zf.reveal', function(a,b,c) {
+    var $img = $('.dragonfly-image-tag', a.target);
+    $img.attr('src', $img.data('src'));
+  });
 });
