@@ -10,7 +10,10 @@ module Refinery
       before_filter :find_shipment,       except: [:index, :create]
 
       def index
-        @shipment = Shipment.new(from_contact_name: current_authentication_devise_user.contact.try(:name), from_contact_id: current_authentication_devise_user.contact.try(:id))
+        @shipment = Shipment.new(
+            from_contact_label: current_authentication_devise_user.contact.try(:name),
+            from_contact_id: current_authentication_devise_user.contact.try(:id)
+        )
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @parcel in the line below:
         present(@page)
@@ -105,7 +108,7 @@ module Refinery
       end
 
       def shipment_params
-        params.require(:shipment).permit(:from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id)
+        params.require(:shipment).permit(:from_contact_label, :to_contact_label, :courier, :assigned_to_label, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id)
       end
 
       def filter_params

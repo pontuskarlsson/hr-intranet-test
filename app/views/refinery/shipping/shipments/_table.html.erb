@@ -47,8 +47,8 @@
         "ajax": "<%= refinery.shipping_shipments_path(filter_params) %>",
         "columns": [
           { data: "id", "width": 60, "render": function(data, type, row){ return ('<a href="<%= refinery.shipping_shipments_path %>/'+data+'">View</a>'); } },
-          { data: "from_contact_name" },
-          { data: "to_contact_name" },
+          { data: "from_contact_label" },
+          { data: "to_contact_label" },
           { data: "courier", "width": 150 },
           { data: "tracking_number", "width": 150 },
           { data: "display_status", "width": 150 },

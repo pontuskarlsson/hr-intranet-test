@@ -86,7 +86,7 @@ en:
         bill_to_account_id: Bill To Account
         created_by_id: Created By
         courier: Courier
-        from_contact_name: From Contact
+        from_contact_label: From Contact
         statuses:
           not_shipped: Not Shipped
           manually_shipped: Shipped
@@ -98,7 +98,7 @@ en:
           delivered: Delivered
           failure: Failure
           cancelled: Canceled
-        to_contact_name: To Contact
+        to_contact_label: To Contact
 
       'refinery/shipping/shipment_account':
         account_no: Account No

@@ -3,17 +3,17 @@
   <div class="grid-x grid-padding-x">
     <div class="medium-3 cell">
       <div class='field'>
-        <%= f.label :from_contact_name, 'From'  -%>
+        <%= f.label :from_contact_label, 'From'  -%>
         <%= f.hidden_field :from_contact_id, class: 'js_from_contact_id' %>
-        <%= f.text_field :from_contact_name, autofocus: true, class: 'js_from_field' -%>
+        <%= f.text_field :from_contact_label, autofocus: true, class: 'js_from_field' -%>
       </div>
     </div>
 
     <div class="medium-3 cell">
       <div class='field'>
-        <%= f.label :to_contact_name, 'Address To' -%>
+        <%= f.label :to_contact_label, 'Address To' -%>
         <%= f.hidden_field :to_contact_id, class: 'js_to_contact_id' %>
-        <%= f.text_field :to_contact_name, class: 'js_to_field' -%>
+        <%= f.text_field :to_contact_label, class: 'js_to_field' -%>
       </div>
     </div>
 

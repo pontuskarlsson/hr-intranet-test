@@ -63,6 +63,10 @@ module Refinery
         self.zip = zip
       end
 
+      def label
+        name
+      end
+
     end
   end
 end

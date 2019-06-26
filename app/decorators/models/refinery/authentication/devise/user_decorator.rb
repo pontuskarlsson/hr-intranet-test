@@ -15,6 +15,10 @@ Refinery::Authentication::Devise::User.class_eval do
     full_name
   end
 
+  def label
+    full_name
+  end
+
   after_save do
     if password_has_expired and !need_change_password?
       # Means that the password_has_expired checkbox was clicked on save. We
