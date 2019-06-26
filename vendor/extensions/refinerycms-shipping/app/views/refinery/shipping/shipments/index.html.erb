@@ -1,18 +1,10 @@
 <% content_for :body do %>
-  <h4>Add Shipment</h4>
-
-  <section class="add_shipment">
-    <%= render 'quick_form', shipment: @shipment %>
-  </section>
-
-  <% if params[:view_all] == '1' %>
-    <p>Currently showing all shipments. <%= link_to 'View only recent', refinery.shipping_shipments_path %>.</p>
-  <% else %>
-    <p>Currently showing recent shipments. <%= link_to 'View all', refinery.shipping_shipments_path(view_all: '1') %>.</p>
+  <% if page_role? Refinery::Shipping::ROLE_INTERNAL %>
+    <%= render 'add', shipment: @shipment %>
   <% end %>
 
   <section>
-    <%= render 'table', shipments: @shipments %>
+    <%= render 'table', shipments: @shipments, table_id: 'js_shipments_data_table' %>
   </section>
 
 <% end %>

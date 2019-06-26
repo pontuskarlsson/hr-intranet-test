@@ -1,4 +1,4 @@
-<table class="display js_shipments_data_table" cellspacing="0" style="width: 100%;">
+<table id="<%= table_id %>" class="display" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
     <th>&nbsp;</th>
@@ -41,12 +41,10 @@
 
   <script type="text/javascript">
     $(function(){
-      $('.js_shipments_data_table').dataTable({
-        "scrollY":        "600px",
-        "scrollCollapse": true,
-        "paging":         false,
+      $('#<%= table_id %>').dataTable({
+        "paging":         true,
         "order":          [[ 6, "desc" ]],
-        "data":           <%= shipments.to_json(methods: [:from_contact_name, :to_contact_name, :display_status]).html_safe %>,
+        "ajax": "<%= refinery.shipping_shipments_path(filter_params) %>",
         "columns": [
           { data: "id", "width": 60, "render": function(data, type, row){ return ('<a href="<%= refinery.shipping_shipments_path %>/'+data+'">View</a>'); } },
           { data: "from_contact_name" },

@@ -1,0 +1,13 @@
+<a class="button js_shipment_form_button">Add new Shipment</a>
+
+<div class="js_shipment_form" style="display: <%= shipment.errors.any? ? 'block' : 'none' %>;">
+  <%= render 'quick_form', shipment: shipment %>
+</div>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      $('.js_shipment_form_button').on('click', function() { $('.js_shipment_form').show() })
+    });
+  </script>
+<% end -%>

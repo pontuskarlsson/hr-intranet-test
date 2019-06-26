@@ -9,7 +9,6 @@ module Refinery
       has_many :company_users,  dependent: :destroy
       has_many :parcels,        through: :contact
       has_many :invoices,       dependent: :nullify
-      has_many :to_shipments,   through: :contact
       has_many :projects,       dependent: :destroy
       has_many :users,          through: :company_users
 

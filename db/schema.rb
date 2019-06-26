@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190614122730) do
+ActiveRecord::Schema.define(version: 20190625081202) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -1162,42 +1162,81 @@ ActiveRecord::Schema.define(version: 20190614122730) do
   add_index "refinery_shipping_shipment_parcels", ["position"], name: "index_refinery_shipping_shipment_parcels_on_position", using: :btree
 
   create_table "refinery_shipping_shipments", force: :cascade do |t|
-    t.integer  "from_contact_id",    limit: 4
-    t.integer  "from_address_id",    limit: 4
-    t.integer  "to_contact_id",      limit: 4
-    t.integer  "to_address_id",      limit: 4
-    t.integer  "created_by_id",      limit: 4
-    t.integer  "assigned_to_id",     limit: 4
-    t.string   "courier",            limit: 255
-    t.integer  "position",           limit: 4
-    t.datetime "created_at",                                               null: false
-    t.datetime "updated_at",                                               null: false
-    t.integer  "bill_to_account_id", limit: 4
-    t.string   "bill_to",            limit: 255
-    t.string   "description",        limit: 255
-    t.string   "label_url",          limit: 255
-    t.string   "tracking_number",    limit: 255
-    t.string   "tracking_status",    limit: 255
-    t.string   "status",             limit: 255
-    t.string   "easypost_object_id", limit: 255
-    t.text     "rates_content",      limit: 65535
-    t.string   "rate_object_id",     limit: 255
-    t.string   "rate_service",       limit: 255
-    t.decimal  "rate_amount",                      precision: 8, scale: 2
-    t.string   "rate_currency",      limit: 255
+    t.integer  "from_contact_id",                     limit: 4
+    t.integer  "from_address_id",                     limit: 4
+    t.integer  "to_contact_id",                       limit: 4
+    t.integer  "to_address_id",                       limit: 4
+    t.integer  "created_by_id",                       limit: 4
+    t.integer  "assigned_to_id",                      limit: 4
+    t.string   "courier",                             limit: 255
+    t.integer  "position",                            limit: 4
+    t.datetime "created_at",                                                                 null: false
+    t.datetime "updated_at",                                                                 null: false
+    t.integer  "bill_to_account_id",                  limit: 4
+    t.string   "bill_to",                             limit: 255
+    t.string   "description",                         limit: 255
+    t.string   "label_url",                           limit: 255
+    t.string   "tracking_number",                     limit: 255
+    t.string   "tracking_status",                     limit: 255
+    t.string   "status",                              limit: 255
+    t.string   "easypost_object_id",                  limit: 255
+    t.text     "rates_content",                       limit: 65535
+    t.string   "rate_object_id",                      limit: 255
+    t.string   "rate_service",                        limit: 255
+    t.decimal  "rate_amount",                                       precision: 13, scale: 4
+    t.string   "rate_currency",                       limit: 255
     t.date     "shipping_date"
-    t.text     "tracking_info",      limit: 65535
+    t.text     "tracking_info",                       limit: 65535
+    t.integer  "project_id",                          limit: 4
+    t.string   "code",                                limit: 255
+    t.integer  "to_company_id",                       limit: 4
+    t.integer  "from_company_id",                     limit: 4
+    t.integer  "consignee_company_id",                limit: 4
+    t.integer  "consignee_address_id",                limit: 4
+    t.string   "consignee_reference",                 limit: 255
+    t.string   "mode",                                limit: 255
+    t.string   "forwarder",                           limit: 255
+    t.string   "forwarder_booking_number",            limit: 255
+    t.string   "comments",                            limit: 255
+    t.integer  "no_of_parcels",                       limit: 4
+    t.decimal  "duty_amount",                                       precision: 13, scale: 4
+    t.decimal  "terminal_fee_amount",                               precision: 13, scale: 4
+    t.decimal  "domestic_transportation_cost_amount",               precision: 13, scale: 4
+    t.decimal  "forwarding_fee_amount",                             precision: 13, scale: 4
+    t.decimal  "freight_cost_amount",                               precision: 13, scale: 4
+    t.decimal  "volume_amount",                                     precision: 13, scale: 4
+    t.decimal  "volume_manual_amount",                              precision: 13, scale: 4
+    t.string   "volume_unit",                         limit: 255
+    t.decimal  "gross_weight_amount",                               precision: 13, scale: 4
+    t.decimal  "gross_weight_manual_amount",                        precision: 13, scale: 4
+    t.decimal  "net_weight_amount",                                 precision: 13, scale: 4
+    t.decimal  "net_weight_manual_amount",                          precision: 13, scale: 4
+    t.decimal  "chargeable_weight_amount",                          precision: 13, scale: 4
+    t.decimal  "chargeable_weight_manual_amount",                   precision: 13, scale: 4
+    t.string   "weight_unit",                         limit: 255
   end
 
   add_index "refinery_shipping_shipments", ["assigned_to_id"], name: "index_refinery_shipping_shipments_on_assigned_to_id", using: :btree
   add_index "refinery_shipping_shipments", ["bill_to_account_id"], name: "index_refinery_parcels_shipments_on_bta_id", using: :btree
+  add_index "refinery_shipping_shipments", ["code"], name: "index_refinery_shipping_shipments_on_code", using: :btree
+  add_index "refinery_shipping_shipments", ["comments"], name: "index_refinery_shipping_shipments_on_comments", using: :btree
+  add_index "refinery_shipping_shipments", ["consignee_address_id"], name: "index_refinery_shipping_shipments_on_consignee_address_id", using: :btree
+  add_index "refinery_shipping_shipments", ["consignee_company_id"], name: "index_refinery_shipping_shipments_on_consignee_company_id", using: :btree
+  add_index "refinery_shipping_shipments", ["consignee_reference"], name: "index_refinery_shipping_shipments_on_consignee_reference", using: :btree
   add_index "refinery_shipping_shipments", ["created_by_id"], name: "index_refinery_shipping_shipments_on_created_by_id", using: :btree
   add_index "refinery_shipping_shipments", ["easypost_object_id"], name: "index_refinery_parcels_shipments_on_eo_id", using: :btree
+  add_index "refinery_shipping_shipments", ["forwarder"], name: "index_refinery_shipping_shipments_on_forwarder", using: :btree
+  add_index "refinery_shipping_shipments", ["forwarder_booking_number"], name: "index_refinery_shipping_shipments_on_forwarder_booking_number", using: :btree
   add_index "refinery_shipping_shipments", ["from_address_id"], name: "index_refinery_shipping_shipments_on_from_address_id", using: :btree
+  add_index "refinery_shipping_shipments", ["from_company_id"], name: "index_refinery_shipping_shipments_on_from_company_id", using: :btree
   add_index "refinery_shipping_shipments", ["from_contact_id"], name: "index_refinery_shipping_shipments_on_from_contact_id", using: :btree
+  add_index "refinery_shipping_shipments", ["mode"], name: "index_refinery_shipping_shipments_on_mode", using: :btree
+  add_index "refinery_shipping_shipments", ["no_of_parcels"], name: "index_refinery_shipping_shipments_on_no_of_parcels", using: :btree
   add_index "refinery_shipping_shipments", ["position"], name: "index_refinery_shipping_shipments_on_position", using: :btree
+  add_index "refinery_shipping_shipments", ["project_id"], name: "index_refinery_shipping_shipments_on_project_id", using: :btree
   add_index "refinery_shipping_shipments", ["status"], name: "index_refinery_shipping_shipments_on_status", using: :btree
   add_index "refinery_shipping_shipments", ["to_address_id"], name: "index_refinery_shipping_shipments_on_to_address_id", using: :btree
+  add_index "refinery_shipping_shipments", ["to_company_id"], name: "index_refinery_shipping_shipments_on_to_company_id", using: :btree
   add_index "refinery_shipping_shipments", ["to_contact_id"], name: "index_refinery_shipping_shipments_on_to_contact_id", using: :btree
 
   create_table "refinery_shows", force: :cascade do |t|

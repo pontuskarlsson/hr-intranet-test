@@ -24,8 +24,10 @@ module Refinery
 
       self.table_name = 'refinery_shipping_shipments'
 
+      belongs_to :from_company,         class_name: '::Refinery::Business::Company'
       belongs_to :from_contact,         class_name: '::Refinery::Marketing::Contact'
       belongs_to :from_address,         class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
+      belongs_to :to_company,           class_name: '::Refinery::Business::Company'
       belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact'
       belongs_to :to_address,           class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
       belongs_to :created_by,           class_name: '::Refinery::Authentication::Devise::User'

@@ -6,7 +6,7 @@ module Refinery
       set_page PAGE_SHIPMENTS_URL
       allow_page_roles ROLE_INTERNAL
 
-      before_filter :find_all_shipments,  only: [:index]
+      before_filter :find_shipments,      only: [:index]
       before_filter :find_shipment,       except: [:index, :create]
 
       def index
@@ -87,11 +87,17 @@ module Refinery
 
       protected
 
-      def find_all_shipments
-        @shipments = Shipment.includes(:from_contact, :to_contact, :assigned_to).order('updated_at DESC, id DESC')
-        unless params[:view_all] == '1'
-          @shipments = @shipments.where('created_at > ?', DateTime.now - 3.months)
-        end
+      def shipments_scope
+        @shipments ||=
+            if page_role? ROLE_INTERNAL
+              Refinery::Shipping::Shipment.where(nil)
+            else
+              Refinery::Business::Company.where('1=0')
+            end
+      end
+
+      def find_shipments
+        @shipments = shipments_scope.where(filter_params)
       end
 
       def find_shipment
@@ -100,6 +106,10 @@ module Refinery
 
       def shipment_params
         params.require(:shipment).permit(:from_contact_name, :to_contact_name, :courier, :assign_to, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id)
+      end
+
+      def filter_params
+        params.permit([:from_company_id, :to_company_id, :consignee_company_id, :project_id, :status, :courier])
       end
 
     end
