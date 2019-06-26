@@ -21,6 +21,7 @@ module WipSchedule
       # Retrieve orders from Airtable
       row_data = @custom_list.data_for(list_row)
       @results[:description] = row_data['Description']
+      @results[:recipients] = row_data['Recipients']
 
       each_airtable_order do |id, at_order, excel_order|
         changed_fields = changes_from(at_order, excel_order)

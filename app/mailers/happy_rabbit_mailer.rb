@@ -7,7 +7,7 @@ class HappyRabbitMailer < ApplicationMailer
     @creator = creator
     file_name = "#{data['Description']}-#{Date.today.to_s}.xls"
     attachments[file_name] = File.read(creator.wip_file_path)
-    mail(from: 'wip_status@happyrabbit.com', to: data['Recipients'], subject: "WIP Status update: #{data['Description']}")
+    mail(from: 'wip_status@happyrabbit.com', to: data['Recipients'], bcc: ['daniel.viklund@happyrabbit.com'], subject: "WIP Status update: #{data['Description']}")
   end
 
   def inspection_result_email(user, inspection)
@@ -15,25 +15,13 @@ class HappyRabbitMailer < ApplicationMailer
 
     @inspection = inspection
     @user = user
-    mail(to: user.email, bcc: 'daniel.viklund@happyrabbit.com', subject: "#{@header} - #{Date.today.to_s}")
+    mail(to: user.email, bcc: ['daniel.viklund@happyrabbit.com'], subject: "#{@header} - #{Date.today.to_s}")
   end
 
-  def services_notification_email(description, notice, orders)
-    @header = 'Services Notification'
-    @notice = notice
-    @orders = orders
-    mail(to: emails_for_role('Services'), subject: "#{@header} - #{description} - #{Date.today.to_s}")
-  end
-
-  protected
-
-  def emails_for_role(title)
-    role = Refinery::Authentication::Devise::Role.find_by_title(title)
-    if role.present?
-      role.users.pluck(:email).join(', ')
-    else
-      ''
-    end
+  def services_notification_email(results)
+    recipients, description, @notice, @orders = results[:recipients], results[:description], results[:notice], results[:orders]
+    @header = 'WIP Update Notification'
+    mail(to: recipients, bcc: ['daniel.viklund@happyrabbit.com'], subject: "#{@header} - #{description} - #{Date.today.to_s}")
   end
 
 end

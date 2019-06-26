@@ -56,7 +56,7 @@
 
   <% if current_authentication_devise_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
     <div class="cell">
-      <h4>Finance</h4>
+      <h4>Quality Assurance</h4>
       <p><%= link_to "See Company Inspections (#{@company.inspections.count})", refinery.quality_assurance_inspections_path(company_id: @company) %></p>
     </div>
   <% end %>
