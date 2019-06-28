@@ -35,8 +35,24 @@ $(function(){
     }
   });
 
-  $(document.body).on('open.zf.reveal', function(a,b,c) {
-    var $img = $('.dragonfly-image-tag', a.target);
+  $(document.body).on('open.zf.reveal', function(evt) {
+    var $img = $('.dragonfly-image-tag', evt.target);
     $img.attr('src', $img.data('src'));
+  });
+
+  $(document.body).on('error', 'img.dragonfly-thumb-tag:not(.dragonfly-reloaded)', function(evt) {
+    var $img = $(evt.target);
+    var src = $img.attr('src');
+
+    // Set src to 1px gif temporary
+    $img.attr('src', 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D');
+    console.log({ schedule: $img[0] })
+    // Attempty to load the src again
+    setTimeout(function() {
+      console.log({ reload: $img[0] })
+      $img.attr('src', src);
+    }, 1000);
+
+    $img.addClass('dragonfly-reloaded');
   });
 });
