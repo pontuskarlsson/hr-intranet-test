@@ -42,6 +42,7 @@ Refinery::Images.configure do |config|
   # config.dragonfly_url_host = ""
   # config.datastore_root_path = "/vagrant/hr_intranet/public/system/refinery/images"
   # config.trust_file_extensions = false
+  config.dragonfly_secret = ENV['DRAGONFLY_SECRET']
 
   # Configure Dragonfly custom storage backend
   # The custom_backend setting by default defers to the core setting for this but can be set just for images.

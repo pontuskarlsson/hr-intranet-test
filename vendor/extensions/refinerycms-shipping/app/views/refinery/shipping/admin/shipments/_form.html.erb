@@ -38,6 +38,35 @@
     <%= f.text_field :courier, class: 'js_courier_field' -%>
   </div>
 
+  <div class='field'>
+    <%= f.label :rate_currency -%>
+    <%= f.text_field :rate_currency -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :duty_amount -%>
+    <%= f.number_field :duty_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :terminal_fee_amount -%>
+    <%= f.number_field :terminal_fee_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :domestic_transportation_cost_amount -%>
+    <%= f.number_field :domestic_transportation_cost_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :forwarding_fee_amount -%>
+    <%= f.number_field :forwarding_fee_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :freight_cost_amount -%>
+    <%= f.number_field :freight_cost_amount, step: '0.01' -%>
+  </div>
 
   <%= render '/refinery/admin/form_actions', :f => f,
              :continue_editing => false,

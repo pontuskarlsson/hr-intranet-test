@@ -70,6 +70,12 @@
 
       <div class="grid-x grid-padding-x">
         <div class="cell">
+          <%= render 'costs', shipment: @shipment %>
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+        <div class="cell">
           <%= render 'parcels', shipment: @shipment %>
         </div>
       </div>
