@@ -2,6 +2,7 @@
   <thead>
   <tr>
     <th>&nbsp;</th>
+    <th>Photo</th>
     <th>Customer</th>
     <th>Supplier</th>
     <th>Manufacturer</th>
@@ -17,6 +18,7 @@
     <tfoot>
     <tr>
       <th>&nbsp;</th>
+      <th>Photo</th>
       <th>Customer</th>
       <th>Supplier</th>
       <th>Manufacturer</th>
@@ -52,6 +54,12 @@
               .attr('href', href)
               .html('<i class="' + className + '"></i>')
               .prop('outerHTML');
+          } },
+          { data: "inspection_photo_thumb_url", "width": '5%', "render": function(data, type, row) {
+            if (data) {
+              return $('<img />').attr('src', data).prop('outerHTML');
+            }
+            return null;
           } },
           { data: "company_label", "width": '10%' },
           { data: "supplier_label", "width": '10%' },

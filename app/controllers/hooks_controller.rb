@@ -7,19 +7,13 @@ class HooksController < ApplicationController
   skip_before_filter :verify_authenticity_token, :authenticate_authentication_devise_user!
 
   def catch
-    if @webhook == 'qc'
-      parse_qc
-    elsif @webhook == 'wip'
+    if @webhook == 'wip'
       parse_wip
     elsif @webhook == 'topo'
       parse_topo unless request.delete?
     end
 
     render text: 'success', status: :ok
-
-  rescue RangeError => e
-    ErrorMailer.webhook_error_email(e, params).deliver
-    render text: 'failed', status: '400'
 
   rescue StandardError => e
     ErrorMailer.webhook_error_email(e, params).deliver
@@ -64,7 +58,6 @@ class HooksController < ApplicationController
   end
 
   def parse_topo
-    ErrorMailer.webhook_notification_email(['Topo webhook received'], params).deliver
     Delayed::Job.enqueue(TopoWebhookJob.new(params[:hook] && params[:hook].to_unsafe_h))
   end
 

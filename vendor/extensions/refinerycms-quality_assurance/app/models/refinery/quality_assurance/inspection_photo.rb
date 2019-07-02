@@ -16,6 +16,20 @@ module Refinery
       validates :inspection_id,   presence: true
       validates :image_id,        presence: true
 
+      def thumb_url
+        image_url('45x45#')
+      end
+
+      def preview_url
+        image_url('190x190#')
+      end
+
+      def image_url(size = nil)
+        if image.present?
+          size.nil? ? image.image.url : image.image.thumb(size).url
+        end
+      end
+
     end
   end
 end

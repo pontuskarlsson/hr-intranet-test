@@ -3,7 +3,9 @@ module Refinery
     module Admin
       class InspectionsController < ::Refinery::AdminController
 
-        crudify :'refinery/quality_assurance/inspection'
+        crudify :'refinery/quality_assurance/inspection',
+                :title_attribute => 'po_number',
+                order: 'inspection_date DESC'
 
         private
 

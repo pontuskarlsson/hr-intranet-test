@@ -25,6 +25,8 @@ module Refinery
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:company_label, :supplier_label, :manufacturer_label, :po_number, :result, :product_code, :product_description]
 
+      delegate :image_url, :preview_url, :thumb_url, to: :inspection_photo, prefix: true, allow_nil: true
+
       validates :result,          inclusion: RESULTS, allow_blank: true
       validates :inspection_type, inclusion: INSPECTION_TYPES, allow_blank: true
       validates :po_type,         inclusion: PO_TYPES, allow_blank: true
