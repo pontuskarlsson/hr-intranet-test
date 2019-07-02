@@ -21,7 +21,7 @@ en:
               create_new_user: Add new user
             user:
               email_user: Email this user
-              preview: '(%{who}) added %{created_at}'
+              preview: '(%{who}) status %{status} added %{created_at}'
         sessions:
           new:
             hello_please_sign_in: Hello! Please sign in.

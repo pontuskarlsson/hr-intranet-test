@@ -51,4 +51,19 @@ Refinery::Authentication::Devise::User.class_eval do
     (super == nil) ? '1' : super
   end
 
+  def status
+    if deactivated
+      'Deactivated'
+    elsif created_by_invite?
+      if invitation_accepted?
+        'Accepted'
+      else
+        'Invited'
+      end
+
+    else
+      'Active'
+    end
+  end
+
 end
