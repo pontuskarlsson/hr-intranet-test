@@ -7,9 +7,13 @@ Refinery::Authentication::Devise::User.class_eval do
 
   validates :full_name, presence: true
 
-  devise :password_expirable, :expire_password_after => 10.years
+  devise :password_expirable,
+         :invitable,
+         :expire_password_after => 10.years
 
-  acts_as_target devise_resource: :authentication_devise_user, email: :email, email_allowed: true
+  acts_as_target devise_resource: :authentication_devise_user,
+                 email: :email,
+                 email_allowed: ->(user, key) { user.active_for_authentication? && user.accepted_or_not_invited? }
 
   def printable_name
     full_name
@@ -31,6 +35,10 @@ Refinery::Authentication::Devise::User.class_eval do
     Refinery::Authentication::Devise::User.joins(:roles).where(refinery_authentication_devise_roles: { title: title })
   }
 
+  def active_for_authentication?
+    super && !deactivated
+  end
+
   def password_has_expired=(val)
     @password_has_expired = val == '1'
   end
@@ -41,21 +49,6 @@ Refinery::Authentication::Devise::User.class_eval do
 
   def remember_me
     (super == nil) ? '1' : super
-  end
-
-  def wants_notification_for?(other_employee)
-    return false if other_employee.user_id == id
-
-    user_setting = user_settings.find_by_identifier('leave_notification') || user_settings.build(identifier: 'leave_notification', content: { 'receive_for' => 'all' })
-    content = user_setting.content || {}
-    case content['receive_for']
-      when 'all' then true
-      when 'none' then false
-      when 'employees' then content['employees']["employee_#{other_employee.id}"] == '1'
-      when 'offices'
-        employment_contract = other_employee.employment_contracts.current_contracts.first
-        employment_contract.present? && content['offices']["office_#{ employment_contract.country }"] == '1'
-    end
   end
 
 end

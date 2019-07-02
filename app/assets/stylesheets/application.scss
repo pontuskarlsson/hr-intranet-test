@@ -18,14 +18,15 @@
  */
 
 html { height: 100%; }
-body, #wrap {min-height: 100%;}
-body > #wrap {height: auto; min-height: 100%;}
+body, #wrap {min-height: 100%; position: relative;}
+body > #wrap {height: auto; min-height: 100vh;}
 main {padding-bottom: 385px;}
 footer {
-    position: relative;
-    margin-top: -385px; /* negative value of footer height */
+    position: absolute;
+    bottom: 0;
     height: 385px;
     clear:both;
+    width: 100%;
 }
 .clearfix:after {content: ".";
     display: block;

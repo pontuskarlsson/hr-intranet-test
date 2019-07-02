@@ -1,6 +1,7 @@
 module Refinery
   module Business
     class Budget < Refinery::Core::BaseModel
+
       self.table_name = 'refinery_business_budgets'
 
       belongs_to :customer_contact, class_name: '::Refinery::Marketing::Contact'
@@ -21,6 +22,19 @@ module Refinery
       # a more presentable format that can be used in views and form fields.
       def margin_percent
         margin * 100
+      end
+
+      # A method to display which quarter the Budget is in.
+      def quarter
+        if from_date.present?
+          ::Refinery::Business::QUARTERS.detect { |_,v| v === from_date.month }[0]
+        end
+      end
+
+      def year
+        if from_date.present?
+          from_date.year
+        end
       end
 
     end

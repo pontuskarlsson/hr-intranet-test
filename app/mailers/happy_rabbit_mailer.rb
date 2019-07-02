@@ -7,7 +7,7 @@ class HappyRabbitMailer < ApplicationMailer
     @creator = creator
     file_name = "#{data['Description']}-#{Date.today.to_s}.xls"
     attachments[file_name] = File.read(creator.wip_file_path)
-    mail(from: 'wip_status@happyrabbit.com', to: data['Recipients'], bcc: ['daniel.viklund@happyrabbit.com'], subject: "WIP Status update: #{data['Description']}")
+    mail(from: "\"Happy Rabbit WIP Status\" <wip_status@happyrabbit.com>", to: data['Recipients'], bcc: ['daniel.viklund@happyrabbit.com'], subject: "WIP Status Request: #{data['Description']}, #{Date.today.to_s}")
   end
 
   def inspection_result_email(user, inspection)

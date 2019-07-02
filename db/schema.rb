@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190626032445) do
+ActiveRecord::Schema.define(version: 20190702094006) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -153,9 +153,9 @@ ActiveRecord::Schema.define(version: 20190626032445) do
   add_index "refinery_authentication_devise_user_plugins", ["user_id", "name"], name: "refinery_user_plugins_user_id_name", unique: true, using: :btree
 
   create_table "refinery_authentication_devise_users", force: :cascade do |t|
-    t.string   "username",               limit: 255, null: false
-    t.string   "email",                  limit: 255, null: false
-    t.string   "encrypted_password",     limit: 255, null: false
+    t.string   "username",               limit: 255,                 null: false
+    t.string   "email",                  limit: 255,                 null: false
+    t.string   "encrypted_password",     limit: 255,                 null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",     limit: 255
@@ -164,15 +164,27 @@ ActiveRecord::Schema.define(version: 20190626032445) do
     t.datetime "remember_created_at"
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "slug",                   limit: 255
     t.datetime "password_changed_at"
     t.string   "full_name",              limit: 255
+    t.string   "invitation_token",       limit: 255
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer  "invitation_limit",       limit: 4
+    t.integer  "invited_by_id",          limit: 4
+    t.string   "invited_by_type",        limit: 255
+    t.integer  "invitations_count",      limit: 4,   default: 0
+    t.boolean  "deactivated",                        default: false, null: false
   end
 
   add_index "refinery_authentication_devise_users", ["full_name"], name: "index_refinery_authentication_devise_users_on_full_name", using: :btree
   add_index "refinery_authentication_devise_users", ["id"], name: "index_refinery_authentication_devise_users_on_id", using: :btree
+  add_index "refinery_authentication_devise_users", ["invitation_token"], name: "index_refinery_authentication_devise_users_on_invitation_token", unique: true, using: :btree
+  add_index "refinery_authentication_devise_users", ["invitations_count"], name: "index_refinery_authentication_devise_users_on_invitations_count", using: :btree
+  add_index "refinery_authentication_devise_users", ["invited_by_id"], name: "index_refinery_authentication_devise_users_on_invited_by_id", using: :btree
   add_index "refinery_authentication_devise_users", ["password_changed_at"], name: "refinery_devise_users_password_changed_at", using: :btree
   add_index "refinery_authentication_devise_users", ["slug"], name: "index_refinery_authentication_devise_users_on_slug", using: :btree
 

@@ -17,11 +17,19 @@ class ApplicationController < ActionController::Base
   delegate :authentication_devise_user_password_expired_path, to: :refinery
 
   def signed_in_root_path(resource_or_scope)
-    refinery.root_path
+    return_to_or_root_path resource_or_scope
+  end
+
+  def after_sign_in_path_for(resource_or_scope)
+    return_to_or_root_path resource_or_scope
   end
 
   def after_sign_out_path_for(resource_or_scope)
     refinery.login_path
+  end
+
+  def after_update_path_for(resource_or_scope)
+    return_to_or_root_path resource_or_scope
   end
 
   def not_found
@@ -31,6 +39,14 @@ class ApplicationController < ActionController::Base
 
   def filter_params
     {}
+  end
+
+  def return_to_or_root_path(resource_or_scope)
+    if !session[:return_to] || (session[:return_to][/^\/refinery/] && !resource_or_scope.has_role?(:refinery))
+      refinery.root_path
+    else
+      session[:return_to]
+    end
   end
 
   private

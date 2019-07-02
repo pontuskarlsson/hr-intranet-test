@@ -1,0 +1,9 @@
+<p>
+  <%= t('reset_request_received_for', :scope => 'refinery.authentication.devise.user_mailer.reset_notification', :username => @user.email) %>
+</p>
+<p>
+  <%= link_to t('click_here_to_choose_new_password', :scope => 'refinery.authentication.devise.user_mailer.reset_notification'), @url %>
+</p>
+<p>
+  (<%= t('remain_same_if_no_action', :scope => 'refinery.authentication.devise.user_mailer.reset_notification') %>)
+</p>

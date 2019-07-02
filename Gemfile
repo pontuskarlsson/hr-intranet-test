@@ -45,6 +45,9 @@ gem 'refinerycms-page_roles',   path: 'vendor/extensions'
 gem 'refinerycms-resource_authorizations', path: 'vendor/extensions'
 gem 'refinerycms-quality_assurance', path: 'vendor/extensions'
 
+# Invitable
+gem 'devise_invitable', '1.6.1'
+
 # Specify specific version to prevent deprecation messages from 5.1 version
 gem 'globalize', '5.0.1'
 

@@ -19,6 +19,13 @@ module Refinery
     PAGE_SALES_ORDERS_URL = '/business/sales_orders'
     PAGE_SECTIONS_URL     = '/business/sections'
 
+    QUARTERS = {
+        'Q1' => 1..3,
+        'Q2' => 4..6,
+        'Q3' => 7..9,
+        'Q4' => 10..12
+    }
+
     class << self
       attr_writer :root
 
