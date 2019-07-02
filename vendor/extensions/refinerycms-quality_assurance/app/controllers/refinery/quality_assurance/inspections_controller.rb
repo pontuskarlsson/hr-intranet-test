@@ -41,7 +41,7 @@ module Refinery
       end
 
       def find_all_inspections
-        @inspections = inspections_scope.order(inspection_date: :desc).includes(inspection_photo: :image)
+        @inspections = inspections_scope.order(inspection_date: :desc)
       end
 
       def find_inspection

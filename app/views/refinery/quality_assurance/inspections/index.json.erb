@@ -1,3 +1,4 @@
+<%- inspections = @inspections.includes(inspection_defects: :defect, inspection_photo: :image).order(inspection_date: :desc) -%>
 {
-  "data": <%= @inspections.includes(inspection_defects: :defect).order(inspection_date: :desc).to_json(only: [:id, :company_label, :supplier_label, :manufacturer_label, :inspection_date, :inspection_type, :result, :po_number, :po_qty], methods: [:product_label, :chart_defects, :inspection_photo_image_url, :inspection_photo_preview_url, :inspection_photo_thumb_url]).html_safe %>
+  "data": <%= inspections.to_json(only: [:id, :company_label, :supplier_label, :manufacturer_label, :inspection_date, :inspection_type, :result, :po_number, :po_qty], methods: [:product_label, :chart_defects, :inspection_photo_image_url, :inspection_photo_preview_url, :inspection_photo_thumb_url]).html_safe %>
 }
