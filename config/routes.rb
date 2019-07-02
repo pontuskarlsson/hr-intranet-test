@@ -23,6 +23,17 @@ HrIntranet::Application.routes.draw do
   # We ask that you don't use the :as option here, as Refinery relies on it being the default of "refinery"
   mount Refinery::Core::Engine, :at => '/'
 
+  devise_for :authentication_devise_user,
+             class_name: 'Refinery::Authentication::Devise::User',
+             path: "#{Refinery::Core.backend_route}/users",
+             controllers: {
+                 passwords: 'refinery/authentication/devise/passwords',
+                 sessions: 'refinery/authentication/devise/sessions',
+                 registrations: 'refinery/authentication/devise/users'
+             },
+             skip: [:registrations],
+             path_names: { sign_out: 'logout', sign_in: 'login', sign_up: 'register' }
+
   match 'hooks/catch/:webhook_key(/:webhook_id)', to: 'hooks#catch', via: [:post, :put, :delete], as: :hooks_catch
 
   # The priority is based upon order of creation:
