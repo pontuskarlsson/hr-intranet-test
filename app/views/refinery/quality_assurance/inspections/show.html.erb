@@ -8,7 +8,7 @@
       <section class="contact-card">
         <h1 class="cc-attribute cc-name">
           <%=raw @inspection.label %>
-          <span style="color: <%= @inspection.result == 'Pass' ? 'green' : @inspection.result == 'Reject' ? 'red' : 'black' %>"><%= @inspection.result %></span>
+          <span style="color: <%= @inspection.result == 'Pass' ? '#0e7d5b' : @inspection.result == 'Reject' ? '#d66666' : 'black' %>"><%= @inspection.result %></span>
         </h1>
         <% if @inspection.resource.present? %>
           <%= link_to @inspection.resource.file.url do %>
@@ -110,7 +110,7 @@
               </tr>
               <tr>
                 <th>Result</th>
-                <td colspan="3" style="color: <%= @inspection.result == 'Pass' ? 'green' : @inspection.result == 'Reject' ? 'red' : 'black' %>"><%= @inspection.result %></td>
+                <td colspan="3" style="color: <%= @inspection.result == 'Pass' ? '#0e7d5b' : @inspection.result == 'Reject' ? '#d66666' : 'black' %>"><%= @inspection.result %></td>
               </tr>
               </tbody>
             </table>

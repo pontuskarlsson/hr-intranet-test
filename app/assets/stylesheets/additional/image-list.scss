@@ -1,44 +1,46 @@
 ul.list-with-image {
     list-style-type: none;
+    margin-left: 0;
 
     li {
-        padding-left: 70px;
+        padding-left: 80px;
         padding-right: 80px;
         position: relative;
         height: 50px;
         overflow: hidden;
 
         &.no-image {
-            padding-left: 20px;
+            padding-left: 30px;
         }
 
         .list-icon {
             position: absolute;
             left: 0;
             top: 5px;
+            font-size: 1.5rem;
 
             &.fa-check-circle {
-                color: green;
+                color: #0e7d5b;
             }
 
             &.fa-times-circle {
-                color: red;
+                color: #d66666;
             }
         }
 
         .list-image {
             position: absolute;
-            left: 20px;
+            left: 30px;
             top: 2px;
             height: 45px;
             width: 45px;
 
             &.fa-check-circle {
-                color: green;
+                color: #0e7d5b;
             }
 
             &.fa-times-circle {
-                color: red;
+                color: #d66666;
             }
         }
 
