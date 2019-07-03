@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
-  layout 'public'
+  #layout 'public'
 
-  before_filter :redirect_external
+  before_filter :redirect_external, except: [:privacy_policy, :terms_conditions]
 
   def index
 
