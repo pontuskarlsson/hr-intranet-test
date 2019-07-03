@@ -24,14 +24,18 @@ module Refinery
 
       self.table_name = 'refinery_shipping_shipments'
 
-      belongs_to :from_company,         class_name: '::Refinery::Business::Company'
+      belongs_to :project,              class_name: '::Refinery::Business::Project'
+      belongs_to :shipper_company,      class_name: '::Refinery::Business::Company'
       belongs_to :from_contact,         class_name: '::Refinery::Marketing::Contact'
       belongs_to :from_address,         class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
-      belongs_to :to_company,           class_name: '::Refinery::Business::Company'
+      belongs_to :receiver_company,     class_name: '::Refinery::Business::Company'
       belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact'
       belongs_to :to_address,           class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
       belongs_to :consignee_company,    class_name: '::Refinery::Business::Company'
       belongs_to :consignee_address,    class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
+      belongs_to :supplier_company,     class_name: '::Refinery::Business::Company'
+      belongs_to :forwarder_company,    class_name: '::Refinery::Business::Company'
+      belongs_to :courier_company,      class_name: '::Refinery::Business::Company'
       belongs_to :created_by,           class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :assigned_to,          class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :bill_to_account,      class_name: '::Refinery::Shipping::ShipmentAccount'
@@ -40,12 +44,10 @@ module Refinery
       serialize :rates_content, Array
       serialize :tracking_info, Array
 
-      validates :created_by_id,           presence: true
-      validates :assigned_to_id,          presence: true
       validates :from_address_id,         uniqueness: true, allow_nil: true
       validates :to_address_id,           uniqueness: true, allow_nil: true
-      validates :bill_to,                 inclusion: BILL_TO
-      validates :status,                  inclusion: STATUSES
+      validates :bill_to,                 inclusion: BILL_TO, if: :shipped_by_easypost?
+      validates :status,                  inclusion: STATUSES, if: :shipped_by_easypost?
       validates :easypost_object_id,      uniqueness: true, allow_nil: true
 
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
@@ -102,10 +104,13 @@ module Refinery
 
       before_save do
         self.from_contact_label =       from_contact.label      if from_contact.present?
-        self.from_company_label =       from_company.label      if from_company.present?
+        self.shipper_company_label =    shipper_company.label   if shipper_company.present?
         self.to_contact_label =         to_contact.label        if to_contact.present?
-        self.to_company_label =         to_company.label        if to_company.present?
+        self.receiver_company_label =   receiver_company.label  if receiver_company.present?
         self.consignee_company_label =  consignee_company.label if consignee_company.present?
+        self.supplier_company_label =   supplier_company.label  if supplier_company.present?
+        self.forwarder_company_label =  forwarder_company.label if forwarder_company.present?
+        self.courier_company_label =    courier_company.label   if courier_company.present?
         self.assigned_to_label =        assigned_to.label       if assigned_to.present?
         self.created_by_label =         created_by.label        if created_by.present?
       end
@@ -122,8 +127,14 @@ module Refinery
         created_by_id == user.id || assigned_to_id == user.id
       end
 
+      def easypost_courier
+        {
+            'DHL' => 'DHL'
+        }[courier_company_label]
+      end
+
       def courier_predefined_packages
-        (COURIERS[courier] || {})[:parcels] || []
+        (COURIERS[easypost_courier] || {})[:parcels] || []
       end
 
       def international?
@@ -133,10 +144,10 @@ module Refinery
       def available_accounts
         if bill_to == 'Receiver'
           if to_contact.present?
-            if courier.blank?
+            if courier_company_label.blank?
               to_contact.shipment_accounts
             else
-              to_contact.shipment_accounts.where(courier: courier)
+              to_contact.shipment_accounts.where(courier: courier_company_label)
             end
           else
             []
@@ -155,6 +166,14 @@ module Refinery
 
       def shippable?
         status == 'not_shipped' && shipment_parcels.exists?
+      end
+
+      def shipped_by_courier?
+        courier_company_label.present?
+      end
+
+      def shipped_by_easypost?
+        mode == 'easypost'
       end
 
       class << self

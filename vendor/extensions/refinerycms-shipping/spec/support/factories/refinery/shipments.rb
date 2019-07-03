@@ -10,7 +10,7 @@ FactoryGirl.define do
     # A factory that creates a Shipment with a courier that
     # can be handled by EasyPost
     factory :shipment_with_easypost do
-      courier ::Refinery::Shipping::Shipment::COURIERS.detect { |_,v| v[:easypost] }[0]
+      courier_company_label ::Refinery::Shipping::Shipment::COURIERS.detect { |_,v| v[:easypost] }[0]
 
       # A factory to create associated with addresses that makes the shipment
       # an international shipment.

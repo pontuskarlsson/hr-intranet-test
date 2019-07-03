@@ -6,7 +6,7 @@ module Refinery
       RATIO_KG_TO_OZ = 35.274
       RATIO_CM_TO_IN = 0.393701
 
-      set_main_model :shipment, proxy: { attributes: %w(bill_to_account_id courier) }, class_name: '::Refinery::Shipping::Shipment'
+      set_main_model :shipment, proxy: { attributes: %w(bill_to_account_id courier_company_label) }, class_name: '::Refinery::Shipping::Shipment'
 
       attribute :shipment_parcels_attributes,   Hash, default: {}
       attribute :rate_id,                       String
@@ -44,14 +44,14 @@ module Refinery
       # with).
       def update_courier_and_account!
         if shipment.bill_to == 'Sender'
-          shipment.courier = courier
+          shipment.courier_company_label = courier
 
         elsif shipment.bill_to == 'Receiver'
           if shipment.to_contact.present?
             # Makes sure that the ShipmentAccount is a valid account (belongs to either ToContact or ToContact's Organisation)
             account = ShipmentAccount.where('contact_id IN (?)', [shipment.to_contact.id, shipment.to_contact.organisation_id].compact).find bill_to_account_id
             shipment.bill_to_account_id = account.id
-            shipment.courier = account.courier
+            shipment.courier_company_label = account.courier
           else
             raise 'Cannot find Account to bill to without a Contact selected', ::ActiveRecord::RecordNotSaved
           end
@@ -59,7 +59,7 @@ module Refinery
         elsif shipment.bill_to == '3rd Party'
           account = ShipmentAccount.find bill_to_account_id
           shipment.bill_to_account_id = account.id
-          shipment.courier = account.courier
+          shipment.courier_company_label = account.courier
 
         end
 
@@ -102,7 +102,7 @@ module Refinery
         if shipment.bill_to == 'Receiver'
           if shipment.bill_to_account.present?
             order_hash[:options] = { bill_receiver_account: shipment.bill_to_account.account_no }
-            order_hash[:options][:bill_receiver_postal_code] = shipment.to_address.zip if shipment.courier == 'UPS'
+            order_hash[:options][:bill_receiver_postal_code] = shipment.to_address.zip if shipment.courier_company_label == 'UPS'
           else
             raise ActiveRecord::RecordNotSaved
           end
@@ -110,7 +110,7 @@ module Refinery
         elsif shipment.bill_to == '3rd Party'
           if shipment.bill_to_account.present?
             order_hash[:options] = { bill_third_party_account: shipment.bill_to_account.account_no }
-            if shipment.courier == ::Refinery::Shipping::Shipment::COURIER_UPS
+            if shipment.courier_company_label == ::Refinery::Shipping::Shipment::COURIER_UPS
               order_hash[:options][:bill_third_party_country] = shipment.to_address.country
               order_hash[:options][:bill_third_party_postal_code] = shipment.to_address.zip
             end
@@ -197,7 +197,7 @@ module Refinery
       def buy_shipment_rate!
         order = EasyPost::Order.retrieve shipment.easypost_object_id
         rate = order.rates.detect { |r| r.id == rate_id } || (raise ActiveRecord::RecordNotFound)
-        order.buy(carrier: shipment.courier, service: rate.service)
+        order.buy(carrier: shipment.courier_company_label, service: rate.service)
 
         shipment.rate_object_id =   rate.id
         shipment.rate_service =     rate.service

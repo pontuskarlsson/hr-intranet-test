@@ -1,0 +1,47 @@
+<div class="grid-x grid-padding-x">
+  <div class="medium-3 cell">
+    <h4>Shipper</h4>
+    <% if shipment.shipper_company.present? %>
+      <%= link_to shipment.shipper_company_label, refinery.business_company_path(shipment.shipper_company) %>
+    <% else %>
+      <%= shipment.shipper_company_label %>
+    <% end %>
+  </div>
+
+  <div class="medium-3 cell">
+    <h4>Receiver</h4>
+    <% if shipment.receiver_company.present? %>
+      <%= link_to shipment.receiver_company_label, refinery.business_company_path(shipment.receiver_company) %>
+    <% else %>
+      <%= shipment.receiver_company_label %>
+    <% end %>
+  </div>
+
+  <div class="medium-3 cell">
+    <h4>Consignee</h4>
+    <% if shipment.consignee_company.present? %>
+      <%= link_to shipment.consignee_company_label, refinery.business_company_path(shipment.consignee_company) %>
+    <% else %>
+      <%= shipment.consignee_company_label %>
+    <% end %>
+  </div>
+
+  <div class="medium-3 cell">
+    <h4>Supplier</h4>
+    <% if shipment.supplier_company.present? %>
+      <%= link_to shipment.supplier_company_label, refinery.business_company_path(shipment.supplier_company) %>
+    <% else %>
+      <%= shipment.supplier_company_label %>
+    <% end %>
+  </div>
+
+  <div class="cell">
+    <%= render 'costs', shipment: shipment %>
+  </div>
+</div>
+
+<div class="grid-x grid-padding-x">
+  <div class="cell">
+    <%= render 'parcels', shipment: shipment %>
+  </div>
+</div>

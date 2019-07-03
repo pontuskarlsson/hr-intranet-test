@@ -15,7 +15,7 @@ module Refinery
         end
 
         context 'when :courier is not in list' do
-          before { shipment.courier = 'InvalidCourier' }
+          before { shipment.courier_company_label = 'InvalidCourier' }
           it { is_expected.to be_valid }
         end
 

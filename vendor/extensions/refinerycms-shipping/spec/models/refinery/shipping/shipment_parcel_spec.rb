@@ -56,7 +56,7 @@ module Refinery
           end
 
           describe 'that has selected a predefined package type' do
-            before { shipment_parcel.predefined_package = (Refinery::Shipping::Shipment::COURIERS[shipment_parcel.shipment.try(:courier)] || {} )[:'refinerycms-shipping'].first }
+            before { shipment_parcel.predefined_package = (Refinery::Shipping::Shipment::COURIERS[shipment_parcel.shipment.try(:courier_company_label)] || {} )[:'refinerycms-shipping'].first }
 
             it { is_expected.to eq true }
 

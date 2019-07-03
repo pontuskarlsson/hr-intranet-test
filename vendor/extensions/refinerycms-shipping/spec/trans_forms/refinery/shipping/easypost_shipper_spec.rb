@@ -45,12 +45,12 @@ module Refinery
       describe '#save' do
         context 'when :bill_to is Sender and choosing courier' do
           let(:shipment) { FactoryGirl.create(:shipment, bill_to: 'Sender') }
-          let(:attr) { { courier: ::Refinery::Shipping::Shipment::COURIER_DHL } }
+          let(:attr) { { courier_company_label: ::Refinery::Shipping::Shipment::COURIER_DHL } }
 
           it { expect( form.save ).to eq true }
 
           it 'sets the courier of the shipment' do
-            expect{ form.save }.to change{ shipment.courier }.from(nil).to(attr[:courier])
+            expect{ form.save }.to change{ shipment.courier_company_label }.from(nil).to(attr[:courier_company_label])
           end
         end
 
@@ -66,7 +66,7 @@ module Refinery
           end
 
           it 'sets the courier of the shipment' do
-            expect{ form.save }.to change{ shipment.courier }.from(nil).to(shipment_account.courier)
+            expect{ form.save }.to change{ shipment.courier_company_label }.from(nil).to(shipment_account.courier)
           end
         end
 
@@ -82,14 +82,14 @@ module Refinery
           end
 
           it 'does not set the courier of the shipment' do
-            expect{ form.save }.not_to change{ shipment.courier }.from(nil)
+            expect{ form.save }.not_to change{ shipment.courier_company_label }.from(nil)
           end
         end
 
         context 'when adding courier specific details to ShipmentParcels' do
           let(:shipment) { FactoryGirl.create(:shipment, bill_to: 'Sender') }
           let(:shipment_parcel) { FactoryGirl.create(:shipment_parcel, shipment: shipment) }
-          let(:attr) { { courier: ::Refinery::Shipping::Shipment::COURIER_DHL, shipment_parcels_attributes: {
+          let(:attr) { { courier_company_label: ::Refinery::Shipping::Shipment::COURIER_DHL, shipment_parcels_attributes: {
               '0' => { id: shipment_parcel.id, predefined_package: 'JumboParcel', weight: '1' }
           } } }
 

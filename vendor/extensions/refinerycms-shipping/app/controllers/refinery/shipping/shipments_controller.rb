@@ -108,11 +108,11 @@ module Refinery
       end
 
       def shipment_params
-        params.require(:shipment).permit(:from_contact_label, :to_contact_label, :courier, :assigned_to_label, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id)
+        params.require(:shipment).permit(:from_contact_label, :to_contact_label, :courier_company_label, :assigned_to_label, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id)
       end
 
       def filter_params
-        params.permit([:from_company_id, :to_company_id, :consignee_company_id, :project_id, :status, :courier])
+        params.permit([:shipper_company_id, :receiver_company_id, :consignee_company_id, :supplier_company_id, :project_id, :status, :courier_company_label])
       end
 
     end

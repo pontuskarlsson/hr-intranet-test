@@ -1,0 +1,40 @@
+<div class="grid-x grid-padding-x">
+  <div class="medium-6 cell">
+    <h4>Shipper</h4>
+    <% if shipment.shipper_company.present? %>
+      <%= link_to shipment.shipper_company_label, refinery.business_company_path(shipment.shipper_company) %>
+    <% else %>
+      <%= shipment.shipper_company_label %>
+    <% end %>
+  </div>
+
+  <div class="medium-6 cell">
+    <h4>Receiver</h4>
+    <% if shipment.receiver_company.present? %>
+      <%= link_to shipment.receiver_company_label, refinery.business_company_path(shipment.receiver_company) %>
+    <% else %>
+      <%= shipment.receiver_company_label %>
+    <% end %>
+  </div>
+
+  <div class="cell">
+    <h4>Bill to</h4>
+    <p>
+      <%= shipment.bill_to %>
+      <% if shipment.bill_to_account.present? %>
+        <br/><%= shipment.bill_to_account.account_no %>
+      <% end %>
+    </p>
+  </div>
+
+  <% if shipment.label_url.present? %>
+    <div class="cell">
+      <h4>Shipping Label</h4>
+      <p><%= link_to 'Download', shipment.label_url, target: :_blank %></p>
+    </div>
+  <% end %>
+
+  <div class="cell">
+    <%= render 'parcels', shipment: shipment %>
+  </div>
+</div>

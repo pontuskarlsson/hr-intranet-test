@@ -49,10 +49,10 @@
           { data: "id", "width": 60, "render": function(data, type, row){ return ('<a href="<%= refinery.shipping_shipments_path %>/'+data+'">View</a>'); } },
           { data: "from_contact_label" },
           { data: "to_contact_label" },
-          { data: "courier", "width": 150 },
+          { data: "courier_company_label", "width": 150 },
           { data: "tracking_number", "width": 150 },
           { data: "display_status", "width": 150 },
-          { data: "shipping_date", "width": 150, "render": { "sort": function(data, type, row){ if(data){ return data; }else{ return new Date('2099-01-01') } } } }
+          { data: "etd_date", "width": 150, "render": { "sort": function(data, type, row){ if(data){ return data; }else{ return new Date('2099-01-01') } } } }
         ]
       });
     });

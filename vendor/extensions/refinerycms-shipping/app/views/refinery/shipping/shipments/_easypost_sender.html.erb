@@ -1,6 +1,6 @@
-<% if shipment.courier.blank? %>
+<% if shipment.courier_company_label.blank? %>
   <label>Courier
-    <%= f.select :courier, options_for_select(::Refinery::Shipping::Shipment.easypost_couriers), include_blank: true %>
+    <%= f.select :courier_company_label, options_for_select(::Refinery::Shipping::Shipment.easypost_couriers), include_blank: true %>
   </label>
 
   <div class="grid-x grid-padding-x">

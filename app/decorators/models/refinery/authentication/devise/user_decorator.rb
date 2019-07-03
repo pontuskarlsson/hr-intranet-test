@@ -13,7 +13,7 @@ Refinery::Authentication::Devise::User.class_eval do
 
   acts_as_target devise_resource: :authentication_devise_user,
                  email: :email,
-                 email_allowed: ->(user, key) { user.active_for_authentication? && user.accepted_or_not_invited? }
+                 email_allowed: ->(user, notifiable, key) { user.active_for_authentication? && user.accepted_or_not_invited? }
 
   def printable_name
     full_name

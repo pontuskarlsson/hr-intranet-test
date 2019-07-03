@@ -1,31 +1,22 @@
-<div class="grid-x grid-padding-x">
-  <div class="cell medium-2">
-    <h5>Currency</h5>
-    <p><%= shipment.rate_currency %></p>
-  </div>
-
-  <div class="cell medium-2">
-    <h5>Duty</h5>
-    <p><%= number_to_currency shipment.duty_amount %></p>
-  </div>
-
-  <div class="cell medium-2">
-    <h5>Terminal Fee</h5>
-    <p><%= number_to_currency shipment.terminal_fee_amount %></p>
-  </div>
-
-  <div class="cell medium-2">
-    <h5>Domestic Transportation Cost</h5>
-    <p><%= number_to_currency shipment.domestic_transportation_cost_amount %></p>
-  </div>
-
-  <div class="cell medium-2">
-    <h5>Forwarding Fee</h5>
-    <p><%= number_to_currency shipment.forwarding_fee_amount %></p>
-  </div>
-
-  <div class="cell medium-2">
-    <h5>Freight Cost</h5>
-    <p><%= number_to_currency shipment.freight_cost_amount %></p>
-  </div>
-</div>
+<table>
+  <thead>
+  <tr>
+    <th>Currency</th>
+    <th>Duty</th>
+    <th>Terminal Fee</th>
+    <th>Domestic Transportation Cost</th>
+    <th>Forwarding Fee</th>
+    <th>Freight Cost</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><%= shipment.rate_currency %></td>
+    <td><%= number_to_currency shipment.duty_amount %></td>
+    <td><%= number_to_currency shipment.terminal_fee_amount %></td>
+    <td><%= number_to_currency shipment.domestic_transportation_cost_amount %></td>
+    <td><%= number_to_currency shipment.forwarding_fee_amount %></td>
+    <td><%= number_to_currency shipment.freight_cost_amount %></td>
+  </tr>
+  </tbody>
+</table>

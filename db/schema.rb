@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190702094006) do
+ActiveRecord::Schema.define(version: 20190703021943) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -1180,7 +1180,7 @@ ActiveRecord::Schema.define(version: 20190702094006) do
     t.integer  "to_address_id",                       limit: 4
     t.integer  "created_by_id",                       limit: 4
     t.integer  "assigned_to_id",                      limit: 4
-    t.string   "courier",                             limit: 255
+    t.string   "courier_company_label",               limit: 255
     t.integer  "position",                            limit: 4
     t.datetime "created_at",                                                                 null: false
     t.datetime "updated_at",                                                                 null: false
@@ -1197,17 +1197,17 @@ ActiveRecord::Schema.define(version: 20190702094006) do
     t.string   "rate_service",                        limit: 255
     t.decimal  "rate_amount",                                       precision: 13, scale: 4
     t.string   "rate_currency",                       limit: 255
-    t.date     "shipping_date"
+    t.date     "etd_date"
     t.text     "tracking_info",                       limit: 65535
     t.integer  "project_id",                          limit: 4
     t.string   "code",                                limit: 255
-    t.integer  "to_company_id",                       limit: 4
-    t.integer  "from_company_id",                     limit: 4
+    t.integer  "receiver_company_id",                 limit: 4
+    t.integer  "shipper_company_id",                  limit: 4
     t.integer  "consignee_company_id",                limit: 4
     t.integer  "consignee_address_id",                limit: 4
     t.string   "consignee_reference",                 limit: 255
     t.string   "mode",                                limit: 255
-    t.string   "forwarder",                           limit: 255
+    t.string   "forwarder_company_label",             limit: 255
     t.string   "forwarder_booking_number",            limit: 255
     t.string   "comments",                            limit: 255
     t.integer  "no_of_parcels",                       limit: 4
@@ -1227,12 +1227,18 @@ ActiveRecord::Schema.define(version: 20190702094006) do
     t.decimal  "chargeable_weight_manual_amount",                   precision: 13, scale: 4
     t.string   "weight_unit",                         limit: 255
     t.string   "from_contact_label",                  limit: 255
-    t.string   "from_company_label",                  limit: 255
+    t.string   "shipper_company_label",               limit: 255
     t.string   "to_contact_label",                    limit: 255
-    t.string   "to_company_label",                    limit: 255
+    t.string   "receiver_company_label",              limit: 255
     t.string   "consignee_company_label",             limit: 255
     t.string   "created_by_label",                    limit: 255
     t.string   "assigned_to_label",                   limit: 255
+    t.date     "eta_date"
+    t.integer  "supplier_company_id",                 limit: 4
+    t.string   "supplier_company_label",              limit: 255
+    t.integer  "forwarder_company_id",                limit: 4
+    t.string   "load_port",                           limit: 255
+    t.integer  "courier_company_id",                  limit: 4
   end
 
   add_index "refinery_shipping_shipments", ["assigned_to_id"], name: "index_refinery_shipping_shipments_on_assigned_to_id", using: :btree
@@ -1244,24 +1250,29 @@ ActiveRecord::Schema.define(version: 20190702094006) do
   add_index "refinery_shipping_shipments", ["consignee_company_id"], name: "index_refinery_shipping_shipments_on_consignee_company_id", using: :btree
   add_index "refinery_shipping_shipments", ["consignee_company_label"], name: "index_refinery_shipping_shipments_on_consignee_company_label", using: :btree
   add_index "refinery_shipping_shipments", ["consignee_reference"], name: "index_refinery_shipping_shipments_on_consignee_reference", using: :btree
+  add_index "refinery_shipping_shipments", ["courier_company_id"], name: "index_refinery_shipping_shipments_on_courier_company_id", using: :btree
   add_index "refinery_shipping_shipments", ["created_by_id"], name: "index_refinery_shipping_shipments_on_created_by_id", using: :btree
   add_index "refinery_shipping_shipments", ["created_by_label"], name: "index_refinery_shipping_shipments_on_created_by_label", using: :btree
   add_index "refinery_shipping_shipments", ["easypost_object_id"], name: "index_refinery_parcels_shipments_on_eo_id", using: :btree
-  add_index "refinery_shipping_shipments", ["forwarder"], name: "index_refinery_shipping_shipments_on_forwarder", using: :btree
+  add_index "refinery_shipping_shipments", ["eta_date"], name: "index_refinery_shipping_shipments_on_eta_date", using: :btree
   add_index "refinery_shipping_shipments", ["forwarder_booking_number"], name: "index_refinery_shipping_shipments_on_forwarder_booking_number", using: :btree
+  add_index "refinery_shipping_shipments", ["forwarder_company_id"], name: "index_refinery_shipping_shipments_on_forwarder_company_id", using: :btree
+  add_index "refinery_shipping_shipments", ["forwarder_company_label"], name: "index_refinery_shipping_shipments_on_forwarder_company_label", using: :btree
   add_index "refinery_shipping_shipments", ["from_address_id"], name: "index_refinery_shipping_shipments_on_from_address_id", using: :btree
-  add_index "refinery_shipping_shipments", ["from_company_id"], name: "index_refinery_shipping_shipments_on_from_company_id", using: :btree
-  add_index "refinery_shipping_shipments", ["from_company_label"], name: "index_refinery_shipping_shipments_on_from_company_label", using: :btree
   add_index "refinery_shipping_shipments", ["from_contact_id"], name: "index_refinery_shipping_shipments_on_from_contact_id", using: :btree
   add_index "refinery_shipping_shipments", ["from_contact_label"], name: "index_refinery_shipping_shipments_on_from_contact_label", using: :btree
   add_index "refinery_shipping_shipments", ["mode"], name: "index_refinery_shipping_shipments_on_mode", using: :btree
   add_index "refinery_shipping_shipments", ["no_of_parcels"], name: "index_refinery_shipping_shipments_on_no_of_parcels", using: :btree
   add_index "refinery_shipping_shipments", ["position"], name: "index_refinery_shipping_shipments_on_position", using: :btree
   add_index "refinery_shipping_shipments", ["project_id"], name: "index_refinery_shipping_shipments_on_project_id", using: :btree
+  add_index "refinery_shipping_shipments", ["receiver_company_id"], name: "index_refinery_shipping_shipments_on_receiver_company_id", using: :btree
+  add_index "refinery_shipping_shipments", ["receiver_company_label"], name: "index_refinery_shipping_shipments_on_receiver_company_label", using: :btree
+  add_index "refinery_shipping_shipments", ["shipper_company_id"], name: "index_refinery_shipping_shipments_on_shipper_company_id", using: :btree
+  add_index "refinery_shipping_shipments", ["shipper_company_label"], name: "index_refinery_shipping_shipments_on_shipper_company_label", using: :btree
   add_index "refinery_shipping_shipments", ["status"], name: "index_refinery_shipping_shipments_on_status", using: :btree
+  add_index "refinery_shipping_shipments", ["supplier_company_id"], name: "index_refinery_shipping_shipments_on_supplier_company_id", using: :btree
+  add_index "refinery_shipping_shipments", ["supplier_company_label"], name: "index_refinery_shipping_shipments_on_supplier_company_label", using: :btree
   add_index "refinery_shipping_shipments", ["to_address_id"], name: "index_refinery_shipping_shipments_on_to_address_id", using: :btree
-  add_index "refinery_shipping_shipments", ["to_company_id"], name: "index_refinery_shipping_shipments_on_to_company_id", using: :btree
-  add_index "refinery_shipping_shipments", ["to_company_label"], name: "index_refinery_shipping_shipments_on_to_company_label", using: :btree
   add_index "refinery_shipping_shipments", ["to_contact_id"], name: "index_refinery_shipping_shipments_on_to_contact_id", using: :btree
   add_index "refinery_shipping_shipments", ["to_contact_label"], name: "index_refinery_shipping_shipments_on_to_contact_label", using: :btree
 

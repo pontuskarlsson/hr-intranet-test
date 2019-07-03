@@ -3,7 +3,6 @@ module Refinery
     class ShipmentAddress < Refinery::Core::BaseModel
       self.table_name = 'refinery_shipping_shipment_addresses'
 
-      validates :name,          presence: true
       validates :easy_post_id,  uniqueness: true, allow_blank: true
 
       #attr_accessible :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email

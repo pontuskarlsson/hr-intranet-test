@@ -1,30 +1,53 @@
-<p>
-  <% if shipment_address.name.present? %>
-    <%= shipment_address.name %>
-  <% end %>
-
-  <% if shipment_address.street1.present? %>
-    <br/><%= shipment_address.street1 %>
-  <% end %>
-  <% if shipment_address.street2.present? %>
-    <br/><%= shipment_address.street2 %>
-  <% end %>
-  <% if shipment_address.city.present? %>
-    <br/><%= shipment_address.city %>
-  <% end %>
-  <% if shipment_address.state.present? %>
-    <br/><%= shipment_address.state %>
-  <% end %>
-  <% if shipment_address.zip.present? %>
-    <br/><%= shipment_address.zip %>
-  <% end %>
-  <% if shipment_address.country.present? %>
-    <br/><%= shipment_address.country %>
-  <% end %>
-  <% if shipment_address.phone.present? %>
-    <br/><%= shipment_address.phone %>
-  <% end %>
-  <% if shipment_address.email.present? %>
-    <br/><%= shipment_address.email %>
-  <% end %>
-</p>
+<section class="contact-card">
+  <table class="cc-table">
+    <tbody>
+    <% if shipment_address.country.present? %>
+      <tr>
+        <th>Map</th>
+        <td>
+          <%= link_to shipment_address.google_maps_url, target: '_blank' do %>
+            <i class="fa fa-map-marker"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    <tr>
+      <th>Name</th>
+      <td><%= shipment_address.name %></td>
+    </tr>
+    <tr>
+      <th>Street</th>
+      <td>
+        <%= shipment_address.street1 %>
+        <% if shipment_address.street2.present? %>
+          <br/><%= shipment_address.street2 %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <th>City</th>
+      <td><%= shipment_address.city %></td>
+    </tr>
+    <tr>
+      <th>Zip</th>
+      <td><%= shipment_address.zip %></td>
+    </tr>
+    <tr>
+      <th>State</th>
+      <td><%= shipment_address.state %></td>
+    </tr>
+    <tr>
+      <th>Country</th>
+      <td><%= shipment_address.country %></td>
+    </tr>
+    <tr>
+      <th>Phone</th>
+      <td><%= shipment_address.phone %></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td><%= shipment_address.email %></td>
+    </tr>
+    </tbody>
+  </table>
+</section>
