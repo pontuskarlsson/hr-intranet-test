@@ -1,7 +1,7 @@
-<table id="<%= table_id %>" class="display" cellspacing="0" style="width: 100%;">
+<table id="<%= table_id %>" class="display responsive" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
-    <th>&nbsp;</th>
+    <th></th>
     <th>Photo</th>
     <th>Customer</th>
     <th>Supplier</th>
@@ -17,7 +17,7 @@
   <% unless options[:no_footer] %>
     <tfoot>
     <tr>
-      <th>&nbsp;</th>
+      <th></th>
       <th>Photo</th>
       <th>Customer</th>
       <th>Supplier</th>
@@ -33,44 +33,88 @@
 </table>
 
 <% content_for :stylesheets do %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+  <%= stylesheet_link_tag 'https://cdn.datatables.net/1.10.19/css/dataTables.foundation.min.css' %>
+  <%= stylesheet_link_tag 'https://cdn.datatables.net/responsive/2.2.3/css/responsive.foundation.min.css' %>
 <% end %>
 
 <% content_for :javascripts do %>
-  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.foundation.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.foundation.min.js"></script>
 
   <script type="text/javascript">
+    function initDataTableMenu(dt) {
+      var tmplMenu = '<ul class="dropdown menu" data-dropdown-menu><li><a href="#">Columns</a><ul class="menu"></ul></li></ul>';
+      var tmplItem = '<li><a href="#"><i class="fa"></i></a></li>';
+
+      var classVisible = 'fa-check-square-o';
+      var classHidden = 'fa-square-o';
+
+      var $menu = $(tmplMenu);
+
+      dt.columns().every(function(colIndex) {
+        if (colIndex === 0) return;
+
+        var col = dt.column(colIndex);
+
+        var $item = $(tmplItem);
+        $('> a > i.fa', $item).addClass(col.visible() ? classVisible : classHidden);
+        $('> a', $item).append($(col.header()).html()).data('col-index', colIndex);
+
+        $('.menu', $menu).append($item);
+      });
+
+      $(dt.table().container()).prepend($menu);
+
+      new Foundation.DropdownMenu($menu, { 'closeOnClickInside': false });
+
+      $menu.on('click', '.menu > li > a', function() {
+        var col = dt.column($(this).data('col-index'));
+
+        col.visible(!col.visible());
+
+        $('i.fa', this).toggleClass('fa-check-square-o');
+        $('i.fa', this).toggleClass('fa-square-o');
+
+        dt.columns.adjust();
+      });
+    }
+
     $(function(){
-      $('#<%= table_id %>').dataTable({
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
         "scrollCollapse": true,
         "paging":         true,
         "pageLength":     <%= options[:page_length] || 10 %>,
         "ajax": "<%= refinery.quality_assurance_inspections_path(filter_params) %>",
         "columns": [
-          { data: "id", "width": '5%', "render": function(data, type, row) {
+          { data: "id", width: "50px", "render": function(data, type, row) {
             const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
-            const className = 'fa fa-arrow-right';
+            const className = 'fa fa-arrow-circle-right';
             return $('<a></a>')
               .attr('href', href)
               .html('<i class="' + className + '"></i>')
               .prop('outerHTML');
           } },
-          { data: "inspection_photo_thumb_url", "width": '5%', "render": function(data, type, row) {
+          { data: "inspection_photo_thumb_url", width: "50px", "render": function(data, type, row) {
             if (data) {
               return $('<img />').attr('src', data).prop('outerHTML');
             }
             return null;
           } },
-          { data: "company_label", "width": '10%' },
-          { data: "supplier_label", "width": '10%' },
-          { data: "manufacturer_label", "width": '10%' },
-          { data: "inspection_date", "width": '10%' },
-          { data: "inspection_type", "width": '10%' },
-          { data: "result", "width": '10%' },
-          { data: "po_number", "width": '10%' },
-          { data: "product_label", "width": '10%' }
+          { data: "company_label", width: "140px" },
+          { data: "supplier_label", width: "140px" },
+          { data: "manufacturer_label", width: "140px" },
+          { data: "inspection_date", width: "80px" },
+          { data: "inspection_type", width: "50px" },
+          { data: "result", width: "50px" },
+          { data: "po_number", width: "100px" },
+          { data: "product_label", width: "100px" }
         ]
       });
+
+      initDataTableMenu(dt);
     });
   </script>
 <% end %>
