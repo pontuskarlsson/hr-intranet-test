@@ -1,4 +1,4 @@
-<table id="<%= table_id %>" class="display responsive" cellspacing="0" style="width: 100%;">
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
     <th></th>
@@ -84,12 +84,11 @@
     $(function(){
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
-        "scrollCollapse": true,
         "paging":         true,
         "pageLength":     <%= options[:page_length] || 10 %>,
         "ajax": "<%= refinery.quality_assurance_inspections_path(filter_params) %>",
         "columns": [
-          { data: "id", width: "50px", "render": function(data, type, row) {
+          { data: "id", "render": function(data, type, row) {
             const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
             const className = 'fa fa-arrow-circle-right';
             return $('<a></a>')
@@ -97,20 +96,20 @@
               .html('<i class="' + className + '"></i>')
               .prop('outerHTML');
           } },
-          { data: "inspection_photo_thumb_url", width: "50px", "render": function(data, type, row) {
+          { data: "inspection_photo_thumb_url", "render": function(data, type, row) {
             if (data) {
               return $('<img />').attr('src', data).prop('outerHTML');
             }
             return null;
           } },
-          { data: "company_label", width: "140px" },
-          { data: "supplier_label", width: "140px" },
-          { data: "manufacturer_label", width: "140px" },
-          { data: "inspection_date", width: "80px" },
-          { data: "inspection_type", width: "50px" },
-          { data: "result", width: "50px" },
-          { data: "po_number", width: "100px" },
-          { data: "product_label", width: "100px" }
+          { data: "company_label" },
+          { data: "supplier_label" },
+          { data: "manufacturer_label" },
+          { data: "inspection_date" },
+          { data: "inspection_type" },
+          { data: "result" },
+          { data: "po_number" },
+          { data: "product_label" }
         ]
       });
 
