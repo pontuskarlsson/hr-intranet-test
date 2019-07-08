@@ -87,21 +87,22 @@
         "paging":         true,
         "pageLength":     <%= options[:page_length] || 10 %>,
         "ajax": "<%= refinery.quality_assurance_inspections_path(filter_params) %>",
+        "order": [[6, 'desc']],
         "columns": [
-          { data: "id", "render": function(data, type, row) {
+          { data: "id", "render": { "display": function(data, type, row) {
             const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
             const className = 'fa fa-arrow-circle-right';
             return $('<a></a>')
               .attr('href', href)
               .html('<i class="' + className + '"></i>')
               .prop('outerHTML');
-          } },
-          { data: "inspection_photo_thumb_url", "render": function(data, type, row) {
+          } } },
+          { data: "inspection_photo_thumb_url", "render": { "display": function(data, type, row) {
             if (data) {
               return $('<img />').attr('src', data).prop('outerHTML');
             }
             return null;
-          } },
+          } } },
           { data: "inspection_type" },
           { data: "result" },
           { data: "po_number" },
