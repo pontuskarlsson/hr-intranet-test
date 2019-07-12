@@ -66,4 +66,22 @@ Refinery::Authentication::Devise::User.class_eval do
     end
   end
 
+  # Returns an email friendly address string.
+  #
+  # Examples:
+  #
+  #   "John Doe <john@doe.com>"
+  #
+  #   "\"John \\\" Doe\" <john@doe.com>"
+  #
+  def recipient
+    address = Mail::Address.new email
+    address.display_name = full_name
+    address.format
+  end
+
+  def self.to_recipients
+    select([:email, :full_name]).map(&:recipient)
+  end
+
 end

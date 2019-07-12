@@ -7,21 +7,24 @@ class HappyRabbitMailer < ApplicationMailer
     @creator = creator
     file_name = "#{data['Description']}-#{Date.today.to_s}.xls"
     attachments[file_name] = File.read(creator.wip_file_path)
-    mail(from: "\"Happy Rabbit WIP Status\" <wip_status@happyrabbit.com>", to: data['Recipients'], bcc: ['daniel.viklund@happyrabbit.com'], subject: "WIP Status Request: #{data['Description']}, #{Date.today.to_s}")
+
+    mail(
+        from: "\"Happy Rabbit WIP Status\" <wip_status@happyrabbit.com>",
+        to: data['Recipients'],
+        subject: "WIP Status Request: #{data['Description']}, #{Date.today.to_s}",
+        cc: Refinery::Authentication::Devise::User.for_role(Refinery::Shipping::ROLE_INTERNAL).to_recipients
+    )
   end
 
-  def inspection_result_email(user, inspection)
-    @header = 'QC Inspection Report'
-
-    @inspection = inspection
-    @user = user
-    mail(to: user.email, bcc: ['daniel.viklund@happyrabbit.com'], subject: "#{@header} - #{Date.today.to_s}")
-  end
-
-  def services_notification_email(results)
+  def wip_update_notification_email(results)
     recipients, description, @notice, @orders = results[:recipients], results[:description], results[:notice], results[:orders]
     @header = 'WIP Update Notification'
-    mail(to: recipients, bcc: ['daniel.viklund@happyrabbit.com'], subject: "#{@header} - #{description} - #{Date.today.to_s}")
+
+    mail(
+        to: recipients,
+        subject: "#{@header} - #{description} - #{Date.today.to_s}",
+        cc: Refinery::Authentication::Devise::User.for_role(Refinery::Shipping::ROLE_INTERNAL).to_recipients
+    )
   end
 
 end

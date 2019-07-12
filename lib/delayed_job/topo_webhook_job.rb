@@ -9,9 +9,6 @@ class TopoWebhookJob < Struct.new(:payload)
         ErrorMailer.error_email(syncer.error).deliver
       elsif syncer.inspection
         syncer.inspection.notify :'refinery/authentication/devise/users'
-        # users_for_role('Services').each do |user|
-        #   HappyRabbitMailer.inspection_result_email(user, syncer.inspection).deliver_now
-        # end
       end
 
     end

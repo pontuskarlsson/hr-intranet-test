@@ -68,7 +68,7 @@ class HooksController < ApplicationController
       results = updater.update_wip_orders
 
       if results[:notice] || results[:orders].any?
-        HappyRabbitMailer.services_notification_email(results).deliver
+        HappyRabbitMailer.wip_update_notification_email(results).deliver
       end
     end
 
