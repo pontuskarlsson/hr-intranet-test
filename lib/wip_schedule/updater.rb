@@ -77,7 +77,8 @@ module WipSchedule
         begin
           column_value = value_from_excel excel_order, col
 
-          if column_value != at_order[col]
+          # Need to also check that both values or not blank, because api returns empty string for number values when they should be nil
+          if column_value != at_order[col] && !(column_value.blank? && at_order[col].blank?)
             if WipSchedule::Excel::ONLY_IF_BLANK.include?(col) && at_order[col].present?
               @results[:orders][order_id][:updates][col] = { error: "Tried to change #{col} from #{at_order[col].to_s} to #{changed_fields[col].to_s}. This is not allowed." }
             else
@@ -99,6 +100,8 @@ module WipSchedule
           value.present? ? value.to_date.to_s : ''
         when :number
           value.present? ? value.to_i : ''
+        when :currency
+          value.present? ? value.to_f : ''
         else
           value.to_s
       end
