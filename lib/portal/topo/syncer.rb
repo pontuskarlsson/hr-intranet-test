@@ -45,6 +45,7 @@ module Portal
 
         inspection.fields = payload
 
+        set_inspected_by! payload['owners']
         set_company!
         set_supplier!
         set_manufacturer!
@@ -57,6 +58,12 @@ module Portal
 
         inspection.inspection_photo = inspection.inspection_photos.detect { |inspection_photo| inspection_photo.fields['key'] == 'd' }
         inspection.save!
+      end
+
+      def set_inspected_by!(owners)
+        if owners && owners[0]
+          inspection.inspected_by = ::Refinery::Authentication::Devise::User.where(topo_id: owners[0]).first
+        end
       end
 
       def set_company!

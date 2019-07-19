@@ -8,6 +8,7 @@ module Refinery
 
     ROLE_INTERNAL = 'QualityAssurance:Internal'
     ROLE_EXTERNAL = 'QualityAssurance:External'
+    ROLE_INSPECTOR = 'QualityAssurance:Inspector'
 
     PAGE_INSPECTIONS_URL = '/quality_assurance/inspections'
 

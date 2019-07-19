@@ -9,6 +9,17 @@
 
         td {
             vertical-align: top;
+            max-width: 260px;
+        }
+    }
+
+    tbody tr {
+        transition-property: background;
+        transition-duration: .1s;
+        transition-timing-function: linear;
+
+        &:hover {
+            background: #9dd4f6;
         }
     }
 }

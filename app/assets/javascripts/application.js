@@ -16,6 +16,7 @@
 //= require date.format
 //= require Chart.bundle
 //= require chartkick
+//= require_tree ./additional
 
 
 $(function(){ $(document).foundation(); });

@@ -1,3 +1,3 @@
 {
-  "data": <%= @companies.to_json(only: [:id, :code, :name], include: { contact: { only: [:country, :phone, :website, :email] } }).html_safe %>
+  "data": <%= @companies.to_json(only: [:id, :code, :name], methods: [:contact_country, :contact_phone, :contact_website, :contact_email]).html_safe %>
 }

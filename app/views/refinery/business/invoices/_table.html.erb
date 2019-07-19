@@ -1,4 +1,4 @@
-<table id="<%= table_id %>" class="display" cellspacing="0" style="width: 100%;">
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
     <th></th>
@@ -35,48 +35,39 @@
 </table>
 
 <% content_for :stylesheets do %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+  <%= stylesheet_link_tag 'https://cdn.datatables.net/1.10.19/css/dataTables.foundation.min.css' %>
+  <%= stylesheet_link_tag 'https://cdn.datatables.net/responsive/2.2.3/css/responsive.foundation.min.css' %>
 <% end %>
 
 <% content_for :javascripts do %>
-  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.foundation.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.foundation.min.js"></script>
 
   <script type="text/javascript">
     $(function(){
-      var formatCurrency = function(data) {
-        var val = parseFloat(data).toFixed(2).toString();
-
-        return $('<div style="text-align: right;"></div>')
-          .text(val.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
-          .prop('outerHTML');
-      };
-
-      $('#<%= table_id %>').dataTable({
-        "scrollCollapse": true,
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
         "paging":         true,
         "ajax": "<%= refinery.business_invoices_path(filter_params) %>",
         "columns": [
-          { data: "id", "width": '10%', "render": function(data, type, row) {
-            const href = ["<%= refinery.business_invoices_path %>", row.id].join('/');
-            const className = 'fa fa-arrow-right';
-            return $('<a></a>')
-              .attr('href', href)
-              .html('<i class="' + className + '"></i>')
-              .prop('outerHTML');
-          } },
-          { data: "invoice_number", "width": '30%' },
-          { data: "reference", "width": '30%' },
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_invoices_path %>") } },
+          { data: "invoice_number" },
+          { data: "reference" },
           { data: function(row, type, set, meta) { return row.company && row.company.name || null; }, "width": '40%' },
-          { data: "invoice_type", "width": '30%' },
-          { data: "invoice_date", "width": '30%', render: { '_': function(data) { return new Date(data); }, 'display': function(data) { return data; } } },
-          { data: "due_date", "width": '30%' },
-          { data: "status", "width": '30%' },
-          { data: "currency_code", "width": '15%' },
-          { data: "total_amount", "width": '30%', render: formatCurrency },
-          { data: "amount_paid", "width": '30%', render: formatCurrency },
-          { data: "amount_due", "width": '30%', render: formatCurrency }
+          { data: "invoice_type" },
+          { data: "invoice_date", render: { '_': function(data) { return new Date(data); }, 'display': function(data) { return data; } } },
+          { data: "due_date" },
+          { data: "status" },
+          { data: "currency_code" },
+          { data: "total_amount", render: formatCurrency },
+          { data: "amount_paid", render: formatCurrency },
+          { data: "amount_due", render: formatCurrency }
         ]
       });
+
+      initDataTableMenu(dt);
     });
   </script>
 <% end %>

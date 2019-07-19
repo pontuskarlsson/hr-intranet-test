@@ -8,6 +8,9 @@ module Refinery
 
       initializer 'resource-authorization-hooks-for-business-engine' do |app|
         ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Business::ROLE_INTERNAL
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Business::ROLE_EXTERNAL do |user, conditions|
+          user.present? && conditions.has_key?(:contact_id) # Allow external users to see contact profile pictures
+        end
       end
 
       before_inclusion do

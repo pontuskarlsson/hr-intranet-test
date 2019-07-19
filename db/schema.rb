@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190703021943) do
+ActiveRecord::Schema.define(version: 20190719062113) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 20190703021943) do
     t.string   "invited_by_type",        limit: 255
     t.integer  "invitations_count",      limit: 4,   default: 0
     t.boolean  "deactivated",                        default: false, null: false
+    t.string   "topo_id",                limit: 255
   end
 
   add_index "refinery_authentication_devise_users", ["full_name"], name: "index_refinery_authentication_devise_users_on_full_name", using: :btree
@@ -187,6 +188,7 @@ ActiveRecord::Schema.define(version: 20190703021943) do
   add_index "refinery_authentication_devise_users", ["invited_by_id"], name: "index_refinery_authentication_devise_users_on_invited_by_id", using: :btree
   add_index "refinery_authentication_devise_users", ["password_changed_at"], name: "refinery_devise_users_password_changed_at", using: :btree
   add_index "refinery_authentication_devise_users", ["slug"], name: "index_refinery_authentication_devise_users_on_slug", using: :btree
+  add_index "refinery_authentication_devise_users", ["topo_id"], name: "index_refinery_authentication_devise_users_on_topo_id", using: :btree
 
   create_table "refinery_blog_categories", force: :cascade do |t|
     t.string   "title",       limit: 255
@@ -1029,6 +1031,7 @@ ActiveRecord::Schema.define(version: 20190703021943) do
     t.integer  "manufacturer_id",         limit: 4
     t.string   "manufacturer_label",      limit: 255
     t.string   "manufacturer_code",       limit: 255
+    t.string   "status",                  limit: 255
   end
 
   add_index "refinery_quality_assurance_inspections", ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id", using: :btree
@@ -1051,6 +1054,7 @@ ActiveRecord::Schema.define(version: 20190703021943) do
   add_index "refinery_quality_assurance_inspections", ["product_description"], name: "index_qa_inspections_on_product_description", using: :btree
   add_index "refinery_quality_assurance_inspections", ["resource_id"], name: "index_qa_inspections_on_resource_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["result"], name: "index_qa_inspections_on_result", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["status"], name: "index_refinery_quality_assurance_inspections_on_status", using: :btree
   add_index "refinery_quality_assurance_inspections", ["supplier_code"], name: "index_qa_inspections_on_supplier_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["supplier_id"], name: "index_qa_inspections_on_supplier_id", using: :btree
 

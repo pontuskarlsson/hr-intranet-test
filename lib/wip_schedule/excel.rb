@@ -23,10 +23,10 @@ module WipSchedule
         "Rev. Qty" =>                     { column: { width: '10' }, type: :number,   format: PATTERN_READ_ONLY },
         "Act. Qty" =>                     { column: { width: '10' }, type: :number },
 
-        "Customer PO Currency" =>         { column: { width: '15' }, type: :text,     format: PATTERN_READ_ONLY },
-        "Customer PO Price / SKU" =>      { column: { width: '15' }, type: :currency, format: PATTERN_READ_ONLY },
-        "Customer PO Total Cost" =>       { column: { width: '15' }, type: :currency, format: PATTERN_READ_ONLY },
-        "Vendor Conf. PO Price / SKU" =>  { column: { width: '15' }, type: :currency },
+        "Customer PO Currency" =>         { column: { width: '20' }, type: :text,     format: PATTERN_READ_ONLY },
+        "Customer PO Price / SKU" =>      { column: { width: '20' }, type: :currency, format: PATTERN_READ_ONLY },
+        "Customer PO Total Cost" =>       { column: { width: '20' }, type: :currency, format: PATTERN_READ_ONLY },
+        "Vendor Conf. PO Price / SKU" =>  { column: { width: '30' }, type: :currency },
 
         "Ship To" =>                      { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
         "Ship Mode" =>                    { column: { width: '10' }, type: :text,     format: PATTERN_READ_ONLY },
@@ -172,13 +172,13 @@ module WipSchedule
       # Set column settings last, otherwise they seem to be ignored
       COLUMNS.each_pair.each_with_index do |(column, options), column_i|
         @sheet[0, column_i] = column
+        if options[:format]
+          @sheet.format_column column_i, formats_for(options[:format])
+        end
         if options[:column]
           options[:column].each_pair do |k ,v|
             @sheet.column(column_i).send("#{k}=", v)
           end
-        end
-        if options[:format]
-          @sheet.format_column column_i, formats_for(options[:format])
         end
       end
 
@@ -232,7 +232,7 @@ module WipSchedule
           end
 
         elsif (res = /Upd: (.*$)/.match(column)).present?
-          if res[0] != 'Shipping Booked' && operation_outdated?(res[0], order)
+          if res[1] != 'Shipping Booked' && operation_outdated?(res[1], order)
             alert 'Ordered', 'outdated', order['id'], column
           else
             false

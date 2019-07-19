@@ -14,6 +14,8 @@ module Refinery
 
       accepts_nested_attributes_for :company_users, reject_if: :all_blank, allow_destroy: true
 
+      delegate :website, :phone, :email, :country, to: :contact, allow_nil: true, prefix: true
+
       acts_as_indexed :fields => [:code, :name]
 
       validates :name,          presence: true, uniqueness: true

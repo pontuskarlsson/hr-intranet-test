@@ -36,6 +36,10 @@
     <%= f.label :deactivated %>
     <%= f.check_box :deactivated %>
   </div>
+  <div class='field'>
+    <%= f.label :topo_id %>
+    <%= f.text_field :topo_id %>
+  </div>
 
   <div class='field plugin_access'>
     <span class='label_with_help'>
@@ -69,7 +73,7 @@
         <%= f.label :role_access, t('.role_access'), :class => "title_label" %>
       </span>
       <ul id='roles' class='checkboxes'>
-        <% @available_roles.each do |role|
+        <% @available_roles.sort_by { |r| r[:title] }.each do |role|
           downcased_title = (title = role[:title]).downcase -%>
           <li>
             <%= check_box_tag 'user[roles][]', downcased_title, @user.has_role?(title),

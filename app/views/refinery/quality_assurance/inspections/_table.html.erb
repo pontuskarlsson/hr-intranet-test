@@ -44,43 +44,6 @@
   <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.foundation.min.js"></script>
 
   <script type="text/javascript">
-    function initDataTableMenu(dt) {
-      var tmplMenu = '<ul class="dropdown menu" data-dropdown-menu><li><a href="#">Columns</a><ul class="menu"></ul></li></ul>';
-      var tmplItem = '<li><a href="#"><i class="fa"></i></a></li>';
-
-      var classVisible = 'fa-check-square-o';
-      var classHidden = 'fa-square-o';
-
-      var $menu = $(tmplMenu);
-
-      dt.columns().every(function(colIndex) {
-        if (colIndex === 0) return;
-
-        var col = dt.column(colIndex);
-
-        var $item = $(tmplItem);
-        $('> a > i.fa', $item).addClass(col.visible() ? classVisible : classHidden);
-        $('> a', $item).append($(col.header()).html()).data('col-index', colIndex);
-
-        $('.menu', $menu).append($item);
-      });
-
-      $(dt.table().container()).prepend($menu);
-
-      new Foundation.DropdownMenu($menu, { 'closeOnClickInside': false });
-
-      $menu.on('click', '.menu > li > a', function() {
-        var col = dt.column($(this).data('col-index'));
-
-        col.visible(!col.visible());
-
-        $('i.fa', this).toggleClass('fa-check-square-o');
-        $('i.fa', this).toggleClass('fa-square-o');
-
-        dt.columns.adjust();
-      });
-    }
-
     $(function(){
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
@@ -89,19 +52,8 @@
         "ajax": "<%= refinery.quality_assurance_inspections_path(filter_params) %>",
         "order": [[6, 'desc']],
         "columns": [
-          { data: "id", "render": { "display": function(data, type, row) {
-            const href = ["<%= refinery.quality_assurance_inspections_path %>", row.id].join('/');
-            const className = 'fa fa-arrow-circle-right';
-            return $('<a></a>')
-              .attr('href', href)
-              .html('<i class="' + className + '"></i>')
-              .prop('outerHTML');
-          } } },
-          { data: "inspection_photo_thumb_url", "render": { "display": function(data, type, row) {
-            if (data) {
-              return $('<img />').attr('src', data).prop('outerHTML');
-            }
-            return null;
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_inspections_path %>") } },
+          { data: "inspection_photo_thumb_url", "render": { "display": function(data, type, row) { return data ? '<img src="'+data+'" />' : null;
           } } },
           { data: "inspection_type" },
           { data: "result" },
