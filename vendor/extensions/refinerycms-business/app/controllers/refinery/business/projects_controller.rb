@@ -4,14 +4,22 @@ module Refinery
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_PROJECTS_URL
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :archive, :show]
       allow_page_roles ROLE_INTERNAL
 
-      before_filter :find_projects, only: [:index]
-      before_filter :find_project,  except: [:index, :create]
+      before_filter :find_projects, only: [:index, :archive]
+      before_filter :find_project,  except: [:index, :archive, :create]
 
       def index
-        @projects = @projects.where(filter_params).order(code: :asc)
+        @projects = @projects.current.where(filter_params).order(code: :asc)
+        @project = Project.new
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @project in the line below:
+        present(@page)
+      end
+
+      def archive
+        @projects = @projects.past.where(filter_params).order(code: :asc)
         @project = Project.new
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @project in the line below:

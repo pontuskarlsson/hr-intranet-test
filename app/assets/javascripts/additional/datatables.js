@@ -52,3 +52,8 @@ function formatCurrency(data) {
     .text(val.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,"))
     .prop('outerHTML');
 }
+
+var dtDateRenderer = {
+  '_': function(data) { return new Date(data); },
+  'display': function(data) { return data; }
+};

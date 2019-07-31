@@ -5,9 +5,9 @@
         <%= render 'add_project', project: @project %>
       <% end %>
 
-      <%= link_to 'Show archived Projects', refinery.archive_business_projects_path, class: 'button' %>
+      <%= link_to 'Show current Projects', refinery.business_projects_path, class: 'button' %>
 
-      <%= render 'table', projects: @projects, table_id: 'js_projects_data_table', ajax: refinery.business_projects_path(filter_params) %>
+      <%= render 'table', projects: @projects, table_id: 'js_archive_data_table', ajax: refinery.archive_business_projects_path(filter_params) %>
     </div>
   </div>
 

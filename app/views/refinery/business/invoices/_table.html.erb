@@ -57,7 +57,7 @@
           { data: "reference" },
           { data: function(row, type, set, meta) { return row.company && row.company.name || null; }, "width": '40%' },
           { data: "invoice_type" },
-          { data: "invoice_date", render: { '_': function(data) { return new Date(data); }, 'display': function(data) { return data; } } },
+          { data: "invoice_date", render: dtDateRenderer },
           { data: "due_date" },
           { data: "status" },
           { data: "currency_code" },

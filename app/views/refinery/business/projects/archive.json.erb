@@ -1,0 +1,3 @@
+{
+  "data": <%= @projects.includes(:company).to_json(only: [:id, :code, :description, :company_id, :start_date, :end_date, :status], methods: [:company_label]).html_safe %>
+}

@@ -44,7 +44,7 @@
   <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.foundation.min.js"></script>
 
   <script type="text/javascript">
-    $(function(){
+    $(function() {
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
@@ -53,13 +53,15 @@
         "order": [[6, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_inspections_path %>") } },
-          { data: "inspection_photo_thumb_url", "render": { "display": function(data, type, row) { return data ? '<img src="'+data+'" />' : null;
+          { data: "inspection_photo_thumb_url", "render": { "display": function(data, type, row, meta) {
+            //console.log({data: 0data, type: type, row: row, meta: meta});
+            return data ? '<img src="'+data+'" />' : '<img src="/asd/qwer.png" />';
           } } },
           { data: "inspection_type" },
           { data: "result" },
           { data: "po_number" },
           { data: "product_label"},
-          { data: "inspection_date" },
+          { data: "inspection_date", render: dtDateRenderer },
           { data: "company_label" },
           { data: "supplier_label" },
           { data: "manufacturer_label" }

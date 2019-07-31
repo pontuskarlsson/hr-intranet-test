@@ -1,13 +1,11 @@
-<a class="button js_project_form_button">Add new Project</a>
+<% content_for :actions do %>
+  <p><button class="button" data-open="js_project_form">Add new Project</button></p>
 
-<div class="js_project_form" style="display: <%= project.errors.any? ? 'block' : 'none' %>;">
-  <%= render 'form', project: @project %>
-</div>
+  <div class="reveal" id="js_project_form" data-reveal>
+    <%= render 'form', project: @project %>
 
-<% content_for :javascripts do -%>
-  <script>
-    $(document).ready(function(){
-      $('.js_project_form_button').on('click', function() { $('.js_project_form').show() })
-    });
-  </script>
-<% end -%>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>

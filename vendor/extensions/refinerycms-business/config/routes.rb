@@ -5,7 +5,9 @@ Refinery::Core::Engine.routes.draw do
     resources :budgets, :only => [:index, :show, :new, :create, :update]
     resources :companies, :only => [:index, :show, :create]
     resources :invoices, :only => [:index, :show]
-    resources :projects, :only => [:index, :show, :new, :create]
+    resources :projects, :only => [:index, :show, :new, :create] do
+      get :archive, on: :collection
+    end
     resources :sales_orders, :only => [:index, :show]
     resources :sections, :only => [:index, :show]
   end

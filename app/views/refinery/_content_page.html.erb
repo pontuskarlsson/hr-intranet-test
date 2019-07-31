@@ -2,7 +2,31 @@
   <%- side_body_content = content_for(:side_body).present? ? content_for(:side_body) : @page.part_with_title('side_body').try(:body) -%>
   <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_title('body').try(:body) -%>
   <%- body_content_title = content_for(:body_content_title) -%>
+  <%- actions = content_for(:actions) -%>
   <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <% if actions.present? %>
+      <span style="float: right;">
+        <%=raw actions %>
+      </span>
+      <% end %>
+
+      <nav aria-label="You are here:" role="navigation">
+        <ul class="breadcrumbs">
+          <li><a href="/">Home</a></li>
+          <% @page.self_and_ancestors.each do |page| %>
+            <li>
+              <% if page == @page %>
+                <span class="show-for-sr">Current: </span> <%= link_to page.title, page.link_url %>
+              <% else %>
+                <%= link_to page.title, page.link_url %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </nav>
+    </div>
+
     <% if side_body_content.present? %>
 
       <div class="medium-8 cell">

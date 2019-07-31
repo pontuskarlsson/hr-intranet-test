@@ -4,6 +4,7 @@ module Refinery
       self.table_name = 'refinery_business_projects'
 
       STATUSES = %w(Draft Proposed InProgress Open Completed Cancelled Closed Archived)
+      CURRENT_STATUSES = %w(Draft Proposed InProgress Open)
 
       belongs_to :company
       has_many :invoices,       dependent: :nullify
@@ -25,7 +26,8 @@ module Refinery
         self.code = NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0') if code.blank?
       end
 
-      scope :current, -> { where(status: %w(Draft Proposed InProgress Open)) }
+      scope :current, -> { where(status: CURRENT_STATUSES) }
+      scope :past, -> { where(status: STATUSES - CURRENT_STATUSES) }
       
       def label
         [code, description].reject(&:blank?).join ' - '
