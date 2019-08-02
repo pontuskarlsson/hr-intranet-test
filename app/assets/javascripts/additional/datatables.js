@@ -53,7 +53,45 @@ function formatCurrency(data) {
     .prop('outerHTML');
 }
 
+var dtThumbRenderer = {
+  "display": function(data) {
+    return data ? '<img data-src="'+data+'" class="js_dt_img"/>' : null;
+  }
+};
+
 var dtDateRenderer = {
   '_': function(data) { return new Date(data); },
   'display': function(data) { return data; }
 };
+
+function dtOnDrawSetImgSrc() {
+  $('.js_dt_img').each(function(i, img) {
+    var $img = $(img);
+    $img.attr('src', $img.data('src'));
+  });
+}
+
+function dtAddDateRangeSearch(col) {
+  var $from = $('.dt-date .from', col.header());
+  var $to = $('.dt-date .to', col.header());
+
+  function isNoDate(d) {
+    return !(d instanceof Date && !isNaN(d));
+  }
+
+  $.fn.dataTable.ext.search.push(
+    function(settings, data, dataIndex) {
+      var min = new Date($from.val());
+      var max = new Date($to.val());
+
+      var date = new Date(data[col.index()]);
+
+      return (
+        (isNoDate(min) && isNoDate(max)) ||
+        (isNoDate(min) && date <= max ) ||
+        (min <= date   && isNoDate(max) ) ||
+        (min <= date   && date <= max )
+      );
+    }
+  );
+}

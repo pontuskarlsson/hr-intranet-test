@@ -22,4 +22,16 @@
             background: #9dd4f6;
         }
     }
+
+    input, select {
+        margin: 0;
+        min-width: 70px;
+    }
+
+    .dt-date-range {
+        input {
+            display: inline-block;
+            width: 45%;
+        }
+    }
 }

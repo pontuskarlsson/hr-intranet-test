@@ -3,14 +3,45 @@
   <tr>
     <th></th>
     <th>Photo</th>
-    <th>Type</th>
-    <th>Result</th>
-    <th>PO</th>
-    <th>Style</th>
-    <th>Inspected</th>
-    <th>Customer</th>
-    <th>Supplier</th>
-    <th>Manufacturer</th>
+    <th>
+      <select>
+        <option value="">Type</option>
+        <option value="In-line">In-line</option>
+        <option value="Final">Final</option>
+        <option value="Re-Final">Re-Final</option>
+      </select>
+    </th>
+    <th>
+      <select>
+        <option value="">Result</option>
+        <option value="Pass">Pass</option>
+        <option value="Reject">Reject</option>
+        <option value="Hold">Hold</option>
+      </select>
+    </th>
+    <th>
+      <input type="text" placeholder="PO" />
+    </th>
+    <th>
+      <input type="text" placeholder="Style" />
+    </th>
+    <th class="dt-date-range">
+      <% if false %>
+      <input type="text" placeholder="From" class="dt-date from" />
+      <input type="text" placeholder="To" class="dt-date to" />
+      <% else %>
+      Inspection Date
+      <% end %>
+    </th>
+    <th>
+      <input type="text" placeholder="Customer" />
+    </th>
+    <th>
+      <input type="text" placeholder="Supplier" />
+    </th>
+    <th>
+      <input type="text" placeholder="Manufacturer" />
+    </th>
   </tr>
   </thead>
 
@@ -35,6 +66,7 @@
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag 'https://cdn.datatables.net/1.10.19/css/dataTables.foundation.min.css' %>
   <%= stylesheet_link_tag 'https://cdn.datatables.net/responsive/2.2.3/css/responsive.foundation.min.css' %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -53,10 +85,7 @@
         "order": [[6, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_inspections_path %>") } },
-          { data: "inspection_photo_thumb_url", "render": { "display": function(data, type, row, meta) {
-            //console.log({data: 0data, type: type, row: row, meta: meta});
-            return data ? '<img src="'+data+'" />' : '<img src="/asd/qwer.png" />';
-          } } },
+          { data: "inspection_photo_thumb_url", "render": dtThumbRenderer },
           { data: "inspection_type" },
           { data: "result" },
           { data: "po_number" },
@@ -65,7 +94,31 @@
           { data: "company_label" },
           { data: "supplier_label" },
           { data: "manufacturer_label" }
-        ]
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
+      });
+
+      dt.on( 'draw', dtOnDrawSetImgSrc);
+
+      // Apply the search
+      dt.columns().every(function() {
+        var that = this;
+        $('input:not(.dt-date), select', this.header()).on('keyup change clear', function() {
+          if ( that.search() !== this.value ) {
+            that.search( this.value ).draw();
+          }
+        });
+
+        // $('input.dt-date', this.header()).datepicker({ dateFormat: "yy-mm-dd" }).on('keyup change clear', function() {
+        //   dt.draw();
+        // });
+
+        dtAddDateRangeSearch(dt.column(6)) // InspectionDate
+
+        // Don't trigger sort when clicking inside a search field
+        $('input, select', this.header()).on('click', function(e) { e.stopPropagation() });
       });
 
       initDataTableMenu(dt);
