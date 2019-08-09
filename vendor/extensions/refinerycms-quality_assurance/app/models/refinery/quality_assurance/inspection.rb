@@ -58,6 +58,7 @@ module Refinery
       
       scope :recent, -> (no_of_records) { order(inspection_date: :desc).limit(no_of_records) }
       scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
+      scope :inspected_by, -> (user) { where(inspected_by_id: user.id) }
       scope :similar_to, -> (inspection) { where.not(id: inspection.id).where(inspection.attributes.slice('company_id', 'supplier_id')) }
 
       def self.top_defects
