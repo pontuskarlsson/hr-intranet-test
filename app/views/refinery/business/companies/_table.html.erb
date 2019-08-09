@@ -2,12 +2,12 @@
   <thead>
   <tr>
     <th></th>
-    <th>Code</th>
-    <th>Name</th>
-    <th>Website</th>
-    <th>Phone</th>
-    <th>Email</th>
-    <th>Country</th>
+    <th data-dt-search-input="true">Code</th>
+    <th data-dt-search-input="true">Name</th>
+    <th data-dt-search-input="true">Website</th>
+    <th data-dt-search-input="true">Phone</th>
+    <th data-dt-search-input="true">Email</th>
+    <th data-dt-search-input="true">Country</th>
   </tr>
   </thead>
 
@@ -49,10 +49,13 @@
           { data: "contact_phone" },
           { data: "contact_email" },
           { data: "contact_country" }
-        ]
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
       });
 
-      initDataTableMenu(dt);
+      initDataTable(dt)
     });
   </script>
 <% end %>

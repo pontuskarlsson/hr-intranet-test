@@ -2,12 +2,12 @@
   <thead>
   <tr>
     <th></th>
-    <th>Code</th>
-    <th>Description</th>
-    <th>Company</th>
+    <th data-dt-search-input="true">Code</th>
+    <th data-dt-search-input="true">Description</th>
+    <th data-dt-search-input="true">Company</th>
     <th>Start Date</th>
     <th>End Date</th>
-    <th>Status</th>
+    <th data-dt-search-select="<%= ::Refinery::Business::Project::STATUSES.join(',') %>">Status</th>
   </tr>
   </thead>
 
@@ -60,6 +60,8 @@
           "t"+
           "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
       });
+
+      initDataTable(dt);
     });
   </script>
 <% end %>

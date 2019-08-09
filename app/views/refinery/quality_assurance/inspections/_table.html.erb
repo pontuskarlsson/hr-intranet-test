@@ -3,45 +3,14 @@
   <tr>
     <th></th>
     <th>Photo</th>
-    <th>
-      <select>
-        <option value="">Type</option>
-        <option value="In-line">In-line</option>
-        <option value="Final">Final</option>
-        <option value="Re-Final">Re-Final</option>
-      </select>
-    </th>
-    <th>
-      <select>
-        <option value="">Result</option>
-        <option value="Pass">Pass</option>
-        <option value="Reject">Reject</option>
-        <option value="Hold">Hold</option>
-      </select>
-    </th>
-    <th>
-      <input type="text" placeholder="PO" />
-    </th>
-    <th>
-      <input type="text" placeholder="Style" />
-    </th>
-    <th class="dt-date-range">
-      <% if false %>
-      <input type="text" placeholder="From" class="dt-date from" />
-      <input type="text" placeholder="To" class="dt-date to" />
-      <% else %>
-      Inspection Date
-      <% end %>
-    </th>
-    <th>
-      <input type="text" placeholder="Customer" />
-    </th>
-    <th>
-      <input type="text" placeholder="Supplier" />
-    </th>
-    <th>
-      <input type="text" placeholder="Manufacturer" />
-    </th>
+    <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
+    <th data-dt-search-select="Pass,Reject,Hold">Result</th>
+    <th data-dt-search-input="true">PO</th>
+    <th data-dt-search-input="true">Style</th>
+    <th data-dt-search-date-range>Inspection Date</th>
+    <th data-dt-search-input="true">Customer</th>
+    <th data-dt-search-input="true">Supplier</th>
+    <th data-dt-search-input="true">Manufacturer</th>
   </tr>
   </thead>
 
@@ -102,26 +71,7 @@
 
       dt.on( 'draw', dtOnDrawSetImgSrc);
 
-      // Apply the search
-      dt.columns().every(function() {
-        var that = this;
-        $('input:not(.dt-date), select', this.header()).on('keyup change clear', function() {
-          if ( that.search() !== this.value ) {
-            that.search( this.value ).draw();
-          }
-        });
-
-        // $('input.dt-date', this.header()).datepicker({ dateFormat: "yy-mm-dd" }).on('keyup change clear', function() {
-        //   dt.draw();
-        // });
-
-        dtAddDateRangeSearch(dt.column(6)) // InspectionDate
-
-        // Don't trigger sort when clicking inside a search field
-        $('input, select', this.header()).on('click', function(e) { e.stopPropagation() });
-      });
-
-      initDataTableMenu(dt);
+      initDataTable(dt)
     });
   </script>
 <% end %>

@@ -2,14 +2,14 @@
   <thead>
   <tr>
     <th></th>
-    <th>Inv. No.</th>
-    <th>Reference</th>
-    <th>Company</th>
-    <th>Type</th>
+    <th data-dt-search-input="true">Inv. No.</th>
+    <th data-dt-search-input="true">Reference</th>
+    <th data-dt-search-input="true">Company</th>
+    <th data-dt-search-select="<%= ::Refinery::Business::Invoice::INVOICE_TYPES.join(',') %>">Type</th>
     <th>Inv. Date</th>
     <th>Due Date</th>
-    <th>Status</th>
-    <th>Cur.</th>
+    <th data-dt-search-select="<%= ::Refinery::Business::Invoice::STATUSES.join(',') %>">Status</th>
+    <th data-dt-search-input="true">Cur.</th>
     <th style="text-align: right;">Tot. Amount</th>
     <th style="text-align: right;">Paid</th>
     <th style="text-align: right;">Due</th>
@@ -64,10 +64,13 @@
           { data: "total_amount", render: formatCurrency },
           { data: "amount_paid", render: formatCurrency },
           { data: "amount_due", render: formatCurrency }
-        ]
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
       });
 
-      initDataTableMenu(dt);
+      initDataTable(dt);
     });
   </script>
 <% end %>

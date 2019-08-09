@@ -1,6 +1,12 @@
 // A Function to create and attach a dropdown button
 // to show and hide columns from the data table.
 //
+function initDataTable(dt) {
+  initDataTableMenu(dt);
+  initDataTableHeaders(dt);
+  initDataTableRowClick(dt)
+}
+
 function initDataTableMenu(dt) {
   var tmplMenu = '<ul class="dropdown menu" data-dropdown-menu><li><a href="#">Columns</a><ul class="menu"></ul></li></ul>';
   var tmplItem = '<li><a href="#"><i class="fa"></i></a></li>';
@@ -38,10 +44,49 @@ function initDataTableMenu(dt) {
   });
 }
 
+function initDataTableHeaders(dt) {
+  dt.columns().every(function() {
+    var col = this;
+    var $h = $(col.header());
+
+    if ($h.data('dt-search-select')) {
+      var $select = $('<select></select>').append($('<option></option>').attr('value', "").html($h.html()));
+
+      $h.data('dt-search-select').split(',').map(function(v) {
+        $select.append($('<option></option>').attr('value', v).html(v));
+      });
+      $h.html($select)
+
+    } else if ($h.data('dt-search-input')) {
+      var $input = $('<input type="text" />').attr('placeholder', $h.html());
+      $h.html($input)
+    }
+
+    $('input:not(.dt-date), select', col.header()).on('keyup change clear', function() {
+      if ( col.search() !== this.value ) {
+        col.search( this.value ).draw();
+      }
+    });
+
+    // Don't trigger sort when clicking inside a search field
+    $('input, select', col.header()).on('click', function(e) { e.stopPropagation() });
+  });
+}
+
+function initDataTableRowClick(dt) {
+  dt.on('click', 'tbody td:not(:first-child)', function() {
+    // Stop propagation of up-coming click, not to trigger responsive row event
+    $('a[data-dt-row-link]', this.parentNode).on('click', function(e) { e.stopPropagation(); });
+
+    // Trigger link click
+    $('a[data-dt-row-link]', this.parentNode)[0].click();
+  });
+}
+
 function idColumnRendererFor(baseUrl) {
   return function(data, type, row) {
     const href = [baseUrl, row.id].join('/');
-    return '<a href="'+href+'"><i class="fa fa-arrow-circle-right"></i></a>';
+    return '<a href="'+href+'" data-dt-row-link></a>';
   };
 }
 
@@ -94,4 +139,21 @@ function dtAddDateRangeSearch(col) {
       );
     }
   );
+}
+
+function dtHeaderSearchSelect(col, options) {
+  var title = col.header().html();
+
+  var $select = $('<select></select>');
+  $select.append('<option></option>').
+    attr('value', title).
+    html(title);
+
+  options.map(function (option) {
+    $select.append('<option></option>').
+    attr('value', option).
+    html(option);
+  });
+
+
 }

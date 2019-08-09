@@ -17,6 +17,7 @@
         transition-property: background;
         transition-duration: .1s;
         transition-timing-function: linear;
+        cursor: pointer;
 
         &:hover {
             background: #9dd4f6;
