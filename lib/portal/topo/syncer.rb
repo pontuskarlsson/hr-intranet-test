@@ -45,7 +45,7 @@ module Portal
 
         inspection.fields = payload
 
-        set_inspected_by! payload['owners']
+        set_inspected_by! data['InspectorID']
         set_company!
         set_supplier!
         set_manufacturer!
@@ -60,9 +60,9 @@ module Portal
         inspection.save!
       end
 
-      def set_inspected_by!(owners)
-        if owners && owners[0]
-          inspection.inspected_by = ::Refinery::Authentication::Devise::User.where(topo_id: owners[0]).first
+      def set_inspected_by!(inspector_email)
+        if inspector_email.present?
+          inspection.inspected_by ||= ::Refinery::Authentication::Devise::User.find_by email: inspector_email
         end
       end
 
