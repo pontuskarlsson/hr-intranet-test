@@ -1,4 +1,6 @@
-role_internal = Refinery::Authentication::Devise::Role.where(title: Refinery::Shipping::ROLE_INTERNAL).first_or_create
+Refinery::Authentication::Devise::Role.where(title: Refinery::Shipping::ROLE_INTERNAL).first_or_create
+Refinery::Authentication::Devise::Role.where(title: Refinery::Shipping::ROLE_EXTERNAL).first_or_create
+Refinery::Authentication::Devise::Role.where(title: Refinery::Shipping::ROLE_EXTERNAL_FF).first_or_create
 
 Refinery::I18n.frontend_locales.each do |lang|
   I18n.locale = lang

@@ -12,6 +12,8 @@ module Refinery
     PAGE_SHIPMENTS_URL = '/shipping/shipments'
 
     ROLE_INTERNAL = 'Shipping:Internal'
+    ROLE_EXTERNAL = 'Shipping:External'
+    ROLE_EXTERNAL_FF = 'Shipping:External:FreightForwarder'
 
     class << self
       attr_writer :root

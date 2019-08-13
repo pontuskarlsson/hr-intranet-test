@@ -1,11 +1,11 @@
-<table id="<%= table_id %>" class="display" cellspacing="0" style="width: 100%;">
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
     <th>&nbsp;</th>
-    <th>From</th>
-    <th>To</th>
-    <th>Courier</th>
-    <th>Tracking No.</th>
+    <th data-dt-search-input="true">From</th>
+    <th data-dt-search-input="true">To</th>
+    <th data-dt-search-input="true">Courier / Forwarder</th>
+    <th data-dt-search-input="true">Tracking No.</th>
     <th>Status</th>
     <th>Shipping Date</th>
   </tr>
@@ -16,7 +16,7 @@
     <th>&nbsp;</th>
     <th>From</th>
     <th>To</th>
-    <th>Courier</th>
+    <th>Courier / Forwarder</th>
     <th>Tracking No.</th>
     <th>Status</th>
     <th>Shipping Date</th>
@@ -31,32 +31,39 @@
 </table>
 
 <% content_for :stylesheets do %>
-  <%= stylesheet_link_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.css' %>
+  <%= stylesheet_link_tag 'https://cdn.datatables.net/1.10.19/css/dataTables.foundation.min.css' %>
+  <%= stylesheet_link_tag 'https://cdn.datatables.net/responsive/2.2.3/css/responsive.foundation.min.css' %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
 <% end %>
 
 <% content_for :javascripts do %>
-
-  <%= javascript_include_tag '//cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js' %>
-  <%= javascript_include_tag '//cdn.datatables.net/plug-ins/a5734b29083/integration/foundation/dataTables.foundation.js' %>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.foundation.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.foundation.min.js"></script>
 
   <script type="text/javascript">
     $(function(){
-      $('#<%= table_id %>').dataTable({
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
         "paging":         true,
         "order":          [[ 6, "desc" ]],
         "ajax": "<%= refinery.shipping_shipments_path(filter_params) %>",
         "columns": [
-          { data: "id", "width": 60, "render": function(data, type, row){ return ('<a href="<%= refinery.shipping_shipments_path %>/'+data+'">View</a>'); } },
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.shipping_shipments_path %>") } },
           { data: "from_contact_label" },
           { data: "to_contact_label" },
-          { data: "courier_company_label", "width": 150 },
-          { data: "tracking_number", "width": 150 },
-          { data: "display_status", "width": 150 },
-          { data: "etd_date", "width": 150, "render": { "sort": function(data, type, row){ if(data){ return data; }else{ return new Date('2099-01-01') } } } }
-        ]
+          { data: "courier_forwarder_company_label" },
+          { data: "tracking_number" },
+          { data: "display_status" },
+          { data: "etd_date", render: dtDateRenderer }
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
       });
+
+      initDataTable(dt)
     });
   </script>
 <% end %>
-
-<%= render '/refinery/content_page' %>

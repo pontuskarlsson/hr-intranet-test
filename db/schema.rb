@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190719062113) do
+ActiveRecord::Schema.define(version: 20190813073411) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -1243,6 +1243,8 @@ ActiveRecord::Schema.define(version: 20190719062113) do
     t.integer  "forwarder_company_id",                limit: 4
     t.string   "load_port",                           limit: 255
     t.integer  "courier_company_id",                  limit: 4
+    t.string   "shipment_terms",                      limit: 255
+    t.text     "shipment_terms_details",              limit: 65535
   end
 
   add_index "refinery_shipping_shipments", ["assigned_to_id"], name: "index_refinery_shipping_shipments_on_assigned_to_id", using: :btree
@@ -1271,6 +1273,7 @@ ActiveRecord::Schema.define(version: 20190719062113) do
   add_index "refinery_shipping_shipments", ["project_id"], name: "index_refinery_shipping_shipments_on_project_id", using: :btree
   add_index "refinery_shipping_shipments", ["receiver_company_id"], name: "index_refinery_shipping_shipments_on_receiver_company_id", using: :btree
   add_index "refinery_shipping_shipments", ["receiver_company_label"], name: "index_refinery_shipping_shipments_on_receiver_company_label", using: :btree
+  add_index "refinery_shipping_shipments", ["shipment_terms"], name: "index_refinery_shipping_shipments_on_shipment_terms", using: :btree
   add_index "refinery_shipping_shipments", ["shipper_company_id"], name: "index_refinery_shipping_shipments_on_shipper_company_id", using: :btree
   add_index "refinery_shipping_shipments", ["shipper_company_label"], name: "index_refinery_shipping_shipments_on_shipper_company_label", using: :btree
   add_index "refinery_shipping_shipments", ["status"], name: "index_refinery_shipping_shipments_on_status", using: :btree

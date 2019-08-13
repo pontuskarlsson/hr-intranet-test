@@ -92,8 +92,12 @@ module Refinery
 
       def shipments_scope
         @shipments ||=
-            if page_role? ROLE_INTERNAL
+            if page_role? Refinery::Shipping::ROLE_INTERNAL
               Refinery::Shipping::Shipment.where(nil)
+
+            elsif page_role? Refinery::Shipping::ROLE_EXTERNAL_FF
+              Refinery::Shipping::Shipment.where(forwarder_company_id: current_authentication_devise_user.company_ids)
+
             else
               Refinery::Business::Company.where('1=0')
             end

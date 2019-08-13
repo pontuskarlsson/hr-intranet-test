@@ -90,6 +90,7 @@ en:
         statuses:
           not_shipped: Not Shipped
           manually_shipped: Shipped
+          shipped: Shipped
           unknown: Unknown
           pre_transit: Pre-Transit
           in_transit: In Transit

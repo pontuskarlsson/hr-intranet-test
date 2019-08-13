@@ -3,6 +3,9 @@
 
   <div class="grid-x grid-padding-x">
     <div class="medium-8 cell">
+      <h1 class="cc-attribute cc-name">
+        <%=raw @shipment.code %>
+      </h1>
       <% if @shipment.shipped_by_courier? %>
         <%= render 'courier_shipment', shipment: @shipment %>
       <% else %>

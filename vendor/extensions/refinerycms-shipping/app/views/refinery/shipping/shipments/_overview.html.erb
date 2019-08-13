@@ -1,53 +1,56 @@
-<% if shipment.tracking_number.present? %>
-  <h4>Tracking number</h4>
-  <p>
-    <%= shipment.tracking_number %>
+<h3>Mode</h3>
+<p><%= shipment.mode.presence || 'N/A' %></p>
 
-    <% if shipment.courier_company_label == ::Refinery::Shipping::Shipment::COURIER_UPS %>
-      <br /><%= link_to 'Track Shipment', "http://wwwapps.ups.com/etracking/tracking.cgi?track.x=0&track.y=0&InquiryNumber1=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
-
-    <% elsif shipment.courier_company_label == ::Refinery::Shipping::Shipment::COURIER_FEDEX %>
-      <br /><%= link_to 'Track Shipment', "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
-
-    <% elsif shipment.courier_company_label == ::Refinery::Shipping::Shipment::COURIER_DHL %>
-      <br /><%= link_to 'Track Shipment', "http://www.dhl.com.hk/en/express/tracking.html?AWB=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
-
-    <% end %>
-  </p>
-
-  <% if shipment.tracking_info.any? %>
-    <table>
-      <thead>
-      <tr>
-        <th>Date</th>
-        <th>Information</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% shipment.tracking_info.each do |tracking| %>
-        <tr>
-          <td><%= tracking['date'].in_time_zone(8) %></td>
-          <td><%= tracking['message'] %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  <% end %>
-<% end %>
-
-<h4>From
-  <% if shipment.shipped_by_easypost? && shipment.from_address.missing_for_shipment.any? %>
-    <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= shipment.from_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
-  <% end %>
-</h4>
-<%= render 'address_card', shipment_address: shipment.from_address %>
-
-<h4>To
-  <% if shipment.shipped_by_easypost? && shipment.to_address.missing_for_shipment.any? %>
-    <small data-tooltip aria-haspopup="true" class="has-tip" title="<%= shipment.to_address.missing_for_shipment.join('<br/>') %>">Missing information</small>
-  <% end %>
-</h4>
-<%= render 'address_card', shipment_address: shipment.to_address %>
-
-<h4>Status</h4>
+<h3>Status</h3>
 <p><%= shipment.display_status %></p>
+
+<h3>ETD</h3>
+<p><%= shipment.etd_date.presence || 'N/A' %></p>
+
+<h3>ETA</h3>
+<p><%= shipment.eta_date.presence || 'N/A' %></p>
+
+<h3>Mode</h3>
+<p><%= shipment.mode.presence || 'N/A' %></p>
+
+<h3>Tracking number</h3>
+<p>
+  <% if shipment.tracking_number.present? %>
+    <%= shipment.tracking_number %>
+  <% else %>
+    <span class="not_present">N/A</span>
+  <% end %>
+
+  <% if shipment.courier_company_label == ::Refinery::Shipping::Shipment::COURIER_UPS %>
+    <br /><%= link_to 'Track Shipment', "http://wwwapps.ups.com/etracking/tracking.cgi?track.x=0&track.y=0&InquiryNumber1=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
+
+  <% elsif shipment.courier_company_label == ::Refinery::Shipping::Shipment::COURIER_FEDEX %>
+    <br /><%= link_to 'Track Shipment', "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
+
+  <% elsif shipment.courier_company_label == ::Refinery::Shipping::Shipment::COURIER_DHL %>
+    <br /><%= link_to 'Track Shipment', "http://www.dhl.com.hk/en/express/tracking.html?AWB=#{ shipment.tracking_number.gsub(' ', '') }", target: :_blank %>
+
+  <% end %>
+</p>
+
+<h3>Terms</h3>
+<p><%= shipment.shipment_terms.presence || 'N/A' %></p>
+
+<% if shipment.tracking_info.any? %>
+  <table>
+    <thead>
+    <tr>
+      <th>Date</th>
+      <th>Information</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% shipment.tracking_info.each do |tracking| %>
+      <tr>
+        <td><%= tracking['date'].in_time_zone(8) %></td>
+        <td><%= tracking['message'] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
