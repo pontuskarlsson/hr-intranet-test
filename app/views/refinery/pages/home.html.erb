@@ -1,76 +1,44 @@
-<div class="grid-x grid-padding-x">
-
-  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
-    <div class="cell">
-      <section class="page-part">
-        <div class="page-part-header">
-          <small>
-            <%= link_to 'See all', refinery.quality_assurance_inspections_path %>
-          </small>
-          Inspections
-        </div>
-
-        <div style="position: relative; width: 100%; overflow: hidden;">
-          <%= render 'refinery/quality_assurance/inspections/table', table_id: 'dashboard_inspections', options: { no_footer: true } %>
-        </div>
-      </section>
-    </div>
-  <% end %>
-
+<% content_for :side_body do %>
   <% if current_authentication_devise_user.has_role?('Employees:Employee') %>
     <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
       Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
       *Refinery::Employees::PublicHoliday.all_calendar_functions
     ).limit(5)).any? %>
-      <div class="medium-4 cell">
-        <section class="page-part">
-          <div class="page-part-header">
-            TODAY IN CALENDAR
-          </div>
-          <ul class="events">
-            <% events.each do |event| %>
-              <li>
-                <%= render 'refinery/partials/home_event', event: event %>
-              </li>
-            <% end %>
-          </ul>
-        </section>
-      </div>
-    <% end %>
-
-    <div class="medium-4 cell">
       <section class="page-part">
         <div class="page-part-header">
-          UPCOMING IN CALENDAR
+          TODAY IN CALENDAR
         </div>
-
-        <% if (events = Refinery::Calendar::Event.after_today.for_calendar_functions(
-          Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
-          *Refinery::Employees::PublicHoliday.all_calendar_functions
-        ).limit(5)).any? %>
-          <ul class="events">
-            <% events.each do |event| %>
-              <li>
-                <%= render 'refinery/partials/home_event', event: event %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="italic">No Upcoming Events</p>
-        <% end %>
+        <ul class="events">
+          <% events.each do |event| %>
+            <li>
+              <%= render 'refinery/partials/home_event', event: event %>
+            </li>
+          <% end %>
+        </ul>
       </section>
-    </div>
-  <% end %>
+    <% end %>
 
-  <% if false %>
-  <div class="medium-4 cell">
     <section class="page-part">
       <div class="page-part-header">
-        TWITTER
+        UPCOMING IN CALENDAR
       </div>
-      <a class="twitter-timeline" data-height="600" href="https://twitter.com/happyrabbitltd?ref_src=twsrc%5Etfw">Tweets by happyrabbitltd</a>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+      <% if (events = Refinery::Calendar::Event.after_today.for_calendar_functions(
+        Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
+        *Refinery::Employees::PublicHoliday.all_calendar_functions
+      ).limit(5)).any? %>
+        <ul class="events">
+          <% events.each do |event| %>
+            <li>
+              <%= render 'refinery/partials/home_event', event: event %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="italic">No Upcoming Events</p>
+      <% end %>
     </section>
-  </div>
   <% end %>
-</div>
+<% end %>
+
+<%= render '/refinery/content_page' %>

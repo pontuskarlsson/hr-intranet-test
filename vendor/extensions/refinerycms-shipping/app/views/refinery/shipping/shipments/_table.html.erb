@@ -2,6 +2,7 @@
   <thead>
   <tr>
     <th>&nbsp;</th>
+    <th>Code</th>
     <th>From</th>
     <th>To</th>
     <th>Courier</th>
@@ -15,12 +16,13 @@
   <% shipments.each do |shipment| %>
     <tr>
       <td><%= link_to 'View', refinery.shipping_shipment_path(shipment) %></td>
+      <td><%= shipment.code %></td>
       <td><%= shipment.from_address_name %></td>
       <td><%= shipment.to_address_name %></td>
       <td><%= shipment.courier_company_label %></td>
       <td><%= shipment.tracking_number %></td>
       <td><%= shipment.display_status %></td>
-      <td><%= shipment.shipping_date %></td>
+      <td><%= shipment.etd_date %></td>
     </tr>
   <% end %>
   </tbody>

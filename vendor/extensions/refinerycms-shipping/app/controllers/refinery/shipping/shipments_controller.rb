@@ -5,6 +5,8 @@ module Refinery
 
       set_page PAGE_SHIPMENTS_URL
       allow_page_roles ROLE_INTERNAL
+      allow_page_roles ROLE_EXTERNAL
+      allow_page_roles ROLE_EXTERNAL_FF
 
       before_filter :find_shipments,      only: [:index]
       before_filter :find_shipment,       except: [:index, :create]
@@ -99,7 +101,7 @@ module Refinery
               Refinery::Shipping::Shipment.where(forwarder_company_id: current_authentication_devise_user.company_ids)
 
             else
-              Refinery::Business::Company.where('1=0')
+              Refinery::Shipping::Shipment.where('1=0')
             end
       end
 

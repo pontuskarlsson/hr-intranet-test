@@ -1,5 +1,7 @@
 <% if @page.try(:live?) %>
+  <%- side_body_contents = [@page.part_with_title('side_body').try(:body), content_for(:side_body)].reject(&:blank?) -%>
   <%- side_body_content = content_for(:side_body).present? ? content_for(:side_body) : @page.part_with_title('side_body').try(:body) -%>
+  <%- body_contents = [@page.part_with_title('body').try(:body), content_for(:body)].reject(&:blank?) -%>
   <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_title('body').try(:body) -%>
   <%- body_content_title = content_for(:body_content_title) -%>
   <%- actions = content_for(:actions) -%>
@@ -15,29 +17,32 @@
         <ul class="breadcrumbs">
           <li><a href="/">Home</a></li>
           <% @page.self_and_ancestors.each do |page| %>
-            <li>
-              <% if page == @page %>
-                <span class="show-for-sr">Current: </span> <%= link_to page.title, page.link_url %>
-              <% else %>
-                <%= link_to page.title, page.link_url %>
-              <% end %>
-            </li>
+            <% if page.title != 'Home' %>
+              <li>
+                <% if page == @page %><span class="show-for-sr">Current: </span><% end %>
+                <% if page.link_url %>
+                  <%= link_to page.title, page.link_url %>
+                <% else %>
+                  <%= page.title %>
+                <% end %>
+              </li>
+            <% end %>
           <% end %>
         </ul>
       </nav>
     </div>
 
-    <% if side_body_content.present? %>
+    <% if side_body_contents.any? %>
 
       <div class="medium-8 cell">
         <% if body_content_title.present? %>
           <h1 class="body_content_title"><%=raw body_content_title %></h1>
         <% end %>
-        <%=raw body_content %>
+        <%=raw body_contents.join %>
       </div>
 
         <div class="medium-4 cell">
-          <%=raw side_body_content %>
+          <%=raw side_body_contents.join %>
       </div>
 
     <% else %>
@@ -46,7 +51,7 @@
         <% if body_content_title.present? %>
           <h1 class="body_content_title"><%=raw body_content_title %></h1>
         <% end %>
-        <%=raw body_content %>
+        <%=raw body_contents.join %>
       </div>
 
     <% end %>

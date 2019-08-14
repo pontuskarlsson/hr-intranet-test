@@ -1,17 +1,16 @@
 <% content_for :body do %>
+  <h4>Pages</h4>
 
-  <h1><%= @page.title %></h1>
-
-  <ul class="medium-block-grid-2">
+  <ul class="vertical menu drilldown" data-drilldown data-scroll-top="true">
     <% @page.children.each do |child| %>
-      <li>
-        <h4><%= child.title %></h4>
-        <% if child.children.any? %>
-          <%= render 'refinery/pages/nested_pages', child_pages: child.children %>
-        <% else %>
-          <p class="italic">No sub-pages.</p>
-        <% end %>
-      </li>
+      <% if child.user_authorized? current_authentication_devise_user %>
+        <li>
+          <%= link_to child.title, child.link_url.presence || '#' %>
+          <% if child.children.any? %>
+            <%= render 'refinery/pages/nested_pages', child_pages: child.children %>
+          <% end %>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 <% end %>

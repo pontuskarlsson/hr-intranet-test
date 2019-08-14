@@ -10,9 +10,6 @@
 <h3>ETA</h3>
 <p><%= shipment.eta_date.presence || 'N/A' %></p>
 
-<h3>Mode</h3>
-<p><%= shipment.mode.presence || 'N/A' %></p>
-
 <h3>Tracking number</h3>
 <p>
   <% if shipment.tracking_number.present? %>
