@@ -21,7 +21,7 @@ module Refinery
       BILL_TO = ['Sender', 'Receiver', '3rd Party']
 
       EASYPOST_STATUSES = %w(unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
-      STATUSES = %w(not_shipped manually_shipped) + EASYPOST_STATUSES
+      STATUSES = %w(not_shipped manually_shipped shipped) + EASYPOST_STATUSES
 
       self.table_name = 'refinery_shipping_shipments'
 
@@ -187,6 +187,8 @@ module Refinery
 
       scope :shipped, -> { where(status: STATUSES - %w(not_shipped)) }
       scope :recent, -> (no_of_records = 10, days_ago = 90) { where('shipping_date > ?', Date.today - days_ago).order(shipping_date: :desc).limit(no_of_records) }
+      scope :forwarder, -> { where.not(forwarder_company_id: nil).includes(:forwarder_company) }
+      scope :active, -> { where.not(status: %w(delivered cancelled)) }
 
       # Method used to check whether a particular user has the right to update the
       # shipment information. This is only used by the front-end controller, not the
@@ -230,7 +232,9 @@ module Refinery
       end
 
       def display_status
-        ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status.presence || 'unknown'}"
+        if status.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
+        end
       end
 
 

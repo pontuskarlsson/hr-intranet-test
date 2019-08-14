@@ -55,7 +55,7 @@
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
-        "order":          [[ 6, "desc" ]],
+        "order":          [[ 1, "desc" ]],
         "ajax": "<%= refinery.shipping_shipments_path(filter_params) %>",
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.shipping_shipments_path %>") } },

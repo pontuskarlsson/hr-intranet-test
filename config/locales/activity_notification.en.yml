@@ -26,6 +26,11 @@ en:
           title: Project Invoices Overdue
 
     user:
+      batch:
+        shipment:
+          status_request:
+            mail_subject: 'Status Request for Shipments'
+
       inspection:
         default:
           mail_subject:

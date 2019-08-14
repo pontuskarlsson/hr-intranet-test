@@ -10,7 +10,7 @@
           <%= notification.notifiable.printable_notifiable_name(notification.target) %>
           <%= "in #{notification.group.printable_group_name}" if notification.group.present? %>
         <% else %>
-          <%= " a #{notification.notifiable_type.humanize.singularize.downcase}" %>
+          <%= " a #{notification.notifiable_type.constantize.model_name.human.singularize.downcase}" %>
           <%= "in #{notification.group.printable_group_name}" if notification.group.present? %>
           but the notifiable is not found. It may have been deleted.
         <% end %>

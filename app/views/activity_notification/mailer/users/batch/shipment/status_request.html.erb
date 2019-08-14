@@ -1,0 +1,11 @@
+<%- @shipments = @notifications.map(&:notifiable) -%>
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>You have received requests to update the status of <%= @notifications.count %> shipment(s), please see below.</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<%= render 'notification_list', notifications: @notifications %>
