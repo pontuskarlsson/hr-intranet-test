@@ -5,8 +5,8 @@ module Refinery
 
       set_page PAGE_SHIPMENTS_URL
       allow_page_roles ROLE_INTERNAL
-      allow_page_roles ROLE_EXTERNAL
-      allow_page_roles ROLE_EXTERNAL_FF
+      allow_page_roles ROLE_EXTERNAL,     only: [:index, :show, :edit, :update]
+      allow_page_roles ROLE_EXTERNAL_FF,  only: [:index, :show, :edit, :update]
 
       before_filter :find_shipments,      only: [:index]
       before_filter :find_shipment,       except: [:index, :create]
@@ -117,7 +117,7 @@ module Refinery
       end
 
       def find_shipment
-        @shipment = Shipment.find(params[:id])
+        @shipment = shipments_scope.find(params[:id])
       end
 
       def shipment_params
