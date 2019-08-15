@@ -168,18 +168,18 @@ module Refinery
       # end
 
       before_save do
-        self.shipper_company_label =    shipper_company.name     if shipper_company.present?
+        self.shipper_company_label =    shipper_company.label     if shipper_company.present?
         self.from_contact =             shipper_company.contact   if shipper_company.present?
         self.from_contact_label =       from_contact.label        if from_contact.present?
 
-        self.receiver_company_label =   receiver_company.name     if receiver_company.present?
+        self.receiver_company_label =   receiver_company.label    if receiver_company.present?
         self.to_contact =               receiver_company.contact  if receiver_company.present?
         self.to_contact_label =         to_contact.label          if to_contact.present?
 
-        self.consignee_company_label =  consignee_company.name    if consignee_company.present?
-        self.supplier_company_label =   supplier_company.name     if supplier_company.present?
-        self.forwarder_company_label =  forwarder_company.name    if forwarder_company.present?
-        self.courier_company_label =    courier_company.name      if courier_company.present?
+        self.consignee_company_label =  consignee_company.label   if consignee_company.present?
+        self.supplier_company_label =   supplier_company.label    if supplier_company.present?
+        self.forwarder_company_label =  forwarder_company.label   if forwarder_company.present?
+        self.courier_company_label =    courier_company.label     if courier_company.present?
 
         self.assigned_to_label =        assigned_to.label         if assigned_to.present?
         self.created_by_label =         created_by.label          if created_by.present?
@@ -237,6 +237,10 @@ module Refinery
         end
       end
 
+      def self.status_options
+        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses").reduce([['---', '']]) { |acc, (k,v)| acc << [v,k] }
+      end
+
 
       def shippable?
         status == 'not_shipped' && shipment_parcels.exists?
@@ -277,6 +281,17 @@ module Refinery
         amount = volume_manual_amount.presence || volume_amount.presence
         "#{amount} #{volume_unit}" if amount
       end
+
+      %w(consignee courier forwarder receiver shipper supplier).each do |company|
+        define_method("#{company}_company_label=") do |label|
+          self.send("#{company}_company=", ::Refinery::Business::Company.find_by_label(label))
+          super label
+        end
+      end
+      # def forwarder_company_label=(label)
+      #   self.forwarder_company = ::Refinery::Business::Company.find_by_label label
+      #   super
+      # end
 
       class << self
         def easypost_couriers

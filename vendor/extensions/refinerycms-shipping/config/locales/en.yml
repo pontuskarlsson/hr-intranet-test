@@ -89,7 +89,7 @@ en:
         from_contact_label: From Contact
         statuses:
           not_shipped: Not Shipped
-          manually_shipped: Shipped
+          manually_shipped: Manually Shipped
           shipped: Shipped
           unknown: Unknown
           pre_transit: Pre-Transit

@@ -10,11 +10,11 @@
         <tbody>
         <tr>
           <th style="width: 150px;"><%= f.label :supplier_company_label, 'Supplier' %></th>
-          <td><%= f.text_field :supplier_company_label %></td>
+          <td><%= f.text_field :supplier_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
           <th><%= f.label :shipper_company_label, 'Shipper' %></th>
-          <td><%= f.text_field :shipper_company_label %></td>
+          <td><%= f.text_field :shipper_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
           <th><%= f.label :load_port %></th>
@@ -45,11 +45,11 @@
         <tbody>
         <tr>
           <th style="width: 150px;"><%= f.label :receiver_company_label, 'Receiver' %></th>
-          <td><%= f.text_field :receiver_company_label %></td>
+          <td><%= f.text_field :receiver_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
           <th><%= f.label :consignee_company_label, 'Consignee' %></th>
-          <td><%= f.text_field :consignee_company_label %></td>
+          <td><%= f.text_field :consignee_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
           <th><%= f.label :consignee_reference %></th>
@@ -80,7 +80,7 @@
         <tbody>
         <tr>
           <th style="width: 150px;"><%= f.label :forwarder_company_label, 'Forwarder' %></th>
-          <td><%= f.text_field :forwarder_company_label %></td>
+          <td><%= f.text_field :forwarder_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
           <th><%= f.label :forwarder_booking_number, 'Booking No.' %></th>
@@ -92,7 +92,7 @@
         </tr>
         <tr>
           <th><%= f.label :status %></th>
-          <td><%= f.text_field :status %></td>
+          <td><%= f.select :status, options_for_select(::Refinery::Shipping::Shipment.status_options, f.object.status) %></td>
         </tr>
         <tr>
           <th><%= f.label :etd_date, 'ETD' %></th>
@@ -134,6 +134,7 @@
   <script type="text/javascript">
     $(function(){
       $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_company_field').autocomplete({ source: <%= ::Refinery::Business::Company.to_source %> });
     });
   </script>
 <% end %>
