@@ -29,8 +29,14 @@ module Refinery
         }.compact
       end
 
+      def present_address_lines
+        [street1, street2, city, zip, state, country].reject(&:blank?)
+      end
+
       def google_maps_url
-        "http://maps.google.com/?q=#{ [street1, city, zip, state, country].reject(&:blank?).join(',') }"
+        if present_address_lines.any?
+          "http://maps.google.com/?q=#{ present_address_lines.join(',') }"
+        end
       end
 
     end

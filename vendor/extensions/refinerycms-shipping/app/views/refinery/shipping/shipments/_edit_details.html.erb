@@ -1,0 +1,69 @@
+<section class="contact-card">
+  <h3>Details</h3>
+
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th style="width: 150px;"><%= f.label :no_of_parcels, 'No. of Cartons' %></th>
+      <td><%= f.text_field :no_of_parcels %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :weight_unit %></th>
+      <td><%= f.text_field :weight_unit, class: 'js_weight_unit' %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :gross_weight_amount, 'Gross Weight' %></th>
+      <td>
+        <div class="input-group">
+          <%= f.text_field :gross_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
+          <%= f.text_field :gross_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
+          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label :net_weight_amount, 'Net Weight' %></th>
+      <td>
+        <div class="input-group">
+          <%= f.text_field :net_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
+          <%= f.text_field :net_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
+          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label :chargeable_weight_amount, 'Chargeable Weight' %></th>
+      <td>
+        <div class="input-group">
+          <%= f.text_field :chargeable_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
+          <%= f.text_field :chargeable_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
+          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label :volume_unit %></th>
+      <td><%= f.text_field :volume_unit, class: 'js_volume_unit' %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :volume_amount, 'Volume' %></th>
+      <td>
+        <div class="input-group">
+          <%= f.text_field :volume_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
+          <%= f.text_field :volume_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
+          <span class="input-group-label js_volume_unit_label"><%= f.object.volume_unit %></span>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function(){
+      $('.js_weight_unit').on('change', function() { $('.js_weight_unit_label').html(this.value) });
+      $('.js_volume_unit').on('change', function() { $('.js_volume_unit_label').html(this.value) });
+    });
+  </script>
+<% end %>

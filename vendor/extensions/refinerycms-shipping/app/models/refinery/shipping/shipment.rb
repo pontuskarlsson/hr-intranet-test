@@ -266,6 +266,18 @@ module Refinery
         end
       end
 
+      %w(gross_weight net_weight chargeable_weight).each do |w|
+        define_method "display_#{w}" do
+          amount = send("#{w}_manual_amount").presence || send("#{w}_amount").presence
+          "#{amount} #{weight_unit}" if amount
+        end
+      end
+
+      def display_volume
+        amount = volume_manual_amount.presence || volume_amount.presence
+        "#{amount} #{volume_unit}" if amount
+      end
+
       class << self
         def easypost_couriers
           COURIERS.select { |_,v| v[:easypost] }.keys

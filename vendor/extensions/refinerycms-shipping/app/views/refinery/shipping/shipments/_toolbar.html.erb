@@ -1,42 +1,9 @@
-<div class="grid-x grid-padding-x">
-  <div class="medium-2 cell">
-    <%= link_to t('go_back', default: 'Go Back', scope: 'refinery.shipping.shipments.show'), refinery.shipping_shipments_path, class: 'button tiny' %>
-  </div>
-
-  <% if shipment.status == 'not_shipped' %>
-    <div class="medium-2 cell">
-      <%= link_to t('edit_details', scope: 'refinery.shipping.shipments.show'), refinery.edit_shipping_shipment_path(shipment), class: 'button tiny' %>
-    </div>
-
-    <% if shipment.shippable? %>
-      <div class="medium-2 cell">
-        <%= link_to t('send_shipment', scope: 'refinery.shipping.shipments.show'), '#', class: 'button tiny', 'data-open' => 'send-shipment-modal' %>
-
-        <div id="send-shipment-modal" class="reveal tiny" data-reveal>
-          <a class="close-reveal-modal" data-close>&#215;</a>
-
-          <%= render 'manual_ship', shipment: shipment %>
-        </div>
-      </div>
-
-      <div class="medium-2 cell">
-        <%= link_to t('send_easypost_shipment', scope: 'refinery.shipping.shipments.show'), '#', class: 'button tiny', 'data-reveal-id' => 'send-easypost-modal' %>
-
-        <div id="send-easypost-modal" class="reveal-modal tiny" data-reveal>
-          <a class="close-reveal-modal">&#215;</a>
-          <%= render 'easypost', shipment: shipment %>
-        </div>
-      </div>
-
+<% content_for :actions do %>
+  <div class="button-group">
+    <% if shipment.shipped_by_courier? %>
+      <%= render 'courier_actions', shipment: shipment %>
     <% else %>
-      <%= link_to t('send_shipment', scope: 'refinery.shipping.shipments.show'), '#', class: 'button tiny disabled' %>
+      <%= render 'forwarder_actions', shipment: shipment %>
     <% end %>
-
-    <div class="medium-2 cell end">
-      <%= link_to t('remove', scope: 'refinery.shipping.shipments.show'), refinery.shipping_shipment_path(shipment), class: 'button tiny alert', method: :delete, confirm: t('.confirm_remove') %>
-    </div>
-
-  <% else %>
-
-  <% end %>
-</div>
+  </div>
+<% end %>

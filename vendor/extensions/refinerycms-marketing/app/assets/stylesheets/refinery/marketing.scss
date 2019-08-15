@@ -6,7 +6,6 @@
     }
 
     h3 {
-        background: #fff;
         display: inline-block;
         font-size: 0.8rem;
         font-weight: bold;
@@ -52,7 +51,7 @@
     }
 
     .cc-table {
-        width: auto;
+        width: 100%;
         border: none;
 
         tbody { background: none; }
@@ -62,12 +61,16 @@
         }
 
         th {
+            width: 80px;
+        }
+
+        th, th label {
             text-align: right;
             color: #777;
             font-weight: normal;
             padding: 0;
-            width: 80px;
             vertical-align: top;
+            font-size: inherit;
         }
 
         td {
@@ -75,6 +78,33 @@
             padding-top: 0;
             padding-bottom: 0;
             vertical-align: top;
+
+            [type='text'],
+            [type='password'],
+            [type='date'],
+            [type='datetime'],
+            [type='datetime-local'],
+            [type='month'],
+            [type='week'],
+            [type='email'],
+            [type='number'],
+            [type='search'],
+            [type='tel'],
+            [type='time'],
+            [type='url'],
+            [type='color'],
+            textarea {
+                margin: 0;
+                height: 1.5rem;
+                line-height: 1.2rem;
+            }
+
+            .input-group {
+                margin: 0;
+            }
+            .input-group-label {
+                line-height: 1.2rem;
+            }
         }
     }
 }

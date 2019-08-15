@@ -1,0 +1,36 @@
+<%= form_for [refinery, :shipping, shipment] do |f| -%>
+
+  <div class='field'>
+    <%= f.label :consignee_company_label, 'Consignee' -%>
+    <%= f.text_field :consignee_company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :supplier_company_label, 'Supplier' -%>
+    <%= f.text_field :supplier_company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :forwarder_company_label, 'Forwarder' -%>
+    <%= f.text_field :forwarder_company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.submit 'Save', class: 'button' -%>
+  </div>
+<% end -%>
+
+<% content_for :stylesheets do %>
+
+<% end %>
+
+<% content_for :javascripts do %>
+
+  <script type="text/javascript">
+    $(function(){
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.to_source %>
+      });
+    });
+  </script>
+<% end %>

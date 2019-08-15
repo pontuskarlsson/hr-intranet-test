@@ -1,0 +1,28 @@
+<section class="contact-card">
+  <h3>Details</h3>
+
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th style="width: 150px;">No. of Cartons</th>
+      <td><%= shipment.no_of_parcels.presence || 'N/A' %></td>
+    </tr>
+    <tr>
+      <th>Gross Weight</th>
+      <td><%= shipment.display_gross_weight.presence || 'N/A' %></td>
+    </tr>
+    <tr>
+      <th>Net Weight</th>
+      <td><%= shipment.display_net_weight.presence || 'N/A' %></td>
+    </tr>
+    <tr>
+      <th>Chargeable Weight</th>
+      <td><%= shipment.display_chargeable_weight.presence || 'N/A' %></td>
+    </tr>
+    <tr>
+      <th>Volume</th>
+      <td><%= shipment.display_volume.presence || 'N/A' %></td>
+    </tr>
+    </tbody>
+  </table>
+</section>

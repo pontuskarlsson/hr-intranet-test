@@ -1,0 +1,2 @@
+<%= link_to t('edit_details', scope: 'refinery.shipping.shipments.show'), refinery.edit_shipping_shipment_path(shipment), class: 'button' %>
+<%= link_to t('remove', scope: 'refinery.shipping.shipments.show'), refinery.shipping_shipment_path(shipment), class: 'button alert', method: :delete, data: { confirm: t('refinery.shipping.shipments.show.confirm_remove') } %>

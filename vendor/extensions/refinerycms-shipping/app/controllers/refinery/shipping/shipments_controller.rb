@@ -21,6 +21,12 @@ module Refinery
         present(@page)
       end
 
+      def new
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @parcel in the line below:
+        present(@page)
+      end
+
       def create
         @shipment = current_authentication_devise_user.created_shipments.build(shipment_params)
         if @shipment.save
@@ -49,7 +55,8 @@ module Refinery
 
       def update
         @shipment_address_updater = Refinery::Shipping::ShipmentAddressUpdater.new({ shipment: @shipment }.reverse_merge(params[:shipment_address_updater] || {}))
-        if @shipment_address_updater.save
+
+        if (params[:shipment_address_updater] ? @shipment_address_updater.save : @shipment.update_attributes(shipment_params))
           flash[:notice] = 'Shipment successfully updated.'
           redirect_to refinery.shipping_shipment_path(@shipment)
         else
@@ -114,7 +121,12 @@ module Refinery
       end
 
       def shipment_params
-        params.require(:shipment).permit(:from_contact_label, :to_contact_label, :courier_company_label, :assigned_to_label, :from_contact_id, :to_contact_id, :bill_to, :bill_to_account_id, :position, :created_by_id, :assigned_to_id)
+        params.require(:shipment).permit(
+            :supplier_company_label, :shipper_company_label, :receiver_company_label, :consignee_company_label, :courier_company_label, :forwarder_company_label,
+            :load_port, :consignee_reference, :forwarder_booking_number, :mode, :status, :etd_date, :eta_date, :tracking_number, :shipment_terms, :shipment_terms_details,
+            :rate_currency, :duty_amount, :terminal_fee_amount, :domestic_transportation_cost_amount, :forwarding_fee_amount, :freight_cost_amount,
+            :no_of_parcels, :weight_unit, :gross_weight_manual_amount, :net_weight_manual_amount, :chargeable_weight_manual_amount, :volume_unit, :volume_manual_amount
+        )
       end
 
       def filter_params
