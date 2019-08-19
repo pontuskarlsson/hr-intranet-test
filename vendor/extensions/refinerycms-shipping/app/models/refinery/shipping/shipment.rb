@@ -21,7 +21,9 @@ module Refinery
       BILL_TO = ['Sender', 'Receiver', '3rd Party']
 
       EASYPOST_STATUSES = %w(unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
-      STATUSES = %w(not_shipped manually_shipped shipped) + EASYPOST_STATUSES
+      STATUSES = %w(draft not_shipped manually_shipped shipped) + EASYPOST_STATUSES
+
+      SHIP_MODES = %w(Air Courier Rail Sea Sea-Air Train Truck)
 
       self.table_name = 'refinery_shipping_shipments'
 
@@ -166,6 +168,17 @@ module Refinery
       #   end
       #   self.assigned_to ||= created_by
       # end
+
+      before_validation(on: :create) do
+        self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0') if code.blank?
+
+        self.status ||= 'draft'
+
+        if mode.present? && mode != 'Courier'
+          self.supplier_company ||= shipper_company
+          self.consignee_company ||= receiver_company
+        end
+      end
 
       before_save do
         self.shipper_company_label =    shipper_company.label     if shipper_company.present?

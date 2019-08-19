@@ -21,12 +21,6 @@ module Refinery
         present(@page)
       end
 
-      def new
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @parcel in the line below:
-        present(@page)
-      end
-
       def create
         @shipment = current_authentication_devise_user.created_shipments.build(shipment_params)
         if @shipment.save

@@ -1,3 +1,4 @@
+<%= link_to t('edit_addresses', scope: 'refinery.shipping.shipments.show'), refinery.edit_shipping_shipment_path(shipment, edit_address: '1'), class: 'button' %>
 <%= link_to t('edit_details', scope: 'refinery.shipping.shipments.show'), refinery.edit_shipping_shipment_path(shipment), class: 'button' %>
 
 <% if page_role? Refinery::Shipping::ROLE_INTERNAL %>

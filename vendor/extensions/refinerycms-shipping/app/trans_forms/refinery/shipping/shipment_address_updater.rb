@@ -35,6 +35,7 @@ module Refinery
 
         shipment.to_address.attributes = ATTRIBUTES.inject({}) { |acc, attr| acc.merge(attr => send("to_address_#{attr}")) }
         shipment.to_address.save!
+        shipment.save!
       end
 
       def persisted?

@@ -1,0 +1,98 @@
+<section class="contact-card">
+  <%= form_for @shipment_address_updater, url: refinery.shipping_shipment_path(@shipment) do |f| %>
+    <div class="grid-x grid-padding-x">
+      <div class="medium-6 cell">
+        <h3>Shipped From</h3>
+
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;"><%= f.label :from_address_name %></th>
+            <td><%= f.text_field :from_address_name %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_street1 %></th>
+            <td><%= f.text_field :from_address_street1 %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_street2 %></th>
+            <td><%= f.text_field :from_address_street2 %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_city %></th>
+            <td><%= f.text_field :from_address_city %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_zip %></th>
+            <td><%= f.text_field :from_address_zip %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_state %></th>
+            <td><%= f.text_field :from_address_state %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_country %></th>
+            <td><%= f.text_field :from_address_country %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_phone %></th>
+            <td><%= f.text_field :from_address_phone %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :from_address_email %></th>
+            <td><%= f.text_field :from_address_email %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+  
+      <div class="medium-6 cell">
+        <h3>Shipped To</h3>
+
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;"><%= f.label :to_address_name %></th>
+            <td><%= f.text_field :to_address_name %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_street1 %></th>
+            <td><%= f.text_field :to_address_street1 %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_street2 %></th>
+            <td><%= f.text_field :to_address_street2 %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_city %></th>
+            <td><%= f.text_field :to_address_city %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_zip %></th>
+            <td><%= f.text_field :to_address_zip %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_state %></th>
+            <td><%= f.text_field :to_address_state %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_country %></th>
+            <td><%= f.text_field :to_address_country %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_phone %></th>
+            <td><%= f.text_field :to_address_phone %></td>
+          </tr>
+          <tr>
+            <th><%= f.label :to_address_email %></th>
+            <td><%= f.text_field :to_address_email %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <%= f.submit t('save', scope: 'refinery.shipping.shipments.edit'), class: 'button tiny' %>
+    <%= link_to t('cancel', scope: 'refinery.shipping.shipments.edit'), refinery.shipping_shipment_path(@shipment) %>
+  <% end %>
+</section>

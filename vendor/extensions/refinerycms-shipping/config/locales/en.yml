@@ -62,6 +62,7 @@ en:
           save: Save
         show:
           add: Add
+          edit_addresses: Edit Addresses
           edit_details: Edit Details
           remove: Remove
           confirm_remove: Are you sure you want to remove this Shipment?
@@ -88,6 +89,7 @@ en:
         courier: Courier
         from_contact_label: From Contact
         statuses:
+          draft: Draft
           not_shipped: Not Shipped
           manually_shipped: Manually Shipped
           shipped: Shipped

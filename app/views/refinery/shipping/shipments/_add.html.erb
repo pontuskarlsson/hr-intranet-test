@@ -1,24 +1,8 @@
 <% content_for :actions do %>
-  <ul class="dropdown menu" data-dropdown-menu>
-    <li>
-      <a href="#">Add</a>
-      <ul class="menu">
-        <li><a class="" data-open="js_courier_shipment_form">Courier Shipment</a></li>
-        <li><a class="" data-open="js_forwarder_shipment_form">Forwarder Shipment</a></li>
-      </ul>
-    </li>
-  </ul>
+  <p><button class="button" data-open="js_shipment_form">Add new Shipment</button></p>
 
-  <div class="reveal" id="js_courier_shipment_form" data-reveal>
-    <%= render 'courier_form', shipment: shipment %>
-
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="reveal" id="js_forwarder_shipment_form" data-reveal>
-    <%= render 'forwarder_form', shipment: shipment %>
+  <div class="reveal" id="js_shipment_form" data-reveal>
+    <%= render 'quick_form', shipment: shipment %>
 
     <button class="close-button" data-close aria-label="Close modal" type="button">
       <span aria-hidden="true">&times;</span>

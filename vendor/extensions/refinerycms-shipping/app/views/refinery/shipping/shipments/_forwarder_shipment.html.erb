@@ -4,22 +4,22 @@
     <table class="cc-table">
       <tbody>
       <tr>
-        <th style="width: 150px;">Supplier</th>
-        <td>
-          <% if shipment.shipper_company.present? %>
-            <%= link_to shipment.supplier_company_label, refinery.business_company_path(shipment.supplier_company) %>
-          <% else %>
-            <%= shipment.supplier_company_label %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
         <th>Shipper</th>
         <td>
           <% if shipment.shipper_company.present? %>
             <%= link_to shipment.shipper_company_label, refinery.business_company_path(shipment.shipper_company) %>
           <% else %>
             <%= shipment.shipper_company_label %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th style="width: 150px;">Supplier</th>
+        <td>
+          <% if shipment.supplier_company.present? %>
+            <%= link_to shipment.supplier_company_label, refinery.business_company_path(shipment.supplier_company) %>
+          <% else %>
+            <%= shipment.supplier_company_label %>
           <% end %>
         </td>
       </tr>
