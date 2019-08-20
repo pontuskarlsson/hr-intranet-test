@@ -1,24 +1,28 @@
 <% content_for :body do %>
   <div class="grid-x grid-padding-x">
-    <div class="cell">
-      <h2>Inspections</h2>
-    </div>
-
     <div class="cell medium-3">
-      <h5>
-        <i class="fa fa-check-circle"></i>
-        Pass rate
-      </h5>
-      <%= render 'chart_pass_rate', chart_id: 'chart-pass-rate-qty', source_table_id: 'js_inspections_data_table' %>
+      <ul class="vertical tabs" data-tabs id="example-tabs">
+        <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Pass Rate</a></li>
+        <li class="tabs-title"><a href="#panel2v">Top Defects</a></li>
+        <li class="tabs-title"><a href="#panel3v">By Supplier</a></li>
+      </ul>
+    </div>
+    <div class="cell medium-9">
+      <div class="tabs-content" data-tabs-content="example-tabs">
+        <div class="tabs-panel is-active" id="panel1v">
+          <%= render 'chart_pass_rate', chart_id: 'chart-pass-rate-qty', source_table_id: 'js_inspections_data_table' %>
+        </div>
+
+        <div class="tabs-panel" id="panel2v">
+          <%= render 'chart_top_defects', chart_id: 'chart-top-defects', source_table_id: 'js_inspections_data_table' %>
+        </div>
+
+        <div class="tabs-panel" id="panel3v">
+          <%= render 'chart_by_supplier', chart_id: 'chart-by-supplier', source_table_id: 'js_inspections_data_table' %>
+        </div>
+      </div>
     </div>
 
-    <div class="cell medium-9">
-      <h5>
-        <i class="fa fa-exclamation-triangle"></i>
-        Top Defects
-      </h5>
-      <%= render 'chart_top_defects', chart_id: 'chart-top-defects', source_table_id: 'js_inspections_data_table' %>
-    </div>
 
     <div class="cell">
       <h4>All inspections</h4>

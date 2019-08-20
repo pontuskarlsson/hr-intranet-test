@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190813073411) do
+ActiveRecord::Schema.define(version: 20190820084621) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -388,19 +388,21 @@ ActiveRecord::Schema.define(version: 20190813073411) do
   add_index "refinery_business_number_series", ["position"], name: "index_refinery_business_number_series_on_position", using: :btree
 
   create_table "refinery_business_projects", force: :cascade do |t|
-    t.integer  "company_id",  limit: 4
-    t.string   "code",        limit: 255
-    t.text     "description", limit: 65535
-    t.string   "status",      limit: 255
+    t.integer  "company_id",        limit: 4
+    t.string   "code",              limit: 255
+    t.text     "description",       limit: 65535
+    t.string   "status",            limit: 255
     t.date     "start_date"
     t.date     "end_date"
-    t.integer  "position",    limit: 4
+    t.integer  "position",          limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "company_reference", limit: 255
   end
 
   add_index "refinery_business_projects", ["code"], name: "index_refinery_business_projects_on_code", using: :btree
   add_index "refinery_business_projects", ["company_id"], name: "index_refinery_business_projects_on_company_id", using: :btree
+  add_index "refinery_business_projects", ["company_reference"], name: "index_refinery_business_projects_on_company_reference", using: :btree
   add_index "refinery_business_projects", ["end_date"], name: "index_refinery_business_projects_on_end_date", using: :btree
   add_index "refinery_business_projects", ["position"], name: "index_refinery_business_projects_on_position", using: :btree
   add_index "refinery_business_projects", ["start_date"], name: "index_refinery_business_projects_on_start_date", using: :btree
@@ -992,53 +994,58 @@ ActiveRecord::Schema.define(version: 20190813073411) do
   add_index "refinery_quality_assurance_inspection_photos", ["inspection_id"], name: "index_qa_inspection_photos_on_inspection_id", using: :btree
 
   create_table "refinery_quality_assurance_inspections", force: :cascade do |t|
-    t.integer  "company_id",              limit: 4
-    t.integer  "supplier_id",             limit: 4
-    t.string   "supplier_label",          limit: 255
-    t.integer  "business_section_id",     limit: 4
-    t.integer  "business_product_id",     limit: 4
-    t.integer  "assigned_to_id",          limit: 4
-    t.integer  "resource_id",             limit: 4
-    t.integer  "inspected_by_id",         limit: 4
-    t.string   "inspected_by_name",       limit: 255
-    t.string   "document_id",             limit: 255
-    t.string   "result",                  limit: 255
+    t.integer  "company_id",                limit: 4
+    t.integer  "supplier_id",               limit: 4
+    t.string   "supplier_label",            limit: 255
+    t.integer  "business_section_id",       limit: 4
+    t.integer  "business_product_id",       limit: 4
+    t.integer  "assigned_to_id",            limit: 4
+    t.integer  "resource_id",               limit: 4
+    t.integer  "inspected_by_id",           limit: 4
+    t.string   "inspected_by_name",         limit: 255
+    t.string   "document_id",               limit: 255
+    t.string   "result",                    limit: 255
     t.date     "inspection_date"
-    t.integer  "inspection_sample_size",  limit: 4
-    t.string   "inspection_type",         limit: 255
-    t.string   "po_number",               limit: 255
-    t.string   "po_type",                 limit: 255
-    t.integer  "po_qty",                  limit: 4
-    t.integer  "available_qty",           limit: 4
-    t.string   "product_code",            limit: 255
-    t.string   "product_description",     limit: 255
-    t.string   "product_colour_variants", limit: 255
-    t.string   "inspection_standard",     limit: 255
-    t.integer  "acc_critical",            limit: 4
-    t.integer  "acc_major",               limit: 4
-    t.integer  "acc_minor",               limit: 4
-    t.integer  "total_critical",          limit: 4,     default: 0, null: false
-    t.integer  "total_major",             limit: 4,     default: 0, null: false
-    t.integer  "total_minor",             limit: 4,     default: 0, null: false
-    t.integer  "position",                limit: 4
+    t.integer  "inspection_sample_size",    limit: 4
+    t.string   "inspection_type",           limit: 255
+    t.string   "po_number",                 limit: 255
+    t.string   "po_type",                   limit: 255
+    t.integer  "po_qty",                    limit: 4
+    t.integer  "available_qty",             limit: 4
+    t.string   "product_code",              limit: 255
+    t.string   "product_description",       limit: 255
+    t.string   "product_colour_variants",   limit: 255
+    t.string   "inspection_standard",       limit: 255
+    t.integer  "acc_critical",              limit: 4
+    t.integer  "acc_major",                 limit: 4
+    t.integer  "acc_minor",                 limit: 4
+    t.integer  "total_critical",            limit: 4,     default: 0, null: false
+    t.integer  "total_major",               limit: 4,     default: 0, null: false
+    t.integer  "total_minor",               limit: 4,     default: 0, null: false
+    t.integer  "position",                  limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "fields",                  limit: 65535
-    t.string   "company_label",           limit: 255
-    t.integer  "inspection_photo_id",     limit: 4
-    t.string   "company_code",            limit: 255
-    t.string   "supplier_code",           limit: 255
-    t.integer  "manufacturer_id",         limit: 4
-    t.string   "manufacturer_label",      limit: 255
-    t.string   "manufacturer_code",       limit: 255
-    t.string   "status",                  limit: 255
+    t.text     "fields",                    limit: 65535
+    t.string   "company_label",             limit: 255
+    t.integer  "inspection_photo_id",       limit: 4
+    t.string   "company_code",              limit: 255
+    t.string   "supplier_code",             limit: 255
+    t.integer  "manufacturer_id",           limit: 4
+    t.string   "manufacturer_label",        limit: 255
+    t.string   "manufacturer_code",         limit: 255
+    t.string   "status",                    limit: 255
+    t.string   "company_project_reference", limit: 255
+    t.string   "project_code",              limit: 255
+    t.string   "code",                      limit: 255
   end
 
   add_index "refinery_quality_assurance_inspections", ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["business_product_id"], name: "index_qa_inspections_on_business_product_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["business_section_id"], name: "index_qa_inspections_on_business_section_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["code"], name: "index_refinery_quality_assurance_inspections_on_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["company_code"], name: "index_qa_inspections_on_company_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["company_id"], name: "index_qa_inspections_on_company_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["company_project_reference"], name: "index_qa_inspections_on_company_project_reference", using: :btree
   add_index "refinery_quality_assurance_inspections", ["document_id"], name: "index_qa_inspections_on_document_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_date"], name: "index_qa_inspections_on_inspection_date", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_photo_id"], name: "index_qa_inspections_on_inspection_photo_id", using: :btree
@@ -1052,6 +1059,7 @@ ActiveRecord::Schema.define(version: 20190813073411) do
   add_index "refinery_quality_assurance_inspections", ["position"], name: "index_qa_inspections_on_position", using: :btree
   add_index "refinery_quality_assurance_inspections", ["product_code"], name: "index_qa_inspections_on_product_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["product_description"], name: "index_qa_inspections_on_product_description", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["project_code"], name: "index_refinery_quality_assurance_inspections_on_project_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["resource_id"], name: "index_qa_inspections_on_resource_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["result"], name: "index_qa_inspections_on_result", using: :btree
   add_index "refinery_quality_assurance_inspections", ["status"], name: "index_refinery_quality_assurance_inspections_on_status", using: :btree

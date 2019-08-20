@@ -1,0 +1,36 @@
+<%= column_chart [], stacked: true, id: chart_id, colors: ['#48A9A6', '#C1666B', '#D4B483'], background_colors: ['#48A9A6', '#C1666B', '#D4B483'] %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $(document).on('draw.dt', '#<%= source_table_id %>', function() {
+        var $dt = $('#<%= source_table_id %>').dataTable();
+        var chart = Chartkick.charts['<%= chart_id %>'];
+
+        var supplierIdx = {};
+        var nextIdx = 0;
+        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
+          if (typeof supplierIdx[dataRow.supplier_label] == 'undefined') {
+            supplierIdx[dataRow.supplier_label] = nextIdx;
+            acc[0].data.push([dataRow.supplier_label, 0]);
+            acc[1].data.push([dataRow.supplier_label, 0]);
+            acc[2].data.push([dataRow.supplier_label, 0]);
+            nextIdx++;
+          }
+
+          if (dataRow.result == 'Pass') {
+            acc[0].data[supplierIdx[dataRow.supplier_label]][1] += 1;
+          } else if (dataRow.result == 'Reject') {
+            acc[1].data[supplierIdx[dataRow.supplier_label]][1] += 1;
+          } else if (dataRow.result == 'Hold') {
+            acc[2].data[supplierIdx[dataRow.supplier_label]][1] += 1;
+          }
+
+          return acc;
+        }, [{ name: 'Pass', data: [] }, { name: 'Reject', data: [] }, { name: 'Hold', data: [] }]);
+
+        chart.updateData(data);
+      });
+    });
+  </script>
+<% end %>
