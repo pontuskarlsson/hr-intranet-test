@@ -68,7 +68,7 @@ module Refinery
       end
 
       def project_params
-        params.require(:project).permit(:company_label, :description, :end_date, :start_date, :status)
+        params.require(:project).permit(:company_label, :company_reference, :description, :end_date, :start_date, :status)
       end
 
       def filter_params

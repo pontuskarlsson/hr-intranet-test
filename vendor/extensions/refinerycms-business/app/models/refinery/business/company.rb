@@ -24,7 +24,7 @@ module Refinery
 
       before_validation do
         if code.blank?
-          self.code = NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0')
+          self.code = NumberSerie.next_counter!(self.class, :code)
         end
 
         if contact_label.present?

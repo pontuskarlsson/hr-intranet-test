@@ -8,9 +8,19 @@
     <th data-dt-search-input="true">PO</th>
     <th data-dt-search-input="true">Style</th>
     <th data-dt-search-date-range>Inspection Date</th>
+    <th data-dt-search-input="true">Project Ref.</th>
     <th data-dt-search-input="true">Customer</th>
     <th data-dt-search-input="true">Supplier</th>
     <th data-dt-search-input="true">Manufacturer</th>
+    <th data-dt-search-input="true">Project Code</th>
+    <th data-dt-search-input="true">PO Qty</th>
+    <th data-dt-search-input="true">Avail. Qty</th>
+    <th data-dt-search-input="true">Sample Size</th>
+    <th data-dt-search-input="true">Insp. By</th>
+    <th data-dt-search-input="true">Product Code</th>
+    <th data-dt-search-input="true">Product Desc.</th>
+    <th data-dt-search-input="true">Product Colours</th>
+    <th data-dt-search-input="true">Insp. Code</th>
   </tr>
   </thead>
 
@@ -23,10 +33,20 @@
       <th>Result</th>
       <th>PO</th>
       <th>Style</th>
-      <th>Inspected</th>
+      <th>Inspection Date</th>
+      <th>Project Reference</th>
       <th>Customer</th>
       <th>Supplier</th>
       <th>Manufacturer</th>
+      <th>Project Code</th>
+      <th>PO Qty</th>
+      <th>Avail. Qty</th>
+      <th>Sample Size</th>
+      <th>Insp. By</th>
+      <th>Product Code</th>
+      <th>Product Desc.</th>
+      <th>Product Colours</th>
+      <th>Insp. Code</th>
     </tr>
     </tfoot>
   <% end %>
@@ -64,9 +84,19 @@
           { data: "po_number" },
           { data: "product_label"},
           { data: "inspection_date", render: dtDateRenderer },
+          { data: "company_project_reference" },
           { data: "company_label" },
           { data: "supplier_label" },
-          { data: "manufacturer_label" }
+          { data: "manufacturer_label" },
+          { data: "project_code" },
+          { data: "po_qty" },
+          { data: "available_qty" },
+          { data: "inspection_sample_size" },
+          { data: "inspected_by_name" },
+          { data: "product_code" },
+          { data: "product_description" },
+          { data: "product_colour_variants" },
+          { data: "code" },
         ],
         "dom": "<'row grid-x'<'medium-6 columns cell'Bl><'medium-6 columns cell'f>r>"+
           "t"+

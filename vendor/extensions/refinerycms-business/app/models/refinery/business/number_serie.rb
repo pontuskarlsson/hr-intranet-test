@@ -5,13 +5,16 @@ module Refinery
 
       validates :identifier,  presence: true, uniqueness: true
 
-      def self.next_counter!(klass, column)
+      def self.next_counter!(klass, column, options = {})
         identifier = "#{klass.name}##{column}"
+        prefix = options[:prefix] || ''
+        pad_length = options[:pad_length] || 5
         number_serie = find_or_create_by!(identifier: identifier) do |ns|
-          ns.last_counter = (klass.maximum(column) || 0).to_i
+          max = klass.maximum(column) || "#{prefix}0"
+          ns.last_counter = max.gsub(prefix, '').to_i
         end
         increment_counter(:last_counter, number_serie.id)
-        number_serie.reload.last_counter
+        [prefix, number_serie.reload.last_counter.to_s.rjust(pad_length, '0')].join ''
       end
     end
   end

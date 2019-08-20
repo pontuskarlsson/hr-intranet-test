@@ -170,7 +170,7 @@ module Refinery
       # end
 
       before_validation(on: :create) do
-        self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0') if code.blank?
+        self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code) if code.blank?
 
         self.status ||= 'draft'
 

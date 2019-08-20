@@ -23,7 +23,7 @@ module Refinery
       end
 
       before_validation(on: :create) do
-        self.code = NumberSerie.next_counter!(self.class, :code).to_s.rjust(5, '0') if code.blank?
+        self.code = NumberSerie.next_counter!(self.class, :code) if code.blank?
       end
 
       scope :current, -> { where(status: CURRENT_STATUSES) }

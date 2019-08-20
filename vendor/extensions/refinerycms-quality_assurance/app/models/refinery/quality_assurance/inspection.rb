@@ -33,6 +33,10 @@ module Refinery
       validates :po_type,         inclusion: PO_TYPES, allow_blank: true
       validates :document_id,     uniqueness: true, allow_blank: true
 
+      before_validation(on: :create) do
+        assign_code!
+      end
+
       validate do
         if business_section.present?
           unless company.present? && business_section.try(:company) == company
@@ -53,6 +57,10 @@ module Refinery
         if supplier.present?
           self.supplier_code = supplier.code
           self.supplier_label = supplier.name
+        end
+        if business_section.present?
+          self.company_project_reference = business_section.business_project.try(:company_reference)
+          self.project_code = business_section.business_project.try(:code)
         end
       end
       
@@ -131,6 +139,10 @@ module Refinery
         else
           '&nbsp;'.html_safe
         end
+      end
+
+      def assign_code!
+        self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code, prefix: 'QA-', pad_length: 6) if code.blank?
       end
 
     end
