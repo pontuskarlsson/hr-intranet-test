@@ -59,7 +59,8 @@ function initDataTableHeaders(dt) {
 
     } else if ($h.data('dt-search-input')) {
       var $input = $('<input type="text" />').attr('placeholder', $h.html());
-      $h.html($input)
+      var $hidden = $('<div class="hidden-title"></div>').html($h.html());
+      $h.html($hidden).append($input)
     }
 
     $('input:not(.dt-date), select', col.header()).on('keyup change clear', function() {
@@ -86,7 +87,7 @@ function initDataTableRowClick(dt) {
 function idColumnRendererFor(baseUrl) {
   return function(data, type, row) {
     const href = [baseUrl, row.id].join('/');
-    return '<a href="'+href+'" data-dt-row-link></a>';
+    return '<div class="hidden-title"><a href="'+href+'" data-dt-row-link>'+row.code+'</a></div>';
   };
 }
 

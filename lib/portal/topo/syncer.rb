@@ -26,6 +26,7 @@ module Portal
           result: 'Result',
           inspection_sample_size: 'SampleSize',
           product_code: 'StyleNr',
+          product_description: 'ProductDescription',
           supplier_code: 'SupplierCode',
           supplier_label: 'Supplier'
       }.freeze

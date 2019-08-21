@@ -7,7 +7,7 @@
     <div class="cell">
       <section class="contact-card">
         <h1 class="cc-attribute cc-name">
-          <%=raw @inspection.label %>
+          <%=raw @inspection.code %>
           <span style="color: <%= @inspection.result == 'Pass' ? '#0e7d5b' : @inspection.result == 'Reject' ? '#d66666' : 'black' %>"><%= @inspection.result %></span>
         </h1>
         <% if @inspection.resource.present? %>
@@ -61,8 +61,12 @@
                 <td><%= @inspection.po_type %></td>
               </tr>
               <tr>
-                <th>Style / Product</th>
-                <td><%= @inspection.product_code %> <%= @inspection.product_description %></td>
+                <th>StyleNr / Product Code</th>
+                <td><%= @inspection.product_code %></td>
+              </tr>
+              <tr>
+                <th>Product Description</th>
+                <td><%= @inspection.product_description %></td>
               </tr>
               <tr>
                 <th>Colours / Variants</th>
@@ -165,25 +169,29 @@
 <% if @similar_inspections.any? %>
   <% content_for :side_body do %>
     <aside>
-      <h4><%= t('.other') %></h4>
-      <ul id="inspections" class="list-with-image">
-        <% @similar_inspections.each do |inspection| %>
-          <li class="<%= 'no-image' unless inspection.inspection_photo.present? %>">
-            <i class="list-icon fa <%= inspection.result == 'Pass' ? 'fa-check-circle' : (inspection.result == 'Reject' ? 'fa-times-circle' : 'fa-question-circle') %>"></i>
-            <% if inspection.inspection_photo.present? %>
-                <span class="list-image">
-                  <%= image_tag inspection.inspection_photo.image.image.thumb('45x45#').url %>
-                </span>
-            <% end %>
-            <div class="list-content">
-              <%= link_to [inspection.label, inspection.product_code, inspection.product_description, inspection.product_colour_variants].reject(&:blank?).join(', '), refinery.quality_assurance_inspection_path(inspection) %>
+      <h5><%= t('.similar') %></h5>
+      <% @similar_inspections.each do |inspection| %>
+        <div class="sidebar-item<%= ' with-preview' if inspection.inspection_photo.present? %>">
+          <% if inspection.inspection_photo.present? %>
+            <div class="item-preview">
+              <%= image_tag inspection.inspection_photo.image.image.thumb('45x45#').url %>
             </div>
-            <div class="list-trailing">
-              <small style="float: right;"><%= time_ago_in_words inspection.display_inspection_date %> ago</small>
+          <% end %>
+          <div class="item-title">
+            <%= link_to inspection.code, refinery.quality_assurance_inspection_path(inspection) %>
+          </div>
+          <div class="item-content">
+            <%= [inspection.po_number, inspection.product_code, inspection.product_description, inspection.product_colour_variants].reject(&:blank?).join(', ') %>
+          </div>
+          <div class="item-trailing">
+            <div class="<%= inspection.result.downcase %>">
+              <i class="list-icon fa <%= inspection.result == 'Pass' ? 'fa-check-circle' : (inspection.result == 'Reject' ? 'fa-times-circle' : 'fa-question-circle') %>"></i>
+              <%= inspection.result %>
             </div>
-          </li>
-        <% end %>
-      </ul>
+            <small style="float: right;"><%= time_ago_in_words inspection.display_inspection_date %> ago</small>
+          </div>
+        </div>
+      <% end %>
     </aside>
   <% end %>
 <% end %>

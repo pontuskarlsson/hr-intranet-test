@@ -13,6 +13,12 @@
         }
     }
 
+    .hidden-title {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+    }
+
     tbody tr {
         transition-property: background;
         transition-duration: .1s;

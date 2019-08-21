@@ -1,61 +1,64 @@
-ul.list-with-image {
-    list-style-type: none;
-    margin-left: 0;
+.sidebar-item {
+    margin-bottom: 1rem;
+    display: grid;
+    column-gap: 1rem;
+    row-gap: 0.2rem;
+    grid-template-columns: 1fr 80px;
+    grid-template-rows: 1.2rem 2.4rem;
+    grid-template-areas:
+            "title trailing"
+            "content trailing";
 
-    li {
-        padding-left: 80px;
-        padding-right: 80px;
-        position: relative;
-        height: 50px;
+    padding: 2px;
+    border-radius: 2px;
+
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+
+    &.with-preview {
+        grid-template-columns: 45px 1fr 80px;
+        grid-template-areas:
+                "preview title trailing"
+                "preview content trailing";
+    }
+
+    .item-preview {
+        grid-area: preview;
         overflow: hidden;
+    }
 
-        &.no-image {
-            padding-left: 30px;
-        }
+    .item-title {
+        grid-area: title;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-        .list-icon {
-            position: absolute;
-            left: 0;
-            top: 5px;
-            font-size: 1.5rem;
+    .item-content {
+        grid-area: content;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.8rem;
 
-            &.fa-check-circle {
-                color: #0e7d5b;
-            }
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; /* number of lines to show */
+    }
 
-            &.fa-times-circle {
-                color: #d66666;
-            }
-        }
+    .item-trailing {
+        grid-area: trailing;
+        overflow: hidden;
+        text-align: right;
+    }
 
-        .list-image {
-            position: absolute;
-            left: 30px;
-            top: 2px;
-            height: 45px;
-            width: 45px;
+    .pass {
+        color: #48A9A6;
+    }
 
-            &.fa-check-circle {
-                color: #0e7d5b;
-            }
+    .reject {
+        color: #C1666B;
+    }
 
-            &.fa-times-circle {
-                color: #d66666;
-            }
-        }
-
-        .list-content {
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .list-trailing {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 80px;
-            overflow: hidden;
-            text-align: right;;
-        }
+    .hold {
+        color: #D4B483;
     }
 }

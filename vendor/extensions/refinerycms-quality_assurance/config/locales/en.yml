@@ -40,6 +40,7 @@ en:
       inspections:
         show:
           other: Other Inspections
+          similar: Similar Inspections
 
   activerecord:
     attributes:
