@@ -50,7 +50,7 @@
   <% if current_authentication_devise_user.authorized_for_page?(::Refinery::Business::PAGE_PROJECTS_URL) %>
     <div class="cell">
       <h4>Projects</h4>
-      <p><%= link_to "See Company Projects (#{@company.projects.count})", refinery.business_projects_path(company_id: @company) %></p>
+      <p><%= link_to "See Company Projects (#{@company.projects.current.count})", refinery.business_projects_path(company_id: @company) %></p>
     </div>
   <% end %>
 

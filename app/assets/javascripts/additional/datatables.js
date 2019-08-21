@@ -45,6 +45,10 @@ function initDataTableMenu(dt) {
 }
 
 function initDataTableHeaders(dt) {
+  var minDateFilter = "";
+  var maxDateFilter = "";
+  var dateFilters = [];
+
   dt.columns().every(function() {
     var col = this;
     var $h = $(col.header());
@@ -61,6 +65,12 @@ function initDataTableHeaders(dt) {
       var $input = $('<input type="text" />').attr('placeholder', $h.html());
       var $hidden = $('<div class="hidden-title"></div>').html($h.html());
       $h.html($hidden).append($input)
+
+    } else if ($h.data('dt-search-date')) {
+      dateFilters.push(col.index())
+      var $input = $('<input type="text" class="dt-date" />').attr('placeholder', $h.html());
+      var $hidden = $('<div class="hidden-title"></div>').html($h.html());
+      $h.html($hidden).append($input)
     }
 
     $('input:not(.dt-date), select', col.header()).on('keyup change clear', function() {
@@ -69,9 +79,39 @@ function initDataTableHeaders(dt) {
       }
     });
 
+    $('input.dt-date', col.header()).on('keyup change clear', function() {
+      if ( col._fromDate !== this.value ) {
+        col._fromDate = this.value;
+        col.draw();
+      }
+    });
+
     // Don't trigger sort when clicking inside a search field
     $('input, select', col.header()).on('click', function(e) { e.stopPropagation() });
   });
+
+  $.fn.dataTableExt.afnFiltering.push(
+    function(meta, data, index) {
+      var col = dt.column(dateFilters[0]);
+      var attr = col.dataSrc();
+
+      var input = $('input.dt-date', col.header());
+      var value = input.val();
+      var dateValue = new Date(value).getTime();
+
+      // For caching
+      if (typeof data['_'+attr] == 'undefined') {
+        data['_'+attr] = new Date(data[dateFilters[0]]).getTime();
+      }
+
+      if (dateValue && !isNaN(dateValue)) {
+        if (data['_'+attr] < dateValue) {
+          return false;
+        }
+      }
+      return true;
+    }
+  );
 }
 
 function initDataTableRowClick(dt) {
@@ -155,6 +195,4 @@ function dtHeaderSearchSelect(col, options) {
     attr('value', option).
     html(option);
   });
-
-
 }

@@ -7,8 +7,8 @@
     <th data-dt-search-select="Pass,Reject,Hold">Result</th>
     <th data-dt-search-input="true">PO</th>
     <th data-dt-search-input="true">Style</th>
-    <th data-dt-search-date-range>Inspection Date</th>
-    <th data-dt-search-input="true">Project Ref.</th>
+    <th data-dt-search-date="true">Insp. Date</th>
+    <%- if false %><th data-dt-search-input="true">Project Ref.</th><%- end %>
     <th data-dt-search-input="true">Customer</th>
     <th data-dt-search-input="true">Supplier</th>
     <th data-dt-search-input="true">Manufacturer</th>
@@ -33,8 +33,8 @@
       <th>Result</th>
       <th>PO</th>
       <th>Style</th>
-      <th>Inspection Date</th>
-      <th>Project Reference</th>
+      <th>Insp. Date</th>
+      <%- if false %><th>Project Reference</th><%- end %>
       <th>Customer</th>
       <th>Supplier</th>
       <th>Manufacturer</th>
@@ -84,7 +84,7 @@
           { data: "po_number" },
           { data: "product_label"},
           { data: "inspection_date", render: dtDateRenderer },
-          { data: "company_project_reference" },
+//          { data: "company_project_reference" },
           { data: "company_label" },
           { data: "supplier_label" },
           { data: "manufacturer_label" },
