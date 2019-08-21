@@ -31,7 +31,7 @@ Refinery::QualityAssurance::Inspection.class_eval do
     # Take two first present attributes from below
     reference = [product_code, product_description, po_number].reject(&:blank?)[0..1].join(', ')
 
-    "#{inspection_type} Inspection Completed for #{reference}"
+    "#{code}: #{inspection_type} Inspection Completed for #{reference}"
   end
 
 end
