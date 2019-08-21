@@ -7,7 +7,11 @@
     <i class="fa fa-<%= contact.is_organisation ? 'building' : 'user' %>"></i>
   <% end %>
   <h4>
-    <%= link_to contact.name, refinery.marketing_contact_path(contact) %>
+    <% if page_role? Refinery::Marketing::ROLE_CRM_MANAGER %>
+      <%= link_to contact.name, refinery.marketing_contact_path(contact) %>
+    <% else %>
+      <%= contact.name %>
+    <% end %>
   </h4>
   <p class="bc-attribute"><%= contact.email %></p>
   <p class="bc-attribute"><%= contact.phone %></p>
