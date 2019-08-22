@@ -58,6 +58,18 @@ module Refinery
         find_by_code label.split(' ').first
       end
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+
+        if titles.include? ROLE_INTERNAL
+          where(nil)
+        elsif titles.include? ROLE_EXTERNAL
+          user.companies
+        else
+          where('1=0')
+        end
+      end
+
       def label
         PROC_LABEL.call(code, name)
       end

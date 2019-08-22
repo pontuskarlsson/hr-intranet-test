@@ -38,7 +38,7 @@
   <script type="text/javascript">
     $(function(){
       $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
-      $('.js_company_field').autocomplete({ source: <%= ::Refinery::Business::Company.to_source %> });
+      $('.js_company_field').autocomplete({ source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %> });
     });
   </script>
 <% end %>

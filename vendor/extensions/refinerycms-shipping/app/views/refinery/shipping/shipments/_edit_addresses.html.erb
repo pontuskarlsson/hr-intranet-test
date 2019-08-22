@@ -1,5 +1,10 @@
 <section class="contact-card">
   <%= form_for @shipment_address_updater, url: refinery.shipping_shipment_path(@shipment) do |f| %>
+    <div>
+      <%= f.submit t('save', scope: 'refinery.shipping.shipments.edit'), class: 'button' %>
+      <%= link_to t('cancel', scope: 'refinery.shipping.shipments.edit'), refinery.shipping_shipment_path(@shipment) %>
+    </div>
+
     <div class="grid-x grid-padding-x">
       <div class="medium-6 cell">
         <h3>Shipped From</h3>
@@ -91,8 +96,5 @@
         </table>
       </div>
     </div>
-  
-    <%= f.submit t('save', scope: 'refinery.shipping.shipments.edit'), class: 'button tiny' %>
-    <%= link_to t('cancel', scope: 'refinery.shipping.shipments.edit'), refinery.shipping_shipment_path(@shipment) %>
   <% end %>
 </section>

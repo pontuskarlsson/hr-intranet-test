@@ -203,6 +203,19 @@ module Refinery
       scope :forwarder, -> { where.not(forwarder_company_id: nil).includes(:forwarder_company) }
       scope :active, -> { where.not(status: %w(delivered cancelled)) }
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+        if titles.include? Refinery::Shipping::ROLE_INTERNAL
+          where(nil)
+
+        elsif titles.include? Refinery::Shipping::ROLE_EXTERNAL_FF
+          where(forwarder_company_id: user.company_ids)
+
+        else
+          where('1=0')
+        end
+      end
+
       # Method used to check whether a particular user has the right to update the
       # shipment information. This is only used by the front-end controller, not the
       # admin controller.

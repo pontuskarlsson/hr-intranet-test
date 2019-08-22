@@ -39,14 +39,7 @@ module Refinery
       protected
 
       def company_scope
-        @companies ||=
-            if page_role? ROLE_INTERNAL
-              Refinery::Business::Company.where(nil)
-            elsif page_role? ROLE_EXTERNAL
-              current_authentication_devise_user.companies
-            else
-              Refinery::Business::Company.where('1=0')
-            end
+        @companies ||= Company.for_user_roles(current_authentication_devise_user, @auth_role_titles)
       end
 
       def find_companies

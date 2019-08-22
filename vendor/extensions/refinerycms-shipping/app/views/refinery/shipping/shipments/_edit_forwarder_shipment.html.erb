@@ -1,6 +1,7 @@
 <%= form_for @shipment, url: refinery.shipping_shipment_path(@shipment) do |f| %>
   <div>
     <%= f.submit 'Save', class: 'button' %>
+    <%= link_to 'Cancel', refinery.shipping_shipment_path(@shipment) %>
   </div>
 
   <div class="grid-x grid-padding-x">
@@ -134,7 +135,7 @@
   <script type="text/javascript">
     $(function(){
       $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
-      $('.js_company_field').autocomplete({ source: <%= ::Refinery::Business::Company.to_source %> });
+      $('.js_company_field').autocomplete({ source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %> });
     });
   </script>
 <% end %>

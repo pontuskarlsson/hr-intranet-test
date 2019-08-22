@@ -94,16 +94,7 @@ module Refinery
       protected
 
       def shipments_scope
-        @shipments ||=
-            if page_role? Refinery::Shipping::ROLE_INTERNAL
-              Refinery::Shipping::Shipment.where(nil)
-
-            elsif page_role? Refinery::Shipping::ROLE_EXTERNAL_FF
-              Refinery::Shipping::Shipment.where(forwarder_company_id: current_authentication_devise_user.company_ids)
-
-            else
-              Refinery::Shipping::Shipment.where('1=0')
-            end
+        @shipments ||= Shipment.for_user_roles(current_authentication_devise_user, @auth_role_titles)
       end
 
       def find_shipments
