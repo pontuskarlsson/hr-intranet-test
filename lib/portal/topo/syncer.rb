@@ -115,9 +115,9 @@ module Portal
                 )
               end
 
-          inspection_defect.critical = topo_defects.reduce(0) { |acc, td| acc + td['Critical'] }
-          inspection_defect.major = topo_defects.reduce(0) { |acc, td| acc + td['Major'] }
-          inspection_defect.minor = topo_defects.reduce(0) { |acc, td| acc + td['Minor'] }
+          inspection_defect.critical = topo_defects.reduce(0) { |acc, td| acc + td['Critical'].to_i }
+          inspection_defect.major = topo_defects.reduce(0) { |acc, td| acc + td['Major'].to_i }
+          inspection_defect.minor = topo_defects.reduce(0) { |acc, td| acc + td['Minor'].to_i }
           inspection_defect.can_fix = topo_defects.all? { |td| td['CanFix'] == 'Y' }
 
           inspection_defect.save!
