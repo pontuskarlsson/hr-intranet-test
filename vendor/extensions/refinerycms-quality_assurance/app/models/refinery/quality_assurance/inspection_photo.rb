@@ -16,6 +16,8 @@ module Refinery
       validates :inspection_id,   presence: true
       validates :image_id,        presence: true
 
+      scope :non_defects, -> { where(inspection_defect_id: nil) }
+
       def thumb_url
         image_url('45x45#')
       end

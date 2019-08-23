@@ -3,167 +3,184 @@
 <% end %>
 
 <% content_for :body do %>
-  <div class="grid-x grid-padding-x">
-    <div class="cell">
-      <section class="contact-card">
-        <h1 class="cc-attribute cc-name">
-          <%=raw @inspection.code %>
-          <span class="result-<%= @inspection.result.downcase %>"><%= @inspection.result %></span>
-        </h1>
-        <% if @inspection.resource.present? %>
-          <%= link_to @inspection.resource.file.url do %>
-            <i class="fa fa-file-pdf-o"></i>
-            Download PDF Report
-          <% end %>
+  <section class="contact-card">
+    <h1 class="cc-attribute cc-name">
+      <%=raw @inspection.code %>
+      <span class="result-<%= @inspection.result.downcase %>"><%= @inspection.result %></span>
+    </h1>
+    <% if @inspection.resource.present? %>
+      <%= link_to @inspection.resource.file.url do %>
+        <i class="fa fa-file-pdf-o"></i>
+        Download PDF Report
+      <% end %>
+    <% end %>
+
+    <div class="grid-x grid-padding-x">
+      <div class="cell medium-9">
+        <h3>Inspection Details</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Date</th>
+            <td><%= @inspection.display_inspection_date %></td>
+          </tr>
+          <tr>
+            <th>Company</th>
+            <td><%= @inspection.company_label %></td>
+          </tr>
+          <tr>
+            <th>Supplier</th>
+            <td><%= @inspection.supplier_label %></td>
+          </tr>
+          <tr>
+            <th>Manufacturer</th>
+            <td><%= @inspection.manufacturer_label %></td>
+          </tr>
+          <tr>
+            <th>Inspected By</th>
+            <td><%= @inspection.inspected_by_name %></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3>Order / Product</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th>Type</th>
+            <td><%= @inspection.inspection_type %></td>
+          </tr>
+          <tr>
+            <th style="width: 150px;">PO Number</th>
+            <td><%= @inspection.po_number %></td>
+          </tr>
+          <tr>
+            <th>Type</th>
+            <td><%= @inspection.po_type %></td>
+          </tr>
+          <tr>
+            <th>StyleNr / Product Code</th>
+            <td><%= @inspection.product_code %></td>
+          </tr>
+          <tr>
+            <th>Product Description</th>
+            <td><%= @inspection.product_description %></td>
+          </tr>
+          <tr>
+            <th>Colours / Variants</th>
+            <td><%= @inspection.product_colour_variants %></td>
+          </tr>
+          <tr>
+            <th>PO Qty</th>
+            <td><%= number_with_delimiter @inspection.po_qty %></td>
+          </tr>
+          <tr>
+            <th>Available Qty</th>
+            <td><%= number_with_delimiter @inspection.available_qty %></td>
+          </tr>
+          <tr>
+            <th>Sample Size</th>
+            <td><%= number_with_delimiter @inspection.inspection_sample_size %></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3>Inspection Result</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Inspection Standard</th>
+            <td colspan="3"><%= @inspection.inspection_standard %></td>
+          </tr>
+          <tr>
+            <th></th>
+            <th style="text-align: center;">Critical</th>
+            <th style="text-align: center;">Major</th>
+            <th style="text-align: center;">Minor</th>
+          </tr>
+          <tr>
+            <th>Accepted</th>
+            <td style="text-align: center;"><%= @inspection.acc_critical %></td>
+            <td style="text-align: center;"><%= @inspection.acc_major %></td>
+            <td style="text-align: center;"><%= @inspection.acc_minor %></td>
+          </tr>
+          <tr>
+            <th>Found</th>
+            <td style="text-align: center;"><%= @inspection.total_critical %></td>
+            <td style="text-align: center;"><%= @inspection.total_major %></td>
+            <td style="text-align: center;"><%= @inspection.total_minor %></td>
+          </tr>
+          <tr>
+            <th>Result</th>
+            <td colspan="3" class="result-<%= @inspection.result.downcase %>"><%= @inspection.result %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cell medium-3">
+        <% if @inspection.inspection_photo.present? %>
+          <%=  dragonfly_reveal_tag @inspection.inspection_photo.image %>
         <% end %>
+      </div>
+    </div>
 
-        <div class="grid-x grid-padding-x">
-          <div class="cell medium-9">
-            <h3>Inspection Details</h3>
+    <ul class="tabs" data-tabs id="example-tabs">
+      <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Defects</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Chart</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Photos</a></li>
+    </ul>
+
+    <div class="tabs-content" data-tabs-content="example-tabs">
+      <div class="tabs-panel is-active" id="panel1">
+        <% @inspection.inspection_defects.each do |inspection_defect| %>
+          <h5 style="margin-top: 30px;"><%= inspection_defect.defect_label %></h5>
+
+          <section class="contact-card">
             <table class="cc-table">
               <tbody>
-              <tr>
-                <th style="width: 150px;">Date</th>
-                <td><%= @inspection.display_inspection_date %></td>
-              </tr>
-              <tr>
-                <th>Company</th>
-                <td><%= @inspection.company_label %></td>
-              </tr>
-              <tr>
-                <th>Supplier</th>
-                <td><%= @inspection.supplier_label %></td>
-              </tr>
-              <tr>
-                <th>Manufacturer</th>
-                <td><%= @inspection.manufacturer_label %></td>
-              </tr>
-              <tr>
-                <th>Inspected By</th>
-                <td><%= @inspection.inspected_by_name %></td>
-              </tr>
-              </tbody>
-            </table>
-
-            <h3>Order / Product</h3>
-            <table class="cc-table">
-              <tbody>
-              <tr>
-                <th>Type</th>
-                <td><%= @inspection.inspection_type %></td>
-              </tr>
-              <tr>
-                <th style="width: 150px;">PO Number</th>
-                <td><%= @inspection.po_number %></td>
-              </tr>
-              <tr>
-                <th>Type</th>
-                <td><%= @inspection.po_type %></td>
-              </tr>
-              <tr>
-                <th>StyleNr / Product Code</th>
-                <td><%= @inspection.product_code %></td>
-              </tr>
-              <tr>
-                <th>Product Description</th>
-                <td><%= @inspection.product_description %></td>
-              </tr>
-              <tr>
-                <th>Colours / Variants</th>
-                <td><%= @inspection.product_colour_variants %></td>
-              </tr>
-              <tr>
-                <th>PO Qty</th>
-                <td><%= number_with_delimiter @inspection.po_qty %></td>
-              </tr>
-              <tr>
-                <th>Available Qty</th>
-                <td><%= number_with_delimiter @inspection.available_qty %></td>
-              </tr>
-              <tr>
-                <th>Sample Size</th>
-                <td><%= number_with_delimiter @inspection.inspection_sample_size %></td>
-              </tr>
-              </tbody>
-            </table>
-
-            <h3>Inspection Result</h3>
-            <table class="cc-table">
-              <tbody>
-              <tr>
-                <th style="width: 150px;">Inspection Standard</th>
-                <td colspan="3"><%= @inspection.inspection_standard %></td>
-              </tr>
               <tr>
                 <th></th>
                 <th style="text-align: center;">Critical</th>
                 <th style="text-align: center;">Major</th>
                 <th style="text-align: center;">Minor</th>
-              </tr>
-              <tr>
-                <th>Accepted</th>
-                <td style="text-align: center;"><%= @inspection.acc_critical %></td>
-                <td style="text-align: center;"><%= @inspection.acc_major %></td>
-                <td style="text-align: center;"><%= @inspection.acc_minor %></td>
+                <th style="text-align: center;">Can Fix?</th>
               </tr>
               <tr>
                 <th>Found</th>
-                <td style="text-align: center;"><%= @inspection.total_critical %></td>
-                <td style="text-align: center;"><%= @inspection.total_major %></td>
-                <td style="text-align: center;"><%= @inspection.total_minor %></td>
-              </tr>
-              <tr>
-                <th>Result</th>
-                <td colspan="3" class="result-<%= @inspection.result.downcase %>"><%= @inspection.result %></td>
+                <td style="text-align: center;"><%= inspection_defect.critical %></td>
+                <td style="text-align: center;"><%= inspection_defect.major %></td>
+                <td style="text-align: center;"><%= inspection_defect.minor %></td>
+                <td style="text-align: center;"><%= inspection_defect.display_can_fix %></td>
               </tr>
               </tbody>
             </table>
+          </section>
+
+          <p><%= inspection_defect.comments %></p>
+
+          <div style="margin-top: 10px;">
+            <div class="block-css-grid">
+              <% inspection_defect.inspection_photos.each do |inspection_photo| %>
+                <%=  dragonfly_reveal_tag inspection_photo.image %>
+              <% end %>
+            </div>
           </div>
-          <div class="cell medium-3">
-            <% if @inspection.inspection_photo.present? %>
-              <%=  dragonfly_reveal_tag @inspection.inspection_photo.image %>
-            <% end %>
-          </div>
-        </div>
+        <% end %>
+      </div>
 
-        <h3>Defects</h3>
-      </section>
-      <%= bar_chart @inspection.chart_defects, stacked: true, colors: ['#30384B'] %>
+      <div class="tabs-panel" id="panel2">
+        <%= bar_chart @inspection.chart_defects, stacked: true, colors: ['#30384B'] %>
+      </div>
 
-      <% @inspection.inspection_defects.each do |inspection_defect| %>
-        <h5 style="margin-top: 30px;"><%= inspection_defect.defect_label %></h5>
-
-        <section class="contact-card">
-          <table class="cc-table">
-            <tbody>
-            <tr>
-              <th></th>
-              <th style="text-align: center;">Critical</th>
-              <th style="text-align: center;">Major</th>
-              <th style="text-align: center;">Minor</th>
-              <th style="text-align: center;">Can Fix?</th>
-            </tr>
-            <tr>
-              <th>Found</th>
-              <td style="text-align: center;"><%= inspection_defect.critical %></td>
-              <td style="text-align: center;"><%= inspection_defect.major %></td>
-              <td style="text-align: center;"><%= inspection_defect.minor %></td>
-              <td style="text-align: center;"><%= inspection_defect.display_can_fix %></td>
-            </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <p><%= inspection_defect.comments %></p>
-
-        <div style="margin-top: 10px;">
-          <% inspection_defect.inspection_photos.each do |inspection_photo| %>
+      <div class="tabs-panel" id="panel3">
+        <div class="block-css-grid">
+          <% @inspection.inspection_photos.non_defects.each do |inspection_photo| %>
             <%=  dragonfly_reveal_tag inspection_photo.image %>
           <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
-  </div>
+  </section>
 <% end %>
 
 <% if @similar_inspections.any? %>

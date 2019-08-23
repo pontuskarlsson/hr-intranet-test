@@ -158,3 +158,9 @@
         }
     }
 }
+
+.block-css-grid {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}

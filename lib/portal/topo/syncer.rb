@@ -57,7 +57,7 @@ module Portal
         handle_defects!(inspection, data['Defect'])
         handle_photos!(inspection, payload['files'])
 
-        inspection.inspection_photo = inspection.inspection_photos.detect { |inspection_photo| inspection_photo.fields['key'] == 'd' }
+        inspection.inspection_photo = inspection.inspection_photos.detect { |inspection_photo| inspection_photo.fields['key'] == 'Preview' }
         inspection.save!
       end
 
@@ -146,7 +146,7 @@ module Portal
                 image_id:image.id
             )
 
-            if topo_file['key'] && (match = /^cj\.([0-9]+)\./.match(topo_file['key'])).present?
+            if topo_file['key'] && (match = /^Defect\.([0-9]+)\./.match(topo_file['key'])).present?
               index = match[1].to_i
               inspection_photo.inspection_defect = @inspection_defects[index]
             end
