@@ -104,21 +104,21 @@ module Portal
       end
 
       def handle_defects!(inspection, topo_defects)
-        @inspection_defects = Array(topo_defects).map do |topo_defect|
+        @inspection_defects = Array(topo_defects).group_by { |topo_defect| topo_defect['Defectlist'] }.map do |defectlist, topo_defects|
           inspection_defect =
-              if (defect = defect_for topo_defect['Defectlist']).present?
+              if (defect = defect_for defectlist).present?
                 inspection.inspection_defects.find_or_initialize_by(defect_id: defect.id)
               else
                 inspection.inspection_defects.find_or_initialize_by(
                     defect_id: nil,
-                    defect_label: topo_defect['Defectlist']
+                    defect_label: defectlist
                 )
               end
 
-          inspection_defect.critical = topo_defect['Critical'] || 0
-          inspection_defect.major = topo_defect['Major'] || 0
-          inspection_defect.minor = topo_defect['Minor'] || 0
-          inspection_defect.can_fix = topo_defect['CanFix']
+          inspection_defect.critical = topo_defects.reduce(0) { |acc, td| acc + td['Critical'] }
+          inspection_defect.major = topo_defects.reduce(0) { |acc, td| acc + td['Major'] }
+          inspection_defect.minor = topo_defects.reduce(0) { |acc, td| acc + td['Minor'] }
+          inspection_defect.can_fix = topo_defects.all? { |td| td['CanFix'] == 'Y' }
 
           inspection_defect.save!
 
