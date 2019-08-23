@@ -131,6 +131,8 @@ module Portal
       def handle_photos!(inspection, topo_files)
         @inspection_photos = Array(topo_files).select { |tf| tf['property'] == 'src' }.map do |topo_file|
           if (inspection_photo = inspection.inspection_photos.find_by(file_id: topo_file['fileId'])).present?
+            inspection_photo.fields = topo_file
+            inspection_photo.save!
             inspection_photo
 
           else
