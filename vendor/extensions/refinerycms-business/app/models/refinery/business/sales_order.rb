@@ -10,6 +10,16 @@ module Refinery
       validates :order_ref,     presence: true, uniqueness: true
       validates :order_id,      uniqueness: true, allow_blank: true
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+
+        if titles.include? ROLE_INTERNAL
+          where(nil)
+        else
+          where('1=0')
+        end
+      end
+
     end
   end
 end

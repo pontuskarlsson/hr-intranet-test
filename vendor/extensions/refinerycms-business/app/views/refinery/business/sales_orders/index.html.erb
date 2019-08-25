@@ -1,11 +1,10 @@
 <% content_for :body do %>
-  <ul id="sales_orders">
-    <% @sales_orders.each do |sales_order| %>
-      <li>
-        <%= link_to sales_order.order_id, refinery.business_sales_order_path(sales_order) %>
-      </li>
-    <% end %>
-  </ul>
+  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+    <%= render 'add_sales_order', sales_order: @sales_order %>
+  <% end %>
+
+  <%= render 'table', sales_orders: @sales_orders, table_id: 'js_sales_orders_table', ajax: refinery.business_sales_orders_path %>
+
 <% end %>
 
 <%= render '/refinery/content_page' %>
