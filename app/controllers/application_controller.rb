@@ -42,10 +42,10 @@ class ApplicationController < ActionController::Base
   end
 
   def return_to_or_root_path(resource_or_scope)
-    if !session[:return_to] || (session[:return_to][/^\/refinery/] && !resource_or_scope.has_role?(:refinery))
+    if !session[:authentication_devise_user_return_to] || (session[:authentication_devise_user_return_to][/^\/refinery/] && !resource_or_scope.has_role?(:refinery))
       refinery.root_path
     else
-      session[:return_to]
+      session[:authentication_devise_user_return_to]
     end
   end
 
