@@ -24,17 +24,9 @@
   </tfoot>
 </table>
 
-<% content_for :stylesheets do %>
-  <%= stylesheet_link_tag 'https://cdn.datatables.net/1.10.19/css/dataTables.foundation.min.css' %>
-  <%= stylesheet_link_tag 'https://cdn.datatables.net/responsive/2.2.3/css/responsive.foundation.min.css' %>
-<% end %>
+<%= render 'refinery/datatable_dependencies' %>
 
 <% content_for :javascripts do %>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.foundation.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.foundation.min.js"></script>
-
   <script type="text/javascript">
     $(function() {
       var dt = $('#<%= table_id %>').DataTable({
