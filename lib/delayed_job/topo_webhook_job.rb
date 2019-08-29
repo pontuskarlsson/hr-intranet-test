@@ -7,8 +7,13 @@ class TopoWebhookJob < Struct.new(:payload)
 
       if syncer.error
         ErrorMailer.error_email(syncer.error).deliver
+
       elsif syncer.inspection
-        syncer.inspection.notify :'refinery/authentication/devise/users'
+        if syncer.inspection.status == 'Inspected'
+          syncer.inspection.notify :'refinery/authentication/devise/users'
+          syncer.inspection.status = 'Notified'
+          syncer.inspection.save!
+        end
       end
 
     end

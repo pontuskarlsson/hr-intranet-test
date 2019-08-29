@@ -7,6 +7,8 @@ module Refinery
       INSPECTION_TYPES = %w(In-line Final Re-Final)
       PO_TYPES = %w(Bulk SMS Other)
 
+      STATUSES = %w(Draft Planned Booked Inspected Notified Alerted Delivered Confirmed)
+
       serialize :fields, Hash
 
       belongs_to :inspected_by,       class_name: 'Refinery::Authentication::Devise::User'
@@ -32,15 +34,17 @@ module Refinery
       validates :inspection_type, inclusion: INSPECTION_TYPES, allow_blank: true
       validates :po_type,         inclusion: PO_TYPES, allow_blank: true
       validates :document_id,     uniqueness: true, allow_blank: true
+      validates :status,          inclusion: STATUSES
 
       before_validation(on: :create) do
+        self.status ||= 'Draft'
         assign_code!
       end
 
       validate do
         if business_section.present?
           unless company.present? && business_section.try(:company) == company
-            errors.add(:busniess_section_id, :invalid)
+            errors.add(:business_section_id, :invalid)
           end
         end
       end

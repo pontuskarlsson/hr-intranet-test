@@ -38,7 +38,10 @@ module Portal
 
       def run_webhook!(payload)
         data = payload['data'] || {}
-        @inspection = ::Refinery::QualityAssurance::Inspection.find_or_initialize_by(document_id: payload['formId'])
+        @inspection = ::Refinery::QualityAssurance::Inspection.find_or_initialize_by(document_id: payload['formId']) do |inspection|
+          # Default status if inspection was not already created
+          inspection.status = 'Inspected'
+        end
 
         inspection.attributes = SYNC_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
           acc[local] = data[remote]
