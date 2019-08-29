@@ -127,7 +127,9 @@
     <ul class="tabs" data-tabs id="example-tabs">
       <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Defects</a></li>
       <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Chart</a></li>
-      <li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Photos</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Measurements</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel4" href="#panel4">Product Photos</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel5" href="#panel5">Other Photos</a></li>
     </ul>
 
     <div class="tabs-content" data-tabs-content="example-tabs">
@@ -173,8 +175,22 @@
       </div>
 
       <div class="tabs-panel" id="panel3">
+        <% @inspection.inspection_photos.non_defects.select(&:measurement_photo?).each do |inspection_photo| %>
+          <%=  dragonfly_reveal_tag inspection_photo.image, 716, 716 %>
+        <% end %>
+      </div>
+
+      <div class="tabs-panel" id="panel4">
         <div class="block-css-grid">
-          <% @inspection.inspection_photos.non_defects.each do |inspection_photo| %>
+          <% @inspection.inspection_photos.non_defects.select(&:product_photo?).each do |inspection_photo| %>
+            <%=  dragonfly_reveal_tag inspection_photo.image %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="tabs-panel" id="panel5">
+        <div class="block-css-grid">
+          <% @inspection.inspection_photos.non_defects.select(&:other_photo?).each do |inspection_photo| %>
             <%=  dragonfly_reveal_tag inspection_photo.image %>
           <% end %>
         </div>

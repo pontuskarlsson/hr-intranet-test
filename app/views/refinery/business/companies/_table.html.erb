@@ -41,6 +41,7 @@
         "responsive":     true,
         "paging":         true,
         "ajax": "<%= refinery.business_companies_path(filter_params) %>",
+        "order": [[1, 'asc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_companies_path %>") } },
           { data: "code" },

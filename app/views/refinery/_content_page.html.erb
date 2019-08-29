@@ -1,8 +1,8 @@
 <% if @page.try(:live?) %>
-  <%- side_body_contents = [@page.part_with_title('side_body').try(:body), content_for(:side_body)].reject(&:blank?) -%>
-  <%- side_body_content = content_for(:side_body).present? ? content_for(:side_body) : @page.part_with_title('side_body').try(:body) -%>
-  <%- body_contents = [@page.part_with_title('body').try(:body), content_for(:body)].reject(&:blank?) -%>
-  <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_title('body').try(:body) -%>
+  <%- side_body_contents = [@page.part_with_slug('side_body').try(:body), content_for(:side_body)].reject(&:blank?) -%>
+  <%- side_body_content = content_for(:side_body).present? ? content_for(:side_body) : @page.part_with_slug('side_body').try(:body) -%>
+  <%- body_contents = [@page.part_with_slug('body').try(:body), content_for(:body)].reject(&:blank?) -%>
+  <%- body_content = content_for(:body).present? ? content_for(:body) : @page.part_with_slug('body').try(:body) -%>
   <%- body_content_title = content_for(:body_content_title) -%>
   <%- actions = content_for(:actions) -%>
   <div class="grid-x grid-padding-x">
