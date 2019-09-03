@@ -1,4 +1,4 @@
-<%= column_chart [], stacked: true, id: chart_id, colors: ['#48A9A6', '#C1666B', '#D4B483'], background_colors: ['#48A9A6', '#C1666B', '#D4B483'] %>
+<%= column_chart [], stacked: true, id: chart_id, colors: ['#48A9A6', '#C1666B', '#D4B483'], background_colors: ['#48A9A6', '#C1666B', '#D4B483'], thousands: ',' %>
 
 <% content_for :javascripts do %>
   <script type="text/javascript">
@@ -19,11 +19,11 @@
           }
 
           if (dataRow.result == 'Pass') {
-            acc[0].data[supplierIdx[dataRow.supplier_label]][1] += 1;
+            acc[0].data[supplierIdx[dataRow.supplier_label]][1] += (dataRow.po_qty || 0);
           } else if (dataRow.result == 'Reject') {
-            acc[1].data[supplierIdx[dataRow.supplier_label]][1] += 1;
+            acc[1].data[supplierIdx[dataRow.supplier_label]][1] += (dataRow.po_qty || 0);
           } else if (dataRow.result == 'Hold') {
-            acc[2].data[supplierIdx[dataRow.supplier_label]][1] += 1;
+            acc[2].data[supplierIdx[dataRow.supplier_label]][1] += (dataRow.po_qty || 0);
           }
 
           return acc;
