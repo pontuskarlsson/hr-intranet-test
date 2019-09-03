@@ -1,7 +1,7 @@
 <%- @inspection = @notification.notifiable -%>
 <p>Dear <%= @target.printable_target_name %>,</p>
 
-<p><%= @inspection.inspected_by_label %> have just completed an inspection. Please verify it's content before notifying the Customer.</p>
+<p><%= @inspection.inspected_by_name %> have just completed an inspection. Please verify it's content before notifying the Customer.</p>
 
 <% if @inspection.to_be_verified.any? %>
   <p>Please pay extra attention to the following:</p>
