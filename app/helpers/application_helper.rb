@@ -2,7 +2,13 @@ module ApplicationHelper
 
   def dragonfly_reveal_tag(image, width = 190, height = 190)
     content_tag(:div, class: 'reveal', id: "preview-image-modal-#{image.id}", 'data-reveal' => true) do
-      image_tag('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D', 'data-src' => image.image.url, class: 'dragonfly-image-tag')
+      content_tag(:div) do
+        link_to(image.image.url, target: '_blank', class: 'button') do
+          content_tag(:span, 'Open in new tab ') + content_tag(:i, '', class: 'fa fa-external-link')
+        end + ' ' + link_to(image.image.url, download: image.image_name, class: 'button') do
+        content_tag(:span, 'Download ') + content_tag(:i, '', class: 'fa fa-cloud-download')
+      end
+      end + image_tag('data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D', 'data-src' => image.image.url, class: 'dragonfly-image-tag')
     end + image_tag(image.image.thumb("#{width}x#{height}#").url, class: 'dragonfly-thumb-tag', 'data-open' => "preview-image-modal-#{image.id}")
   end
 

@@ -36,6 +36,10 @@ module Refinery
         end
       end
 
+      def total_no_of_defects
+        critical + major + minor
+      end
+
     end
   end
 end

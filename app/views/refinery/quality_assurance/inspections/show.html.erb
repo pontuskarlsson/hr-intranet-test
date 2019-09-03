@@ -119,7 +119,7 @@
       </div>
       <div class="cell medium-3">
         <% if @inspection.inspection_photo.present? %>
-          <%=  dragonfly_reveal_tag @inspection.inspection_photo.image %>
+          <%= dragonfly_reveal_tag @inspection.inspection_photo.image %>
         <% end %>
       </div>
     </div>
@@ -163,7 +163,7 @@
           <div style="margin-top: 10px;">
             <div class="block-css-grid">
               <% inspection_defect.inspection_photos.each do |inspection_photo| %>
-                <%=  dragonfly_reveal_tag inspection_photo.image %>
+                <%= dragonfly_reveal_tag inspection_photo.image %>
               <% end %>
             </div>
           </div>
@@ -176,14 +176,14 @@
 
       <div class="tabs-panel" id="panel3">
         <% @inspection.inspection_photos.non_defects.select(&:measurement_photo?).each do |inspection_photo| %>
-          <%=  dragonfly_reveal_tag inspection_photo.image, 716, 716 %>
+          <%= dragonfly_reveal_tag inspection_photo.image, 716, 716 %>
         <% end %>
       </div>
 
       <div class="tabs-panel" id="panel4">
         <div class="block-css-grid">
           <% @inspection.inspection_photos.non_defects.select(&:product_photo?).each do |inspection_photo| %>
-            <%=  dragonfly_reveal_tag inspection_photo.image %>
+            <%= dragonfly_reveal_tag inspection_photo.image %>
           <% end %>
         </div>
       </div>
@@ -191,12 +191,59 @@
       <div class="tabs-panel" id="panel5">
         <div class="block-css-grid">
           <% @inspection.inspection_photos.non_defects.select(&:other_photo?).each do |inspection_photo| %>
-            <%=  dragonfly_reveal_tag inspection_photo.image %>
+            <%= dragonfly_reveal_tag inspection_photo.image %>
           <% end %>
         </div>
       </div>
     </div>
   </section>
+<% end %>
+
+<% if page_role? Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER %>
+  <% content_for :side_body do %>
+    <aside>
+      <h5>Status</h5>
+      <p><%= @inspection.status %></p>
+
+      <% if @inspection.status == 'Inspected' %>
+        <h5>Verify content</h5>
+
+        <% if @inspection.to_be_verified.any? %>
+          <p>Please pay extra attention to the following:</p>
+
+          <ul>
+            <% @inspection.to_be_verified.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+
+        <% else %>
+          <p>We could not automatically determine anything that might be wrong, so look through in general.</p>
+        <% end %>
+
+        <% if @inspection.company.present? %>
+          <%= form_for @inspection, url: refinery.quality_assurance_inspection_path(@inspection) do |f| %>
+            <%= f.hidden_field :status, value: 'Notified' %>
+            <% if @inspection.company.users.any? %>
+              <ul>
+                <% @inspection.company.users.each do |user| %>
+                  <li>
+                    <%= check_box_tag 'notify_users[]', user.id %>
+                    <%= label_tag user.id, user.full_name %>
+                  </li>
+                <% end %>
+              </ul>
+
+              <p><%= f.submit 'Confirm and notify', confirm: 'This will send out a notification to the Customer.' %></p>
+            <% else %>
+
+              <p><%= f.submit 'Confirm', confirm: 'This will send out a notification to the Customer.' %></p>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </aside>
+  <% end %>
 <% end %>
 
 <% if @similar_inspections.any? %>

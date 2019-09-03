@@ -1,0 +1,26 @@
+<%- @inspection = @notification.notifiable -%>
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p><%= @inspection.inspected_by_label %> have just completed an inspection. Please verify it's content before notifying the Customer.</p>
+
+<% if @inspection.to_be_verified.any? %>
+  <p>Please pay extra attention to the following:</p>
+
+  <ul>
+    <% @inspection.to_be_verified.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+
+<% else %>
+  <p>We could not automatically determine anything that might be wrong, so look through in general.</p>
+<% end %>
+
+<p>For more details, <%= link_to "see inspection on our Portal", move_notification_url_for(@notification, open: true) %>.</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<%= render 'inspection', inspection: @inspection %>

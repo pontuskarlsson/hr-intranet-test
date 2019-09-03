@@ -5,7 +5,8 @@ module Refinery
 
       set_page PAGE_INSPECTIONS_URL
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
-      allow_page_roles ROLE_INTERNAL
+      allow_page_roles ROLE_INTERNAL, only: [:index, :show]
+      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :show, :update]
 
       before_action :find_all_inspections,  only: [:index, :show]
       before_action :find_inspection,       except: [:index, :new, :create]
@@ -27,11 +28,34 @@ module Refinery
         present(@page)
       end
 
+      def update
+        if @inspection.update_attributes(inspection_params)
+          if notify_users.any?
+            @inspection.notify_only notify_users, later: true
+          end
+          redirect_to refinery.quality_assurance_inspection_path(@inspection), status: :see_other
+        else
+          @similar_inspections = @inspections.similar_to(@inspection).recent(10)
+          present(@page)
+          render :show
+        end
+      end
+
+      def confirm
+        if @inspection.update_attributes(inspection_params)
+          redirect_to refinery.quality_assurance_inspection_path(@inspection), status: :see_other
+        else
+          @similar_inspections = @inspections.similar_to(@inspection).recent(10)
+          present(@page)
+          render :show
+        end
+      end
+
     protected
 
       def inspections_scope
         @inspections ||=
-            if page_role? ROLE_INTERNAL
+            if page_role?(ROLE_INTERNAL) or page_role?(ROLE_INTERNAL_MANAGER)
               Inspection.where(nil)
             elsif page_role? ROLE_INSPECTOR
               Inspection.inspected_by(current_authentication_devise_user)
@@ -54,6 +78,19 @@ module Refinery
 
       def filter_params
         params.permit([:company_id, :manufacturer_id, :supplier_id, :business_section_id, :business_product_id])
+      end
+
+      def inspection_params
+        params.require(:inspection).permit(:status)
+      end
+
+      def notify_users
+        @notify_users ||=
+            if @inspection.company.present?
+              @inspection.company.users.where(id: params[:notify_users])
+            else
+              []
+            end
       end
 
     end

@@ -7,6 +7,7 @@ module Refinery
     require 'refinery/quality_assurance/engine'
 
     ROLE_INTERNAL = 'QualityAssurance:Internal'
+    ROLE_INTERNAL_MANAGER = 'QualityAssurance:Internal:Manager'
     ROLE_EXTERNAL = 'QualityAssurance:External'
     ROLE_INSPECTOR = 'QualityAssurance:Inspector'
 
