@@ -32,4 +32,8 @@ module ApplicationHelper
     end
   end
 
+  def format_joined_items(str)
+    str.split(',').map(&:squish).join ', '
+  end
+
 end
