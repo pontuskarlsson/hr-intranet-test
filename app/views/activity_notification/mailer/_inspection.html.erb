@@ -34,7 +34,7 @@
         </tr>
         <tr>
           <th>PO#</th>
-          <td><%= inspection.po_number %></td>
+          <td><%=format_joined_items inspection.po_number %></td>
         </tr>
         <tr>
           <th>Order Type</th>
@@ -46,7 +46,7 @@
         </tr>
         <tr>
           <th>Variants</th>
-          <td><%= inspection.product_colour_variants %></td>
+          <td><%=format_joined_items inspection.product_colour_variants %></td>
         </tr>
         <tr>
           <th>Inspection Type</th>
