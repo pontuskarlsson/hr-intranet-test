@@ -8,7 +8,8 @@
         var chart = Chartkick.charts['<%= chart_id %>'];
 
         var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
-          acc[dataRow.result] = (acc[dataRow.result] || 0) + dataRow.po_qty;
+          var result = dataRow.result ||  'Unknown';
+          acc[result] = (acc[result] || 0) + dataRow.po_qty;
           return acc;
         }, { 'Pass': 0, 'Reject': 0, 'Hold': 0 });
         chart.updateData(data);
