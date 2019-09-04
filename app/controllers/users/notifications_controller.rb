@@ -50,9 +50,11 @@ class Users::NotificationsController < ActivityNotification::NotificationsContro
   #   super
   # end
 
-  # def set_index_options
-  #   super
-  # end
+  def set_index_options
+    super
+    @index_options[:limit] = [@index_options[:limit], 100].reject(&:nil).min
+    @index_options
+  end
 
   # def load_index
   #   super
