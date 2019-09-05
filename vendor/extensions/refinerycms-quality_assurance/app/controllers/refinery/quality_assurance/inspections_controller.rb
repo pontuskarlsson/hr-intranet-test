@@ -31,7 +31,7 @@ module Refinery
       def update
         if @inspection.update_attributes(inspection_params)
           if notify_users.any?
-            ActivityNotification::Notification.notify_all notify_users, @inspection, notify_later: true
+            ActivityNotification::Notification.notify_all notify_users.to_a, @inspection, notify_later: true
           end
           redirect_to refinery.quality_assurance_inspection_path(@inspection), status: :see_other
         else

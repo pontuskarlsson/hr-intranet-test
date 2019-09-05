@@ -1,1 +1,1 @@
-*/15 * * * * root /bin/bash /hr-intranet/scripts/xero_sync_updated_invoices.sh
+*/30 * * * * root /bin/bash /hr-intranet/scripts/xero_sync_updated_invoices.sh
