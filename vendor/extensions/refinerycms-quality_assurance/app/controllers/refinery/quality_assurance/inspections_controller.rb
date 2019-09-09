@@ -4,20 +4,33 @@ module Refinery
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_INSPECTIONS_URL
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
-      allow_page_roles ROLE_INTERNAL, only: [:index, :show]
-      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :show, :update]
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :show]
+      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :show]
+      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :show, :update]
 
-      before_action :find_all_inspections,  only: [:index, :show]
-      before_action :find_inspection,       except: [:index, :new, :create]
+      before_action :find_all_inspections,  only: [:index, :calendar, :show]
+      before_action :find_inspection,       except: [:index, :calendar, :new, :create]
 
-      helper_method :filter_params
+      helper_method :filter_params, :calendar_params
 
       def index
         @inspections = @inspections.where(filter_params)
         # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @quality_assurance in the line below:\
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json
+        end
+      end
+
+      def calendar
+        @inspections = @inspections.where(filter_params)
+        # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @quality_assurance in the line below:
-        present(@page)
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json
+        end
       end
 
       def show
@@ -78,6 +91,10 @@ module Refinery
 
       def filter_params
         params.permit([:company_id, :manufacturer_id, :supplier_id, :business_section_id, :business_product_id])
+      end
+
+      def calendar_params
+        params.permit(:start, :end)
       end
 
       def inspection_params

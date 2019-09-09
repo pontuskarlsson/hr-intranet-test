@@ -119,6 +119,10 @@ module Refinery
         [product_code, product_description].reject(&:blank?).first
       end
 
+      def calendar_label
+        "(#{inspection_type[0]}) #{product_label}"
+      end
+
       def chart_defects
         inspection_defects.each_with_object({}) { |inspection_defect, acc|
           acc[inspection_defect.defect.try(:label) || 'Unknown'] = [inspection_defect.critical, inspection_defect.major, inspection_defect.minor].sum

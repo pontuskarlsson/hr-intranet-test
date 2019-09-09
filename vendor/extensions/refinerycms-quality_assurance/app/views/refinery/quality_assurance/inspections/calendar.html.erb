@@ -1,0 +1,57 @@
+<% content_for :actions do %>
+  <ul class="menu">
+    <li><%= link_to 'Inspections', refinery.quality_assurance_inspections_path %></li>
+    <li><%= link_to 'Calendar', '#' %></li>
+  </ul>
+<% end %>
+
+<% content_for :body do %>
+  <h5>Display event as:</h5>
+  <select class="js-calendar-title-field">
+    <option value="product_label" selected>Product</option>
+    <option value="company_label">Customer</option>
+    <option value="supplier_label">Supplier</option>
+    <option value="inspected_by_name">Inspector</option>
+  </select>
+  <div id='calendar-inspections'></div>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/core/main.min.css' %>
+  <%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/daygrid/main.min.css' %>
+  <%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/list/main.min.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript" src="https://unpkg.com/@fullcalendar/core/main.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@fullcalendar/daygrid/main.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@fullcalendar/list/main.min.js"></script>
+
+
+  <script type="text/javascript">
+    $(function() {
+      var field = $('.js-calendar-title-field')[0];
+      var calendar = new FullCalendar.Calendar(document.getElementById('calendar-inspections'), {
+        plugins: ['dayGrid'],
+        defaultDate: '<%= [@inspections.order(inspection_date: :desc).first.try(:inspection_date), Date.today].reject(&:nil?).min.to_s %>',
+        events: '<%= refinery.calendar_quality_assurance_inspections_path(format: :json) %>',
+        eventDataTransform: function(eventData) {
+          return {
+            title: ['(', eventData.inspection_type.substr(0, 1), ') ', eventData[field.value]].join(''),
+            start: eventData.inspection_date,
+            end: eventData.inspection_date,
+            allDay: true,
+            url: ['<%= refinery.quality_assurance_inspections_path %>/', eventData.id].join('')
+          };
+        },
+      });
+      calendar.render();
+
+      $('.js-calendar-title-field').on('change', function() {
+        calendar.refetchEvents();
+      })
+    });
+  </script>
+<% end %>
+
+<%= render '/refinery/content_page' %>

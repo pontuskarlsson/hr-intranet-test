@@ -2,7 +2,9 @@ Refinery::Core::Engine.routes.draw do
 
   # Frontend routes
   namespace :quality_assurance do
-    resources :inspections, :only => [:index, :show, :edit, :update]
+    resources :inspections, :only => [:index, :show, :edit, :update] do
+      get :calendar, on: :collection
+    end
   end
 
   # Admin routes
