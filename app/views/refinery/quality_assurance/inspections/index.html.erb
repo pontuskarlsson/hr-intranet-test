@@ -1,7 +1,7 @@
 <% content_for :actions do %>
   <ul class="menu">
-    <li><%= link_to 'Inspections', refinery.quality_assurance_inspections_path %></li>
-    <li><%= link_to 'Calendar', refinery.calendar_quality_assurance_inspections_path %></li>
+    <li><%= link_to 'Inspections', '#' %></li>
+    <li><%= link_to 'Calendar', refinery.calendar_quality_assurance_inspections_path(filter_params) %></li>
   </ul>
 <% end %>
 
