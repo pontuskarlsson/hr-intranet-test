@@ -15,7 +15,7 @@ module Portal
           company_code: 'CustomerCode',
           company_label: 'Customer',
           inspection_date: 'InspDate',
-          inspected_by_name: 'InspectorName',
+          inspected_by_name: 'Inspector',
           inspection_standard: 'InspStandard',
           inspection_type: 'InspType',
           manufacturer_code: 'ManufacturerCode',
