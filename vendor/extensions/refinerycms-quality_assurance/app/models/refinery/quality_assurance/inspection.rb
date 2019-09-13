@@ -11,6 +11,7 @@ module Refinery
 
       serialize :fields, Hash
 
+      belongs_to :job
       belongs_to :inspected_by,       class_name: 'Refinery::Authentication::Devise::User'
       belongs_to :business_product,   class_name: 'Refinery::Business::Product'
       belongs_to :business_section,   class_name: 'Refinery::Business::Section'

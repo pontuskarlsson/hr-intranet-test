@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190820084621) do
+ActiveRecord::Schema.define(version: 20190912064814) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 20190820084621) do
     t.integer  "invitations_count",      limit: 4,   default: 0
     t.boolean  "deactivated",                        default: false, null: false
     t.string   "topo_id",                limit: 255
+    t.datetime "last_active_at"
   end
 
   add_index "refinery_authentication_devise_users", ["full_name"], name: "index_refinery_authentication_devise_users_on_full_name", using: :btree
@@ -186,6 +187,7 @@ ActiveRecord::Schema.define(version: 20190820084621) do
   add_index "refinery_authentication_devise_users", ["invitation_token"], name: "index_refinery_authentication_devise_users_on_invitation_token", unique: true, using: :btree
   add_index "refinery_authentication_devise_users", ["invitations_count"], name: "index_refinery_authentication_devise_users_on_invitations_count", using: :btree
   add_index "refinery_authentication_devise_users", ["invited_by_id"], name: "index_refinery_authentication_devise_users_on_invited_by_id", using: :btree
+  add_index "refinery_authentication_devise_users", ["last_active_at"], name: "index_refinery_authentication_devise_users_on_last_active_at", using: :btree
   add_index "refinery_authentication_devise_users", ["password_changed_at"], name: "refinery_devise_users_password_changed_at", using: :btree
   add_index "refinery_authentication_devise_users", ["slug"], name: "index_refinery_authentication_devise_users_on_slug", using: :btree
   add_index "refinery_authentication_devise_users", ["topo_id"], name: "index_refinery_authentication_devise_users_on_topo_id", using: :btree
@@ -268,6 +270,40 @@ ActiveRecord::Schema.define(version: 20190820084621) do
 
   add_index "refinery_business_accounts", ["organisation"], name: "index_refinery_business_accounts_on_organisation", using: :btree
   add_index "refinery_business_accounts", ["position"], name: "index_refinery_business_accounts_on_position", using: :btree
+
+  create_table "refinery_business_billables", force: :cascade do |t|
+    t.integer  "company_id",    limit: 4
+    t.integer  "project_id",    limit: 4
+    t.integer  "section_id",    limit: 4
+    t.integer  "invoice_id",    limit: 4
+    t.string   "billable_type", limit: 255
+    t.string   "status",        limit: 255
+    t.string   "title",         limit: 255
+    t.text     "description",   limit: 65535
+    t.string   "article_code",  limit: 255
+    t.decimal  "qty",                         precision: 10
+    t.string   "qty_unit",      limit: 255
+    t.decimal  "unit_price",                  precision: 13, scale: 4, default: 0.0, null: false
+    t.decimal  "discount",                    precision: 12, scale: 6, default: 0.0, null: false
+    t.decimal  "total_cost",                  precision: 13, scale: 4, default: 0.0, null: false
+    t.string   "account",       limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_billables", ["account"], name: "index_refinery_business_billables_on_account", using: :btree
+  add_index "refinery_business_billables", ["article_code"], name: "index_refinery_business_billables_on_article_code", using: :btree
+  add_index "refinery_business_billables", ["billable_type"], name: "index_refinery_business_billables_on_billable_type", using: :btree
+  add_index "refinery_business_billables", ["company_id"], name: "index_refinery_business_billables_on_company_id", using: :btree
+  add_index "refinery_business_billables", ["invoice_id"], name: "index_refinery_business_billables_on_invoice_id", using: :btree
+  add_index "refinery_business_billables", ["project_id"], name: "index_refinery_business_billables_on_project_id", using: :btree
+  add_index "refinery_business_billables", ["qty"], name: "index_refinery_business_billables_on_qty", using: :btree
+  add_index "refinery_business_billables", ["qty_unit"], name: "index_refinery_business_billables_on_qty_unit", using: :btree
+  add_index "refinery_business_billables", ["section_id"], name: "index_refinery_business_billables_on_section_id", using: :btree
+  add_index "refinery_business_billables", ["status"], name: "index_refinery_business_billables_on_status", using: :btree
+  add_index "refinery_business_billables", ["title"], name: "index_refinery_business_billables_on_title", using: :btree
+  add_index "refinery_business_billables", ["total_cost"], name: "index_refinery_business_billables_on_total_cost", using: :btree
+  add_index "refinery_business_billables", ["unit_price"], name: "index_refinery_business_billables_on_unit_price", using: :btree
 
   create_table "refinery_business_budget_items", force: :cascade do |t|
     t.integer  "budget_id",      limit: 4
@@ -1037,6 +1073,7 @@ ActiveRecord::Schema.define(version: 20190820084621) do
     t.string   "company_project_reference", limit: 255
     t.string   "project_code",              limit: 255
     t.string   "code",                      limit: 255
+    t.integer  "job_id",                    limit: 4
   end
 
   add_index "refinery_quality_assurance_inspections", ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id", using: :btree
@@ -1050,6 +1087,7 @@ ActiveRecord::Schema.define(version: 20190820084621) do
   add_index "refinery_quality_assurance_inspections", ["inspection_date"], name: "index_qa_inspections_on_inspection_date", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_photo_id"], name: "index_qa_inspections_on_inspection_photo_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["inspection_type"], name: "index_qa_inspections_on_inspection_type", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["job_id"], name: "index_qa_inspections_on_job_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["manufacturer_code"], name: "index_qa_inspections_on_manufacturer_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["manufacturer_id"], name: "index_qa_inspections_on_manufacturer_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["manufacturer_label"], name: "index_qa_inspections_on_manufacturer_label", using: :btree
@@ -1065,6 +1103,49 @@ ActiveRecord::Schema.define(version: 20190820084621) do
   add_index "refinery_quality_assurance_inspections", ["status"], name: "index_refinery_quality_assurance_inspections_on_status", using: :btree
   add_index "refinery_quality_assurance_inspections", ["supplier_code"], name: "index_qa_inspections_on_supplier_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["supplier_id"], name: "index_qa_inspections_on_supplier_id", using: :btree
+
+  create_table "refinery_quality_assurance_jobs", force: :cascade do |t|
+    t.integer  "company_id",                limit: 4
+    t.string   "company_code",              limit: 255
+    t.string   "company_label",             limit: 255
+    t.integer  "project_id",                limit: 4
+    t.string   "project_code",              limit: 255
+    t.string   "company_project_reference", limit: 255
+    t.integer  "section_id",                limit: 4
+    t.string   "billable_type",             limit: 255
+    t.integer  "billable_id",               limit: 4
+    t.string   "status",                    limit: 255
+    t.string   "code",                      limit: 255
+    t.string   "title",                     limit: 255
+    t.text     "description",               limit: 65535
+    t.integer  "assigned_to_id",            limit: 4
+    t.string   "assigned_to_label",         limit: 255
+    t.string   "job_type",                  limit: 255
+    t.date     "inspection_date"
+    t.decimal  "time_spent",                              precision: 8, scale: 2, default: 0.0, null: false
+    t.text     "time_log",                  limit: 65535
+    t.integer  "position",                  limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_quality_assurance_jobs", ["assigned_to_id"], name: "index_qa_inspection_jobs_on_assigned_to_id", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["assigned_to_label"], name: "index_qa_inspection_jobs_on_assigned_to_label", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["billable_id"], name: "index_qa_inspection_jobs_on_billable_id", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["billable_type"], name: "index_qa_inspection_jobs_on_billable_type", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["code"], name: "index_qa_inspection_jobs_on_code", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["company_code"], name: "index_qa_inspection_jobs_on_company_code", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["company_id"], name: "index_qa_inspection_jobs_on_company_id", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["company_label"], name: "index_qa_inspection_jobs_on_company_label", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["company_project_reference"], name: "index_qa_inspection_jobs_on_company_project_reference", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["inspection_date"], name: "index_qa_inspection_jobs_on_inspection_date", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["job_type"], name: "index_qa_inspection_jobs_on_job_type", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["position"], name: "index_qa_inspection_jobs_on_position", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["project_code"], name: "index_qa_inspection_jobs_on_project_code", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["project_id"], name: "index_qa_inspection_jobs_on_project_id", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["section_id"], name: "index_qa_inspection_jobs_on_section_id", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["status"], name: "index_qa_inspection_jobs_on_status", using: :btree
+  add_index "refinery_quality_assurance_jobs", ["title"], name: "index_qa_inspection_jobs_on_title", using: :btree
 
   create_table "refinery_resource_translations", force: :cascade do |t|
     t.integer  "refinery_resource_id", limit: 4,   null: false

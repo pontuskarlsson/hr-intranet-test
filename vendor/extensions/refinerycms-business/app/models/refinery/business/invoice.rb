@@ -9,6 +9,7 @@ module Refinery
       belongs_to :account
       belongs_to :company
       belongs_to :project
+      has_many :billables,      dependent: :nullify
 
       validates :account_id,    presence: true
       validates :invoice_id,    presence: true, uniqueness: true
