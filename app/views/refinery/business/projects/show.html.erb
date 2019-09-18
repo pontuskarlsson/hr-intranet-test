@@ -50,7 +50,7 @@
     <h3>Project Scope</h3>
     <% if @project.sections.any? %>
       <% @project.sections.each do |section| %>
-        <%= render "section_#{section.section_type}", section: section %>
+        <%= render "section_#{section.section_type.downcase}", section: section %>
       <% end %>
     <% else %>
       <p>No sections added.</p>
