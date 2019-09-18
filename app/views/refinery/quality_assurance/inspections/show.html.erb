@@ -261,34 +261,6 @@
 <% if page_role? Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER %>
   <% content_for :side_body do %>
     <aside>
-      <% if @inspection.job.present? %>
-        <% if @inspection.job.project.present? %>
-          <h5>Project</h5>
-          <p><%= @inspection.job_project_code %></p>
-        <% else %>
-
-          <%= form_for @inspection.job, url: refinery.quality_assurance_inspection_path(@inspection) do |f| %>
-            <%= f.hidden_field :status, value: 'Notified' %>
-            <% if @inspection.company.users.any? %>
-              <ul>
-                <% @inspection.company.users.each do |user| %>
-                  <li>
-                    <%= check_box_tag 'notify_users[]', user.id %>
-                    <%= label_tag user.id, user.full_name %>
-                  </li>
-                <% end %>
-              </ul>
-
-              <p><%= f.submit 'Confirm and notify', confirm: 'This will send out a notification to the Customer.' %></p>
-            <% else %>
-
-              <p><%= f.submit 'Confirm', confirm: 'This will send out a notification to the Customer.' %></p>
-            <% end %>
-          <% end %>
-
-        <% end %>
-      <% end %>
-
       <h5>Status</h5>
       <p><%= @inspection.status %></p>
 

@@ -4,84 +4,90 @@
       <%=raw @job.code %>
     </h1>
 
-    <h3>Job Details</h3>
-    <table class="cc-table">
-      <tbody>
-      <tr>
-        <th style="width: 150px;">Job No.</th>
-        <td><%= @job.code %></td>
-      </tr>
-      <tr>
-        <th>Company</th>
-        <td><%= @job.company_label %></td>
-      </tr>
-      <tr>
-        <th>Project</th>
-        <td>
-          <% if @job.company.present? && page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
-            <%= form_for @job, url: refinery.quality_assurance_job_path(@job) do |f| %>
-              <div class="input-group">
-                <%= f.text_field :project_label, :class => 'js_project_field input-group-field' -%>
-                <div class="input-group-button">
-                  <%= f.submit 'Update', class: 'button' %>
-                </div>
-              </div>
-            <% end %>
-          <% else %>
-            <%= @job.project_label.presence || 'N/A' %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Status</th>
-        <td><%= @job.status %></td>
-      </tr>
-      <tr>
-        <th>Assigned to</th>
-        <td><%= @job.assigned_to_label %></td>
-      </tr>
-      <tr>
-        <th>Date</th>
-        <td><%= @job.inspection_date %></td>
-      </tr>
-      </tbody>
-    </table>
-
-    <h3>Billable</h3>
-    <% if (billable = @job.billable).present? %>
-      <table class="cc-table">
-        <tbody>
-        <tr>
-          <th style="width: 150px;">Title</th>
-          <td><%= billable.title %></td>
-        </tr>
-        <tr>
-          <th>Description</th>
-          <td><%= billable.description %></td>
-        </tr>
-        <tr>
-          <th>Invoice</th>
-          <td>
-            <% if billable.invoice.present? %>
-              <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
-                <%= link_to billable.invoice.invoice_number, refinery.business_invoice_path(billable.invoice) %>
+    <div class="grid-x grid-padding-x">
+      <div class="cell medium-6">
+        <h3>Job Details</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Job No.</th>
+            <td><%= @job.code %></td>
+          </tr>
+          <tr>
+            <th>Company</th>
+            <td><%= @job.company_label %></td>
+          </tr>
+          <tr>
+            <th>Project</th>
+            <td>
+              <% if @job.company.present? && page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
+                <%= form_for @job, url: refinery.quality_assurance_job_path(@job) do |f| %>
+                  <div class="input-group">
+                    <%= f.text_field :project_label, :class => 'js_project_field input-group-field' -%>
+                    <div class="input-group-button">
+                      <%= f.submit 'Update', class: 'button' %>
+                    </div>
+                  </div>
+                <% end %>
               <% else %>
-                <%= billable.invoice.invoice_number %>
+                <%= @job.project_label.presence || 'N/A' %>
               <% end %>
-            <% else %>
-              N/A
-            <% end %>
-          </td>
-        </tr>
-        <tr>
-          <th>Status</th>
-          <td><%= @job.status %></td>
-        </tr>
-        </tbody>
-      </table>
-    <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td><%= @job.status %></td>
+          </tr>
+          <tr>
+            <th>Assigned to</th>
+            <td><%= @job.assigned_to_label %></td>
+          </tr>
+          <tr>
+            <th>Date</th>
+            <td><%= @job.inspection_date %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <h3>Job Type: <%= @job.job_type %></h3>
+      <div class="cell medium-6">
+        <h3>Billable</h3>
+        <% if (billable = @job.billable).present? %>
+          <table class="cc-table">
+            <tbody>
+            <tr>
+              <th style="width: 150px;">Title</th>
+              <td><%= billable.title %></td>
+            </tr>
+            <tr>
+              <th>Description</th>
+              <td><%= billable.description %></td>
+            </tr>
+            <tr>
+              <th>Invoice</th>
+              <td>
+                <% if billable.invoice.present? %>
+                  <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+                    <%= link_to billable.invoice.invoice_number, refinery.business_invoice_path(billable.invoice) %>
+                  <% else %>
+                    <%= billable.invoice.invoice_number %>
+                  <% end %>
+                <% else %>
+                  N/A
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td><%= billable.status %></td>
+            </tr>
+            </tbody>
+          </table>
+        <% end %>
+      </div>
+    </div>
+
+    <%= render "#{@job.job_type.downcase}_job", job: @job %>
   </section>
 <% end %>
 

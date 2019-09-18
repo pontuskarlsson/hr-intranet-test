@@ -1,0 +1,65 @@
+<% if job.inspection.present? %>
+  <h3>Inspection Details</h3>
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th style="width: 150px;">Date</th>
+      <td><%= job.inspection.display_inspection_date %></td>
+    </tr>
+    <tr>
+      <th>Supplier</th>
+      <td><%= job.inspection.supplier_label %></td>
+    </tr>
+    <tr>
+      <th>Manufacturer</th>
+      <td><%= job.inspection.manufacturer_label %></td>
+    </tr>
+    <tr>
+      <th>Inspected By</th>
+      <td><%= job.inspection.inspected_by_name %></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h3>Order / Product</h3>
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th>Type</th>
+      <td><%= job.inspection.inspection_type %></td>
+    </tr>
+    <tr>
+      <th style="width: 150px;">PO Number</th>
+      <td><%=format_joined_items job.inspection.po_number %></td>
+    </tr>
+    <tr>
+      <th>Type</th>
+      <td><%= job.inspection.po_type %></td>
+    </tr>
+    <tr>
+      <th>StyleNr / Product Code</th>
+      <td><%= job.inspection.product_code %></td>
+    </tr>
+    <tr>
+      <th>Product Description</th>
+      <td><%= job.inspection.product_description %></td>
+    </tr>
+    <tr>
+      <th>Colours / Variants</th>
+      <td><%=format_joined_items job.inspection.product_colour_variants %></td>
+    </tr>
+    <tr>
+      <th>PO Qty</th>
+      <td><%= number_with_delimiter job.inspection.po_qty %></td>
+    </tr>
+    <tr>
+      <th>Available Qty</th>
+      <td><%= number_with_delimiter job.inspection.available_qty %></td>
+    </tr>
+    <tr>
+      <th>Sample Size</th>
+      <td><%= number_with_delimiter job.inspection.inspection_sample_size %></td>
+    </tr>
+    </tbody>
+  </table>
+<% end %>
