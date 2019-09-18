@@ -21,7 +21,7 @@ module Refinery
 
         def contact_params
           params.require(:contact).permit(
-              :base_id, :name, :first_name, :last_name, :address,
+              :base_id, :code, :name, :first_name, :last_name, :address,
               :city, :skype, :zip, :state, :country, :title, :private,
               :contact_id, :is_organisation, :mobile, :fax,
               :website, :phone, :description, :linked_in, :facebook,
