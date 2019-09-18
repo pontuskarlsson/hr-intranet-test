@@ -63,7 +63,7 @@ module Portal
         inspection.inspection_photo = inspection.inspection_photos.detect { |inspection_photo| inspection_photo.fields['key'] == 'Preview' }
         inspection.save!
 
-        job = inspection.job || Job.new
+        job = inspection.job || ::Refinery::QualityAssurance::Job.new
         job.attributes = {
             company_id: inspection.company_id,
             company_code: inspection.company_code,
