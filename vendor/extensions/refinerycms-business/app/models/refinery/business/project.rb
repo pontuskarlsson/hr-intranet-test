@@ -6,6 +6,8 @@ module Refinery
       STATUSES = %w(Draft Proposed InProgress Open Completed Cancelled Closed Archived)
       CURRENT_STATUSES = %w(Draft Proposed InProgress Open)
 
+      PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' - ' }
+
       belongs_to :company
       has_many :invoices,       dependent: :nullify
       has_many :sections,       dependent: :destroy
@@ -28,9 +30,17 @@ module Refinery
 
       scope :current, -> { where(status: CURRENT_STATUSES) }
       scope :past, -> { where(status: STATUSES - CURRENT_STATUSES) }
-      
+
+      def self.to_source
+        where(nil).pluck(:code, :description).map(&PROC_LABEL).to_json.html_safe
+      end
+
+      def self.find_by_label(label)
+        find_by_code label.split(' - ').first
+      end
+
       def label
-        [code, description].reject(&:blank?).join ' - '
+        PROC_LABEL.call(code, description)
       end
 
       def company_label

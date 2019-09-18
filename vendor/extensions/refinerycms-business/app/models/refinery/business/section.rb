@@ -5,12 +5,13 @@ module Refinery
 
       TYPES = %w(VBO QA)
 
-      belongs_to :company
+      belongs_to :project
       has_many :sections, dependent: :destroy
+      has_many :billables, dependent: :nullify
 
       validates :project_id,    presence: true
       validates :description,   presence: true
-      validates :section_type,  inclusion: TYPES
+      validates :section_type,  inclusion: TYPES, uniqueness: { scope: :project_id }
       validates :start_date,    presence: true
 
       before_validation do
@@ -31,6 +32,10 @@ module Refinery
 
       def project_label=(label)
         @project_label = label
+      end
+
+      def label
+        description
       end
 
     end

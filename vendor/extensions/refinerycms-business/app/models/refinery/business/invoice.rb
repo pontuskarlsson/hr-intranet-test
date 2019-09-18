@@ -11,6 +11,11 @@ module Refinery
       belongs_to :project
       has_many :billables,      dependent: :nullify
 
+      # To enable admin searching, add acts_as_indexed on searchable fields, for example:
+      #
+      #   acts_as_indexed :fields => [:title]
+      acts_as_indexed :fields => [:invoice_number]
+
       validates :account_id,    presence: true
       validates :invoice_id,    presence: true, uniqueness: true
       validates :contact_id,    presence: true
@@ -26,6 +31,14 @@ module Refinery
 
       def label
         invoice_number
+      end
+
+      def self.find_by_label(label)
+        find_by invoice_number: label
+      end
+
+      def self.to_source
+        where(nil).pluck(:invoice_number).to_json.html_safe
       end
 
     end

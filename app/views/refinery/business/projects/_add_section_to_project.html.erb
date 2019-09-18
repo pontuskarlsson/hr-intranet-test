@@ -1,0 +1,19 @@
+<% content_for :actions do %>
+  <p><button class="button" data-open="js_project_form">Add Section</button></p>
+
+  <div class="reveal" id="js_project_form" data-reveal>
+    <%= form_for section, url: refinery.business_project_sections_path(section.project) do |f| %>
+      <h5><%= f.label :section_type %></h5>
+      <%= f.select :section_type, options_for_select(::Refinery::Business::Section::TYPES) %>
+
+      <h5><%= f.label :description %></h5>
+      <%= f.text_field :description %>
+
+      <%= f.submit 'Add', class: 'button' %>
+    <% end %>
+
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>

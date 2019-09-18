@@ -1,7 +1,15 @@
-<div class="grid-x grid-padding-x">
-  <div class="cell">
-    <h2><%= @project.code %></h2>
-    <h5><%= @project.company_label %></h5>
-    <h5><%= @project.description %></h5>
+<% content_for :body do %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+        <%= render 'add_section_to_project', project: @project %>
+      <% end %>
+
+      <h2><%= @project.code %></h2>
+      <h5><%= @project.company_label %></h5>
+      <h5><%= @project.description %></h5>
+    </div>
   </div>
-</div>
+<% end %>
+
+<%= render '/refinery/content_page' %>

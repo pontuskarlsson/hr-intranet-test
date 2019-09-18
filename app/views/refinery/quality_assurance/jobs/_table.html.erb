@@ -1,0 +1,57 @@
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th><div class="hidden-title">Row</div></th>
+    <th data-dt-search-input="true">Code</th>
+    <th data-dt-search-input="true">Company</th>
+    <th data-dt-search-input="true">Project</th>
+    <th data-dt-search-input="true">Status</th>
+    <th data-dt-search-date="true">Date</th>
+  </tr>
+  </thead>
+
+  <% unless options[:no_footer] %>
+    <tfoot>
+    <tr>
+      <th></th>
+      <th>Code</th>
+      <th>Company</th>
+      <th>Project</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+    </tfoot>
+  <% end %>
+</table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        "paging":         true,
+        "pageLength":     <%= options[:page_length] || 10 %>,
+        "ajax": "<%= refinery.quality_assurance_jobs_path(filter_params) %>",
+        "order": [[1, 'desc']],
+        "columns": [
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_jobs_path %>") } },
+          { data: "code" },
+          { data: "company_label" },
+          { data: "project_code" },
+          { data: "status" },
+          { data: "inspection_date" },
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell'Bl><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5',
+        ]
+      });
+
+      initDataTable(dt)
+    });
+  </script>
+<% end %>

@@ -13,8 +13,8 @@ module Refinery
 
       belongs_to :job
       belongs_to :inspected_by,       class_name: 'Refinery::Authentication::Devise::User'
-      belongs_to :business_product,   class_name: 'Refinery::Business::Product'
-      belongs_to :business_section,   class_name: 'Refinery::Business::Section'
+      belongs_to :business_product,   class_name: 'Refinery::Business::Product' # Not correct to let it be a belongs_to here, and maybe let Job handle...
+      belongs_to :business_section,   class_name: 'Refinery::Business::Section' # Let Job handle
       belongs_to :company,            class_name: 'Refinery::Business::Company'
       belongs_to :inspection_photo
       belongs_to :manufacturer,       class_name: 'Refinery::Business::Company'
@@ -30,6 +30,7 @@ module Refinery
       acts_as_indexed :fields => [:company_label, :supplier_label, :manufacturer_label, :po_number, :result, :product_code, :product_description]
 
       delegate :image_url, :preview_url, :thumb_url, to: :inspection_photo, prefix: true, allow_nil: true
+      delegate :code, :company_label, :project_code, :status, to: :job, prefix: true, allow_nil: true
 
       validates :result,          inclusion: RESULTS, allow_blank: true
       validates :inspection_type, inclusion: INSPECTION_TYPES, allow_blank: true
@@ -43,10 +44,8 @@ module Refinery
       end
 
       validate do
-        if business_section.present?
-          unless company.present? && business_section.try(:company) == company
-            errors.add(:business_section_id, :invalid)
-          end
+        if job.present?
+          errors.add(:company_id, :invalid) unless job.company_id == company_id
         end
       end
       

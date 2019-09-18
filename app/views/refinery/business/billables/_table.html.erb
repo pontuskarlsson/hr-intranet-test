@@ -1,0 +1,50 @@
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th data-dt-search-input="true">Company</th>
+    <th data-dt-search-input="true">Title</th>
+    <th data-dt-search-input="true">Project</th>
+    <th data-dt-search-input="true">Invoice</th>
+    <th data-dt-search-input="true">Total Cost</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Company</th>
+    <th>title</th>
+    <th>Project</th>
+    <th>Invoice</th>
+    <th>Total Cost</th>
+  </tr>
+  </tfoot>
+</table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        "paging":         true,
+        "ajax": "<%= ajax %>",
+        "columns": [
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
+          { data: "company_label" },
+          { data: "title" },
+          { data: "project_label" },
+          { data: "invoice_invoice_number" },
+          { data: "total_cost", "render": { "display": formatCurrency } },
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
+      });
+
+      initDataTable(dt);
+    });
+  </script>
+<% end %>

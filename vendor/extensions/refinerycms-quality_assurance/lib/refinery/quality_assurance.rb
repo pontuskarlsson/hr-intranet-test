@@ -12,6 +12,7 @@ module Refinery
     ROLE_INSPECTOR = 'QualityAssurance:Inspector'
 
     PAGE_INSPECTIONS_URL = '/quality_assurance/inspections'
+    PAGE_JOBS_URL = '/quality_assurance/jobs'
 
     class << self
       attr_writer :root

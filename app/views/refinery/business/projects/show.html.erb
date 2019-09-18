@@ -1,6 +1,12 @@
 <% content_for :body do %>
+  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+    <%= render 'add_section_to_project', section: @section %>
+  <% end %>
+
   <h3><%= @project.code %></h3>
   <section class="contact-card">
+
+    <h3>Project Details</h3>
     <table class="cc-table">
       <tbody>
       <tr>
@@ -35,12 +41,22 @@
       </tr>
       </tbody>
     </table>
-  </section>
 
-  <% if current_authentication_devise_user.has_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
-    <h4>Finance</h4>
-    <p><%= link_to "See Project Invoices (#{@project.invoices.count})", refinery.business_invoices_path(project_id: @project) %></p>
-  <% end %>
+    <% if current_authentication_devise_user.has_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
+      <h3>Finance</h3>
+      <p><%= link_to "See Project Invoices (#{@project.invoices.count})", refinery.business_invoices_path(project_id: @project) %></p>
+    <% end %>
+
+    <h3>Project Scope</h3>
+    <% if @project.sections.any? %>
+      <% @project.sections.each do |section| %>
+        <%= render "section_#{section.section_type}", section: section %>
+      <% end %>
+    <% else %>
+      <p>No sections added.</p>
+    <% end %>
+
+  </section>
 <% end %>
 
 <%= render '/refinery/content_page' %>

@@ -22,6 +22,7 @@ PATH
   remote: vendor/extensions
   specs:
     refinerycms-business (1.0)
+      jbuilder (= 2.9.0)
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing
       refinerycms-page_roles (>= 1.0)

@@ -6,5 +6,7 @@ Refinery::Business::Company.class_eval do
   has_many :supplier_inspections,   class_name: '::Refinery::QualityAssurance::Inspection',
                                     foreign_key: :supplier_id,
                                     dependent: :nullify
+  has_many :jobs,                   class_name: '::Refinery::QualityAssurance::Job',
+                                    dependent: :nullify
 
 end

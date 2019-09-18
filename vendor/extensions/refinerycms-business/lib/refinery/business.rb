@@ -12,6 +12,7 @@ module Refinery
     ROLE_INTERNAL = 'Business:Internal'
     ROLE_INTERNAL_FINANCE = 'Business:Internal:Finance'
 
+    PAGE_BILLABLES_URL    = '/business/billables'
     PAGE_BUDGETS_URL      = '/business/budgets'
     PAGE_COMPANIES_URL    = '/business/companies'
     PAGE_INVOICES_URL     = '/business/invoices'

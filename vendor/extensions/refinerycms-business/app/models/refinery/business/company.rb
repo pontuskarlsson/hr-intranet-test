@@ -10,6 +10,7 @@ module Refinery
       has_many :parcels,        through: :contact
       has_many :invoices,       dependent: :nullify
       has_many :projects,       dependent: :destroy
+      has_many :billables,      dependent: :destroy
       has_many :users,          through: :company_users
 
       accepts_nested_attributes_for :company_users, reject_if: :all_blank, allow_destroy: true

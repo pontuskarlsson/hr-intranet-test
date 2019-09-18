@@ -47,7 +47,7 @@
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_invoices_path %>") } },
           { data: "invoice_number" },
           { data: "reference" },
-          { data: function(row, type, set, meta) { return row.company && row.company.name || null; }, "width": '40%' },
+          { data: function(row, type, set, meta) { return row.company && row.company.name || null; } },
           { data: "invoice_type" },
           { data: "invoice_date", render: dtDateRenderer },
           { data: "due_date" },

@@ -17,16 +17,75 @@
 
     <div class="grid-x grid-padding-x">
       <div class="cell medium-9">
+        <h3>Job Details</h3>
+        <table class="cc-table">
+          <tbody>
+          <% if (job = @inspection.job).present? %>
+            <tr>
+              <th style="width: 150px;">Job No.</th>
+              <td>
+                <% if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
+                  <%= link_to job.code, refinery.quality_assurance_job_path(job) %>
+                <% else %>
+                  <%= job.code %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <th>Company</th>
+              <td><%= job.company_label %></td>
+            </tr>
+            <tr>
+              <th>Project</th>
+              <td>
+                <% if job.company.present? && job.project.nil? && page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
+                  <%= form_for job, url: refinery.quality_assurance_job_path(job) do |f| %>
+                    <%= hidden_field_tag :redirect_to, refinery.quality_assurance_inspection_path(@inspection) %>
+                    <div class="input-group">
+                      <%= f.text_field :project_label, :class => 'js_project_field input-group-field' -%>
+                      <div class="input-group-button">
+                        <%= f.submit 'Update', class: 'button' %>
+                      </div>
+                    </div>
+                  <% end %>
+
+                  <% content_for :javascripts do -%>
+                    <script>
+                      $(document).ready(function(){
+                        $('.js_project_field').autocomplete({
+                          source: <%= job.company.projects.to_source %>
+                        });
+                      });
+                    </script>
+                  <% end -%>
+
+                  <% content_for :stylesheets do -%>
+                    <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+                  <% end -%>
+                <% else %>
+                  <%= job.project_label.presence || 'N/A' %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td><%= job.status %></td>
+            </tr>
+          <% else %>
+            <tr>
+              <th style="width: 150px;">Job No.</th>
+              <td><%= @inspection.code %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+
         <h3>Inspection Details</h3>
         <table class="cc-table">
           <tbody>
           <tr>
             <th style="width: 150px;">Date</th>
             <td><%= @inspection.display_inspection_date %></td>
-          </tr>
-          <tr>
-            <th>Company</th>
-            <td><%= @inspection.company_label %></td>
           </tr>
           <tr>
             <th>Supplier</th>
@@ -202,6 +261,34 @@
 <% if page_role? Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER %>
   <% content_for :side_body do %>
     <aside>
+      <% if @inspection.job.present? %>
+        <% if @inspection.job.project.present? %>
+          <h5>Project</h5>
+          <p><%= @inspection.job_project_code %></p>
+        <% else %>
+
+          <%= form_for @inspection.job, url: refinery.quality_assurance_inspection_path(@inspection) do |f| %>
+            <%= f.hidden_field :status, value: 'Notified' %>
+            <% if @inspection.company.users.any? %>
+              <ul>
+                <% @inspection.company.users.each do |user| %>
+                  <li>
+                    <%= check_box_tag 'notify_users[]', user.id %>
+                    <%= label_tag user.id, user.full_name %>
+                  </li>
+                <% end %>
+              </ul>
+
+              <p><%= f.submit 'Confirm and notify', confirm: 'This will send out a notification to the Customer.' %></p>
+            <% else %>
+
+              <p><%= f.submit 'Confirm', confirm: 'This will send out a notification to the Customer.' %></p>
+            <% end %>
+          <% end %>
+
+        <% end %>
+      <% end %>
+
       <h5>Status</h5>
       <p><%= @inspection.status %></p>
 

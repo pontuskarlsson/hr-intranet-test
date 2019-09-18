@@ -27,6 +27,7 @@ module Refinery
       end
 
       def show
+        @section = ::Refinery::Business::Section.new(project_id: @project.id)
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @project in the line below:
         present(@page)

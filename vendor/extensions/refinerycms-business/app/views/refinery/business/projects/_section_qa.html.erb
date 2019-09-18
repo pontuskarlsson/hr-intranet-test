@@ -1,0 +1,26 @@
+<table class="cc-table">
+  <tbody>
+  <tr>
+    <th>Type</th>
+    <td><%= section.section_type %></td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td><%= section.description %></td>
+  </tr>
+  <tr>
+    <th>Jobs</th>
+    <td>
+      <p><%= section.quality_assurance_jobs.count %></p>
+      <%= link_to 'View', refinery.quality_assurance_jobs_path(section_id: section.id) %>
+    </td>
+  </tr>
+  <tr>
+    <th>Billables</th>
+    <td>
+      <p><%= section.billables.count %></p>
+      <p><%= link_to 'View', refinery.business_billables_path(section_id: section.id) %></p>
+    </td>
+  </tr>
+  </tbody>
+</table>

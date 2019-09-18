@@ -1,0 +1,8 @@
+<% content_for :body do %>
+  <div class="cell">
+    <%= render 'table', jobs: @jobs, table_id: 'js_jobs_data_table', options: {} %>
+  </div>
+
+<% end %>
+
+<%= render '/refinery/content_page' %>

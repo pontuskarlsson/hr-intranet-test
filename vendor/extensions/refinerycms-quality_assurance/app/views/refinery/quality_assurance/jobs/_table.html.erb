@@ -1,0 +1,26 @@
+<table>
+  <thead>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Company</th>
+    <th>project</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% jobs.each do |job| %>
+    <tr>
+      <td>
+        <%= link_to refinery.quality_assurance_job_path(job) do %>
+          <i class="fa fa-arrow-right"></i>
+        <% end %>
+      </td>
+      <td><%= job.code %></td>
+      <td><%= job.company_label %></td>
+      <td><%= job.project_code %></td>
+      <td><%= job.status %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

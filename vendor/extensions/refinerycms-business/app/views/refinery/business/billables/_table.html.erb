@@ -1,0 +1,50 @@
+<table class="display" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Company</th>
+    <th>Title</th>
+    <th>Project</th>
+    <th>Invoice</th>
+    <th>Total Cost</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Company</th>
+    <th>Title</th>
+    <th>Project</th>
+    <th>Invoice</th>
+    <th>Total Cost</th>
+  </tr>
+  </tfoot>
+
+  <tbody>
+  <% billables.includes(:company, :project, :invoice).each do |billable| %>
+    <tr>
+      <td>
+        <%= link_to refinery.business_billable_path(billable) do %>
+          <i class="fa fa-arrow-right"></i>
+        <% end %>
+      </td>
+      <td>
+        <%= billable.company.label %>
+      </td>
+      <td>
+        <%= billable.title %>
+      </td>
+      <td>
+        <%= billable.display_project %>
+      </td>
+      <td>
+        <%= billable.display_invoice %>
+      </td>
+      <td>
+        <%=number_to_currency billable.total_cost %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

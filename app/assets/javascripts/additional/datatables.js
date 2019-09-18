@@ -115,12 +115,16 @@ function initDataTableHeaders(dt) {
 }
 
 function initDataTableRowClick(dt) {
-  dt.on('click', 'tbody td:not(:first-child)', function() {
+  dt.on('click', 'tbody td:not(:first-child)', function(evt) {
     // Stop propagation of up-coming click, not to trigger responsive row event
     $('a[data-dt-row-link]', this.parentNode).on('click', function(e) { e.stopPropagation(); });
 
     // Trigger link click
-    $('a[data-dt-row-link]', this.parentNode)[0].click();
+    if (evt.metaKey) {
+      window.open($('a[data-dt-row-link]', this.parentNode)[0].href, '_blank');
+    } else {
+      $('a[data-dt-row-link]', this.parentNode)[0].click();
+    }
   });
 }
 

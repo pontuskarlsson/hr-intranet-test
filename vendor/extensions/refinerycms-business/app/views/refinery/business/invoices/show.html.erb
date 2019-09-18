@@ -1,6 +1,106 @@
-<div class="grid-x grid-padding-x">
-  <div class="cell">
-    <h2><%= @invoice.label %></h2>
-  </div>
+<% content_for :body do %>
+  <h2><%= @invoice.label %></h2>
 
-</div>
+  <section class="contact-card">
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th style="width: 150px;">Company</th>
+        <td>
+          <% if @invoice.company.present? %>
+            <%= link_to @invoice.company.label, refinery.business_company_path(@invoice) %>
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>Invoice No.</th>
+        <td><%= @invoice.invoice_number %></td>
+      </tr>
+      <tr>
+        <th>Type</th>
+        <td><%= @invoice.invoice_type %></td>
+      </tr>
+      <tr>
+        <th>Reference</th>
+        <td><%= @invoice.reference %></td>
+      </tr>
+      <tr>
+        <th>Invoice Date</th>
+        <td><%= @invoice.invoice_date %></td>
+      </tr>
+      <tr>
+        <th>Due Date</th>
+        <td><%= @invoice.due_date %></td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td><%= @invoice.status %></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h3>Invoice Amount</h3>
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th style="width: 150px;">Total Amount</th>
+        <td><%=number_to_currency @invoice.total_amount, currency: @invoice.currency_code %></td>
+      </tr>
+      <tr>
+        <th>Billable Amount</th>
+        <td><%=number_to_currency @invoice.billables.map(&:total_cost).reduce(:+) %></td>
+      </tr>
+      <tr>
+        <th>Amount Due</th>
+        <td><%=number_to_currency @invoice.amount_due, currency: @invoice.currency_code %></td>
+      </tr>
+      <tr>
+        <th>Amount Paid</th>
+        <td><%=number_to_currency @invoice.amount_paid, currency: @invoice.currency_code %></td>
+      </tr>
+      <tr>
+        <th>Amount Credited</th>
+        <td><%=number_to_currency @invoice.amount_credited, currency: @invoice.currency_code %></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h3>Billables</h3>
+    <% if @invoice.billables.any? %>
+      <table>
+        <thead>
+        <tr>
+          <th>Project</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Article</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Discount</th>
+          <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @invoice.billables.each do |billable| %>
+          <tr>
+            <td><%= billable.project_code %></td>
+            <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
+            <td><%= billable.status %></td>
+            <td><%= billable.article_code %></td>
+            <td><%= billable.qty %></td>
+            <td><%= billable.unit_price %></td>
+            <td><%= billable.discount %></td>
+            <td><%= billable.total_cost %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No Billables added</p>
+    <% end %>
+  </section>
+<% end %>
+
+<%= render '/refinery/content_page' %>

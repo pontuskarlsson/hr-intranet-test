@@ -62,6 +62,25 @@ module Portal
 
         inspection.inspection_photo = inspection.inspection_photos.detect { |inspection_photo| inspection_photo.fields['key'] == 'Preview' }
         inspection.save!
+
+        job = inspection.job || Job.new
+        job.attributes = {
+            company_id: inspection.company_id,
+            company_code: inspection.company_code,
+            company_label: inspection.company_label,
+            billable_type: 'ManDay',
+            status: 'Completed',
+            assigned_to_id: inspection.inspected_by_id,
+            assigned_to_label: inspection.inspected_by_name,
+            code: inspection.code,
+            title: "#{inspection.inspection_type} of #{inspection.po_number}",
+            job_type: 'Inspection',
+            inspection_date: inspection.inspection_date
+        }
+        job.save!
+
+        inspection.job = job
+        inspection.save!
       end
 
       def set_inspected_by!(inspector_email)
