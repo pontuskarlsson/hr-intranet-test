@@ -78,7 +78,7 @@ module Refinery
           self.project_code = project.code
         end
         if assigned_to.present?
-          self.assigned_to_label = assigned_to.name
+          self.assigned_to_label = assigned_to.full_name
         end
 
       end
