@@ -62,6 +62,7 @@ module Refinery
                 else
                   company.billables.create!(
                       billable_type: 'time',
+                      billable_date: job.inspection_date,
                       project_id: project_id,
                       section_id: section_id,
                       title: "QA Jobs on #{inspection_date} by #{assigned_to_label}",

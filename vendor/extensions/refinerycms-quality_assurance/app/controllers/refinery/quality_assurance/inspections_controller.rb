@@ -24,6 +24,7 @@ module Refinery
       end
 
       def calendar
+        @page = Refinery::Page.find_by(link_url: '/quality_assurance/inspections/calendar') || @page
         @inspections = @inspections.where(filter_params)
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @quality_assurance in the line below:

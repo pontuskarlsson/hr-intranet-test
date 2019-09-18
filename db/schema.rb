@@ -289,10 +289,12 @@ ActiveRecord::Schema.define(version: 20190912064814) do
     t.string   "account",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "billable_date"
   end
 
   add_index "refinery_business_billables", ["account"], name: "index_refinery_business_billables_on_account", using: :btree
   add_index "refinery_business_billables", ["article_code"], name: "index_refinery_business_billables_on_article_code", using: :btree
+  add_index "refinery_business_billables", ["billable_date"], name: "index_refinery_business_billables_on_billable_date", using: :btree
   add_index "refinery_business_billables", ["billable_type"], name: "index_refinery_business_billables_on_billable_type", using: :btree
   add_index "refinery_business_billables", ["company_id"], name: "index_refinery_business_billables_on_company_id", using: :btree
   add_index "refinery_business_billables", ["invoice_id"], name: "index_refinery_business_billables_on_invoice_id", using: :btree

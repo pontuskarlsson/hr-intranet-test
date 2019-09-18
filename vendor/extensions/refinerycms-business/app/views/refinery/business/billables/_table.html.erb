@@ -6,6 +6,7 @@
     <th>Title</th>
     <th>Project</th>
     <th>Invoice</th>
+    <th>Date</th>
     <th>Total Cost</th>
   </tr>
   </thead>
@@ -17,6 +18,7 @@
     <th>Title</th>
     <th>Project</th>
     <th>Invoice</th>
+    <th>Date</th>
     <th>Total Cost</th>
   </tr>
   </tfoot>
@@ -40,6 +42,9 @@
       </td>
       <td>
         <%= billable.display_invoice %>
+      </td>
+      <td>
+        <%= billable.billable_date %>
       </td>
       <td>
         <%=number_to_currency billable.total_cost %>

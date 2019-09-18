@@ -10,7 +10,7 @@ module Refinery
       before_filter :find_billable, except: [:index, :new, :create]
 
       def index
-        @billables = @billables.where(filter_params)
+        @billables = @billables.where(filter_params).order(billable_date: :desc)
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @sales_order in the line below:
         respond_to do |format|

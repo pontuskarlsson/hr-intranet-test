@@ -104,3 +104,14 @@ main {
 .reveal:focus {
     outline: none;
 }
+
+.sub-menu {
+    margin-bottom: 1rem;
+    .current {
+        font-weight: bold
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+}

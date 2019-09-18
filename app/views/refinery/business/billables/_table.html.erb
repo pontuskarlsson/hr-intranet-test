@@ -6,6 +6,7 @@
     <th data-dt-search-input="true">Title</th>
     <th data-dt-search-input="true">Project</th>
     <th data-dt-search-input="true">Invoice</th>
+    <th data-dt-search-date="true">Date</th>
     <th data-dt-search-input="true">Total Cost</th>
   </tr>
   </thead>
@@ -17,6 +18,7 @@
     <th>title</th>
     <th>Project</th>
     <th>Invoice</th>
+    <th>Date</th>
     <th>Total Cost</th>
   </tr>
   </tfoot>
@@ -31,12 +33,14 @@
         "responsive":     true,
         "paging":         true,
         "ajax": "<%= ajax %>",
+        "order": [[5, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
           { data: "company_label" },
           { data: "title" },
           { data: "project_label" },
           { data: "invoice_invoice_number" },
+          { data: "billable_date" },
           { data: "total_cost", "render": { "display": formatCurrency } },
         ],
         "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+

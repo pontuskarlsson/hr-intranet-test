@@ -8,7 +8,7 @@
   <div class="grid-x grid-padding-x">
     <div class="cell">
       <% if actions.present? %>
-      <span style="float: right;">
+      <span style="position: absolute; right: 2rem;">
         <%=raw actions %>
       </span>
       <% end %>
@@ -30,6 +30,18 @@
           <% end %>
         </ul>
       </nav>
+
+      <% if @page.self_and_ancestors[2].present? && @page.self_and_ancestors[1].children.count > 1 %>
+        <ul class="menu simple sub-menu" style="margin-bottom: 1rem;">
+          <% @page.self_and_ancestors[1].children.each do |page| %>
+            <% if page == @page %>
+              <li class="current"><%= @page.title %></li>
+            <% else %>
+              <li><%= link_to page.title, page.link_url %></li>
+            <% end %>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
 
     <% if side_body_contents.any? %>

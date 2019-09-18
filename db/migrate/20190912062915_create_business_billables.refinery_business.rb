@@ -9,6 +9,7 @@ class CreateBusinessBillables < ActiveRecord::Migration
       t.integer  :invoice_id
 
       t.string   :billable_type
+      t.date     :billable_date
       t.string   :status
 
       t.string   :title
@@ -30,6 +31,7 @@ class CreateBusinessBillables < ActiveRecord::Migration
     add_index :refinery_business_billables, :section_id
     add_index :refinery_business_billables, :invoice_id
     add_index :refinery_business_billables, :billable_type
+    add_index :refinery_business_billables, :billable_date
     add_index :refinery_business_billables, :status
     add_index :refinery_business_billables, :title
     add_index :refinery_business_billables, :article_code
