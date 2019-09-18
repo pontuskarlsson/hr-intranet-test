@@ -31,9 +31,9 @@
         </ul>
       </nav>
 
-      <% if @page.self_and_ancestors[2].present? && @page.self_and_ancestors[1].children.count > 1 %>
+      <% if @page.self_and_ancestors[2].present? && (pages = @page.self_and_ancestors[1].children.select { |p| p.user_authorized?(current_authentication_devise_user) }).count > 1 %>
         <ul class="menu simple sub-menu" style="margin-bottom: 1rem;">
-          <% @page.self_and_ancestors[1].children.each do |page| %>
+          <% pages.each do |page| %>
             <% if page == @page %>
               <li class="current"><%= @page.title %></li>
             <% else %>
