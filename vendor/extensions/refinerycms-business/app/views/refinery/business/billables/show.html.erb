@@ -16,6 +16,7 @@
         <th>Company</th>
         <td><%= @billable.company.label %></td>
       </tr>
+      <% if false # Project removed from direct association %>
       <tr>
         <th>Project</th>
         <td>
@@ -38,6 +39,7 @@
           <% end %>
         </td>
       </tr>
+      <% end %>
       <tr>
         <th>Invoice</th>
         <td>

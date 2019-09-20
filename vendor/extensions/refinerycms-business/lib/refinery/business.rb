@@ -5,6 +5,7 @@ module Refinery
 
   module Business
     require 'refinery/business/engine'
+    require 'refinery/business/job'
     require 'refinery/business/xero/client'
     require 'refinery/business/xero/syncer'
 

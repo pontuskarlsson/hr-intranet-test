@@ -15,6 +15,10 @@ module Refinery
       belongs_to :visit
       has_one :inspection,          dependent: :nullify
 
+      # Registers self as a possible Billable Job
+      include ::Refinery::Business::Job
+      configure_job self, :quality_assurance_jobs, billable_type: 'time'
+
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
       #   acts_as_indexed :fields => [:title]
@@ -63,8 +67,8 @@ module Refinery
                   company.billables.create!(
                       billable_type: 'time',
                       billable_date: inspection_date,
-                      project_id: project_id,
-                      section_id: section_id,
+                      # project_id: project_id,
+                      # section_id: section_id,
                       title: "QA Jobs on #{inspection_date} by #{assigned_to_label}",
                       qty: 1,
                       qty_unit: 'day',
@@ -86,8 +90,8 @@ module Refinery
 
       after_save do
         if billable.present?
-          billable.project ||= project
-          billable.section ||= section
+          #billable.project ||= project
+          #billable.section ||= section
           billable.title = "QA Jobs on #{inspection_date} by #{assigned_to_label}"
           billable.save!
         end

@@ -9,7 +9,7 @@ module Refinery
       PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' - ' }
 
       belongs_to :company
-      has_many :invoices,       dependent: :nullify
+      #has_many :invoices,       dependent: :nullify
       has_many :sections,       dependent: :destroy
 
       acts_as_indexed :fields => [:code, :description, :company_label, :status]

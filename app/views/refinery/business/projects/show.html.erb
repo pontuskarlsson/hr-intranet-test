@@ -42,11 +42,6 @@
       </tbody>
     </table>
 
-    <% if current_authentication_devise_user.has_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
-      <h3>Finance</h3>
-      <p><%= link_to "See Project Invoices (#{@project.invoices.count})", refinery.business_invoices_path(project_id: @project) %></p>
-    <% end %>
-
     <h3>Project Scope</h3>
     <% if @project.sections.any? %>
       <% @project.sections.each do |section| %>

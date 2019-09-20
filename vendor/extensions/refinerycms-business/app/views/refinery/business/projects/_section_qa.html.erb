@@ -11,16 +11,36 @@
   <tr>
     <th>Jobs</th>
     <td>
-      <p><%= section.quality_assurance_jobs.count %></p>
-      <%= link_to 'View', refinery.quality_assurance_jobs_path(section_id: section.id) %>
-    </td>
-  </tr>
-  <tr>
-    <th>Billables</th>
-    <td>
-      <p><%= section.billables.count %></p>
-      <p><%= link_to 'View', refinery.business_billables_path(section_id: section.id) %></p>
+      <p>
+        <%= section.quality_assurance_jobs.count %>
+        <%= link_to 'View', refinery.quality_assurance_jobs_path(section_id: section.id) %>
+      </p>
     </td>
   </tr>
   </tbody>
 </table>
+
+<% if section.quality_assurance_jobs.any? %>
+  <table>
+    <thead>
+    <tr>
+      <th>Billable</th>
+      <th>Allocated</th>
+      <th>Job</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% section.jobs_and_allocations.each_pair do |billable, allocations| %>
+      <tr>
+        <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
+        <td><%= allocations[:jobs].count / allocations[:total_no_of_jobs] * 100 %>%</td>
+        <td>
+          <% allocations[:jobs].each_with_index do |job, i| %>
+          <p><%= job.title %></p>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
