@@ -6,6 +6,7 @@ module Refinery
       set_page PAGE_PROJECTS_URL
       allow_page_roles ROLE_EXTERNAL, only: [:index, :archive, :show]
       allow_page_roles ROLE_INTERNAL
+      allow_page_roles ROLE_INTERNAL_FINANCE
 
       before_filter :find_projects, only: [:index, :archive]
       before_filter :find_project,  except: [:index, :archive, :create]

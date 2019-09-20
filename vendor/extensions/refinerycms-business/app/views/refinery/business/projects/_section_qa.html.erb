@@ -20,27 +20,40 @@
   </tbody>
 </table>
 
-<% if section.quality_assurance_jobs.any? %>
-  <table>
-    <thead>
-    <tr>
-      <th>Billable</th>
-      <th>Allocated</th>
-      <th>Job</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% section.jobs_and_allocations.each_pair do |billable, allocations| %>
+<% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+  <% if section.quality_assurance_jobs.any? %>
+    <%- total_days = 0.0 -%>
+    <table>
+      <thead>
       <tr>
-        <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
-        <td><%= allocations[:jobs].count / allocations[:total_no_of_jobs] * 100 %>%</td>
-        <td>
-          <% allocations[:jobs].each_with_index do |job, i| %>
-          <p><%= job.title %></p>
-          <% end %>
-        </td>
+        <th>Billable</th>
+        <th>Allocated</th>
+        <th>Job</th>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      <% section.jobs_and_allocations.each_pair do |billable, allocations| %>
+        <tr>
+          <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
+          <td>
+            <%= '%g' % (allocated = 100.0 * allocations[:jobs].count / allocations[:total_no_of_jobs]) %>%
+            <%- total_days += allocated / 100.0 -%>
+          </td>
+          <td>
+            <% allocations[:jobs].each_with_index do |job, i| %>
+            <p><%= job.title %></p>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+      <tfoot>
+      <tr>
+        <th>&nbsp;</th>
+        <th>Total of <%= '%g' % total_days %> billable days</th>
+        <th>&nbsp;</th>
+      </tr>
+      </tfoot>
+    </table>
+  <% end %>
 <% end %>
