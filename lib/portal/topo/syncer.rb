@@ -49,7 +49,7 @@ module Portal
 
         inspection.fields = payload
 
-        set_inspected_by! data['InspectorID']
+        #set_inspected_by! data['InspectorID']
         set_company!
         set_supplier!
         set_manufacturer!
@@ -83,11 +83,11 @@ module Portal
         inspection.save!
       end
 
-      def set_inspected_by!(inspector_email)
-        if inspector_email.present?
-          inspection.inspected_by ||= ::Refinery::Authentication::Devise::User.find_by email: inspector_email
-        end
-      end
+      # def set_inspected_by!(inspector_email)
+      #   if inspector_email.present?
+      #     inspection.inspected_by ||= ::Refinery::Authentication::Devise::User.find_by email: inspector_email
+      #   end
+      # end
 
       def set_company!
         if inspection.company_code.present? && (company = ::Refinery::Business::Company.find_by(code: inspection.company_code)).present?
