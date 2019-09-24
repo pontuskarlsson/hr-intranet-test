@@ -40,6 +40,7 @@ PATH
       refinerycms-authentication-devise (= 1.0.4)
       refinerycms-calendar (>= 2.1)
       refinerycms-core (>= 2.1.2)
+      refinerycms-marketing (>= 1.0)
       refinerycms-page_roles (>= 1.0)
       xeroizer
     refinerycms-marketing (1.0)

@@ -35,8 +35,7 @@ module Portal
           company_code: 'CustomerCode',
           company_label: 'Customer',
           inspection_date: 'InspDate',
-          assigned_to_label: 'Inspector',
-          job_type: 'Inspection'
+          assigned_to_label: 'Inspector'
       }.freeze
 
       attr_reader :inspection, :job, :error
@@ -56,7 +55,7 @@ module Portal
             billable_type: 'ManDay',
             status: 'Completed',
             job_type: 'Inspection',
-            title: "#{payload['InspType']} of #{payload['PO']}"
+            title: "#{data['InspType']} of #{data['PO']}"
         }) { |(local, remote), acc| acc[local] = data[remote] }
 
         job.company = company_from job.company_code, job.company_label
