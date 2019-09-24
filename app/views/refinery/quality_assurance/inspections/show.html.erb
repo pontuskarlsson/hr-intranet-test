@@ -6,7 +6,7 @@
   <section class="contact-card">
     <h1 class="cc-attribute cc-name">
       <%=raw @inspection.code %>
-      <span class="result-<%= @inspection.result.downcase %>"><%= @inspection.result %></span>
+      <span class="result-<%= @inspection.result.try(:downcase) %>"><%= @inspection.result %></span>
     </h1>
     <% if @inspection.resource.present? %>
       <%= link_to @inspection.resource.file.url do %>
@@ -171,7 +171,7 @@
           </tr>
           <tr>
             <th>Result</th>
-            <td colspan="3" class="result-<%= @inspection.result.downcase %>"><%= @inspection.result %></td>
+            <td colspan="3" class="result-<%= @inspection.result.try(:downcase) %>"><%= @inspection.result %></td>
           </tr>
           </tbody>
         </table>
@@ -323,7 +323,7 @@
             <%= [inspection.po_number, inspection.product_code, inspection.product_description, inspection.product_colour_variants].reject(&:blank?).join(', ') %>
           </div>
           <div class="item-trailing">
-            <div class="result-<%= inspection.result.downcase %>">
+            <div class="result-<%= inspection.result.try(:downcase) %>">
               <i class="list-icon fa <%= inspection.result == 'Pass' ? 'fa-check-circle' : (inspection.result == 'Reject' ? 'fa-times-circle' : 'fa-question-circle') %>"></i>
               <%= inspection.result %>
             </div>
