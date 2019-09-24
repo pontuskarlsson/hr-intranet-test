@@ -27,7 +27,7 @@ module Refinery
               :website, :phone, :description, :linked_in, :facebook,
               :industry, :twitter, :email, :organisation_name,
               :tags_joined_by_comma, :position, :user_id, :insightly_id,
-              :courier_company, :courier_account_no, :image_url
+              :courier_company, :courier_account_no, :image_url, :xero_hr_id, :xero_hrt_id
           )
         end
 
