@@ -24,6 +24,8 @@ module Refinery
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:code, :title, :description, :company_code, :company_label, :assigned_to_label]
 
+      delegate :label, to: :project, prefix: true, allow_nil: true
+
       #validates :company_id,        presence: true # Remove validation since some inspections from external might not be able to match company name initially
       validates :status,            inclusion: STATUSES
       validates :job_type,          inclusion: JOB_TYPES
@@ -47,6 +49,10 @@ module Refinery
       end
 
       before_validation do
+        # Clear Section association if project changed
+        self.section = nil if project_id_changed?
+
+        # Assign an existing or create a new section based on the project association (if present)
         if project.present?
           self.section ||= project.sections.find_or_create_by!(section_type: 'QA') { |section|
             section.description = "Inspections #{project.description}"

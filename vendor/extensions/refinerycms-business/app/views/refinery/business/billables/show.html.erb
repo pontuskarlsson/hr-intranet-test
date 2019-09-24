@@ -68,6 +68,38 @@
       </tr>
       </tbody>
     </table>
+
+    <% @billable.all_jobs.group_by(&:job_type).each_pair do |job_type, jobs| %>
+      <h3><%= job_type %> Jobs</h3>
+      <table>
+        <thead>
+        <tr>
+          <th>Job</th>
+          <th>Project</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% jobs.each do |job| %>
+          <tr>
+            <td>
+              <% if job_type == 'Inspection' %>
+                <%= link_to job.title, refinery.quality_assurance_job_path(job) %>
+              <% else %>
+                <%= job.title %>
+              <% end %>
+            </td>
+            <td><%= job.project_label.presence || 'N/A' %></td>
+          </tr>
+        <% end %>
+        </tbody>
+        <tfoot>
+        <tr>
+          <th>Total of <%= jobs.count %> jobs</th>
+          <th>&nbsp;</th>
+        </tr>
+        </tfoot>
+      </table>
+    <% end %>
   </section>
 <% end %>
 

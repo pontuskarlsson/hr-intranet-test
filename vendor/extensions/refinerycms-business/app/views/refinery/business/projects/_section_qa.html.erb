@@ -27,6 +27,7 @@
       <thead>
       <tr>
         <th>Billable</th>
+        <th>Date</th>
         <th>Allocated</th>
         <th>Job</th>
       </tr>
@@ -35,13 +36,14 @@
       <% section.jobs_and_allocations.each_pair do |billable, allocations| %>
         <tr>
           <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
+          <td><%= billable.billable_date %></td>
           <td>
             <%= '%g' % (allocated = 100.0 * allocations[:jobs].count / allocations[:total_no_of_jobs]) %>%
             <%- total_days += allocated / 100.0 -%>
           </td>
           <td>
             <% allocations[:jobs].each_with_index do |job, i| %>
-            <p><%= job.title %></p>
+            <p><%= link_to job.title, refinery.quality_assurance_job_path(job) %></p>
             <% end %>
           </td>
         </tr>
@@ -49,6 +51,7 @@
       </tbody>
       <tfoot>
       <tr>
+        <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th>Total of <%= '%g' % total_days %> billable days</th>
         <th>&nbsp;</th>

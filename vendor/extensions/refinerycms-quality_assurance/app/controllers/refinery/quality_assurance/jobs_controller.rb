@@ -7,6 +7,7 @@ module Refinery
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :show, :update]
+      allow_page_roles Refinery::Business::ROLE_INTERNAL_FINANCE, only: [:index, :show, :update]
 
       before_action :find_all_jobs,  only: [:index]
       before_action :find_job,       except: [:index, :new, :create]

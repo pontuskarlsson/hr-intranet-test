@@ -94,7 +94,7 @@ module Refinery
       end
 
       def all_jobs
-        registered_jobs.keys.inject([]) do |acc, assoc_name|
+        all_job_association_names.inject([]) do |acc, assoc_name|
           acc.concat send(assoc_name)
         end
       end
@@ -107,8 +107,8 @@ module Refinery
 
       end
 
-      def self.all_job_association_names
-        registered_jobs.keys
+      def all_job_association_names
+        (registered_jobs || {}).keys
       end
 
     end

@@ -57,7 +57,13 @@
             <tbody>
             <tr>
               <th style="width: 150px;">Title</th>
-              <td><%= billable.title %></td>
+              <td>
+                <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+                  <%= link_to billable.title, refinery.business_billable_path(billable) %>
+                <% else %>
+                  <%= billable.title %>
+                <% end %>
+              </td>
             </tr>
             <tr>
               <th>Description</th>
