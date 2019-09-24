@@ -43,10 +43,12 @@
           <table class="cc-table">
             <tbody>
             <tr>
-              <th>Happy Rabbit Limited</th>
+              <th style="width: 120px;">Happy Rabbit Limited</th>
               <td>
                 <% if @company.contact.try(:xero_hr_id).present? %>
-                  <%= link_to 'Happy Rabbit Limited', "https://go.xero.com/Contacts/View/#{@company.contact.xero_hr_id}" %>
+                  <%= link_to "https://go.xero.com/Contacts/View/#{@company.contact.xero_hr_id}", target: '_blank' do %>
+                    <%= @company.contact.xero_hr_id %> <i class="fa fa-external-link"></i>
+                  <% end %>
                 <% end %>
               </td>
             </tr>
@@ -54,7 +56,9 @@
               <th>Happy Rabbit Trading Limited</th>
               <td>
                 <% if @company.contact.try(:xero_hrt_id).present? %>
-                  <%= link_to 'Happy Rabbit Trading Limited', "https://go.xero.com/Contacts/View/#{@company.contact.xero_hrt_id}" %>
+                  <%= link_to "https://go.xero.com/Contacts/View/#{@company.contact.xero_hrt_id}", target: '_blank' do %>
+                    <%= @company.contact.xero_hrt_id %> <i class="fa fa-external-link"></i>
+                  <% end %>
                 <% end %>
               </td>
             </tr>
