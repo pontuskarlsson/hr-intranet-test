@@ -39,7 +39,7 @@ module Portal
           job_type: 'Inspection'
       }.freeze
 
-      attr_reader :inspection, :error
+      attr_reader :inspection, :job, :error
 
       def initialize()
       end
