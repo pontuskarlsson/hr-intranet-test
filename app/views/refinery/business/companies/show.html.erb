@@ -38,27 +38,29 @@
       <% end %>
 
       <% if current_authentication_devise_user.has_role?(::Refinery::Business::ROLE_INTERNAL_FINANCE) %>
-        <h3>Xero Contacts</h3>
-        <table class="cc-table">
-          <tbody>
-          <tr>
-            <th>Happy Rabbit Limited</th>
-            <td>
-              <% if @company.contact.try(:xero_hr_id).present? %>
-                <%= link_to 'Happy Rabbit Limited', "https://go.xero.com/Contacts/View/#{@company.contact.xero_hr_id}" %>
-              <% end %>
-            </td>
-          </tr>
-          <tr>
-            <th>Happy Rabbit Trading Limited</th>
-            <td>
-              <% if @company.contact.try(:xero_hrt_id).present? %>
-                <%= link_to 'Happy Rabbit Trading Limited', "https://go.xero.com/Contacts/View/#{@company.contact.xero_hrt_id}" %>
-              <% end %>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <section class="contact-card">
+          <h3>Xero Contacts</h3>
+          <table class="cc-table">
+            <tbody>
+            <tr>
+              <th>Happy Rabbit Limited</th>
+              <td>
+                <% if @company.contact.try(:xero_hr_id).present? %>
+                  <%= link_to 'Happy Rabbit Limited', "https://go.xero.com/Contacts/View/#{@company.contact.xero_hr_id}" %>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <th>Happy Rabbit Trading Limited</th>
+              <td>
+                <% if @company.contact.try(:xero_hrt_id).present? %>
+                  <%= link_to 'Happy Rabbit Trading Limited', "https://go.xero.com/Contacts/View/#{@company.contact.xero_hrt_id}" %>
+                <% end %>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
       <% end %>
     </div>
   <% end %>
