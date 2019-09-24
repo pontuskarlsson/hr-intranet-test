@@ -73,8 +73,6 @@ module Refinery
                   company.billables.create!(
                       billable_type: 'time',
                       billable_date: inspection_date,
-                      # project_id: project_id,
-                      # section_id: section_id,
                       title: "QA Jobs on #{inspection_date} by #{assigned_to_label}",
                       qty: 1,
                       qty_unit: 'day',
@@ -84,20 +82,19 @@ module Refinery
                 end
           end
         end
+
         if project.present?
           self.company_project_reference = project.company_reference
           self.project_code = project.code
         end
+
         if assigned_to.present?
           self.assigned_to_label = assigned_to.full_name
         end
-
       end
 
       after_save do
         if billable.present?
-          #billable.project ||= project
-          #billable.section ||= section
           billable.title = "QA Jobs on #{inspection_date} by #{assigned_to_label}"
           billable.save!
         end
@@ -119,9 +116,9 @@ module Refinery
       end
 
       def assign_code!
-        # if code.blank?
-        #   self.code = ::Refinery::Business::NumberSerie.next_counter!(::Refinery::QualityAssurance::Inspection, :code, prefix: 'QA-', pad_length: 6)
-        # end
+        if code.blank?
+          self.code = ::Refinery::Business::NumberSerie.next_counter!(::Refinery::QualityAssurance::Inspection, :code, prefix: 'QA-', pad_length: 6)
+        end
       end
 
     end

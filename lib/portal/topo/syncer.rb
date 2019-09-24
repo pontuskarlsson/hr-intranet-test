@@ -4,7 +4,7 @@ module Portal
   module Topo
     class Syncer
 
-      SYNC_ATTRIBUTES = {
+      SYNC_INSPECTION_ATTRIBUTES = {
           acc_critical: 'AccCr',
           acc_major: 'AccMa',
           acc_minor: 'AccMi',
@@ -31,6 +31,14 @@ module Portal
           supplier_label: 'Supplier'
       }.freeze
 
+      SYNC_JOB_ATTRIBUTES = {
+          company_code: 'CustomerCode',
+          company_label: 'Customer',
+          inspection_date: 'InspDate',
+          assigned_to_label: 'Inspector',
+          job_type: 'Inspection'
+      }.freeze
+
       attr_reader :inspection, :error
 
       def initialize()
@@ -43,17 +51,26 @@ module Portal
           inspection.status = 'Inspected'
         end
 
-        inspection.attributes = SYNC_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
+        @job = inspection.job || ::Refinery::QualityAssurance::Job.new
+        job.attributes = SYNC_JOB_ATTRIBUTES.each_with_object({
+            billable_type: 'ManDay',
+            status: 'Completed',
+            job_type: 'Inspection',
+            title: "#{payload['InspType']} of #{payload['PO']}"
+        }) { |(local, remote), acc| acc[local] = data[remote] }
+
+        job.company = company_from job.company_code, job.company_label
+        job.save!
+
+        inspection.job = job
+        inspection.attributes = SYNC_INSPECTION_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
           acc[local] = data[remote]
         }
 
         inspection.fields = payload
-
-        #set_inspected_by! data['InspectorID']
-        set_company!
-        set_supplier!
-        set_manufacturer!
-
+        inspection.company = company_from inspection.company_code, inspection.company_label
+        inspection.supplier = company_from inspection.supplier_code, inspection.supplier_label
+        inspection.manufacturer = company_from inspection.manufacturer_code, inspection.manufacturer_label
         inspection.save!
 
         handle_exports!(inspection, payload['exports'])
@@ -62,66 +79,13 @@ module Portal
 
         inspection.inspection_photo = inspection.inspection_photos.detect { |inspection_photo| inspection_photo.fields['key'] == 'Preview' }
         inspection.save!
-
-        job = inspection.job || ::Refinery::QualityAssurance::Job.new
-        job.attributes = {
-            company_id: inspection.company_id,
-            company_code: inspection.company_code,
-            company_label: inspection.company_label,
-            billable_type: 'ManDay',
-            status: 'Completed',
-            assigned_to_id: inspection.inspected_by_id,
-            assigned_to_label: inspection.inspected_by_name,
-            code: inspection.code,
-            title: "#{inspection.inspection_type} of #{inspection.po_number}",
-            job_type: 'Inspection',
-            inspection_date: inspection.inspection_date
-        }
-        job.save!
-
-        inspection.job = job
-        inspection.save!
       end
 
-      # def set_inspected_by!(inspector_email)
-      #   if inspector_email.present?
-      #     inspection.inspected_by ||= ::Refinery::Authentication::Devise::User.find_by email: inspector_email
-      #   end
-      # end
-
-      def set_company!
-        if inspection.company_code.present? && (company = ::Refinery::Business::Company.find_by(code: inspection.company_code)).present?
-          inspection.company = company
-
-        elsif inspection.company_label.present? && (company = ::Refinery::Business::Company.find_by(name: inspection.company_label)).present?
-          inspection.company = company
-
-        else
-          inspection.company = nil
-        end
-      end
-      
-      def set_manufacturer!
-        if inspection.manufacturer_code.present? && (manufacturer = ::Refinery::Business::Company.find_by(code: inspection.manufacturer_code)).present?
-          inspection.manufacturer = manufacturer
-
-        elsif inspection.manufacturer_label.present? && (manufacturer = ::Refinery::Business::Company.find_by(name: inspection.manufacturer_label)).present?
-          inspection.manufacturer = manufacturer
-
-        else
-          inspection.manufacturer = nil
-        end
-      end
-
-      def set_supplier!
-        if inspection.supplier_code.present? && (supplier = ::Refinery::Business::Company.find_by(code: inspection.supplier_code)).present?
-          inspection.supplier = supplier
-
-        elsif inspection.supplier_label.present? && (supplier = ::Refinery::Business::Company.find_by(name: inspection.supplier_label)).present?
-          inspection.supplier = supplier
-
-        else
-          inspection.supplier = nil
+      def company_from(code, label)
+        if code.present? && (company = ::Refinery::Business::Company.find_by(code: code)).present?
+          company
+        elsif label.present? && (company = ::Refinery::Business::Company.find_by(name: label)).present?
+          company
         end
       end
 

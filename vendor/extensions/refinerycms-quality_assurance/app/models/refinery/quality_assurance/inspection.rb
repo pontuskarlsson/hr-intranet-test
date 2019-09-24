@@ -40,7 +40,13 @@ module Refinery
 
       before_validation(on: :create) do
         self.status ||= 'Draft'
-        assign_code!
+      end
+
+      before_validation do
+        if job.present?
+          self.company = job.company
+          self.code = job.code
+        end
       end
 
       validate do
@@ -149,9 +155,9 @@ module Refinery
         end
       end
 
-      def assign_code!
-        self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code, prefix: 'QA-', pad_length: 6) if code.blank?
-      end
+      # def assign_code!
+      #   self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code, prefix: 'QA-', pad_length: 6) if code.blank?
+      # end
 
     end
   end
