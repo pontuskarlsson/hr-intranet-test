@@ -31,6 +31,14 @@ module Refinery
         "#{total_amount} #{currency_code}"
       end
 
+      def total_cost_from_billables
+        @total_cost_from_billables ||= billables.map(&:total_cost).reduce(0, :+)
+      end
+
+      def billable_cost_diff
+        total_cost_from_billables - total_amount
+      end
+
       def label
         invoice_number
       end

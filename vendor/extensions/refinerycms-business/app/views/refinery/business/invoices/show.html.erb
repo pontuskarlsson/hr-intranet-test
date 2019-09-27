@@ -50,7 +50,12 @@
       </tr>
       <tr>
         <th>Billable Amount</th>
-        <td><%=number_to_currency @invoice.billables.map(&:total_cost).reduce(:+) %></td>
+        <td>
+          <%=number_to_currency @invoice.total_cost_from_billables %>
+          <% if @invoice.billable_cost_diff != 0 %>
+            (<span style="color: #C1666B;"><%=number_to_currency @invoice.billable_cost_diff %></span>)
+          <% end %>
+        </td>
       </tr>
       <tr>
         <th>Amount Due</th>
@@ -73,6 +78,7 @@
         <thead>
         <tr>
           <th>Title</th>
+          <th>Date</th>
           <th>Status</th>
           <th>Article</th>
           <th>Qty</th>
@@ -85,12 +91,13 @@
         <% @invoice.billables.each do |billable| %>
           <tr>
             <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
+            <td><%= billable.billable_date %></td>
             <td><%= billable.status %></td>
             <td><%= billable.article_code %></td>
-            <td><%= billable.qty %></td>
-            <td><%= billable.unit_price %></td>
-            <td><%= billable.discount %></td>
-            <td><%= billable.total_cost %></td>
+            <td><%= billable.display_qty %></td>
+            <td><%=number_to_currency billable.unit_price %></td>
+            <td><%=number_to_percentage billable.discount %></td>
+            <td><%=number_to_currency billable.total_cost %></td>
           </tr>
         <% end %>
         </tbody>
