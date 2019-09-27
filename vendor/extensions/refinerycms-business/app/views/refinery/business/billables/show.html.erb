@@ -14,7 +14,17 @@
       </tr>
       <tr>
         <th>Company</th>
-        <td><%= @billable.company.label %></td>
+        <td>
+          <% if @billable.company.present? %>
+            <%= link_to @billable.company.label, refinery.business_company_path(@billable.company) %>
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>Assigned To</th>
+        <td><%= @billable.assigned_to_label %></td>
       </tr>
       <tr>
         <th>Invoice</th>
@@ -28,6 +38,23 @@
                   </div>
                 <% end %>
                 <%= f.text_field :invoice_label, :class => 'js_invoice_field input-group-field' -%>
+                <div class="input-group-button">
+                  <%= f.submit 'Update', class: 'button' %>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <%= @billable.invoice_invoice_number.presence || 'N/A' %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>Article Code</th>
+        <td>
+          <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+            <%= form_for @billable, url: refinery.business_billable_path(@billable) do |f| %>
+              <div class="input-group">
+                <%= f.select :article_code, options_for_select([''] + Refinery::Business::Billable::ARTICLE_CODES, @billable.article_code), :class => 'input-group-field' -%>
                 <div class="input-group-button">
                   <%= f.submit 'Update', class: 'button' %>
                 </div>

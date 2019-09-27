@@ -11,10 +11,13 @@ module Refinery
       PRODUCT_UNITS = %w()
       TIME_UNITS = %w(day)
 
+      ARTICLE_CODES = %w(CONSULTANT-QCQA-CN-DAY CONSULTANT-QCQA-VN-DAY CONSULTANT-QCQA-TH-DAY CONSULTANT-QCQA-ID-DAY)
+
       belongs_to :company
       #belongs_to :project
       #belongs_to :section
       belongs_to :invoice
+      belongs_to :assigned_to,      class_name: '::Refinery::Authentication::Devise::User'
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
@@ -26,7 +29,7 @@ module Refinery
 
       validates :company_id,    presence: true
       validates :billable_type, inclusion: TYPES
-      validates :article_code,  presence: true
+      validates :article_code,  inclusion: ARTICLE_CODES,     allow_blank: true
       validates :title,         presence: true
       validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_is_commission?
       validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_is_product?
@@ -34,6 +37,12 @@ module Refinery
 
       before_validation do
         self.total_cost = qty * unit_price * (1.0 - discount)
+      end
+
+      before_save do
+        if assigned_to.present?
+          self.assigned_to_label = assigned_to.full_name
+        end
       end
 
       def billable_is_commission?

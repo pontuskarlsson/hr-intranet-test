@@ -2,22 +2,36 @@
   <thead>
   <tr>
     <th></th>
-    <th data-dt-search-input="true">Company</th>
+    <% unless options[:view] == :invoice %><th data-dt-search-input="true">Company</th><% end %>
     <th data-dt-search-input="true">Title</th>
-    <th data-dt-search-input="true">Invoice</th>
     <th data-dt-search-date="true">Date</th>
-    <th data-dt-search-input="true">Total Cost</th>
+    <th data-dt-search-input="true">Assigned To</th>
+    <th data-dt-search-input="true">Article</th>
+    <% unless options[:view] == :invoice %><th data-dt-search-input="true">Invoice</th><% end %>
+    <th>Qty</th>
+    <th data-dt-search-input="true">Unit</th>
+    <th>Unit Price</th>
+    <th>Discount</th>
+    <th>Total Cost</th>
+    <th data-dt-search-input="true">Status</th>
   </tr>
   </thead>
 
   <tfoot>
   <tr>
     <th></th>
-    <th>Company</th>
-    <th>title</th>
-    <th>Invoice</th>
+    <% unless options[:view] == :invoice %><th>Company</th><% end %>
+    <th>Title</th>
     <th>Date</th>
+    <th>Assigned To</th>
+    <th>Article</th>
+    <% unless options[:view] == :invoice %><th>Invoice</th><% end %>
+    <th>Qty</th>
+    <th>Unit</th>
+    <th>Unit Price</th>
+    <th>Discount</th>
     <th>Total Cost</th>
+    <th>Status</th>
   </tr>
   </tfoot>
 </table>
@@ -34,11 +48,18 @@
         "order": [[4, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
-          { data: "company_label" },
+            <% unless options[:view] == :invoice %>{ data: "company_label" },<% end %>
           { data: "title" },
-          { data: "invoice_invoice_number" },
-          { data: "billable_date" },
+          { data: "billable_date", "render": dtDateRenderer },
+          { data: "assigned_to_label" },
+          { data: "article_code" },
+            <% unless options[:view] == :invoice %>{ data: "invoice_invoice_number" },<% end %>
+          { data: "qty" },
+          { data: "qty_unit" },
+          { data: "unit_price", "render": { "display": formatCurrency } },
+          { data: "discount" },
           { data: "total_cost", "render": { "display": formatCurrency } },
+          { data: "status" },
         ],
         "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
           "t"+

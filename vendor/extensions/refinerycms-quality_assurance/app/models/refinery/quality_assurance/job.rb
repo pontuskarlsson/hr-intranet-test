@@ -73,7 +73,9 @@ module Refinery
                   company.billables.create!(
                       billable_type: 'time',
                       billable_date: inspection_date,
-                      title: "QA Jobs on #{inspection_date} by #{assigned_to_label}",
+                      assigned_to_id: assigned_to_id,
+                      assigned_to_label: assigned_to_label,
+                      title: 'QC/QA Job(s)',
                       qty: 1,
                       qty_unit: 'day',
                       unit_price: 350,
@@ -90,13 +92,6 @@ module Refinery
 
         if assigned_to.present?
           self.assigned_to_label = assigned_to.full_name
-        end
-      end
-
-      after_save do
-        if billable.present?
-          billable.title = "QA Jobs on #{inspection_date} by #{assigned_to_label}"
-          billable.save!
         end
       end
 

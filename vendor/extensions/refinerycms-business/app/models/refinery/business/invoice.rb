@@ -3,6 +3,8 @@ module Refinery
     class Invoice < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_invoices'
 
+      PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ', ' }
+
       INVOICE_TYPES = %w(ACCREC ACCPAY)
       STATUSES = %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
 
@@ -40,15 +42,15 @@ module Refinery
       end
 
       def label
-        invoice_number
+        PROC_LABEL.call(invoice_number, invoice_date, reference)
       end
 
       def self.find_by_label(label)
-        find_by invoice_number: label
+        find_by invoice_number: label.split(', ').first
       end
 
       def self.to_source
-        where(nil).pluck(:invoice_number).to_json.html_safe
+        order(invoice_number: :desc).pluck(:invoice_number, :invoice_date, :reference).map(&PROC_LABEL).to_json.html_safe
       end
 
     end
