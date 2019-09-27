@@ -72,7 +72,6 @@
       <table>
         <thead>
         <tr>
-          <th>Project</th>
           <th>Title</th>
           <th>Status</th>
           <th>Article</th>
@@ -85,7 +84,6 @@
         <tbody>
         <% @invoice.billables.each do |billable| %>
           <tr>
-            <td><%= billable.project_code %></td>
             <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
             <td><%= billable.status %></td>
             <td><%= billable.article_code %></td>

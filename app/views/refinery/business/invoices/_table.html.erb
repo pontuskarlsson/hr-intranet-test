@@ -43,6 +43,7 @@
         "responsive":     true,
         "paging":         true,
         "ajax": "<%= refinery.business_invoices_path(filter_params) %>",
+        "order": [[5, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_invoices_path %>") } },
           { data: "invoice_number" },

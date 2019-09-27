@@ -6,7 +6,7 @@ module Refinery
 
       after_save do
         if Refinery::Marketing::Insightly.configuration.updates_allowed
-          Delayed::Job.enqueue(PushContactJob.new(id, changes))
+          Delayed::Job.enqueue(PushContactJob.new(id, changes)) if changes.any?
         end
       end
 

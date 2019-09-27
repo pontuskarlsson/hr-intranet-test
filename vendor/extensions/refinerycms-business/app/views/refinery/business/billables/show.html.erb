@@ -16,30 +16,6 @@
         <th>Company</th>
         <td><%= @billable.company.label %></td>
       </tr>
-      <% if false # Project removed from direct association %>
-      <tr>
-        <th>Project</th>
-        <td>
-          <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
-            <%= form_for @billable, url: refinery.business_billable_path(@billable) do |f| %>
-              <div class="input-group">
-                <% if @billable.project.present? %>
-                  <div class="input-group-button">
-                    <%= link_to 'Go to', refinery.business_project_path(@billable.project), class: 'button' %>
-                  </div>
-                <% end %>
-                <%= f.text_field :project_label, :class => 'js_project_field input-group-field' -%>
-                <div class="input-group-button">
-                  <%= f.submit 'Update', class: 'button' %>
-                </div>
-              </div>
-            <% end %>
-          <% else %>
-            <%= @billable.project_code.presence || 'N/A' %>
-          <% end %>
-        </td>
-      </tr>
-      <% end %>
       <tr>
         <th>Invoice</th>
         <td>
@@ -66,15 +42,43 @@
         <th>Status</th>
         <td><%= @billable.status %></td>
       </tr>
+      <tr>
+        <th>Type</th>
+        <td><%= @billable.display_billable_type %></td>
+      </tr>
       </tbody>
     </table>
 
+    <h3>Cost</h3>
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th style="width: 150px;">Qty</th>
+        <td><%= @billable.display_qty %></td>
+      </tr>
+      <tr>
+        <th>Unit Price</th>
+        <td><%=number_to_currency @billable.unit_price %></td>
+      </tr>
+      <tr>
+        <th>Discount</th>
+        <td><%=number_to_percentage @billable.discount %></td>
+      </tr>
+      <tr>
+        <th>Total Cost</th>
+        <td><%=number_to_currency @billable.total_cost %></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h3>Jobs</h3>
     <% @billable.all_jobs.group_by(&:job_type).each_pair do |job_type, jobs| %>
-      <h3><%= job_type %> Jobs</h3>
       <table>
         <thead>
         <tr>
           <th>Job</th>
+          <th>Type</th>
+          <th>Date</th>
           <th>Project</th>
         </tr>
         </thead>
@@ -88,6 +92,8 @@
                 <%= job.title %>
               <% end %>
             </td>
+            <td><%= job_type %></td>
+            <td><%= job.inspection_date %></td>
             <td><%= job.project_label.presence || 'N/A' %></td>
           </tr>
         <% end %>

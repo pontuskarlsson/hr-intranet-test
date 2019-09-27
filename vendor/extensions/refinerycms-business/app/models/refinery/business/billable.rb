@@ -22,7 +22,6 @@ module Refinery
       acts_as_indexed :fields => [:title, :description]
 
       delegate :invoice_number, to: :invoice, prefix: true, allow_nil: true
-      delegate :code, :description, to: :project, prefix: true, allow_nil: true
       delegate :label, to: :company, prefix: true, allow_nil: true
 
       validates :company_id,    presence: true
@@ -32,12 +31,6 @@ module Refinery
       validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_is_commission?
       validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_is_product?
       validates :qty_unit,      inclusion: TIME_UNITS,        if: :billable_is_time?
-
-      # validate do
-      #   if project.present?
-      #     errors.add(:project_id, :invalid) unless project.company_id == company_id
-      #   end
-      # end
 
       before_validation do
         self.total_cost = qty * unit_price * (1.0 - discount)
@@ -55,12 +48,12 @@ module Refinery
         billable_type == 'time'
       end
 
-      def display_project
-        if project.present?
-          project.label
-        else
-          'N/A'
-        end
+      def display_billable_type
+        billable_type.present? ? billable_type.capitalize : 'N/A'
+      end
+
+      def display_qty
+        "#{qty} #{qty_unit}"
       end
 
       def display_invoice
@@ -82,15 +75,6 @@ module Refinery
       def invoice_label=(label)
         self.invoice = Invoice.find_by_label label
         @invoice_label = label
-      end
-
-      def project_label
-        @project_label ||= project.try(:label)
-      end
-
-      def project_label=(label)
-        self.project = ::Refinery::Business::Project.find_by_label label
-        @project_label = label
       end
 
       def all_jobs

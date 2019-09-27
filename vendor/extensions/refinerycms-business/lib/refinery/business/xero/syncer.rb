@@ -23,6 +23,7 @@ module Refinery
 
         def initialize(account)
           @account = account
+          @account_company = Refinery::Business::Company.find_by! name: account.organisation
           @errors = []
         end
 
@@ -50,19 +51,29 @@ module Refinery
             acc[local] = xero_invoice.attributes[remote]
           }
 
+          if invoice.invoice_type == 'ACCREC'
+            invoice.from_company = @account_company
+            invoice.to_company = invoice.company
+            invoice.to_contact_id = invoice.contact_id
+          else
+            invoice.to_company = @account_company
+            invoice.from_company = invoice.company
+            invoice.from_contact_id = invoice.contact_id
+          end
+
           # Try to match and associate with Project, but only if it is not already
           # associated, because we don't want to automatically override a manually
           # assigned project.
           #
           # The Project reference can currently be found either in Invoice Number or
           # Reference.
-          if invoice.project_id.nil?
-            if (res = /Project ([0-9]{5})/.match(invoice.reference)).present?
-              invoice.project = ::Refinery::Business::Project.find_by code: res[1]
-            elsif (res = /Project ([0-9]{5})/.match(invoice.invoice_number)).present?
-              invoice.project = ::Refinery::Business::Project.find_by code: res[1]
-            end
-          end
+          # if invoice.project_id.nil?
+          #   if (res = /Project ([0-9]{5})/.match(invoice.reference)).present?
+          #     invoice.project = ::Refinery::Business::Project.find_by code: res[1]
+          #   elsif (res = /Project ([0-9]{5})/.match(invoice.invoice_number)).present?
+          #     invoice.project = ::Refinery::Business::Project.find_by code: res[1]
+          #   end
+          # end
 
           invoice.save!
         rescue ActiveRecord::RecordNotSaved => e

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190912064814) do
+ActiveRecord::Schema.define(version: 20190927010324) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -377,33 +377,42 @@ ActiveRecord::Schema.define(version: 20190912064814) do
   add_index "refinery_business_company_users", ["user_id"], name: "index_refinery_business_company_users_on_user_id", using: :btree
 
   create_table "refinery_business_invoices", force: :cascade do |t|
-    t.integer  "account_id",       limit: 4
-    t.string   "invoice_id",       limit: 255
-    t.string   "contact_id",       limit: 255
-    t.string   "invoice_number",   limit: 255
-    t.string   "invoice_type",     limit: 255
-    t.string   "reference",        limit: 255
-    t.string   "invoice_url",      limit: 255
+    t.integer  "account_id",         limit: 4
+    t.string   "invoice_id",         limit: 255
+    t.string   "contact_id",         limit: 255
+    t.string   "invoice_number",     limit: 255
+    t.string   "invoice_type",       limit: 255
+    t.string   "reference",          limit: 255
+    t.string   "invoice_url",        limit: 255
     t.date     "invoice_date"
     t.date     "due_date"
-    t.string   "status",           limit: 255
-    t.decimal  "total_amount",                 precision: 12, scale: 2, default: 0.0
-    t.decimal  "amount_due",                   precision: 12, scale: 2, default: 0.0
-    t.decimal  "amount_paid",                  precision: 12, scale: 2, default: 0.0
-    t.decimal  "amount_credited",              precision: 8,  scale: 2, default: 0.0
-    t.string   "currency_code",    limit: 255
-    t.decimal  "currency_rate",                precision: 12, scale: 6, default: 1.0
+    t.string   "status",             limit: 255
+    t.decimal  "total_amount",                   precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_due",                     precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_paid",                    precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_credited",                precision: 8,  scale: 2, default: 0.0
+    t.string   "currency_code",      limit: 255
+    t.decimal  "currency_rate",                  precision: 12, scale: 6, default: 1.0
     t.datetime "updated_date_utc"
-    t.integer  "position",         limit: 4
+    t.integer  "position",           limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "company_id",       limit: 4
-    t.integer  "project_id",       limit: 4
+    t.integer  "company_id",         limit: 4
+    t.integer  "project_id",         limit: 4
+    t.integer  "from_company_id",    limit: 4
+    t.string   "from_company_label", limit: 255
+    t.integer  "from_contact_id",    limit: 4
+    t.integer  "to_company_id",      limit: 4
+    t.string   "to_company_label",   limit: 255
+    t.integer  "to_contact_id",      limit: 4
   end
 
   add_index "refinery_business_invoices", ["account_id"], name: "index_refinery_business_invoices_on_account_id", using: :btree
   add_index "refinery_business_invoices", ["company_id"], name: "index_refinery_business_invoices_on_company_id", using: :btree
   add_index "refinery_business_invoices", ["contact_id"], name: "index_refinery_business_invoices_on_contact_id", using: :btree
+  add_index "refinery_business_invoices", ["from_company_id"], name: "INDEX_rb_invoices_ON_from_company_id", using: :btree
+  add_index "refinery_business_invoices", ["from_company_label"], name: "INDEX_rb_invoices_ON_from_company_label", using: :btree
+  add_index "refinery_business_invoices", ["from_contact_id"], name: "INDEX_rb_invoices_ON_from_contact_id", using: :btree
   add_index "refinery_business_invoices", ["invoice_date"], name: "index_refinery_business_invoices_on_invoice_date", using: :btree
   add_index "refinery_business_invoices", ["invoice_id"], name: "index_refinery_business_invoices_on_invoice_id", using: :btree
   add_index "refinery_business_invoices", ["invoice_number"], name: "index_refinery_business_invoices_on_invoice_number", using: :btree
@@ -411,6 +420,9 @@ ActiveRecord::Schema.define(version: 20190912064814) do
   add_index "refinery_business_invoices", ["position"], name: "index_refinery_business_invoices_on_position", using: :btree
   add_index "refinery_business_invoices", ["project_id"], name: "index_refinery_business_invoices_on_project_id", using: :btree
   add_index "refinery_business_invoices", ["status"], name: "index_refinery_business_invoices_on_status", using: :btree
+  add_index "refinery_business_invoices", ["to_company_id"], name: "INDEX_rb_invoices_ON_to_company_id", using: :btree
+  add_index "refinery_business_invoices", ["to_company_label"], name: "INDEX_rb_invoices_ON_to_company_label", using: :btree
+  add_index "refinery_business_invoices", ["to_contact_id"], name: "INDEX_rb_invoices_ON_to_contact_id", using: :btree
   add_index "refinery_business_invoices", ["total_amount"], name: "index_refinery_business_invoices_on_total_amount", using: :btree
 
   create_table "refinery_business_number_series", force: :cascade do |t|

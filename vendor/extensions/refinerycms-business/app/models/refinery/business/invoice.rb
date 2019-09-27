@@ -8,6 +8,8 @@ module Refinery
 
       belongs_to :account
       belongs_to :company
+      belongs_to :from_company
+      belongs_to :to_company
       belongs_to :project
       has_many :billables,      dependent: :nullify
 
