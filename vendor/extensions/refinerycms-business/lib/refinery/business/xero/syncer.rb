@@ -23,7 +23,7 @@ module Refinery
 
         def initialize(account)
           @account = account
-          @account_company = Refinery::Business::Company.find_by! name: account.organisation
+          @account_company = nil #Refinery::Business::Company.find_by! name: account.organisation
           @errors = []
         end
 
