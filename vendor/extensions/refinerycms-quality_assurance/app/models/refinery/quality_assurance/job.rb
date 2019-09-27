@@ -79,7 +79,7 @@ module Refinery
                       qty: 1,
                       qty_unit: 'day',
                       unit_price: 350,
-                      article_code: 'TBC'
+                      article_code: ''
                   )
                 end
           end
