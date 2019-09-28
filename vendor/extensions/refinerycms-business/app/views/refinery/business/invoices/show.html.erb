@@ -1,3 +1,30 @@
+<% content_for :actions do %>
+  <p><button class="button" data-open="js_invoice_billables_form">Add Billables</button></p>
+
+  <div class="reveal" id="js_invoice_billables_form" data-reveal>
+    <%= form_for @invoice_billables_form, url: refinery.add_billables_business_invoice_path(@invoice) do |f| %>
+      <h4><%= @invoice_billables_form.non_invoiced_billables.count %> non-invoiced billables available</h4>
+      <ul style="max-height: 300px; overflow-y: scroll;">
+        <%= f.fields_for :non_invoiced_billables do |ib_form| %>
+          <li>
+            <%= ib_form.label :invoice_id do %>
+              <%= ib_form.check_box :invoice_id, {}, @invoice.id.to_s, '' %>
+              <%= ib_form.object.title %>
+              <%= ib_form.object.billable_date %>
+              <%= ib_form.object.assigned_to_label %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <%= f.submit 'Add' %>
+    <% end %>
+
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% end %>
+
 <% content_for :body do %>
   <h2><%= @invoice.label %></h2>
 

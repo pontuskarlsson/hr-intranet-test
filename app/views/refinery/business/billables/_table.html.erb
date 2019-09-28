@@ -45,7 +45,7 @@
         "responsive":     true,
         "paging":         true,
         "ajax": "<%= ajax %>",
-        "order": [[4, 'desc']],
+        "order": [[<%= options[:view] == :invoice ? '2' : '3' %>, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
             <% unless options[:view] == :invoice %>{ data: "company_label" },<% end %>

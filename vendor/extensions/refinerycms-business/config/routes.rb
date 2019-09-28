@@ -5,7 +5,9 @@ Refinery::Core::Engine.routes.draw do
     resources :billables, :only => [:index, :show, :new, :create, :update]
     resources :budgets, :only => [:index, :show, :new, :create, :update]
     resources :companies, :only => [:index, :show, :create]
-    resources :invoices, :only => [:index, :show]
+    resources :invoices, :only => [:index, :show] do
+      patch :add_billables, to: 'invoices#add_billables', on: :member
+    end
     resources :projects, :only => [:index, :show, :new, :create] do
       get :archive, on: :collection
       resources :sections, only: [:create, :update]

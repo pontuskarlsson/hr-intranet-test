@@ -20,7 +20,7 @@
   </tbody>
 </table>
 
-<% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+<% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
   <% if section.quality_assurance_jobs.any? %>
     <%- total_days = 0.0 -%>
     <table>

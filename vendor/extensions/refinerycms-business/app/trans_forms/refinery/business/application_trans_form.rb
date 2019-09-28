@@ -50,6 +50,14 @@ module Refinery
         end
       end
 
+      def find_from!(collection, identifier, find_by = :id)
+        if identifier.present?
+          collection.detect { |instance| instance.send(find_by) == identifier.to_i } || (raise NotFoundFromError)
+        else
+          raise ActiveRecord::RecordNotFound
+        end
+      end
+
     end
   end
 end

@@ -44,9 +44,29 @@
 
     <h3>Project Scope</h3>
     <% if @project.sections.any? %>
-      <% @project.sections.each do |section| %>
-        <%= render "section_#{section.section_type.downcase}", section: section %>
-      <% end %>
+      <ul class="tabs" data-tabs id="project-section-tabs">
+        <% @project.sections.each_with_index do |section, i| %>
+          <% if i.zero? %>
+            <li class="tabs-title is-active"><a href="#panel<%= i %>" aria-selected="true"><%= section.section_type %></a></li>
+          <% else %>
+            <li class="tabs-title"><a data-tabs-target="panel<%= i %>" href="#panel<%= i %>"><%= section.section_type %></a></li>
+          <% end %>
+        <% end %>
+      </ul>
+
+      <div class="tabs-content" data-tabs-content="project-section-tabs">
+        <% @project.sections.each_with_index do |section, i| %>
+          <% if i.zero? %>
+            <div class="tabs-panel is-active" id="panel<%= i %>">
+              <%= render "section_#{section.section_type.downcase}", section: section %>
+            </div>
+          <% else %>
+            <div class="tabs-panel" id="panel<%= i %>">
+              <%= render "section_#{section.section_type.downcase}", section: section %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     <% else %>
       <p>No sections added.</p>
     <% end %>

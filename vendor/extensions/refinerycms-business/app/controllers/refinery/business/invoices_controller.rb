@@ -17,9 +17,25 @@ module Refinery
       end
 
       def show
+        @invoice_billables_form = InvoiceBillablesForm.new_in_model(@invoice)
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @invoice in the line below:
         present(@page)
+      end
+
+      def add_billables
+        @invoice_billables_form = InvoiceBillablesForm.new_in_model(@invoice, params[:invoice], current_authentication_devise_user)
+        if @invoice_billables_form.save
+          flash[:notice] = 'Successfully added Billables to Invoice'
+          if params[:redirect_to].present?
+            redirect_to params[:redirect_to], status: :see_other
+          else
+            redirect_to refinery.business_invoice_path(@invoice), status: :see_other
+          end
+        else
+          present(@page)
+          render :show
+        end
       end
 
       protected
