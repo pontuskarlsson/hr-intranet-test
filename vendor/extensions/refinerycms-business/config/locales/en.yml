@@ -50,22 +50,7 @@ en:
             edit: Edit this project
             delete: Remove this project forever
             preview: '(%{status}) %{description}, Company: %{company_label}'
-            
-        sales_orders:
-          actions:
-            create_new: Add New Sales Order
-            reorder: Reorder Sales Orders
-            reorder_done: Done Reordering Sales Orders
-          records:
-            title: Sales Orders
-            sorry_no_results: Sorry! There are no results found.
-            no_items_yet: There are no Sales Orders yet. Click "Add New Sales Order" to add your first sales order.
-          sales_order:
-            view_live_html: View this sales order live <br/><em>(opens in a new window)</em>
-            edit: Edit this sales order
-            delete: Remove this sales order forever
-            preview: 'Order total: %{total} %{currency_name}, Last modified at %{modified_date}'
-            
+
         sections:
           actions:
             create_new: Add New Section
@@ -86,7 +71,6 @@ en:
             manage_budgets: Manage Budgets
             manage_companies: Manage Companies
             manage_projects: Manage Projects
-            manage_sales_orders: Manage Sales Orders
             manage_sections: Manage Sections
 
       budgets:
@@ -100,10 +84,6 @@ en:
       projects:
         show:
           other: Other Projects
-
-      sales_orders:
-        show:
-          other: Other Sales Orders
 
       sections:
         show:
@@ -121,16 +101,6 @@ en:
       'refinery/business/project':
         code: Code
         description: Description
-
-      'refinery/business/sales_order':
-        order_ref: Order Ref
-        order_id: Po Order ID
-        company: Company
-        billing_address: Billing Address
-        delivery_address: Delivery Address
-        modified_date: Modified Date
-        total: Total
-        currency_name: Currency
 
       'refinery/business/section':
         description: Description

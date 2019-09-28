@@ -20,7 +20,6 @@ Refinery::I18n.frontend_locales.each do |lang|
       [Refinery::Business::PAGE_COMPANIES_URL, 'Companies'],
       [Refinery::Business::PAGE_INVOICES_URL, 'Invoices', role_internal_finance],
       [Refinery::Business::PAGE_PROJECTS_URL, 'Projects'],
-      [Refinery::Business::PAGE_SALES_ORDERS_URL, 'Sales Orders'],
       [Refinery::Business::PAGE_SECTIONS_URL, 'Sections']
   ].each do |url, title, role|
 

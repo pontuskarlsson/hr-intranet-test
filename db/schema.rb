@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190927083207) do
+ActiveRecord::Schema.define(version: 20190928141153) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -462,72 +462,6 @@ ActiveRecord::Schema.define(version: 20190927083207) do
   add_index "refinery_business_projects", ["start_date"], name: "index_refinery_business_projects_on_start_date", using: :btree
   add_index "refinery_business_projects", ["status"], name: "index_refinery_business_projects_on_status", using: :btree
 
-  create_table "refinery_business_sales_orders", force: :cascade do |t|
-    t.string   "order_id",             limit: 255,                default: "",    null: false
-    t.string   "order_session_id",     limit: 255,                default: "",    null: false
-    t.string   "order_ref",            limit: 255,                default: "",    null: false
-    t.datetime "created_date"
-    t.datetime "modified_date"
-    t.boolean  "active",                                          default: false, null: false
-    t.string   "transaction_type",     limit: 255,                default: "",    null: false
-    t.string   "member_id",            limit: 255,                default: "",    null: false
-    t.string   "member_email",         limit: 255,                default: "",    null: false
-    t.string   "member_cost_center",   limit: 255,                default: "",    null: false
-    t.string   "member_session_id",    limit: 255,                default: "",    null: false
-    t.string   "sales_person_id",      limit: 255,                default: "",    null: false
-    t.string   "sales_person_email",   limit: 255,                default: "",    null: false
-    t.decimal  "product_total",                    precision: 10, default: 0,     null: false
-    t.decimal  "freight_total",                    precision: 10, default: 0,     null: false
-    t.string   "freight_description",  limit: 255,                default: "",    null: false
-    t.decimal  "discount_total",                   precision: 10, default: 0,     null: false
-    t.string   "discount_description", limit: 255,                default: "",    null: false
-    t.decimal  "total",                            precision: 10, default: 0,     null: false
-    t.decimal  "currency_rate",                    precision: 10, default: 0,     null: false
-    t.string   "currency_name",        limit: 255,                default: "",    null: false
-    t.string   "currency_symbol",      limit: 255,                default: "",    null: false
-    t.string   "tax_status",           limit: 255,                default: "",    null: false
-    t.decimal  "tax_rate",                         precision: 10, default: 0,     null: false
-    t.string   "first_name",           limit: 255,                default: "",    null: false
-    t.string   "last_name",            limit: 255,                default: "",    null: false
-    t.string   "company",              limit: 255,                default: "",    null: false
-    t.string   "phone",                limit: 255,                default: "",    null: false
-    t.string   "mobile",               limit: 255,                default: "",    null: false
-    t.string   "email",                limit: 255,                default: "",    null: false
-    t.string   "delivery_first_name",  limit: 255,                default: "",    null: false
-    t.string   "delivery_last_name",   limit: 255,                default: "",    null: false
-    t.string   "delivery_company",     limit: 255,                default: "",    null: false
-    t.string   "delivery_address",     limit: 255,                default: "",    null: false
-    t.string   "delivery_suburb",      limit: 255,                default: "",    null: false
-    t.string   "delivery_city",        limit: 255,                default: "",    null: false
-    t.string   "delivery_postal_code", limit: 255,                default: "",    null: false
-    t.string   "delivery_state",       limit: 255,                default: "",    null: false
-    t.string   "delivery_country",     limit: 255,                default: "",    null: false
-    t.string   "billing_first_name",   limit: 255,                default: "",    null: false
-    t.string   "billing_last_name",    limit: 255,                default: "",    null: false
-    t.string   "billing_company",      limit: 255,                default: "",    null: false
-    t.string   "billing_address",      limit: 255,                default: "",    null: false
-    t.string   "billing_suburb",       limit: 255,                default: "",    null: false
-    t.string   "billing_city",         limit: 255,                default: "",    null: false
-    t.string   "billing_postal_code",  limit: 255,                default: "",    null: false
-    t.string   "billing_state",        limit: 255,                default: "",    null: false
-    t.string   "billing_country",      limit: 255,                default: "",    null: false
-    t.string   "comments",             limit: 255,                default: "",    null: false
-    t.string   "voucher_code",         limit: 255,                default: "",    null: false
-    t.string   "branch_id",            limit: 255,                default: "",    null: false
-    t.string   "branch_email",         limit: 255,                default: "",    null: false
-    t.string   "stage",                limit: 255,                default: "",    null: false
-    t.string   "cost_center",          limit: 255,                default: "",    null: false
-    t.string   "tracking_code",        limit: 255,                default: "",    null: false
-    t.string   "payment_terms",        limit: 255,                default: "",    null: false
-    t.integer  "position",             limit: 4
-    t.datetime "created_at",                                                      null: false
-    t.datetime "updated_at",                                                      null: false
-  end
-
-  add_index "refinery_business_sales_orders", ["active"], name: "index_refinery_sales_orders_on_active", using: :btree
-  add_index "refinery_business_sales_orders", ["order_id"], name: "index_refinery_sales_orders_on_order_id", using: :btree
-  add_index "refinery_business_sales_orders", ["position"], name: "index_refinery_sales_orders_on_position", using: :btree
-
   create_table "refinery_business_sections", force: :cascade do |t|
     t.integer  "project_id",         limit: 4
     t.string   "section_type",       limit: 255
@@ -882,38 +816,6 @@ ActiveRecord::Schema.define(version: 20190927083207) do
   end
 
   add_index "refinery_news_items", ["id"], name: "index_refinery_news_items_on_id", using: :btree
-
-  create_table "refinery_order_items", force: :cascade do |t|
-    t.integer  "sales_order_id",            limit: 4,                                  null: false
-    t.string   "order_detail_id",           limit: 255,                default: "",    null: false
-    t.string   "order_detail_imported_ref", limit: 255,                default: "",    null: false
-    t.string   "order_id",                  limit: 255,                default: "",    null: false
-    t.string   "order_ref",                 limit: 255,                default: "",    null: false
-    t.datetime "created_date"
-    t.boolean  "active",                                               default: false, null: false
-    t.string   "sku",                       limit: 255,                default: "",    null: false
-    t.string   "code",                      limit: 255,                default: "",    null: false
-    t.string   "product_id",                limit: 255,                default: "",    null: false
-    t.string   "style_code",                limit: 255,                default: "",    null: false
-    t.string   "master_id",                 limit: 255,                default: "",    null: false
-    t.decimal  "price",                                 precision: 10, default: 0,     null: false
-    t.decimal  "qty",                                   precision: 10, default: 0,     null: false
-    t.string   "name",                      limit: 255,                default: "",    null: false
-    t.decimal  "discount",                              precision: 10, default: 0,     null: false
-    t.string   "option1",                   limit: 255,                default: "",    null: false
-    t.string   "option2",                   limit: 255,                default: "",    null: false
-    t.string   "option3",                   limit: 255,                default: "",    null: false
-    t.string   "line_comments",             limit: 255,                default: "",    null: false
-    t.integer  "position",                  limit: 4
-    t.datetime "created_at",                                                           null: false
-    t.datetime "updated_at",                                                           null: false
-  end
-
-  add_index "refinery_order_items", ["active"], name: "index_refinery_order_items_on_active", using: :btree
-  add_index "refinery_order_items", ["order_detail_id"], name: "index_refinery_order_items_on_order_detail_id", using: :btree
-  add_index "refinery_order_items", ["order_id"], name: "index_refinery_order_items_on_order_id", using: :btree
-  add_index "refinery_order_items", ["position"], name: "index_refinery_order_items_on_position", using: :btree
-  add_index "refinery_order_items", ["sales_order_id"], name: "index_refinery_order_items_on_sales_order_id", using: :btree
 
   create_table "refinery_page_part_translations", force: :cascade do |t|
     t.integer  "refinery_page_part_id", limit: 4

@@ -12,7 +12,6 @@ Refinery::Core::Engine.routes.draw do
       get :archive, on: :collection
       resources :sections, only: [:create, :update]
     end
-    resources :sales_orders, :only => [:index, :show]
     resources :sections, :only => [:index, :show]
   end
 
@@ -32,12 +31,6 @@ Refinery::Core::Engine.routes.draw do
       end
 
       resources :projects, :except => :show do
-        collection do
-          post :update_positions
-        end
-      end
-
-      resources :sales_orders, :except => :show do
         collection do
           post :update_positions
         end

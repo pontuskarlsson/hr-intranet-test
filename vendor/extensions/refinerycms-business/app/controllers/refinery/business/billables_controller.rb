@@ -11,8 +11,7 @@ module Refinery
 
       def index
         @billables = @billables.where(filter_params).order(billable_date: :desc)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @sales_order in the line below:
+
         respond_to do |format|
           format.html { present(@page) }
           format.json
@@ -35,8 +34,6 @@ module Refinery
       end
 
       def show
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @sales_order in the line below:
         present(@page)
       end
 
