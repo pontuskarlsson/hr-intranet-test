@@ -1,6 +1,6 @@
 module Refinery
   module Business
-    class OrdersController < ::ApplicationController
+    class OrderItemsController < ::ApplicationController
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_ORDERS_URL
