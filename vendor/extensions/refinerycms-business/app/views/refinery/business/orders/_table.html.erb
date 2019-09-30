@@ -1,0 +1,20 @@
+<table>
+  <tr>
+    <th>Buyer</th>
+    <th>Seller</th>
+    <th>Order No.</th>
+    <th>Order Type</th>
+    <th>Order Date</th>
+    <th>Total Cost</th>
+  </tr>
+  <% @orders.each do |order| %>
+    <tr>
+      <td><%= order.buyer_label %></td>
+      <td><%= order.seller_label %></td>
+      <td><%= order.order_number %></td>
+      <td><%= order.order_type %></td>
+      <td><%= order.order_date %></td>
+      <td><%= order.total_cost %></td>
+    </tr>
+  <% end %>
+</table>

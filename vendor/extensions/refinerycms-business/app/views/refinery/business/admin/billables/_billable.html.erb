@@ -1,0 +1,22 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(billable) -%>">
+  <span class='title'>
+    <%= billable.label %>
+    <span class="preview">
+      <%= t('.preview', billable_date: billable.billable_date, assigned_to_label: billable.assigned_to_label) %>
+    </span>
+  </span>
+  <span class='actions'>
+    
+    <%= link_to refinery_icon_tag("application_go.png"), refinery.business_billable_path(billable),
+        :title => t('.view_live_html'),
+        :target => "_blank" %>
+    
+    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_business_admin_billable_path(billable),
+         :title => t('.edit') %>
+    <%= link_to refinery_icon_tag("delete.png"), refinery.business_admin_billable_path(billable),
+        :class => "cancel confirm-delete",
+        :title => t('.delete'),
+        :confirm => t('message', :scope => 'refinery.admin.delete', :title => billable.label),
+        :method => :delete %>
+  </span>
+</li>

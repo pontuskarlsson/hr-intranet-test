@@ -1,0 +1,120 @@
+<%= form_for [refinery, :business_admin, @invoice] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @invoice,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :company_label -%>
+    <%= f.text_field :company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :from_company_label -%>
+    <%= f.text_field :from_company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :to_company_label -%>
+    <%= f.text_field :to_company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :project_label -%>
+    <%= f.text_field :project_label, :class => 'js_project_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :invoice_id -%>
+    <%= f.text_field :invoice_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :invoice_number -%>
+    <%= f.text_field :invoice_number -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :invoice_type -%>
+    <%= f.text_field :invoice_type -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :reference -%>
+    <%= f.text_field :reference -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :invoice_url -%>
+    <%= f.text_field :invoice_url -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :invoice_date -%>
+    <%= f.date_field :invoice_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :due_date -%>
+    <%= f.date_field :due_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :status -%>
+    <%= f.text_field :status -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :total_amount -%>
+    <%= f.text_field :total_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :amount_due -%>
+    <%= f.text_field :amount_due -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :amount_paid -%>
+    <%= f.text_field :amount_paid -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :amount_credited -%>
+    <%= f.text_field :amount_credited -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :currency_code -%>
+    <%= f.text_field :currency_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :currency_rate -%>
+    <%= f.text_field :currency_rate -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :updated_date_utc -%>
+    <%= f.text_field :total_amount -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.business.admin.invoices.invoice'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @invoice.label) -%>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      page_options.init(false, '', '');
+
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.to_source %>
+      });
+      $('.js_project_field').autocomplete({
+        source: <%= ::Refinery::Business::Project.to_source %>
+      });
+    });
+  </script>
+<% end -%>

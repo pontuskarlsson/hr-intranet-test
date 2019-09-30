@@ -15,12 +15,13 @@ Refinery::I18n.frontend_locales.each do |lang|
   end
 
   [
-      [Refinery::Business::PAGE_BILLABLES_URL, 'Billables', role_internal_finance],
-      [Refinery::Business::PAGE_BUDGETS_URL, 'Budgets'],
-      [Refinery::Business::PAGE_COMPANIES_URL, 'Companies'],
-      [Refinery::Business::PAGE_INVOICES_URL, 'Invoices', role_internal_finance],
-      [Refinery::Business::PAGE_PROJECTS_URL, 'Projects'],
-      [Refinery::Business::PAGE_SECTIONS_URL, 'Sections']
+      [Refinery::Business::PAGE_BILLABLES_URL,  'Billables', role_internal_finance],
+      [Refinery::Business::PAGE_BUDGETS_URL,    'Budgets'],
+      [Refinery::Business::PAGE_COMPANIES_URL,  'Companies'],
+      [Refinery::Business::PAGE_INVOICES_URL,   'Invoices', role_internal_finance],
+      [Refinery::Business::PAGE_ORDERS_URL,     'Orders', role_internal_finance],
+      [Refinery::Business::PAGE_PROJECTS_URL,   'Projects'],
+      [Refinery::Business::PAGE_SECTIONS_URL,   'Sections']
   ].each do |url, title, role|
 
     if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?

@@ -1,9 +1,29 @@
 <li>
+  <%= link_to t('.manage_billables'), refinery.business_admin_billables_path,
+              :class => "manage_icon" %>
+</li>
+<li>
   <%= link_to t('.manage_budgets'), refinery.business_admin_budgets_path,
               :class => "manage_icon" %>
 </li>
 <li>
   <%= link_to t('.manage_companies'), refinery.business_admin_companies_path,
+              :class => "manage_icon" %>
+</li>
+<li>
+  <%= link_to t('.manage_invoices'), refinery.business_admin_invoices_path,
+              :class => "manage_icon" %>
+</li>
+<li>
+  <%= link_to t('.manage_number_series'), refinery.business_admin_number_series_index_path,
+              :class => "manage_icon" %>
+</li>
+<li>
+  <%= link_to t('.manage_orders'), refinery.business_admin_orders_path,
+              :class => "manage_icon" %>
+</li>
+<li>
+  <%= link_to t('.manage_order_items'), refinery.business_admin_order_items_path,
               :class => "manage_icon" %>
 </li>
 <li>

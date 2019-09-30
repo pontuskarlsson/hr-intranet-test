@@ -100,40 +100,7 @@
     </table>
 
     <h3>Billables</h3>
-    <%= render 'refinery/business/billables/table', table_id: 'invoice_billables_table', ajax: refinery.business_billables_path(invoice_id: @invoice.id), options: { view: :invoice } %>
-
-    <% if false #@invoice.billables.any? %>
-      <table>
-        <thead>
-        <tr>
-          <th>Title</th>
-          <th>Date</th>
-          <th>Article</th>
-          <th>Qty</th>
-          <th>Unit Price</th>
-          <th>Discount</th>
-          <th>Total</th>
-          <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @invoice.billables.each do |billable| %>
-          <tr>
-            <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
-            <td><%= billable.billable_date %></td>
-            <td><%= billable.article_code %></td>
-            <td><%= billable.display_qty %></td>
-            <td><%=number_to_currency billable.unit_price %></td>
-            <td><%=number_to_percentage billable.discount %></td>
-            <td><%=number_to_currency billable.total_cost %></td>
-            <td><%= billable.status %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    <% else %>
-      <p>No Billables added</p>
-    <% end %>
+    <%= render 'refinery/business/invoices/billables_table', table_id: 'invoice_billables_table', ajax: refinery.business_billables_path(invoice_id: @invoice.id), options: {} %>
   </section>
 <% end %>
 

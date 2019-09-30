@@ -5,6 +5,10 @@ module Refinery
 
       validates :identifier,  presence: true, uniqueness: true
 
+      def label
+        identifier
+      end
+
       def self.next_counter!(klass, column, options = {})
         identifier = "#{klass.name}##{column}"
         prefix = options[:prefix] || ''

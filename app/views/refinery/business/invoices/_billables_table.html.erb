@@ -2,12 +2,10 @@
   <thead>
   <tr>
     <th></th>
-    <th data-dt-search-input="true">Company</th>
     <th data-dt-search-input="true">Title</th>
     <th data-dt-search-date="true">Date</th>
     <th data-dt-search-input="true">Assigned To</th>
     <th data-dt-search-input="true">Article</th>
-    <th data-dt-search-input="true">Invoice</th>
     <th>Qty</th>
     <th>Unit</th>
     <th>Unit Price</th>
@@ -20,12 +18,10 @@
   <tfoot>
   <tr>
     <th></th>
-    <th>Company</th>
     <th>Title</th>
     <th>Date</th>
     <th>Assigned To</th>
     <th>Article</th>
-    <th>Invoice</th>
     <th>Qty</th>
     <th>Unit</th>
     <th>Unit Price</th>
@@ -45,15 +41,13 @@
         "responsive":     true,
         "paging":         true,
         "ajax": "<%= ajax %>",
-        "order": [[3, 'desc']],
+        "order": [[2, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
-            { data: "company_label" },
           { data: "title" },
           { data: "billable_date", "render": dtDateRenderer },
           { data: "assigned_to_label" },
           { data: "article_code" },
-          { data: "invoice_invoice_number" },
           { data: "qty" },
           { data: "qty_unit" },
           { data: "unit_price", "render": { "display": formatCurrency } },

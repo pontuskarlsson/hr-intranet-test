@@ -1,0 +1,57 @@
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th data-dt-search-input="true">Buyer</th>
+    <th data-dt-search-input="true">Seller</th>
+    <th data-dt-search-input="true">Order No.</th>
+    <th data-dt-search-input="true">Order Type</th>
+    <th data-dt-search-date="true">Order Date</th>
+    <th>Ordered Qty</th>
+    <th>Total Cost</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Buyer</th>
+    <th>Seller</th>
+    <th>Order No.</th>
+    <th>Order Type</th>
+    <th>Order Date</th>
+    <th>Ordered Qty</th>
+    <th>Total Cost</th>
+  </tr>
+  </tfoot>
+</table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        "paging":         true,
+        "ajax": "<%= ajax %>",
+        "order": [[5, 'desc']],
+        "columns": [
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_orders_path %>") } },
+          { data: "buyer_label" },
+          { data: "seller_label" },
+          { data: "order_number" },
+          { data: "order_type" },
+          { data: "order_date", "render": dtDateRenderer },
+          { data: "ordered_qty" },
+          { data: "total_cost", "render": { "display": formatCurrency } },
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
+      });
+
+      initDataTable(dt);
+    });
+  </script>
+<% end %>

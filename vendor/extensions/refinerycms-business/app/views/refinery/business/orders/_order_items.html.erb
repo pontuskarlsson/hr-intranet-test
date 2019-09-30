@@ -1,0 +1,16 @@
+<table>
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% order.order_items.order(:line_item_number).each do |order_item| %>
+    <tr>
+      <td><%= order_item.line_item_number %></td>
+      <td><%= order_item.description %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

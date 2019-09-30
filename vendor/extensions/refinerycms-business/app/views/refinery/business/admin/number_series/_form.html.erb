@@ -1,0 +1,43 @@
+<%= form_for [refinery, :business_admin, @number_serie] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @number_serie,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :identifier -%>
+    <%= f.text_field :identifier -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :prefix -%>
+    <%= f.text_field :prefix -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :suffix -%>
+    <%= f.text_field :suffix -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :number_of_digits -%>
+    <%= f.text_field :number_of_digits -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :last_counter -%>
+    <%= f.text_field :last_counter -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.business.admin.number_series.number_serie'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @number_serie.label) -%>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      page_options.init(false, '', '');
+    });
+  </script>
+<% end -%>

@@ -45,6 +45,24 @@ module Refinery
         PROC_LABEL.call(invoice_number, invoice_date, reference)
       end
 
+      def company_label
+        @company_label ||= company.try(:label)
+      end
+
+      def company_label=(label)
+        self.company = Company.find_by_label label
+        @company_label = label
+      end
+
+      def project_label
+        @project_label ||= project.try(:label)
+      end
+
+      def project_label=(label)
+        self.project = Project.find_by_label label
+        @project_label = label
+      end
+
       def self.find_by_label(label)
         find_by invoice_number: label.split(', ').first
       end

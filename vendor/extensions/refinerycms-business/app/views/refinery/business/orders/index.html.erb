@@ -1,0 +1,5 @@
+<% content_for :body do %>
+  <%= render 'table', table_id: 'js_orders_table', ajax: refinery.business_orders_path(filter_params), options: {} %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

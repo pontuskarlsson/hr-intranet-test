@@ -8,6 +8,9 @@ Refinery::Core::Engine.routes.draw do
     resources :invoices, :only => [:index, :show] do
       patch :add_billables, to: 'invoices#add_billables', on: :member
     end
+    resources :orders, :only => [:index, :show] do
+      resources :order_items, only: [:index]
+    end
     resources :projects, :only => [:index, :show, :new, :create] do
       get :archive, on: :collection
       resources :sections, only: [:create, :update]
@@ -18,6 +21,12 @@ Refinery::Core::Engine.routes.draw do
   # Admin routes
   namespace :business, :path => '' do
     namespace :admin, :path => "#{Refinery::Core.backend_route}/business" do
+      resources :billables, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
       resources :budgets, :except => :show do
         collection do
           post :update_positions
@@ -25,6 +34,30 @@ Refinery::Core::Engine.routes.draw do
       end
 
       resources :companies, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :invoices, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :number_series, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :order_items, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :orders, :except => :show do
         collection do
           post :update_positions
         end

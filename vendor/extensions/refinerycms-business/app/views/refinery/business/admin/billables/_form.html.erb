@@ -1,0 +1,119 @@
+<%= form_for [refinery, :business_admin, @billable] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @billable,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :company_label -%>
+    <%= f.text_field :company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :project_label -%>
+    <%= f.text_field :project_label, :class => 'js_project_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :section_label -%>
+    <%= f.text_field :section_label, :class => 'js_section_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :invoice_label -%>
+    <%= f.text_field :invoice_label, :class => 'js_invoice_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :billable_type -%>
+    <%= f.text_field :billable_type -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :status -%>
+    <%= f.text_field :status -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :title -%>
+    <%= f.text_field :title -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_area :description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :article_code -%>
+    <%= f.text_field :article_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :qty -%>
+    <%= f.text_field :qty -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :qty_unit -%>
+    <%= f.text_field :qty_unit -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :unit_price -%>
+    <%= f.text_field :unit_price -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :discount -%>
+    <%= f.text_field :discount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :total_cost -%>
+    <%= f.text_field :total_cost -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :account -%>
+    <%= f.text_field :account -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :billable_date -%>
+    <%= f.date_field :billable_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :assigned_to_label -%>
+    <%= f.text_field :assigned_to_label, :class => 'js_user_field' -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.business.admin.billables.billable'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @billable.label) -%>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      page_options.init(false, '', '');
+
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.to_source %>
+      });
+      $('.js_project_field').autocomplete({
+        source: <%= ::Refinery::Business::Project.to_source %>
+      });
+      $('.js_section_field').autocomplete({
+        source: <%= ::Refinery::Business::Section.to_source %>
+      });
+      $('.js_invoice_field').autocomplete({
+        source: <%= ::Refinery::Business::Invoice.to_source %>
+      });
+      $('.js_user_field').autocomplete({
+        source: <%= ::Refinery::Authentication::Devise::User.to_source %>
+      });
+    });
+  </script>
+<% end -%>

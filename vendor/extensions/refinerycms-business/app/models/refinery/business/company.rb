@@ -12,6 +12,8 @@ module Refinery
       has_many :projects,       dependent: :destroy
       has_many :billables,      dependent: :destroy
       has_many :users,          through: :company_users
+      has_many :seller_orders,  dependent: :nullify,    class_name: 'Order'
+      has_many :buyer_orders,   dependent: :nullify,    class_name: 'Order'
 
       accepts_nested_attributes_for :company_users, reject_if: :all_blank, allow_destroy: true
 

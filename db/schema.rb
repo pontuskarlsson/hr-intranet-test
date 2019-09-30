@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190928141153) do
+ActiveRecord::Schema.define(version: 20190929144356) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -430,16 +430,110 @@ ActiveRecord::Schema.define(version: 20190928141153) do
   add_index "refinery_business_invoices", ["total_amount"], name: "index_refinery_business_invoices_on_total_amount", using: :btree
 
   create_table "refinery_business_number_series", force: :cascade do |t|
-    t.string   "identifier",   limit: 255
-    t.integer  "last_counter", limit: 4
-    t.integer  "position",     limit: 4
+    t.string   "identifier",       limit: 255
+    t.integer  "last_counter",     limit: 4
+    t.integer  "position",         limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "prefix",           limit: 255, default: "", null: false
+    t.string   "suffix",           limit: 255, default: "", null: false
+    t.integer  "number_of_digits", limit: 4,   default: 5,  null: false
   end
 
   add_index "refinery_business_number_series", ["identifier"], name: "index_refinery_business_number_series_on_identifier", using: :btree
   add_index "refinery_business_number_series", ["last_counter"], name: "index_refinery_business_number_series_on_last_counter", using: :btree
   add_index "refinery_business_number_series", ["position"], name: "index_refinery_business_number_series_on_position", using: :btree
+
+  create_table "refinery_business_order_items", force: :cascade do |t|
+    t.integer  "order_id",         limit: 4
+    t.string   "order_item_id",    limit: 255
+    t.integer  "line_item_number", limit: 4
+    t.integer  "article_id",       limit: 4
+    t.string   "article_code",     limit: 255
+    t.string   "description",      limit: 255
+    t.decimal  "ordered_qty",                  precision: 13, scale: 4, default: 0.0, null: false
+    t.decimal  "shipped_qty",                  precision: 13, scale: 4
+    t.string   "qty_unit",         limit: 255
+    t.decimal  "unit_price",                   precision: 13, scale: 4, default: 0.0, null: false
+    t.decimal  "discount",                     precision: 12, scale: 6, default: 0.0, null: false
+    t.decimal  "total_cost",                   precision: 13, scale: 4, default: 0.0, null: false
+    t.string   "account",          limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_order_items", ["account"], name: "index_refinery_business_order_items_on_account", using: :btree
+  add_index "refinery_business_order_items", ["article_code"], name: "index_refinery_business_order_items_on_article_code", using: :btree
+  add_index "refinery_business_order_items", ["article_id"], name: "index_refinery_business_order_items_on_article_id", using: :btree
+  add_index "refinery_business_order_items", ["line_item_number"], name: "index_refinery_business_order_items_on_line_item_number", using: :btree
+  add_index "refinery_business_order_items", ["order_id"], name: "index_refinery_business_order_items_on_order_id", using: :btree
+  add_index "refinery_business_order_items", ["order_item_id"], name: "index_refinery_business_order_items_on_order_item_id", using: :btree
+  add_index "refinery_business_order_items", ["ordered_qty"], name: "index_refinery_business_order_items_on_ordered_qty", using: :btree
+  add_index "refinery_business_order_items", ["qty_unit"], name: "index_refinery_business_order_items_on_qty_unit", using: :btree
+  add_index "refinery_business_order_items", ["shipped_qty"], name: "index_refinery_business_order_items_on_shipped_qty", using: :btree
+  add_index "refinery_business_order_items", ["total_cost"], name: "index_refinery_business_order_items_on_total_cost", using: :btree
+  add_index "refinery_business_order_items", ["unit_price"], name: "index_refinery_business_order_items_on_unit_price", using: :btree
+
+  create_table "refinery_business_orders", force: :cascade do |t|
+    t.string   "order_id",               limit: 255
+    t.integer  "buyer_id",               limit: 4
+    t.string   "buyer_label",            limit: 255
+    t.integer  "seller_id",              limit: 4
+    t.string   "seller_label",           limit: 255
+    t.integer  "project_id",             limit: 4
+    t.string   "order_number",           limit: 255
+    t.string   "order_type",             limit: 255
+    t.date     "order_date"
+    t.integer  "version_number",         limit: 4
+    t.date     "revised_date"
+    t.string   "reference",              limit: 255
+    t.text     "description",            limit: 65535
+    t.date     "delivery_date"
+    t.text     "delivery_address",       limit: 65535
+    t.text     "delivery_instructions",  limit: 65535
+    t.string   "ship_mode",              limit: 255
+    t.string   "shipment_terms",         limit: 255
+    t.string   "attention_to",           limit: 255
+    t.string   "status",                 limit: 255
+    t.string   "proforma_invoice_label", limit: 255
+    t.string   "invoice_label",          limit: 255
+    t.decimal  "ordered_qty",                          precision: 13, scale: 4, default: 0.0, null: false
+    t.decimal  "shipped_qty",                          precision: 13, scale: 4
+    t.string   "qty_unit",               limit: 255
+    t.string   "currency_code",          limit: 255
+    t.decimal  "total_cost",                           precision: 13, scale: 4, default: 0.0, null: false
+    t.string   "account",                limit: 255
+    t.datetime "updated_date_utc"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_orders", ["account"], name: "index_refinery_business_orders_on_account", using: :btree
+  add_index "refinery_business_orders", ["attention_to"], name: "index_refinery_business_orders_on_attention_to", using: :btree
+  add_index "refinery_business_orders", ["buyer_id"], name: "index_refinery_business_orders_on_buyer_id", using: :btree
+  add_index "refinery_business_orders", ["buyer_label"], name: "index_refinery_business_orders_on_buyer_label", using: :btree
+  add_index "refinery_business_orders", ["currency_code"], name: "index_refinery_business_orders_on_currency_code", using: :btree
+  add_index "refinery_business_orders", ["delivery_date"], name: "index_refinery_business_orders_on_delivery_date", using: :btree
+  add_index "refinery_business_orders", ["invoice_label"], name: "index_refinery_business_orders_on_invoice_label", using: :btree
+  add_index "refinery_business_orders", ["order_date"], name: "index_refinery_business_orders_on_order_date", using: :btree
+  add_index "refinery_business_orders", ["order_id"], name: "index_refinery_business_orders_on_order_id", using: :btree
+  add_index "refinery_business_orders", ["order_number"], name: "index_refinery_business_orders_on_order_number", using: :btree
+  add_index "refinery_business_orders", ["order_type"], name: "index_refinery_business_orders_on_order_type", using: :btree
+  add_index "refinery_business_orders", ["ordered_qty"], name: "index_refinery_business_orders_on_ordered_qty", using: :btree
+  add_index "refinery_business_orders", ["proforma_invoice_label"], name: "index_refinery_business_orders_on_proforma_invoice_label", using: :btree
+  add_index "refinery_business_orders", ["project_id"], name: "index_refinery_business_orders_on_project_id", using: :btree
+  add_index "refinery_business_orders", ["qty_unit"], name: "index_refinery_business_orders_on_qty_unit", using: :btree
+  add_index "refinery_business_orders", ["reference"], name: "index_refinery_business_orders_on_reference", using: :btree
+  add_index "refinery_business_orders", ["revised_date"], name: "index_refinery_business_orders_on_revised_date", using: :btree
+  add_index "refinery_business_orders", ["seller_id"], name: "index_refinery_business_orders_on_seller_id", using: :btree
+  add_index "refinery_business_orders", ["seller_label"], name: "index_refinery_business_orders_on_seller_label", using: :btree
+  add_index "refinery_business_orders", ["ship_mode"], name: "index_refinery_business_orders_on_ship_mode", using: :btree
+  add_index "refinery_business_orders", ["shipment_terms"], name: "index_refinery_business_orders_on_shipment_terms", using: :btree
+  add_index "refinery_business_orders", ["shipped_qty"], name: "index_refinery_business_orders_on_shipped_qty", using: :btree
+  add_index "refinery_business_orders", ["status"], name: "index_refinery_business_orders_on_status", using: :btree
+  add_index "refinery_business_orders", ["total_cost"], name: "index_refinery_business_orders_on_total_cost", using: :btree
+  add_index "refinery_business_orders", ["updated_date_utc"], name: "index_refinery_business_orders_on_updated_date_utc", using: :btree
+  add_index "refinery_business_orders", ["version_number"], name: "index_refinery_business_orders_on_version_number", using: :btree
 
   create_table "refinery_business_projects", force: :cascade do |t|
     t.integer  "company_id",        limit: 4

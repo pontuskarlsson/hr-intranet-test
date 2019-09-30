@@ -6,6 +6,21 @@ en:
 
     business:
       admin:
+        billables:
+          actions:
+            create_new: Add New Billable
+            reorder: Reorder Billables
+            reorder_done: Done Reordering Billables
+          records:
+            title: Billables
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Billables yet. Click "Add New Billable" to add your first billable.
+          billable:
+            view_live_html: View this billable live <br/><em>(opens in a new window)</em>
+            edit: Edit this billable
+            delete: Remove this billable forever
+            preview: '%{billable_date}, %{assigned_to_label}'
+
         budgets:
           actions:
             create_new: Add New Budget
@@ -35,6 +50,66 @@ en:
             edit: Edit this company
             delete: Remove this company forever
             preview: '%{name}'
+
+        invoices:
+          actions:
+            create_new: Add New Invoice
+            reorder: Reorder Invoices
+            reorder_done: Done Reordering Invoices
+          records:
+            title: Invoices
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Invoices yet. Click "Add New Invoice" to add your first invoice.
+          invoice:
+            view_live_html: View this invoice live <br/><em>(opens in a new window)</em>
+            edit: Edit this invoice
+            delete: Remove this invoice forever
+            preview: ''
+
+        number_series:
+          actions:
+            create_new: Add New Number Serie
+            reorder: Reorder Number Series
+            reorder_done: Done Reordering Number Series
+          records:
+            title: Number Series
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Number Series yet. Click "Add New Number Serie" to add your first number serie.
+          number_serie:
+            view_live_html: View this number serie live <br/><em>(opens in a new window)</em>
+            edit: Edit this number serie
+            delete: Remove this number serie forever
+            preview: ''
+
+        order_items:
+          actions:
+            create_new: Add New Order Item
+            reorder: Reorder Order Items
+            reorder_done: Done Reordering Order Items
+          records:
+            title: Order Items
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Order Items yet. Click "Add New Order Item" to add your first order item.
+          order_item:
+            view_live_html: View this order item live <br/><em>(opens in a new window)</em>
+            edit: Edit this order item
+            delete: Remove this order item forever
+            preview: '%{article_code}'
+
+        orders:
+          actions:
+            create_new: Add New Order
+            reorder: Reorder Orders
+            reorder_done: Done Reordering Orders
+          records:
+            title: Orders
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Orders yet. Click "Add New Order" to add your first order.
+          order:
+            view_live_html: View this order live <br/><em>(opens in a new window)</em>
+            edit: Edit this order
+            delete: Remove this order forever
+            preview: '%{reference}, %{description}'
             
         projects:
           actions:
@@ -68,10 +143,19 @@ en:
             
         shared:
           links:
+            manage_billables: Manage Billables
             manage_budgets: Manage Budgets
             manage_companies: Manage Companies
+            manage_invoices: Manage Invoices
+            manage_number_series: Manage Number Series
+            manage_orders: Manage Orders
+            manage_order_items: Manage Order Items
             manage_projects: Manage Projects
             manage_sections: Manage Sections
+
+      billables:
+        show:
+          other: Other Billables
 
       budgets:
         show:
@@ -80,6 +164,22 @@ en:
       companies:
         show:
           other: Other Companies
+
+      invoices:
+        show:
+          other: Other Invoices
+
+      number_series:
+        show:
+          other: Other Number Series
+
+      order_items:
+        show:
+          other: Other Order Items
+
+      orders:
+        show:
+          other: Other Orders
 
       projects:
         show:
@@ -91,12 +191,37 @@ en:
 
   activerecord:
     attributes:
+      'refinery/business/billable':
+        billable_date: Billable Date
+        description: Description
+        title: Title
+
       'refinery/business/budget':
         description: Description
 
       'refinery/business/company':
         code: Code
         name: Name
+
+      'refinery/business/invoice':
+        description: Description
+        invoice_number: Invoice No.
+        reference: Reference
+
+      'refinery/business/number_serie':
+        identifier: Identifier
+        last_counter: Last Counter
+
+      'refinery/business/order':
+        description: Description
+        order_number: Order Number
+        order_type: Order Type
+        reference: Reference
+        order_date: Order Date
+
+      'refinery/business/order_item':
+        description: Description
+        article_code: Article Code
 
       'refinery/business/project':
         code: Code

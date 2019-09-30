@@ -1,0 +1,82 @@
+<%= form_for [refinery, :business_admin, @order_item] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @order_item,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :order_label -%>
+    <%= f.text_field :order_label, :class => 'js_order_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :order_item_id -%>
+    <%= f.text_field :order_item_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :line_item_number -%>
+    <%= f.text_field :line_item_number -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :article_code -%>
+    <%= f.text_field :article_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_field :description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :ordered_qty -%>
+    <%= f.text_field :ordered_qty -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :shipped_qty -%>
+    <%= f.text_field :shipped_qty -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :qty_unit -%>
+    <%= f.text_field :qty_unit -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :unit_price -%>
+    <%= f.text_field :unit_price -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :discount -%>
+    <%= f.text_field :discount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :total_cost -%>
+    <%= f.text_field :total_cost -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :account -%>
+    <%= f.text_field :account -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.business.admin.order_items.order_item'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @order_item.label) -%>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      page_options.init(false, '', '');
+
+      $('.js_order_field').autocomplete({
+        source: <%= ::Refinery::Business::Order.to_source %>
+      });
+    });
+  </script>
+<% end -%>
