@@ -36,6 +36,8 @@
           <% pages.each do |page| %>
             <% if page == @page %>
               <li class="current"><%= @page.title %></li>
+            <% elsif filter_params.any? %>
+              <li><%= link_to page.title, "#{page.link_url}?#{filter_params.to_query}" %></li>
             <% else %>
               <li><%= link_to page.title, page.link_url %></li>
             <% end %>

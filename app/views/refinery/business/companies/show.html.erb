@@ -3,6 +3,36 @@
     <h2><%= @company.label %></h2>
   </div>
 
+  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::Business::PAGE_INVOICES_URL) %>
+    <div class="cell">
+      <h4>Finance</h4>
+      <ul>
+        <li><%= link_to "See Invoices (#{@company.invoices.count})", refinery.business_invoices_path(company_id: @company) %></li>
+        <li><%= link_to "See Billables (#{@company.billables.count})", refinery.business_billables_path(company_id: @company) %></li>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::Business::PAGE_PROJECTS_URL) %>
+    <div class="cell">
+      <h4>Projects</h4>
+      <ul>
+        <li><%= link_to "See Projects (#{@company.projects.current.count})", refinery.business_projects_path(company_id: @company) %></li>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
+    <div class="cell">
+      <h4>Quality Assurance</h4>
+      <ul>
+        <li><%= link_to "See Jobs (#{@company.jobs.count})", refinery.quality_assurance_jobs_path(company_id: @company) %></li>
+        <li><%= link_to "See Inspections (#{@company.inspections.count})", refinery.quality_assurance_inspections_path(company_id: @company) %></li>
+        <li><%= link_to "See Defects Summary", refinery.defects_quality_assurance_inspections_path(company_id: @company) %></li>
+      </ul>
+    </div>
+  <% end %>
+
   <% if @company.contact.present? %>
     <div class="cell medium-6">
       <section class="contact-card">
@@ -66,27 +96,6 @@
           </table>
         </section>
       <% end %>
-    </div>
-  <% end %>
-
-  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::Business::PAGE_INVOICES_URL) %>
-    <div class="cell">
-      <h4>Finance</h4>
-      <p><%= link_to "See Company Invoices (#{@company.invoices.count})", refinery.business_invoices_path(company_id: @company) %></p>
-    </div>
-  <% end %>
-
-  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::Business::PAGE_PROJECTS_URL) %>
-    <div class="cell">
-      <h4>Projects</h4>
-      <p><%= link_to "See Company Projects (#{@company.projects.current.count})", refinery.business_projects_path(company_id: @company) %></p>
-    </div>
-  <% end %>
-
-  <% if current_authentication_devise_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
-    <div class="cell">
-      <h4>Quality Assurance</h4>
-      <p><%= link_to "See Company Inspections (#{@company.inspections.count})", refinery.quality_assurance_inspections_path(company_id: @company) %></p>
     </div>
   <% end %>
 </div>

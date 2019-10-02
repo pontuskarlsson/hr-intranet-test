@@ -11,7 +11,7 @@ module Refinery
       PRODUCT_UNITS = %w()
       TIME_UNITS = %w(day)
 
-      ARTICLE_CODES = %w(CONSULTANT-QCQA-CN-DAY CONSULTANT-QCQA-VN-DAY CONSULTANT-QCQA-TH-DAY CONSULTANT-QCQA-ID-DAY)
+      ARTICLE_CODES = %w(WORK-QCQA-CN-DAY WORK-QCQA-VN-DAY WORK-QCQA-TH-DAY WORK-QCQA-ID-DAY)
 
       belongs_to :company
       #belongs_to :project
