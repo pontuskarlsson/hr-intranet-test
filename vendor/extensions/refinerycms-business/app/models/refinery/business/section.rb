@@ -41,7 +41,7 @@ module Refinery
       end
 
       def jobs_and_allocations
-        @jobs_and_allocations ||= all_jobs { |job_scope| job_scope.includes(billable: all_job_association_names) }.each_with_object({}) { |job, acc|
+        @jobs_and_allocations ||= all_jobs { |job_scope| job_scope.includes(billable: all_job_association_names + [:invoice]) }.each_with_object({}) { |job, acc|
           acc[job.billable] ||= { jobs: [] }
           acc[job.billable][:jobs] << job
         }.to_a.sort_by{ |(billable, _)| billable.billable_date }.to_h

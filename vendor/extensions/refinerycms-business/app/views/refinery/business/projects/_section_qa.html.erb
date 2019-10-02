@@ -10,7 +10,12 @@
   </tr>
   <tr>
       <th>No. of Billables</th>
-    <td><%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %></td>
+    <td>
+      Total of <%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days
+      <% if (not_invoiced = section.jobs_and_allocations.keys.select { |b| b.invoice.nil? }).any? %>
+        (<%=number_to_human not_invoiced.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days not invoiced)
+      <% end %>
+    </td>
   </tr>
   <tr>
     <th>No. of Jobs</th>
@@ -32,7 +37,8 @@
         <th>Billable</th>
         <th>Date</th>
         <th>Assigned To</th>
-        <th>Allocated</th>
+        <th>Invoice</th>
+        <th>Allocated Here</th>
         <th>Job</th>
       </tr>
       </thead>
@@ -42,6 +48,13 @@
           <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
           <td><%= billable.billable_date %></td>
           <td><%= billable.assigned_to_label %></td>
+          <td>
+            <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
+              <%= link_to billable.invoice_label, refinery.business_invoice_path(billable.invoice) %>
+            <% else %>
+              <%= billable.invoice_label %>
+            <% end %>
+          </td>
           <td>
             <%= number_to_human Rational(100) * allocations[:jobs].count / billable.total_no_of_jobs %>%
           </td>
@@ -53,15 +66,6 @@
         </tr>
       <% end %>
       </tbody>
-      <tfoot>
-      <tr>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
-        <th>Total of <%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> billable days</th>
-        <th>&nbsp;</th>
-      </tr>
-      </tfoot>
     </table>
   <% end %>
 <% end %>
