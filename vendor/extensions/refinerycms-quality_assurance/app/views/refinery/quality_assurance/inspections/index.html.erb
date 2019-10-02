@@ -1,32 +1,6 @@
 <% content_for :body do %>
-  <div class="cell">
-    <table>
-      <thead>
-      <tr>
-        <th></th>
-        <th>Inspected</th>
-        <th>Result</th>
-        <th>PO</th>
-        <th>Style</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @inspections.each do |inspection| %>
-        <tr>
-          <td>
-            <%= link_to refinery.quality_assurance_inspection_path(inspection) do %>
-              <i class="fa fa-arrow-right"></i>
-            <% end %>
-          </td>
-          <td><%= time_ago_in_words inspection.inspection_date %> ago</td>
-          <td style="color: <%= inspection.result == 'Pass' ? 'green' : inspection.result == 'Reject' ? 'red' : 'black' %>"><%= inspection.result %></td>
-          <td><%= inspection.po_number %></td>
-          <td><%= inspection.product_label %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
+
+  <%= render 'table', table_id: 'js_inspections_data_table', options: {}, inspections: @inspections, ajax: refinery.quality_assurance_inspections_path(filter_params) %>
 
 <% end %>
 

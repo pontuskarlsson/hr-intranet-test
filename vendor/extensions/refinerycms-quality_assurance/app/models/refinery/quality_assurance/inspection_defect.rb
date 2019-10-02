@@ -40,6 +40,10 @@ module Refinery
         critical + major + minor
       end
 
+      def detailed_no_of_defects
+        "#{critical}/#{major}/#{minor}"
+      end
+
     end
   end
 end

@@ -12,6 +12,8 @@ module Refinery
     ROLE_INSPECTOR = 'QualityAssurance:Inspector'
 
     PAGE_INSPECTIONS_URL = '/quality_assurance/inspections'
+    PAGE_INSPECTIONS_CALENDAR = '/quality_assurance/inspections/calendar'
+    PAGE_INSPECTIONS_DEFECTS = '/quality_assurance/inspections/defects'
     PAGE_JOBS_URL = '/quality_assurance/jobs'
 
     class << self

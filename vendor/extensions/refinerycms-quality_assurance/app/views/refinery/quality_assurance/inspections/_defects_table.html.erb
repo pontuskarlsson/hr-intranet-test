@@ -1,0 +1,26 @@
+<table>
+  <thead>
+  <tr>
+    <th>Defect</th>
+    <th>PO</th>
+    <th>Style</th>
+    <th>Date</th>
+    <th>Type</th>
+    <th>Total</th>
+    <th>Cri/Maj/Min</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% inspection_defects.each do |(inspection, inspection_defect)| %>
+    <tr>
+      <td><%= inspection_defect.defect_label %></td>
+      <td><%= inspection.po_number %></td>
+      <td><%= inspection.product_label %></td>
+      <td style="white-space: nowrap;"><%= inspection.display_inspection_date('%b %e, %Y') %></td>
+      <td><%= inspection.inspection_type %></td>
+      <td><%= inspection_defect.total_no_of_defects %></td>
+      <td><%= inspection_defect.detailed_no_of_defects %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

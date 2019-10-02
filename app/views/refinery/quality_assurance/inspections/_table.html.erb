@@ -24,32 +24,30 @@
   </tr>
   </thead>
 
-  <% unless options[:no_footer] %>
-    <tfoot>
-    <tr>
-      <th></th>
-      <th>Photo</th>
-      <th>Type</th>
-      <th>Result</th>
-      <th>PO</th>
-      <th>Style</th>
-      <th>Insp. Date</th>
-      <%- if false %><th>Project Reference</th><%- end %>
-      <th>Customer</th>
-      <th>Supplier</th>
-      <th>Manufacturer</th>
-      <th>Project Code</th>
-      <th>PO Qty</th>
-      <th>Avail. Qty</th>
-      <th>Sample Size</th>
-      <th>Insp. By</th>
-      <th>Product Code</th>
-      <th>Product Desc.</th>
-      <th>Product Colours</th>
-      <th>Insp. Code</th>
-    </tr>
-    </tfoot>
-  <% end %>
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Photo</th>
+    <th>Type</th>
+    <th>Result</th>
+    <th>PO</th>
+    <th>Style</th>
+    <th>Insp. Date</th>
+    <%- if false %><th>Project Reference</th><%- end %>
+    <th>Customer</th>
+    <th>Supplier</th>
+    <th>Manufacturer</th>
+    <th>Project Code</th>
+    <th>PO Qty</th>
+    <th>Avail. Qty</th>
+    <th>Sample Size</th>
+    <th>Insp. By</th>
+    <th>Product Code</th>
+    <th>Product Desc.</th>
+    <th>Product Colours</th>
+    <th>Insp. Code</th>
+  </tr>
+  </tfoot>
 </table>
 
 <%= render 'refinery/datatable_dependencies' %>
@@ -60,8 +58,7 @@
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
-        "pageLength":     <%= options[:page_length] || 10 %>,
-        "ajax": "<%= refinery.quality_assurance_inspections_path(filter_params) %>",
+        "ajax": "<%= ajax %>",
         "order": [[6, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_inspections_path %>") } },

@@ -4,19 +4,16 @@ module Refinery
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_INSPECTIONS_URL
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :show]
-      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :show]
-      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :show, :update]
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :defects, :show]
+      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :defects, :show]
+      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :defects, :show, :update]
 
-      before_action :find_all_inspections,  only: [:index, :calendar, :show]
-      before_action :find_inspection,       except: [:index, :calendar, :new, :create]
+      before_action :find_all_inspections,  only: [:index, :calendar, :defects, :show]
+      before_action :find_inspection,       except: [:index, :calendar, :defects, :new, :create]
 
-      helper_method :filter_params, :calendar_params
+      helper_method :filter_params, :calendar_params, :inspection_defects
 
       def index
-        @inspections = @inspections.where(filter_params)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @quality_assurance in the line below:\
         respond_to do |format|
           format.html { present(@page) }
           format.json
@@ -24,10 +21,17 @@ module Refinery
       end
 
       def calendar
-        @page = Refinery::Page.find_by(link_url: '/quality_assurance/inspections/calendar') || @page
-        @inspections = @inspections.where(filter_params)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @quality_assurance in the line below:
+        @page = Refinery::Page.find_by(link_url: PAGE_INSPECTIONS_CALENDAR) || @page
+
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json
+        end
+      end
+
+      def defects
+        @page = Refinery::Page.find_by(link_url: PAGE_INSPECTIONS_DEFECTS) || @page
+
         respond_to do |format|
           format.html { present(@page) }
           format.json
@@ -81,7 +85,7 @@ module Refinery
       end
 
       def find_all_inspections
-        @inspections = inspections_scope.order(inspection_date: :desc)
+        @inspections = inspections_scope.where(filter_params).order(inspection_date: :desc)
       end
 
       def find_inspection
@@ -109,6 +113,14 @@ module Refinery
             else
               []
             end
+      end
+
+      def inspection_defects
+        @inspection_defects ||= @inspections.includes(inspection_defects: :defect).each_with_object([]) { |inspection, acc|
+          inspection.inspection_defects.each do |inspection_defect|
+            acc << [inspection, inspection_defect]
+          end
+        }
       end
 
     end

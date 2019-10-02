@@ -5,23 +5,29 @@
     <th data-dt-search-input="true">Code</th>
     <th data-dt-search-input="true">Company</th>
     <th data-dt-search-input="true">Project</th>
-    <th data-dt-search-input="true">Status</th>
+    <th data-dt-search-input="true">Title</th>
+    <th data-dt-search-input="true">Description</th>
+    <th data-dt-search-input="true">Type</th>
+    <th data-dt-search-input="true">Assigned To</th>
     <th data-dt-search-date="true">Date</th>
+    <th data-dt-search-input="true">Status</th>
   </tr>
   </thead>
 
-  <% unless options[:no_footer] %>
-    <tfoot>
-    <tr>
-      <th></th>
-      <th>Code</th>
-      <th>Company</th>
-      <th>Project</th>
-      <th>Status</th>
-      <th>Date</th>
-    </tr>
-    </tfoot>
-  <% end %>
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Company</th>
+    <th>Project</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Assigned To</th>
+    <th>Date</th>
+    <th>Status</th>
+  </tr>
+  </tfoot>
 </table>
 
 <%= render 'refinery/datatable_dependencies' %>
@@ -32,16 +38,19 @@
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
-        "pageLength":     <%= options[:page_length] || 10 %>,
         "ajax": "<%= refinery.quality_assurance_jobs_path(filter_params) %>",
         "order": [[1, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_jobs_path %>") } },
           { data: "code" },
           { data: "company_label" },
-          { data: "project_code" },
-          { data: "status" },
+          { data: "project_code", "render": function(data, type, row, meta) { return [data, row.company_project_reference].filter(function(val) { return !!val;}).join(' - ') } },
+          { data: "title" },
+          { data: "description" },
+          { data: "job_type" },
+          { data: "assigned_to_label" },
           { data: "inspection_date" },
+          { data: "status" },
         ],
         "dom": "<'row grid-x'<'medium-6 columns cell'Bl><'medium-6 columns cell'f>r>"+
           "t"+
@@ -55,3 +64,4 @@
     });
   </script>
 <% end %>
+

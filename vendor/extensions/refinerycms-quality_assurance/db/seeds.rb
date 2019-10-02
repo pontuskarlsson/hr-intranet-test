@@ -14,7 +14,9 @@ Refinery::I18n.frontend_locales.each do |lang|
 
   [
       [Refinery::QualityAssurance::PAGE_INSPECTIONS_URL, 'Inspections'],
-      [Refinery::QualityAssurance::PAGE_JOBS_URL, 'Jobs', role_internal_manager]
+      [Refinery::QualityAssurance::PAGE_JOBS_URL, 'Jobs', role_internal_manager],
+      [Refinery::QualityAssurance::PAGE_INSPECTIONS_CALENDAR, 'Calendar', role_internal_manager],
+      [Refinery::QualityAssurance::PAGE_INSPECTIONS_DEFECTS, 'Defects', role_internal_manager]
   ].each do |url, title, role|
 
     Refinery::Page.where(link_url: url).first_or_create!(

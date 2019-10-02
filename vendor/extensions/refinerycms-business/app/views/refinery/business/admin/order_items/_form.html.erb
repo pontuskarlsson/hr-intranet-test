@@ -15,7 +15,7 @@
 
   <div class='field'>
     <%= f.label :line_item_number -%>
-    <%= f.text_field :line_item_number -%>
+    <%= f.number_field :line_item_number -%>
   </div>
 
   <div class='field'>
@@ -30,12 +30,12 @@
 
   <div class='field'>
     <%= f.label :ordered_qty -%>
-    <%= f.text_field :ordered_qty -%>
+    <%= f.number_field :ordered_qty -%>
   </div>
 
   <div class='field'>
     <%= f.label :shipped_qty -%>
-    <%= f.text_field :shipped_qty -%>
+    <%= f.number_field :shipped_qty -%>
   </div>
 
   <div class='field'>
@@ -50,7 +50,7 @@
 
   <div class='field'>
     <%= f.label :discount -%>
-    <%= f.text_field :discount -%>
+    <%= f.number_field :discount, step: '0.01' -%>
   </div>
 
   <div class='field'>
