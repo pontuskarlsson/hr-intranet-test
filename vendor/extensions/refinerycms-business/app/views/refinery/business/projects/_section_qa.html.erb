@@ -1,7 +1,7 @@
 <table class="cc-table">
   <tbody>
   <tr>
-    <th>Type</th>
+    <th style="width: 120px;">Type</th>
     <td><%= section.section_type %></td>
   </tr>
   <tr>
@@ -9,11 +9,15 @@
     <td><%= section.description %></td>
   </tr>
   <tr>
-    <th>Jobs</th>
+      <th>No. of Billables</th>
+    <td><%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %></td>
+  </tr>
+  <tr>
+    <th>No. of Jobs</th>
     <td>
       <p>
-        <%= section.quality_assurance_jobs.count %>
-        <%= link_to 'View', refinery.quality_assurance_jobs_path(section_id: section.id) %>
+        <%= section.quality_assurance_jobs.count %>,
+        <%= link_to 'View All', refinery.quality_assurance_jobs_path(section_id: section.id) %>
       </p>
     </td>
   </tr>
@@ -22,12 +26,12 @@
 
 <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
   <% if section.quality_assurance_jobs.any? %>
-    <%- total_days = 0.0 -%>
     <table>
       <thead>
       <tr>
         <th>Billable</th>
         <th>Date</th>
+        <th>Assigned To</th>
         <th>Allocated</th>
         <th>Job</th>
       </tr>
@@ -37,9 +41,9 @@
         <tr>
           <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
           <td><%= billable.billable_date %></td>
+          <td><%= billable.assigned_to_label %></td>
           <td>
-            <%= '%g' % (allocated = 100.0 * allocations[:jobs].count / allocations[:total_no_of_jobs]) %>%
-            <%- total_days += allocated / 100.0 -%>
+            <%= number_to_human Rational(100) * allocations[:jobs].count / billable.total_no_of_jobs %>%
           </td>
           <td>
             <% allocations[:jobs].each_with_index do |job, i| %>
@@ -53,7 +57,8 @@
       <tr>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
-        <th>Total of <%= '%g' % total_days %> billable days</th>
+        <th>&nbsp;</th>
+        <th>Total of <%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> billable days</th>
         <th>&nbsp;</th>
       </tr>
       </tfoot>

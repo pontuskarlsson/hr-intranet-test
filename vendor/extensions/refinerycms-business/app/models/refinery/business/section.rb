@@ -42,13 +42,13 @@ module Refinery
 
       def jobs_and_allocations
         @jobs_and_allocations ||= all_jobs { |job_scope| job_scope.includes(billable: all_job_association_names) }.each_with_object({}) { |job, acc|
-          acc[job.billable] ||= { jobs: [], total_no_of_jobs: job.billable.all_jobs.count }
+          acc[job.billable] ||= { jobs: [] }
           acc[job.billable][:jobs] << job
         }.to_a.sort_by{ |(billable, _)| billable.billable_date }.to_h
       end
 
       def all_jobs(&block)
-        registered_jobs.keys.inject([]) do |acc, assoc_name|
+        (registered_jobs || {}).keys.inject([]) do |acc, assoc_name|
           res =
               if block_given?
                 yield send(assoc_name)

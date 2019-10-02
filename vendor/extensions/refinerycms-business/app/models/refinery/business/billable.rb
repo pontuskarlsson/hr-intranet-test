@@ -87,9 +87,21 @@ module Refinery
       end
 
       def all_jobs
-        all_job_association_names.inject([]) do |acc, assoc_name|
+        @all_jobs ||= all_job_association_names.inject([]) do |acc, assoc_name|
           acc.concat send(assoc_name)
         end
+      end
+
+      def total_no_of_jobs
+        all_jobs.count
+      end
+
+      def allocated_by(scope)
+        Rational(1) * all_jobs.select { |j|
+          if scope.is_a? Refinery::Business::Section
+            j.section == scope
+          end
+        }.count / total_no_of_jobs
       end
 
       def self.register_job(klass, assoc_name, options = {})
