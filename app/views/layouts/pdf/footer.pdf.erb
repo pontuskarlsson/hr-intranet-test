@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    footer {
+
+    }
+
+    p { margin: 0; padding: 0 }
+  </style>
+
+  <script>
+    function number_pages() {
+      var vars={};
+      var x=document.location.search.substring(1).split('&');
+      for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+      var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+      for(var i in x) {
+        var y = document.getElementsByClassName(x[i]);
+        for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+      }
+    }
+  </script>
+</head>
+<body onload="number_pages()">
+<footer>
+  <div style="padding-top: 4px; border-top: 1px solid #000; ">
+    <div style="float: left; width: 33%;">
+      <p>Phone +852-5804 3980</p>
+      <p>Email info@happyrabbit.com</p>
+    </div>
+    <div style="float: left; width: 34%; text-align: left;">
+      <p>2104, Wai Wah Commercial Centre,<br/>
+        6 Wilmer Street<br/>
+        Sai Ying Pun, Hong Kong
+    </div>
+
+    <div style="float: left; width: 33%; text-align: right;">
+      <p style="margin-bottom: 1rem;"><%= DateTime.now.strftime('%b %e, %Y (%a)') %></p>
+      Page <span class="page"></span> of <span class="topage"></span>
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+</footer>
+</body>
+</html>

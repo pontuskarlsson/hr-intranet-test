@@ -78,6 +78,7 @@ module Refinery
       scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
       scope :inspected_by, -> (user) { where(inspected_by_id: user.id) }
       scope :similar_to, -> (inspection) { where.not(id: inspection.id).where(inspection.attributes.slice('company_id', 'supplier_id')) }
+      scope :final, -> { where(inspection_type: 'Final') }
 
       def self.top_defects
         inspection_ids = where(nil).pluck(:id)
@@ -106,6 +107,18 @@ module Refinery
         select('COUNT(id) as no_of_inspections, result').group('result').each_with_object({}) { |insp, acc|
           acc[insp.result] = insp.no_of_inspections
         }
+      end
+
+      def self.defects_by_category
+        categories = Defect.uniq.pluck(:category_code, :category_name).inject({}) { |acc, (code, name)| acc.merge(code => { name: name, defects: 0 }) }
+        defects = includes(inspection_defects: :defect).each_with_object(categories) do |insp, acc|
+          insp.inspection_defects.map do |inspection_defect|
+            if inspection_defect.defect
+              acc[inspection_defect.defect.category_code][:defects] += inspection_defect.total_no_of_defects
+            end
+          end
+        end
+        defects.map { |category_code, obj| ["#{category_code}. #{obj[:name]}", obj[:defects]] }
       end
 
 

@@ -96,16 +96,22 @@ function initDataTableHeaders(dt) {
       var attr = col.dataSrc();
 
       var input = $('input.dt-date', col.header());
-      var value = input.val();
-      var dateValue = new Date(value).getTime();
+      var values = input.val().split(':');
+      var fromDateValue = new Date(values[0]).getTime();
+      var toDateValue = values.length === 2 ? new Date(values[1]).getTime() : null;
 
       // For caching
       if (typeof data['_'+attr] == 'undefined') {
         data['_'+attr] = new Date(data[dateFilters[0]]).getTime();
       }
 
-      if (dateValue && !isNaN(dateValue)) {
-        if (data['_'+attr] < dateValue) {
+      if (fromDateValue && !isNaN(fromDateValue)) {
+        if (data['_'+attr] < fromDateValue) {
+          return false;
+        }
+      }
+      if (toDateValue && !isNaN(toDateValue)) {
+        if (data['_'+attr] > toDateValue) {
           return false;
         }
       }

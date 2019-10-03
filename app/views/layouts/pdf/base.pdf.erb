@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <%= wicked_pdf_stylesheet_link_tag "pdf" -%>
+  <%= wicked_pdf_stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" %>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+  <style type="text/css">
+    document, body {
+      height: 100%;
+      width: 100%;
+      background-color: #fff;
+    }
+
+    h5 {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .kpi_result {
+      font-size: 72px;
+      margin: 0;
+      padding: 0;
+      line-height: 100%;
+    }
+
+    .bordered-table {
+      background: none;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .bordered-table tr {
+      border-bottom: 1px solid #000;
+      background: none;
+    }
+
+    .bordered-table th {
+      text-align: left;
+      background: none;
+    }
+
+    .bordered-table td {
+      text-align: right;
+      font-weight: bold;
+      background: none;
+    }
+
+    .bordered-table thead th {
+      font-weight: bold;
+    }
+
+    .bordered-table tbody th {
+      font-weight: normal;
+    }
+
+    .full_chart {
+      width: 100%;
+    }
+
+    .cc-table {
+      width: 100%;
+      border: none;
+    }
+
+    .cc-table tbody { background: none; }
+
+    .cc-table tr {
+      background: none;
+    }
+
+    .cc-table th {
+      width: 80px;
+    }
+
+    .cc-table th,  .cc-table th label {
+      text-align: left;
+      color: #777;
+      font-weight: normal;
+      padding: 0;
+      vertical-align: top;
+      font-size: inherit;
+    }
+
+    .cc-table td {
+      text-align: left;
+      padding-top: 0;
+      padding-bottom: 0;
+      vertical-align: top;
+    }
+  </style>
+
+  <%= wicked_pdf_javascript_include_tag "https://code.jquery.com/jquery-2.2.4.min.js" %>
+  <%= wicked_pdf_javascript_include_tag "https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" %>
+  <%= wicked_pdf_javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/chartkick/2.3.0/chartkick.min.js" %>
+  <%= wicked_pdf_javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
+  <%= wicked_pdf_javascript_include_tag "number_pages" %>
+
+  <script type="text/javascript">
+    setTimeout((function () {
+      window.status = "FLAG_FOR_PDF";
+      Object.keys(Chartkick.charts).forEach(function (key) {
+        Chartkick.charts[key].redraw();
+      });
+    }), 3000);
+  </script>
+</head>
+<body onload='number_pages'>
+<div id="content">
+  <%= yield %>
+</div>
+</body>
+</html>

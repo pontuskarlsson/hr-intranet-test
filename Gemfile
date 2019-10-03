@@ -56,6 +56,8 @@ gem 'fog-aws'
 gem 'dragonfly-s3_data_store'
 
 gem 'rubyzip'
+gem 'wicked_pdf', '1.1.0'
+gem 'wkhtmltopdf-binary'
 
 # Need for password expiration
 gem 'devise_security_extension'

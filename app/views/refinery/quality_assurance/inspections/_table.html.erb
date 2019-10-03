@@ -87,6 +87,27 @@
           "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
         buttons: [
           'excelHtml5',
+          {
+            text: 'Report',
+            action: function(e, dt, node, config) {
+              console.log({ e: e, dt: dt, node: node, config: config, data: dt.rows({ search: 'applied' }).data() })
+
+              var $form = $('<form action="/reports/inspections.pdf" method="post" target="_blank"></form>');
+              $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
+              dt.rows({ search: 'applied' }).data().each(function(dataRow) { $form.append('<input type="hidden" name="id[]" value="'+dataRow.id+'" />') })
+              $form.appendTo(document.body);
+              $form.submit()
+
+              // $.post('/reports/inspections', {
+              //   id: dt.rows({ search: 'applied' }).data().reduce(function(acc, dataRow) { return acc.concat(dataRow.id) }, [])
+              // }, function(data) {
+              //   var w = window.open('about:blank');
+              //   w.document.open();
+              //   w.document.write(data);
+              //   w.document.close();
+              // });
+            }
+          }
         ]
       });
 

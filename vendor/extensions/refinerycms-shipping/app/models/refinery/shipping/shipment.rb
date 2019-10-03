@@ -23,7 +23,7 @@ module Refinery
       EASYPOST_STATUSES = %w(unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
       STATUSES = %w(draft not_shipped manually_shipped shipped) + EASYPOST_STATUSES
 
-      SHIP_MODES = %w(Air Courier Rail Sea Sea-Air Train Truck)
+      SHIP_MODES = %w(Air Courier Rail Sea Sea-Air Rail Road)
 
       self.table_name = 'refinery_shipping_shipments'
 

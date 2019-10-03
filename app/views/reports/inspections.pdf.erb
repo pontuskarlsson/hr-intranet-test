@@ -1,0 +1,110 @@
+<%- scope = @inspections.includes(inspection_defects: :defect, company: {}, supplier: {}) %>
+<div style="width: 100%;">
+  <div style="margin-bottom: 2rem;">
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th>Company</th>
+        <td><%= scope.map(&:company).uniq.length == 1 ? scope.first.company.try(:name) : '(Multiple)' %></td>
+      </tr>
+      <tr>
+        <th>Supplier</th>
+        <td><%= scope.map(&:supplier).uniq.length == 1 ? scope.first.supplier.try(:name) : '(Multiple)' %></td>
+      </tr>
+      <tr>
+        <th>From</th>
+        <td><%= scope.map(&:inspection_date).compact.min.strftime('%b %e, %Y') %></td>
+      </tr>
+      <tr>
+        <th>To</th>
+        <td><%= scope.map(&:inspection_date).compact.max.strftime('%b %e, %Y') %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="float: left; width: 40%;">
+    <h5>Inspection Result</h5>
+    <p class="kpi_result"><%= (100.0 * scope.inject(0) { |acc, inspection| inspection.result == 'Pass' ? acc + inspection.po_qty : acc } / scope.inject(0) { |acc, inspection| acc + inspection.po_qty }).round %>%</p>
+
+    <%- summary = scope.each_with_object({ inspections: 0, tot_ord: 0, tot_avai: 0, tot_insp: 0, tot_def: 0 }) { |inspection, acc|
+      acc[:inspections] += 1
+      acc[:tot_ord] += inspection.po_qty || 0
+      acc[:tot_avai] += inspection.available_qty || 0
+      acc[:tot_insp] += inspection.inspection_sample_size || 0
+      acc[:tot_def] += inspection.inspection_defects.map(&:total_no_of_defects).sum
+    } %>
+    <table class="bordered-table">
+      <thead>
+      <tr>
+        <th colspan="2">Inspection Summary</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Final Inspections</th>
+        <td><%=number_with_delimiter summary[:inspections] %></td>
+      </tr>
+      <tr>
+        <th>Tot. Order Qty</th>
+        <td><%=number_with_delimiter summary[:tot_ord] %></td>
+      </tr>
+      <tr>
+        <th>Tot. Available Qty</th>
+        <td><%=number_with_delimiter summary[:tot_avai] %></td>
+      </tr>
+      <tr>
+        <th>Tot. Inspected Qty</th>
+        <td><%=number_with_delimiter summary[:tot_insp] %></td>
+      </tr>
+      <tr>
+        <th>Tot. Defect Qty</th>
+        <td><%=number_with_delimiter summary[:tot_def] %></td>
+      </tr>
+      <tr>
+        <th>Defect Rate</th>
+        <td><%= (100.0 * summary[:tot_def] / summary[:tot_insp]).round(2) %>%</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="float: left; width: 60%; text-align: right; overflow: hidden;">
+    <div style="width: 500px; margin-left: 100px;">
+      <%= pie_chart @inspections.pass_rate_qty, thousands: ',', colors: ['#48A9A6', '#C1666B', '#D4B483'] %>
+    </div>
+  </div>
+  <div style="clear: both;"></div>
+
+  <div>
+    <%- defects = scope.each_with_object({}) { |inspection, acc|
+      inspection.inspection_defects.each { |inspection_defect|
+        acc[inspection_defect.defect_label] ||= 0
+        acc[inspection_defect.defect_label] += inspection_defect.total_no_of_defects
+      }
+    }.sort_by { |k, v| -v } %>
+    <table class="bordered-table">
+      <thead>
+      <tr>
+        <th colspan="3">Top Five Defects</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% defects[0..4].each do |defect| %>
+      <tr>
+        <td style="width: 60px;"><%= defect[1] %></td>
+        <td style="width: 60px;"><%= (100.0 * defect[1] / defects.map { |d| d[1] }.sum).round(0) %>%</td>
+        <th style="padding-left: 10px;"><%= defect[0] %></th>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="clear: both;"></div>
+
+  <div style="width: 100%; overflow: hidden;">
+    <div style="width: 1050px; margin-left: -75px; height: 400px;">
+      <%= column_chart @inspections.defects_by_category, thousands: ',', colors: ['#C1666B'] %>
+    </div>
+  </div>
+</div>
