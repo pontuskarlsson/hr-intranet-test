@@ -37,8 +37,10 @@ $(function(){
   });
 
   $(document.body).on('open.zf.reveal', function(evt) {
-    var $img = $('.dragonfly-image-tag', evt.target);
-    $img.attr('src', $img.data('src'));
+    if ($(evt.target).hasClass('js-image-reveal')) {
+      var $img = $('.dragonfly-image-tag', evt.target);
+      $img.attr('src', $img.data('src'));
+    }
   });
 
   $(document.body).on('error', 'img.dragonfly-thumb-tag:not(.dragonfly-reloaded)', function(evt) {
@@ -47,13 +49,19 @@ $(function(){
 
     // Set src to 1px gif temporary
     $img.attr('src', 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D');
-    console.log({ schedule: $img[0] })
     // Attempty to load the src again
     setTimeout(function() {
-      console.log({ reload: $img[0] })
       $img.attr('src', src);
     }, 1000);
 
     $img.addClass('dragonfly-reloaded');
+  });
+
+  $(document.body).on('change.zf.tabs', function(evt, $title, $pane) {
+    var $imgs = $('.dragonfly-thumb-tag[data-src]', $pane);
+    $imgs.each(function(i, el) {
+      var $img = $(el);
+      $img.attr('src', $img.data('src'));
+    });
   });
 });
