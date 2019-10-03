@@ -96,6 +96,9 @@ function initDataTableHeaders(dt) {
       var attr = col.dataSrc();
 
       var input = $('input.dt-date', col.header());
+      if (input.length === 0)
+        return true;
+
       var values = input.val().split(':');
       var fromDateValue = new Date(values[0]).getTime();
       var toDateValue = values.length === 2 ? new Date(values[1]).getTime() : null;
