@@ -1,67 +1,57 @@
 // A Function to create and attach a dropdown button
 // to show and hide columns from the data table.
 //
-function initDataTable(dt) {
-  initDataTableMenu(dt);
+function initDataTable(dt, hasSelect) {
+  initDataTableMenu(dt, hasSelect);
   initDataTableHeaders(dt);
-  initDataTableRowClick(dt)
+  initDataTableRowClick(dt, hasSelect)
 }
 
-function initDataTableMenu(dt) {
-  var tmplMenu = '<ul class="dropdown menu" data-dropdown-menu><li><a href="#">Columns</a><ul class="menu"></ul></li></ul>';
-  var tmplItem = '<li><a href="#"><i class="fa"></i></a></li>';
+function initDataTableMenu(dt, hasSelect) {
+  var tmplButton = '<button class="dt-button" type="button" data-toggle="data-table-dropdown">Columns <i class="fa fa-caret-down"></i></button>';
+  var tmplMenu = '<div class="dropdown-pane" id="data-table-dropdown" data-dropdown data-auto-focus="true"><h5>Visible Columns</h5><ul class="menu vertical"></ul></div>';
+  var tmplItem = '<li><label class="switch"><input type="checkbox" /><span class="switch-slider round"></span></label></li>';
 
-  var classVisible = 'fa-check-square-o';
-  var classHidden = 'fa-square-o';
-
+  var $button = $(tmplButton);
   var $menu = $(tmplMenu);
 
   dt.columns().every(function(colIndex) {
-    if (colIndex === 0) return;
+    if (colIndex === 0 || (hasSelect && colIndex === 1)) return;
 
+    // Create column item
     var col = dt.column(colIndex);
-
     var $item = $(tmplItem);
-    $('> a > i.fa', $item).addClass(col.visible() ? classVisible : classHidden);
-    $('> a', $item).append($(col.header()).html()).data('col-index', colIndex);
 
+    // Configure item
+    $item.append(' '+$(col.header()).html());
+    $('input', $item).attr('checked', col.visible());
+    $('input', $item).data('col-index', colIndex);
+
+    // Add to menu
     $('.menu', $menu).append($item);
   });
 
   $(dt.table().container()).prepend($menu);
+  $(dt.table().container()).prepend($button);
 
-  new Foundation.DropdownMenu($menu, { 'closeOnClickInside': false });
+  new Foundation.Dropdown($menu, {});
 
-  $menu.on('click', '.menu > li > a', function() {
+  // Show/Hide columns och input change event
+  $menu.on('change', 'input', function() {
     var col = dt.column($(this).data('col-index'));
-
     col.visible(!col.visible());
-
-    $('i.fa', this).toggleClass('fa-check-square-o');
-    $('i.fa', this).toggleClass('fa-square-o');
-
     dt.columns.adjust();
   });
 }
 
 function initDataTableHeaders(dt) {
-  var minDateFilter = "";
-  var maxDateFilter = "";
-  var dateFilters = [];
+   var dateFilters = [];
 
   dt.columns().every(function() {
     var col = this;
     var $h = $(col.header());
 
-    if ($h.data('dt-search-select')) {
-      var $select = $('<select></select>').append($('<option></option>').attr('value', "").html($h.html()));
-
-      $h.data('dt-search-select').split(',').map(function(v) {
-        $select.append($('<option></option>').attr('value', v).html(v));
-      });
-      $h.html($select)
-
-    } else if ($h.data('dt-search-input')) {
+    if ($h.data('dt-search-input')) {
       var $input = $('<input type="text" />').attr('placeholder', $h.html());
       var $hidden = $('<div class="hidden-title"></div>').html($h.html());
       $h.html($hidden).append($input)
@@ -123,8 +113,8 @@ function initDataTableHeaders(dt) {
   );
 }
 
-function initDataTableRowClick(dt) {
-  dt.on('click', 'tbody td:not(:first-child)', function(evt) {
+function initDataTableRowClick(dt, hasSelect) {
+  dt.on('click', 'tbody td:nth-child(n+'+(hasSelect ? 3 : 2)+')', function(evt) {
     // Stop propagation of up-coming click, not to trigger responsive row event
     $('a[data-dt-row-link]', this.parentNode).on('click', function(e) { e.stopPropagation(); });
 

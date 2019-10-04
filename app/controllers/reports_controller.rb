@@ -9,8 +9,9 @@ class ReportsController < ApplicationController
   before_action :find_inspections,  only: [:inspections]
 
   def inspections
-    @title = 'QA/QC Report'
-    @inspections = @inspections.final
+    @title = 'QA Report: Inspections'
+    @inline_inspections = @inspections.inline
+    @inspections = @inspections.all_final
 
     respond_to do |format|
       format.pdf { render pdf: "Inspections #{DateTime.now.strftime('%d, %M, %Y')}", window_status: "FLAG_FOR_PDF" }

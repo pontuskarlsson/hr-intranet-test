@@ -2,6 +2,7 @@
   <thead>
   <tr>
     <th><div class="hidden-title">Row</div></th>
+    <th><div class="hidden-title">Select</div></th>
     <th>Photo</th>
     <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
     <th data-dt-search-select="Pass,Reject,Hold">Result</th>
@@ -26,6 +27,7 @@
 
   <tfoot>
   <tr>
+    <th></th>
     <th></th>
     <th>Photo</th>
     <th>Type</th>
@@ -57,11 +59,21 @@
     $(function() {
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
+        select: {
+          style:    'multi',
+          selector: 'td:nth-child(2)'
+        },
         "paging":         true,
         "ajax": "<%= ajax %>",
-        "order": [[6, 'desc']],
+        "order": [[7, 'desc']],
+        columnDefs: [ {
+          orderable: false,
+          className: 'select-checkbox',
+          targets:   1
+        } ],
         "columns": [
-          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_inspections_path %>") } },
+          { data: "id", "orderable": false, "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_inspections_path %>") } },
+          { data: "id", "render": function() {return '<span style="display: inline-block; width: 20px;">&nbsp;</span>';} },
           { data: "inspection_photo_thumb_url", "render": dtThumbRenderer },
           { data: "inspection_type" },
           { data: "result", "render": { "display": function(data, type, row) { return '<span class="result-'+(data || '').toLowerCase()+'">'+data+'</span>' } } },
@@ -90,22 +102,22 @@
           {
             text: 'Report',
             action: function(e, dt, node, config) {
-              console.log({ e: e, dt: dt, node: node, config: config, data: dt.rows({ search: 'applied' }).data() })
+              var data = dt.rows({ selected: true }).data();
+              var resp;
+              if (data.length > 0) {
+                resp = confirm('You have selected '+data.length+' rows. Do you want to continue?');
+              } else {
+                data = dt.rows({ search: 'applied' }).data();
+                resp = confirm('There are '+data.length+' rows filtered. Do you want to continue?');
+              }
 
-              var $form = $('<form action="/reports/inspections.pdf" method="post" target="_blank"></form>');
-              $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
-              dt.rows({ search: 'applied' }).data().each(function(dataRow) { $form.append('<input type="hidden" name="id[]" value="'+dataRow.id+'" />') })
-              $form.appendTo(document.body);
-              $form.submit()
-
-              // $.post('/reports/inspections', {
-              //   id: dt.rows({ search: 'applied' }).data().reduce(function(acc, dataRow) { return acc.concat(dataRow.id) }, [])
-              // }, function(data) {
-              //   var w = window.open('about:blank');
-              //   w.document.open();
-              //   w.document.write(data);
-              //   w.document.close();
-              // });
+              if (resp) {
+                var $form = $('<form action="/reports/inspections.pdf" method="post" target="_blank"></form>');
+                $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
+                data.each(function(dataRow) { $form.append('<input type="hidden" name="id[]" value="'+dataRow.id+'" />') });
+                $form.appendTo(document.body);
+                $form.submit();
+              }
             }
           }
         ]
@@ -113,7 +125,9 @@
 
       dt.on( 'draw', dtOnDrawSetImgSrc);
 
-      initDataTable(dt)
+      initDataTable(dt, true);
+
+      window._dt = dt;
     });
   </script>
 <% end %>

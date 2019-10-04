@@ -75,7 +75,7 @@
   </div>
   <div style="clear: both;"></div>
 
-  <div>
+  <div style="padding-right: 7px;">
     <%- defects = scope.each_with_object({}) { |inspection, acc|
       inspection.inspection_defects.each { |inspection_defect|
         acc[inspection_defect.defect_label] ||= 0
@@ -91,9 +91,9 @@
       <tbody>
       <% defects[0..4].each do |defect| %>
       <tr>
+        <th><%= defect[0] %></th>
         <td style="width: 60px;"><%= defect[1] %></td>
         <td style="width: 60px;"><%= (100.0 * defect[1] / defects.map { |d| d[1] }.sum).round(0) %>%</td>
-        <th style="padding-left: 10px;"><%= defect[0] %></th>
       </tr>
       <% end %>
       </tbody>
@@ -103,7 +103,7 @@
   <div style="clear: both;"></div>
 
   <div style="width: 100%; overflow: hidden;">
-    <div style="width: 1050px; margin-left: -75px; height: 400px;">
+    <div style="width: 1025px; margin-left: -75px; height: 400px;">
       <%= column_chart @inspections.defects_by_category, thousands: ',', colors: ['#C1666B'] %>
     </div>
   </div>

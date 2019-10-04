@@ -79,6 +79,8 @@ module Refinery
       scope :inspected_by, -> (user) { where(inspected_by_id: user.id) }
       scope :similar_to, -> (inspection) { where.not(id: inspection.id).where(inspection.attributes.slice('company_id', 'supplier_id')) }
       scope :final, -> { where(inspection_type: 'Final') }
+      scope :all_final, -> { where(inspection_type: ['Final', 'Re-Final']) }
+      scope :inline, -> { where(inspection_type: 'In-line') }
 
       def self.top_defects
         inspection_ids = where(nil).pluck(:id)
