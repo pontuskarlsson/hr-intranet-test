@@ -6,6 +6,7 @@
 <%= raw %(<meta name="description" content="#{@meta.meta_description}" />) if @meta.meta_description.present? -%>
 <%= raw %(<link rel="canonical" content="#{@canonical}" />) if @canonical.present? -%>
 <%= csrf_meta_tags if Refinery::Core.authenticity_token_on_frontend -%>
+<%= tag :meta, name: 'filter-params', content: filter_params.to_json %>
 <%= yield :meta %>
 
 <%= stylesheet_link_tag 'foundation_and_overrides_portal' %>

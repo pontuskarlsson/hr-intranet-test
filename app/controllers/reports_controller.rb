@@ -10,7 +10,17 @@ class ReportsController < ApplicationController
 
   def inspections
     @title = 'QA Report: Inspections'
+
     @inline_inspections = @inspections.inline
+    @inline_inspection_defects ||= @inline_inspections.includes(inspection_defects: :defect).each_with_object({}) { |inspection, acc|
+      inspection.inspection_defects.each do |inspection_defect|
+        if inspection_defect.defect.present?
+          acc[inspection_defect.defect] ||= []
+          acc[inspection_defect.defect] << [inspection, inspection_defect]
+        end
+      end
+    }
+
     @inspections = @inspections.all_final
 
     respond_to do |format|

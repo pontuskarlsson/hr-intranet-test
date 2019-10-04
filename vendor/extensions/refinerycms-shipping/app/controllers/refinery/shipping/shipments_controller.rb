@@ -16,9 +16,13 @@ module Refinery
             from_contact_label: current_authentication_devise_user.contact.try(:name),
             from_contact_id: current_authentication_devise_user.contact.try(:id)
         )
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @parcel in the line below:
-        present(@page)
+
+        @shipments = @shipments.from_params(params)
+
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json
+        end
       end
 
       def create
@@ -80,16 +84,16 @@ module Refinery
         end
       end
 
-      def easypost_ship
-        @easypost_shipper = Refinery::Shipping::EasypostShipper.new({ shipment: @shipment }.reverse_merge(params[:shipment] || {}))
-        if @easypost_shipper.save
-          flash[:notice] = 'Shipment successfully Updated.'
-          redirect_to refinery.shipping_shipment_path(@shipment)
-        else
-          present(@page)
-          render action: :show
-        end
-      end
+      # def easypost_ship
+      #   @easypost_shipper = Refinery::Shipping::EasypostShipper.new({ shipment: @shipment }.reverse_merge(params[:shipment] || {}))
+      #   if @easypost_shipper.save
+      #     flash[:notice] = 'Shipment successfully Updated.'
+      #     redirect_to refinery.shipping_shipment_path(@shipment)
+      #   else
+      #     present(@page)
+      #     render action: :show
+      #   end
+      # end
 
       protected
 

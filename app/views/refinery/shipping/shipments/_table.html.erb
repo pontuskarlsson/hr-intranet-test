@@ -12,6 +12,7 @@
     <th>ETA</th>
     <th>Terms</th>
     <th data-dt-search-input="true">Courier / Forwarder</th>
+    <th>Archived At</th>
   </tr>
   </thead>
 
@@ -28,12 +29,13 @@
     <th>ETA</th>
     <th>Terms</th>
     <th>Courier / Forwarder</th>
+    <th>Archived At</th>
   </tr>
   </tfoot>
 
   <tbody>
   <tr>
-    <td colspan="11">Loading data. Please wait...</td>
+    <td colspan="12">Loading data. Please wait...</td>
   </tr>
   </tbody>
 </table>
@@ -43,11 +45,18 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function(){
+      var ajaxStatus = { active: true, archived: false };
+
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
         "order":          [[ 1, "desc" ]],
-        "ajax": "<%= refinery.shipping_shipments_path(filter_params) %>",
+        "ajax": {
+          "url": "<%= refinery.shipping_shipments_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.shipping_shipments_path %>") } },
           { data: "code" },
@@ -59,14 +68,15 @@
           { data: "etd_date", render: dtDateRenderer },
           { data: "eta_date", render: dtDateRenderer },
           { data: "shipment_terms" },
-          { data: "courier_forwarder_company_label" }
+          { data: "courier_forwarder_company_label" },
+          { data: "archived_at" }
         ],
-        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'l><'medium-6 columns cell'f>r>"+
           "t"+
           "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
       });
 
-      initDataTable(dt)
+      initDataTable(dt, ajaxStatus);
     });
   </script>
 <% end %>

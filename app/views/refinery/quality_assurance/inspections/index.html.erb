@@ -24,10 +24,8 @@
     </div>
 
 
-    <div class="cell">
-      <h4>All inspections</h4>
-
-      <%= render 'table', table_id: 'js_inspections_data_table', options: {}, inspections: @inspections, ajax: refinery.quality_assurance_inspections_path(filter_params) %>
+    <div class="cell" style="margin-top: 2rem;">
+      <%= render 'table', table_id: 'js_inspections_data_table', options: {}, inspections: @inspections %>
     </div>
   </div>
 <% end %>

@@ -1,13 +1,30 @@
 // A Function to create and attach a dropdown button
 // to show and hide columns from the data table.
 //
-function initDataTable(dt, hasSelect) {
-  initDataTableMenu(dt, hasSelect);
+function initDataTable(dt, ajaxStatus, hasSelect) {
+  initDataTableMenu(dt, ajaxStatus, hasSelect);
   initDataTableHeaders(dt);
   initDataTableRowClick(dt, hasSelect)
 }
 
-function initDataTableMenu(dt, hasSelect) {
+function initDataTableMenu(dt, ajaxStatus, hasSelect) {
+  var $toolbar = $('.extra-toolbar', dt.table().container());
+
+  if (ajaxStatus) {
+    var $statusButtons = $('<span style="margin-left: 5px;"><span>Data: </span></span>');
+    Object.keys(ajaxStatus).forEach(function(key, i) {
+      var $button = $('<button class="dt-button'+(ajaxStatus[key] ? ' active' : '')+'" data-status="'+key+'"'+(i === 0 ? ' style="margin-right: -1px;"' : '')+'></button>');
+      $button.html(key[0].toUpperCase()+key.slice(1));
+      $button.on('click', function() {
+        ajaxStatus[key] = !ajaxStatus[key];
+        $button.toggleClass('active');
+        dt.ajax.reload();
+      });
+      $button.appendTo($statusButtons);
+    });
+    $toolbar.prepend($statusButtons);
+  }
+
   var tmplButton = '<button class="dt-button" type="button" data-toggle="data-table-dropdown">Columns <i class="fa fa-caret-down"></i></button>';
   var tmplMenu = '<div class="dropdown-pane" id="data-table-dropdown" data-dropdown data-auto-focus="true"><h5>Visible Columns</h5><ul class="menu vertical"></ul></div>';
   var tmplItem = '<li><label class="switch"><input type="checkbox" /><span class="switch-slider round"></span></label></li>';
@@ -31,8 +48,8 @@ function initDataTableMenu(dt, hasSelect) {
     $('.menu', $menu).append($item);
   });
 
-  $(dt.table().container()).prepend($menu);
-  $(dt.table().container()).prepend($button);
+  $toolbar.prepend($menu);
+  $toolbar.prepend($button);
 
   new Foundation.Dropdown($menu, {});
 

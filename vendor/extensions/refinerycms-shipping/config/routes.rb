@@ -11,9 +11,7 @@ Refinery::Core::Engine.routes.draw do
     resources :shipments, :only => [:index, :create, :show, :edit, :update, :destroy] do
       member do
         patch :manual_ship
-        patch :easypost_ship
       end
-      resources :shipment_parcels, path: 'parcels', as: :parcels
     end
   end
 
@@ -26,18 +24,6 @@ Refinery::Core::Engine.routes.draw do
         end
       end
       resources :shipments, :except => :show do
-        collection do
-          post :update_positions
-        end
-      end
-
-      resources :shipment_parcels, :except => :show do
-        collection do
-          post :update_positions
-        end
-      end
-
-      resources :shipment_accounts, :except => :show do
         collection do
           post :update_positions
         end

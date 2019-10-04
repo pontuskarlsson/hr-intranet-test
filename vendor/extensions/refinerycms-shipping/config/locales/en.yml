@@ -68,7 +68,6 @@ en:
           confirm_remove: Are you sure you want to remove this Shipment?
           ship: Ship
           send_shipment: Send Shipment
-          send_easypost_shipment: Send by EasyPost
   activerecord:
     attributes:
       'refinery/shipping/parcel':

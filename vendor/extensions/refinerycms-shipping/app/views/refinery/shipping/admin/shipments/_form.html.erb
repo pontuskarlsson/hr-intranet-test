@@ -84,9 +84,6 @@
       $('.js_contact_field').autocomplete({
         source: <%= ::Refinery::Marketing::Contact.pluck(:name).to_json.html_safe %>
       });
-      $('.js_courier_field').autocomplete({
-        source: <%= ::Refinery::Shipping::Shipment.easypost_couriers.to_json.html_safe %>
-      });
     });
   </script>
 <% end %>

@@ -20,8 +20,8 @@ module Refinery
 
       BILL_TO = ['Sender', 'Receiver', '3rd Party']
 
-      EASYPOST_STATUSES = %w(unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
-      STATUSES = %w(draft not_shipped manually_shipped shipped) + EASYPOST_STATUSES
+      #EASYPOST_STATUSES = %w(unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
+      STATUSES = %w(draft shipped delivered cancelled)
 
       SHIP_MODES = %w(Air Courier Rail Sea Sea-Air Rail Road)
 
@@ -113,9 +113,9 @@ module Refinery
 
       validates :from_address_id,         uniqueness: true, allow_nil: true
       validates :to_address_id,           uniqueness: true, allow_nil: true
-      validates :bill_to,                 inclusion: BILL_TO, if: :shipped_by_easypost?
-      validates :status,                  inclusion: EASYPOST_STATUSES, if: :shipped_by_easypost?
-      validates :easypost_object_id,      uniqueness: true, allow_nil: true
+      #validates :bill_to,                 inclusion: BILL_TO, if: :shipped_by_easypost?
+      #validates :status,                  inclusion: EASYPOST_STATUSES, if: :shipped_by_easypost?
+      #validates :easypost_object_id,      uniqueness: true, allow_nil: true
 
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
       delegate :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email, to: :from_address, prefix: true, allow_nil: true
@@ -198,10 +198,10 @@ module Refinery
         self.created_by_label =         created_by.label          if created_by.present?
       end
 
-      scope :shipped, -> { where(status: STATUSES - %w(not_shipped)) }
-      scope :recent, -> (no_of_records = 10, days_ago = 90) { where('shipping_date > ?', Date.today - days_ago).order(shipping_date: :desc).limit(no_of_records) }
-      scope :forwarder, -> { where.not(forwarder_company_id: nil).includes(:forwarder_company) }
-      scope :active, -> { where.not(status: %w(delivered cancelled)) }
+      scope :shipped,     -> { where(status: STATUSES - %w(not_shipped)) }
+      scope :recent,      -> (no_of_records = 10, days_ago = 90) { where('shipping_date > ?', Date.today - days_ago).order(shipping_date: :desc).limit(no_of_records) }
+      scope :forwarder,   -> { where.not(forwarder_company_id: nil).includes(:forwarder_company) }
+      scope :active,      -> { where.not(status: %w(delivered cancelled)) }
 
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
@@ -225,15 +225,15 @@ module Refinery
         created_by_id == user.id || assigned_to_id == user.id
       end
 
-      def easypost_courier
-        {
-            'DHL' => 'DHL'
-        }[courier_company_label]
-      end
+      # def easypost_courier
+      #   {
+      #       'DHL' => 'DHL'
+      #   }[courier_company_label]
+      # end
 
-      def courier_predefined_packages
-        (COURIERS[easypost_courier] || {})[:parcels] || []
-      end
+      # def courier_predefined_packages
+      #   (COURIERS[easypost_courier] || {})[:parcels] || []
+      # end
 
       def international?
         from_address.country != to_address.country
@@ -276,9 +276,9 @@ module Refinery
         courier_company_label.present?
       end
 
-      def shipped_by_easypost?
-        mode == 'easypost'
-      end
+      # def shipped_by_easypost?
+      #   mode == 'easypost'
+      # end
 
       def supplier_different_from_shipper?
         supplier_company_label.present? && supplier_company_label != shipper_company_label
@@ -320,12 +320,29 @@ module Refinery
       # end
 
       class << self
-        def easypost_couriers
-          COURIERS.select { |_,v| v[:easypost] }.keys
+        # def easypost_couriers
+        #   COURIERS.select { |_,v| v[:easypost] }.keys
+        # end
+
+        # Only used by background tracker at the moment
+        def shipped_not_delivered
+          where('1=0')
+          #where(status: %w(shipped))
         end
 
-        def shipped_manually_not_delivered
-          where("#{table_name}.easypost_object_id IS NULL AND #{table_name}.status IN (?)", %w(manually_shipped))
+        def from_params(params)
+          active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
+          archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
+
+          if active && archived
+            where(nil)
+          elsif active
+            where(archived_at: nil)
+          elsif archived
+            where.not(archived_at: nil)
+          else
+            where('1=0')
+          end
         end
       end
 

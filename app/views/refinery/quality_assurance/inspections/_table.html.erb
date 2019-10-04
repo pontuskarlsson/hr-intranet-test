@@ -57,6 +57,8 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
+      var ajaxStatus = { active: true, archived: false };
+
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         select: {
@@ -64,7 +66,12 @@
           selector: 'td:nth-child(2)'
         },
         "paging":         true,
-        "ajax": "<%= ajax %>",
+        "ajax": {
+          "url": "<%= refinery.quality_assurance_inspections_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
         "order": [[7, 'desc']],
         columnDefs: [ {
           orderable: false,
@@ -94,7 +101,7 @@
           { data: "product_colour_variants" },
           { data: "code" },
         ],
-        "dom": "<'row grid-x'<'medium-6 columns cell'Bl><'medium-6 columns cell'f>r>"+
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
           "t"+
           "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
         buttons: [
@@ -125,7 +132,7 @@
 
       dt.on( 'draw', dtOnDrawSetImgSrc);
 
-      initDataTable(dt, true);
+      initDataTable(dt, null, true);
 
       window._dt = dt;
     });

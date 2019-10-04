@@ -19,7 +19,7 @@ namespace :refinery do
     # was used to ship it, it will use different methods to check the status.
     task :check_shipment_status => :environment do
 
-      Refinery::Shipping::Shipment.shipped_manually_not_delivered.each do |shipment|
+      Refinery::Shipping::Shipment.shipped_not_delivered.each do |shipment|
         begin
           if shipment.courier_company_label == Refinery::Shipping::Shipment::COURIER_SF
 

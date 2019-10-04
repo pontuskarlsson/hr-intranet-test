@@ -107,4 +107,38 @@
       <%= column_chart @inspections.defects_by_category, thousands: ',', colors: ['#C1666B'] %>
     </div>
   </div>
+
+  <% if @inline_inspections.any? %>
+    <div class="new-page" style="padding-right: 7px;">
+      <h3>In-line Inspection Defects</h3>
+      <table class="list-table">
+        <thead>
+        <tr>
+          <th>Defect</th>
+          <th style="width: 50px;">Total</th>
+          <th>Summary of Inspections</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @inline_inspection_defects.each_pair do |defect, inspection_and_inspection_defects| %>
+          <tr>
+            <td><%= defect.label %></td>
+            <td><%= inspection_and_inspection_defects.map{ |(_, inspection_defect)| inspection_defect.total_no_of_defects }.sum %></td>
+            <td>
+              <table class="bordered-table">
+                <% inspection_and_inspection_defects.each do |(inspection, inspection_defect)| %>
+                  <tr>
+                    <th><%= inspection.po_number %></th>
+                    <th><%= inspection.product_label %></th>
+                    <th><%= inspection_defect.detailed_no_of_defects %></th>
+                  </tr>
+                <% end %>
+              </table>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
 </div>

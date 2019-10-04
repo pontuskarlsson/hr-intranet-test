@@ -13,6 +13,12 @@
       background-color: #fff;
     }
 
+    thead { display: table-header-group }
+
+    tfoot { display: table-row-group }
+
+    tr { page-break-inside: avoid }
+
     h5 {
       margin: 0;
       font-weight: bold;
@@ -20,7 +26,7 @@
 
     .kpi_result {
       font-size: 72px;
-      margin: 0;
+      margin: 0 0 1rem;
       padding: 0;
       line-height: 100%;
     }
@@ -88,6 +94,29 @@
       padding-top: 0;
       padding-bottom: 0;
       vertical-align: top;
+    }
+
+    .new-page {
+      page-break-before: always;
+    }
+
+    .list-table {
+      background: none;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .list-table th, .list-table td {
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .list-table th:not(:first-child), .list-table td:not(:first-child) {
+      padding-left: 3px;
+    }
+
+    .list-table > tbody > tr:nth-child(2n) {
+      background-color: #eee;
     }
   </style>
 

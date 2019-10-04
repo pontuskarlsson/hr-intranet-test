@@ -1348,8 +1348,10 @@ ActiveRecord::Schema.define(version: 20190929144356) do
     t.integer  "courier_company_id",                  limit: 4
     t.string   "shipment_terms",                      limit: 255
     t.text     "shipment_terms_details",              limit: 65535
+    t.datetime "archived_at"
   end
 
+  add_index "refinery_shipping_shipments", ["archived_at"], name: "index_refinery_shipping_shipments_on_archived_at", using: :btree
   add_index "refinery_shipping_shipments", ["assigned_to_id"], name: "index_refinery_shipping_shipments_on_assigned_to_id", using: :btree
   add_index "refinery_shipping_shipments", ["assigned_to_label"], name: "index_refinery_shipping_shipments_on_assigned_to_label", using: :btree
   add_index "refinery_shipping_shipments", ["bill_to_account_id"], name: "index_refinery_parcels_shipments_on_bta_id", using: :btree
