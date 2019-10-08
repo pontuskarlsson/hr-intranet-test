@@ -21,6 +21,10 @@ $(document).ready(function() {
 
     var $record = $('<div class="form-addable-record form-init">'+template+'</div>').appendTo($container);
 
+    if (typeof partial.onAdd === 'function') {
+      partial.onAdd();
+    }
+
     if (window.ReactRailsUJS) { ReactRailsUJS.mountComponents($record[0]); }
     
     $record.show();

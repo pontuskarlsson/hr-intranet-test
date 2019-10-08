@@ -14,10 +14,12 @@ function initDataTableMenu(dt, ajaxStatus, hasSelect) {
     var $statusButtons = $('<span style="margin-left: 5px;"><span>Data: </span></span>');
     Object.keys(ajaxStatus).forEach(function(key, i) {
       var $button = $('<button class="dt-button'+(ajaxStatus[key] ? ' active' : '')+'" data-status="'+key+'"'+(i === 0 ? ' style="margin-right: -1px;"' : '')+'></button>');
-      $button.html(key[0].toUpperCase()+key.slice(1));
+      $button.html('<i class="fa fa'+(ajaxStatus[key] ? '-check' : '')+'-circle-o"></i> ' + key[0].toUpperCase()+key.slice(1));
       $button.on('click', function() {
         ajaxStatus[key] = !ajaxStatus[key];
         $button.toggleClass('active');
+        $('.fa', $button).toggleClass('fa-check-circle-o');
+        $('.fa', $button).toggleClass('fa-circle-o');
         dt.ajax.reload();
       });
       $button.appendTo($statusButtons);

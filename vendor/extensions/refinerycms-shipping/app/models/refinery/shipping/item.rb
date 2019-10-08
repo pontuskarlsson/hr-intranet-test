@@ -9,6 +9,14 @@ module Refinery
 
       validates :shipment_id,     presence: true
 
+      def order_label
+        @order_label ||= order.try(:label)
+      end
+
+      def order_label=(label)
+        self.order = ::Refinery::Business::Order.find_by_label(label)
+        @order_label
+      end
     end
   end
 end

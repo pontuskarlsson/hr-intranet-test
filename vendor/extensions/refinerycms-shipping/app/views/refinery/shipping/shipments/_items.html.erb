@@ -13,15 +13,28 @@
         </div>
       <% end %>
 
-      <% content_for :javascripts do %>
-        <script type="text/javascript">
-          $(document).ready(function() {
-            Addable.partials["shipment-items"] = {
-              "attributes": { "__index__": <%= shipment.items.length+1 %> },
-              "template": "<%= escape_javascript render('item_form', item: ::Refinery::Shipping::Item.new, i: '__index__', f: f) %>",
-            };
-          });
-        </script>
+      <% if shipment.consignee_company.present? %>
+        <% content_for :javascripts do %>
+          <script type="text/javascript">
+            var orderSource = <%= shipment.consignee_company.buyer_orders.to_source %>;
+
+            $(document).ready(function() {
+              $('.js_order_field').autocomplete({
+                source: orderSource
+              });
+
+              Addable.partials["shipment-items"] = {
+                "attributes": { "__index__": <%= shipment.items.length+1 %> },
+                "template": "<%= escape_javascript render('item_form', item: ::Refinery::Shipping::Item.new, i: '__index__', f: f) %>",
+                "onAdd": function() {
+                  $('.js_order_field').autocomplete({
+                    source: orderSource
+                  });
+                }
+              };
+            });
+          </script>
+        <% end %>
       <% end %>
     </div>
   <% end %>

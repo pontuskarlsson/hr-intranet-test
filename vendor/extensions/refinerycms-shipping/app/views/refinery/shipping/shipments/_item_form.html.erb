@@ -7,9 +7,9 @@
   </span>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell large-6">
+    <div class="cell large-6 end">
       <%= item_form.label :order_label %>
-      <%= item_form.text_field :order_label, placeholder: "Order" %>
+      <%= item_form.text_field :order_label, placeholder: "Order", disabled: item.persisted? %>
     </div>
   </div>
 <% end %>
