@@ -1,3 +1,4 @@
+# This migration comes from refinery_shipping (originally 15)
 class CreateShippingItems < ActiveRecord::Migration
 
   def change

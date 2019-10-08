@@ -107,6 +107,8 @@ module Refinery
       belongs_to :bill_to_account,      class_name: '::Refinery::Shipping::ShipmentAccount'
       belongs_to :project,              class_name: '::Refinery::Business::Project'
       has_many :shipment_parcels,       dependent: :destroy
+      has_many :packages,               dependent: :destroy
+      has_many :items,                  dependent: :destroy
 
       serialize :rates_content, Array
       serialize :tracking_info, Array

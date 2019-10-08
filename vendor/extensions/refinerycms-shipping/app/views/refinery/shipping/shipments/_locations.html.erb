@@ -1,0 +1,47 @@
+<div class="grid-x grid-padding-x">
+  <div class="medium-6 cell">
+    <h3>From</h3>
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th style="width: 150px;">From Address</th>
+        <td>
+          <% if shipment.from_address %>
+            <% if shipment.from_address.google_maps_url %>
+              <%= link_to shipment.from_address.google_maps_url, target: '_blank' do %>
+                <i class="fa fa-map-marker"></i>
+              <% end %>
+            <% end %>
+            <%=simple_format shipment.from_address.present_address_lines.join("\n") %>
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="medium-6 cell">
+    <h3>To</h3>
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th style="width: 150px;">To Address</th>
+        <td>
+          <% if shipment.to_address %>
+            <% if shipment.to_address.google_maps_url %>
+              <%= link_to shipment.to_address.google_maps_url, target: '_blank' do %>
+                <i class="fa fa-map-marker"></i>
+              <% end %>
+            <% end %>
+            <%=simple_format shipment.to_address.present_address_lines.join("\n") %>
+          <% else %>
+            N/A
+          <% end %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

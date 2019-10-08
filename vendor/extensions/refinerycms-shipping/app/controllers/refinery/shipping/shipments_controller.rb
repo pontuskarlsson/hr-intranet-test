@@ -11,6 +11,8 @@ module Refinery
       before_filter :find_shipments,      only: [:index]
       before_filter :find_shipment,       except: [:index, :create]
 
+      helper_method :default_package_fields
+
       def index
         @shipment = Shipment.new(
             from_contact_label: current_authentication_devise_user.contact.try(:name),
@@ -120,6 +122,10 @@ module Refinery
 
       def filter_params
         params.permit([:shipper_company_id, :receiver_company_id, :consignee_company_id, :supplier_company_id, :project_id, :status, :courier_company_label])
+      end
+
+      def default_package_fields
+        { package_type: 'Carton', length_unit: 'cm', weight_unit: 'kg' }
       end
 
     end

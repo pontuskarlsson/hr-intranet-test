@@ -25,6 +25,8 @@ module Refinery
       validates :order_type,    inclusion: TYPES,           allow_blank: true
       validates :status,        inclusion: STATUSES,        allow_blank: true
       validates :currency_code, inclusion: CURRENCY_CODES,  allow_blank: true
+      validates :ordered_qty,   numericality: true
+      validates :shipped_qty,   numericality: true,         allow_nil: true
 
       before_validation do
         if buyer.present?
@@ -70,6 +72,14 @@ module Refinery
 
       def self.to_source
         order(order_number: :desc).pluck(:order_number, :reference, :order_date).map(&PROC_LABEL).to_json.html_safe
+      end
+
+      def qty
+        shipped_qty.nil? ? ordered_qty : shipped_qty
+      end
+
+      def sum_total_cost!
+        update_attributes(total_cost: order_items.sum(:total_cost))
       end
 
     end

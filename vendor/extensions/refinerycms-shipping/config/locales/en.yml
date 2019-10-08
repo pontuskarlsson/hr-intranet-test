@@ -7,10 +7,43 @@ en:
       admin:
         shared:
           links:
+            manage_items: Manage Items
+            manage_packages: Manage Packages
             manage_parcels: Manage Parcels
             manage_shipments: Manage Shipments
             manage_shipment_parcels: Manage Shipment Parcels
             manage_shipment_accounts: Manage Shipment Accounts
+
+        items:
+          actions:
+            create_new: Add New Item
+            reorder: Reorder Items
+            reorder_done: Done Reordering Items
+          records:
+            title: Items
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Items yet. Click "Add New Item" to add your first item.
+          item:
+            view_live_html: View this item live <br/><em>(opens in a new window)</em>
+            edit: Edit this item
+            delete: Remove this item forever
+            preview: ''
+
+        packages:
+          actions:
+            create_new: Add New Package
+            reorder: Reorder Packages
+            reorder_done: Done Reordering Packages
+          records:
+            title: Packages
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Packages yet. Click "Add New Package" to add your first package.
+          package:
+            view_live_html: View this package live <br/><em>(opens in a new window)</em>
+            edit: Edit this package
+            delete: Remove this package forever
+            preview: ''
+
         parcels:
           actions:
             create_new: Add New Parcel
@@ -25,6 +58,7 @@ en:
             edit: Edit this parcel
             delete: Remove this parcel forever
             preview: 'From: %{from_name}, To: %{to_name}, Received: %{parcel_date}'
+
         shipment_accounts:
           actions:
             create_new: Add New Shipment Account
@@ -39,6 +73,7 @@ en:
             edit: Edit this shipment account
             delete: Remove this shipment account forever
             preview: '%{account_no}'
+
         shipments:
           actions:
             create_new: Add New Shipment
@@ -53,9 +88,19 @@ en:
             edit: Edit this shipment
             delete: Remove this shipment forever
             preview: 'From %{from_address_name}, Bill To: %{bill_to}, Status: %{status}'
+
+      items:
+        show:
+          other: Other Items
+
+      packages:
+        show:
+          other: Other Packages
+
       parcels:
         show:
           other: Other Parcels
+
       shipments:
         edit:
           cancel: Cancel
@@ -68,8 +113,23 @@ en:
           confirm_remove: Are you sure you want to remove this Shipment?
           ship: Ship
           send_shipment: Send Shipment
+
   activerecord:
     attributes:
+      'refinery/shipping/item':
+        shipment_id: Shipment
+
+      'refinery/shipping/package':
+        length_unit: Unit
+        package_height: Height
+        package_length: Length
+        package_volume: Volume
+        package_weight: Weight
+        package_width: Width
+        shipment_id: Shipment
+        volume_unit: Unit
+        weight_unit: Unit
+
       'refinery/shipping/parcel':
         parcel_date: Parcel Date
         from_name: From Name

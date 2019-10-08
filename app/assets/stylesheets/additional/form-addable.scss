@@ -1,0 +1,104 @@
+.form-addable {
+    position: relative;
+    padding-bottom: 1.5rem;
+
+    .fa {
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+    .fa-plus-square:hover {
+        color: green;
+    }
+
+    .fa-minus-square:hover {
+        color: red;
+    }
+
+    .form-addable-record {
+        padding-right: 1.8rem;
+        margin-bottom: 0.6rem;
+
+        &.form-init {
+            display: none;
+        }
+
+        &.active {
+            animation: scale-display .3s;
+            display: block;
+        }
+
+        &.out {
+            animation: scale-display--reversed .3s;
+            animation-fill-mode:forwards;
+            display: block;
+        }
+
+        &.highlight {
+            -webkit-box-shadow: 0px 0px 3px 0px rgba(255,0,0,1);
+            -moz-box-shadow: 0px 0px 3px 0px rgba(255,0,0,1);
+            box-shadow: 0px 0px 3px 0px rgba(255,0,0,1);
+        }
+
+        .form-addable-remove {
+            position: absolute;
+            right: 0;
+        }
+
+        > .pure-g > * {
+            padding-bottom: 0;
+        }
+    }
+
+    .form-addable-controls {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        &.highlight {
+            -webkit-box-shadow: 0px 0px 3px 0px rgba(0,128,0,1);
+            -moz-box-shadow: 0px 0px 3px 0px rgba(0,128,0,1);
+            box-shadow: 0px 0px 3px 0px rgba(0,128,0,1);
+        }
+    }
+}
+
+@keyframes scale-display {
+    0% {
+        opacity: 0;
+        transform: scaleY(0);
+        -webkit-transform: scaleY(0);
+        transform-origin: top;
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+        -webkit-transform: scaleY(1);
+        transform-origin: top;
+    }
+}
+
+@keyframes scale-display--reversed {
+    0% {
+        display: inline-flex;
+        opacity: 1;
+        transform: scaleY(1);
+        -webkit-transform: scaleY(1);
+        transform-origin: top;
+    }
+    99% {
+        display: inline-flex;
+        opacity: 0;
+        transform: scaleY(0);
+        -webkit-transform: scaleY(0);
+        transform-origin: top;
+    }
+    100% {
+        display: none;
+        opacity: 0;
+        transform: scaleY(0);
+        -webkit-transform: scaleY(0);
+        transform-origin: top;
+    }
+}

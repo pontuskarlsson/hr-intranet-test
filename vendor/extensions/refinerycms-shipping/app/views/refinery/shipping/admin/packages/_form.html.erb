@@ -1,0 +1,89 @@
+<%= form_for [refinery, :shipping_admin, @package] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @package,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :created_by_id -%>
+    <%= f.collection_select :created_by_id, ::Refinery::Authentication::Devise::User.all, :id, :full_name -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :assigned_to_id -%>
+    <%= f.collection_select :assigned_to_id, ::Refinery::Authentication::Devise::User.all, :id, :full_name, include_blank: true -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :from_contact_label -%>
+    <%= f.text_field :from_contact_label, class: 'js_contact_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :to_contact_label -%>
+    <%= f.text_field :to_contact_label, class: 'js_contact_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :bill_to -%>
+    <%= f.select :bill_to, options_for_select(::Refinery::Shipping::Package::BILL_TO) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :bill_to_account_id -%>
+    <%= f.collection_select :bill_to_account_id, ::Refinery::Shipping::PackageAccount.all, :id, :account_and_description, include_blank: true -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :courier_company_label -%>
+    <%= f.text_field :courier_company_label, class: 'js_courier_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :rate_currency -%>
+    <%= f.text_field :rate_currency -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :duty_amount -%>
+    <%= f.number_field :duty_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :terminal_fee_amount -%>
+    <%= f.number_field :terminal_fee_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :domestic_transportation_cost_amount -%>
+    <%= f.number_field :domestic_transportation_cost_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :forwarding_fee_amount -%>
+    <%= f.number_field :forwarding_fee_amount, step: '0.01' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :freight_cost_amount -%>
+    <%= f.number_field :freight_cost_amount, step: '0.01' -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.shipping.admin.packages.package'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @package.to_address.try(:name)) -%>
+<% end -%>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function(){
+      $('.js_contact_field').autocomplete({
+        source: <%= ::Refinery::Marketing::Contact.pluck(:name).to_json.html_safe %>
+      });
+    });
+  </script>
+<% end %>

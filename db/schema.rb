@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190929144356) do
+ActiveRecord::Schema.define(version: 20191007233749) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -1198,6 +1198,39 @@ ActiveRecord::Schema.define(version: 20190929144356) do
   end
 
   add_index "refinery_settings", ["name"], name: "index_refinery_settings_on_name", using: :btree
+
+  create_table "refinery_shipping_items", force: :cascade do |t|
+    t.integer  "shipment_id",      limit: 4
+    t.integer  "order_id",         limit: 4
+    t.string   "order_label",      limit: 255
+    t.integer  "order_item_id",    limit: 4
+    t.string   "article_code",     limit: 255
+    t.string   "description",      limit: 255
+    t.string   "hs_code_label",    limit: 255
+    t.boolean  "partial_shipment",                                      default: false, null: false
+    t.decimal  "qty",                          precision: 13, scale: 4
+    t.integer  "item_order",       limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "refinery_shipping_packages", force: :cascade do |t|
+    t.integer  "shipment_id",    limit: 4
+    t.string   "name",           limit: 255
+    t.string   "package_type",   limit: 255
+    t.decimal  "total_packages",             precision: 13, scale: 4
+    t.string   "length_unit",    limit: 255
+    t.decimal  "package_length",             precision: 13, scale: 4
+    t.decimal  "package_width",              precision: 13, scale: 4
+    t.decimal  "package_height",             precision: 13, scale: 4
+    t.string   "volume_unit",    limit: 255
+    t.decimal  "package_volume",             precision: 13, scale: 4
+    t.string   "weight_unit",    limit: 255
+    t.decimal  "package_weight",             precision: 13, scale: 4
+    t.integer  "package_order",  limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "refinery_shipping_parcels", force: :cascade do |t|
     t.date     "parcel_date"

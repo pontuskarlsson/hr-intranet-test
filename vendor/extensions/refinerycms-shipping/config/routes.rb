@@ -12,6 +12,7 @@ Refinery::Core::Engine.routes.draw do
       member do
         patch :manual_ship
       end
+      resources :packages, only: [:create, :update, :destroy]
     end
   end
 
@@ -24,6 +25,11 @@ Refinery::Core::Engine.routes.draw do
         end
       end
       resources :shipments, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+      resources :packages, :except => :show do
         collection do
           post :update_positions
         end
