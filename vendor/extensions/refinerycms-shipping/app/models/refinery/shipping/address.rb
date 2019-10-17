@@ -1,7 +1,7 @@
 module Refinery
   module Shipping
-    class ShipmentAddress < Refinery::Core::BaseModel
-      self.table_name = 'refinery_shipping_shipment_addresses'
+    class Address < Refinery::Core::BaseModel
+      self.table_name = 'refinery_shipping_addresses'
 
       validates :easy_post_id,  uniqueness: true, allow_blank: true
 

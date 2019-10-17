@@ -9,6 +9,8 @@ class AddTermsToShipments < ActiveRecord::Migration
 
     add_column :refinery_shipping_shipments, :archived_at, :datetime
     add_index :refinery_shipping_shipments, :archived_at
+
+    add_column :refinery_shipping_shipments, :length_unit, :string
   end
 
 end

@@ -9,9 +9,8 @@ module Refinery
       before_inclusion do
         Refinery::Plugin.register do |plugin|
           plugin.name = "shipping"
-          plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.shipping_admin_parcels_path }
+          plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.shipping_admin_shipments_path }
           plugin.pathname = root
-          
         end
       end
 

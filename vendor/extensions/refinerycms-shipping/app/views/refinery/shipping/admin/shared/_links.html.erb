@@ -3,6 +3,18 @@
               :class => 'manage_icon' %>
 </li>
 <li>
+  <%= link_to t('.manage_routes'), refinery.shipping_admin_routes_path,
+              :class => 'manage_icon' %>
+</li>
+<li>
+  <%= link_to t('.manage_items'), refinery.shipping_admin_items_path,
+              :class => 'manage_icon' %>
+</li>
+<li>
+  <%= link_to t('.manage_locations'), refinery.shipping_admin_locations_path,
+              :class => 'manage_icon' %>
+</li>
+<li>
   <%= link_to t('.manage_packages'), refinery.shipping_admin_packages_path,
               :class => 'manage_icon' %>
 </li>

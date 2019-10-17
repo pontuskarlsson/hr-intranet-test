@@ -4,7 +4,7 @@
 <p><%= @inspection.inspected_by_name %> have just completed an inspection. Please verify it's content before notifying the Customer.</p>
 
 <% if @inspection.to_be_verified.any? %>
-  <p>Please pay extra attention to the following:</p>
+  <p>Please fix the following before notifying the customer:</p>
 
   <ul>
     <% @inspection.to_be_verified.each do |msg| %>

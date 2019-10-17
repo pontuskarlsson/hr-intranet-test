@@ -1,8 +1,8 @@
 # This migration comes from refinery_shipping (originally 4)
-class CreateShippingShipmentAddresses < ActiveRecord::Migration
+class CreateShippingAddresses < ActiveRecord::Migration
 
   def change
-    create_table :refinery_shipping_shipment_addresses do |t|
+    create_table :refinery_shipping_addresses do |t|
       t.string :easy_post_id
 
       t.string :name
@@ -21,8 +21,8 @@ class CreateShippingShipmentAddresses < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :refinery_shipping_shipment_addresses, :position, name: 'index_shipping_sa_on_position'
-    add_index :refinery_shipping_shipment_addresses, :easy_post_id, name: 'index_shipping_sa_on_easy_post_id'
+    add_index :refinery_shipping_addresses, :position, name: 'index_shipping_sa_on_position'
+    add_index :refinery_shipping_addresses, :easy_post_id, name: 'index_shipping_sa_on_easy_post_id'
   end
 
 end

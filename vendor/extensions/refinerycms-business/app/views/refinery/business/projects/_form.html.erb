@@ -39,7 +39,7 @@
 
 <% content_for :javascripts do -%>
   <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
       $('.js_company_field').autocomplete({
         source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %>
       });

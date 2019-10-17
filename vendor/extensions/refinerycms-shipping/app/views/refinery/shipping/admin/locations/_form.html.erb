@@ -1,0 +1,160 @@
+<%= form_for [refinery, :shipping_admin, @location] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @location,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :owner_label -%>
+    <%= f.text_field :owner_label, class: 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :name -%>
+    <%= f.text_field :name -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_area :description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :location_type -%>
+    <%= f.select :location_type, options_for_select([['Please select', { disabled: true }]] + ::Refinery::Shipping::Location::TYPES, f.object.location_type) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :airport -%>
+    <%= f.check_box :airport -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :railport -%>
+    <%= f.check_box :railport -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :roadport -%>
+    <%= f.check_box :roadport -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :seaport -%>
+    <%= f.check_box :seaport -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :location_code -%>
+    <%= f.text_field :location_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :iata_code -%>
+    <%= f.text_field :iata_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :icao_code -%>
+    <%= f.text_field :icao_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :street1 -%>
+    <%= f.text_field :street1 -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :street2 -%>
+    <%= f.text_field :street2 -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :city -%>
+    <%= f.text_field :city -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :state -%>
+    <%= f.text_field :state -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :postal_code -%>
+    <%= f.text_field :postal_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :country -%>
+    <%= f.text_field :country -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :country_code -%>
+    <%= f.text_field :country_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :timezone -%>
+    <%= f.text_field :timezone, class: 'js_timezone_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :lat -%>
+    <%= f.number_field :lat, step: '0.000001' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :lng -%>
+    <%= f.number_field :lng, step: '0.000001' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :customs_district_code -%>
+    <%= f.text_field :customs_district_code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :confirmed_at -%>
+    <%= f.date_field :confirmed_at -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :verified_at -%>
+    <%= f.date_field :verified_at -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :archived_at -%>
+    <%= f.date_field :archived_at -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :public -%>
+    <%= f.check_box :public -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.shipping.admin.locations.location'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @location.name) -%>
+<% end -%>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function(){
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.to_source %>
+      });
+      $('.js_shipment_field').autocomplete({
+        source: <%= ::Refinery::Shipping::Shipment.to_source %>
+      });
+      $('.js_timezone_field').autocomplete({
+        source: <%= timezones_source %>
+      });
+    });
+  </script>
+<% end %>

@@ -1,0 +1,128 @@
+.location-item {
+    margin: 0.2rem;
+    display: grid;
+    grid-gap: 0.2rem;
+    grid-template-columns: 5rem 1fr;
+    grid-template-rows: 2.5rem 2.5rem;
+    grid-template-areas:
+            "map title"
+            "map description";
+
+    .location-map {
+        grid-area: map;
+    }
+
+    .location-title {
+        grid-area: title;
+    }
+
+    .location-description {
+        grid-area: description;
+    }
+
+    .location-ports {
+        .fa { color: #ccc; margin: 0 0.2rem; }
+        .fa.port-active { color: #000; }
+    }
+}
+
+.shipment-progress {
+    position: relative;
+    box-sizing: border-box;
+
+    padding-top: 4px;
+    padding-bottom: 8px;
+    padding-right: 6px;
+
+    
+    .routes {
+        margin: 0px;
+        flex: 1 1 0%;
+        pointer-events: none;
+
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: stretch;
+
+        .route-container {
+            flex: 1 1 0%;
+            margin: 0px;
+            pointer-events: auto;
+
+            .route {
+                padding-top: 3px !important;
+                position: relative !important;
+
+                .checkpoint {
+                    background-color: rgb(255, 255, 255);
+                    padding-left: 6px !important;
+                    padding-right: 6px !important;
+                    position: absolute !important;
+                    left: -6px !important;
+                    top: 0px !important;
+
+                    .fa {
+                        color: rgb(164, 162, 174);
+                        display: block !important;
+
+                        &.arrived {
+                            background-color: rgb(147, 129, 35);
+                        }
+
+                        &.departed {
+                            background-color: rgb(15, 41, 67);
+                        }
+                    }
+                }
+
+                .transport {
+                    background-color: rgb(164, 162, 174);
+
+                    padding-top: 3px !important;
+                    height: 0px !important;
+                    width: 100% !important;
+                }
+            }
+        }
+    }
+
+    .destination {
+        background-color: rgb(255, 255, 255);
+        padding-left: 6px !important;
+        position: absolute !important;
+        right: 0px !important;
+        top: 0px !important;
+
+        .dest-container {
+            position: relative !important;
+
+            .dest-inner {
+                margin-top: -7px !important;
+
+                .icon-cont {
+                    width: 12px;
+                    height: 12px;
+                    color: rgb(164, 162, 174);
+
+                    display: inline-block !important;
+                    position: relative !important;
+
+                    &.arrived {
+                        color: rgb(15, 41, 67);
+                    }
+
+                    .icon {
+                        width: unset;
+                        height: unset;
+
+                        position: absolute !important;
+                        bottom: -0.3em !important;
+                        left: 0px !important;
+                    }
+                }
+            }
+        }
+    }
+}

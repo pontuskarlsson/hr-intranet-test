@@ -1,0 +1,99 @@
+<%= form_for routes_form, url: [refinery, :shipping, shipment] do |f| %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <h3>Origin</h3>
+      <%= render 'route_form', shipment: shipment, route: shipment.route_origin, f: f, i: 0 %>
+    </div>
+
+    <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
+      <div class="cell">
+        <h3>Port of Loading</h3>
+        <%= render 'route_form', shipment: shipment, route: shipment.route_port_of_loading, f: f, i: 1 %>
+      </div>
+
+      <div class="cell">
+        <h3>Port of Discharge</h3>
+        <%= render 'route_form', shipment: shipment, route: shipment.route_port_of_discharge, f: f, i: 2 %>
+      </div>
+    <% end %>
+
+    <div class="cell">
+      <h3>Destination</h3>
+      <%= render 'route_form', shipment: shipment, route: shipment.route_destination, f: f, i: 3 %>
+    </div>
+  </div>
+
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+<% end %>
+
+<% content_for :stylesheets do -%>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end -%>
+
+<% content_for :javascripts do %>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjWwew3_yQqcUrxFrEbcd4rm8iM1yOyL0&callback=initMap"></script>
+
+  <script type="text/javascript">
+    function initMap() {
+      $('.js-location-map').each(function(i, node) {
+        var $node = $(node);
+        setMap(node, $node.data('map-lat'), $node.data('map-lng'))
+      });
+    }
+
+    function setMap(node, lat, lng) {
+      var loc = { lat: parseFloat(lat), lng: parseFloat(lng) };
+      if (isNaN(loc.lat) || isNaN(loc.lng)) {
+        $(node).html('');
+
+      } else {
+        var map = new google.maps.Map(node, {
+          zoom: 4, center: loc, fullscreenControl: false, disableDefaultUI: true
+        });
+        new google.maps.Marker({ position: loc, map: map });
+      }
+    }
+
+    $(function(){
+      $('.js_location_field').each(function(i, node) {
+        var field = $(node).autocomplete({
+          source: <%= ::Refinery::Shipping::Location.to_source %>,
+          change: function(event, ui) {
+            var item = ui.item || { id: null };
+            console.log({ item: item });
+            var $item = $(this).parents('.location-item');
+
+            $('.js_location_id', $item).attr('value', item.id);
+            $('.location-description', $item).html('').append($('<p></p>').html(item.description));
+            setMap($('.js-location-map', $item)[0], item.lat, item.lng);
+            var $ports = $('<div class="location-ports"><i class="fa fa-plane"></i><i class="fa fa-ship"></i><i class="fa fa-train"></i><i class="fa fa-truck"></i></div>');
+            if (item.airport) { $('.fa-plane', $ports).addClass('port-active'); }
+            if (item.railport) { $('.fa-train', $ports).addClass('port-active'); }
+            if (item.roadport) { $('.fa-truck', $ports).addClass('port-active'); }
+            if (item.seaport) { $('.fa-ship', $ports).addClass('port-active'); }
+            $('.location-description', $item).append($ports);
+
+          }
+        }).data('ui-autocomplete');
+
+        field._renderItem = function(ul, item) {
+          var $node = $('<li class="ui-menu-item"><div class="location-item"><span class="location-map"></span><span class="location-title"></span><span class="location-description"></span></div></li>');
+
+          $('.location-title', $node).html(item.name);
+          $('.location-description', $node).append($('<p></p>').html(item.description));
+
+          setMap($('.location-map', $node)[0], item.lat, item.lng);
+
+          var $ports = $('<div class="location-ports"><i class="fa fa-plane"></i><i class="fa fa-ship"></i><i class="fa fa-train"></i><i class="fa fa-truck"></i></div>');
+          if (item.airport) { $('.fa-plane', $ports).addClass('port-active'); }
+          if (item.railport) { $('.fa-train', $ports).addClass('port-active'); }
+          if (item.roadport) { $('.fa-truck', $ports).addClass('port-active'); }
+          if (item.seaport) { $('.fa-ship', $ports).addClass('port-active'); }
+          $('.location-description', $node).append($ports);
+
+          return $node.appendTo(ul);
+        };
+      });
+    });
+  </script>
+<% end %>

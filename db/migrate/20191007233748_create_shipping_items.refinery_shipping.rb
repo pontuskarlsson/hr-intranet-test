@@ -22,6 +22,16 @@ class CreateShippingItems < ActiveRecord::Migration
       t.timestamps
     end
 
+    add_index :refinery_shipping_items, :shipment_id
+    add_index :refinery_shipping_items, :order_id
+    add_index :refinery_shipping_items, :order_label
+    add_index :refinery_shipping_items, :order_item_id
+    add_index :refinery_shipping_items, :article_code
+    add_index :refinery_shipping_items, :description
+    add_index :refinery_shipping_items, :hs_code_label
+    add_index :refinery_shipping_items, :partial_shipment
+
+    add_index :refinery_shipping_items, :item_order
   end
 
 end

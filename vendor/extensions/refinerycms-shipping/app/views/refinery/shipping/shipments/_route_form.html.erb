@@ -1,0 +1,25 @@
+<%= f.fields_for :routes, route, child_index: i do |route_form| %>
+  <%= route_form.hidden_field :route_type %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <div class="location-item">
+        <div class="location-map">
+          <div class="js-location-map" style="height: 100%;" data-map-lat="<%= route.location_lat %>" data-map-lng="<%= route.location_lng %>"></div>
+        </div>
+        <div class="location-title">
+          <%= route_form.hidden_field :location_id, class: 'js_location_id' %>
+          <%= route_form.text_field :location_label, placeholder: 'Location', class: 'js_location_field' %>
+        </div>
+        <div class="location-description">
+          <p><%= route.location_description %></p>
+          <div class="location-ports">
+            <i class="fa fa-plane <%= route.location_airport ? 'port-active' : '' %>"></i>
+            <i class="fa fa-ship <%= route.location_seaport ? 'port-active' : '' %>"></i>
+            <i class="fa fa-train <%= route.location_railport ? 'port-active' : '' %>"></i>
+            <i class="fa fa-truck <%= route.location_roadport ? 'port-active' : '' %>"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

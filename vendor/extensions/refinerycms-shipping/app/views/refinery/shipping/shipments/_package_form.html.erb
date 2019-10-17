@@ -1,4 +1,4 @@
-<%= f.fields_for package, child_index: i do |package_form| %>
+<%= f.fields_for :packages, package, child_index: i do |package_form| %>
   <span class="form-addable-remove">
     <% if package.persisted? %>
       <%= package_form.hidden_field :_destroy %>
@@ -22,35 +22,39 @@
       <%= package_form.number_field :total_packages, placeholder: '0' %>
     </div>
 
-    <div class="cell large-9">
+    <div class="cell large-6">
       <div class="input-group">
         <div class="input-group-field">
           <%= package_form.label :package_length %>
-          <%= package_form.number_field :package_length, placeholder: '0' %>
+          <%= package_form.number_field :package_length, placeholder: '0', step: '0.001' %>
         </div>
         <div class="input-group-field">
           <%= package_form.label :package_width %>
-          <%= package_form.number_field :package_width, placeholder: '0' %>
+          <%= package_form.number_field :package_width, placeholder: '0', step: '0.001' %>
         </div>
         <div class="input-group-field">
           <%= package_form.label :package_height %>
-          <%= package_form.number_field :package_height, placeholder: '0' %>
+          <%= package_form.number_field :package_height, placeholder: '0', step: '0.001' %>
         </div>
         <div style="width: 80px;">
-          <%= package_form.label :length_unit %>
+          <%= package_form.label :length_unit, '/ Package' %>
           <%= package_form.select :length_unit, options_for_select([['Please Select', '', { disabled: true }]]+::Refinery::Shipping::Package::LENGTH_UNITS, package_form.object.length_unit) %>
         </div>
       </div>
     </div>
 
-    <div class="cell large-3">
+    <div class="cell large-6">
       <div class="input-group">
         <div class="input-group-field">
-          <%= package_form.label :package_weight %>
-          <%= package_form.number_field :package_weight, placeholder: '0' %>
+          <%= package_form.label :package_gross_weight %>
+          <%= package_form.number_field :package_gross_weight, placeholder: '0', step: '0.001' %>
+        </div>
+        <div class="input-group-field">
+          <%= package_form.label :package_net_weight %>
+          <%= package_form.number_field :package_net_weight, placeholder: '0', step: '0.001' %>
         </div>
         <div style="width: 80px;">
-          <%= package_form.label :weight_unit %>
+          <%= package_form.label :weight_unit, '/ Package' %>
           <%= package_form.select :weight_unit, options_for_select([['Please Select', '', { disabled: true }]]+::Refinery::Shipping::Package::WEIGHT_UNITS, package_form.object.weight_unit) %>
         </div>
       </div>

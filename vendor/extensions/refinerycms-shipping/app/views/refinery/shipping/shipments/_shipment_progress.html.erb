@@ -1,0 +1,58 @@
+<div class="shipment-progress">
+  <div class="routes">
+    <div class="route-container">
+      <div class="route">
+        <div class="checkpoint">
+          <% if shipment.route_origin.present? %>
+            <div class="box <%= shipment.route_origin.has_departed? ? 'departed' : '' %>" data-tooltip title="<%= shipment.route_origin.location_label %>"></div>
+          <% else %>
+            <div class="box" ></div>
+          <% end %>
+        </div>
+        <div class="transport"></div>
+      </div>
+    </div>
+
+    <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
+      <div class="route-container">
+        <div class="route">
+          <div class="checkpoint">
+            <% if shipment.route_port_of_loading.present? %>
+              <div class="box <%= shipment.route_port_of_loading.has_departed? ? 'departed' : '' %>" data-tooltip title="<%= shipment.route_port_of_loading.location_label %>"></div>
+            <% else %>
+              <div class="box" ></div>
+            <% end %>
+          </div>
+          <div class="transport"></div>
+        </div>
+      </div>
+
+      <div class="route-container">
+        <div class="route">
+          <div class="checkpoint">
+            <% if shipment.route_port_of_discharge.present? %>
+              <div class="box <%= shipment.route_port_of_discharge.has_departed? ? 'departed' : '' %>" data-tooltip title="<%= shipment.route_port_of_discharge.location_label %>"></div>
+            <% else %>
+              <div class="box" ></div>
+            <% end %>
+          </div>
+          <div class="transport"></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="destination">
+    <div class="dest-container">
+      <div class="dest-inner">
+        <div class="icon-cont">
+          <% if shipment.route_destination.present? %>
+            <i class="fa fa-home icon <%= shipment.route_destination.has_arrived? ? 'arrived' : '' %>" data-tooltip title="<%= shipment.route_destination.location_label %>"></i>
+          <% else %>
+            <i class="fa fa-home icon"></i>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

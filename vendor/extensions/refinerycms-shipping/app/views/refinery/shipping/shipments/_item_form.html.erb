@@ -1,4 +1,4 @@
-<%= f.fields_for item, child_index: i do |item_form| %>
+<%= f.fields_for :items, item, child_index: i do |item_form| %>
   <span class="form-addable-remove">
     <% if item.persisted? %>
       <%= item_form.hidden_field :_destroy %>
@@ -7,9 +7,12 @@
   </span>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell large-6 end">
-      <%= item_form.label :order_label %>
-      <%= item_form.text_field :order_label, placeholder: "Order", disabled: item.persisted? %>
+    <div class="cell medium-6">
+      <%= item_form.text_field :order_label, placeholder: "Order", disabled: item.persisted?, class: 'js_order_field' %>
+    </div>
+
+    <div class="cell medium-6">
+      <%= item_form.text_field :hs_code_label, placeholder: "HS Code" %>
     </div>
   </div>
 <% end %>

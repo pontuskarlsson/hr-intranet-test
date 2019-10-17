@@ -11,6 +11,13 @@ module Refinery
 
       validates :shipment_id,     presence: true
       validates :package_type,    inclusion: TYPES
+      
+      validate do
+        if shipment.present?
+          errors.add(:length_unit, :invalid) unless shipment.length_unit == length_unit
+          errors.add(:weight_unit, :invalid) unless shipment.weight_unit == weight_unit
+        end
+      end
 
     end
   end

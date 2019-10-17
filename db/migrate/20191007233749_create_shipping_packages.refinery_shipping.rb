@@ -17,13 +17,19 @@ class CreateShippingPackages < ActiveRecord::Migration
       t.decimal :package_volume, precision: 13, scale: 4
 
       t.string :weight_unit
-      t.decimal :package_weight, precision: 13, scale: 4
+      t.decimal :package_gross_weight, precision: 13, scale: 4
+      t.decimal :package_net_weight, precision: 13, scale: 4
 
       t.integer :package_order
 
       t.timestamps
     end
 
+    add_index :refinery_shipping_packages, :shipment_id
+    add_index :refinery_shipping_packages, :name
+    add_index :refinery_shipping_packages, :package_type
+
+    add_index :refinery_shipping_packages, :package_order
   end
 
 end

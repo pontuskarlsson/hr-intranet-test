@@ -1,32 +1,32 @@
-<table class="cc-table">
-  <tbody>
-  <tr>
-    <th style="width: 150px;">Booking No.</th>
-    <td><%= shipment.forwarder_booking_number %></td>
-  </tr>
-  <tr>
-    <th>Mode</th>
-    <td><%= shipment.mode.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>Status</th>
-    <td><%= shipment.display_status %></td>
-  </tr>
-  <tr>
-    <th>ETD</th>
-    <td><%= shipment.etd_date.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>ETA</th>
-    <td><%= shipment.eta_date.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>AWB</th>
-    <td><%= shipment.tracking_number.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>Shipment Terms</th>
-    <td><%= shipment.shipment_terms.presence || 'N/A' %></td>
-  </tr>
-  </tbody>
-</table>
+<%= form_for shipment, url: [refinery, :shipping, shipment] do |f| %>
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th style="width: 120px;"><%= f.label :forwarder_booking_number, 'Booking No.' %></th>
+      <td><%= f.text_field :forwarder_booking_number %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :mode %></th>
+      <td><%= f.text_field :mode %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :etd_date, 'ETD' %></th>
+      <td><%= f.text_field :etd_date, class: 'js_date_field' %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :eta_date, 'ETA' %></th>
+      <td><%= f.text_field :eta_date, class: 'js_date_field' %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :tracking_number, 'AWB' %></th>
+      <td><%= f.text_field :tracking_number %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :shipment_terms %></th>
+      <td><%= f.text_field :shipment_terms %></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+<% end %>

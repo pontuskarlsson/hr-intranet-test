@@ -1,54 +1,28 @@
-<section class="contact-card">
-  <% shipment.packages.build(default_package_fields) if shipment.packages.empty? %>
+<% shipment.packages.build(default_package_fields) if shipment.packages.empty? %>
 
-  <%= form_for shipment, url: [refinery, :shipping, shipment] do |f| %>
-    <div data-form-container="shipment-packages" class="form-addable">
-      <div class="form-addable-controls">
-        <i class="fa fa-plus-square form-ctrl-add"></i>
-      </div>
-
-      <% shipment.packages.each_with_index do |package, i| %>
-        <div class="form-addable-record">
-          <%= render 'package_form', f: f, package: package, i: i+1 %>
-        </div>
-      <% end %>
-
-      <% content_for :javascripts do %>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                Addable.partials["shipment-packages"] = {
-                    "attributes": { "__index__": <%= shipment.packages.length+1 %> },
-                    "template": "<%= escape_javascript render('package_form', package: ::Refinery::Shipping::Package.new(default_package_fields), i: '__index__', f: f) %>",
-                };
-            });
-        </script>
-      <% end %>
+<%= form_for packages_form, url: [refinery, :shipping, shipment] do |f| %>
+  <div data-form-container="shipment-packages" class="form-addable">
+    <div class="form-addable-controls">
+      <i class="fa fa-plus-square form-ctrl-add"></i>
     </div>
-  <% end %>
 
-  <h3>Summary</h3>
-  <table class="cc-table">
-    <tbody>
-    <tr>
-      <th style="width: 150px;">No. of Cartons</th>
-      <td><%= shipment.no_of_parcels.presence || 'N/A' %></td>
-    </tr>
-    <tr>
-      <th>Gross Weight</th>
-      <td><%= shipment.display_gross_weight.presence || 'N/A' %></td>
-    </tr>
-    <tr>
-      <th>Net Weight</th>
-      <td><%= shipment.display_net_weight.presence || 'N/A' %></td>
-    </tr>
-    <tr>
-      <th>Chargeable Weight</th>
-      <td><%= shipment.display_chargeable_weight.presence || 'N/A' %></td>
-    </tr>
-    <tr>
-      <th>Volume</th>
-      <td><%= shipment.display_volume.presence || 'N/A' %></td>
-    </tr>
-    </tbody>
-  </table>
-</section>
+    <% shipment.packages.each_with_index do |package, i| %>
+      <div class="form-addable-record">
+        <%= render 'package_form', f: f, package: package, i: i+1 %>
+      </div>
+    <% end %>
+
+    <% content_for :javascripts do %>
+      <script type="text/javascript">
+          $(document).ready(function() {
+              Addable.partials["shipment-packages"] = {
+                  "attributes": { "__index__": <%= shipment.packages.length+1 %> },
+                  "template": "<%= escape_javascript render('package_form', package: ::Refinery::Shipping::Package.new(default_package_fields), i: '__index__', f: f) %>",
+              };
+          });
+      </script>
+    <% end %>
+  </div>
+
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+<% end %>

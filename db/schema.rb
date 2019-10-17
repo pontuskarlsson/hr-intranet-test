@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191007233749) do
+ActiveRecord::Schema.define(version: 20191016015153) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -1199,6 +1199,26 @@ ActiveRecord::Schema.define(version: 20191007233749) do
 
   add_index "refinery_settings", ["name"], name: "index_refinery_settings_on_name", using: :btree
 
+  create_table "refinery_shipping_addresses", force: :cascade do |t|
+    t.string   "easy_post_id", limit: 255
+    t.string   "name",         limit: 255
+    t.string   "company",      limit: 255
+    t.string   "street1",      limit: 255
+    t.string   "street2",      limit: 255
+    t.string   "city",         limit: 255
+    t.string   "state",        limit: 255
+    t.string   "zip",          limit: 255
+    t.string   "country",      limit: 255
+    t.string   "phone",        limit: 255
+    t.string   "email",        limit: 255
+    t.integer  "position",     limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "refinery_shipping_addresses", ["easy_post_id"], name: "index_refinery_shipping_addresses_on_easy_post_id", using: :btree
+  add_index "refinery_shipping_addresses", ["position"], name: "index_refinery_shipping_addresses_on_position", using: :btree
+
   create_table "refinery_shipping_items", force: :cascade do |t|
     t.integer  "shipment_id",      limit: 4
     t.integer  "order_id",         limit: 4
@@ -1214,23 +1234,96 @@ ActiveRecord::Schema.define(version: 20191007233749) do
     t.datetime "updated_at"
   end
 
-  create_table "refinery_shipping_packages", force: :cascade do |t|
-    t.integer  "shipment_id",    limit: 4
-    t.string   "name",           limit: 255
-    t.string   "package_type",   limit: 255
-    t.decimal  "total_packages",             precision: 13, scale: 4
-    t.string   "length_unit",    limit: 255
-    t.decimal  "package_length",             precision: 13, scale: 4
-    t.decimal  "package_width",              precision: 13, scale: 4
-    t.decimal  "package_height",             precision: 13, scale: 4
-    t.string   "volume_unit",    limit: 255
-    t.decimal  "package_volume",             precision: 13, scale: 4
-    t.string   "weight_unit",    limit: 255
-    t.decimal  "package_weight",             precision: 13, scale: 4
-    t.integer  "package_order",  limit: 4
+  add_index "refinery_shipping_items", ["article_code"], name: "index_refinery_shipping_items_on_article_code", using: :btree
+  add_index "refinery_shipping_items", ["description"], name: "index_refinery_shipping_items_on_description", using: :btree
+  add_index "refinery_shipping_items", ["hs_code_label"], name: "index_refinery_shipping_items_on_hs_code_label", using: :btree
+  add_index "refinery_shipping_items", ["item_order"], name: "index_refinery_shipping_items_on_item_order", using: :btree
+  add_index "refinery_shipping_items", ["order_id"], name: "index_refinery_shipping_items_on_order_id", using: :btree
+  add_index "refinery_shipping_items", ["order_item_id"], name: "index_refinery_shipping_items_on_order_item_id", using: :btree
+  add_index "refinery_shipping_items", ["order_label"], name: "index_refinery_shipping_items_on_order_label", using: :btree
+  add_index "refinery_shipping_items", ["partial_shipment"], name: "index_refinery_shipping_items_on_partial_shipment", using: :btree
+  add_index "refinery_shipping_items", ["shipment_id"], name: "index_refinery_shipping_items_on_shipment_id", using: :btree
+
+  create_table "refinery_shipping_locations", force: :cascade do |t|
+    t.string   "name",                  limit: 255
+    t.text     "description",           limit: 65535
+    t.integer  "owner_id",              limit: 4
+    t.string   "location_type",         limit: 255
+    t.boolean  "airport",                                                     default: false, null: false
+    t.boolean  "railport",                                                    default: false, null: false
+    t.boolean  "roadport",                                                    default: false, null: false
+    t.boolean  "seaport",                                                     default: false, null: false
+    t.string   "location_code",         limit: 255
+    t.string   "iata_code",             limit: 255
+    t.string   "icao_code",             limit: 255
+    t.string   "street1",               limit: 255
+    t.string   "street2",               limit: 255
+    t.string   "city",                  limit: 255
+    t.string   "state",                 limit: 255
+    t.string   "postal_code",           limit: 255
+    t.string   "country",               limit: 255
+    t.string   "country_code",          limit: 255
+    t.string   "timezone",              limit: 255
+    t.decimal  "lat",                                 precision: 9, scale: 6
+    t.decimal  "lng",                                 precision: 9, scale: 6
+    t.string   "customs_district_code", limit: 255
+    t.datetime "confirmed_at"
+    t.datetime "verified_at"
+    t.datetime "archived_at"
+    t.boolean  "public",                                                      default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "refinery_shipping_locations", ["airport"], name: "index_refinery_shipping_locations_on_airport", using: :btree
+  add_index "refinery_shipping_locations", ["archived_at"], name: "index_refinery_shipping_locations_on_archived_at", using: :btree
+  add_index "refinery_shipping_locations", ["city"], name: "index_refinery_shipping_locations_on_city", using: :btree
+  add_index "refinery_shipping_locations", ["confirmed_at"], name: "index_refinery_shipping_locations_on_confirmed_at", using: :btree
+  add_index "refinery_shipping_locations", ["country"], name: "index_refinery_shipping_locations_on_country", using: :btree
+  add_index "refinery_shipping_locations", ["country_code"], name: "index_refinery_shipping_locations_on_country_code", using: :btree
+  add_index "refinery_shipping_locations", ["customs_district_code"], name: "index_refinery_shipping_locations_on_customs_district_code", using: :btree
+  add_index "refinery_shipping_locations", ["iata_code"], name: "index_refinery_shipping_locations_on_iata_code", using: :btree
+  add_index "refinery_shipping_locations", ["icao_code"], name: "index_refinery_shipping_locations_on_icao_code", using: :btree
+  add_index "refinery_shipping_locations", ["lat"], name: "index_refinery_shipping_locations_on_lat", using: :btree
+  add_index "refinery_shipping_locations", ["lng"], name: "index_refinery_shipping_locations_on_lng", using: :btree
+  add_index "refinery_shipping_locations", ["location_code"], name: "index_refinery_shipping_locations_on_location_code", using: :btree
+  add_index "refinery_shipping_locations", ["location_type"], name: "index_refinery_shipping_locations_on_location_type", using: :btree
+  add_index "refinery_shipping_locations", ["name"], name: "index_refinery_shipping_locations_on_name", using: :btree
+  add_index "refinery_shipping_locations", ["owner_id"], name: "index_refinery_shipping_locations_on_owner_id", using: :btree
+  add_index "refinery_shipping_locations", ["postal_code"], name: "index_refinery_shipping_locations_on_postal_code", using: :btree
+  add_index "refinery_shipping_locations", ["public"], name: "index_refinery_shipping_locations_on_public", using: :btree
+  add_index "refinery_shipping_locations", ["railport"], name: "index_refinery_shipping_locations_on_railport", using: :btree
+  add_index "refinery_shipping_locations", ["roadport"], name: "index_refinery_shipping_locations_on_roadport", using: :btree
+  add_index "refinery_shipping_locations", ["seaport"], name: "index_refinery_shipping_locations_on_seaport", using: :btree
+  add_index "refinery_shipping_locations", ["state"], name: "index_refinery_shipping_locations_on_state", using: :btree
+  add_index "refinery_shipping_locations", ["street1"], name: "index_refinery_shipping_locations_on_street1", using: :btree
+  add_index "refinery_shipping_locations", ["street2"], name: "index_refinery_shipping_locations_on_street2", using: :btree
+  add_index "refinery_shipping_locations", ["timezone"], name: "index_refinery_shipping_locations_on_timezone", using: :btree
+  add_index "refinery_shipping_locations", ["verified_at"], name: "index_refinery_shipping_locations_on_verified_at", using: :btree
+
+  create_table "refinery_shipping_packages", force: :cascade do |t|
+    t.integer  "shipment_id",          limit: 4
+    t.string   "name",                 limit: 255
+    t.string   "package_type",         limit: 255
+    t.decimal  "total_packages",                   precision: 13, scale: 4
+    t.string   "length_unit",          limit: 255
+    t.decimal  "package_length",                   precision: 13, scale: 4
+    t.decimal  "package_width",                    precision: 13, scale: 4
+    t.decimal  "package_height",                   precision: 13, scale: 4
+    t.string   "volume_unit",          limit: 255
+    t.decimal  "package_volume",                   precision: 13, scale: 4
+    t.string   "weight_unit",          limit: 255
+    t.decimal  "package_gross_weight",             precision: 13, scale: 4
+    t.integer  "package_order",        limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "package_net_weight",               precision: 13, scale: 4
+  end
+
+  add_index "refinery_shipping_packages", ["name"], name: "index_refinery_shipping_packages_on_name", using: :btree
+  add_index "refinery_shipping_packages", ["package_order"], name: "index_refinery_shipping_packages_on_package_order", using: :btree
+  add_index "refinery_shipping_packages", ["package_type"], name: "index_refinery_shipping_packages_on_package_type", using: :btree
+  add_index "refinery_shipping_packages", ["shipment_id"], name: "index_refinery_shipping_packages_on_shipment_id", using: :btree
 
   create_table "refinery_shipping_parcels", force: :cascade do |t|
     t.date     "parcel_date"
@@ -1258,6 +1351,31 @@ ActiveRecord::Schema.define(version: 20191007233749) do
   add_index "refinery_shipping_parcels", ["shipping_document_id"], name: "index_refinery_shipping_parcels_on_shipping_document_id", using: :btree
   add_index "refinery_shipping_parcels", ["to_user_id"], name: "index_refinery_shipping_parcels_on_to_user_id", using: :btree
 
+  create_table "refinery_shipping_routes", force: :cascade do |t|
+    t.integer  "shipment_id",       limit: 4
+    t.integer  "location_id",       limit: 4
+    t.string   "route_type",        limit: 255
+    t.string   "route_description", limit: 255
+    t.text     "notes",             limit: 65535
+    t.string   "status",            limit: 255
+    t.datetime "arrived_at"
+    t.datetime "departed_at"
+    t.integer  "prior_route_id",    limit: 4
+    t.boolean  "final_destination",               default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_shipping_routes", ["arrived_at"], name: "index_refinery_shipping_routes_on_arrived_at", using: :btree
+  add_index "refinery_shipping_routes", ["departed_at"], name: "index_refinery_shipping_routes_on_departed_at", using: :btree
+  add_index "refinery_shipping_routes", ["final_destination"], name: "index_refinery_shipping_routes_on_final_destination", using: :btree
+  add_index "refinery_shipping_routes", ["location_id"], name: "index_refinery_shipping_routes_on_location_id", using: :btree
+  add_index "refinery_shipping_routes", ["prior_route_id"], name: "index_refinery_shipping_routes_on_prior_route_id", using: :btree
+  add_index "refinery_shipping_routes", ["route_description"], name: "index_refinery_shipping_routes_on_route_description", using: :btree
+  add_index "refinery_shipping_routes", ["route_type"], name: "index_refinery_shipping_routes_on_route_type", using: :btree
+  add_index "refinery_shipping_routes", ["shipment_id"], name: "index_refinery_shipping_routes_on_shipment_id", using: :btree
+  add_index "refinery_shipping_routes", ["status"], name: "index_refinery_shipping_routes_on_status", using: :btree
+
   create_table "refinery_shipping_shipment_accounts", force: :cascade do |t|
     t.integer  "contact_id",  limit: 4
     t.string   "description", limit: 255
@@ -1273,26 +1391,6 @@ ActiveRecord::Schema.define(version: 20191007233749) do
   add_index "refinery_shipping_shipment_accounts", ["contact_id"], name: "index_refinery_shipping_shipment_accounts_on_contact_id", using: :btree
   add_index "refinery_shipping_shipment_accounts", ["courier"], name: "index_refinery_shipping_shipment_accounts_on_courier", using: :btree
   add_index "refinery_shipping_shipment_accounts", ["position"], name: "index_refinery_shipping_shipment_accounts_on_position", using: :btree
-
-  create_table "refinery_shipping_shipment_addresses", force: :cascade do |t|
-    t.string   "easy_post_id", limit: 255
-    t.string   "name",         limit: 255
-    t.string   "company",      limit: 255
-    t.string   "street1",      limit: 255
-    t.string   "street2",      limit: 255
-    t.string   "city",         limit: 255
-    t.string   "state",        limit: 255
-    t.string   "zip",          limit: 255
-    t.string   "country",      limit: 255
-    t.string   "phone",        limit: 255
-    t.string   "email",        limit: 255
-    t.integer  "position",     limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  add_index "refinery_shipping_shipment_addresses", ["easy_post_id"], name: "index_refinery_shipping_shipment_addresses_on_easy_post_id", using: :btree
-  add_index "refinery_shipping_shipment_addresses", ["position"], name: "index_refinery_shipping_shipment_addresses_on_position", using: :btree
 
   create_table "refinery_shipping_shipment_parcels", force: :cascade do |t|
     t.integer  "shipment_id",        limit: 4
@@ -1382,6 +1480,7 @@ ActiveRecord::Schema.define(version: 20191007233749) do
     t.string   "shipment_terms",                      limit: 255
     t.text     "shipment_terms_details",              limit: 65535
     t.datetime "archived_at"
+    t.string   "length_unit",                         limit: 255
   end
 
   add_index "refinery_shipping_shipments", ["archived_at"], name: "index_refinery_shipping_shipments_on_archived_at", using: :btree

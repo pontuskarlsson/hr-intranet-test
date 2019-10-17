@@ -11,12 +11,12 @@ module Refinery
       before_filter :find_shipments,      only: [:index]
       before_filter :find_shipment,       except: [:index, :create]
 
-      helper_method :default_package_fields
+      helper_method :default_package_fields, :items_form, :packages_form, :routes_form
 
       def index
         @shipment = Shipment.new(
-            from_contact_label: current_authentication_devise_user.contact.try(:name),
-            from_contact_id: current_authentication_devise_user.contact.try(:id)
+            # from_contact_label: current_authentication_devise_user.contact.try(:name),
+            # from_contact_id: current_authentication_devise_user.contact.try(:id)
         )
 
         @shipments = @shipments.from_params(params)
@@ -54,14 +54,12 @@ module Refinery
       end
 
       def update
-        @shipment_address_updater = Refinery::Shipping::ShipmentAddressUpdater.new({ shipment: @shipment }.reverse_merge(params[:shipment_address_updater] || {}))
-
-        if (params[:shipment_address_updater] ? @shipment_address_updater.save : @shipment.update_attributes(shipment_params))
+        if shipment_form_saved?
           flash[:notice] = 'Shipment successfully updated.'
           redirect_to refinery.shipping_shipment_path(@shipment)
         else
           present(@page)
-          render action: :edit
+          render action: :show
         end
       end
 
@@ -125,7 +123,34 @@ module Refinery
       end
 
       def default_package_fields
-        { package_type: 'Carton', length_unit: 'cm', weight_unit: 'kg' }
+        { package_type: 'Carton', length_unit: @shipment.try(:length_unit) || 'cm', weight_unit: @shipment.try(:weight_unit) || 'kg' }
+      end
+
+      def shipment_form_saved?
+        if params[:packages_form]
+          packages_form.save
+
+        elsif params[:items_form]
+          items_form.save
+
+        elsif params[:routes_form]
+          routes_form.save
+
+        else
+          @shipment.update_attributes(shipment_params)
+        end
+      end
+
+      def items_form
+        @items_form ||= Refinery::Shipping::ItemsForm.new_in_model(@shipment, params[:items_form], current_authentication_devise_user)
+      end
+
+      def routes_form
+        @route_form ||= Refinery::Shipping::RoutesForm.new_in_model(@shipment, params[:routes_form], current_authentication_devise_user)
+      end
+
+      def packages_form
+        @packages_form ||= Refinery::Shipping::PackagesForm.new_in_model(@shipment, params[:packages_form], current_authentication_devise_user)
       end
 
     end

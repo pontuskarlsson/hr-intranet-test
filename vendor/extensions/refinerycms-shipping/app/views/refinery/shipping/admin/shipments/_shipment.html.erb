@@ -1,8 +1,8 @@
 <li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(shipment) -%>">
   <span class='title'>
-    <%= shipment.to_address_name %>
+    <%= shipment.code %>
     <span class="preview">
-      <%= t('.preview', from_address_name: shipment.from_address_name, bill_to: shipment.bill_to, status: shipment.status) %>
+      <%= t('.preview', shipper_company_label: shipment.shipper_company_label, receiver_company_label: shipment.receiver_company_label) %>
     </span>
   </span>
   <span class='actions'>

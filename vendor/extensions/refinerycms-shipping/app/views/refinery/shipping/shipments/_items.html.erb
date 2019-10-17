@@ -1,41 +1,41 @@
-<section class="contact-card">
-  <% shipment.items.build if shipment.items.empty? %>
+<% shipment.items.build if shipment.items.empty? %>
 
-  <%= form_for shipment, url: [refinery, :shipping, shipment] do |f| %>
-    <div data-form-container="shipment-items" class="form-addable">
-      <div class="form-addable-controls">
-        <i class="fa fa-plus-square form-ctrl-add"></i>
-      </div>
-
-      <% shipment.items.each_with_index do |item, i| %>
-        <div class="form-addable-record">
-          <%= render 'item_form', f: f, item: item, i: i+1 %>
-        </div>
-      <% end %>
-
-      <% if shipment.consignee_company.present? %>
-        <% content_for :javascripts do %>
-          <script type="text/javascript">
-            var orderSource = <%= shipment.consignee_company.buyer_orders.to_source %>;
-
-            $(document).ready(function() {
-              $('.js_order_field').autocomplete({
-                source: orderSource
-              });
-
-              Addable.partials["shipment-items"] = {
-                "attributes": { "__index__": <%= shipment.items.length+1 %> },
-                "template": "<%= escape_javascript render('item_form', item: ::Refinery::Shipping::Item.new, i: '__index__', f: f) %>",
-                "onAdd": function() {
-                  $('.js_order_field').autocomplete({
-                    source: orderSource
-                  });
-                }
-              };
-            });
-          </script>
-        <% end %>
-      <% end %>
+<%= form_for items_form, url: [refinery, :shipping, shipment] do |f| %>
+  <div data-form-container="shipment-items" class="form-addable">
+    <div class="form-addable-controls">
+      <i class="fa fa-plus-square form-ctrl-add"></i>
     </div>
-  <% end %>
-</section>
+
+    <% shipment.items.each_with_index do |item, i| %>
+      <div class="form-addable-record">
+        <%= render 'item_form', f: f, item: item, i: i+1 %>
+      </div>
+    <% end %>
+
+    <% if shipment.consignee_company.present? %>
+      <% content_for :javascripts do %>
+        <script type="text/javascript">
+          var orderSource = <%= shipment.consignee_company.buyer_orders.to_source %>;
+
+          $(document).ready(function() {
+            $('.js_order_field').autocomplete({
+              source: orderSource
+            });
+
+            Addable.partials["shipment-items"] = {
+              "attributes": { "__index__": <%= shipment.items.length+1 %> },
+              "template": "<%= escape_javascript render('item_form', item: ::Refinery::Shipping::Item.new, i: '__index__', f: f) %>",
+              "onAdd": function() {
+                $('.js_order_field').autocomplete({
+                  source: orderSource
+                });
+              }
+            };
+          });
+        </script>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+<% end %>

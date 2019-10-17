@@ -11,7 +11,7 @@ module Refinery
           params.require(:package).permit(
               :shipment_id, :name, :package_type, :total_packages, :length_unit,
               :package_length, :package_width, :package_height, :volume_unit,
-              :package_volume, :weight_unit, :package_weight
+              :package_volume, :weight_unit, :package_gross_weight, :package_net_weight
           )
         end
 

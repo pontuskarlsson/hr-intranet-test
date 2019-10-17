@@ -268,7 +268,7 @@
         <h5>Verify content</h5>
 
         <% if @inspection.to_be_verified.any? %>
-          <p>Please pay extra attention to the following:</p>
+          <p>Please fix the following before notifying the customer:</p>
 
           <ul>
             <% @inspection.to_be_verified.each do |msg| %>
@@ -278,25 +278,25 @@
 
         <% else %>
           <p>We could not automatically determine anything that might be wrong, so look through in general.</p>
-        <% end %>
 
-        <% if @inspection.company.present? %>
-          <%= form_for @inspection, url: refinery.quality_assurance_inspection_path(@inspection) do |f| %>
-            <%= f.hidden_field :status, value: 'Notified' %>
-            <% if @inspection.company.users.any? %>
-              <ul>
-                <% @inspection.company.users.each do |user| %>
-                  <li>
-                    <%= check_box_tag 'notify_users[]', user.id %>
-                    <%= label_tag user.id, user.full_name %>
-                  </li>
-                <% end %>
-              </ul>
+          <% if @inspection.company.present? %>
+            <%= form_for @inspection, url: refinery.quality_assurance_inspection_path(@inspection) do |f| %>
+              <%= f.hidden_field :status, value: 'Notified' %>
+              <% if @inspection.company.users.any? %>
+                <ul>
+                  <% @inspection.company.users.each do |user| %>
+                    <li>
+                      <%= check_box_tag 'notify_users[]', user.id %>
+                      <%= label_tag user.id, user.full_name %>
+                    </li>
+                  <% end %>
+                </ul>
 
-              <p><%= f.submit 'Confirm and notify', confirm: 'This will send out a notification to the Customer.' %></p>
-            <% else %>
+                <p><%= f.submit 'Confirm and notify', confirm: 'This will send out a notification to the Customer.' %></p>
+              <% else %>
 
-              <p><%= f.submit 'Confirm', confirm: 'This will send out a notification to the Customer.' %></p>
+                <p><%= f.submit 'Confirm', confirm: 'This will send out a notification to the Customer.' %></p>
+              <% end %>
             <% end %>
           <% end %>
         <% end %>

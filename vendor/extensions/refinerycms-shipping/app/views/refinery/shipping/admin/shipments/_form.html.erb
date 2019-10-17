@@ -4,14 +4,94 @@
               :include_object_name => true %>
 
   <div class='field'>
-    <%= f.label :shipment_label -%>
-    <%= f.text_field :shipment_label, class: 'js_shipment_field' -%>
+    <%= f.label :code -%>
+    <%= f.text_field :code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :shipper_company_label -%>
+    <%= f.text_field :shipper_company_label, class: 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :receiver_company_label -%>
+    <%= f.text_field :receiver_company_label, class: 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :consignee_company_label -%>
+    <%= f.text_field :consignee_company_label, class: 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :forwarder_company_label -%>
+    <%= f.text_field :forwarder_company_label, class: 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :courier_company_label -%>
+    <%= f.text_field :courier_company_label, class: 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :mode -%>
+    <%= f.select :mode, options_for_select([['Please select', { disabled: true }]] + ::Refinery::Shipping::Shipment::SHIP_MODES) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :weight_unit -%>
+    <%= f.text_field :weight_unit -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :gross_weight_amount -%>
+    <%= f.text_field :gross_weight_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :gross_weight_manual_amount -%>
+    <%= f.text_field :gross_weight_manual_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :net_weight_amount -%>
+    <%= f.text_field :net_weight_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :net_weight_manual_amount -%>
+    <%= f.text_field :net_weight_manual_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :chargeable_weight_amount -%>
+    <%= f.text_field :chargeable_weight_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :chargeable_weight_manual_amount -%>
+    <%= f.text_field :chargeable_weight_manual_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :volume_unit -%>
+    <%= f.text_field :volume_unit -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :volume_amount -%>
+    <%= f.text_field :volume_manual_amount -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :length_unit -%>
+    <%= f.text_field :length_unit -%>
   </div>
 
   <%= render '/refinery/admin/form_actions', :f => f,
              :continue_editing => false,
              :delete_title => t('delete', :scope => 'refinery.shipping.admin.shipments.shipment'),
-             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @shipment.to_address.try(:name)) -%>
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @shipment.code) -%>
 <% end -%>
 
 <% content_for :stylesheets do %>
@@ -21,8 +101,8 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function(){
-      $('.js_shipment_field').autocomplete({
-        source: <%= ::Refinery::Shipping::Shipment.to_source %>
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.to_source %>
       });
     });
   </script>

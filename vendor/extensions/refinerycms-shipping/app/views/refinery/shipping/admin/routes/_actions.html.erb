@@ -1,0 +1,27 @@
+<ul>
+  <% if ::Refinery::Shipping::Admin::RoutesController.searchable? %>
+    <li>
+      <%= render '/refinery/admin/search', :url => refinery.shipping_admin_routes_path %>
+    </li>
+  <% end %>
+  <li>
+    <%= link_to t('.create_new'), refinery.new_shipping_admin_route_path,
+                 :class => "add_icon" %>
+  </li>
+  <%= render '/refinery/shipping/admin/shared/links' %>
+
+<% if !searching? && ::Refinery::Shipping::Admin::RoutesController.sortable? && ::Refinery::Shipping::Route.many? %>
+  <li>
+    <%= link_to t('.reorder', :what => "Routes"),
+                 refinery.shipping_admin_routes_path,
+                 :id => "reorder_action",
+                 :class => "reorder_icon" %>
+
+    <%= link_to t('.reorder_done', :what => "Routes"),
+                 refinery.shipping_admin_routes_path,
+                 :id => "reorder_action_done",
+                 :style => "display: none;",
+                 :class => "reorder_icon" %>
+  </li>
+<% end %>
+</ul>

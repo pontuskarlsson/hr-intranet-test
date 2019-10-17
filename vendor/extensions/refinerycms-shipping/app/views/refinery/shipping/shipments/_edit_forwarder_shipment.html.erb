@@ -6,7 +6,7 @@
 
   <div class="grid-x grid-padding-x">
     <div class="medium-6 cell">
-      <h3>From</h3>
+      <h3>Parties</h3>
       <table class="cc-table">
         <tbody>
         <tr>
@@ -18,33 +18,6 @@
           <td><%= f.text_field :supplier_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
-          <th><%= f.label :load_port %></th>
-          <td><%= f.text_field :load_port %></td>
-        </tr>
-        <tr>
-          <th>Address</th>
-          <td>
-            <% if shipment.from_address %>
-              <% if shipment.from_address.google_maps_url %>
-                <%= link_to shipment.from_address.google_maps_url, target: '_blank' do %>
-                  <i class="fa fa-map-marker"></i>
-                <% end %>
-              <% end %>
-              <%=simple_format shipment.from_address.present_address_lines.join("\n") %>
-            <% else %>
-              N/A
-            <% end %>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="medium-6 cell">
-      <h3>To</h3>
-      <table class="cc-table">
-        <tbody>
-        <tr>
           <th style="width: 150px;"><%= f.label :receiver_company_label, 'Receiver' %></th>
           <td><%= f.text_field :receiver_company_label, class: 'js_company_field' %></td>
         </tr>
@@ -53,72 +26,19 @@
           <td><%= f.text_field :consignee_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
-          <th><%= f.label :consignee_reference %></th>
-          <td><%= f.text_field :consignee_reference %></td>
-        </tr>
-        <tr>
-          <th>Address</th>
-          <td>
-            <% if shipment.to_address %>
-              <% if shipment.to_address.google_maps_url %>
-                <%= link_to shipment.to_address.google_maps_url, target: '_blank' do %>
-                  <i class="fa fa-map-marker"></i>
-                <% end %>
-              <% end %>
-              <%=simple_format shipment.to_address.present_address_lines.join("\n") %>
-            <% else %>
-              N/A
-            <% end %>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="medium-6 cell">
-      <h3>Forwarder</h3>
-      <table class="cc-table">
-        <tbody>
-        <tr>
           <th style="width: 150px;"><%= f.label :forwarder_company_label, 'Forwarder' %></th>
           <td><%= f.text_field :forwarder_company_label, class: 'js_company_field' %></td>
         </tr>
         <tr>
-          <th><%= f.label :forwarder_booking_number, 'Booking No.' %></th>
-          <td><%= f.text_field :forwarder_booking_number %></td>
-        </tr>
-        <tr>
-          <th><%= f.label :mode %></th>
-          <td><%= f.text_field :mode %></td>
+          <th><%= f.label :consignee_reference %></th>
+          <td><%= f.text_field :consignee_reference %></td>
         </tr>
         <tr>
           <th><%= f.label :status %></th>
           <td><%= f.select :status, options_for_select(::Refinery::Shipping::Shipment.status_options, f.object.status) %></td>
         </tr>
-        <tr>
-          <th><%= f.label :etd_date, 'ETD' %></th>
-          <td><%= f.text_field :etd_date, class: 'js_date_field' %></td>
-        </tr>
-        <tr>
-          <th><%= f.label :eta_date, 'ETA' %></th>
-          <td><%= f.text_field :eta_date, class: 'js_date_field' %></td>
-        </tr>
-        <tr>
-          <th><%= f.label :tracking_number, 'AWB' %></th>
-          <td><%= f.text_field :tracking_number %></td>
-        </tr>
-        <tr>
-          <th><%= f.label :shipment_terms %></th>
-          <td><%= f.text_field :shipment_terms %></td>
-        </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <div class="grid-x grid-padding-x">
-    <div class="medium-6 cell">
-      <%= render 'edit_costs', shipment: shipment, f: f %>
     </div>
 
     <div class="medium-6 cell">

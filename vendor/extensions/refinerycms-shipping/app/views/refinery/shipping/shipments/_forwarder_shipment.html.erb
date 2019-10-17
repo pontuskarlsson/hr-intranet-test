@@ -1,5 +1,8 @@
+<%= render 'shipment_progress', shipment: shipment %>
+
 <div class="grid-x grid-padding-x">
-  <div class="cell">
+  <div class="cell medium-6">
+    <h3>Parties</h3>
     <table class="cc-table">
       <tbody>
       <tr>
@@ -21,10 +24,6 @@
             <%= shipment.supplier_company_label %>
           <% end %>
         </td>
-      </tr>
-      <tr>
-        <th>Load Port</th>
-        <td><%= shipment.load_port.presence || 'N/A' %></td>
       </tr>
       <tr>
         <th style="width: 150px;">Receiver</th>
@@ -60,6 +59,38 @@
           <% end %>
         </td>
       </tr>
+      <tr>
+        <th>Status</th>
+        <td><%= shipment.display_status %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cell medium-6">
+    <h3>Packages Summary</h3>
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th style="width: 150px;">No. of Cartons</th>
+        <td><%= shipment.no_of_parcels.presence || 'N/A' %></td>
+      </tr>
+      <tr>
+        <th>Gross Weight</th>
+        <td><%= shipment.display_gross_weight.presence || 'N/A' %></td>
+      </tr>
+      <tr>
+        <th>Net Weight</th>
+        <td><%= shipment.display_net_weight.presence || 'N/A' %></td>
+      </tr>
+      <tr>
+        <th>Chargeable Weight</th>
+        <td><%= shipment.display_chargeable_weight.presence || 'N/A' %></td>
+      </tr>
+      <tr>
+        <th>Volume</th>
+        <td><%= shipment.display_volume.presence || 'N/A' %></td>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -67,7 +98,7 @@
   <div class="cell medium-3">
     <ul class="vertical tabs" data-tabs id="example-tabs">
       <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Booking</a></li>
-      <li class="tabs-title"><a href="#panel2v">Locations</a></li>
+      <li class="tabs-title"><a href="#panel2v">Route <i class="fa fa-truck"></i></a></li>
       <li class="tabs-title"><a href="#panel3v">Packages</a></li>
       <li class="tabs-title"><a href="#panel4v">Items</a></li>
       <li class="tabs-title"><a href="#panel5v">Costs</a></li>
@@ -80,7 +111,7 @@
       </div>
 
       <div class="tabs-panel" id="panel2v">
-        <%= render 'locations', shipment: shipment %>
+        <%= render 'routes', shipment: shipment %>
       </div>
 
       <div class="tabs-panel" id="panel3v">

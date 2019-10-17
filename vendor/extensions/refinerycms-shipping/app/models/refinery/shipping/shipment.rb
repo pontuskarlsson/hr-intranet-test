@@ -38,7 +38,7 @@ module Refinery
       #
       belongs_to :shipper_company,      class_name: '::Refinery::Business::Company'
       belongs_to :from_contact,         class_name: '::Refinery::Marketing::Contact'
-      belongs_to :from_address,         class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
+      belongs_to :from_address,         class_name: '::Refinery::Shipping::Address', dependent: :destroy
 
 
       # RECEIVER
@@ -52,7 +52,7 @@ module Refinery
       #
       belongs_to :receiver_company,     class_name: '::Refinery::Business::Company'
       belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact'
-      belongs_to :to_address,           class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
+      belongs_to :to_address,           class_name: '::Refinery::Shipping::Address', dependent: :destroy
 
 
       # CONSIGNEE
@@ -65,7 +65,7 @@ module Refinery
       # The company that pays for the shipment.
       #
       belongs_to :consignee_company,    class_name: '::Refinery::Business::Company'
-      belongs_to :consignee_address,    class_name: '::Refinery::Shipping::ShipmentAddress', dependent: :destroy
+      belongs_to :consignee_address,    class_name: '::Refinery::Shipping::Address', dependent: :destroy
 
 
       # SUPPLIER
@@ -109,6 +109,7 @@ module Refinery
       has_many :shipment_parcels,       dependent: :destroy
       has_many :packages,               dependent: :destroy
       has_many :items,                  dependent: :destroy
+      has_many :routes,                 dependent: :destroy
 
       serialize :rates_content, Array
       serialize :tracking_info, Array
@@ -198,6 +199,13 @@ module Refinery
 
         self.assigned_to_label =        assigned_to.label         if assigned_to.present?
         self.created_by_label =         created_by.label          if created_by.present?
+
+        if receiver_company.present? && (length_unit.blank? || weight_unit.blank?)
+          last_created_shipment = receiver_company.receiver_shipments.where.not(id: id).order(created_at: :desc).first
+
+          self.length_unit = last_created_shipment.try(:length_unit) || 'cm' if length_unit.blank?
+          self.weight_unit = last_created_shipment.try(:weight_unit) || 'kg' if weight_unit.blank?
+        end
       end
 
       scope :shipped,     -> { where(status: STATUSES - %w(not_shipped)) }
@@ -216,6 +224,18 @@ module Refinery
         else
           where('1=0')
         end
+      end
+
+      def self.to_source
+        where(nil).pluck(:code).to_json.html_safe
+      end
+
+      def self.find_by_label(label)
+        find_by_code label
+      end
+
+      def label
+        code
       end
 
       # Method used to check whether a particular user has the right to update the
@@ -266,7 +286,7 @@ module Refinery
       end
 
       def self.status_options
-        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses").reduce([['---', '']]) { |acc, (k,v)| acc << [v,k] }
+        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses").reduce([['Please select', { disabled: true }]]) { |acc, (k,v)| acc << [v,k] }
       end
 
 
@@ -320,6 +340,12 @@ module Refinery
       #   self.forwarder_company = ::Refinery::Business::Company.find_by_label label
       #   super
       # end
+
+      Route::TYPES.each do |route_type|
+        define_method :"route_#{route_type}" do
+          routes.detect { |d| d.route_type == route_type } || ::Refinery::Shipping::Route.new(route_type: route_type)
+        end
+      end
 
       class << self
         # def easypost_couriers

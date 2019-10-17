@@ -7,12 +7,11 @@ en:
       admin:
         shared:
           links:
+            manage_routes: Manage Routes
             manage_items: Manage Items
+            manage_locations: Manage Locations
             manage_packages: Manage Packages
-            manage_parcels: Manage Parcels
             manage_shipments: Manage Shipments
-            manage_shipment_parcels: Manage Shipment Parcels
-            manage_shipment_accounts: Manage Shipment Accounts
 
         items:
           actions:
@@ -27,6 +26,21 @@ en:
             view_live_html: View this item live <br/><em>(opens in a new window)</em>
             edit: Edit this item
             delete: Remove this item forever
+            preview: ''
+
+        locations:
+          actions:
+            create_new: Add New Location
+            reorder: Reorder Locations
+            reorder_done: Done Reordering Locations
+          records:
+            title: Locations
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Locations yet. Click "Add New Location" to add your first location.
+          location:
+            view_live_html: View this location live <br/><em>(opens in a new window)</em>
+            edit: Edit this location
+            delete: Remove this location forever
             preview: ''
 
         packages:
@@ -87,11 +101,15 @@ en:
             view_live_html: View this shipment live <br/><em>(opens in a new window)</em>
             edit: Edit this shipment
             delete: Remove this shipment forever
-            preview: 'From %{from_address_name}, Bill To: %{bill_to}, Status: %{status}'
+            preview: 'From %{shipper_company_label}, To: %{receiver_company_label}'
 
       items:
         show:
           other: Other Items
+
+      locations:
+        show:
+          other: Other Locations
 
       packages:
         show:
@@ -119,12 +137,18 @@ en:
       'refinery/shipping/item':
         shipment_id: Shipment
 
+      'refinery/shipping/location':
+        description: Description
+        name: Name
+        owner_id: Owner
+
       'refinery/shipping/package':
         length_unit: Unit
         package_height: Height
         package_length: Length
         package_volume: Volume
-        package_weight: Weight
+        package_gross_weight: Gross Weight
+        package_net_weight: Net Weight
         package_width: Width
         shipment_id: Shipment
         volume_unit: Unit
