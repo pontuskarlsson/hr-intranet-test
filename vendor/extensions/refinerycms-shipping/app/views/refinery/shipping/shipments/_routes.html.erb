@@ -31,8 +31,6 @@
 <% end -%>
 
 <% content_for :javascripts do %>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV[''] %>&callback=initMap"></script>
-
   <script type="text/javascript">
     function initMap() {
       $('.js-location-map').each(function(i, node) {
@@ -54,25 +52,43 @@
       }
     }
 
+    function setItem($item, item) {
+      $('.js_location_id', $item).attr('value', item.id);
+      var $desc = $('.location-description', $item).html('');
+      [item.description, item.street1, item.street2, item.city, item.postal_code, item.state, item.country].filter(function(attr) {
+        return attr && attr !== '';
+      }).forEach(function(attr, i) {
+        if (i > 0) {
+          $desc.append(' ');
+        }
+        $desc.append($('<span></span>').html(attr));
+      });
+
+      setMap($('.location-map', $item)[0], item.lat, item.lng);
+      var $ports = $('<div class="location-ports"><i class="fa fa-plane"></i><i class="fa fa-ship"></i><i class="fa fa-train"></i><i class="fa fa-truck"></i></div>');
+      if (item.airport) { $('.fa-plane', $ports).addClass('port-active'); }
+      if (item.railport) { $('.fa-train', $ports).addClass('port-active'); }
+      if (item.roadport) { $('.fa-truck', $ports).addClass('port-active'); }
+      if (item.seaport) { $('.fa-ship', $ports).addClass('port-active'); }
+      $('.location-description', $item).append($ports);
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_CLOUD_API_KEY'] %>&callback=initMap"></script>
+
+  <script type="text/javascript">
     $(function(){
       $('.js_location_field').each(function(i, node) {
         var field = $(node).autocomplete({
           source: <%= ::Refinery::Shipping::Location.to_source %>,
           change: function(event, ui) {
             var item = ui.item || { id: null };
-            console.log({ item: item });
             var $item = $(this).parents('.location-item');
-
-            $('.js_location_id', $item).attr('value', item.id);
-            $('.location-description', $item).html('').append($('<p></p>').html(item.description));
-            setMap($('.js-location-map', $item)[0], item.lat, item.lng);
-            var $ports = $('<div class="location-ports"><i class="fa fa-plane"></i><i class="fa fa-ship"></i><i class="fa fa-train"></i><i class="fa fa-truck"></i></div>');
-            if (item.airport) { $('.fa-plane', $ports).addClass('port-active'); }
-            if (item.railport) { $('.fa-train', $ports).addClass('port-active'); }
-            if (item.roadport) { $('.fa-truck', $ports).addClass('port-active'); }
-            if (item.seaport) { $('.fa-ship', $ports).addClass('port-active'); }
-            $('.location-description', $item).append($ports);
-
+            setItem($item, item);
+          },
+          select: function(event, ui) {
+            var item = ui.item || { id: null };
+            var $item = $(this).parents('.location-item');
+            setItem($item, item);
           }
         }).data('ui-autocomplete');
 
@@ -80,16 +96,19 @@
           var $node = $('<li class="ui-menu-item"><div class="location-item"><span class="location-map"></span><span class="location-title"></span><span class="location-description"></span></div></li>');
 
           $('.location-title', $node).html(item.name);
-          $('.location-description', $node).append($('<p></p>').html(item.description));
 
-          setMap($('.location-map', $node)[0], item.lat, item.lng);
+          setItem($('.location-item', $node), item);
 
-          var $ports = $('<div class="location-ports"><i class="fa fa-plane"></i><i class="fa fa-ship"></i><i class="fa fa-train"></i><i class="fa fa-truck"></i></div>');
-          if (item.airport) { $('.fa-plane', $ports).addClass('port-active'); }
-          if (item.railport) { $('.fa-train', $ports).addClass('port-active'); }
-          if (item.roadport) { $('.fa-truck', $ports).addClass('port-active'); }
-          if (item.seaport) { $('.fa-ship', $ports).addClass('port-active'); }
-          $('.location-description', $node).append($ports);
+          // $('.location-description', $node).append($('<p></p>').html(item.description));
+          //
+          // setMap($('.location-map', $node)[0], item.lat, item.lng);
+          //
+          // var $ports = $('<div class="location-ports"><i class="fa fa-plane"></i><i class="fa fa-ship"></i><i class="fa fa-train"></i><i class="fa fa-truck"></i></div>');
+          // if (item.airport) { $('.fa-plane', $ports).addClass('port-active'); }
+          // if (item.railport) { $('.fa-train', $ports).addClass('port-active'); }
+          // if (item.roadport) { $('.fa-truck', $ports).addClass('port-active'); }
+          // if (item.seaport) { $('.fa-ship', $ports).addClass('port-active'); }
+          // $('.location-description', $node).append($ports);
 
           return $node.appendTo(ul);
         };

@@ -1,7 +1,7 @@
 <%= f.fields_for :routes, route, child_index: i do |route_form| %>
   <%= route_form.hidden_field :route_type %>
   <div class="grid-x grid-padding-x">
-    <div class="cell">
+    <div class="cell large-8">
       <div class="location-item">
         <div class="location-map">
           <div class="js-location-map" style="height: 100%;" data-map-lat="<%= route.location_lat %>" data-map-lng="<%= route.location_lng %>"></div>
@@ -11,7 +11,9 @@
           <%= route_form.text_field :location_label, placeholder: 'Location', class: 'js_location_field' %>
         </div>
         <div class="location-description">
-          <p><%= route.location_description %></p>
+          <% [route.location_description, route.location_street1, route.location_street2, route.location_city, route.location_postal_code, route.location_state, route.location_country].reject(&:blank?).each_with_index do |attr, i| %>
+            <span><%= attr %></span>
+          <% end %>
           <div class="location-ports">
             <i class="fa fa-plane <%= route.location_airport ? 'port-active' : '' %>"></i>
             <i class="fa fa-ship <%= route.location_seaport ? 'port-active' : '' %>"></i>
@@ -20,6 +22,21 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="cell large-4">
+      <% if route.route_type != 'origin' %>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fa fa-sign-in" title="Arrived at"></i></span>
+          <%= route_form.date_field :arrived_at, class: 'input-group-field' %>
+        </div>
+      <% end %>
+
+      <% if route.route_type != 'destination' %>
+        <div class="input-group">
+          <span class="input-group-label"><i class="fa fa-sign-out" title="Departed at"></i></span>
+          <%= route_form.date_field :departed_at, class: 'input-group-field' %>
+        </div>
+      <% end %>
     </div>
   </div>
 <% end %>

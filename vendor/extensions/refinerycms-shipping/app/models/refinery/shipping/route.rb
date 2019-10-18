@@ -10,7 +10,9 @@ module Refinery
       belongs_to :location
       belongs_to :prior_route,    class_name: '::Refinery::Shipping::Route'
 
-      delegate :label, :description, :lat, :lng, :airport, :seaport, :railport, :roadport, to: :location, prefix: true, allow_nil: true
+      delegate :label, :description, :lat, :lng, :airport, :seaport, :railport, :roadport,
+               :street1, :street2, :city, :postal_code, :state, :country, :country_code,
+               to: :location, prefix: true, allow_nil: true
 
       validates :shipment_id,           presence: true
       validates :location_id,           presence: true, uniqueness: { scope: :shipment_id }

@@ -1,0 +1,41 @@
+<div class="route-container">
+  <div class="route">
+    <div class="checkpoint">
+      <% if route.persisted? %>
+        <% if route.has_departed? %>
+          <i class="fa fa-check-circle departed" data-tooltip title="<%= route.location_label %>"></i>
+        <% elsif route.route_type != 'origin' && route.has_arrived? %>
+          <i class="fa fa-circle arrived" data-tooltip title="<%= route.location_label %>"></i>
+        <% else %>
+          <i class="fa fa-circle-o" data-tooltip title="<%= route.location_label %>"></i>
+        <% end %>
+      <% else %>
+        <i class="fa fa-question" ></i>
+      <% end %>
+    </div>
+
+    <% if next_route.has_arrived? %>
+      <div class="transport arrived"></div>
+    <% elsif route.has_departed? %>
+      <div class="transport departed"></div>
+    <% else %>
+      <div class="transport"></div>
+    <% end %>
+
+    <% if route.has_departed? && !next_route.has_arrived? %>
+      <div class="in-transit">
+        <% if shipment.mode == 'Air' %>
+          <i class="fa fa-plane" ></i>
+        <% elsif shipment.mode == 'Rail' %>
+          <i class="fa fa-train" ></i>
+        <% elsif shipment.mode == 'Road' %>
+          <i class="fa fa-truck" ></i>
+        <% elsif shipment.mode == 'Sea' %>
+          <i class="fa fa-ship" ></i>
+        <% else %>
+          <i class="fa fa-truck" ></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

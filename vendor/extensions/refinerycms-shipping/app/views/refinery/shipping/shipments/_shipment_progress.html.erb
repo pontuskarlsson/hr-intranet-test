@@ -1,44 +1,11 @@
 <div class="shipment-progress">
   <div class="routes">
-    <div class="route-container">
-      <div class="route">
-        <div class="checkpoint">
-          <% if shipment.route_origin.present? %>
-            <i class="fa <%= shipment.route_origin.has_departed? ? 'fa-circle departed' : 'fa-circle-o' %>" data-tooltip title="<%= shipment.route_origin.location_label %>"></i>
-          <% else %>
-            <i class="fa fa-question" ></i>
-          <% end %>
-        </div>
-        <div class="transport"></div>
-      </div>
-    </div>
+    <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_origin, next_route: shipment.mode == 'Air' || shipment.mode == 'Sea' ? shipment.route_port_of_loading : shipment.route_destination %>
 
     <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
-      <div class="route-container">
-        <div class="route">
-          <div class="checkpoint">
-            <% if shipment.route_port_of_loading.present? && shipment.route_port_of_loading.location.present? %>
-              <i class="fa <%= shipment.route_port_of_loading.has_departed? ? 'fa-circle departed' : 'fa-circle-o' %>" data-tooltip title="<%= shipment.route_port_of_loading.location_label %>"></i>
-            <% else %>
-              <i class="fa fa-question" ></i>
-            <% end %>
-          </div>
-          <div class="transport"></div>
-        </div>
-      </div>
+      <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_loading, next_route: shipment.route_port_of_discharge %>
 
-      <div class="route-container">
-        <div class="route">
-          <div class="checkpoint">
-            <% if shipment.route_port_of_discharge.present? && shipment.route_port_of_discharge.location.present? %>
-              <i class="fa <%= shipment.route_port_of_discharge.has_departed? ? 'fa-circle departed' : 'fa-circle-o' %>" data-tooltip title="<%= shipment.route_port_of_discharge.location_label %>"></i>
-            <% else %>
-              <i class="fa fa-question" ></i>
-            <% end %>
-          </div>
-          <div class="transport"></div>
-        </div>
-      </div>
+      <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_discharge, next_route: shipment.route_destination %>
     <% end %>
   </div>
 

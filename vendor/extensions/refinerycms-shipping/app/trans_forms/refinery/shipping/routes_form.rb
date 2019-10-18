@@ -27,8 +27,8 @@ module Refinery
             route.prior_route = prior_route_for attr['route_type']
             route.save!
           end
-        elsif attr['location_id'].present?
-          route = shipment.routes.build(attr.slice(*allowed))
+        elsif (build_attr = attr.slice(*allowed)).values.any?(&:present?)
+          route = shipment.routes.build(build_attr)
           route.prior_route = prior_route_for attr['route_type']
           route.save!
         end

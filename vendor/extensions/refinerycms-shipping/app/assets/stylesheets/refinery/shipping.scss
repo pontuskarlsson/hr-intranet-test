@@ -2,11 +2,11 @@
     margin: 0.2rem;
     display: grid;
     grid-gap: 0.2rem;
-    grid-template-columns: 5rem 1fr;
-    grid-template-rows: 2.5rem 2.5rem;
+    grid-template-columns: 1fr 7.5rem;
+    grid-template-rows: 2.5rem 5rem;
     grid-template-areas:
-            "map title"
-            "map description";
+            "title map"
+            "description map";
 
     .location-map {
         grid-area: map;
@@ -18,9 +18,11 @@
 
     .location-description {
         grid-area: description;
+        font-size: 0.8rem;
     }
 
     .location-ports {
+        font-size: 1rem;
         .fa { color: #ccc; margin: 0 0.2rem; }
         .fa.port-active { color: #000; }
     }
@@ -55,7 +57,7 @@
                 padding-top: 6px !important;
                 position: relative !important;
 
-                .checkpoint {
+                .checkpoint, .in-transit {
                     background-color: #FAF8F7;
                     padding-left: 6px !important;
                     padding-right: 6px !important;
@@ -69,17 +71,32 @@
                         border-bottom: none;
 
                         &.arrived {
-                            background-color: rgb(147, 129, 35);
+                            color: rgb(204, 148, 24);
                         }
 
                         &.departed {
-                            background-color: rgb(15, 41, 67);
+                            color: #48A9A6;
                         }
+                    }
+                }
+
+                .in-transit {
+                    left: 50% !important;
+                    .fa {
+                        color: rgb(204, 148, 24);
                     }
                 }
 
                 .transport {
                     background-color: rgb(164, 162, 174);
+
+                    &.departed {
+                        background-color: rgb(204, 148, 24);
+                    }
+
+                    &.arrived {
+                        background-color: #48A9A6;;
+                    }
 
                     padding-top: 3px !important;
                     height: 0px !important;
@@ -105,16 +122,17 @@
                 .icon-cont {
                     width: 12px;
                     height: 12px;
-                    color: rgb(164, 162, 174);
 
                     display: inline-block !important;
                     position: relative !important;
 
-                    &.arrived {
-                        color: rgb(15, 41, 67);
-                    }
-
                     .icon {
+                        color: rgb(164, 162, 174);
+
+                        &.arrived {
+                            color: #48A9A6;
+                        }
+
                         width: unset;
                         height: unset;
 
