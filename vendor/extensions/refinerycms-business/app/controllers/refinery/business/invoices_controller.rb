@@ -9,23 +9,19 @@ module Refinery
       before_filter :find_invoices, only: [:index]
       before_filter :find_invoice,  except: [:index, :new, :create]
 
+      helper_method :invoice_billables_form
+
       def index
-        @invoices = @invoices.where(filter_params).order(updated_date_utc: :desc)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @invoice in the line below:
+        @invoices = @invoices.from_params(params).order(updated_date_utc: :desc)
         present(@page)
       end
 
       def show
-        @invoice_billables_form = InvoiceBillablesForm.new_in_model(@invoice)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @invoice in the line below:
         present(@page)
       end
 
       def add_billables
-        @invoice_billables_form = InvoiceBillablesForm.new_in_model(@invoice, params[:invoice], current_authentication_devise_user)
-        if @invoice_billables_form.save
+        if invoice_billables_form.save
           flash[:notice] = 'Successfully added Billables to Invoice'
           if params[:redirect_to].present?
             redirect_to params[:redirect_to], status: :see_other
@@ -50,7 +46,7 @@ module Refinery
       end
 
       def find_invoices
-        @invoices = invoices_scope
+        @invoices = invoices_scope.where(filter_params)
       end
 
       def find_invoice
@@ -61,6 +57,10 @@ module Refinery
 
       def filter_params
         params.permit([:company_id, :project_id, :account_id, :contact_id, :status, :invoice_type])
+      end
+
+      def invoice_billables_form
+        @invoice_billables_form ||= InvoiceBillablesForm.new_in_model(@invoice, params[:invoice], current_authentication_devise_user)
       end
 
     end

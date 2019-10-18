@@ -12,7 +12,6 @@ Refinery::Core::Engine.routes.draw do
       resources :order_items, only: [:index]
     end
     resources :projects, :only => [:index, :show, :new, :create] do
-      get :archive, on: :collection
       resources :sections, only: [:create, :update]
     end
     resources :sections, :only => [:index, :show]

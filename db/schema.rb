@@ -409,9 +409,11 @@ ActiveRecord::Schema.define(version: 20191016015153) do
     t.integer  "to_company_id",      limit: 4
     t.string   "to_company_label",   limit: 255
     t.integer  "to_contact_id",      limit: 4
+    t.datetime "archived_at"
   end
 
   add_index "refinery_business_invoices", ["account_id"], name: "index_refinery_business_invoices_on_account_id", using: :btree
+  add_index "refinery_business_invoices", ["archived_at"], name: "INDEX_rb_invoices_ON_archived_at", using: :btree
   add_index "refinery_business_invoices", ["company_id"], name: "index_refinery_business_invoices_on_company_id", using: :btree
   add_index "refinery_business_invoices", ["contact_id"], name: "index_refinery_business_invoices_on_contact_id", using: :btree
   add_index "refinery_business_invoices", ["from_company_id"], name: "INDEX_rb_invoices_ON_from_company_id", using: :btree

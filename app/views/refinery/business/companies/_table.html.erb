@@ -44,9 +44,12 @@
           { data: "contact_email" },
           { data: "contact_country" }
         ],
-        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
           "t"+
-          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5'
+        ]
       });
 
       initDataTable(dt)

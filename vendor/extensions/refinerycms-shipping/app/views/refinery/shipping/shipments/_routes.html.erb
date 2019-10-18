@@ -31,7 +31,7 @@
 <% end -%>
 
 <% content_for :javascripts do %>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjWwew3_yQqcUrxFrEbcd4rm8iM1yOyL0&callback=initMap"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV[''] %>&callback=initMap"></script>
 
   <script type="text/javascript">
     function initMap() {

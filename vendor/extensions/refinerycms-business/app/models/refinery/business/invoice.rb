@@ -71,6 +71,21 @@ module Refinery
         order(invoice_number: :desc).pluck(:invoice_number, :invoice_date, :reference).map(&PROC_LABEL).to_json.html_safe
       end
 
+      def self.from_params(params)
+        active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
+        archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
+
+        if active && archived
+          where(nil)
+        elsif active
+          where(archived_at: nil)
+        elsif archived
+          where.not(archived_at: nil)
+        else
+          where('1=0')
+        end
+      end
+
     end
   end
 end

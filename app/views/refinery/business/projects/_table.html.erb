@@ -29,10 +29,17 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
+      var ajaxStatus = { active: true, archived: false };
+
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
-        "ajax": "<%= ajax %>",
+        "ajax": {
+          "url": "<%= refinery.business_projects_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_projects_path %>") } },
           { data: "code" },
@@ -48,12 +55,15 @@
           { data: "end_date", render: dtDateRenderer },
           { data: "status" }
         ],
-        "dom": "<'row grid-x'<'medium-6 columns cell'l><'medium-6 columns cell'f>r>"+
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
           "t"+
-          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>"
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5'
+        ]
       });
 
-      initDataTable(dt);
+      initDataTable(dt, ajaxStatus);
     });
   </script>
 <% end %>
