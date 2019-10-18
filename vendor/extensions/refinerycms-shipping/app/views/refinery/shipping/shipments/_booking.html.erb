@@ -7,7 +7,7 @@
     </tr>
     <tr>
       <th><%= f.label :mode %></th>
-      <td><%= f.select :mode, options_for_select([['Please select', { disabled: true }]] + ::Refinery::Shipping::Shipment::SHIP_MODES) -%></td>
+      <td><%= f.select :mode, options_for_select([['Please select', { disabled: true }]] + ::Refinery::Shipping::Shipment::SHIP_MODES, f.object.mode) -%></td>
     </tr>
     <tr>
       <th><%= f.label :etd_date, 'ETD' %></th>

@@ -123,7 +123,11 @@ module Refinery
       end
 
       def default_package_fields
-        { package_type: 'Carton', length_unit: @shipment.try(:length_unit) || 'cm', weight_unit: @shipment.try(:weight_unit) || 'kg' }
+        {
+            package_type: 'Carton',
+            length_unit: @shipment.try(:length_unit).presence || 'cm',
+            weight_unit: @shipment.try(:weight_unit).presence || 'kg'
+        }
       end
 
       def shipment_form_saved?
