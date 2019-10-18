@@ -26,6 +26,18 @@ module Refinery
       validates :invoice_type,  inclusion: INVOICE_TYPES
       validates :status,        inclusion: STATUSES
 
+      before_save do
+        if %w(DELETED VOIDED).include?(status)
+          self.archived_at ||= DateTime.now
+        end
+      end
+
+      after_save do
+        if archived_at_changed?
+          billables.update_all(archived_at: archived_at)
+        end
+      end
+
       scope :active, -> { where.not(status: %w(DELETED VOIDED)) }
       scope :overdue, -> { active.where('amount_due > 0').where('due_date < ?', Date.today) }
 

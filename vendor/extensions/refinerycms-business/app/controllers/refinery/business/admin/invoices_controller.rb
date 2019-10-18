@@ -14,7 +14,7 @@ module Refinery
               :amount_due, :amount_paid, :amount_credited, :currency_code, :currency_rate,
               :updated_date_utc, :company_id, :company_label, :project_id, :project_label,
               :from_company_id, :from_company_label, :from_contact_id, :to_company_id,
-              :to_company_label, :to_contact_id
+              :to_company_label, :to_contact_id, :archived_at
           )
         end
 

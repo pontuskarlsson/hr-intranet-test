@@ -12,7 +12,7 @@ module Refinery
               :company_id, :company_label, :project_id, :project_label, :section_id,
               :invoice_id, :invoice_label, :billable_type, :status, :title, :description,
               :article_code, :qty, :qty_unit, :unit_price, :discount, :total_cost, :account,
-              :billable_date, :assigned_to_id, :assigned_to_label
+              :billable_date, :assigned_to_id, :assigned_to_label, :archived_at
           )
         end
 

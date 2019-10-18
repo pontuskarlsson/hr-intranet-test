@@ -95,7 +95,12 @@
 
   <div class='field'>
     <%= f.label :updated_date_utc -%>
-    <%= f.text_field :total_amount -%>
+    <%= f.text_field :updated_date_utc -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :archived_at -%>
+    <%= f.text_field :archived_at -%>
   </div>
 
   <%= render '/refinery/admin/form_actions', :f => f,

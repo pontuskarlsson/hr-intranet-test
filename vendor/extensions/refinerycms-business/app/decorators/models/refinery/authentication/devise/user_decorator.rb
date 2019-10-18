@@ -9,4 +9,16 @@ Refinery::Authentication::Devise::User.class_eval do
     Refinery::Business::Project.where(company_id: company_ids)
   end
 
+  def label
+    email
+  end
+
+  def self.find_by_label(label)
+    find_by email: label
+  end
+
+  def self.to_source
+    order(:email).pluck(:email).to_json.html_safe
+  end
+
 end

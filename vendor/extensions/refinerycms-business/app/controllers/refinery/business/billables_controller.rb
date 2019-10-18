@@ -6,11 +6,11 @@ module Refinery
       set_page PAGE_BILLABLES_URL
       allow_page_roles ROLE_INTERNAL_FINANCE
 
-      before_filter :find_all_billables
+      before_filter :find_billables
       before_filter :find_billable, except: [:index, :new, :create]
 
       def index
-        @billables = @billables.where(filter_params).order(billable_date: :desc)
+        @billables = @billables.from_params(params).order(billable_date: :desc)
 
         respond_to do |format|
           format.html { present(@page) }
@@ -62,8 +62,8 @@ module Refinery
             end
       end
 
-      def find_all_billables
-        billable_scope
+      def find_billables
+        @billables = billable_scope.where(filter_params)
       end
 
       def find_billable

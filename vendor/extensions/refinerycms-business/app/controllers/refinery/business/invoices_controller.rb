@@ -39,7 +39,7 @@ module Refinery
       def invoices_scope
         @invoices ||=
             if page_role? ROLE_INTERNAL_FINANCE
-              Refinery::Business::Invoice.active
+              Refinery::Business::Invoice.where(nil)
             else
               Refinery::Business::Invoice.where('1=0')
             end

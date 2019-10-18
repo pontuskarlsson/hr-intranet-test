@@ -41,10 +41,17 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
+      var ajaxStatus = { active: true, archived: false };
+
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
-        "ajax": "<%= ajax %>",
+        "ajax": {
+          "url": "<%= refinery.business_billables_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
         "order": [[3, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
@@ -69,7 +76,7 @@
         ]
       });
 
-      initDataTable(dt);
+      initDataTable(dt, ajaxStatus);
     });
   </script>
 <% end %>
