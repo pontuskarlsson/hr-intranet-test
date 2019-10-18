@@ -17,7 +17,7 @@ module Refinery
 
       protected
 
-      def update_route!(attr, allowed = %w(route_type location_id))
+      def update_route!(attr, allowed = %w(route_type location_id arrived_at departed_at))
         if attr['id'].present?
           route = find_from! shipment.routes, attr['id']
           if attr['_destroy'] == '1'

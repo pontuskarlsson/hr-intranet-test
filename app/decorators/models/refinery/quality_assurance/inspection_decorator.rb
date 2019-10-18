@@ -63,7 +63,7 @@ Refinery::QualityAssurance::Inspection.class_eval do
     @tbv << 'Customer could not be found' if company.nil?
     @tbv << 'Supplier could not be found' if supplier.nil?
     @tbv << 'Manufacturer could not be found' if manufacturer.nil?
-    @tbv << 'Inspector should be full name, not only first or last name' if inspected_by_name.present? && !inspected_by_name[' '].nil?
+    @tbv << 'Inspector should be full name, not only first or last name' if inspected_by_name.present? && inspected_by_name[' '].nil?
     # @tbv << 'PO Number contains the slash (/) character. If multiple POs are inspected, then the comma (,) character should be used to separate them' if (po_number || '')['/']
     # @tbv << 'Colour contains the slash (/) character. This could be correct if a variant is a combination of colours, but if there are multiple variants inspected, the comma (,) character should be used' if (product_colour_variants || '')['/']
     # inspection_defects.each do |inspection_defect|

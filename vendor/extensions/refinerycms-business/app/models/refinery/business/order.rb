@@ -6,7 +6,7 @@ module Refinery
       PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ', ' }
 
       TYPES = %w(PURCHASEORDER)
-      STATUSES = %w()
+      STATUSES = %w(draft confirmed )
       CURRENCY_CODES = %w(EUR HKD SEK USD)
 
       belongs_to :buyer,        class_name: 'Company'
