@@ -2,10 +2,8 @@
   <div class="route">
     <div class="checkpoint">
       <% if route.persisted? %>
-        <% if route.has_departed? %>
+        <% if route.has_completed? %>
           <i class="fa fa-check-circle departed" data-tooltip title="<%= route.location_label %>"></i>
-        <% elsif route.route_type != 'origin' && route.has_arrived? %>
-          <i class="fa fa-circle arrived" data-tooltip title="<%= route.location_label %>"></i>
         <% else %>
           <i class="fa fa-circle-o" data-tooltip title="<%= route.location_label %>"></i>
         <% end %>
@@ -14,26 +12,30 @@
       <% end %>
     </div>
 
-    <% if next_route.has_arrived? %>
+    <% if next_route.has_completed? %>
       <div class="transport arrived"></div>
-    <% elsif route.has_departed? %>
+    <% elsif route.has_completed? %>
       <div class="transport departed"></div>
     <% else %>
       <div class="transport"></div>
     <% end %>
 
-    <% if route.has_departed? && !next_route.has_arrived? %>
+    <% if route.has_completed? && !next_route.has_completed? %>
       <div class="in-transit">
-        <% if shipment.mode == 'Air' %>
-          <i class="fa fa-plane" ></i>
-        <% elsif shipment.mode == 'Rail' %>
-          <i class="fa fa-train" ></i>
-        <% elsif shipment.mode == 'Road' %>
-          <i class="fa fa-truck" ></i>
-        <% elsif shipment.mode == 'Sea' %>
-          <i class="fa fa-ship" ></i>
+        <% if (route.route_origin? && next_route.route_destination?) || (route.route_port_of_loading? && next_route.route_port_of_discharge?) %>
+          <% if shipment.mode == 'Air' %>
+            <i class="fa fa-plane" ></i>
+          <% elsif shipment.mode == 'Rail' %>
+            <i class="fa fa-train" ></i>
+          <% elsif shipment.mode == 'Road' %>
+            <i class="fa fa-truck fa-flip-horizontal" ></i>
+          <% elsif shipment.mode == 'Sea' %>
+            <i class="fa fa-ship" ></i>
+          <% else %>
+            <i class="fa fa-truck fa-flip-horizontal" ></i>
+          <% end %>
         <% else %>
-          <i class="fa fa-truck" ></i>
+          <i class="fa fa-truck fa-flip-horizontal" ></i>
         <% end %>
       </div>
     <% end %>

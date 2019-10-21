@@ -4,7 +4,7 @@ module Refinery
       self.table_name = 'refinery_shipping_routes'
 
       TYPES = %w(origin port_of_loading port_of_discharge destination custom)
-      STATUS = %w(not_departed departed not_arrived arrived)
+      STATUS = %w(unknown scheduled departed arrived)
 
       belongs_to :shipment
       belongs_to :location
@@ -27,20 +27,55 @@ module Refinery
       end
 
       before_validation(on: :create) do
-        self.status ||= route_type == 'origin' ? 'not_departed' : 'not_arrived'
+        if route_type == 'origin'
+          self.status ||= departed_at.present? ? 'scheduled' : 'unknown'
+        else
+          self.status ||= arrived_at.present? ? 'scheduled' : 'unknown'
+        end
       end
 
       before_save do
         self.final_destination = route_type == 'destination'
-        true # Do not halt by returning false
+
+        if status == 'unknown'
+          if departed_at.present? or arrived_at.present?
+            self.status = 'scheduled'
+          end
+        end
       end
 
       def has_arrived?
-        arrived_at.present? && arrived_at < DateTime.now
+        %w(departed arrived).include? status
       end
 
       def has_departed?
-        departed_at.present? && departed_at < DateTime.now
+        status == 'departed'
+      end
+
+      def has_completed?
+        has_arrived?
+      end
+
+      def route_departure?
+        %w(origin port_of_loading).include? route_type
+      end
+
+      def route_arrival?
+        %w(port_of_discharge destination).include? route_type
+      end
+
+      def self.departure_statuses
+        (STATUS - %w(arrived)).map { |s| [s.capitalize, s] }
+      end
+
+      def self.arrival_statuses
+        (STATUS - %w(departed)).map { |s| [s.capitalize, s] }
+      end
+
+      TYPES.each do |rt|
+        define_method :"route_#{rt}?" do
+          route_type == rt
+        end
       end
 
     end
