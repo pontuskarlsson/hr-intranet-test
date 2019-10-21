@@ -38,6 +38,10 @@ module Refinery
         @order_label = label
       end
 
+      def qty
+        shipped_qty.nil? ? ordered_qty : shipped_qty
+      end
+
     end
   end
 end
