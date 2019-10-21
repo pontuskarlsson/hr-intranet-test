@@ -194,7 +194,125 @@
         width:auto!important;
       }
 
-    }</style>
+    }
+
+    /* line 31, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress {
+      position: relative;
+      box-sizing: border-box;
+      padding-top: 4px;
+      padding-bottom: 8px;
+      padding-right: 6px;
+      width: 100%;
+    }
+    /* line 40, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes {
+      margin: 0px;
+      flex: 1 1 0%;
+      pointer-events: none;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+    /* line 51, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container {
+      flex: 1 1 0%;
+      margin: 0px;
+      pointer-events: auto;
+    }
+    /* line 56, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route {
+      padding-top: 6px !important;
+      position: relative !important;
+    }
+    /* line 60, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .checkpoint, .shipment-progress .routes .route-container .route .in-transit {
+      background-color: #FAF8F7;
+      padding-left: 6px !important;
+      padding-right: 6px !important;
+      position: absolute !important;
+      left: -6px !important;
+      top: 0px !important;
+    }
+    /* line 68, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .checkpoint .fa, .shipment-progress .routes .route-container .route .in-transit .fa {
+      color: #a4a2ae;
+      display: block !important;
+      border-bottom: none;
+    }
+    /* line 73, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .checkpoint .fa.arrived, .shipment-progress .routes .route-container .route .in-transit .fa.arrived {
+      color: #cc9418;
+    }
+    /* line 77, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .checkpoint .fa.departed, .shipment-progress .routes .route-container .route .in-transit .fa.departed {
+      color: #48A9A6;
+    }
+    /* line 83, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .in-transit {
+      left: 50% !important;
+    }
+    /* line 85, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .in-transit .fa {
+      color: #cc9418;
+    }
+    /* line 90, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .transport {
+      background-color: #a4a2ae;
+      padding-top: 3px !important;
+      height: 0px !important;
+      width: 100% !important;
+    }
+    /* line 93, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .transport.departed {
+      background-color: #cc9418;
+    }
+    /* line 97, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .routes .route-container .route .transport.arrived {
+      background-color: #48A9A6;
+    }
+    /* line 109, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .destination {
+      background-color: #FAF8F7;
+      padding-left: 6px !important;
+      position: absolute !important;
+      right: 0px !important;
+      top: 0px !important;
+    }
+    /* line 116, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .destination .dest-container {
+      position: relative !important;
+    }
+    /* line 119, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .destination .dest-container .dest-inner {
+      margin-top: -7px !important;
+    }
+    /* line 122, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .destination .dest-container .dest-inner .icon-cont {
+      width: 12px;
+      height: 12px;
+      display: inline-block !important;
+      position: relative !important;
+    }
+    /* line 129, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .destination .dest-container .dest-inner .icon-cont .icon {
+      color: #a4a2ae;
+      width: unset;
+      height: unset;
+      position: absolute !important;
+      bottom: -0.5em !important;
+      left: 0px !important;
+      border-bottom: none;
+    }
+    /* line 132, /vagrant/vendor/extensions/refinerycms-shipping/app/assets/stylesheets/refinery/shipping.scss */
+    .shipment-progress .destination .dest-container .dest-inner .icon-cont .icon.arrived {
+      color: #48A9A6;
+    }
+
+
+  </style>
 
   <%= yield :head %>
 

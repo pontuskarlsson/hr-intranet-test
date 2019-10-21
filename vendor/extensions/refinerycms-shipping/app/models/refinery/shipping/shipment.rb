@@ -208,9 +208,10 @@ module Refinery
         end
       end
 
-      scope :shipped,     -> { where(status: STATUSES - %w(not_shipped)) }
+      scope :shipped,     -> { where(status: 'shipped') }
       scope :recent,      -> (no_of_records = 10, days_ago = 90) { where('shipping_date > ?', Date.today - days_ago).order(shipping_date: :desc).limit(no_of_records) }
       scope :forwarder,   -> { where.not(forwarder_company_id: nil).includes(:forwarder_company) }
+      scope :consignee,   -> { where.not(consignee_company_id: nil).includes(:consignee_company) }
       scope :active,      -> { where.not(status: %w(delivered cancelled)) }
 
       def self.for_user_roles(user, role_titles = nil)

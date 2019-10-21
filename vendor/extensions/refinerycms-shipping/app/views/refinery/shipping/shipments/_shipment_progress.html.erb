@@ -1,11 +1,11 @@
 <div class="shipment-progress">
   <div class="routes">
-    <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_origin, next_route: shipment.mode == 'Air' || shipment.mode == 'Sea' ? shipment.route_port_of_loading : shipment.route_destination %>
+    <%= render 'refinery/shipping/shipments/shipment_checkpoint', shipment: shipment, route: shipment.route_origin, next_route: shipment.mode == 'Air' || shipment.mode == 'Sea' ? shipment.route_port_of_loading : shipment.route_destination %>
 
     <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
-      <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_loading, next_route: shipment.route_port_of_discharge %>
+      <%= render 'refinery/shipping/shipments/shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_loading, next_route: shipment.route_port_of_discharge %>
 
-      <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_discharge, next_route: shipment.route_destination %>
+      <%= render 'refinery/shipping/shipments/shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_discharge, next_route: shipment.route_destination %>
     <% end %>
   </div>
 

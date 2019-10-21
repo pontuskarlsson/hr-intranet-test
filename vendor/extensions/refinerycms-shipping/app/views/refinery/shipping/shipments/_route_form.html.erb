@@ -37,7 +37,7 @@
       <% if route.route_departure? %>
         <div class="input-group">
           <span class="input-group-label"><i class="fa fa-sign-in" title="Arrived at"></i></span>
-          <%= route_form.date_field :arrived_at, class: 'input-group-field' %>
+          <%= route_form.date_field :departed_at, class: 'input-group-field' %>
         </div>
 
         <div class="input-group">
@@ -48,7 +48,7 @@
       <% elsif route.route_arrival? %>
         <div class="input-group">
           <span class="input-group-label"><i class="fa fa-sign-out" title="Departed at"></i></span>
-          <%= route_form.date_field :departed_at, class: 'input-group-field' %>
+          <%= route_form.date_field :arrived_at, class: 'input-group-field' %>
         </div>
 
         <div class="input-group">

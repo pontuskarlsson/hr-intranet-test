@@ -3,8 +3,15 @@ Refinery::Shipping::Shipment.class_eval do
 
   acts_as_notifiable :'refinery/authentication/devise/users',
                      targets: ->(shipment, key) {
-                       Refinery::Authentication::Devise::User.for_role(Refinery::Shipping::ROLE_INTERNAL) +
-                           Refinery::Authentication::Devise::User.for_role(Refinery::Shipping::ROLE_EXTERNAL_FF).for_companies(shipment.forwarder_company)
+                       internal_users = Refinery::Authentication::Devise::User.where(email: ['daniel.viklund@happyrabbit.com', 'pontus.karlsson@happyrabbit.com', 'yvonne.wong@happyrabbit.com'])
+                       # ff_users = Refinery::Authentication::Devise::User.for_role(Refinery::Shipping::ROLE_EXTERNAL_FF).for_companies(shipment.forwarder_company)
+                       # con_users = Refinery::Authentication::Devise::User.for_role(Refinery::Shipping::ROLE_EXTERNAL).for_companies(shipment.consignee_company)
+                       #
+                       # if key['shipment.status_request']
+                       #   internal_users + ff_users
+                       # elsif key['shipment.status_summary']
+                       #   internal_users + ff_users + con_users
+                       # end
                      },
                      tracked: false, # no automatic callbacks
                      # group: :article,
@@ -18,7 +25,7 @@ Refinery::Shipping::Shipment.class_eval do
   def is_email_allowed?(target, key)
     # Do not send out emails for each status requests. After notifications
     # have been created, batch emails will be sent out instead.
-    key != 'shipment.status_request'
+    !%w(shipment.status_request shipment.status_summary).include? key
   end
 
   def printable_name

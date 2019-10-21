@@ -24,5 +24,29 @@ namespace :portal do
       end
     end
 
+    task send_status_summary: :environment do
+      begin
+        #shipments_by_consignee = Refinery::Shipping::Shipment.shipped.consignee.group_by(&:consignee_company)
+        shipments_by_consignee = Refinery::Shipping::Shipment.where(id: 1398).group_by(&:consignee_company)
+
+        shipments_by_consignee.each_pair do |consignee, shipments|
+          shipments.each do |shipment|
+            shipment.notify :'refinery/authentication/devise/users',
+                            key: 'shipment.status_summary'
+          end
+        end
+
+        # Send batch notification email to the users with unopened notifications of specified key in 1 hour
+        Refinery::Authentication::Devise::User.send_batch_unopened_notification_email(
+            batch_key: 'batch.shipment.status_summary',
+            filtered_by_key: 'shipment.status_summary',
+            custom_filter: ["created_at >= ?", 1.hour.ago]
+        )
+
+      rescue StandardError => e
+        ErrorMailer.error_email(e).deliver
+      end
+    end
+
   end
 end

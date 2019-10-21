@@ -1,0 +1,105 @@
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>Please see the following summary of active shipments.</p>
+
+<p style="margin: 0 0 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<% @notifications.each do |notification| %>
+  <%- shipment = notification.notifiable %>
+  <hr style="margin: 30px 0 10px;" />
+  <h2><%= link_to shipment.code, move_notification_url_for(notification, open: true) %></h2>
+
+  <table style="margin-bottom: 10px;">
+    <tbody>
+    <tr>
+      <th style="width: 100px;">Status</th>
+      <td style="font-weight: bold;"><%= shipment.status.capitalize %></td>
+    </tr>
+    <tr>
+      <th>Mode</th>
+      <td><%= shipment.mode %></td>
+    </tr>
+    <tr>
+      <th>Consignee Ref.</th>
+      <td><%= shipment.consignee_reference %></td>
+    </tr>
+    <tr>
+      <th>From</th>
+      <td><%= shipment.shipper_company_label %></td>
+    </tr>
+    <tr>
+      <th>Receiver</th>
+      <td><%= shipment.receiver_company_label %></td>
+    </tr>
+    <tr>
+      <th>Forwarder</th>
+      <td><%= shipment.forwarder_company_label %></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <table class="list" style="margin-bottom: 10px;">
+    <thead>
+    <tr>
+      <th>Origin</th>
+      <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
+        <th>Port of Loading</th>
+        <th>Port of Discharge</th>
+      <% end %>
+      <th>Destination</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <span style="color: <%= shipment.route_origin.has_completed? ? 'green': 'black' %>">
+          <%= shipment.route_origin.status.capitalize %>
+        </span><br/>
+        <%= shipment.route_origin.departed_at && shipment.route_origin.departed_at.strftime('%b %e, %Y') %>
+      </td>
+      <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
+        <td>
+          <span style="color: <%= shipment.route_port_of_loading.has_completed? ? 'green': 'black' %>">
+            <%= shipment.route_port_of_loading.status.capitalize %>
+          </span><br/>
+          <%= shipment.route_port_of_loading.departed_at && shipment.route_port_of_loading.departed_at.strftime('%b %e, %Y') %>
+        </td>
+        <td>
+          <span style="color: <%= shipment.route_port_of_discharge.has_completed? ? 'green': 'black' %>">
+            <%= shipment.route_port_of_discharge.status.capitalize %>
+          </span><br/>
+          <%= shipment.route_port_of_discharge.arrived_at && shipment.route_port_of_discharge.arrived_at.strftime('%b %e, %Y') %>
+        </td>
+      <% end %>
+      <td>
+        <span style="color: <%= shipment.route_destination.has_completed? ? 'green': 'black' %>">
+          <%= shipment.route_destination.status.capitalize %>
+        </span><br/>
+        <%= shipment.route_destination.arrived_at && shipment.route_destination.arrived_at.strftime('%b %e, %Y') %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h5 style="margin: 1rem 0 0;">Orders</h5>
+  <table>
+    <tbody>
+    <% shipment.items.each do |item| %>
+      <tr style="border-top: 1px solid #000;">
+        <td><%= item.order_label %></td>
+        <td>
+          <% if item.order.present? and item.order.order_items.any? %>
+            <% item.order.order_items.each_with_index do |order_item, i| %>
+              <% if i > 0 %><br/><% end %>
+              <%= order_item.description %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

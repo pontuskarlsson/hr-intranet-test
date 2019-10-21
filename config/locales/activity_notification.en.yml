@@ -31,6 +31,9 @@ en:
           status_request:
             mail_subject: 'Status Request for Shipments'
 
+          status_summary:
+            mail_subject: 'Shipments Summary'
+
       inspection:
         default:
           mail_subject:
