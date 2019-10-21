@@ -219,6 +219,9 @@ module Refinery
         if titles.include? Refinery::Shipping::ROLE_INTERNAL
           where(nil)
 
+        elsif titles.include? Refinery::Shipping::ROLE_EXTERNAL
+          where(consignee_company_id: user.company_ids)
+
         elsif titles.include? Refinery::Shipping::ROLE_EXTERNAL_FF
           where(forwarder_company_id: user.company_ids)
 
