@@ -16,7 +16,7 @@
     <tbody>
     <tr>
       <th style="width: 100px;">Status</th>
-      <td style="font-weight: bold;"><%= shipment.status.capitalize %></td>
+      <td style="font-weight: bold;"><%= shipment.status.try(:capitalize) %></td>
     </tr>
     <tr>
       <th>Mode</th>
@@ -56,27 +56,27 @@
     <tr>
       <td>
         <span style="color: <%= shipment.route_origin.has_completed? ? 'green': 'black' %>">
-          <%= shipment.route_origin.status.capitalize %>
+          <%= shipment.route_origin.status.try(:capitalize) %>
         </span><br/>
         <%= shipment.route_origin.departed_at && shipment.route_origin.departed_at.strftime('%b %e, %Y') %>
       </td>
       <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
         <td>
           <span style="color: <%= shipment.route_port_of_loading.has_completed? ? 'green': 'black' %>">
-            <%= shipment.route_port_of_loading.status.capitalize %>
+            <%= shipment.route_port_of_loading.status.try(:capitalize) %>
           </span><br/>
           <%= shipment.route_port_of_loading.departed_at && shipment.route_port_of_loading.departed_at.strftime('%b %e, %Y') %>
         </td>
         <td>
           <span style="color: <%= shipment.route_port_of_discharge.has_completed? ? 'green': 'black' %>">
-            <%= shipment.route_port_of_discharge.status.capitalize %>
+            <%= shipment.route_port_of_discharge.status.try(:capitalize) %>
           </span><br/>
           <%= shipment.route_port_of_discharge.arrived_at && shipment.route_port_of_discharge.arrived_at.strftime('%b %e, %Y') %>
         </td>
       <% end %>
       <td>
         <span style="color: <%= shipment.route_destination.has_completed? ? 'green': 'black' %>">
-          <%= shipment.route_destination.status.capitalize %>
+          <%= shipment.route_destination.status.try(:capitalize) %>
         </span><br/>
         <%= shipment.route_destination.arrived_at && shipment.route_destination.arrived_at.strftime('%b %e, %Y') %>
       </td>
