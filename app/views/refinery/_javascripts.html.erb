@@ -17,6 +17,7 @@
 <%= javascript_include_tag 'refinery/core' %>
 <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.js' %>
 <%= yield :javascripts -%>
+<% if current_authentication_devise_user.present? %>
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<%= ENV['ZENDESK_WIDGET_KEY'] %>"></script>
 <script type="text/javascript">
   zE(function() {
@@ -26,3 +27,4 @@
     });
   });
 </script>
+<% end %>
