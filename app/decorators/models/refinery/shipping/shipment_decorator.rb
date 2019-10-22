@@ -31,7 +31,7 @@ Refinery::Shipping::Shipment.class_eval do
   end
 
   def printable_name
-    code
+    "the shipment no. #{code}"
   end
 
 end

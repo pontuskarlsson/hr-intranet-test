@@ -89,13 +89,13 @@ module Refinery
         @invoice_label = label
       end
 
-      def assigned_to_label
-        @assigned_to_label ||= assigned_to.try(:label)
-      end
+      # def assigned_to_label
+      #   @assigned_to_label ||= assigned_to.try(:label)
+      # end
 
       def assigned_to_label=(label)
         self.assigned_to = ::Refinery::Authentication::Devise::User.find_by_label label
-        @assigned_to_label = label
+        super
       end
 
       def all_jobs

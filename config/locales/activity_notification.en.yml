@@ -25,6 +25,16 @@ en:
           text: A project has overdue invoices
           title: Project Invoices Overdue
 
+      shipment:
+        default:
+          title: Shipment
+
+        status_request:
+          title: Request for status update
+
+        status_summary:
+          title: Status summary of shipment
+
     user:
       batch:
         shipment:

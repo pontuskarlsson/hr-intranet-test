@@ -47,9 +47,11 @@ class Users::NotificationsWithDeviseController < ActivityNotification::Notificat
   #   super
   # end
 
-  # def set_index_options
-  #   super
-  # end
+  def set_index_options
+    super
+    @index_options[:limit] = [@index_options[:limit], 10].reject(&:nil?).min
+    @index_options
+  end
 
   # def load_index
   #   super

@@ -6,7 +6,7 @@ module Refinery
       attribute :non_invoiced_billables_attributes,     Hash
 
       def non_invoiced_billables
-        @non_invoiced_billables ||= invoice.company.billables.where(invoice_id: nil).order(billable_date: :desc)
+        @non_invoiced_billables ||= invoice.company.present? ? invoice.company.billables.where(invoice_id: nil).order(billable_date: :desc) : []
       end
 
       transaction do
