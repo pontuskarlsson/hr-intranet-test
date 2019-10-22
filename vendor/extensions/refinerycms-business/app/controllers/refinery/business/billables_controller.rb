@@ -5,6 +5,7 @@ module Refinery
 
       set_page PAGE_BILLABLES_URL
       allow_page_roles ROLE_INTERNAL_FINANCE
+      allow_page_roles ROLE_INTERNAL, only: [:index, :show]
 
       before_filter :find_billables
       before_filter :find_billable, except: [:index, :new, :create]
@@ -56,6 +57,8 @@ module Refinery
       def billable_scope
         @billables =
             if page_role? ROLE_INTERNAL_FINANCE
+              Refinery::Business::Billable.where(nil)
+            elsif page_role? ROLE_INTERNAL
               Refinery::Business::Billable.where(nil)
             else
               Refinery::Business::Billable.where('1=0')

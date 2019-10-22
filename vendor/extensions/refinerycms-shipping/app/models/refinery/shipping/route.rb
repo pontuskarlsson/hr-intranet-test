@@ -4,7 +4,7 @@ module Refinery
       self.table_name = 'refinery_shipping_routes'
 
       TYPES = %w(origin port_of_loading port_of_discharge destination custom)
-      STATUS = %w(unknown scheduled departed arrived)
+      STATUS = %w(schedule_pending scheduled departed arrived)
 
       belongs_to :shipment
       belongs_to :location
@@ -28,16 +28,16 @@ module Refinery
 
       before_validation(on: :create) do
         if route_type == 'origin'
-          self.status ||= departed_at.present? ? 'scheduled' : 'unknown'
+          self.status ||= departed_at.present? ? 'scheduled' : 'schedule_pending'
         else
-          self.status ||= arrived_at.present? ? 'scheduled' : 'unknown'
+          self.status ||= arrived_at.present? ? 'scheduled' : 'schedule_pending'
         end
       end
 
       before_save do
         self.final_destination = route_type == 'destination'
 
-        if status == 'unknown'
+        if status == 'schedule_pending'
           if departed_at.present? or arrived_at.present?
             self.status = 'scheduled'
           end
