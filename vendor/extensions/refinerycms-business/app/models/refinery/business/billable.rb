@@ -24,7 +24,7 @@ module Refinery
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:title, :description]
 
-      delegate :invoice_number, to: :invoice, prefix: true, allow_nil: true
+      delegate :invoice_number, :reference, to: :invoice, prefix: true, allow_nil: true
       delegate :label, to: :company, prefix: true, allow_nil: true
 
       validates :company_id,    presence: true

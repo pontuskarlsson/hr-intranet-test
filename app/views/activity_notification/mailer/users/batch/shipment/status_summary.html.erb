@@ -27,16 +27,32 @@
       <td><%= shipment.consignee_reference %></td>
     </tr>
     <tr>
-      <th>From</th>
-      <td><%= shipment.shipper_company_label %></td>
+      <th>Consignee</th>
+      <td><%= shipment.consignee_company_label %></td>
     </tr>
+    <% if shipment.receiver_company_label != shipment.consignee_company_label %>
+      <tr>
+        <th>Receiver</th>
+        <td><%= shipment.receiver_company_label %></td>
+      </tr>
+    <% end %>
     <tr>
-      <th>Receiver</th>
-      <td><%= shipment.receiver_company_label %></td>
+      <th>Destination</th>
+      <td><%= shipment.route_destination.location_name %></td>
     </tr>
     <tr>
       <th>Supplier</th>
       <td><%= shipment.supplier_company_label %></td>
+    </tr>
+    <% if shipment.shipper_company_label != shipment.supplier_company_label %>
+      <tr>
+        <th>Shipper</th>
+        <td><%= shipment.shipper_company_label %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <th>Origin</th>
+      <td><%= shipment.route_origin.location_name %></td>
     </tr>
     <tr>
       <th>Forwarder</th>

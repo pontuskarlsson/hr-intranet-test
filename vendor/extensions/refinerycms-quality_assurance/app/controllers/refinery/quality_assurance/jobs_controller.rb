@@ -50,6 +50,8 @@ module Refinery
         @jobs ||=
             if page_role?(ROLE_INTERNAL_MANAGER)
               Job.where(nil)
+            elsif page_role?(ROLE_INTERNAL)
+              Job.where(nil)
             else
               Job.where('1=0')
             end

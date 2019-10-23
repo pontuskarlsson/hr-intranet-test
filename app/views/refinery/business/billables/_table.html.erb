@@ -7,7 +7,8 @@
     <th data-dt-search-date="true">Date</th>
     <th data-dt-search-input="true">Assigned To</th>
     <th data-dt-search-input="true">Article</th>
-    <th data-dt-search-input="true">Invoice</th>
+    <th data-dt-search-input="true">Inv. No.</th>
+    <th data-dt-search-input="true">Inv. Ref.</th>
     <th>Qty</th>
     <th>Unit</th>
     <th>Unit Price</th>
@@ -25,7 +26,8 @@
     <th>Date</th>
     <th>Assigned To</th>
     <th>Article</th>
-    <th>Invoice</th>
+    <th>Inv. No.</th>
+    <th>Inv. Ref.</th>
     <th>Qty</th>
     <th>Unit</th>
     <th>Unit Price</th>
@@ -55,12 +57,13 @@
         "order": [[3, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
-            { data: "company_label" },
+          { data: "company_label" },
           { data: "title" },
           { data: "billable_date", "render": dtDateRenderer },
           { data: "assigned_to_label" },
           { data: "article_code" },
           { data: "invoice_invoice_number" },
+          { data: "invoice_reference" },
           { data: "qty" },
           { data: "qty_unit" },
           { data: "unit_price", "render": { "display": formatCurrency } },
