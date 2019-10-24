@@ -61,7 +61,7 @@
               </div>
             <% end %>
           <% else %>
-            <%= @billable.invoice_invoice_number.presence || 'N/A' %>
+            <%= @billable.article_code || 'N/A' %>
           <% end %>
         </td>
       </tr>

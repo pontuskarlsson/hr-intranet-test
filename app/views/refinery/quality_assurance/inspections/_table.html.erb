@@ -6,10 +6,10 @@
     <th>Photo</th>
     <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
     <th data-dt-search-select="Pass,Reject,Hold">Result</th>
+    <th data-dt-search-date="true">Insp. Date</th>
     <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th data-dt-search-input="true">Status</th><%- end %>
     <th data-dt-search-input="true">PO</th>
     <th data-dt-search-input="true">Style</th>
-    <th data-dt-search-date="true">Insp. Date</th>
     <%- if false %><th data-dt-search-input="true">Project Ref.</th><%- end %>
     <th data-dt-search-input="true">Customer</th>
     <th data-dt-search-input="true">Supplier</th>
@@ -33,10 +33,10 @@
     <th>Photo</th>
     <th>Type</th>
     <th>Result</th>
+    <th>Insp. Date</th>
     <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th>Status</th><%- end %>
     <th>PO</th>
     <th>Style</th>
-    <th>Insp. Date</th>
     <%- if false %><th>Project Reference</th><%- end %>
     <th>Customer</th>
     <th>Supplier</th>
@@ -74,7 +74,7 @@
             Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
           }
         },
-        "order": [[7, 'desc']],
+        "order": [[5, 'desc']],
         columnDefs: [ {
           orderable: false,
           className: 'select-checkbox',
@@ -86,10 +86,10 @@
           { data: "inspection_photo_thumb_url", "render": dtThumbRenderer },
           { data: "inspection_type" },
           { data: "result", "render": { "display": function(data, type, row) { return '<span class="result-'+(data || '').toLowerCase()+'">'+data+'</span>' } } },
+          { data: "inspection_date", render: dtDateRenderer },
           <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>{ data: "status" },<%- end %>
           { data: "po_number" },
           { data: "product_label"},
-          { data: "inspection_date", render: dtDateRenderer },
 //          { data: "company_project_reference" },
           { data: "company_label" },
           { data: "supplier_label" },

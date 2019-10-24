@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191016015153) do
+ActiveRecord::Schema.define(version: 20191024034447) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -361,10 +361,14 @@ ActiveRecord::Schema.define(version: 20191016015153) do
     t.integer  "position",   limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "country",    limit: 255
+    t.string   "city",       limit: 255
   end
 
+  add_index "refinery_business_companies", ["city"], name: "index_refinery_business_companies_on_city", using: :btree
   add_index "refinery_business_companies", ["code"], name: "index_refinery_business_companies_on_code", using: :btree
   add_index "refinery_business_companies", ["contact_id"], name: "index_refinery_business_companies_on_contact_id", using: :btree
+  add_index "refinery_business_companies", ["country"], name: "index_refinery_business_companies_on_country", using: :btree
   add_index "refinery_business_companies", ["name"], name: "index_refinery_business_companies_on_name", using: :btree
   add_index "refinery_business_companies", ["position"], name: "index_refinery_business_companies_on_position", using: :btree
 
