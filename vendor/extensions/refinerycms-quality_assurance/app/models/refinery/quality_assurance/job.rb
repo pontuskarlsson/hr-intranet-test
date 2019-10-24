@@ -100,6 +100,7 @@ module Refinery
             where.not(id: job.id).
             where(assigned_to_label: job.assigned_to_label, inspection_date: job.inspection_date, company_id: job.company_id)
       }
+      scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
 
       def project_label
         @project_label ||= project.try(:label)
@@ -108,6 +109,15 @@ module Refinery
       def project_label=(label)
         self.project = ::Refinery::Business::Project.find_by_label label
         @project_label = label
+      end
+
+      def billable_label
+        @billable_label ||= billable.try(:label)
+      end
+
+      def billable_label=(label)
+        self.billable = ::Refinery::Business::Billable.find_by_label label
+        @billable_label = label
       end
 
       def assign_code!

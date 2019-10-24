@@ -13,6 +13,8 @@ module Refinery
 
       ARTICLE_CODES = %w(WORK-QCQA-CN-DAY WORK-QCQA-VN-DAY WORK-QCQA-TH-DAY WORK-QCQA-ID-DAY)
 
+      PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' - ' }
+
       belongs_to :company
       #belongs_to :project
       #belongs_to :section
@@ -76,8 +78,16 @@ module Refinery
         end
       end
 
+      def self.to_source
+        where(nil).pluck(:id, :title, :assigned_to_label, :billable_date).map(&PROC_LABEL).to_json.html_safe
+      end
+
       def label
-        title
+        PROC_LABEL.call(id, title, assigned_to_label, billable_date)
+      end
+
+      def self.find_by_label(label)
+        find_by id: label.split(' - ').first
       end
 
       def invoice_label

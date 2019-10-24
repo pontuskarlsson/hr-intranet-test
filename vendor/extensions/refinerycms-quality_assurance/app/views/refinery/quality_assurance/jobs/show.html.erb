@@ -55,6 +55,21 @@
         <% if (billable = @job.billable).present? %>
           <table class="cc-table">
             <tbody>
+            <% if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
+              <tr>
+                <th>Billable</th>
+                <td>
+                  <%= form_for @job, url: refinery.quality_assurance_job_path(@job) do |f| %>
+                    <div class="input-group">
+                      <%= f.text_field :billable_label, class: 'js_billable_field input-group-field' -%>
+                      <div class="input-group-button">
+                        <%= f.submit 'Update', class: 'button' %>
+                      </div>
+                    </div>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
             <tr>
               <th style="width: 150px;">Title</th>
               <td>
@@ -70,6 +85,14 @@
               <td><%= billable.description %></td>
             </tr>
             <tr>
+              <th>Assigned To</th>
+              <td><%= billable.assigned_to_label %></td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td><%= billable.status %></td>
+            </tr>
+            <tr>
               <th>Invoice</th>
               <td>
                 <% if billable.invoice.present? %>
@@ -82,10 +105,6 @@
                   N/A
                 <% end %>
               </td>
-            </tr>
-            <tr>
-              <th>Status</th>
-              <td><%= billable.status %></td>
             </tr>
             </tbody>
           </table>

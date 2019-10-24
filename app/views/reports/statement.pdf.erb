@@ -1,0 +1,15 @@
+<h1><%= @invoice.invoice_number %></h1>
+
+<table>
+  <tbody>
+  <tr>
+    <th>Invoice Date</th>
+    <td><%= @invoice.invoice_date %></td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Billables</h2>
+<% @invoice.billables.each do |billable| %>
+  <p><%= billable.label %></p>
+<% end %>

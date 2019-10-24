@@ -52,6 +52,10 @@ module Refinery
               Job.where(nil)
             elsif page_role?(ROLE_INTERNAL)
               Job.where(nil)
+            elsif page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE)
+              Job.where(nil)
+            elsif page_role? ROLE_EXTERNAL
+              Job.for_companies(current_authentication_devise_user.companies)
             else
               Job.where('1=0')
             end
@@ -72,7 +76,7 @@ module Refinery
       end
 
       def job_params
-        params.require(:job).permit(:status, :project_code, :project_label, :project_id)
+        params.require(:job).permit(:status, :project_code, :project_label, :project_id, :billable_id, :billable_label)
       end
 
     end

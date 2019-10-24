@@ -3,7 +3,11 @@
   <table class="cc-table">
     <tbody>
     <tr>
-      <th style="width: 150px;">Date</th>
+      <th style="width: 150px;">&nbsp;</th>
+      <td><%= link_to 'View Inspection', refinery.quality_assurance_inspection_path(job.inspection) %></td>
+    </tr>
+    <tr>
+      <th>Date</th>
       <td><%= job.inspection.display_inspection_date %></td>
     </tr>
     <tr>

@@ -6,6 +6,7 @@
     <th>Photo</th>
     <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
     <th data-dt-search-select="Pass,Reject,Hold">Result</th>
+    <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th data-dt-search-input="true">Status</th><%- end %>
     <th data-dt-search-input="true">PO</th>
     <th data-dt-search-input="true">Style</th>
     <th data-dt-search-date="true">Insp. Date</th>
@@ -32,6 +33,7 @@
     <th>Photo</th>
     <th>Type</th>
     <th>Result</th>
+    <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th>Status</th><%- end %>
     <th>PO</th>
     <th>Style</th>
     <th>Insp. Date</th>
@@ -84,6 +86,7 @@
           { data: "inspection_photo_thumb_url", "render": dtThumbRenderer },
           { data: "inspection_type" },
           { data: "result", "render": { "display": function(data, type, row) { return '<span class="result-'+(data || '').toLowerCase()+'">'+data+'</span>' } } },
+          <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>{ data: "status" },<%- end %>
           { data: "po_number" },
           { data: "product_label"},
           { data: "inspection_date", render: dtDateRenderer },

@@ -6,7 +6,10 @@ class ReportsController < ApplicationController
   allow_page_roles Refinery::QualityAssurance::ROLE_EXTERNAL, only: [:inspections]
   allow_page_roles Refinery::QualityAssurance::ROLE_INTERNAL, only: [:inspections]
 
+  allow_page_roles Refinery::Business::ROLE_INTERNAL_FINANCE, only: [:statement]
+
   before_action :find_inspections,  only: [:inspections]
+  before_action :find_invoice,      only: [:statement]
 
   def inspections
     @title = 'QA Report: Inspections'
@@ -28,6 +31,12 @@ class ReportsController < ApplicationController
     end
   end
 
+  def statement
+    respond_to do |format|
+      format.pdf { render pdf: "Invoice #{@invoice.invoice_number} - Statement #{DateTime.now.strftime('%d, %M, %Y')}", window_status: "FLAG_FOR_PDF" }
+    end
+  end
+
   private
 
   def inspections_scope
@@ -45,6 +54,12 @@ class ReportsController < ApplicationController
 
   def find_inspections
     @inspections = inspections_scope.where(inspections_filter_params).where(id: params[:id])
+  rescue ::ActiveRecord::RecordNotFound
+    error_404
+  end
+
+  def find_invoice
+    @invoice = Refinery::Business::Invoice.find params[:id]
   rescue ::ActiveRecord::RecordNotFound
     error_404
   end

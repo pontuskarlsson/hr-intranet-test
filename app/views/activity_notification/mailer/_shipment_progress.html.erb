@@ -1,0 +1,27 @@
+<div class="shipment-progress">
+  <table class="routes-table">
+    <tbody>
+    <tr>
+      <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_origin, next_route: shipment.mode == 'Air' || shipment.mode == 'Sea' ? shipment.route_port_of_loading : shipment.route_destination %>
+
+      <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
+        <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_loading, next_route: shipment.route_port_of_discharge %>
+
+        <%= render 'shipment_checkpoint', shipment: shipment, route: shipment.route_port_of_discharge, next_route: shipment.route_destination %>
+      <% end %>
+
+      <td class="dest-container">
+        <div class="dest-inner">
+          <div class="icon-cont">
+            <% if shipment.route_destination.present? %>
+              <i class="fa fa-home icon <%= shipment.route_destination.has_arrived? ? 'arrived' : '' %>" data-tooltip title="<%= shipment.route_destination.location_label %>"></i>
+            <% else %>
+              <i class="fa fa-home icon"></i>
+            <% end %>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
