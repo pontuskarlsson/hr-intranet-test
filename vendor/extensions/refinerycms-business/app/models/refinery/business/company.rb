@@ -24,6 +24,7 @@ module Refinery
       validates :name,          presence: true, uniqueness: true
       validates :code,          presence: true, uniqueness: true
       validates :contact_id,    presence: true, uniqueness: true
+      validates :country_code,  inclusion: ISO3166::Country.codes, allow_blank: true
 
       before_validation do
         if code.blank?
@@ -34,6 +35,13 @@ module Refinery
           self.contact = Refinery::Marketing::Contact.organisations.find_by_name(contact_label)
         elsif contact_id.nil? && name.present?
           self.contact = Refinery::Marketing::Contact.organisations.where(name: name).first_or_create!(code: code)
+        end
+      end
+
+      before_save do
+        if contact.present?
+          self.country_code = ISO3166::Country.find_country_by_name(contact.country || contact.other_country).try(:un_locode)
+          self.city = contact.city || contact.other_city
         end
       end
 
@@ -83,6 +91,10 @@ module Refinery
 
       def contact_label=(label)
         @contact_label = label
+      end
+
+      def country
+        country_code.present? ? ISO3166::Country[country_code].name : nil
       end
 
     end

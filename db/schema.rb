@@ -266,7 +266,7 @@ ActiveRecord::Schema.define(version: 20191024034447) do
     t.integer  "position",        limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
+  en
 
   add_index "refinery_business_accounts", ["organisation"], name: "index_refinery_business_accounts_on_organisation", using: :btree
   add_index "refinery_business_accounts", ["position"], name: "index_refinery_business_accounts_on_position", using: :btree
@@ -355,20 +355,20 @@ ActiveRecord::Schema.define(version: 20191024034447) do
   add_index "refinery_business_budgets", ["description"], name: "index_refinery_business_budgets_on_description", using: :btree
 
   create_table "refinery_business_companies", force: :cascade do |t|
-    t.integer  "contact_id", limit: 4
-    t.string   "code",       limit: 255
-    t.string   "name",       limit: 255
-    t.integer  "position",   limit: 4
+    t.integer  "contact_id",   limit: 4
+    t.string   "code",         limit: 255
+    t.string   "name",         limit: 255
+    t.integer  "position",     limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "country",    limit: 255
-    t.string   "city",       limit: 255
+    t.string   "country_code", limit: 255
+    t.string   "city",         limit: 255
   end
 
   add_index "refinery_business_companies", ["city"], name: "index_refinery_business_companies_on_city", using: :btree
   add_index "refinery_business_companies", ["code"], name: "index_refinery_business_companies_on_code", using: :btree
   add_index "refinery_business_companies", ["contact_id"], name: "index_refinery_business_companies_on_contact_id", using: :btree
-  add_index "refinery_business_companies", ["country"], name: "index_refinery_business_companies_on_country", using: :btree
+  add_index "refinery_business_companies", ["country_code"], name: "index_refinery_business_companies_on_country_code", using: :btree
   add_index "refinery_business_companies", ["name"], name: "index_refinery_business_companies_on_name", using: :btree
   add_index "refinery_business_companies", ["position"], name: "index_refinery_business_companies_on_position", using: :btree
 

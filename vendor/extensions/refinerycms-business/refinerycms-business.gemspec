@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency             'refinerycms-resource_authorizations'
   s.add_dependency             'jbuilder',            '2.9.0'
   s.add_dependency             'trans_forms'
+  s.add_dependency             'countries'
 
   # Development dependencies (usually used for testing)
   s.add_development_dependency 'refinerycms-testing', '>= 2.1.2'

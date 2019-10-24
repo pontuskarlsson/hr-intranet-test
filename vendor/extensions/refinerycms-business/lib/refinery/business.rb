@@ -1,4 +1,5 @@
 require 'refinerycms-core'
+require 'countries'
 
 module Refinery
   autoload :BusinessGenerator, 'generators/refinery/business_generator'

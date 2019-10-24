@@ -8,7 +8,9 @@ module Refinery
                 order: 'code ASC'
 
         def company_params
-          params.require(:company).to_unsafe_h.slice('code', 'company_users_attributes', 'name', 'contact_id', 'contact_label')
+          params.require(:company).to_unsafe_h.slice(
+              'code', 'company_users_attributes', 'name', 'contact_id', 'contact_label', 'country_code', 'city'
+          )
         end
 
       end

@@ -18,6 +18,16 @@
     <%= f.text_field :name -%>
   </div>
 
+  <div class='field'>
+    <%= f.label :city -%>
+    <%= f.text_field :city -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :country_code -%>
+    <%= f.select :country_code, options_for_select([['Please select', '']] + ISO3166::Country.all_names_with_codes, f.object.country_code) -%>
+  </div>
+
   <h5 style="margin-bottom: 0;">Company Users</h5>
   <% @company.company_users.each_with_index do |company_user, i| %>
     <%= f.fields_for :company_users, company_user, child_index: i do |cu_form| %>

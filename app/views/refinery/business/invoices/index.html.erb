@@ -1,13 +1,5 @@
 <% content_for :body do %>
   <div class="grid-x grid-padding-x">
-
-    <% Refinery::Business::Account.all.each do |account| %>
-      <div class="cell medium-6">
-        <h5><%= account.organisation %></h5>
-        <%= render 'chart_balance', chart_id: "chart-balance-#{account.id}", source_table_id: 'js_invoices_table', account_id: account.id %>
-      </div>
-    <% end %>
-
     <div class="cell">
       <%= render 'table', companies: @companies, table_id: 'js_invoices_table' %>
     </div>

@@ -22,6 +22,7 @@ PATH
   remote: vendor/extensions
   specs:
     refinerycms-business (1.0)
+      countries
       jbuilder (= 2.9.0)
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing
@@ -163,6 +164,10 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.5)
+    countries (3.0.0)
+      i18n_data (~> 0.8.0)
+      sixarm_ruby_unaccent (~> 1.1)
+      unicode_utils (~> 1.4)
     crass (1.0.4)
     daemons (1.3.1)
     database_cleaner (1.3.0)
@@ -258,6 +263,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
+    i18n_data (0.8.0)
     ice_nine (0.11.2)
     inflection (1.0.0)
     insensitive_hash (0.3.3)
@@ -446,6 +452,7 @@ GEM
       faraday (~> 0.9)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
+    sixarm_ruby_unaccent (1.2.0)
     speakingurl-rails (8.0.2)
       railties (>= 3.1)
     spreadsheet (1.1.7)
@@ -477,6 +484,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
+    unicode_utils (1.4.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
