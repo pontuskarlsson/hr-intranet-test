@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191024034447) do
+ActiveRecord::Schema.define(version: 20191029014840) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -266,10 +266,39 @@ ActiveRecord::Schema.define(version: 20191024034447) do
     t.integer  "position",        limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
-  en
+  end
 
   add_index "refinery_business_accounts", ["organisation"], name: "index_refinery_business_accounts_on_organisation", using: :btree
   add_index "refinery_business_accounts", ["position"], name: "index_refinery_business_accounts_on_position", using: :btree
+
+  create_table "refinery_business_articles", force: :cascade do |t|
+    t.string   "item_id",          limit: 255
+    t.string   "code",             limit: 255
+    t.string   "name",             limit: 255
+    t.text     "description",      limit: 65535
+    t.boolean  "is_sold",                        default: false, null: false
+    t.boolean  "is_purchased",                   default: false, null: false
+    t.boolean  "is_public",                      default: false, null: false
+    t.integer  "company_id",       limit: 4
+    t.boolean  "is_managed",                     default: false, null: false
+    t.datetime "updated_date_utc"
+    t.string   "managed_status",   limit: 255
+    t.datetime "archived_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_articles", ["archived_at"], name: "index_refinery_business_articles_on_archived_at", using: :btree
+  add_index "refinery_business_articles", ["code"], name: "index_refinery_business_articles_on_code", using: :btree
+  add_index "refinery_business_articles", ["company_id"], name: "index_refinery_business_articles_on_company_id", using: :btree
+  add_index "refinery_business_articles", ["is_managed"], name: "index_refinery_business_articles_on_is_managed", using: :btree
+  add_index "refinery_business_articles", ["is_public"], name: "index_refinery_business_articles_on_is_public", using: :btree
+  add_index "refinery_business_articles", ["is_purchased"], name: "index_refinery_business_articles_on_is_purchased", using: :btree
+  add_index "refinery_business_articles", ["is_sold"], name: "index_refinery_business_articles_on_is_sold", using: :btree
+  add_index "refinery_business_articles", ["item_id"], name: "index_refinery_business_articles_on_item_id", using: :btree
+  add_index "refinery_business_articles", ["managed_status"], name: "index_refinery_business_articles_on_managed_status", using: :btree
+  add_index "refinery_business_articles", ["name"], name: "index_refinery_business_articles_on_name", using: :btree
+  add_index "refinery_business_articles", ["updated_date_utc"], name: "index_refinery_business_articles_on_updated_date_utc", using: :btree
 
   create_table "refinery_business_billables", force: :cascade do |t|
     t.integer  "company_id",        limit: 4
@@ -386,6 +415,34 @@ ActiveRecord::Schema.define(version: 20191024034447) do
   add_index "refinery_business_company_users", ["role"], name: "index_refinery_business_company_users_on_role", using: :btree
   add_index "refinery_business_company_users", ["user_id"], name: "index_refinery_business_company_users_on_user_id", using: :btree
 
+  create_table "refinery_business_invoice_items", force: :cascade do |t|
+    t.integer  "invoice_id",       limit: 4
+    t.string   "line_item_id",     limit: 255
+    t.string   "description",      limit: 255
+    t.decimal  "quantity",                     precision: 13, scale: 4
+    t.decimal  "unit_amount",                  precision: 13, scale: 4
+    t.string   "item_code",        limit: 255
+    t.string   "account_code",     limit: 255
+    t.string   "tax_type",         limit: 255
+    t.decimal  "tax_amount",                   precision: 13, scale: 4
+    t.decimal  "line_amount",                  precision: 13, scale: 4
+    t.integer  "billable_id",      limit: 4
+    t.string   "transaction_type", limit: 255
+    t.integer  "line_item_order",  limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_invoice_items", ["account_code"], name: "INDEX_rb_invoice_items_ON_account_code", using: :btree
+  add_index "refinery_business_invoice_items", ["billable_id"], name: "INDEX_rb_invoice_items_ON_billable_id", using: :btree
+  add_index "refinery_business_invoice_items", ["description"], name: "INDEX_rb_invoice_items_ON_description", using: :btree
+  add_index "refinery_business_invoice_items", ["invoice_id"], name: "INDEX_rb_invoice_items_ON_invoice_id", using: :btree
+  add_index "refinery_business_invoice_items", ["item_code"], name: "INDEX_rb_invoice_items_ON_item_code", using: :btree
+  add_index "refinery_business_invoice_items", ["line_item_id"], name: "INDEX_rb_invoice_items_ON_line_item_id", using: :btree
+  add_index "refinery_business_invoice_items", ["line_item_order"], name: "INDEX_rb_invoice_items_ON_line_item_order", using: :btree
+  add_index "refinery_business_invoice_items", ["tax_type"], name: "INDEX_rb_invoice_items_ON_tax_type", using: :btree
+  add_index "refinery_business_invoice_items", ["transaction_type"], name: "INDEX_rb_invoice_items_ON_transaction_type", using: :btree
+
   create_table "refinery_business_invoices", force: :cascade do |t|
     t.integer  "account_id",         limit: 4
     t.string   "invoice_id",         limit: 255
@@ -416,6 +473,9 @@ ActiveRecord::Schema.define(version: 20191024034447) do
     t.string   "to_company_label",   limit: 255
     t.integer  "to_contact_id",      limit: 4
     t.datetime "archived_at"
+    t.string   "managed_status",     limit: 255
+    t.boolean  "is_managed",                                              default: false, null: false
+    t.date     "invoice_for_month"
   end
 
   add_index "refinery_business_invoices", ["account_id"], name: "index_refinery_business_invoices_on_account_id", using: :btree
@@ -426,9 +486,12 @@ ActiveRecord::Schema.define(version: 20191024034447) do
   add_index "refinery_business_invoices", ["from_company_label"], name: "INDEX_rb_invoices_ON_from_company_label", using: :btree
   add_index "refinery_business_invoices", ["from_contact_id"], name: "INDEX_rb_invoices_ON_from_contact_id", using: :btree
   add_index "refinery_business_invoices", ["invoice_date"], name: "index_refinery_business_invoices_on_invoice_date", using: :btree
+  add_index "refinery_business_invoices", ["invoice_for_month"], name: "INDEX_rb_invoices_ON_invoice_for_month", using: :btree
   add_index "refinery_business_invoices", ["invoice_id"], name: "index_refinery_business_invoices_on_invoice_id", using: :btree
   add_index "refinery_business_invoices", ["invoice_number"], name: "index_refinery_business_invoices_on_invoice_number", using: :btree
   add_index "refinery_business_invoices", ["invoice_type"], name: "index_refinery_business_invoices_on_invoice_type", using: :btree
+  add_index "refinery_business_invoices", ["is_managed"], name: "INDEX_rb_invoices_ON_is_managed", using: :btree
+  add_index "refinery_business_invoices", ["managed_status"], name: "INDEX_rb_invoices_ON_managed_status", using: :btree
   add_index "refinery_business_invoices", ["position"], name: "index_refinery_business_invoices_on_position", using: :btree
   add_index "refinery_business_invoices", ["project_id"], name: "index_refinery_business_invoices_on_project_id", using: :btree
   add_index "refinery_business_invoices", ["status"], name: "index_refinery_business_invoices_on_status", using: :btree
@@ -581,6 +644,42 @@ ActiveRecord::Schema.define(version: 20191024034447) do
   add_index "refinery_business_sections", ["project_id"], name: "index_refinery_business_sections_on_project_id", using: :btree
   add_index "refinery_business_sections", ["section_type"], name: "index_refinery_business_sections_on_section_type", using: :btree
   add_index "refinery_business_sections", ["start_date"], name: "index_refinery_business_sections_on_start_date", using: :btree
+
+  create_table "refinery_business_vouchers", force: :cascade do |t|
+    t.integer  "company_id",                    limit: 4
+    t.integer  "article_id",                    limit: 4
+    t.integer  "line_item_sales_purchase_id",   limit: 4
+    t.integer  "line_item_sales_discount_id",   limit: 4
+    t.integer  "line_item_sales_move_from_id",  limit: 4
+    t.integer  "line_item_prepay_move_to_id",   limit: 4
+    t.integer  "line_item_prepay_move_from_id", limit: 4
+    t.integer  "line_item_sales_move_to_id",    limit: 4
+    t.string   "discount_type",                 limit: 255
+    t.decimal  "base_amount",                               precision: 13, scale: 4
+    t.decimal  "discount_amount",                           precision: 13, scale: 4
+    t.decimal  "discount_percentage",                       precision: 9,  scale: 6
+    t.decimal  "amount",                                    precision: 13, scale: 4
+    t.string   "currency_code",                 limit: 255
+    t.datetime "valid_from"
+    t.datetime "valid_to"
+    t.string   "status",                        limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_business_vouchers", ["article_id"], name: "INDEX_rb_vouchers_ON_article_id", using: :btree
+  add_index "refinery_business_vouchers", ["company_id"], name: "INDEX_rb_vouchers_ON_company_id", using: :btree
+  add_index "refinery_business_vouchers", ["currency_code"], name: "INDEX_rb_vouchers_ON_currency_code", using: :btree
+  add_index "refinery_business_vouchers", ["discount_type"], name: "INDEX_rb_vouchers_ON_disount_type", using: :btree
+  add_index "refinery_business_vouchers", ["line_item_prepay_move_from_id"], name: "INDEX_rb_vouchers_ON_line_item_prepay_move_from_id", using: :btree
+  add_index "refinery_business_vouchers", ["line_item_prepay_move_to_id"], name: "INDEX_rb_vouchers_ON_line_item_prepay_move_to_id", using: :btree
+  add_index "refinery_business_vouchers", ["line_item_sales_discount_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_discount_id", using: :btree
+  add_index "refinery_business_vouchers", ["line_item_sales_move_from_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_move_from_id", using: :btree
+  add_index "refinery_business_vouchers", ["line_item_sales_move_to_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_move_to_id", using: :btree
+  add_index "refinery_business_vouchers", ["line_item_sales_purchase_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_purchase_id", using: :btree
+  add_index "refinery_business_vouchers", ["status"], name: "INDEX_rb_vouchers_ON_status", using: :btree
+  add_index "refinery_business_vouchers", ["valid_from"], name: "INDEX_rb_vouchers_ON_valid_from", using: :btree
+  add_index "refinery_business_vouchers", ["valid_to"], name: "INDEX_rb_vouchers_ON_valid_to", using: :btree
 
   create_table "refinery_calendar_calendars", force: :cascade do |t|
     t.string   "title",            limit: 255
@@ -1226,6 +1325,19 @@ ActiveRecord::Schema.define(version: 20191024034447) do
 
   add_index "refinery_shipping_addresses", ["easy_post_id"], name: "index_refinery_shipping_addresses_on_easy_post_id", using: :btree
   add_index "refinery_shipping_addresses", ["position"], name: "index_refinery_shipping_addresses_on_position", using: :btree
+
+  create_table "refinery_shipping_documents", force: :cascade do |t|
+    t.integer  "shipment_id",   limit: 4
+    t.integer  "resource_id",   limit: 4
+    t.string   "document_type", limit: 255
+    t.text     "comments",      limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "refinery_shipping_documents", ["document_type"], name: "index_refinery_shipping_documents_on_document_type", using: :btree
+  add_index "refinery_shipping_documents", ["resource_id"], name: "index_refinery_shipping_documents_on_resource_id", using: :btree
+  add_index "refinery_shipping_documents", ["shipment_id"], name: "index_refinery_shipping_documents_on_shipment_id", using: :btree
 
   create_table "refinery_shipping_items", force: :cascade do |t|
     t.integer  "shipment_id",      limit: 4

@@ -39,10 +39,10 @@ en:
       batch:
         shipment:
           status_request:
-            mail_subject: 'Status Request for Shipments'
+            mail_subject: 'Status Request for Shipments - %{current_date}'
 
           status_summary:
-            mail_subject: 'Shipments Summary'
+            mail_subject: 'Shipments Summary - %{current_date}'
 
       inspection:
         default:

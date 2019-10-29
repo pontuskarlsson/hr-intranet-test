@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   delegate :authentication_devise_user_password_expired_path, to: :refinery
 
   def authenticate_authentication_devise_user!
-    super && ((current_authentication_devise_user.last_active_at && current_authentication_devise_user.last_active_at + 1.day > DateTime.now) || current_authentication_devise_user.touch(:last_active_at))
+    super && ((current_authentication_devise_user.last_active_at && current_authentication_devise_user.last_active_at < 1.minutes.ago) || current_authentication_devise_user.touch(:last_active_at))
   end
 
   def signed_in_root_path(resource_or_scope)

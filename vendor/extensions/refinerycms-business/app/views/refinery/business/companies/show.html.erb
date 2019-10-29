@@ -35,14 +35,6 @@
 
   <% end %>
 
-  <% if page_role? Refinery::Business::ROLE_INTERNAL_FINANCE %>
-    <% if @company.invoices.any? %>
-      <div class="cell">
-        <%= render 'invoices_list', invoices: @company.invoices.includes(:account) %>
-      </div>
-    <% end %>
-  <% end %>
-
   <% if @company.projects.any? %>
     <%= render 'projects_list', projects: @company.projects %>
   <% end %>

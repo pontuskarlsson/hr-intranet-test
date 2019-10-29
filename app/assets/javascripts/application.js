@@ -64,4 +64,22 @@ $(function(){
       $img.attr('src', $img.data('src'));
     });
   });
+
+  $(document.body).on('change', '.js_append_selected_files', function(evt) {
+    var $t = $(this);
+
+    var $file_cont = $t.siblings('.js_file_cont');
+
+    if ($file_cont.length === 0) {
+      $file_cont = $('<div class="js_file_cont"><h5>Selected File(s)</h5></div>').appendTo($t.parent());
+    }
+
+    $file_cont.html();
+    var files = $t[0].files;
+
+    for (var i = 0; i < files.length; i++) {
+      $('<div></div>').html(files[i].name).appendTo($file_cont);
+    }
+    console.log('test')
+  })
 });

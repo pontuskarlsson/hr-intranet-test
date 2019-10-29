@@ -1,24 +1,20 @@
 <%= form_for routes_form, url: [refinery, :shipping, shipment] do |f| %>
   <div class="grid-x grid-padding-x">
     <div class="cell">
-      <h3>Origin</h3>
       <%= render 'route_form', shipment: shipment, route: shipment.route_origin, f: f, i: 0 %>
     </div>
 
     <% if shipment.mode == 'Air' || shipment.mode == 'Sea' %>
       <div class="cell">
-        <h3>Port of Loading</h3>
         <%= render 'route_form', shipment: shipment, route: shipment.route_port_of_loading, f: f, i: 1 %>
       </div>
 
       <div class="cell">
-        <h3>Port of Discharge</h3>
         <%= render 'route_form', shipment: shipment, route: shipment.route_port_of_discharge, f: f, i: 2 %>
       </div>
     <% end %>
 
     <div class="cell">
-      <h3>Destination</h3>
       <%= render 'route_form', shipment: shipment, route: shipment.route_destination, f: f, i: 3 %>
     </div>
   </div>

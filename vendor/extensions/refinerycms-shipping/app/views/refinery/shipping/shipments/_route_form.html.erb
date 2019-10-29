@@ -2,6 +2,7 @@
   <%= route_form.hidden_field :route_type %>
   <div class="grid-x grid-padding-x">
     <div class="cell large-8">
+      <h3><%= route.display_route_type %></h3>
       <div class="location-item">
         <div class="location-map">
           <div class="js-location-map" style="height: 100%;" data-map-lat="<%= route.location_lat %>" data-map-lng="<%= route.location_lng %>"></div>
@@ -42,7 +43,7 @@
 
         <div class="input-group">
           <span class="input-group-label">Status</span>
-          <%= route_form.select :status, options_for_select([['Please select', { disabled: true }]] + ::Refinery::Shipping::Route.departure_statuses, route_form.object.status), {}, class: 'input-group-field' %>
+          <%= route_form.select :status, options_for_select(::Refinery::Shipping::Route.departure_status_options, route_form.object.status), {}, class: 'input-group-field' %>
         </div>
 
       <% elsif route.route_arrival? %>
@@ -53,7 +54,7 @@
 
         <div class="input-group">
           <span class="input-group-label">Status</span>
-          <%= route_form.select :status, options_for_select([['Please select', { disabled: true }]] + ::Refinery::Shipping::Route.arrival_statuses, route_form.object.status), {}, class: 'input-group-field' %>
+          <%= route_form.select :status, options_for_select(::Refinery::Shipping::Route.arrival_status_options, route_form.object.status), {}, class: 'input-group-field' %>
         </div>
       <% end %>
     </div>

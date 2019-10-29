@@ -40,7 +40,7 @@
       var dt = $('#<%= table_id %>').DataTable({
         "responsive":     true,
         "paging":         true,
-        "ajax": "<%= ajax %>",
+        "ajax": "<%= refinery.business_billables_path(invoice_id: invoice.id) %>",
         "order": [[2, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },

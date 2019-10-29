@@ -50,4 +50,31 @@ module ApplicationHelper
     str.present? ? str.split(',').map(&:squish).join(', ') : ''
   end
 
+  def fa_icon_from_mime_type(resource)
+    if resource.file_mime_type.present?
+      case resource.file_mime_type
+      when /application\/(zip)/ then 'fa-file-archive-o'
+      when /application\/(vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet|vnd\.ms-excel)/ then 'fa-file-excel-o'
+      when /image\/(jpeg|jpg|png|gif|bmp)/ then 'fa-file-image-o'
+      when /application\/(pdf|x-pdf)/ then 'fa-file-pdf-o'
+      when /application\/(vnd\.openxmlformats-officedocument\.presentationml\.presentation)/ then 'fa-file-powerpoint-o'
+      when /application\/(pdf)/ then 'fa-file-video-o'
+      when /application\/(pdf)/ then 'fa-file-word-o'
+      else 'fa-file-o'
+      end
+
+    else
+      case resource.file_name.split('.').last
+      when /zip/ then 'fa-file-archive-o'
+      when /xls|xlsx/ then 'fa-file-excel-o'
+      when /jpeg|jpg|png|gif|bmp/ then 'fa-file-image-o'
+      when /pdf/ then 'fa-file-pdf-o'
+      when /ppt|pptx/ then 'fa-file-powerpoint-o'
+      when /mpg|mpeg|avi|mp4/ then 'fa-file-video-o'
+      when /doc|docx|/ then 'fa-file-word-o'
+      else 'fa-file-o'
+      end
+    end
+  end
+
 end

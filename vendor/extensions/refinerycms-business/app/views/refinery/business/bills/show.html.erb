@@ -1,0 +1,76 @@
+<% content_for :body do %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <h2><%= @bill.invoice_number %></h2>
+    </div>
+
+    <div class="cell medium-6">
+      <section class="contact-card">
+        <h3>Details</h3>
+
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Seller</th>
+            <td>
+              <% if @bill.company.present? %>
+                <%= link_to @bill.company.label, refinery.business_company_path(@bill.company) %>
+              <% else %>
+                N/A
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th>Invoice No.</th>
+            <td><%= @bill.invoice_number %></td>
+          </tr>
+          <tr>
+            <th>Reference</th>
+            <td><%= @bill.reference %></td>
+          </tr>
+          <tr>
+            <th>Invoice Date</th>
+            <td><%= @bill.invoice_date %></td>
+          </tr>
+          <tr>
+            <th>Due Date</th>
+            <td><%= @bill.due_date %></td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td><%= @bill.status %></td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="cell medium-6">
+      <section class="contact-card">
+        <h3>Invoice Amount</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Total Amount</th>
+            <td><%=number_to_currency @bill.total_amount, currency: @bill.currency_code %></td>
+          </tr>
+          <tr>
+            <th>Amount Due</th>
+            <td><%=number_to_currency @bill.amount_due, currency: @bill.currency_code %></td>
+          </tr>
+          <tr>
+            <th>Amount Paid</th>
+            <td><%=number_to_currency @bill.amount_paid, currency: @bill.currency_code %></td>
+          </tr>
+          <tr>
+            <th>Amount Credited</th>
+            <td><%=number_to_currency @bill.amount_credited, currency: @bill.currency_code %></td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+<% end %>
+
+<%= render '/refinery/content_page' %>

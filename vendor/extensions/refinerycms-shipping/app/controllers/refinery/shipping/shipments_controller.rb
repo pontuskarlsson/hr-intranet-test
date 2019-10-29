@@ -95,6 +95,29 @@ module Refinery
       #   end
       # end
 
+      def add_document
+        @document_creator = ::Refinery::Shipping::DocumentCreator.new_in_model(@shipment)
+      end
+
+      def create_document
+        @document_creator = ::Refinery::Shipping::DocumentCreator.new_in_model(@shipment, params[:document], current_authentication_devise_user)
+        if @document_creator.save
+          flash[:notice] = 'Successfully added Document(s)'
+        else
+          flash[:alert] = 'Failed to add Document(s)'
+        end
+        redirect_to refinery.shipping_shipment_path(@shipment)
+      end
+
+      def destroy_document
+        if destroy_attachment_and_document
+          flash[:notice] = 'Successfully removed Document'
+        else
+          flash[:alert] = 'Failed to remove Document'
+        end
+        redirect_to refinery.shipping_shipment_path(@shipment)
+      end
+
       protected
 
       def shipments_scope
@@ -128,6 +151,12 @@ module Refinery
             length_unit: @shipment.try(:length_unit).presence || 'cm',
             weight_unit: @shipment.try(:weight_unit).presence || 'kg'
         }
+      end
+
+      def destroy_attachment_and_document
+        document = @shipment.documents.find params[:document_id]
+        document.resource.destroy
+        document.destroy
       end
 
       def shipment_form_saved?

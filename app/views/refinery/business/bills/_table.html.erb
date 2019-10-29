@@ -1,0 +1,76 @@
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th data-dt-search-input="true">Inv. No.</th>
+    <th data-dt-search-input="true">Reference</th>
+    <th data-dt-search-input="true">Seller</th>
+    <th>Inv. Date</th>
+    <th>Due Date</th>
+    <th data-dt-search-select="<%= ::Refinery::Business::Invoice::STATUSES.join(',') %>">Status</th>
+    <th data-dt-search-input="true">Cur.</th>
+    <th style="text-align: right;">Tot. Amount</th>
+    <th style="text-align: right;">Paid</th>
+    <th style="text-align: right;">Due</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Inv. No.</th>
+    <th>Reference</th>
+    <th>Seller</th>
+    <th>Inv. Date</th>
+    <th>Due Date</th>
+    <th>Status</th>
+    <th>Cur.</th>
+    <th style="text-align: right;">Tot. Amount</th>
+    <th style="text-align: right;">Paid</th>
+    <th style="text-align: right;">Due</th>
+  </tr>
+  </tfoot>
+</table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var ajaxStatus = { active: true, archived: false };
+
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        "paging":         true,
+        "ajax": {
+          "url": "<%= refinery.business_bills_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
+        "order": [[5, 'desc']],
+        "columns": [
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_bills_path %>") } },
+          { data: "invoice_number" },
+          { data: "reference" },
+          { data: function(row, type, set, meta) { return row.company && row.company.name || null; } },
+          { data: "invoice_date", render: dtDateRenderer },
+          { data: "due_date" },
+          { data: "status" },
+          { data: "currency_code" },
+          { data: "total_amount", render: formatCurrency },
+          { data: "amount_paid", render: formatCurrency },
+          { data: "amount_due", render: formatCurrency }
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5'
+        ]
+      });
+
+      initDataTable(dt, ajaxStatus);
+    });
+  </script>
+<% end %>

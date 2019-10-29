@@ -4,8 +4,7 @@
     <th></th>
     <th data-dt-search-input="true">Inv. No.</th>
     <th data-dt-search-input="true">Reference</th>
-    <th data-dt-search-input="true">Company</th>
-    <th data-dt-search-select="<%= ::Refinery::Business::Invoice::INVOICE_TYPES.join(',') %>">Type</th>
+    <th data-dt-search-input="true">Buyer</th>
     <th>Inv. Date</th>
     <th>Due Date</th>
     <th data-dt-search-select="<%= ::Refinery::Business::Invoice::STATUSES.join(',') %>">Status</th>
@@ -21,8 +20,7 @@
     <th></th>
     <th>Inv. No.</th>
     <th>Reference</th>
-    <th>Company</th>
-    <th>Type</th>
+    <th>Buyer</th>
     <th>Inv. Date</th>
     <th>Due Date</th>
     <th>Status</th>
@@ -56,7 +54,6 @@
           { data: "invoice_number" },
           { data: "reference" },
           { data: function(row, type, set, meta) { return row.company && row.company.name || null; } },
-          { data: "invoice_type" },
           { data: "invoice_date", render: dtDateRenderer },
           { data: "due_date" },
           { data: "status" },

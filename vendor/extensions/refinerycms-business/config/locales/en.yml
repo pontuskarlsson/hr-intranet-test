@@ -189,6 +189,8 @@ en:
         show:
           other: Other Sections
 
+    please_select: Please Select
+
   activerecord:
     attributes:
       'refinery/business/billable':
@@ -216,6 +218,8 @@ en:
         description: Description
         order_number: Order Number
         order_type: Order Type
+        order_types:
+          purchaseorder: Purchase Order
         reference: Reference
         order_date: Order Date
 

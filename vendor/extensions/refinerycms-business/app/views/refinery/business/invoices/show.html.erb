@@ -1,107 +1,142 @@
 <% content_for :actions do %>
-  <p><button class="button" data-open="js_invoice_billables_form">Add Billables</button></p>
-
-  <div class="reveal" id="js_invoice_billables_form" data-reveal>
-    <%= form_for invoice_billables_form, url: refinery.add_billables_business_invoice_path(@invoice) do |f| %>
-      <h4><%= invoice_billables_form.non_invoiced_billables.count %> non-invoiced billables available</h4>
-      <ul style="max-height: 300px; overflow-y: scroll;">
-        <%= f.fields_for :non_invoiced_billables do |ib_form| %>
-          <li>
-            <%= ib_form.label :invoice_id do %>
-              <%= ib_form.check_box :invoice_id, {}, @invoice.id.to_s, '' %>
-              <%= ib_form.object.title %>
-              <%= ib_form.object.billable_date %>
-              <%= ib_form.object.assigned_to_label %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-      <%= f.submit 'Add' %>
+  <% if page_role? ::Refinery::Business::ROLE_INTERNAL_FINANCE %>
+    <% if @invoice.is_managed %>
+      <p class="italic">Managed</p>
+    <% else %>
+      <p><%= button_to 'Set as Managed', [refinery, :business, @invoice], params: { :"invoice[is_managed]" => true }, class: 'button', method: :put, html: { confirm: 'Managing this Invoice will overwrite any changes made manually in Xero. Do you want to continue?' } %></p>
     <% end %>
-
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+  <% end %>
 <% end %>
 
 <% content_for :body do %>
-  <h2><%= @invoice.label %></h2>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <h2><%= @invoice.invoice_number %></h2>
+    </div>
 
-  <section class="contact-card">
-    <table class="cc-table">
-      <tbody>
-      <tr>
-        <th style="width: 150px;">Company</th>
-        <td>
-          <% if @invoice.company.present? %>
-            <%= link_to @invoice.company.label, refinery.business_company_path(@invoice.company) %>
-          <% else %>
-            N/A
+    <div class="cell medium-6">
+      <section class="contact-card">
+        <h3>Invoice Amount</h3>
+
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Buyer</th>
+            <td>
+              <% if @invoice.company.present? %>
+                <%= link_to @invoice.company.label, refinery.business_company_path(@invoice.company) %>
+              <% else %>
+                N/A
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th>Invoice No.</th>
+            <td><%= @invoice.invoice_number %></td>
+          </tr>
+          <tr>
+            <th>Reference</th>
+            <td><%= @invoice.reference %></td>
+          </tr>
+          <tr>
+            <th>Invoice Date</th>
+            <td><%= @invoice.invoice_date %></td>
+          </tr>
+          <tr>
+            <th>Due Date</th>
+            <td><%= @invoice.due_date %></td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td><%= @invoice.status %></td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="cell medium-6">
+      <section class="contact-card">
+        <h3>Invoice Amount</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Total Amount</th>
+            <td><%=number_to_currency @invoice.total_amount, currency: @invoice.currency_code %></td>
+          </tr>
+          <% if false %>
+          <tr>
+            <th>Billable Amount</th>
+            <td>
+              <%=number_to_currency @invoice.total_cost_from_billables %>
+              <% if @invoice.billable_cost_diff != 0 %>
+                (<span style="color: #C1666B;"><%=number_to_currency @invoice.billable_cost_diff %></span>)
+              <% end %>
+            </td>
+          </tr>
           <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Invoice No.</th>
-        <td><%= @invoice.invoice_number %></td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td><%= @invoice.invoice_type %></td>
-      </tr>
-      <tr>
-        <th>Reference</th>
-        <td><%= @invoice.reference %></td>
-      </tr>
-      <tr>
-        <th>Invoice Date</th>
-        <td><%= @invoice.invoice_date %></td>
-      </tr>
-      <tr>
-        <th>Due Date</th>
-        <td><%= @invoice.due_date %></td>
-      </tr>
-      <tr>
-        <th>Status</th>
-        <td><%= @invoice.status %></td>
-      </tr>
-      </tbody>
-    </table>
+          <tr>
+            <th>Amount Due</th>
+            <td><%=number_to_currency @invoice.amount_due, currency: @invoice.currency_code %></td>
+          </tr>
+          <tr>
+            <th>Amount Paid</th>
+            <td><%=number_to_currency @invoice.amount_paid, currency: @invoice.currency_code %></td>
+          </tr>
+          <tr>
+            <th>Amount Credited</th>
+            <td><%=number_to_currency @invoice.amount_credited, currency: @invoice.currency_code %></td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
 
-    <h3>Invoice Amount</h3>
-    <table class="cc-table">
-      <tbody>
-      <tr>
-        <th style="width: 150px;">Total Amount</th>
-        <td><%=number_to_currency @invoice.total_amount, currency: @invoice.currency_code %></td>
-      </tr>
-      <tr>
-        <th>Billable Amount</th>
-        <td>
-          <%=number_to_currency @invoice.total_cost_from_billables %>
-          <% if @invoice.billable_cost_diff != 0 %>
-            (<span style="color: #C1666B;"><%=number_to_currency @invoice.billable_cost_diff %></span>)
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Amount Due</th>
-        <td><%=number_to_currency @invoice.amount_due, currency: @invoice.currency_code %></td>
-      </tr>
-      <tr>
-        <th>Amount Paid</th>
-        <td><%=number_to_currency @invoice.amount_paid, currency: @invoice.currency_code %></td>
-      </tr>
-      <tr>
-        <th>Amount Credited</th>
-        <td><%=number_to_currency @invoice.amount_credited, currency: @invoice.currency_code %></td>
-      </tr>
-      </tbody>
-    </table>
+    <% if @invoice.is_managed %>
+      <div class="cell medium-3">
+        <ul class="vertical tabs" data-tabs id="example-tabs">
+          <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Billables</a></li>
+          <li class="tabs-title"><a href="#panel2v">Line Items</a></li>
+        </ul>
+      </div>
+      <div class="cell medium-9">
+        <div class="tabs-content" data-tabs-content="example-tabs">
+          <div class="tabs-panel is-active" id="panel1v">
+            <p><button class="button" data-open="js_invoice_billables_form">Add Billables</button></p>
 
-    <h3>Billables</h3>
-    <%= render 'refinery/business/invoices/billables_table', table_id: 'invoice_billables_table', ajax: refinery.business_billables_path(invoice_id: @invoice.id), options: {} %>
-  </section>
+            <div class="reveal" id="js_invoice_billables_form" data-reveal>
+              <%= form_for invoice_billables_form, url: refinery.add_billables_business_invoice_path(@invoice) do |f| %>
+                <h4><%= invoice_billables_form.non_invoiced_billables.count %> non-invoiced billables available</h4>
+                <ul style="max-height: 300px; overflow-y: scroll;">
+                  <%= f.fields_for :non_invoiced_billables do |ib_form| %>
+                    <li>
+                      <%= ib_form.label :invoice_id do %>
+                        <%= ib_form.check_box :invoice_id, {}, @invoice.id.to_s, '' %>
+                        <%= ib_form.object.title %>
+                        <%= ib_form.object.billable_date %>
+                        <%= ib_form.object.assigned_to_label %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+                <%= f.submit 'Add' %>
+              <% end %>
+
+              <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+
+            <%= render 'refinery/business/invoices/billables_table', table_id: 'invoice_billables_table', invoice: @invoice %>
+          </div>
+
+          <div class="tabs-panel" id="panel2v">
+            <%= render 'refinery/business/invoices/line_items_table', table_id: 'invoice_line_items_table', invoice: @invoice %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 <% end %>
 
 <%= render '/refinery/content_page' %>

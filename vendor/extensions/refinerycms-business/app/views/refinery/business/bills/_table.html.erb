@@ -1,0 +1,35 @@
+<table class="display" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Inv. No.</th>
+    <th>Reference</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Inv. No.</th>
+    <th>Reference</th>
+  </tr>
+  </tfoot>
+
+  <tbody>
+  <% @bills.each do |bill| %>
+    <tr>
+      <td>
+        <%= link_to refinery.business_bill_path(bill) do %>
+          <i class="fa fa-arrow-right"></i>
+        <% end %>
+      </td>
+      <td>
+        <%= bill.invoice_number %>
+      </td>
+      <td>
+        <%= bill.reference %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

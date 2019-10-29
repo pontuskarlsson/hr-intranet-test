@@ -132,8 +132,25 @@ en:
           ship: Ship
           send_shipment: Send Shipment
 
+    please_select: Please Select
+
   activerecord:
     attributes:
+      'refinery/shipping/document':
+        comments: Comments
+        document_type: Document Type
+        document_types:
+          air_waybill: Air Waybill
+          cmr_waybill: CMR Waybill
+          rail_waybill: Rail Waybill
+          bill_of_lading: Bill of Lading
+          packing_list: Packing List
+          commercial_invoice: Commercial Invoice
+          insurance: Insurance
+          country_of_origin: Country of Origin
+          other: Other
+        shipment_id: Shipment
+
       'refinery/shipping/item':
         shipment_id: Shipment
 
@@ -163,6 +180,24 @@ en:
         to_name: To Name
         to_user_id: To User
         shipping_document_id: Shipping Document
+
+      'refinery/shipping/route':
+        location_id: Location
+        route_type: Route Type
+        route_types:
+          origin: Origin
+          port_of_loading: Port of Loading
+          port_of_discharge: Port of Discharge
+          destination: Destination
+          other: Other
+        shipment_id: Shipment
+        status: Status
+        statuses:
+          schedule_pending: Schedule Pending
+          scheduled: Scheduled
+          departed: Departed
+          arrived: Arrived
+
 
       'refinery/shipping/shipment':
         assigned_to_id: Assigned To

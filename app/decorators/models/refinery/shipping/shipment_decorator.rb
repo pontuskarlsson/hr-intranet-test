@@ -34,4 +34,20 @@ Refinery::Shipping::Shipment.class_eval do
     "the shipment no. #{code}"
   end
 
+  def overriding_notification_email_subject(target, key)
+    case key
+    when /^batch\./ then subject_for target, key, current_date: DateTime.now.strftime('%b %e, %Y')
+    else nil
+    end
+  end
+
+  def subject_for(target, key, args = {})
+    k = key.split('.')
+    k.unshift('notification') if k.first != 'notification'
+    k.insert(1, target.to_resource_name)
+    k = k.join('.')
+    I18n.t(:mail_subject, scope: k,
+           default: ["Notification of #{printable_type.downcase}"], **args)
+  end
+
 end

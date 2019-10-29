@@ -54,7 +54,7 @@
             pointer-events: auto;
 
             .route {
-                padding-top: 6px !important;
+                padding-top: 13px !important;
                 position: relative !important;
 
                 .checkpoint, .in-transit {
@@ -69,6 +69,7 @@
                         color: rgb(164, 162, 174);
                         display: block !important;
                         border-bottom: none;
+                        font-size: 2rem;
 
                         &.arrived {
                             color: rgb(204, 148, 24);
@@ -117,17 +118,18 @@
             position: relative !important;
 
             .dest-inner {
-                margin-top: -7px !important;
+                margin-top: -0.8rem !important;
 
                 .icon-cont {
-                    width: 12px;
-                    height: 12px;
+                    width: 2rem;
+                    height: 2rem;
 
                     display: inline-block !important;
                     position: relative !important;
 
                     .icon {
                         color: rgb(164, 162, 174);
+                        font-size: 2rem;
 
                         &.arrived {
                             color: #48A9A6;

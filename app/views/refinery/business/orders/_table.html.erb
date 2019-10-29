@@ -5,7 +5,7 @@
     <th data-dt-search-input="true">Buyer</th>
     <th data-dt-search-input="true">Seller</th>
     <th data-dt-search-input="true">Order No.</th>
-    <th data-dt-search-input="true">Order Type</th>
+    <th data-dt-search-input="true">Type</th>
     <th data-dt-search-date="true">Order Date</th>
     <th>Ordered Qty</th>
     <th>Total Cost</th>
@@ -18,7 +18,7 @@
     <th>Buyer</th>
     <th>Seller</th>
     <th>Order No.</th>
-    <th>Order Type</th>
+    <th>Type</th>
     <th>Order Date</th>
     <th>Ordered Qty</th>
     <th>Total Cost</th>
@@ -41,7 +41,7 @@
           { data: "buyer_label" },
           { data: "seller_label" },
           { data: "order_number" },
-          { data: "order_type" },
+          { data: "display_order_type" },
           { data: "order_date", "render": dtDateRenderer },
           { data: "ordered_qty" },
           { data: "total_cost", "render": { "display": formatCurrency } },

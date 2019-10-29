@@ -20,6 +20,20 @@ module Refinery
         present(@page)
       end
 
+      def update
+        if @invoice.update_attributes(invoice_params)
+          flash[:notice] = 'Successfully updated the Invoice'
+          if params[:redirect_to].present?
+            redirect_to params[:redirect_to], status: :see_other
+          else
+            redirect_to refinery.business_invoice_path(@invoice), status: :see_other
+          end
+        else
+          present(@page)
+          render :show
+        end
+      end
+
       def add_billables
         if invoice_billables_form.save
           flash[:notice] = 'Successfully added Billables to Invoice'
@@ -39,9 +53,9 @@ module Refinery
       def invoices_scope
         @invoices ||=
             if page_role? ROLE_INTERNAL_FINANCE
-              Refinery::Business::Invoice.where(nil)
+              Refinery::Business::Invoice.invoices.where(nil)
             else
-              Refinery::Business::Invoice.where('1=0')
+              Refinery::Business::Invoice.invoices.where('1=0')
             end
       end
 
@@ -53,6 +67,10 @@ module Refinery
         @invoice = invoices_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
+      end
+
+      def invoice_params
+        params.require(:invoice).permit(:is_managed)
       end
 
       def filter_params

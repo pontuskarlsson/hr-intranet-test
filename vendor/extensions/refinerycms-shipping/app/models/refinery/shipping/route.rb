@@ -64,18 +64,46 @@ module Refinery
         %w(port_of_discharge destination).include? route_type
       end
 
-      def self.departure_statuses
-        (STATUS - %w(arrived)).map { |s| [s.capitalize, s] }
-      end
-
-      def self.arrival_statuses
-        (STATUS - %w(departed)).map { |s| [s.capitalize, s] }
-      end
-
       TYPES.each do |rt|
         define_method :"route_#{rt}?" do
           route_type == rt
         end
+      end
+
+      def display_route_type
+        if route_type.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.route_types.#{route_type}"
+        end
+      end
+
+      def self.route_type_options
+        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.route_types").reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, (k,v)| acc << [v,k] }
+      end
+
+      def display_status
+        if status.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
+        end
+      end
+
+      def self.status_options
+        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses").reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, (k,v)| acc << [v,k] }
+      end
+
+      def self.departure_status_options
+        (STATUS - %w(arrived)).reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
+      end
+
+      def self.arrival_status_options
+        (STATUS - %w(departed)).reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end
 
     end

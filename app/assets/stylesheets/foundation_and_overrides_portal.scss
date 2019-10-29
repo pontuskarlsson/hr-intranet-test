@@ -58,6 +58,25 @@
 // @include motion-ui-animations;
 @import 'foundation-extras/portal_card';
 
+html { height: 100%; }
+body, #wrap {min-height: 100%; position: relative;}
+body > #wrap {height: auto; min-height: 100vh;}
+main {padding-bottom: 520px;}
+main > .grid-container { margin-bottom: 1rem;}
+@media print, screen and (min-width: 40em) {
+    main {padding-bottom: 385px;}
+}
+.clearfix:after {content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;}
+.clearfix {display: inline-block;}
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
 .dropdown.menu > li.menu-logo {
     a { padding: 0; }
     img { height: 2.4rem; }

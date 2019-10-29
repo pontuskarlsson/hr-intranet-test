@@ -1,0 +1,14 @@
+<table>
+  <thead>
+  <tr>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% invoice.invoice_items.each do |invoice_item| %>
+    <tr>
+      <td><%= invoice_item.description %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

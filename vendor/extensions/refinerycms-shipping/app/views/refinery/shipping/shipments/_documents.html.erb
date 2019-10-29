@@ -1,0 +1,21 @@
+<div class="block-css-grid">
+  <% shipment.documents.includes(:resource).each do |document| %>
+    <div class="block-card">
+      <div class="card-label">Document Type</div>
+      <div class="card-text"><%= document.display_document_type %></div>
+
+      <div class="card-label">Comments</div>
+      <div class="card-text"><%= document.comments.presence || 'N/A' %></div>
+
+      <div class="card-text">
+        <%= link_to document.resource.url, download: document.resource.file_name do %>
+          Download <i class="fa <%= fa_icon_from_mime_type document.resource %>"></i>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div>
+    <%= link_to 'Add Document', refinery.add_document_shipping_shipment_path(shipment), remote: true, class: 'button' %>
+  </div>
+</div>

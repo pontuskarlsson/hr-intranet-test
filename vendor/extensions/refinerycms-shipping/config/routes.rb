@@ -9,8 +9,11 @@ Refinery::Core::Engine.routes.draw do
     end
 
     resources :shipments, :only => [:index, :create, :show, :edit, :update, :destroy] do
+      patch :manual_ship, on: :member
       member do
-        patch :manual_ship
+        get :add_document
+        post :create_document
+        delete 'document/:document_id', to: 'shipments#destroy_document', as: :destroy_document
       end
       resources :packages, only: [:create, :update, :destroy]
     end

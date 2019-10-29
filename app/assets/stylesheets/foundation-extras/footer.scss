@@ -1,7 +1,14 @@
 footer {
+    position: absolute;
+    margin-top: -520px; /* negative value of footer height */
+    height: 520px;
+    clear:both;
+    bottom: 0;
+    width: 100%;
+
     background-color: #DFC68C;
     /*color: #ccc;*/
-    padding: 80px 0 40px;
+    padding: 20px 0 10px;
 
     p {
         font-size: 14px;
@@ -30,4 +37,12 @@ footer {
         }
     }
     .footer-right { float: right; }
+}
+
+@media print, screen and (min-width: 40em) {
+    footer {
+        padding: 80px 0 40px;
+        margin-top: -385px; /* negative value of footer height */
+        height: 385px;
+    }
 }

@@ -82,6 +82,18 @@ module Refinery
         update_attributes(total_cost: order_items.sum(:total_cost))
       end
 
+      def display_order_type
+        if order_type.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.order_types.#{order_type.downcase}"
+        end
+      end
+
+      def self.order_type_options
+        TYPES.reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.order_types.#{k.downcase}"), k] }
+      end
+
     end
   end
 end

@@ -14,6 +14,7 @@ module Refinery
       belongs_to :to_company,   class_name: 'Company'
       belongs_to :project
       has_many :billables,      dependent: :nullify
+      has_many :invoice_items,  dependent: :destroy
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
@@ -38,6 +39,8 @@ module Refinery
         end
       end
 
+      scope :invoices, -> { where(invoice_type: 'ACCREC') }
+      scope :bills, -> { where(invoice_type: 'ACCPAY') }
       scope :active, -> { where.not(status: %w(DELETED VOIDED)) }
       scope :overdue, -> { active.where('amount_due > 0').where('due_date < ?', Date.today) }
 

@@ -106,6 +106,7 @@ module Refinery
       belongs_to :assigned_to,          class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :bill_to_account,      class_name: '::Refinery::Shipping::ShipmentAccount'
       belongs_to :project,              class_name: '::Refinery::Business::Project'
+      has_many :documents,              dependent: :nullify
       has_many :shipment_parcels,       dependent: :destroy
       has_many :packages,               dependent: :destroy
       has_many :items,                  dependent: :destroy
@@ -348,6 +349,12 @@ module Refinery
       Route::TYPES.each do |route_type|
         define_method :"route_#{route_type}" do
           routes.detect { |d| d.route_type == route_type } || ::Refinery::Shipping::Route.new(route_type: route_type)
+        end
+      end
+
+      STATUSES.each do |s|
+        define_method :"status_#{s}?" do
+          status == s
         end
       end
 

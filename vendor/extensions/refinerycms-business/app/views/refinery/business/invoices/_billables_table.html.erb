@@ -12,7 +12,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @invoice.billables.each do |billable| %>
+  <% invoice.billables.each do |billable| %>
     <tr>
       <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
       <td><%= billable.billable_date %></td>

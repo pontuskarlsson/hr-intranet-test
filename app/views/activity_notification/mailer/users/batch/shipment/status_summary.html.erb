@@ -10,9 +10,11 @@
 <% @notifications.each do |notification| %>
   <%- shipment = notification.notifiable %>
   <hr style="margin: 30px 0 10px;" />
-  <h2><%= link_to shipment.code, move_notification_url_for(notification, open: true) %></h2>
+  <h3><%= link_to shipment.code, move_notification_url_for(notification, open: true) %></h3>
 
-  <%= render 'shipment_progress', shipment: shipment %>
+  <% if false %>
+    <%= render 'shipment_progress', shipment: shipment %>
+  <% end %>
 
   <table style="margin-bottom: 10px;">
     <tbody>

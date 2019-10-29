@@ -3,9 +3,10 @@ Refinery::Core::Engine.routes.draw do
   # Frontend routes
   namespace :business do
     resources :billables, :only => [:index, :show, :new, :create, :update]
+    resources :bills, :only => [:index, :show]
     resources :budgets, :only => [:index, :show, :new, :create, :update]
     resources :companies, :only => [:index, :show, :create]
-    resources :invoices, :only => [:index, :show] do
+    resources :invoices, :only => [:index, :show, :create, :update] do
       patch :add_billables, to: 'invoices#add_billables', on: :member
     end
     resources :orders, :only => [:index, :show] do

@@ -62,12 +62,10 @@
 
 html, body, #wrap {height: 100%;}
 body > #wrap {height: auto; min-height: 100%;}
-main {padding-bottom: 385px;}
-footer {
-    position: relative;
-    margin-top: -385px; /* negative value of footer height */
-    height: 385px;
-    clear:both;
+main {padding-bottom: 500px;}
+main > .grid-container { margin-bottom: 1rem;}
+@media print, screen and (min-width: 40em) {
+    main {padding-bottom: 385px;}
 }
 .clearfix:after {content: ".";
     display: block;

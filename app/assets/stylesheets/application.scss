@@ -18,27 +18,21 @@
  *= require_tree ./additional
  */
 
-html { height: 100%; }
-body, #wrap {min-height: 100%; position: relative;}
-body > #wrap {height: auto; min-height: 100vh;}
-main {padding-bottom: 385px; margin: 0;}
-footer {
-    position: absolute;
-    bottom: 0;
-    height: 385px;
-    clear:both;
-    width: 100%;
-}
-.clearfix:after {content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;}
-.clearfix {display: inline-block;}
-/* Hides from IE-mac \*/
-* html .clearfix { height: 1%;}
-.clearfix {display: block;}
-/* End hide from IE-mac */
+//html { height: 100%; }
+//body, #wrap {min-height: 100%; position: relative;}
+//body > #wrap {height: auto; min-height: 100vh;}
+//main {padding-bottom: 385px; margin: 0;}
+//
+//.clearfix:after {content: ".";
+//    display: block;
+//    height: 0;
+//    clear: both;
+//    visibility: hidden;}
+//.clearfix {display: inline-block;}
+///* Hides from IE-mac \*/
+//* html .clearfix { height: 1%;}
+//.clearfix {display: block;}
+///* End hide from IE-mac */
 
 #page {
     /*background-color: #fff;*/
