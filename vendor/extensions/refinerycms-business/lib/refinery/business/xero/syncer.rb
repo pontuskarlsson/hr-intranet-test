@@ -74,7 +74,7 @@ module Refinery
         def sync_items(xero_items)
           sync_items = ::Refinery::Business::Xero::Sync::Items.new account, errors
 
-          items.each do |xero_item|
+          xero_items.each do |xero_item|
             sync_items.sync! xero_item
           end; ''
         end
