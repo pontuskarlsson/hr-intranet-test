@@ -3,22 +3,6 @@ module Refinery
     module Xero
       class Syncer
 
-        SYNC_ATTRIBUTES = {
-            invoice_number: :invoice_number,
-            invoice_type: :type,
-            reference: :reference,
-            invoice_date: :date,
-            due_date: :due_date,
-            status: :status,
-            total_amount: :total,
-            amount_due: :amount_due,
-            amount_paid: :amount_paid,
-            amount_credited: :amount_credited,
-            currency_code: :currency_code,
-            currency_rate: :currency_rate,
-            updated_date_utc: :updated_date_utc,
-        }.freeze
-
         attr_reader :account, :errors
 
         def initialize(account)
@@ -27,94 +11,79 @@ module Refinery
           @errors = []
         end
 
-        def sync_invoices(xero_invoices)
-          xero_invoices.each do |xero_invoice|
-            sync_invoice xero_invoice
-          end
+        def sync_changes!
+          params = { order: 'UpdatedDateUTC', modified_since: account.articles.maximum(:updated_date_utc) }.compact
+
+          items = client.Item.all(params)
+          Rails.logger.info "Found #{items.length} Items in Xero"
+
+          # Sync Articles/Items
+          sync_items items
+
+          params = { order: 'UpdatedDateUTC', modified_since: account.invoices.maximum(:updated_date_utc) }.compact
+
+          invoices = client.Invoice.all(params)
+          Rails.logger.info "Found #{invoices.length} Invoices in Xero"
+
+          # When syncing updated invoices only, we only load Contact details if there is no previous
+          # record of the contact. Any changes in contact details from Xero will be handled during
+          # full sync.
+          contacts = invoices.each_with_object({}) { |invoice, acc|
+            unless ::Refinery::Marketing::Contact.find_by_xero_id(account, invoice.attributes[:contact].contact_id).present?
+              acc[invoice.attributes[:contact].contact_id] ||= invoice.contact
+            end
+          }.values
+
+          # Sync Contacts first
+          sync_contacts contacts
+
+          # Sync Invoices
+          sync_invoices invoices
         end
 
-        def sync_invoice(xero_invoice)
-          # It is possible that the invoice has been moved between organisations
-          invoice = Refinery::Business::Invoice.find_or_initialize_by(invoice_id: xero_invoice.invoice_id)
-          invoice.account = @account
+        def sync_all!
+          # Sync Contacts first so that we can cross-reference the contact ids later when syncing Invoices
+          contacts = client.Contact.all(where: { account_number_is_not: nil })
+          sync_contacts contacts
 
-          # Calling the getter +contact+ will make another API call to load additional
-          # contact data, but using attributes[:contact] will not do that.
-          #
-          invoice.contact_id = xero_invoice.attributes[:contact].contact_id
+          # Sync Items
+          items = client.Item.all({ order: 'UpdatedDateUTC' })
+          sync_items items
 
-          if (contact = find_contact_by_xero_id(invoice.contact_id)).present? && contact.company.present?
-            invoice.company = contact.company
+          # Sync Invoices
+          invoices = client.Invoice.all({ order: 'UpdatedDateUTC' })
+          sync_invoices invoices
+        end
+
+        def sync_invoices(xero_invoices)
+          sync_invoices = ::Refinery::Business::Xero::Sync::Invoices.new account, errors
+
+          xero_invoices.each do |xero_invoice|
+            sync_invoices.sync! xero_invoice
           end
-
-          invoice.attributes = SYNC_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
-            acc[local] = xero_invoice.attributes[remote]
-          }
-
-          if invoice.invoice_type == 'ACCREC'
-            invoice.from_company = @account_company
-            invoice.to_company = invoice.company
-            invoice.to_contact_id = invoice.contact_id
-          else
-            invoice.to_company = @account_company
-            invoice.from_company = invoice.company
-            invoice.from_contact_id = invoice.contact_id
-          end
-
-          # Try to match and associate with Project, but only if it is not already
-          # associated, because we don't want to automatically override a manually
-          # assigned project.
-          #
-          # The Project reference can currently be found either in Invoice Number or
-          # Reference.
-          # if invoice.project_id.nil?
-          #   if (res = /Project ([0-9]{5})/.match(invoice.reference)).present?
-          #     invoice.project = ::Refinery::Business::Project.find_by code: res[1]
-          #   elsif (res = /Project ([0-9]{5})/.match(invoice.invoice_number)).present?
-          #     invoice.project = ::Refinery::Business::Project.find_by code: res[1]
-          #   end
-          # end
-
-          invoice.save!
-        rescue ActiveRecord::RecordNotSaved => e
-          @errors << e
         end
 
         def sync_contacts(xero_contacts)
+          sync_contacts = ::Refinery::Business::Xero::Sync::Contacts.new account, errors
+
           xero_contacts.each do |xero_contact|
-            sync_contact xero_contact
+            sync_contacts.sync! xero_contact
           end
         end
 
-        def sync_contact(xero_contact)
-          if xero_contact.account_number.present?
-            code = xero_contact.account_number.rjust(5, '0')
-            company = Refinery::Business::Company.find_by(code: code)
+        def sync_items(xero_items)
+          sync_items = ::Refinery::Business::Xero::Sync::Items.new account, errors
 
-            if company && company.contact
-              assign_xero_id company.contact, xero_contact.contact_id
-            end
-          end
-        rescue ActiveRecord::RecordNotSaved => e
-          @errors << e
+          items.each do |xero_item|
+            sync_items.sync! xero_item
+          end; ''
         end
 
-        def assign_xero_id(contact, xero_id)
-          if account.organisation == 'Happy Rabbit Limited'
-            contact.update_attributes xero_hr_id: xero_id
+        private
 
-          elsif account.organisation == 'Happy Rabbit Trading Limited'
-            contact.update_attributes xero_hrt_id: xero_id
-          end
-        end
-
-        def find_contact_by_xero_id(xero_id)
-          if account.organisation == 'Happy Rabbit Limited'
-            Refinery::Marketing::Contact.where(xero_hr_id: xero_id).first
-
-          elsif account.organisation == 'Happy Rabbit Trading Limited'
-            Refinery::Marketing::Contact.where(xero_hrt_id: xero_id).first
-          end
+        def client
+          @xero_client ||= ::Refinery::Business::Xero::Client.new(account)
+          @xero_client.client
         end
 
       end

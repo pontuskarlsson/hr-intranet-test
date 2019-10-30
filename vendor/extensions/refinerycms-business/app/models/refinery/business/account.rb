@@ -4,6 +4,7 @@ module Refinery
       self.table_name = 'refinery_business_accounts'
 
       has_many :invoices
+      has_many :articles
 
       validates :organisation,    presence: true, uniqueness: true
       validates :key_content,     presence: true

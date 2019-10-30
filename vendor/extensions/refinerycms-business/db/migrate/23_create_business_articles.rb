@@ -2,6 +2,7 @@ class CreateBusinessArticles < ActiveRecord::Migration
 
   def change
     create_table :refinery_business_articles do |t|
+      t.string :account_id
       t.string :item_id
       t.string :code
       t.string :name
@@ -16,11 +17,15 @@ class CreateBusinessArticles < ActiveRecord::Migration
       t.datetime :updated_date_utc
       t.string :managed_status
 
+      t.boolean :is_voucher, null: false, default: false
+      t.text :voucher_constraint
+
       t.datetime :archived_at
 
       t.timestamps
     end
 
+    add_index :refinery_business_articles, :account_id
     add_index :refinery_business_articles, :item_id
     add_index :refinery_business_articles, :code
     add_index :refinery_business_articles, :name
@@ -33,6 +38,8 @@ class CreateBusinessArticles < ActiveRecord::Migration
     add_index :refinery_business_articles, :is_managed
     add_index :refinery_business_articles, :updated_date_utc
     add_index :refinery_business_articles, :managed_status
+
+    add_index :refinery_business_articles, :is_voucher
 
     add_index :refinery_business_articles, :archived_at
   end

@@ -7,6 +7,7 @@ module Refinery
 
       INVOICE_TYPES = %w(ACCREC ACCPAY)
       STATUSES = %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
+      MANAGES_STATUSES = %w(draft synced changed)
 
       belongs_to :account
       belongs_to :company
@@ -19,13 +20,25 @@ module Refinery
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
       #   acts_as_indexed :fields => [:title]
-      acts_as_indexed :fields => [:invoice_number]
+      acts_as_indexed :fields => [:invoice_number, :invoice_date, :reference]
 
-      validates :account_id,    presence: true
-      validates :invoice_id,    presence: true, uniqueness: true
-      validates :contact_id,    presence: true
-      validates :invoice_type,  inclusion: INVOICE_TYPES
-      validates :status,        inclusion: STATUSES
+      validates :account_id,      presence: true
+      validates :invoice_id,      presence: true, uniqueness: true
+      validates :contact_id,      presence: true
+      validates :invoice_type,    inclusion: INVOICE_TYPES
+      validates :status,          inclusion: STATUSES
+      validates :managed_status,  inclusion: MANAGES_STATUSES, allow_nil: true
+
+      validate do
+        if invoice_for_month.present?
+          unless invoice_for_month == invoice_for_month.beginning_of_month
+            errors.add(:invoice_for_month, 'must be first of the month')
+          end
+          if company.present? && company.invoices.where(invoice_for_month: invoice_for_month).where.not(id: id).exists?
+            errors.add(:invoice_for_month, 'an Invoice of the month has already been added for this month')
+          end
+        end
+      end
 
       before_save do
         if %w(DELETED VOIDED).include?(status)

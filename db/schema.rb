@@ -272,22 +272,26 @@ ActiveRecord::Schema.define(version: 20191029014840) do
   add_index "refinery_business_accounts", ["position"], name: "index_refinery_business_accounts_on_position", using: :btree
 
   create_table "refinery_business_articles", force: :cascade do |t|
-    t.string   "item_id",          limit: 255
-    t.string   "code",             limit: 255
-    t.string   "name",             limit: 255
-    t.text     "description",      limit: 65535
-    t.boolean  "is_sold",                        default: false, null: false
-    t.boolean  "is_purchased",                   default: false, null: false
-    t.boolean  "is_public",                      default: false, null: false
-    t.integer  "company_id",       limit: 4
-    t.boolean  "is_managed",                     default: false, null: false
+    t.string   "item_id",            limit: 255
+    t.string   "code",               limit: 255
+    t.string   "name",               limit: 255
+    t.text     "description",        limit: 65535
+    t.boolean  "is_sold",                          default: false, null: false
+    t.boolean  "is_purchased",                     default: false, null: false
+    t.boolean  "is_public",                        default: false, null: false
+    t.integer  "company_id",         limit: 4
+    t.boolean  "is_managed",                       default: false, null: false
     t.datetime "updated_date_utc"
-    t.string   "managed_status",   limit: 255
+    t.string   "managed_status",     limit: 255
     t.datetime "archived_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_voucher",                       default: false, null: false
+    t.text     "voucher_constraint", limit: 65535
+    t.integer  "account_id",         limit: 4
   end
 
+  add_index "refinery_business_articles", ["account_id"], name: "index_refinery_business_articles_on_account_id", using: :btree
   add_index "refinery_business_articles", ["archived_at"], name: "index_refinery_business_articles_on_archived_at", using: :btree
   add_index "refinery_business_articles", ["code"], name: "index_refinery_business_articles_on_code", using: :btree
   add_index "refinery_business_articles", ["company_id"], name: "index_refinery_business_articles_on_company_id", using: :btree
@@ -295,6 +299,7 @@ ActiveRecord::Schema.define(version: 20191029014840) do
   add_index "refinery_business_articles", ["is_public"], name: "index_refinery_business_articles_on_is_public", using: :btree
   add_index "refinery_business_articles", ["is_purchased"], name: "index_refinery_business_articles_on_is_purchased", using: :btree
   add_index "refinery_business_articles", ["is_sold"], name: "index_refinery_business_articles_on_is_sold", using: :btree
+  add_index "refinery_business_articles", ["is_voucher"], name: "index_refinery_business_articles_on_is_voucher", using: :btree
   add_index "refinery_business_articles", ["item_id"], name: "index_refinery_business_articles_on_item_id", using: :btree
   add_index "refinery_business_articles", ["managed_status"], name: "index_refinery_business_articles_on_managed_status", using: :btree
   add_index "refinery_business_articles", ["name"], name: "index_refinery_business_articles_on_name", using: :btree

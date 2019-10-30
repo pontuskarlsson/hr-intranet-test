@@ -9,7 +9,7 @@ module Refinery
       before_filter :find_invoices, only: [:index]
       before_filter :find_invoice,  except: [:index, :new, :create]
 
-      helper_method :invoice_billables_form
+      helper_method :invoice_billables_form, :invoice_items_build_form
 
       def index
         @invoices = @invoices.from_params(params).order(updated_date_utc: :desc)
@@ -48,6 +48,10 @@ module Refinery
         end
       end
 
+      def build
+
+      end
+
       protected
 
       def invoices_scope
@@ -79,6 +83,10 @@ module Refinery
 
       def invoice_billables_form
         @invoice_billables_form ||= InvoiceBillablesForm.new_in_model(@invoice, params[:invoice], current_authentication_devise_user)
+      end
+
+      def invoice_items_build_form
+        @invoice_items_build_form ||= InvoiceItemsBuildForm.new_in_model(@invoice, params[:invoice_items_build_form], current_authentication_devise_user)
       end
 
     end

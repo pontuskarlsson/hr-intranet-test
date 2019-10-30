@@ -1,0 +1,87 @@
+<%= form_for [refinery, :business_admin, @article] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @article,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :account_id -%>
+    <%= f.text_field :account_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :item_id -%>
+    <%= f.text_field :item_id -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :code -%>
+    <%= f.text_field :code -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :name -%>
+    <%= f.text_field :name -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_area :description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :is_sold -%>
+    <%= f.check_box :is_sold -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :is_purchased -%>
+    <%= f.check_box :is_purchased -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :is_public -%>
+    <%= f.check_box :is_public -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :company_label -%>
+    <%= f.text_field :company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :is_managed -%>
+    <%= f.check_box :is_managed -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :managed_status -%>
+    <%= f.select :managed_status, options_for_select(::Refinery::Business::Article::managed_status_options, f.object.managed_status) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :archived_at -%>
+    <%= f.date_field :archived_at -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :is_voucher -%>
+    <%= f.check_box :is_voucher -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.business.admin.articles.article'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @article.code) -%>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      page_options.init(false, '', '');
+
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %>
+      });
+    });
+  </script>
+<% end -%>

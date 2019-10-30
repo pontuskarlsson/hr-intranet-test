@@ -1,0 +1,2 @@
+<%= will_paginate @articles if Refinery::Business::Admin::ArticlesController.pageable? %>
+<%= render 'sortable_list' %>
