@@ -213,6 +213,24 @@ en:
 
   activerecord:
     attributes:
+      'refinery/business/article':
+        archived_at: Archived At
+        code: Code
+        company_id: Company
+        description: Description
+        item_id: Item ID
+        is_managed: Is Managed
+        is_public: Is Public
+        is_purchased: Is Purchased
+        is_sold: Is Sold
+        is_voucher: Is Voucher
+        managed_status: Managed Status
+        managed_statuses:
+          draft: Draft
+          not_synced: Not Synced
+          synced: Synced
+        name: Name
+
       'refinery/business/billable':
         billable_date: Billable Date
         description: Description
@@ -253,3 +271,22 @@ en:
 
       'refinery/business/section':
         description: Description
+
+      'refinery/business/voucher':
+        amount: Amount
+        article_id: Article
+        company_id: Company
+        currency_code: Currency Code
+        discount_type: Discount Type
+        discount_types:
+          fixed_amount: Fixed Amount
+          percentage: Percentage
+        discount_amount: Discount Amount
+        discount_percentage: Discount Percentage
+        status: Status
+        statuses:
+          active: Active
+          expired: Expired
+          redeemed: Redeemed
+        valid_from: Valid From
+        valid_to: Valid To

@@ -11,8 +11,6 @@ module Refinery
       PRODUCT_UNITS = %w()
       TIME_UNITS = %w(day)
 
-      ARTICLE_CODES = %w(WORK-QCQA-CN-DAY WORK-QCQA-VN-DAY WORK-QCQA-TH-DAY WORK-QCQA-ID-DAY)
-
       PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' - ' }
 
       belongs_to :company
@@ -20,18 +18,18 @@ module Refinery
       #belongs_to :section
       belongs_to :invoice
       belongs_to :assigned_to,      class_name: '::Refinery::Authentication::Devise::User'
+      belongs_to :article
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
       #   acts_as_indexed :fields => [:title]
-      acts_as_indexed :fields => [:title, :description]
+      acts_as_indexed :fields => [:title, :description, :article_code]
 
       delegate :invoice_number, :reference, to: :invoice, prefix: true, allow_nil: true
       delegate :label, to: :company, prefix: true, allow_nil: true
 
       validates :company_id,    presence: true
       validates :billable_type, inclusion: TYPES
-      validates :article_code,  inclusion: ARTICLE_CODES,     allow_blank: true
       validates :title,         presence: true
       validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_is_commission?
       validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_is_product?
@@ -47,6 +45,9 @@ module Refinery
         end
         if invoice.present?
           self.archived_at = invoice.archived_at
+        end
+        if article.present?
+          self.article_code = article.code
         end
       end
 
@@ -105,6 +106,11 @@ module Refinery
 
       def assigned_to_label=(label)
         self.assigned_to = ::Refinery::Authentication::Devise::User.find_by_label label
+        super
+      end
+
+      def article_code=(label)
+        self.article = Article.is_public.non_voucher.find_by_label label
         super
       end
 

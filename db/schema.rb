@@ -327,11 +327,13 @@ ActiveRecord::Schema.define(version: 20191029014840) do
     t.integer  "assigned_to_id",    limit: 4
     t.string   "assigned_to_label", limit: 255
     t.datetime "archived_at"
+    t.integer  "article_id",        limit: 4
   end
 
   add_index "refinery_business_billables", ["account"], name: "index_refinery_business_billables_on_account", using: :btree
   add_index "refinery_business_billables", ["archived_at"], name: "INDEX_rb_billables_ON_archived_at", using: :btree
   add_index "refinery_business_billables", ["article_code"], name: "index_refinery_business_billables_on_article_code", using: :btree
+  add_index "refinery_business_billables", ["article_id"], name: "INDEX_rb_billables_ON_article_id", using: :btree
   add_index "refinery_business_billables", ["assigned_to_id"], name: "INDEX_rb_billables_ON_assigned_to_id", using: :btree
   add_index "refinery_business_billables", ["assigned_to_label"], name: "INDEX_rb_billables_ON_assigned_to_label", using: :btree
   add_index "refinery_business_billables", ["billable_date"], name: "index_refinery_business_billables_on_billable_date", using: :btree

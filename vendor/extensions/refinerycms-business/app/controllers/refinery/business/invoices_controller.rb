@@ -49,7 +49,17 @@ module Refinery
       end
 
       def build
-
+        if invoice_items_build_form.save
+          flash[:notice] = 'Successfully built Invoice Items'
+          if params[:redirect_to].present?
+            redirect_to params[:redirect_to], status: :see_other
+          else
+            redirect_to refinery.business_invoice_path(@invoice), status: :see_other
+          end
+        else
+          present(@page)
+          render :show
+        end
       end
 
       protected

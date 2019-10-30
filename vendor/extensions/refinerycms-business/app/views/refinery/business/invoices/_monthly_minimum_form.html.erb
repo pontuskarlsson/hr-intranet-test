@@ -1,0 +1,35 @@
+<%= f.fields_for :monthly_minimums, [OpenStruct.new], child_index: i do |mm_form| %>
+  <span class="form-addable-remove">
+    <% if mm_form.object.persisted? %>
+      <%= mm_form.hidden_field :_destroy %>
+    <% end %>
+    <i class="fa fa-minus-square"></i>
+  </span>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell large-3">
+      <%= mm_form.label :monthly_minimum, 'Monthly Minimum Qty' %>
+      <%= mm_form.text_field :monthly_minimum, placeholder: 'Monthly Minimum Qty' %>
+    </div>
+
+    <div class="cell large-3">
+      <%= mm_form.label :article_label %>
+      <%= mm_form.text_field :article_label, placeholder: 'Article', class: 'js_article_field' %>
+    </div>
+
+    <div class="cell large-2">
+      <%= mm_form.label :base_amount %>
+      <%= mm_form.number_field :base_amount, step: '0.01' %>
+    </div>
+
+    <div class="cell large-2">
+      <%= mm_form.label :discount_type %>
+      <%= mm_form.select :discount_type, options_for_select(::Refinery::Business::Voucher.discount_type_options) %>
+    </div>
+
+    <div class="cell large-2">
+      <%= mm_form.label :discount_amount, 'Discount' %>
+      <%= mm_form.number_field :discount_amount, step: '0.01' %>
+    </div>
+  </div>
+<% end %>

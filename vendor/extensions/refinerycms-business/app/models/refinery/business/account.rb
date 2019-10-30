@@ -12,6 +12,10 @@ module Refinery
       validates :consumer_secret, presence: true
       validates :encryption_key,  presence: true
 
+      def label
+        organisation
+      end
+
       def encrypt_consumer_key(val)
         self.consumer_key = encrypt(val)
       end

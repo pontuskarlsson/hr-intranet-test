@@ -1,6 +1,33 @@
 <%= form_for invoice_items_build_form, url: refinery.build_business_invoice_path do |f| %>
-  <h5><%= f.label :monthly_minimum, 'Monthly Minimum (days)' %></h5>
-  <p><%= f.text_field :monthly_minimum, placeholder: 'Monthly Minimum (days)' %></p>
+  <div data-form-container="invoice-monthly-minimum" class="form-addable">
+    <div class="form-addable-controls">
+      <i class="fa fa-plus-square form-ctrl-add"></i>
+    </div>
+
+    <div class="form-addable-record">
+      <%= render 'monthly_minimum_form', f: f, i: 0 %>
+    </div>
+
+    <% content_for :javascripts do %>
+      <script type="text/javascript">
+        var onAddForm = function() {
+          $('.js_article_field').autocomplete({
+            source: <%= ::Refinery::Business::Article.is_public.to_source %>
+          });
+        };
+
+        $(function() {
+          onAddForm();
+
+          Addable.partials["invoice-monthly-minimum"] = {
+            "attributes": { "__index__": <%= 1 %> },
+            "template": "<%= escape_javascript render('monthly_minimum_form', i: '__index__', f: f) %>",
+            "onAdd": onAddForm,
+          };
+        });
+      </script>
+    <% end %>
+  </div>
 
   <p><%= submit_tag 'Build', class: 'button' %></p>
 <% end %>

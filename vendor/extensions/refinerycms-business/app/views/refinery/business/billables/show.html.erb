@@ -54,7 +54,7 @@
           <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
             <%= form_for @billable, url: refinery.business_billable_path(@billable) do |f| %>
               <div class="input-group">
-                <%= f.select :article_code, options_for_select([''] + Refinery::Business::Billable::ARTICLE_CODES, @billable.article_code), :class => 'input-group-field' -%>
+                <%= f.text_field :article_code, :class => 'input-group-field js_article_field' -%>
                 <div class="input-group-button">
                   <%= f.submit 'Update', class: 'button' %>
                 </div>
@@ -144,8 +144,8 @@
       $('.js_invoice_field').autocomplete({
         source: <%= @billable.company.invoices.to_source %>
       });
-      $('.js_project_field').autocomplete({
-        source: <%= @billable.company.projects.to_source %>
+      $('.js_article_field').autocomplete({
+        source: <%= ::Refinery::Business::Article.non_voucher.is_public.to_source %>
       });
     });
   </script>

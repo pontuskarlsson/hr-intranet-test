@@ -28,7 +28,8 @@ module Refinery
           end
 
           def sync!(xero_invoice)
-            invoice = account.invoices.find_or_initialize_by(invoice_id: xero_invoice.invoice_id)
+            invoice = ::Refinery::Business::Invoice.find_or_initialize_by(invoice_id: xero_invoice.invoice_id)
+            invoice.account = account # Why do invoices keep ending up in the wrong account sometimes???
 
             # Calling the getter +contact+ will make another API call to load additional
             # contact data, but using attributes[:contact] will not do that.

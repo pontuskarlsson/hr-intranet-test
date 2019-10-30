@@ -5,7 +5,7 @@
 
   <div class='field'>
     <%= f.label :account_id -%>
-    <%= f.text_field :account_id -%>
+    <%= f.select :account_id, options_from_collection_for_select(::Refinery::Business::Account.select(:id, :organisation), :id, :organisation, f.object.account_id) -%>
   </div>
 
   <div class='field'>
@@ -44,7 +44,7 @@
   </div>
 
   <div class='field'>
-    <%= f.label :company_label -%>
+    <%= f.label :company_label, 'Company' -%>
     <%= f.text_field :company_label, :class => 'js_company_field' -%>
   </div>
 
@@ -68,11 +68,20 @@
     <%= f.check_box :is_voucher -%>
   </div>
 
+  <div class='field'>
+    <%= f.label :voucher_constraint_applicable_articles, 'Voucher Applicable to (comma-separated Article Codes)' -%>
+    <%= f.text_field :voucher_constraint_applicable_articles -%>
+  </div>
+
   <%= render '/refinery/admin/form_actions', :f => f,
              :continue_editing => false,
              :delete_title => t('delete', :scope => 'refinery.business.admin.articles.article'),
              :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @article.code) -%>
 <% end -%>
+
+<% content_for :stylesheets do %>
+
+<% end %>
 
 <% content_for :javascripts do -%>
   <script>
