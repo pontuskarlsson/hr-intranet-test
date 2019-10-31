@@ -40,14 +40,18 @@ module Refinery
       # persistent.
       #
       def each_nested_hash_for(attr, &block)
+        res = []
         if attr.is_a?(Hash)
           idx = -1
           attr.values.each do |v|
             if v.is_a?(Hash)
-              block.call(v.stringify_keys, idx += 1)
+              arr = [v.stringify_keys, idx += 1]
+              block.call(*arr) if block_given?
+              res << arr
             end
           end
         end
+        res
       end
 
       def find_from!(collection, identifier, find_by = :id)

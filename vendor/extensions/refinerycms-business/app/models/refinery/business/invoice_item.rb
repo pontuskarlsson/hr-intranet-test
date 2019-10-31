@@ -3,10 +3,13 @@ module Refinery
     class InvoiceItem < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_invoice_items'
 
+      TRANSACTION_TYPES = %w(sales discount pre_payment)
+
       belongs_to :invoice
 
-      validates :invoice_id,      presence: true
-      validates :line_item_id,    uniqueness: true, allow_blank: true
+      validates :invoice_id,        presence: true
+      validates :line_item_id,      uniqueness: true, allow_blank: true
+      validates :transaction_type,  inclusion: TRANSACTION_TYPES, allow_blank: true
 
 
       before_save do
@@ -17,6 +20,12 @@ module Refinery
 
       def label
         description
+      end
+
+      TRANSACTION_TYPES.each do |tt|
+        define_method :"transaction_type_is_#{tt}?" do
+          transaction_type == tt
+        end
       end
 
     end

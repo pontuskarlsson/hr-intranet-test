@@ -79,6 +79,19 @@ module Refinery
         end
       end
 
+      def units_for_type
+        case billable_type
+        when 'commission' then COMMISSION_UNITS
+        when 'product' then PRODUCT_UNITS
+        when 'time' then TIME_UNITS
+        else []
+        end
+      end
+
+      def is_base_unit?
+        qty_unit == units_for_type.first
+      end
+
       def self.to_source
         where(nil).pluck(:id, :title, :assigned_to_label, :billable_date).map(&PROC_LABEL).to_json.html_safe
       end

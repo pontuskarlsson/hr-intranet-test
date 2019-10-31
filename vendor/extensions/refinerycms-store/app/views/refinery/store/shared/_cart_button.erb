@@ -1,6 +1,0 @@
-<% if signed_in? %>
-  <%= link_to '', class: 'button cart-button', data: { target: product.cart_action(current_authentication_devise_user.id), addUrl: refinery.add_to_store_cart_path(product), removeUrl: refinery.remove_from_store_cart_path(product) } do %>
-    <i class="fi-shopping-cart"></i>
-    <span><%= product.cart_action(current_authentication_devise_user.id) %></span> Cart
-  <% end %>
-<% end %>

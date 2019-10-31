@@ -6,6 +6,20 @@ module Refinery
 
       engine_name :refinery_shipping
 
+      initializer 'resource-authorization-hooks-for-shipping-engine' do |app|
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Shipping::ROLE_INTERNAL
+
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Shipping::ROLE_EXTERNAL do |user, conditions|
+          shipment = Shipment.find conditions[:shipment_id]
+          user.company_ids.include? shipment.consignee_company_id
+        end
+
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Shipping::ROLE_EXTERNAL_FF do |user, conditions|
+          shipment = Shipment.find conditions[:shipment_id]
+          user.company_ids.include? shipment.forwarder_company_id
+        end
+      end
+
       before_inclusion do
         Refinery::Plugin.register do |plugin|
           plugin.name = "shipping"
