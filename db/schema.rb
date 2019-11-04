@@ -272,23 +272,25 @@ ActiveRecord::Schema.define(version: 20191031020220) do
   add_index "refinery_business_accounts", ["position"], name: "index_refinery_business_accounts_on_position", using: :btree
 
   create_table "refinery_business_articles", force: :cascade do |t|
-    t.string   "item_id",            limit: 255
-    t.string   "code",               limit: 255
-    t.string   "name",               limit: 255
-    t.text     "description",        limit: 65535
-    t.boolean  "is_sold",                          default: false, null: false
-    t.boolean  "is_purchased",                     default: false, null: false
-    t.boolean  "is_public",                        default: false, null: false
-    t.integer  "company_id",         limit: 4
-    t.boolean  "is_managed",                       default: false, null: false
+    t.string   "item_id",             limit: 255
+    t.string   "code",                limit: 255
+    t.string   "name",                limit: 255
+    t.text     "description",         limit: 65535
+    t.boolean  "is_sold",                                                    default: false, null: false
+    t.boolean  "is_purchased",                                               default: false, null: false
+    t.boolean  "is_public",                                                  default: false, null: false
+    t.integer  "company_id",          limit: 4
+    t.boolean  "is_managed",                                                 default: false, null: false
     t.datetime "updated_date_utc"
-    t.string   "managed_status",     limit: 255
+    t.string   "managed_status",      limit: 255
     t.datetime "archived_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_voucher",                       default: false, null: false
-    t.text     "voucher_constraint", limit: 65535
-    t.integer  "account_id",         limit: 4
+    t.boolean  "is_voucher",                                                 default: false, null: false
+    t.text     "voucher_constraint",  limit: 65535
+    t.integer  "account_id",          limit: 4
+    t.decimal  "purchase_unit_price",               precision: 13, scale: 4, default: 0.0,   null: false
+    t.decimal  "sales_unit_price",                  precision: 13, scale: 4, default: 0.0,   null: false
   end
 
   add_index "refinery_business_articles", ["account_id"], name: "index_refinery_business_articles_on_account_id", using: :btree
@@ -672,9 +674,11 @@ ActiveRecord::Schema.define(version: 20191031020220) do
     t.string   "status",                        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "code",                          limit: 255
   end
 
   add_index "refinery_business_vouchers", ["article_id"], name: "INDEX_rb_vouchers_ON_article_id", using: :btree
+  add_index "refinery_business_vouchers", ["code"], name: "INDEX_rb_vouchers_ON_code", using: :btree
   add_index "refinery_business_vouchers", ["company_id"], name: "INDEX_rb_vouchers_ON_company_id", using: :btree
   add_index "refinery_business_vouchers", ["currency_code"], name: "INDEX_rb_vouchers_ON_currency_code", using: :btree
   add_index "refinery_business_vouchers", ["discount_type"], name: "INDEX_rb_vouchers_ON_disount_type", using: :btree

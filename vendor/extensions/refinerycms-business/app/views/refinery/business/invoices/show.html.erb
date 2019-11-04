@@ -16,7 +16,7 @@
 
     <div class="cell medium-6">
       <section class="contact-card">
-        <h3>Invoice Amount</h3>
+        <h3>Invoice Details</h3>
 
         <table class="cc-table">
           <tbody>
@@ -93,13 +93,13 @@
     </div>
 
     <% if @invoice.is_managed %>
-      <div class="cell medium-3">
-        <ul class="vertical tabs" data-tabs id="example-tabs">
+      <div class="cell">
+        <ul class="tabs" data-tabs id="example-tabs">
           <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Billables</a></li>
           <li class="tabs-title"><a href="#panel2v">Line Items</a></li>
         </ul>
       </div>
-      <div class="cell medium-9">
+      <div class="cell">
         <div class="tabs-content" data-tabs-content="example-tabs">
           <div class="tabs-panel is-active" id="panel1v">
             <p><button class="button" data-open="js_invoice_billables_form">Add Billables</button></p>

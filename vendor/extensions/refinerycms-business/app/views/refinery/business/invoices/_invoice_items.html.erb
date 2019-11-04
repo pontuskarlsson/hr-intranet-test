@@ -1,4 +1,15 @@
 <%= form_for invoice_items_build_form, url: refinery.build_business_invoice_path do |f| %>
+  <%= render '/refinery/admin/error_messages',
+             :object => invoice_items_build_form,
+             :include_object_name => true %>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <%= f.label :invoice_for_month %>
+      <%= f.date_field :invoice_for_month %>
+    </div>
+  </div>
+
   <div data-form-container="invoice-monthly-minimum" class="form-addable">
     <div class="form-addable-controls">
       <i class="fa fa-plus-square form-ctrl-add"></i>
@@ -12,7 +23,7 @@
       <script type="text/javascript">
         var onAddForm = function() {
           $('.js_article_field').autocomplete({
-            source: <%= ::Refinery::Business::Article.is_public.to_source %>
+            source: <%= ::Refinery::Business::Article.voucher.is_public.to_source %>
           });
         };
 
@@ -41,23 +52,27 @@
     <th>Qty</th>
     <th>Unit Price</th>
     <th>Account</th>
-    <th>Tax Rate</th>
-    <th>Region</th>
+    <th>Type</th>
     <th>Amount</th>
   </tr>
   </thead>
   <tbody>
-  <% invoice.invoice_items.each do |invoice_item| %>
+  <% invoice.invoice_items.in_order.each do |invoice_item| %>
     <tr>
       <td><%= invoice_item.line_item_order %></td>
-      <td><%= invoice_item.item_code %></td>
-      <td><%= invoice_item.description %></td>
-      <td><%= invoice_item.quantity %></td>
-      <td><%= invoice_item.unit_amount %></td>
+      <td><span class="item-code"><%= invoice_item.item_code %></span></td>
+      <td><%= invoice_item.description.to_s.gsub(/\[([A-Z-]+)(?:{(.*)})?\]/) { |m|
+        if $~[2].present?
+          content_tag(:span, $~[1], title: $~[2], class: 'has-tip inline-article', 'aria-haspopup': 'true', data: { tooltip: 'true' }).html_safe
+        else
+          content_tag(:span, $~[1], class: 'inline-article').html_safe
+        end
+      }.html_safe %></td>
+      <td class="number"><%= invoice_item.quantity %></td>
+      <td class="currency <%= invoice_item.unit_amount&.negative? ? 'negative' : '' %>"><%=number_to_currency invoice_item.unit_amount %></td>
       <td><%= invoice_item.account_code %></td>
-      <td><%= invoice_item.tax_type %></td>
-      <td>&nbsp;</td>
-      <td><%= invoice_item.line_amount %></td>
+      <td><%= invoice_item.display_transaction_type %></td>
+      <td class="currency <%= invoice_item.line_amount&.negative? ? 'negative' : '' %>"><%=number_to_currency invoice_item.line_amount %></td>
     </tr>
   <% end %>
   </tbody>

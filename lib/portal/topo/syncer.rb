@@ -115,12 +115,9 @@ module Portal
 
       def handle_photos!(inspection, topo_files)
         @inspection_photos = Array(topo_files).select { |tf| tf['property'] == 'src' }.map do |topo_file|
-          if (inspection_photo = inspection.inspection_photos.find_by(file_id: topo_file['fileId'])).present?
-            inspection_photo.fields = topo_file
-            inspection_photo.save!
-            inspection_photo
+          inspection_photo = inspection.inspection_photos.find_by(file_id: topo_file['fileId'])
 
-          else
+          if inspection_photo.nil?
             image =
                 begin
                   create_image!(inspection, topo_file['url'], topo_file['fileId'])
@@ -132,18 +129,17 @@ module Portal
                 file_id: topo_file['fileId'],
                 image_id:image.id
             )
-
-            if topo_file['key'] && (match = /^Defect\.([0-9]+)\./.match(topo_file['key'])).present?
-              index = match[1].to_i
-              inspection_photo.inspection_defect = @inspection_defects[index]
-            end
-
-            inspection_photo.fields = topo_file
-
-            inspection_photo.save!
-
-            inspection_photo
           end
+
+          if topo_file['key'] && (match = /^Defect\.([0-9]+)\./.match(topo_file['key'])).present?
+            index = match[1].to_i
+            inspection_photo.inspection_defect = @inspection_defects[index]
+          end
+
+          inspection_photo.fields = topo_file
+          inspection_photo.save!
+
+          inspection_photo
         end
 
         inspection.inspection_photos.where.not(id: @inspection_photos.map(&:id)).each(&:destroy)

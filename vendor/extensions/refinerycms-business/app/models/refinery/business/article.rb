@@ -9,6 +9,7 @@ module Refinery
 
       belongs_to :account
       belongs_to :company
+      has_many :billables,        dependent: :nullify
 
       acts_as_indexed :fields => [:code, :name, :description]
 

@@ -24,6 +24,8 @@ class CreateBusinessVouchers < ActiveRecord::Migration
 
       t.string :status
 
+      t.string :code
+
       t.timestamps
     end
 
@@ -40,6 +42,7 @@ class CreateBusinessVouchers < ActiveRecord::Migration
     add_index :refinery_business_vouchers, :valid_from, name: 'INDEX_rb_vouchers_ON_valid_from'
     add_index :refinery_business_vouchers, :valid_to, name: 'INDEX_rb_vouchers_ON_valid_to'
     add_index :refinery_business_vouchers, :status, name: 'INDEX_rb_vouchers_ON_status'
+    add_index :refinery_business_vouchers, :code, name: 'INDEX_rb_vouchers_ON_code'
   end
 
 end

@@ -47,7 +47,7 @@
               <% if user.last_active_at.nil? %>
                 has never signed in
               <% else %>
-                last active at <%= time_ago_in_words user.last_active_at %> ago
+                last active <%= time_ago_in_words user.last_active_at %> ago
               <% end %>
             </span>
               </p>

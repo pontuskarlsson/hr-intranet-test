@@ -10,6 +10,8 @@ class CreateBusinessArticles < ActiveRecord::Migration
       t.text :description
       t.boolean :is_sold, null: false, default: false
       t.boolean :is_purchased, null: false, default: false
+      t.decimal :purchase_unit_price, precision: 13, scale: 4, default: 0.0, null: false
+      t.decimal :sales_unit_price, precision: 13, scale: 4, default: 0.0, null: false
 
       t.boolean :is_public, null: false, default: false
       t.integer :company_id

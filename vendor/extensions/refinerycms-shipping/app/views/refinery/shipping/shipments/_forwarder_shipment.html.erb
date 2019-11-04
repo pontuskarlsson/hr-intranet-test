@@ -95,8 +95,8 @@
     </table>
   </div>
 
-  <div class="cell medium-3">
-    <ul class="vertical tabs" data-tabs id="example-tabs">
+  <div class="cell">
+    <ul class="tabs" data-tabs id="example-tabs">
       <li class="tabs-title <%= shipment.status_shipped? ? '' : 'is-active' %>"><a href="#panel1v" aria-selected="true">Booking</a></li>
       <li class="tabs-title <%= shipment.status_shipped? ? 'is-active' : '' %>"><a href="#panel2v">Route <i class="fa fa-map-marker"></i></a></li>
       <li class="tabs-title"><a href="#panel3v">Packages</a></li>
@@ -105,7 +105,7 @@
       <li class="tabs-title"><a href="#panel6v">Documents <i class="fa fa-files-o"></i></a></li>
     </ul>
   </div>
-  <div class="cell medium-9">
+  <div class="cell">
     <div class="tabs-content" data-tabs-content="example-tabs">
       <div class="tabs-panel <%= shipment.status_shipped? ? '' : 'is-active' %>" id="panel1v">
         <%= render 'booking', shipment: shipment %>

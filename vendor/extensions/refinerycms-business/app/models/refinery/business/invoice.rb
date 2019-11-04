@@ -69,6 +69,10 @@ module Refinery
         total_cost_from_billables - total_amount
       end
 
+      def approved?
+        %w(AUTHORISED PAID).include? status
+      end
+
       def label
         PROC_LABEL.call(invoice_number, invoice_date, reference)
       end

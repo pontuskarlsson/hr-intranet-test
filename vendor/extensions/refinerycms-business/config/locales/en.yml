@@ -234,6 +234,14 @@ en:
       'refinery/business/billable':
         billable_date: Billable Date
         description: Description
+        status: Status
+        statuses:
+          draft: Draft
+          job_completed: Job Completed
+          to_be_invoiced: To be Invoiced
+          invoiced: Invoiced
+          paid: Paid
+          cancelled: Cancelled
         title: Title
 
       'refinery/business/budget':
@@ -242,6 +250,15 @@ en:
       'refinery/business/company':
         code: Code
         name: Name
+
+      'refinery/business/invoice_item':
+        transaction_type: Transaction Type
+        transaction_types:
+          discount: Discount
+          pre_pay: Pre Pay
+          pre_pay_redeem: Pre Pay Redeem
+          sales: Sales
+          sales_offset: Sales Offset
 
       'refinery/business/invoice':
         description: Description
@@ -288,5 +305,6 @@ en:
           active: Active
           expired: Expired
           redeemed: Redeemed
+          reserved: Reserved
         valid_from: Valid From
         valid_to: Valid To

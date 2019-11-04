@@ -10,6 +10,8 @@ module Refinery
       COMMISSION_UNITS = %w()
       PRODUCT_UNITS = %w()
       TIME_UNITS = %w(day)
+      
+      STATUSES = %w(draft job_completed to_be_invoiced invoiced paid cancelled)
 
       PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' - ' }
 
@@ -34,9 +36,22 @@ module Refinery
       validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_is_commission?
       validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_is_product?
       validates :qty_unit,      inclusion: TIME_UNITS,        if: :billable_is_time?
+      validates :status,        inclusion: STATUSES
 
       before_validation do
         self.total_cost = qty * unit_price * (1.0 - discount)
+        
+        if invoice.present?
+          if invoice.status == 'PAID'
+            self.status = 'paid'
+          elsif invoice.status == 'AUTHORISED'
+            self.status = 'invoiced'
+          else
+            self.status = 'to_be_invoiced'
+          end
+        else
+          self.status = 'draft'
+        end
       end
 
       before_save do
@@ -164,6 +179,18 @@ module Refinery
 
       def all_job_association_names
         (registered_jobs || {}).keys
+      end
+
+      def display_status
+        if status.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
+        end
+      end
+
+      def self.status_options
+        STATUSES.reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end
 
       def self.from_params(params)
