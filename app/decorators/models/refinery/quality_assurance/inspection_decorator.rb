@@ -5,7 +5,6 @@ Refinery::QualityAssurance::Inspection.class_eval do
 
   acts_as_notifiable :'refinery/authentication/devise/users',
                      targets: ->(inspection, key) {
-                       binding.pry
                        users = Refinery::Authentication::Devise::User.where(nil)
 
                        if inspection.explicit_target_for_notification?
