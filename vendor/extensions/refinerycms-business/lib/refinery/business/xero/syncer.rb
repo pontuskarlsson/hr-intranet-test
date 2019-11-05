@@ -76,7 +76,7 @@ module Refinery
 
           xero_items.each do |xero_item|
             sync_items.sync! xero_item
-          end; ''
+          end
         end
 
         private

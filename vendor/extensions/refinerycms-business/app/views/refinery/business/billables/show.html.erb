@@ -27,6 +27,10 @@
         <td><%= @billable.assigned_to_label %></td>
       </tr>
       <tr>
+        <th>Manufacturer</th>
+        <td><%= @billable.manufacturer_label %></td>
+      </tr>
+      <tr>
         <th>Invoice</th>
         <td>
           <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
@@ -106,6 +110,7 @@
           <th>Job</th>
           <th>Type</th>
           <th>Date</th>
+          <th>Manufacturer</th>
           <th>Project</th>
         </tr>
         </thead>
@@ -121,6 +126,7 @@
             </td>
             <td><%= job_type %></td>
             <td><%= job.inspection_date %></td>
+            <td><%= job.respond_to?(:inspection) && job.inspection&.manufacturer_label %></td>
             <td><%= job.project_label.presence || 'N/A' %></td>
           </tr>
         <% end %>
@@ -128,6 +134,7 @@
         <tfoot>
         <tr>
           <th>Total of <%= jobs.count %> jobs</th>
+          <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
