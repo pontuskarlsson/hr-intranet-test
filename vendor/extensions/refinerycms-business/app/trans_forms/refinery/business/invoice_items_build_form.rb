@@ -7,11 +7,22 @@ module Refinery
 
       attr_accessor :invoice
 
-      validates :invoice,       presence: true
+      validates :invoice,           presence: true
 
       validate do
-        if invoice.billables.where(article_id: nil).exists?
-          errors.add(:invoice, 'all Billables must have Article Codes assigned')
+        if invoice.present?
+          errors.add(:invoice, 'company is missing') unless invoice.company.present?
+          errors.add(:invoice, 'is not managed') unless invoice.is_managed
+
+          if invoice.billables.where(article_id: nil).exists?
+            errors.add(:invoice, 'all Billables must have Article Codes assigned')
+          end
+
+          if each_nested_hash_for(monthly_minimums_attributes).any? { |(mma, i)| mma['article_label'].present? }
+            errors.add(:invoice_for_month, 'must be present if monthly minimums are present') unless invoice_for_month.present?
+          else
+            errors.add(:monthly_minimums_attributes, 'cannot be empty when there are no billables present') if invoice.billables.empty?
+          end
         end
       end
 
@@ -29,10 +40,8 @@ module Refinery
 
         invoice.invoice_for_month = invoice_for_month
 
-        voucher_opening_balance = active_vouchers.invoice.company.vouchers.applicable_to(invoice).joins(:article).group("#{Refinery::Business::Article.table_name}.code").count
-
-        #binding.pry
-        #raise ActiveRecord::ActiveRecordError, 'rollback'
+        @opening_balance_by_code = invoice.company.vouchers.applicable_to(invoice).joins(:article).group("#{Refinery::Business::Article.table_name}.code").count
+        @closing_balance_by_code = @opening_balance_by_code.dup
 
         # Build a list of monthly minimum of Voucher article codes, as well as keep track of the prices and
         # discounts for said Vouchers.
@@ -51,7 +60,7 @@ module Refinery
         }.reduce([]) { |acc, (attr, i)|
           acc << attr['article_label']
         }.uniq
-        voucher_articles_by_code = Article.voucher.is_public.where(code: article_codes).each_with_object({}) { |a, acc| acc[a.code] = a }
+        voucher_articles_by_code = Refinery::Business::Article.voucher.is_public.where(code: article_codes).each_with_object({}) { |a, acc| acc[a.code] = a }
 
         # Raises an error unless an actual Voucher Article was found for each supplied row
         raise ActiveRecord::RecordNotFound unless voucher_articles_by_code.length == article_codes.length
@@ -132,7 +141,7 @@ module Refinery
             sales.quantity += allocated_qty
 
             if monthly_minimum['discount_amount_f'] < 0
-              discount = discount_item_per monthly_minimum['discount_amount_f']
+              discount = discount_item_per sales, monthly_minimum['discount_amount_f']
               discount.quantity += allocated_qty
             end
 
@@ -158,11 +167,11 @@ module Refinery
               discount_amount = 0
             end
 
-            sales_purchase = sales_item_per quantities[:article], base_amount
-            sales_purchase.quantity += un_billed_qty
+            sales = sales_item_per quantities[:article], base_amount
+            sales.quantity += un_billed_qty
 
             if discount_amount < 0
-              discount = discount_item_per discount_amount
+              discount = discount_item_per sales, discount_amount
               discount.quantity += un_billed_qty
             end
           end
@@ -184,7 +193,7 @@ module Refinery
             amount = base_amount + discount_amount
 
             sales = sales_item_per monthly_minimum['voucher_article'], base_amount
-            discount = discount_item_per discount_amount # Will return nil if discount_amount is 0
+            discount = discount_item_per sales, discount_amount # Will return nil if discount_amount is 0
             sales_offset = sales_offset_item_per amount
 
             loop do
@@ -210,6 +219,9 @@ module Refinery
               discount.quantity += pre_pay_to.quantity if discount.present?
               sales_offset.quantity += pre_pay_to.quantity
 
+              @closing_balance_by_code[monthly_minimum['voucher_article'].code] ||= 0
+              @closing_balance_by_code[monthly_minimum['voucher_article'].code] += 1
+
               monthly_minimum['remaining_minimum_qty'] -= pre_pay_to.quantity
 
               break if monthly_minimum['remaining_minimum_qty'] <= 0
@@ -222,39 +234,41 @@ module Refinery
         line_item_order = 0
         handled = []
         if invoice.invoice_for_month.present?
-          handled << invoice.invoice_items.build(description: "Monthly Invoice for period #{invoice.invoice_for_month.at_beginning_of_month.iso8601} - #{invoice.invoice_for_month.at_end_of_month.iso8601}", line_item_order: line_item_order += 1)
+          handled << informative_item_per("- - - Monthly Invoice for period #{invoice.invoice_for_month.at_beginning_of_month.iso8601} - #{invoice.invoice_for_month.at_end_of_month.iso8601}", line_item_order: line_item_order += 1)
         end
 
         monthly_minimum_articles.each do |mma|
-          handled << invoice.invoice_items.build(description: "#{mma['monthly_minimum_qty']} x [#{mma['voucher_article'].code}] @ #{mma['base_amount_f']}#{ mma['discount_amount_f'] < 0 ? " (#{mma['discount_amount_f']})" : '' }", line_item_order: line_item_order += 1)
+          handled << informative_item_per("[#{mma['voucher_article'].code}] x #{mma['monthly_minimum_qty']} @ #{mma['base_amount_f']}#{ mma['discount_amount_f'] < 0 ? " (#{mma['discount_amount_f']})" : '' }", line_item_order: line_item_order += 1)
         end
 
         # After initial plan description, we place all Sales transactions
         sales_work = invoice.invoice_items.select { |invoice_item| invoice_item.transaction_type_is_sales? && !invoice_item.article_is_voucher }
-        discounts = invoice.invoice_items.select(&:transaction_type_is_discount?)
-        if sales_work.any? || discounts.any?
+        if sales_work.any?
           # Add section header
-          handled << invoice.invoice_items.build(description: "- - -", line_item_order: line_item_order += 1)
-          handled << invoice.invoice_items.build(description: "Sales of Products and Services", line_item_order: line_item_order += 1)
+          handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
+          handled << informative_item_per("- - - Sales of Products and Services", line_item_order: line_item_order += 1)
           sales_work.each do |invoice_item|
             invoice_item.line_item_order = line_item_order += 1
             handled << invoice_item
-          end
-          discounts.each do |invoice_item|
-            invoice_item.line_item_order = line_item_order += 1
-            handled << invoice_item
+            all_discounts_for(invoice_item).each do |discount_invoice_item|
+              discount_invoice_item.line_item_order = line_item_order += 1
+              handled << discount_invoice_item
+            end
           end
         end
 
-        handled << invoice.invoice_items.build(description: "- - -", line_item_order: line_item_order += 1)
-        handled << invoice.invoice_items.build(description: "Credits: Opening Balance", line_item_order: line_item_order += 1)
+        handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
+        handled << informative_item_per("- - - Credits: Opening Balance", line_item_order: line_item_order += 1)
+        @opening_balance_by_code.each do |code, balance|
+          handled << informative_item_per("[#{code}] x #{balance}", line_item_order: line_item_order += 1)
+        end
 
         # Then comes the Pre Pay Redeem
         pre_pay_redeem = invoice.invoice_items.select(&:transaction_type_is_pre_pay_redeem?)
         if pre_pay_redeem.any?
           # Add section header
-          handled << invoice.invoice_items.build(description: "- - -", line_item_order: line_item_order += 1)
-          handled << invoice.invoice_items.build(description: "Previous Credits redeemed", line_item_order: line_item_order += 1)
+          handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
+          handled << informative_item_per("- - - Credits: Redeemed", line_item_order: line_item_order += 1)
           pre_pay_redeem.each do |invoice_item|
             invoice_item.line_item_order = line_item_order += 1
             handled << invoice_item
@@ -262,16 +276,21 @@ module Refinery
         end
 
         # Then comes the Sales Offset
-        sales_voucher = invoice.invoice_items.select { |invoice_item| invoice_item.transaction_type_is_sales? && !invoice_item.article_is_voucher }
+        sales_voucher = invoice.invoice_items.select { |invoice_item| invoice_item.transaction_type_is_sales? && invoice_item.article_is_voucher }
         sales_offset = invoice.invoice_items.select(&:transaction_type_is_sales_offset?)
         pre_pay = invoice.invoice_items.select(&:transaction_type_is_pre_pay?)
         if sales_offset.any? || pre_pay.any?
           # Add section header
-          handled << invoice.invoice_items.build(description: "- - -", line_item_order: line_item_order += 1)
-          handled << invoice.invoice_items.build(description: "New Credit issued for remaining balance", line_item_order: line_item_order += 1)
+          handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
+          handled << informative_item_per("- - - Credits: Issued", line_item_order: line_item_order += 1)
           sales_voucher.each do |invoice_item|
             invoice_item.line_item_order = line_item_order += 1
             handled << invoice_item
+
+            all_discounts_for(invoice_item).each do |discount_invoice_item|
+              discount_invoice_item.line_item_order = line_item_order += 1
+              handled << discount_invoice_item
+            end
           end
           sales_offset.each do |invoice_item|
             invoice_item.line_item_order = line_item_order += 1
@@ -283,19 +302,19 @@ module Refinery
           end
         end
 
-        handled << invoice.invoice_items.build(description: "- - -", line_item_order: line_item_order += 1)
-        handled << invoice.invoice_items.build(description: "Credits: Closing Balance", line_item_order: line_item_order += 1)
-
-        # Then comes anything else...
-        remaining = invoice.invoice_items.select { |invoice_item| !handled.include? invoice_item }
-        if remaining.any?
-          # Add section header
-          handled << invoice.invoice_items.build(description: "- - -", line_item_order: line_item_order += 1)
-          remaining.each do |invoice_item|
-            invoice_item.line_item_order = line_item_order += 1
-            handled << invoice_item
-          end
+        handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
+        handled << informative_item_per("- - - Credits: Closing Balance", line_item_order: line_item_order += 1)
+        @closing_balance_by_code.each do |code, balance|
+          handled << informative_item_per("[#{code}] x #{balance}", line_item_order: line_item_order += 1)
         end
+
+        # Any previously existing invoice items, that have not been added the to handled array, is no longer used
+        # and can be removed
+        remaining = invoice.invoice_items.select { |invoice_item| !handled.include? invoice_item }
+        remaining.map(&:destroy!)
+
+        # We call :calculated_line_amount here, because :line_amount is not set until a before_save callback
+        invoice.total_amount = invoice.invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.calculated_line_amount.to_f }
 
         invoice.save!
 
@@ -318,9 +337,12 @@ module Refinery
 
       def next_voucher_for(code)
         @next_voucher_for ||= invoice.company.vouchers.active.includes(:article)
-        next_voucher = @next_voucher_for.detect { |v| v.article_applicable_to? code }
-        @next_voucher_for -= [next_voucher] if next_voucher.present?
-        next_voucher
+
+        if (next_voucher = @next_voucher_for.detect { |v| v.article_applicable_to? code }).present?
+          @next_voucher_for -= [next_voucher]
+          @closing_balance_by_code[next_voucher.article_code] -= 1
+          next_voucher
+        end
       end
 
       def issued_vouchers
@@ -345,12 +367,41 @@ module Refinery
         end || invoice.invoice_items.build(transaction_type: 'sales_offset', unit_amount: ua, quantity: 0.0)
       end
 
-      def discount_item_per(unit_amount)
+      def discount_item_per(for_item, unit_amount)
         da = unit_amount > 0 ? unit_amount * -1 : unit_amount
-        if unit_amount != 0
+
+        # We limit discounts to sales items with item_code present
+        if unit_amount != 0 && for_item.item_code
+          description = "Discount: [#{for_item.item_code}{base_amount:#{for_item.unit_amount}}] #{da}"
+
           invoice.invoice_items.detect do |invoice_item|
-            invoice_item.transaction_type == 'discount' && invoice_item.unit_amount == da
-          end || invoice.invoice_items.build(transaction_type: 'discount', unit_amount: da, quantity: 0.0)
+            invoice_item.transaction_type == 'discount' && invoice_item.unit_amount == da && invoice_item.description == description
+          end || invoice.invoice_items.build(transaction_type: 'discount', unit_amount: da, quantity: 0.0, description: description)
+        end
+      end
+
+      def informative_item_per(description, attr = {})
+        @matched_informatives ||= []
+
+        # Match existing but not previously matched informative items
+        item = invoice.invoice_items.detect do |invoice_item|
+          !@matched_informatives.include?(invoice_item) && invoice_item.transaction_type.nil? && invoice_item.description == description
+        end || invoice.invoice_items.build(attr.merge(description: description, transaction_type: nil))
+
+        # Set attributes in case it was a previously existing item that should now have another line_item_order
+        item.attributes = attr
+
+        # Add to matched array so we don't re-assign the same one again
+        @matched_informatives << item
+
+        item
+      end
+
+      def all_discounts_for(for_item)
+        description = "Discount: [#{for_item.item_code}{base_amount:#{for_item.unit_amount}}]"
+
+        invoice.invoice_items.select do |invoice_item|
+          invoice_item.transaction_type == 'discount' && invoice_item.description && invoice_item.description[description]
         end
       end
 

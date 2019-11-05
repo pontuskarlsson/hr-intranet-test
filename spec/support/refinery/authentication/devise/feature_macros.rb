@@ -8,7 +8,7 @@ module Refinery
 
           before do
             visit refinery.login_path
-            binding.pry
+
             fill_in "Username or email", with: logged_in_user.username
             fill_in "Password", with: "refinerycms"
 

@@ -50,6 +50,12 @@
             <th>Status</th>
             <td><%= @invoice.status %></td>
           </tr>
+          <% if @invoice.is_managed %>
+            <tr>
+              <th>Managed Status</th>
+              <td><%= @invoice.display_managed_status %></td>
+            </tr>
+          <% end %>
           </tbody>
         </table>
       </section>
@@ -61,20 +67,13 @@
         <table class="cc-table">
           <tbody>
           <tr>
-            <th style="width: 150px;">Total Amount</th>
+            <th style="width: 150px;">Currency</th>
+            <td><%= @invoice.currency_code %></td>
+          </tr>
+          <tr>
+            <th>Total Amount</th>
             <td><%=number_to_currency @invoice.total_amount, currency: @invoice.currency_code %></td>
           </tr>
-          <% if false %>
-          <tr>
-            <th>Billable Amount</th>
-            <td>
-              <%=number_to_currency @invoice.total_cost_from_billables %>
-              <% if @invoice.billable_cost_diff != 0 %>
-                (<span style="color: #C1666B;"><%=number_to_currency @invoice.billable_cost_diff %></span>)
-              <% end %>
-            </td>
-          </tr>
-          <% end %>
           <tr>
             <th>Amount Due</th>
             <td><%=number_to_currency @invoice.amount_due, currency: @invoice.currency_code %></td>

@@ -263,6 +263,11 @@ en:
       'refinery/business/invoice':
         description: Description
         invoice_number: Invoice No.
+        managed_status: Managed Status
+        managed_statuses:
+          draft: Draft
+          submitted: Submitted
+          changed: Changed
         reference: Reference
 
       'refinery/business/number_serie':

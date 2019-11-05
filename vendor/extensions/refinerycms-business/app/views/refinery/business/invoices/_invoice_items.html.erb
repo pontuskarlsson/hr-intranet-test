@@ -52,27 +52,47 @@
     <th>Qty</th>
     <th>Unit Price</th>
     <th>Account</th>
-    <th>Type</th>
     <th>Amount</th>
   </tr>
   </thead>
   <tbody>
   <% invoice.invoice_items.in_order.each do |invoice_item| %>
-    <tr>
+    <tr class="<%=  %>">
       <td><%= invoice_item.line_item_order %></td>
       <td><span class="item-code"><%= invoice_item.item_code %></span></td>
-      <td><%= invoice_item.description.to_s.gsub(/\[([A-Z-]+)(?:{(.*)})?\]/) { |m|
-        if $~[2].present?
-          content_tag(:span, $~[1], title: $~[2], class: 'has-tip inline-article', 'aria-haspopup': 'true', data: { tooltip: 'true' }).html_safe
-        else
-          content_tag(:span, $~[1], class: 'inline-article').html_safe
-        end
-      }.html_safe %></td>
-      <td class="number"><%= invoice_item.quantity %></td>
-      <td class="currency <%= invoice_item.unit_amount&.negative? ? 'negative' : '' %>"><%=number_to_currency invoice_item.unit_amount %></td>
+      <td>
+        <% if invoice_item.description.present? && (match = invoice_item.description.match(/^- - -(.*)/)).present? %>
+          <span style="font-weight: bold;"><%= match[1] %></span>
+        <% else %>
+          <%= invoice_item.description.to_s.gsub(/\[([A-Z-]+)(?:{(.*)})?\]/) { |m|
+            if $~[2].present?
+              content_tag(:span, $~[1], title: $~[2], class: 'has-tip inline-article', 'aria-haspopup': 'true', data: { tooltip: 'true' }).html_safe
+            else
+              content_tag(:span, $~[1], class: 'inline-article').html_safe
+            end
+          }.html_safe %>
+        <% end %>
+      </td>
+      <td class="number"><%=number_with_precision invoice_item.quantity, strip_insignificant_zeros: true %></td>
+      <td class="currency <%= invoice_item.unit_amount&.negative? ? 'negative' : '' %>">
+        <% if invoice_item.unit_amount.nil? %>
+          
+        <% elsif invoice_item.unit_amount.zero? %>
+          -
+        <% else %>
+          <%=number_to_currency invoice_item.unit_amount, unit: '' %>
+        <% end %>
+      </td>
       <td><%= invoice_item.account_code %></td>
-      <td><%= invoice_item.display_transaction_type %></td>
-      <td class="currency <%= invoice_item.line_amount&.negative? ? 'negative' : '' %>"><%=number_to_currency invoice_item.line_amount %></td>
+      <td class="currency <%= invoice_item.line_amount&.negative? ? 'negative' : '' %>">
+        <% if invoice_item.line_amount.nil? %>
+
+        <% elsif invoice_item.line_amount.zero? %>
+          -
+        <% else %>
+          <%=number_to_currency invoice_item.line_amount, unit: '' %>
+        <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>

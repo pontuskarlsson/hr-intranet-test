@@ -36,20 +36,6 @@ ActiveRecord::Schema.define(version: 20191031020220) do
   add_index "activity_notifications", ["notifier_type", "notifier_id"], name: "index_notifications_on_notifier_id_and_type", using: :btree
   add_index "activity_notifications", ["target_type", "target_id"], name: "index_notifications_on_target_id_and_type", using: :btree
 
-  create_table "amqp_messages", force: :cascade do |t|
-    t.string   "queue",       limit: 255,   null: false
-    t.text     "message",     limit: 65535, null: false
-    t.text     "type",        limit: 65535, null: false
-    t.integer  "sender_id",   limit: 4
-    t.string   "sender_type", limit: 255
-    t.datetime "sent_at"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  add_index "amqp_messages", ["sender_id", "sender_type"], name: "index_amqp_messages_on_sender_id_and_sender_type", using: :btree
-  add_index "amqp_messages", ["sent_at"], name: "index_amqp_messages_on_sent_at", using: :btree
-
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
     t.integer  "attempts",   limit: 4,     default: 0, null: false
@@ -84,20 +70,6 @@ ActiveRecord::Schema.define(version: 20191031020220) do
   add_index "notifications_subscriptions", ["key"], name: "index_notifications_subscriptions_on_key", using: :btree
   add_index "notifications_subscriptions", ["target_type", "target_id", "key"], name: "index_subscriptions_on_target_id_type_and_key", unique: true, using: :btree
   add_index "notifications_subscriptions", ["target_type", "target_id"], name: "index_subscriptions_on_target_id_and_type", using: :btree
-
-  create_table "refinery_amqp_messages", force: :cascade do |t|
-    t.string   "queue",       limit: 255,   null: false
-    t.text     "message",     limit: 65535, null: false
-    t.text     "type",        limit: 65535, null: false
-    t.integer  "sender_id",   limit: 4
-    t.string   "sender_type", limit: 255
-    t.datetime "sent_at"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  add_index "refinery_amqp_messages", ["sender_id", "sender_type"], name: "index_refinery_amqp_messages_on_sender_id_and_sender_type", using: :btree
-  add_index "refinery_amqp_messages", ["sent_at"], name: "index_refinery_amqp_messages_on_sent_at", using: :btree
 
   create_table "refinery_annual_leave_records", force: :cascade do |t|
     t.integer  "employee_id",     limit: 4

@@ -3,7 +3,7 @@ module Refinery
     class Article < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_articles'
 
-      MANAGED_STATUSES = %w(draft synced changed)
+      MANAGED_STATUSES = %w(draft submitted changed)
 
       serialize :voucher_constraint, Hash
 
@@ -13,14 +13,21 @@ module Refinery
 
       acts_as_indexed :fields => [:code, :name, :description]
 
-      validates :account_id,      presence: true
+      #validates :account_id,      presence: true
       validates :item_id,         uniqueness: true, allow_blank: true
-      validates :code,            uniqueness: { scope: [:account_id] }
+      validates :code,            presence: true, uniqueness: { scope: [:account_id] }
       validates :managed_status,  inclusion: MANAGED_STATUSES, allow_nil: true
+      validates :managed_status,  presence: true, if: -> { is_managed }
 
       scope :is_public, -> { where(is_public: true) }
       scope :non_voucher, -> { where(is_voucher: false) }
       scope :voucher, -> { where(is_voucher: true) }
+
+      validate do
+        if company.present?
+          errors.add(:is_public, 'cannot be public when company is present') if is_public
+        end
+      end
 
       def label
         code
@@ -70,6 +77,12 @@ module Refinery
         MANAGED_STATUSES.reduce(
             [[::I18n.t("refinery.please_select"), { disabled: true }]]
         ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.managed_statuses.#{k}"),k] }
+      end
+
+      MANAGED_STATUSES.each do |ms|
+        define_method :"managed_status_is_#{ms}?" do
+          managed_status == ms
+        end
       end
 
       def self.to_source

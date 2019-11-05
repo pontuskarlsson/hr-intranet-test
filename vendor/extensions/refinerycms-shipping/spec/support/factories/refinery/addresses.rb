@@ -1,6 +1,6 @@
 
 FactoryGirl.define do
-  factory :shipment_address, :class => Refinery::Shipping::ShipmentAddress do
+  factory :shipment_address, :class => Refinery::Shipping::Address do
     name 'John Doe'
     company 'Wildlife Hunting'
     street1 '123 Wild Grove'

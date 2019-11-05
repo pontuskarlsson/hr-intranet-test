@@ -9,7 +9,7 @@ FactoryGirl.define do
 
     factory :xero_expense_claim_with_receipts do
 
-      ignore do
+      transient do
         no_of_receipts 1
       end
 

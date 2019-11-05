@@ -39,7 +39,7 @@ module Refinery
       validates :status,        inclusion: STATUSES
 
       before_validation do
-        self.total_cost = qty * unit_price * (1.0 - discount)
+        self.total_cost = qty * unit_price * (1.0 - discount) if qty.present? && unit_price.present?
         
         if invoice.present?
           if invoice.status == 'PAID'
@@ -51,6 +51,12 @@ module Refinery
           end
         else
           self.status = 'draft'
+        end
+      end
+
+      validate do
+        if article.present?
+          errors.add(:article_id, 'not allowed on this Billable') unless article.is_public or article.company == company
         end
       end
 

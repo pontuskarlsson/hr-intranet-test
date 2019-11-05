@@ -10,7 +10,7 @@ FactoryGirl.define do
 
     factory :xero_receipt_with_line_items do
 
-      ignore do
+      transient do
         no_of_line_items 1
       end
 

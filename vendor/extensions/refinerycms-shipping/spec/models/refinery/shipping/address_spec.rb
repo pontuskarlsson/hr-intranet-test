@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Refinery
   module Shipping
-    describe ShipmentAddress do
+    describe Address do
       describe 'validations' do
         let(:shipment_address) { FactoryGirl.build(:shipment_address) }
         subject { shipment_address }
