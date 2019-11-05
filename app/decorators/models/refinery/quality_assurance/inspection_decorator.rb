@@ -14,7 +14,7 @@ Refinery::QualityAssurance::Inspection.class_eval do
                          users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER)
 
                        else
-                         users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL) +
+                         users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) +
                          users.for_role(Refinery::QualityAssurance::ROLE_EXTERNAL).for_companies(inspection.company)
                        end
                      },

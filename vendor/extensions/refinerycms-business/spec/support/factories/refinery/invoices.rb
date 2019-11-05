@@ -1,6 +1,7 @@
 
 FactoryGirl.define do
   factory :invoice, :class => Refinery::Business::Invoice do
+    account
     company
     sequence(:invoice_number) { |n| "INV-#{n.to_s.rjust(5, '0')}" }
     invoice_type 'ACCREC'

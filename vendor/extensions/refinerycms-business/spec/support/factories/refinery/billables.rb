@@ -8,7 +8,11 @@ FactoryGirl.define do
 
 
     factory :billable_with_article do
-      article
+      transient do
+        account { |evaluator| evaluator.invoice&.account || FactoryGirl.create(:account) }
+      end
+
+      article { |evaluator| FactoryGirl.create(:article, account: evaluator.account) }
     end
   end
 end

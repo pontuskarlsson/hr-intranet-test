@@ -23,7 +23,7 @@ module Refinery
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:invoice_number, :invoice_date, :reference]
 
-      #validates :account_id,      presence: true
+      validates :account_id,      presence: true
       validates :invoice_id,      uniqueness: true, allow_blank: true
       validates :currency_code,   presence: true
       validates :currency_code,   inclusion: CURRENCY_CODES, if: -> { is_managed }

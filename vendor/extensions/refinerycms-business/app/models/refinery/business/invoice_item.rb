@@ -20,6 +20,12 @@ module Refinery
       validates :line_item_id,      uniqueness: true, allow_blank: true
       validates :transaction_type,  inclusion: TRANSACTION_TYPES, allow_nil: true
 
+      validate do
+        if article.present? && invoice.present?
+          errors.add(:article_id, 'belongs to the wrong account') unless invoice&.account_id == article.account_id
+        end
+      end
+
       before_create do
         if transaction_type_is_sales_offset?
           self.description = 'Sales offset to Pre Payments' if description.blank?
