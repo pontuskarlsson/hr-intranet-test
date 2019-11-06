@@ -30,7 +30,7 @@
 
   <div class='field'>
     <%= f.label :status -%>
-    <%= f.select :status, options_for_select([['Please select', {disabled: true}]] + ::Refinery::Shipping::Route::STATUSES, f.object.status) -%>
+    <%= f.select :status, options_for_select(::Refinery::Shipping::Route::status_options, f.object.status) -%>
   </div>
 
   <div class='field'>

@@ -19,9 +19,11 @@
         <% if flash.any? %>
           <div id="message">
             <% flash.each do |key, value| %>
-              <div id='flash' class="flash flash_<%= key %>" >
+              <div class="flash flash_<%= key %>" >
                 <%= value %>
-                <%= link_to 'X', '', id: 'flash_close' %>
+                <%= link_to 'javascript:void(0)', class: 'flash_close' do %>
+                  <i class="fa fa-times-circle"></i>
+                <% end %>
               </div>
             <% end %>
           </div>

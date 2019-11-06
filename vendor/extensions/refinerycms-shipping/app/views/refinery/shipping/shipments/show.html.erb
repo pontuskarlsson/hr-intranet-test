@@ -4,6 +4,7 @@
   <section class="contact-card">
     <h1 class="cc-attribute cc-name">
       <%=raw @shipment.code %>
+      <span style="font-size: 1rem; color: #333;">(<%= @shipment.display_status %>)</span>
     </h1>
     <% if @shipment.shipped_by_courier? %>
       <%= render 'courier_shipment', shipment: @shipment %>

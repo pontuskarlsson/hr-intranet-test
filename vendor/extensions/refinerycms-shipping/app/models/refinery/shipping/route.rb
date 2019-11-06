@@ -4,7 +4,7 @@ module Refinery
       self.table_name = 'refinery_shipping_routes'
 
       TYPES = %w(origin port_of_loading port_of_discharge destination custom)
-      STATUS = %w(schedule_pending scheduled departed arrived)
+      STATUSES = %w(schedule_pending scheduled departed arrived)
 
       belongs_to :shipment
       belongs_to :location
@@ -15,9 +15,9 @@ module Refinery
                to: :location, prefix: true, allow_nil: true
 
       validates :shipment_id,           presence: true
-      validates :location_id,           presence: true, uniqueness: { scope: :shipment_id }
+      validates :location_id,           uniqueness: { scope: :shipment_id }, allow_nil: true
       validates :route_type,            inclusion: TYPES
-      validates :status,                inclusion: STATUS
+      validates :status,                inclusion: STATUSES
       #validates :final_destination,     uniqueness: true, if: -> { final_destination }
 
       validate do
@@ -82,6 +82,12 @@ module Refinery
         ) { |acc, (k,v)| acc << [v,k] }
       end
 
+      STATUSES.each do |s|
+        define_method :"status_is_#{s}?" do
+          status == s
+        end
+      end
+
       def display_status
         if status.present?
           ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
@@ -89,19 +95,19 @@ module Refinery
       end
 
       def self.status_options
-        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses").reduce(
+        STATUSES.reduce(
             [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, (k,v)| acc << [v,k] }
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end
 
       def self.departure_status_options
-        (STATUS - %w(arrived)).reduce(
+        (STATUSES - %w(arrived)).reduce(
             [[::I18n.t("refinery.please_select"), { disabled: true }]]
         ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end
 
       def self.arrival_status_options
-        (STATUS - %w(departed)).reduce(
+        (STATUSES - %w(departed)).reduce(
             [[::I18n.t("refinery.please_select"), { disabled: true }]]
         ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end

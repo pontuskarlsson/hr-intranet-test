@@ -1,0 +1,63 @@
+<h3>Shipment Details</h3>
+<table class="cc-table">
+  <tbody>
+  <tr>
+    <th>Shipper</th>
+    <td>
+      <% if shipment.shipper_company.present? %>
+        <%= link_to shipment.shipper_company_label, refinery.business_company_path(shipment.shipper_company) %>
+      <% else %>
+        <%= shipment.shipper_company_label %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th style="width: 150px;">Supplier</th>
+    <td>
+      <% if shipment.supplier_company.present? %>
+        <%= link_to shipment.supplier_company_label, refinery.business_company_path(shipment.supplier_company) %>
+      <% else %>
+        <%= shipment.supplier_company_label %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th style="width: 150px;">Receiver</th>
+    <td>
+      <% if shipment.receiver_company.present? %>
+        <%= link_to shipment.receiver_company_label, refinery.business_company_path(shipment.receiver_company) %>
+      <% else %>
+        <%= shipment.receiver_company_label %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th>Consignee</th>
+    <td>
+      <% if shipment.consignee_company.present? %>
+        <%= link_to shipment.consignee_company_label, refinery.business_company_path(shipment.consignee_company) %>
+      <% else %>
+        <%= shipment.consignee_company_label %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th>Consignee Ref.</th>
+    <td><%= shipment.consignee_reference.presence || 'N/A' %></td>
+  </tr>
+  <tr>
+    <th style="width: 150px;">Freight Forwarder</th>
+    <td>
+      <% if shipment.forwarder_company.present? %>
+        <%= link_to shipment.forwarder_company_label, refinery.business_company_path(shipment.forwarder_company) %>
+      <% else %>
+        <%= shipment.forwarder_company_label %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th>Cargo Ready Date</th>
+    <td><%= shipment.cargo_ready_date %></td>
+  </tr>
+  </tbody>
+</table>

@@ -137,7 +137,7 @@ module Refinery
             :supplier_company_label, :shipper_company_label, :receiver_company_label, :consignee_company_label, :courier_company_label, :forwarder_company_label,
             :load_port, :consignee_reference, :forwarder_booking_number, :mode, :status, :etd_date, :eta_date, :tracking_number, :shipment_terms, :shipment_terms_details,
             :rate_currency, :duty_amount, :terminal_fee_amount, :domestic_transportation_cost_amount, :forwarding_fee_amount, :freight_cost_amount,
-            :no_of_parcels, :weight_unit, :gross_weight_manual_amount, :net_weight_manual_amount, :chargeable_weight_manual_amount, :volume_unit, :volume_manual_amount
+            :no_of_parcels, :weight_unit, :gross_weight_manual_amount, :net_weight_manual_amount, :chargeable_weight_manual_amount, :volume_unit, :volume_manual_amount, :cargo_ready_date
         )
       end
 
@@ -160,8 +160,11 @@ module Refinery
       end
 
       def shipment_form_saved?
-        if params[:packages_form]
+        if params[:update_packages]
           packages_form.save
+
+        elsif params[:send_request]
+          @shipment.update_status('requested')
 
         elsif params[:items_form]
           items_form.save
@@ -183,7 +186,7 @@ module Refinery
       end
 
       def packages_form
-        @packages_form ||= Refinery::Shipping::PackagesForm.new_in_model(@shipment, params[:packages_form], current_authentication_devise_user)
+        @packages_form ||= Refinery::Shipping::PackagesForm.new_in_model(@shipment, params[:shipment], current_authentication_devise_user)
       end
 
     end

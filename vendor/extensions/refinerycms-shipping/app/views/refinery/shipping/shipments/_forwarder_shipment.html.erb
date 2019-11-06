@@ -1,104 +1,22 @@
 <%= render 'shipment_progress', shipment: shipment %>
 
 <div class="grid-x grid-padding-x">
-  <div class="cell medium-6">
-    <h3>Parties</h3>
-    <table class="cc-table">
-      <tbody>
-      <tr>
-        <th>Shipper</th>
-        <td>
-          <% if shipment.shipper_company.present? %>
-            <%= link_to shipment.shipper_company_label, refinery.business_company_path(shipment.shipper_company) %>
-          <% else %>
-            <%= shipment.shipper_company_label %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th style="width: 150px;">Supplier</th>
-        <td>
-          <% if shipment.supplier_company.present? %>
-            <%= link_to shipment.supplier_company_label, refinery.business_company_path(shipment.supplier_company) %>
-          <% else %>
-            <%= shipment.supplier_company_label %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th style="width: 150px;">Receiver</th>
-        <td>
-          <% if shipment.receiver_company.present? %>
-            <%= link_to shipment.receiver_company_label, refinery.business_company_path(shipment.receiver_company) %>
-          <% else %>
-            <%= shipment.receiver_company_label %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Consignee</th>
-        <td>
-          <% if shipment.consignee_company.present? %>
-            <%= link_to shipment.consignee_company_label, refinery.business_company_path(shipment.consignee_company) %>
-          <% else %>
-            <%= shipment.consignee_company_label %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Consignee Ref.</th>
-        <td><%= shipment.consignee_reference.presence || 'N/A' %></td>
-      </tr>
-      <tr>
-        <th style="width: 150px;">Freight Forwarder</th>
-        <td>
-          <% if shipment.forwarder_company.present? %>
-            <%= link_to shipment.forwarder_company_label, refinery.business_company_path(shipment.forwarder_company) %>
-          <% else %>
-            <%= shipment.forwarder_company_label %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Status</th>
-        <td><%= shipment.display_status %></td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="cell medium-8">
+    <% if page_role? ::Refinery::Shipping::ROLE_INTERNAL %>
+      <%= render 'edit_details', shipment: shipment %>
+    <% else %>
+      <%= render 'details', shipment: shipment %>
+    <% end %>
   </div>
 
-  <div class="cell medium-6">
-    <h3>Packages Summary</h3>
-    <table class="cc-table">
-      <tbody>
-      <tr>
-        <th style="width: 150px;">No. of Cartons</th>
-        <td><%= shipment.no_of_parcels.presence || 'N/A' %></td>
-      </tr>
-      <tr>
-        <th>Gross Weight</th>
-        <td><%= shipment.display_gross_weight.presence || 'N/A' %></td>
-      </tr>
-      <tr>
-        <th>Net Weight</th>
-        <td><%= shipment.display_net_weight.presence || 'N/A' %></td>
-      </tr>
-      <tr>
-        <th>Chargeable Weight</th>
-        <td><%= shipment.display_chargeable_weight.presence || 'N/A' %></td>
-      </tr>
-      <tr>
-        <th>Volume</th>
-        <td><%= shipment.display_volume.presence || 'N/A' %></td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="cell medium-4">
+    <%= render 'shipment_summary', shipment: shipment %>
   </div>
 
   <div class="cell">
     <ul class="tabs" data-tabs id="example-tabs">
-      <li class="tabs-title <%= shipment.status_shipped? ? '' : 'is-active' %>"><a href="#panel1v" aria-selected="true">Booking</a></li>
-      <li class="tabs-title <%= shipment.status_shipped? ? 'is-active' : '' %>"><a href="#panel2v">Route <i class="fa fa-map-marker"></i></a></li>
+      <li class="tabs-title <%= shipment.status_is_shipped? ? '' : 'is-active' %>"><a href="#panel1v" aria-selected="true">Booking</a></li>
+      <li class="tabs-title <%= shipment.status_is_shipped? ? 'is-active' : '' %>"><a href="#panel2v">Route <i class="fa fa-map-marker"></i></a></li>
       <li class="tabs-title"><a href="#panel3v">Packages</a></li>
       <li class="tabs-title"><a href="#panel4v">Items</a></li>
       <li class="tabs-title"><a href="#panel5v">Costs <i class="fa fa-usd"></i></a></li>
@@ -107,11 +25,11 @@
   </div>
   <div class="cell">
     <div class="tabs-content" data-tabs-content="example-tabs">
-      <div class="tabs-panel <%= shipment.status_shipped? ? '' : 'is-active' %>" id="panel1v">
+      <div class="tabs-panel <%= shipment.status_is_shipped? ? '' : 'is-active' %>" id="panel1v">
         <%= render 'booking', shipment: shipment %>
       </div>
 
-      <div class="tabs-panel <%= shipment.status_shipped? ? 'is-active' : '' %>" id="panel2v">
+      <div class="tabs-panel <%= shipment.status_is_shipped? ? 'is-active' : '' %>" id="panel2v">
         <%= render 'routes', shipment: shipment %>
       </div>
 

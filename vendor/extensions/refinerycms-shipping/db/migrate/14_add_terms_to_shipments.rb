@@ -10,6 +10,13 @@ class AddTermsToShipments < ActiveRecord::Migration
     add_index :refinery_shipping_shipments, :archived_at
 
     add_column :refinery_shipping_shipments, :length_unit, :string
+
+    add_column :refinery_shipping_shipments, :cargo_ready_date, :date
+    add_index :refinery_shipping_shipments, :cargo_ready_date
+
+    add_column :refinery_shipping_shipments, :no_of_parcels_manual, :integer
+    add_index :refinery_shipping_shipments, :no_of_parcels_manual
+
   end
 
 end

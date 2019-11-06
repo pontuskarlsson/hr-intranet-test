@@ -1584,12 +1584,15 @@ ActiveRecord::Schema.define(version: 20191031020220) do
     t.text     "shipment_terms_details",              limit: 65535
     t.datetime "archived_at"
     t.string   "length_unit",                         limit: 255
+    t.date     "cargo_ready_date"
+    t.integer  "no_of_parcels_manual",                limit: 4
   end
 
   add_index "refinery_shipping_shipments", ["archived_at"], name: "index_refinery_shipping_shipments_on_archived_at", using: :btree
   add_index "refinery_shipping_shipments", ["assigned_to_id"], name: "index_refinery_shipping_shipments_on_assigned_to_id", using: :btree
   add_index "refinery_shipping_shipments", ["assigned_to_label"], name: "index_refinery_shipping_shipments_on_assigned_to_label", using: :btree
   add_index "refinery_shipping_shipments", ["bill_to_account_id"], name: "index_refinery_parcels_shipments_on_bta_id", using: :btree
+  add_index "refinery_shipping_shipments", ["cargo_ready_date"], name: "index_refinery_shipping_shipments_on_cargo_ready_date", using: :btree
   add_index "refinery_shipping_shipments", ["code"], name: "index_refinery_shipping_shipments_on_code", using: :btree
   add_index "refinery_shipping_shipments", ["comments"], name: "index_refinery_shipping_shipments_on_comments", using: :btree
   add_index "refinery_shipping_shipments", ["consignee_address_id"], name: "index_refinery_shipping_shipments_on_consignee_address_id", using: :btree
@@ -1609,6 +1612,7 @@ ActiveRecord::Schema.define(version: 20191031020220) do
   add_index "refinery_shipping_shipments", ["from_contact_label"], name: "index_refinery_shipping_shipments_on_from_contact_label", using: :btree
   add_index "refinery_shipping_shipments", ["mode"], name: "index_refinery_shipping_shipments_on_mode", using: :btree
   add_index "refinery_shipping_shipments", ["no_of_parcels"], name: "index_refinery_shipping_shipments_on_no_of_parcels", using: :btree
+  add_index "refinery_shipping_shipments", ["no_of_parcels_manual"], name: "index_refinery_shipping_shipments_on_no_of_parcels_manual", using: :btree
   add_index "refinery_shipping_shipments", ["position"], name: "index_refinery_shipping_shipments_on_position", using: :btree
   add_index "refinery_shipping_shipments", ["project_id"], name: "index_refinery_shipping_shipments_on_project_id", using: :btree
   add_index "refinery_shipping_shipments", ["receiver_company_id"], name: "index_refinery_shipping_shipments_on_receiver_company_id", using: :btree

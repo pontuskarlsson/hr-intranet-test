@@ -206,19 +206,23 @@ en:
         created_by_id: Created By
         courier: Courier
         from_contact_label: From Contact
+        mode: Mode
+        modes:
+          air: Air
+          courier: Courier
+          rail: Rail
+          road: Road
+          sea: Sea
+          sea-air: Sea-Air
         statuses:
-          draft: Draft
-          not_shipped: Not Shipped
-          manually_shipped: Manually Shipped
-          shipped: Shipped
-          unknown: Unknown
-          pre_transit: Pre-Transit
-          in_transit: In Transit
-          out_for_delivery: Out for Delivery
-          return_to_sender: Return to Sender
-          delivered: Delivered
-          failure: Failure
+          accepted: Accepted
           cancelled: Canceled
+          confirmed: Confirmed
+          delivered: Delivered
+          draft: Draft
+          requested: Requested
+          review: Review
+          shipped: Shipped
         to_contact_label: To Contact
 
       'refinery/shipping/shipment_account':

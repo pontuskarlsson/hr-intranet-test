@@ -13,6 +13,24 @@ module Refinery
         each_nested_hash_for routes_attributes do |attr|
           update_route! attr
         end
+
+        if shipment.route_destination&.status_is_arrived?
+          unless %W(delivered cancelled).include?(shipment.status)
+            shipment.status = 'delivered'
+            shipment.save!
+          end
+
+        elsif shipment.route_origin&.status_is_departed?
+          unless %W(shipped cancelled).include?(shipment.status)
+            shipment.status = 'shipped'
+            shipment.save!
+          end
+
+        elsif %w(shipped delivered).include?(shipment.status)
+          #TODO: Expand this after we implement review and accepted statuses
+          shipment.status = 'confirmed'
+          shipment.save!
+        end
       end
 
       protected

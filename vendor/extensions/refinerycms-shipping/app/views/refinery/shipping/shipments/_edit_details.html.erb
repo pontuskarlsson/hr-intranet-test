@@ -1,69 +1,60 @@
-<section class="contact-card">
-  <h3>Details</h3>
-
+<%= form_for @shipment, url: refinery.shipping_shipment_path(@shipment) do |f| %>
+  <h3>Shipment Details</h3>
   <table class="cc-table">
     <tbody>
     <tr>
-      <th style="width: 150px;"><%= f.label :no_of_parcels, 'No. of Cartons' %></th>
-      <td><%= f.text_field :no_of_parcels %></td>
+      <th><%= f.label :shipper_company_label, 'Shipper' %></th>
+      <td><%= f.text_field :shipper_company_label, class: 'js_company_field' %></td>
     </tr>
     <tr>
-      <th><%= f.label :weight_unit %></th>
-      <td><%= f.text_field :weight_unit, class: 'js_weight_unit' %></td>
+      <th style="width: 150px;"><%= f.label :supplier_company_label, 'Supplier' %></th>
+      <td><%= f.text_field :supplier_company_label, class: 'js_company_field' %></td>
     </tr>
     <tr>
-      <th><%= f.label :gross_weight_amount, 'Gross Weight' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :gross_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
-          <%= f.text_field :gross_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
-        </div>
-      </td>
+      <th style="width: 150px;"><%= f.label :receiver_company_label, 'Receiver' %></th>
+      <td><%= f.text_field :receiver_company_label, class: 'js_company_field' %></td>
     </tr>
     <tr>
-      <th><%= f.label :net_weight_amount, 'Net Weight' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :net_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
-          <%= f.text_field :net_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
-        </div>
-      </td>
+      <th><%= f.label :consignee_company_label, 'Consignee' %></th>
+      <td><%= f.text_field :consignee_company_label, class: 'js_company_field' %></td>
     </tr>
     <tr>
-      <th><%= f.label :chargeable_weight_amount, 'Chargeable Weight' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :chargeable_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
-          <%= f.text_field :chargeable_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
-        </div>
-      </td>
+      <th style="width: 150px;"><%= f.label :forwarder_company_label, 'Forwarder' %></th>
+      <td><%= f.text_field :forwarder_company_label, class: 'js_company_field' %></td>
     </tr>
     <tr>
-      <th><%= f.label :volume_unit %></th>
-      <td><%= f.text_field :volume_unit, class: 'js_volume_unit' %></td>
+      <th><%= f.label :consignee_reference %></th>
+      <td><%= f.text_field :consignee_reference %></td>
     </tr>
     <tr>
-      <th><%= f.label :volume_amount, 'Volume' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :volume_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Orders' %>
-          <%= f.text_field :volume_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_volume_unit_label"><%= f.object.volume_unit %></span>
-        </div>
-      </td>
+      <th><%= f.label :cargo_ready_date %></th>
+      <td><%= f.date_field :cargo_ready_date %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :mode %></th>
+      <td><%= f.select :mode, options_for_select(::Refinery::Shipping::Shipment.mode_options, f.object.mode) -%></td>
     </tr>
     </tbody>
   </table>
-</section>
+
+  <div>
+    <% if shipment.status_is_draft? %>
+      <%= f.submit 'Save Draft', class: 'button' %>
+    <% else %>
+      <%= f.submit 'Save', class: 'button' %>
+    <% end%>
+  </div>
+<% end %>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
 
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function(){
-      $('.js_weight_unit').on('change', function() { $('.js_weight_unit_label').html(this.value) });
-      $('.js_volume_unit').on('change', function() { $('.js_volume_unit_label').html(this.value) });
+      $('.js_date_field').datepicker({ dateFormat: "yy-mm-dd" });
+      $('.js_company_field').autocomplete({ source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %> });
     });
   </script>
 <% end %>

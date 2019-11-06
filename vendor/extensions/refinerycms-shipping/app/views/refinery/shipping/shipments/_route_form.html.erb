@@ -1,29 +1,6 @@
 <%= f.fields_for :routes, route, child_index: i do |route_form| %>
   <%= route_form.hidden_field :route_type %>
-  <div class="grid-x grid-padding-x">
-    <div class="cell large-8">
-      <h3><%= route.display_route_type %></h3>
-      <div class="location-item">
-        <div class="location-map">
-          <div class="js-location-map" style="height: 100%;" data-map-lat="<%= route.location_lat %>" data-map-lng="<%= route.location_lng %>"></div>
-        </div>
-        <div class="location-title">
-          <%= route_form.hidden_field :location_id, class: 'js_location_id' %>
-          <%= route_form.text_field :location_label, placeholder: 'Location', class: 'js_location_field' %>
-        </div>
-        <div class="location-description">
-          <% [route.location_description, route.location_street1, route.location_street2, route.location_city, route.location_postal_code, route.location_state, route.location_country].reject(&:blank?).each_with_index do |attr, i| %>
-            <span><%= attr %></span>
-          <% end %>
-          <div class="location-ports">
-            <i class="fa fa-plane <%= route.location_airport ? 'port-active' : '' %>"></i>
-            <i class="fa fa-ship <%= route.location_seaport ? 'port-active' : '' %>"></i>
-            <i class="fa fa-train <%= route.location_railport ? 'port-active' : '' %>"></i>
-            <i class="fa fa-truck fa-flip-horizontal <%= route.location_roadport ? 'port-active' : '' %>"></i>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="grid-x grid-padding-x" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
     <div class="cell large-4">
       <% if route.route_origin? %>
         <h3>Ex. Factory</h3>
@@ -57,6 +34,29 @@
           <%= route_form.select :status, options_for_select(::Refinery::Shipping::Route.arrival_status_options, route_form.object.status), {}, class: 'input-group-field' %>
         </div>
       <% end %>
+    </div>
+    <div class="cell large-8">
+      <h3><%= route.display_route_type %></h3>
+      <div class="location-item">
+        <div class="location-map">
+          <div class="js-location-map" style="height: 100%;" data-map-lat="<%= route.location_lat %>" data-map-lng="<%= route.location_lng %>"></div>
+        </div>
+        <div class="location-title">
+          <%= route_form.hidden_field :location_id, class: 'js_location_id' %>
+          <%= route_form.text_field :location_label, placeholder: 'Location', class: 'js_location_field' %>
+        </div>
+        <div class="location-description">
+          <% [route.location_description, route.location_street1, route.location_street2, route.location_city, route.location_postal_code, route.location_state, route.location_country].reject(&:blank?).each_with_index do |attr, i| %>
+            <span><%= attr %></span>
+          <% end %>
+          <div class="location-ports">
+            <i class="fa fa-plane <%= route.location_airport ? 'port-active' : '' %>"></i>
+            <i class="fa fa-ship <%= route.location_seaport ? 'port-active' : '' %>"></i>
+            <i class="fa fa-train <%= route.location_railport ? 'port-active' : '' %>"></i>
+            <i class="fa fa-truck fa-flip-horizontal <%= route.location_roadport ? 'port-active' : '' %>"></i>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>

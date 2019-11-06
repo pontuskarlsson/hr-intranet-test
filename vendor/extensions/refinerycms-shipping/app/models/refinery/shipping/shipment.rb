@@ -21,7 +21,7 @@ module Refinery
       BILL_TO = ['Sender', 'Receiver', '3rd Party']
 
       #EASYPOST_STATUSES = %w(unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
-      STATUSES = %w(draft shipped delivered cancelled)
+      STATUSES = %w(draft requested confirmed review accepted shipped delivered cancelled)
 
       SHIP_MODES = %w(Air Courier Rail Road Sea Sea-Air)
 
@@ -224,7 +224,7 @@ module Refinery
           where(consignee_company_id: user.company_ids)
 
         elsif titles.include? Refinery::Shipping::ROLE_EXTERNAL_FF
-          where(forwarder_company_id: user.company_ids)
+          where.not(status: %w(draft cancelled)).where(forwarder_company_id: user.company_ids)
 
         else
           where('1=0')
@@ -241,6 +241,16 @@ module Refinery
 
       def label
         code
+      end
+
+      def update_status(status)
+        if status == 'requested'
+          if ready_to_request?
+            update_attributes(status: status)
+          else
+            errors.add(:status, 'not ready for request')
+          end
+        end
       end
 
       # Method used to check whether a particular user has the right to update the
@@ -284,16 +294,6 @@ module Refinery
         end
       end
 
-      def display_status
-        if status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
-        end
-      end
-
-      def self.status_options
-        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses").reduce([['Please select', { disabled: true }]]) { |acc, (k,v)| acc << [v,k] }
-      end
-
 
       def shippable?
         status == 'not_shipped' && shipment_parcels.exists?
@@ -330,6 +330,10 @@ module Refinery
         end
       end
 
+      def display_no_of_parcels
+        no_of_parcels_manual.presence || no_of_parcels
+      end
+
       def display_volume
         amount = volume_manual_amount.presence || volume_amount.presence
         "#{amount} #{volume_unit}" if amount
@@ -352,10 +356,57 @@ module Refinery
         end
       end
 
+      SHIP_MODES.each do |s|
+        define_method :"mode_#{s}?" do
+          mode == s
+        end
+      end
+
+      def display_mode
+        if mode.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.modes.#{mode.downcase}"
+        end
+      end
+
+      def self.mode_options
+        SHIP_MODES.reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.modes.#{k.downcase}"),k] }
+      end
+
       STATUSES.each do |s|
-        define_method :"status_#{s}?" do
+        define_method :"status_is_#{s}?" do
           status == s
         end
+      end
+
+      def display_status
+        if status.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status.downcase}"
+        end
+      end
+
+      def self.status_options
+        STATUSES.reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k.downcase}"),k] }
+      end
+
+      def needed_for_request
+        return @_needed_for_request unless @_needed_for_request.nil?
+
+        @_needed_for_request ||= []
+        @_needed_for_request << 'No packages added' unless packages.exists?
+
+        %w(no_of_parcels cargo_ready_date mode shipment_terms).each do |attr|
+          @_needed_for_request << "#{self.class.human_attribute_name(attr)} missing" unless send(attr).present?
+        end
+
+        @_needed_for_request
+      end
+
+      def ready_to_request?
+        status == 'draft' && needed_for_request.empty?
       end
 
       class << self

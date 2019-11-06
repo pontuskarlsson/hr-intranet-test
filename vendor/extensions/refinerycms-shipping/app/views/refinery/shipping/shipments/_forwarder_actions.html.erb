@@ -1,4 +1,15 @@
 <% if page_role? Refinery::Shipping::ROLE_INTERNAL %>
-  <%= link_to t('edit_details', scope: 'refinery.shipping.shipments.show'), refinery.edit_shipping_shipment_path(shipment), class: 'button' %>
+  <% if shipment.status_is_draft? %>
+    <% if shipment.ready_to_request? %>
+      <%= form_tag refinery.shipping_shipment_path(@shipment), method: :put do %>
+        <%= hidden_field_tag 'send_request', '1' %>
+        <%= submit_tag 'Send Request', class: 'button' %>
+      <% end %>
+    <% else %>
+      <%= link_to 'Send Request', 'javascript:void(0)', class: 'button', disabled: true %>
+      <span class="fa fa-question has-tip" data-tooltip="true" aria-haspopup="true" title="<%= shipment.needed_for_request.join(', ') %>"></span>
+    <% end %>
+  <% end %>
+
   <%= link_to t('remove', scope: 'refinery.shipping.shipments.show'), refinery.shipping_shipment_path(shipment), class: 'button alert', method: :delete, data: { confirm: t('refinery.shipping.shipments.show.confirm_remove') } %>
 <% end %>
