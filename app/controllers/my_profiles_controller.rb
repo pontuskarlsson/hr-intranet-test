@@ -7,7 +7,7 @@ class MyProfilesController < ApplicationController
   end
 
   def update
-    if current_refinery_user.update_attributes(valid_attributes)
+    if current_refinery_user.update_attributes(user_params)
       flash[:notice] = 'Successfully updated profile settings'
       redirect_to my_profile_path
     else
@@ -22,8 +22,8 @@ class MyProfilesController < ApplicationController
     @page = ::Refinery::Page.where(link_url: '/my_profile').first
   end
 
-  def valid_attributes(valid = %w(full_name user_settings_attributes))
-    params[:user].reject { |k,_| !valid.include?(k) }
+  def user_params
+    params.require(:user).permit(:full_name)
   end
 
 end

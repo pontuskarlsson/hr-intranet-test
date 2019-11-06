@@ -1,17 +1,59 @@
 <% content_for :body do %>
 
-  <h1>My Profile</h1>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x">
+      <div class="cell medium-3">
+        <ul class="vertical tabs" data-tabs id="example-tabs">
+          <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Profile</a></li>
+          <% current_authentication_devise_user.companies.each_with_index do |company, i| %>
+            <li class="tabs-title"><a href="#panel2v<%= i %>">Account: <%= company.name %></a></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="cell medium-9">
+        <div class="tabs-content" data-tabs-content="example-tabs">
+          <div class="tabs-panel is-active" id="panel1v">
+            <% if current_authentication_devise_user.contact.present? %>
+              <%= form_for current_authentication_devise_user.contact, url: my_profile_path do |f| %>
+                <div class='field'>
+                  <%= f.label :first_name %>
+                  <%= f.text_field :first_name %>
+                </div>
 
-  <%= form_for current_authentication_devise_user, url: my_profile_path do |f| %>
+                <div class='field'>
+                  <%= f.label :last_name %>
+                  <%= f.text_field :last_name %>
+                </div>
 
-    <div class='field'>
-      <%= f.label :full_name %>
-      <%= f.text_field :full_name %>
+                <div class='field'>
+                  <%= f.label :phone %>
+                  <%= f.text_field :phone %>
+                </div>
+
+                <%= f.submit 'Save Changes', class: 'button' %>
+              <% end %>
+            <% else %> %>
+              <%= form_for current_authentication_devise_user, url: my_profile_path do |f| %>
+                <div class='field'>
+                  <%= f.label :full_name %>
+                  <%= f.text_field :full_name %>
+                </div>
+
+                <%= f.submit 'Save Changes', class: 'button' %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <% current_authentication_devise_user.companies.each_with_index do |company, i| %>
+            <div class="tabs-panel" id="panel2v<%= i %>">
+              <h3><%= company.name %></h3>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
     </div>
-
-    <%= f.submit 'Save Changes' %>
-
-  <% end %>
+  </div>
 <% end %>
 
 <%= render '/refinery/content_page' %>

@@ -290,6 +290,16 @@ en:
       'refinery/business/project':
         code: Code
         description: Description
+        status: Status
+        statuses:
+          draft: Draft
+          proposed: Proposed
+          inprogress: InProgress
+          open: Open
+          completed: Completed
+          cancelled: Cancelled
+          closed: Closed
+          archived: Archived
 
       'refinery/business/section':
         description: Description

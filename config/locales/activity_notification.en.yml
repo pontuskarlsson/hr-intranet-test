@@ -20,6 +20,10 @@ en:
           text: 'An inspection has been rejected'
           title: Inspection Reject
 
+        verify:
+          text: 'An inspection needs verification'
+          title: Inspection Verification
+
       project:
         invoices_overdue:
           text: A project has overdue invoices

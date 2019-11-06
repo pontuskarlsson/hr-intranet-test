@@ -4,25 +4,18 @@ module Refinery
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_PROJECTS_URL
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :archive, :show]
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL
       allow_page_roles ROLE_INTERNAL_FINANCE
 
-      before_filter :find_projects, only: [:index, :archive]
-      before_filter :find_project,  except: [:index, :archive, :create]
+      before_filter :find_projects, only: [:index]
+      before_filter :find_project,  except: [:index, :create]
 
       def index
         @projects = @projects.from_params(params).order(code: :asc)
 
         @project = Project.new
 
-        present(@page)
-      end
-
-      def show
-        @section = ::Refinery::Business::Section.new(project_id: @project.id)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @project in the line below:
         present(@page)
       end
 
@@ -35,6 +28,33 @@ module Refinery
           @projects = @projects.order(code: :asc)
           present(@page)
           render :index
+        end
+      end
+
+      def show
+        @section = ::Refinery::Business::Section.new(project_id: @project.id)
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @project in the line below:
+        present(@page)
+      end
+
+      def edit
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @project in the line below:
+        present(@page)
+      end
+
+      def update
+        if @project.update_attributes(project_params)
+          flash[:notice] = 'Successfully updated the Project'
+          if params[:redirect_to].present?
+            redirect_to params[:redirect_to], status: :see_other
+          else
+            redirect_to refinery.business_project_path(@project), status: :see_other
+          end
+        else
+          present(@page)
+          render :edit
         end
       end
 
@@ -62,7 +82,7 @@ module Refinery
       end
 
       def project_params
-        params.require(:project).permit(:company_label, :company_reference, :description, :end_date, :start_date, :status)
+        params.require(:project).permit(:code, :company_label, :company_reference, :description, :end_date, :start_date, :status)
       end
 
       def filter_params

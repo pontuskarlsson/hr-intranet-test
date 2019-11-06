@@ -67,6 +67,18 @@ module Refinery
         end
       end
 
+      def display_status
+        if status.present?
+          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status.downcase}"
+        end
+      end
+
+      def self.status_options
+        STATUSES.reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k.downcase}"),k] }
+      end
+
     end
   end
 end

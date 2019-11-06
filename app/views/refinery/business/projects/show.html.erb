@@ -37,10 +37,14 @@
       </tr>
       <tr>
         <th>Status</th>
-        <td><%= @project.status %></td>
+        <td><%= @project.display_status %></td>
       </tr>
       </tbody>
     </table>
+
+    <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+      <p><%= link_to 'Edit', refinery.edit_business_project_path(@project), class: 'button' %></p>
+    <% end %>
 
     <h3>Project Scope</h3>
     <% if @project.sections.any? %>

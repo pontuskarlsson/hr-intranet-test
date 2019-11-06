@@ -13,7 +13,7 @@ Refinery::Core::Engine.routes.draw do
     resources :orders, :only => [:index, :show] do
       resources :order_items, only: [:index]
     end
-    resources :projects, :only => [:index, :show, :new, :create] do
+    resources :projects, :only => [:index, :show, :edit, :update, :new, :create] do
       resources :sections, only: [:create, :update]
     end
     resources :sections, :only => [:index, :show]

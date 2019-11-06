@@ -8,6 +8,10 @@
       <h2><%= @project.code %></h2>
       <h5><%= @project.company_label %></h5>
       <h5><%= @project.description %></h5>
+
+      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+        <p><%= link_to 'Edit', refinery.edit_business_project_path(@project), class: 'button' %></p>
+      <% end %>
     </div>
   </div>
 <% end %>
