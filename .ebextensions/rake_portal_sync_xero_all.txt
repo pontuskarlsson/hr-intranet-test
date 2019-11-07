@@ -1,0 +1,1 @@
+0 0 * * 0 root /bin/bash /var/portal/scripts/rake_portal_sync_xero_all.sh

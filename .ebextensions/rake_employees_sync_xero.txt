@@ -1,0 +1,1 @@
+00 * * * * root /bin/bash /var/portal/scripts/rake_employees_sync_xero.sh

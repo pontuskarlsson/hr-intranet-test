@@ -20,6 +20,10 @@ module Refinery
         present(@page)
       end
 
+      def statement
+        present(@page)
+      end
+
       def update
         if @invoice.update_attributes(invoice_params)
           flash[:notice] = 'Successfully updated the Invoice'

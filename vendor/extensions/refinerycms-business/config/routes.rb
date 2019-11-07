@@ -9,6 +9,7 @@ Refinery::Core::Engine.routes.draw do
     resources :invoices, :only => [:index, :show, :create, :update] do
       patch :add_billables, to: 'invoices#add_billables', on: :member
       post :build, on: :member
+      get :statement, on: :member
     end
     resources :orders, :only => [:index, :show] do
       resources :order_items, only: [:index]

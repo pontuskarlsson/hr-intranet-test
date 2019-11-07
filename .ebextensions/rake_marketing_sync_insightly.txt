@@ -1,0 +1,1 @@
+00 1,4,7,10 * * * root /bin/bash /var/portal/scripts/rake_marketing_sync_insightly.sh

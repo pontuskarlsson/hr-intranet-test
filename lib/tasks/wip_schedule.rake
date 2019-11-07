@@ -1,6 +1,6 @@
 require "#{Rails.root}/lib/wip_schedule"
 
-namespace :hr_intranet do
+namespace :portal do
   namespace :wip_schedule do
 
     task send: :environment do

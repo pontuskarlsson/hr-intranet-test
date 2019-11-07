@@ -1,0 +1,1 @@
+00 3 * * 3 root /bin/bash /var/portal/scripts/rake_portal_send_wip_schedule.sh

@@ -1,1 +1,0 @@
-0 0 * * 0 root /bin/bash /hr-intranet/scripts/xero_sync_all_invoices.sh
