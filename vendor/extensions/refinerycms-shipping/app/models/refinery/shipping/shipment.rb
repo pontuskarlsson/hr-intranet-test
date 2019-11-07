@@ -25,6 +25,9 @@ module Refinery
 
       SHIP_MODES = %w(Air Courier Rail Road Sea Sea-Air)
 
+      WEIGHT_UNITS = %w(kg lbs)
+      VOLUME_UNITS = %w(CBM)
+
       self.table_name = 'refinery_shipping_shipments'
 
 
@@ -120,6 +123,8 @@ module Refinery
       #validates :bill_to,                 inclusion: BILL_TO, if: :shipped_by_easypost?
       #validates :status,                  inclusion: EASYPOST_STATUSES, if: :shipped_by_easypost?
       #validates :easypost_object_id,      uniqueness: true, allow_nil: true
+      validates :weight_unit,             inclusion: WEIGHT_UNITS, allow_blank: true
+      validates :volume_unit,             inclusion: VOLUME_UNITS, allow_blank: true
 
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
       delegate :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email, to: :from_address, prefix: true, allow_nil: true
@@ -390,6 +395,18 @@ module Refinery
         STATUSES.reduce(
             [[::I18n.t("refinery.please_select"), { disabled: true }]]
         ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k.downcase}"),k] }
+      end
+
+      def self.volume_unit_options
+        VOLUME_UNITS.reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [k] }
+      end
+
+      def self.weight_unit_options
+        WEIGHT_UNITS.reduce(
+            [[::I18n.t("refinery.please_select"), { disabled: true }]]
+        ) { |acc, k| acc << [k] }
       end
 
       def needed_for_request

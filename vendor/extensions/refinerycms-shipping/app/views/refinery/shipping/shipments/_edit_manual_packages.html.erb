@@ -7,13 +7,9 @@
         <div class="input-group">
           <%= f.text_field :no_of_parcels, class: 'input-group-field', disabled: true, placeholder: 'Sum from Packages' %>
           <%= f.text_field :no_of_parcels_manual, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
+          <span class="input-group-label" style="flex: 0 0 70px;"></span>
         </div>
       </td>
-    </tr>
-    <tr>
-      <th><%= f.label :weight_unit %></th>
-      <td><%= f.text_field :weight_unit, class: 'js_weight_unit' %></td>
     </tr>
     <tr>
       <th><%= f.label :gross_weight_amount, 'Gross Weight' %></th>
@@ -21,7 +17,7 @@
         <div class="input-group">
           <%= f.text_field :gross_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Packages' %>
           <%= f.text_field :gross_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
+          <%= f.select :weight_unit, options_for_select(::Refinery::Shipping::Shipment::weight_unit_options), {}, class: 'input-group-field js_weight_unit', style: 'flex: 0 0 70px;' %>
         </div>
       </td>
     </tr>
@@ -31,7 +27,7 @@
         <div class="input-group">
           <%= f.text_field :net_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Packages' %>
           <%= f.text_field :net_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
+          <span class="input-group-label js_weight_unit_label" style="flex: 0 0 70px;"><%= f.object.weight_unit %></span>
         </div>
       </td>
     </tr>
@@ -39,15 +35,10 @@
       <th><%= f.label :chargeable_weight_amount, 'Chargeable Weight' %></th>
       <td>
         <div class="input-group">
-          <%= f.text_field :chargeable_weight_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Packages' %>
           <%= f.text_field :chargeable_weight_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_weight_unit_label"><%= f.object.weight_unit %></span>
+          <span class="input-group-label js_weight_unit_label" style="flex: 0 0 70px;"><%= f.object.weight_unit %></span>
         </div>
       </td>
-    </tr>
-    <tr>
-      <th><%= f.label :volume_unit %></th>
-      <td><%= f.text_field :volume_unit, class: 'js_volume_unit' %></td>
     </tr>
     <tr>
       <th><%= f.label :volume_amount, 'Volume' %></th>
@@ -55,7 +46,7 @@
         <div class="input-group">
           <%= f.text_field :volume_amount, class: 'input-group-field', disabled: true, placeholder: 'Sum from Packages' %>
           <%= f.text_field :volume_manual_amount, class: 'input-group-field', placeholder: 'Manually adjust' %>
-          <span class="input-group-label js_volume_unit_label"><%= f.object.volume_unit %></span>
+          <%= f.select :volume_unit, options_for_select(::Refinery::Shipping::Shipment::volume_unit_options), {}, class: 'input-group-field js_volume_unit', style: 'flex: 0 0 70px;' %>
         </div>
       </td>
     </tr>

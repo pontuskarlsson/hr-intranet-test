@@ -10,6 +10,8 @@ module Refinery
       belongs_to :shipment
       belongs_to :resource
 
+      delegate :file_name, to: :resource, prefix: true, allow_nil: true
+
       validates :shipment_id,           presence: true
       validates :resource_id,           presence: true, uniqueness: { scope: :shipment_id }
       validates :document_type,         inclusion: TYPES

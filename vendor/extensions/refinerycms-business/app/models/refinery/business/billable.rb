@@ -5,9 +5,10 @@ module Refinery
 
       class_attribute :registered_jobs, instance_writer: false
 
-      TYPES = %w(commission product time)
+      TYPES = %w(commission cost product time)
 
       COMMISSION_UNITS = %w()
+      COST_UNITS = %w()
       PRODUCT_UNITS = %w()
       TIME_UNITS = %w(day)
       
@@ -19,8 +20,10 @@ module Refinery
       #belongs_to :project
       #belongs_to :section
       belongs_to :invoice
-      belongs_to :assigned_to,      class_name: '::Refinery::Authentication::Devise::User'
+      belongs_to :assigned_to,        class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :article
+      belongs_to :line_item_sales,    class_name: '::Refinery::Business::InvoiceItem'
+      belongs_to :line_item_discount, class_name: '::Refinery::Business::InvoiceItem'
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
@@ -34,6 +37,7 @@ module Refinery
       validates :billable_type, inclusion: TYPES
       validates :title,         presence: true
       validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_is_commission?
+      validates :qty_unit,      inclusion: COST_UNITS,        if: :billable_is_commission?
       validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_is_product?
       validates :qty_unit,      inclusion: TIME_UNITS,        if: :billable_is_time?
       validates :status,        inclusion: STATUSES
@@ -57,6 +61,14 @@ module Refinery
       validate do
         if article.present?
           errors.add(:article_id, 'not allowed on this Billable') unless article.is_public or article.company == company
+        end
+
+        if line_item_sales.present?
+          errors.add(:line_item_sales_id, 'cannot be from another invoice') unless line_item_sales.invoice_id == invoice_id
+        end
+
+        if line_item_discount.present?
+          errors.add(:line_item_discount_id, 'cannot be from another invoice') unless line_item_discount.invoice_id == invoice_id
         end
       end
 

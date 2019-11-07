@@ -18,6 +18,14 @@ module Refinery
           errors.add(:weight_unit, :invalid) unless shipment.weight_unit == weight_unit
         end
       end
+      
+      def total_gross_weight_amount
+        package_gross_weight.to_f * total_packages.to_f
+      end
+
+      def total_net_weight_amount
+        package_net_weight.to_f * total_packages.to_f
+      end
 
     end
   end

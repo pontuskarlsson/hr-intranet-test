@@ -78,7 +78,6 @@ module Refinery
                       title: 'QC/QA Job(s)',
                       qty: 1,
                       qty_unit: 'day',
-                      unit_price: 350,
                       article_code: ''
                   )
                 end

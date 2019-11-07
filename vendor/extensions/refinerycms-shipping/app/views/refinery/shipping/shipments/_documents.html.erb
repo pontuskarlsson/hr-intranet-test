@@ -1,6 +1,9 @@
 <div class="block-css-grid">
   <% shipment.documents.includes(:resource).each do |document| %>
     <div class="block-card">
+      <div class="card-label">File Name</div>
+      <div class="card-text" title="<%= document.resource_file_name %>"><%= document.resource_file_name %></div>
+
       <div class="card-label">Document Type</div>
       <div class="card-text"><%= document.display_document_type %></div>
 
@@ -11,6 +14,12 @@
         <%= link_to document.resource.url, download: document.resource.file_name do %>
           Download <i class="fa <%= fa_icon_from_mime_type document.resource %>"></i>
         <% end %>
+
+        <span style="float: right;">
+          <%= link_to refinery.destroy_document_shipping_shipment_path(shipment, document), method: :delete, data: { confirm: t('refinery.shipping.shipments.show.confirm_remove_document') } do %>
+            <i class="fa fa-trash"></i>
+          <% end %>
+        </span>
       </div>
     </div>
   <% end %>

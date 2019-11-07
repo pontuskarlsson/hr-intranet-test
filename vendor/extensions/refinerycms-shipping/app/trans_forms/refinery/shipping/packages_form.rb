@@ -29,9 +29,9 @@ module Refinery
                 { no_of_parcels: 0.0, gross_weight_amount: 0.0, net_weight_amount: 0.0 }
             ) { |acc, p_attr| acc.merge(p_attr => send(p_attr)) }
         ) { |package, acc|
-          acc[:no_of_parcels]       += package.total_packages
-          acc[:gross_weight_amount] += package.package_gross_weight * package.total_packages
-          acc[:net_weight_amount]   += package.package_net_weight * package.total_packages
+          acc[:no_of_parcels]       += package.total_packages.to_f
+          acc[:gross_weight_amount] += package.total_gross_weight_amount
+          acc[:net_weight_amount]   += package.total_net_weight_amount
         }
         shipment.save!
       end

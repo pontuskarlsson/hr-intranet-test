@@ -86,6 +86,10 @@ main > .grid-container { margin-bottom: 1rem;}
     border-color: $black transparent transparent;
 }
 
+.is-dropdown-submenu {
+    z-index: 2; // To end up on top of flash message if present
+}
+
 .top-bar {
     -webkit-box-shadow: 0 0 40px rgba(0,0,0,.15);
     -moz-box-shadow: 0 0 40px rgba(0,0,0,.15);

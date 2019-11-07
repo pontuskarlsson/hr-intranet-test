@@ -129,6 +129,7 @@ en:
           edit_details: Edit Details
           remove: Remove
           confirm_remove: Are you sure you want to remove this Shipment?
+          confirm_remove_document: Are you sure you want to remove this Document?
           ship: Ship
           send_shipment: Send Shipment
 

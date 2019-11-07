@@ -280,28 +280,30 @@ ActiveRecord::Schema.define(version: 20191031020220) do
   add_index "refinery_business_articles", ["updated_date_utc"], name: "index_refinery_business_articles_on_updated_date_utc", using: :btree
 
   create_table "refinery_business_billables", force: :cascade do |t|
-    t.integer  "company_id",        limit: 4
-    t.integer  "project_id",        limit: 4
-    t.integer  "section_id",        limit: 4
-    t.integer  "invoice_id",        limit: 4
-    t.string   "billable_type",     limit: 255
-    t.string   "status",            limit: 255
-    t.string   "title",             limit: 255
-    t.text     "description",       limit: 65535
-    t.string   "article_code",      limit: 255
-    t.decimal  "qty",                             precision: 10
-    t.string   "qty_unit",          limit: 255
-    t.decimal  "unit_price",                      precision: 13, scale: 4, default: 0.0, null: false
-    t.decimal  "discount",                        precision: 12, scale: 6, default: 0.0, null: false
-    t.decimal  "total_cost",                      precision: 13, scale: 4, default: 0.0, null: false
-    t.string   "account",           limit: 255
+    t.integer  "company_id",            limit: 4
+    t.integer  "project_id",            limit: 4
+    t.integer  "section_id",            limit: 4
+    t.integer  "invoice_id",            limit: 4
+    t.string   "billable_type",         limit: 255
+    t.string   "status",                limit: 255
+    t.string   "title",                 limit: 255
+    t.text     "description",           limit: 65535
+    t.string   "article_code",          limit: 255
+    t.decimal  "qty",                                 precision: 10
+    t.string   "qty_unit",              limit: 255
+    t.decimal  "unit_price",                          precision: 13, scale: 4, default: 0.0, null: false
+    t.decimal  "discount",                            precision: 12, scale: 6, default: 0.0, null: false
+    t.decimal  "total_cost",                          precision: 13, scale: 4, default: 0.0, null: false
+    t.string   "account",               limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "billable_date"
-    t.integer  "assigned_to_id",    limit: 4
-    t.string   "assigned_to_label", limit: 255
+    t.integer  "assigned_to_id",        limit: 4
+    t.string   "assigned_to_label",     limit: 255
     t.datetime "archived_at"
-    t.integer  "article_id",        limit: 4
+    t.integer  "article_id",            limit: 4
+    t.integer  "line_item_sales_id",    limit: 4
+    t.integer  "line_item_discount_id", limit: 4
   end
 
   add_index "refinery_business_billables", ["account"], name: "index_refinery_business_billables_on_account", using: :btree
@@ -314,6 +316,8 @@ ActiveRecord::Schema.define(version: 20191031020220) do
   add_index "refinery_business_billables", ["billable_type"], name: "index_refinery_business_billables_on_billable_type", using: :btree
   add_index "refinery_business_billables", ["company_id"], name: "index_refinery_business_billables_on_company_id", using: :btree
   add_index "refinery_business_billables", ["invoice_id"], name: "index_refinery_business_billables_on_invoice_id", using: :btree
+  add_index "refinery_business_billables", ["line_item_discount_id"], name: "INDEX_rb_billables_ON_line_item_discount_id", using: :btree
+  add_index "refinery_business_billables", ["line_item_sales_id"], name: "INDEX_rb_billables_ON_line_item_sales_id", using: :btree
   add_index "refinery_business_billables", ["project_id"], name: "index_refinery_business_billables_on_project_id", using: :btree
   add_index "refinery_business_billables", ["qty"], name: "index_refinery_business_billables_on_qty", using: :btree
   add_index "refinery_business_billables", ["qty_unit"], name: "index_refinery_business_billables_on_qty_unit", using: :btree
