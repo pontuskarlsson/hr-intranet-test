@@ -162,7 +162,7 @@ en:
             manage_billables: Manage Billables
             manage_budgets: Manage Budgets
             manage_companies: Manage Companies
-            manage_invoices: Manage Invoices
+            manage_invoices_and_bills: Manage Invoices / Bills
             manage_number_series: Manage Number Series
             manage_orders: Manage Orders
             manage_order_items: Manage Order Items
@@ -226,13 +226,19 @@ en:
         is_voucher: Is Voucher
         managed_status: Managed Status
         managed_statuses:
+          changed: Changed
           draft: Draft
-          not_synced: Not Synced
-          synced: Synced
+          submitted: Submitted
         name: Name
 
       'refinery/business/billable':
         billable_date: Billable Date
+        billable_type: Billable Type
+        billable_types:
+          commission: Commission
+          cost: Cost
+          product: Product
+          time: Time
         description: Description
         status: Status
         statuses:
@@ -263,12 +269,24 @@ en:
       'refinery/business/invoice':
         description: Description
         invoice_number: Invoice No.
+        invoice_type: Invoice Type
+        invoice_types:
+          accpay: Accounts Payable
+          accrec: Accounts Receivable
         managed_status: Managed Status
         managed_statuses:
           draft: Draft
           submitted: Submitted
           changed: Changed
         reference: Reference
+        status: Status
+        statuses:
+          authorised: Authorised
+          deleted: Deleted
+          draft: Draft
+          paid: Paid
+          submitted: Submitted
+          voided: Voided
 
       'refinery/business/number_serie':
         identifier: Identifier
@@ -282,6 +300,10 @@ en:
           purchaseorder: Purchase Order
         reference: Reference
         order_date: Order Date
+        status: Status
+        statuses:
+          confirmed: Confirmed
+          draft: Draft
 
       'refinery/business/order_item':
         description: Description

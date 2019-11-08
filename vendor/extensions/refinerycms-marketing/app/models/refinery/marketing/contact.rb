@@ -3,14 +3,16 @@ module Refinery
     class Contact < Refinery::Core::BaseModel
       self.table_name = 'refinery_contacts'
 
-      acts_as_indexed :fields => [:name, :email, :organisation_name]
-
       belongs_to :user,         class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :organisation, class_name: 'Contact'
       belongs_to :image,        class_name: '::Refinery::Image'
       has_many :employees,      class_name: 'Contact', foreign_key: :organisation_id
 
       #serialize :custom_fields, Hash
+
+      acts_as_indexed :fields => [:name, :email, :organisation_name]
+
+      configure_label :name
 
       validates :base_id, uniqueness: true, allow_nil: true
       validates :insightly_id, uniqueness: true, allow_nil: true
@@ -31,6 +33,7 @@ module Refinery
         end
       end
 
+      # Override label configuration to only allow contacts with no :name
       def self.to_source
         where.not(name: nil).pluck(:name).to_json.html_safe
       end
@@ -61,10 +64,6 @@ module Refinery
 
       def postal_code=(zip)
         self.zip = zip
-      end
-
-      def label
-        name
       end
 
     end

@@ -3,8 +3,6 @@ module Refinery
     class Company < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_companies'
 
-      PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' ' }
-
       belongs_to :contact,      class_name: 'Refinery::Marketing::Contact'
       has_many :company_users,  dependent: :destroy
       has_many :parcels,        through: :contact
@@ -21,6 +19,9 @@ module Refinery
       delegate :website, :phone, :email, :country, to: :contact, allow_nil: true, prefix: true
 
       acts_as_indexed :fields => [:code, :name]
+
+      configure_assign_by_label :contact, class_name: '::Refinery::Marketing::Contact'
+      configure_label :code, :name
 
       validates :name,          presence: true, uniqueness: true
       validates :code,          presence: true, uniqueness: true
@@ -62,14 +63,6 @@ module Refinery
         end
       end
 
-      def self.to_source
-        where(nil).pluck(:code, :name).map(&PROC_LABEL).to_json.html_safe
-      end
-
-      def self.find_by_label(label)
-        find_by_code label.split(' ').first
-      end
-
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
 
@@ -80,18 +73,6 @@ module Refinery
         else
           where('1=0')
         end
-      end
-
-      def label
-        PROC_LABEL.call(code, name)
-      end
-
-      def contact_label
-        @contact_label ||= contact.try(:name)
-      end
-
-      def contact_label=(label)
-        @contact_label = label
       end
 
       def country

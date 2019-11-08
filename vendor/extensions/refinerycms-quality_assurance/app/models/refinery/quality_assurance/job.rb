@@ -23,6 +23,8 @@ module Refinery
       #
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:code, :title, :description, :company_code, :company_label, :assigned_to_label]
+      configure_assign_by_label :billable, class_name: '::Refinery::Business::Billable'
+      configure_assign_by_label :project, class_name: '::Refinery::Business::Project'
 
       delegate :label, to: :project, prefix: true, allow_nil: true
 
@@ -100,24 +102,6 @@ module Refinery
             where(assigned_to_label: job.assigned_to_label, inspection_date: job.inspection_date, company_id: job.company_id)
       }
       scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
-
-      def project_label
-        @project_label ||= project.try(:label)
-      end
-
-      def project_label=(label)
-        self.project = ::Refinery::Business::Project.find_by_label label
-        @project_label = label
-      end
-
-      def billable_label
-        @billable_label ||= billable.try(:label)
-      end
-
-      def billable_label=(label)
-        self.billable = ::Refinery::Business::Billable.find_by_label label
-        @billable_label = label
-      end
 
       def assign_code!
         if code.blank?

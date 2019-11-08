@@ -15,7 +15,7 @@
 
   <div class='field'>
     <%= f.label :route_type -%>
-    <%= f.select :route_type, options_for_select(::Refinery::Shipping::Route::TYPES, f.object.route_type) -%>
+    <%= f.select :route_type, options_for_select(::Refinery::Shipping::Route.route_type_options, f.object.route_type) -%>
   </div>
 
   <div class='field'>

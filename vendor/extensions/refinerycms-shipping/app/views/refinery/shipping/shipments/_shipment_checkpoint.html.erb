@@ -22,7 +22,7 @@
 
     <% if route.has_completed? && !next_route.has_completed? %>
       <div class="in-transit">
-        <% if (route.route_origin? && next_route.route_destination?) || (route.route_port_of_loading? && next_route.route_port_of_discharge?) %>
+        <% if (route.route_type_is_origin? && next_route.route_type_is_destination?) || (route.route_type_is_port_of_loading? && next_route.route_type_is_port_of_discharge?) %>
           <% if shipment.mode == 'Air' %>
             <i class="fa fa-plane" ></i>
           <% elsif shipment.mode == 'Rail' %>

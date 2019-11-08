@@ -14,8 +14,6 @@ module Refinery
       
       STATUSES = %w(draft job_completed to_be_invoiced invoiced paid cancelled)
 
-      PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' - ' }
-
       belongs_to :company
       #belongs_to :project
       #belongs_to :section
@@ -30,16 +28,21 @@ module Refinery
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:title, :description, :article_code]
 
+      configure_assign_by_label :invoice, class_name: '::Refinery::Business::Invoice'
+      configure_enumerables :billable_type, TYPES
+      configure_enumerables :status,        STATUSES
+      configure_label :id, :title, :assigned_to_label, :billable_date
+
       delegate :invoice_number, :reference, to: :invoice, prefix: true, allow_nil: true
       delegate :label, to: :company, prefix: true, allow_nil: true
 
       validates :company_id,    presence: true
       validates :billable_type, inclusion: TYPES
       validates :title,         presence: true
-      validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_is_commission?
-      validates :qty_unit,      inclusion: COST_UNITS,        if: :billable_is_commission?
-      validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_is_product?
-      validates :qty_unit,      inclusion: TIME_UNITS,        if: :billable_is_time?
+      validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_type_is_commission?
+      validates :qty_unit,      inclusion: COST_UNITS,        if: :billable_type_is_cost?
+      validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_type_is_product?
+      validates :qty_unit,      inclusion: TIME_UNITS,        if: :billable_type_is_time?
       validates :status,        inclusion: STATUSES
 
       before_validation do
@@ -84,22 +87,6 @@ module Refinery
         end
       end
 
-      def billable_is_commission?
-        billable_type == 'commission'
-      end
-
-      def billable_is_product?
-        billable_type == 'product'
-      end
-
-      def billable_is_time?
-        billable_type == 'time'
-      end
-
-      def display_billable_type
-        billable_type.present? ? billable_type.capitalize : 'N/A'
-      end
-
       def display_qty
         "#{qty} #{qty_unit}"
       end
@@ -132,27 +119,6 @@ module Refinery
 
       def is_base_unit?
         qty_unit == units_for_type.first
-      end
-
-      def self.to_source
-        where(nil).pluck(:id, :title, :assigned_to_label, :billable_date).map(&PROC_LABEL).to_json.html_safe
-      end
-
-      def label
-        PROC_LABEL.call(id, title, assigned_to_label, billable_date)
-      end
-
-      def self.find_by_label(label)
-        find_by id: label.split(' - ').first
-      end
-
-      def invoice_label
-        @invoice_label ||= invoice.try(:label)
-      end
-
-      def invoice_label=(label)
-        self.invoice = Invoice.find_by_label label
-        @invoice_label = label
       end
 
       # def assigned_to_label
@@ -197,18 +163,6 @@ module Refinery
 
       def all_job_association_names
         (registered_jobs || {}).keys
-      end
-
-      def display_status
-        if status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
-        end
-      end
-
-      def self.status_options
-        STATUSES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end
 
       def self.from_params(params)

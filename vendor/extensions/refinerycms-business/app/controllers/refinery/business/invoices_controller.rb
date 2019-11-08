@@ -21,7 +21,14 @@ module Refinery
       end
 
       def statement
-        present(@page)
+        respond_to do |format|
+          format.html { present(@page) }
+          format.pdf {
+            render pdf: "Invoice #{@invoice.invoice_number} - Statement #{DateTime.now.strftime('%d, %M, %Y')}",
+                   header: { html: { template: 'pdf/document_header', layout: 'layouts/pdf/none' } },
+                   window_status: "FLAG_FOR_PDF"
+          }
+        end
       end
 
       def update

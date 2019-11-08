@@ -11,6 +11,9 @@ module Refinery
       has_many :sections, dependent: :destroy
       #has_many :billables, dependent: :nullify
 
+      configure_assign_by_label :project, class_name: '::Refinery::Business::Project'
+      configure_label :description
+
       validates :project_id,    presence: true
       validates :description,   presence: true
       validates :section_type,  inclusion: TYPES, uniqueness: { scope: :project_id }
@@ -26,18 +29,6 @@ module Refinery
             errors.add(:start_date, 'cannot be earlier than project start')
           end
         end
-      end
-
-      def project_label
-        @project_label ||= project.try(:label)
-      end
-
-      def project_label=(label)
-        @project_label = label
-      end
-
-      def label
-        description
       end
 
       def jobs_and_allocations

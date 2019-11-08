@@ -15,6 +15,11 @@ module Refinery
       belongs_to :line_item_prepay_move_from, class_name: 'InvoiceItem'
       belongs_to :line_item_sales_move_to,    class_name: 'InvoiceItem'
 
+      configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
+      configure_enumerables :discount_type, DISCOUNT_TYPES
+      configure_enumerables :status,        STATUSES
+      configure_label :description
+
       delegate :applicable_to?, :code, to: :article, prefix: true, allow_nil: true
 
       validates :article_id,      presence: true
@@ -66,19 +71,6 @@ module Refinery
       scope :valid_for_date, -> (date) { where("#{table_name}.valid_from <= :date AND #{table_name}.valid_to >= :date", date: date) }
       scope :first_in_first_out, -> { order(code: :asc) }
 
-      def label
-        description
-      end
-
-      def company_label
-        @company_label ||= company.try(:label)
-      end
-
-      def company_label=(label)
-        self.company = Company.find_by_label label
-        @company_label = label
-      end
-
       def self.applicable_to(invoice, article_code = '')
         scope = invoice.invoice_for_month.present? ? active.valid_for_date(invoice.invoice_for_month) : active
 
@@ -88,30 +80,6 @@ module Refinery
         else
           scope
         end
-      end
-
-      def display_discount_type
-        if discount_type.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.discount_types.#{discount_type}"
-        end
-      end
-
-      def self.discount_type_options
-        DISCOUNT_TYPES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.discount_types.#{k}"),k] }
-      end
-
-      def display_status
-        if status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
-        end
-      end
-
-      def self.status_options
-        STATUSES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end
 
       def assign_code!

@@ -1,11 +1,5 @@
 <% content_for :actions do %>
-  <% if page_role? ::Refinery::Business::ROLE_INTERNAL_FINANCE %>
-    <% if @invoice.is_managed %>
-      <%= link_to 'View Statement', refinery.statement_business_invoice_path(@invoice), class: 'button' %>
-    <% else %>
-      <p><%= button_to 'Set as Managed', [refinery, :business, @invoice], params: { :"invoice[is_managed]" => true }, class: 'button', method: :put, html: { confirm: 'Managing this Invoice will overwrite any changes made manually in Xero. Do you want to continue?' } %></p>
-    <% end %>
-  <% end %>
+  <%= render 'actions', invoice: @invoice %>
 <% end %>
 
 <% content_for :body do %>

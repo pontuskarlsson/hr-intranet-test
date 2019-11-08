@@ -118,6 +118,10 @@ module Refinery
       serialize :rates_content, Array
       serialize :tracking_info, Array
 
+      configure_enumerables :mode, SHIP_MODES
+      configure_enumerables :status, STATUSES
+      configure_label :code
+
       validates :from_address_id,         uniqueness: true, allow_nil: true
       validates :to_address_id,           uniqueness: true, allow_nil: true
       #validates :bill_to,                 inclusion: BILL_TO, if: :shipped_by_easypost?
@@ -236,18 +240,6 @@ module Refinery
         end
       end
 
-      def self.to_source
-        where(nil).pluck(:code).to_json.html_safe
-      end
-
-      def self.find_by_label(label)
-        find_by_code label
-      end
-
-      def label
-        code
-      end
-
       def update_status(status)
         if status == 'requested'
           if ready_to_request?
@@ -350,51 +342,11 @@ module Refinery
           super label
         end
       end
-      # def forwarder_company_label=(label)
-      #   self.forwarder_company = ::Refinery::Business::Company.find_by_label label
-      #   super
-      # end
 
       Route::TYPES.each do |route_type|
         define_method :"route_#{route_type}" do
           routes.detect { |d| d.route_type == route_type } || ::Refinery::Shipping::Route.new(route_type: route_type)
         end
-      end
-
-      SHIP_MODES.each do |s|
-        define_method :"mode_#{s}?" do
-          mode == s
-        end
-      end
-
-      def display_mode
-        if mode.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.modes.#{mode.downcase}"
-        end
-      end
-
-      def self.mode_options
-        SHIP_MODES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.modes.#{k.downcase}"),k] }
-      end
-
-      STATUSES.each do |s|
-        define_method :"status_is_#{s}?" do
-          status == s
-        end
-      end
-
-      def display_status
-        if status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status.downcase}"
-        end
-      end
-
-      def self.status_options
-        STATUSES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k.downcase}"),k] }
       end
 
       def self.volume_unit_options

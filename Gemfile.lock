@@ -21,9 +21,12 @@ GIT
 PATH
   remote: vendor/extensions
   specs:
+    refinerycms-addons (1.0)
+      refinerycms-core (~> 3.0.6)
     refinerycms-business (1.0)
       countries
       jbuilder (= 2.9.0)
+      refinerycms-addons
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing
       refinerycms-page_roles (>= 1.0)
@@ -532,6 +535,7 @@ DEPENDENCIES
   rails (= 4.2.11)
   refinerycms (= 3.0.6)
   refinerycms-acts-as-indexed (= 3.0.0)
+  refinerycms-addons!
   refinerycms-authentication-devise (= 1.0.4)
   refinerycms-business!
   refinerycms-calendar!

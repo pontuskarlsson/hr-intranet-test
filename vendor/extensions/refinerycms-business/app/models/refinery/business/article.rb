@@ -13,6 +13,10 @@ module Refinery
 
       acts_as_indexed :fields => [:code, :name, :description]
 
+      configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
+      configure_enumerables :managed_status, MANAGED_STATUSES
+      configure_label :code
+
       #validates :account_id,      presence: true
       validates :item_id,         uniqueness: true, allow_blank: true
       validates :code,            presence: true, uniqueness: { scope: [:account_id] }
@@ -27,23 +31,6 @@ module Refinery
         if company.present?
           errors.add(:is_public, 'cannot be public when company is present') if is_public
         end
-      end
-
-      def label
-        code
-      end
-
-      def self.find_by_label(label)
-        find_by code: label
-      end
-
-      def company_label
-        @company_label ||= company.try(:label)
-      end
-
-      def company_label=(label)
-        self.company = Company.find_by_label label
-        @company_label = label
       end
 
       def voucher_constraint_applicable_articles
@@ -65,28 +52,6 @@ module Refinery
 
       def applicable_to?(article_code)
         voucher_constraint_applicable_articles.include? article_code
-      end
-
-      def display_managed_status
-        if managed_status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.managed_statuses.#{managed_status}"
-        end
-      end
-
-      def self.managed_status_options
-        MANAGED_STATUSES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.managed_statuses.#{k}"),k] }
-      end
-
-      MANAGED_STATUSES.each do |ms|
-        define_method :"managed_status_is_#{ms}?" do
-          managed_status == ms
-        end
-      end
-
-      def self.to_source
-        where(nil).pluck(:code).to_json.html_safe
       end
 
     end

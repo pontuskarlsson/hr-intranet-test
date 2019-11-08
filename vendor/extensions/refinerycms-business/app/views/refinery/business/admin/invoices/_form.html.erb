@@ -35,7 +35,7 @@
 
   <div class='field'>
     <%= f.label :invoice_type -%>
-    <%= f.text_field :invoice_type -%>
+    <%= f.select :invoice_type, options_for_select(::Refinery::Business::Invoice.invoice_type_options, f.object.invoice_type) -%>
   </div>
 
   <div class='field'>
@@ -60,7 +60,7 @@
 
   <div class='field'>
     <%= f.label :status -%>
-    <%= f.text_field :status -%>
+    <%= f.select :status, options_for_select(::Refinery::Business::Invoice.status_options, f.object.status) -%>
   </div>
 
   <div class='field'>
@@ -105,7 +105,7 @@
 
   <div class='field'>
     <%= f.label :managed_status -%>
-    <%= f.text_field :managed_status -%>
+    <%= f.select :managed_status, options_for_select(::Refinery::Business::Invoice.managed_status_options, f.object.managed_status) -%>
   </div>
 
   <div class='field'>

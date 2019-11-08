@@ -14,6 +14,9 @@ module Refinery
                :street1, :street2, :city, :postal_code, :state, :country, :country_code,
                to: :location, prefix: true, allow_nil: true
 
+      configure_enumerables :route_type,  TYPES
+      configure_enumerables :status,      STATUSES
+
       validates :shipment_id,           presence: true
       validates :location_id,           uniqueness: { scope: :shipment_id }, allow_nil: true
       validates :route_type,            inclusion: TYPES
@@ -56,48 +59,12 @@ module Refinery
         has_arrived?
       end
 
-      def route_departure?
+      def route_type_is_for_departure?
         %w(origin port_of_loading).include? route_type
       end
 
-      def route_arrival?
+      def route_type_is_for_arrival?
         %w(port_of_discharge destination).include? route_type
-      end
-
-      TYPES.each do |rt|
-        define_method :"route_#{rt}?" do
-          route_type == rt
-        end
-      end
-
-      def display_route_type
-        if route_type.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.route_types.#{route_type}"
-        end
-      end
-
-      def self.route_type_options
-        ::I18n.t("activerecord.attributes.#{model_name.i18n_key}.route_types").reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, (k,v)| acc << [v,k] }
-      end
-
-      STATUSES.each do |s|
-        define_method :"status_is_#{s}?" do
-          status == s
-        end
-      end
-
-      def display_status
-        if status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status}"
-        end
-      end
-
-      def self.status_options
-        STATUSES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k}"),k] }
       end
 
       def self.departure_status_options

@@ -2,17 +2,17 @@
   <%= route_form.hidden_field :route_type %>
   <div class="grid-x grid-padding-x" style="border-bottom: 1px solid #ccc; padding-bottom: 1rem; margin-bottom: 1rem;">
     <div class="cell large-4">
-      <% if route.route_origin? %>
+      <% if route.route_type_is_origin? %>
         <h3>Ex. Factory</h3>
-      <% elsif route.route_port_of_loading? %>
+      <% elsif route.route_type_is_port_of_loading? %>
         <h3>ETD</h3>
-      <% elsif route.route_port_of_discharge? %>
+      <% elsif route.route_type_is_port_of_discharge? %>
         <h3>ETA</h3>
-      <% elsif route.route_destination? %>
+      <% elsif route.route_type_is_destination? %>
         <h3>Goods Received</h3>
       <% end %>
 
-      <% if route.route_departure? %>
+      <% if route.route_type_is_for_departure? %>
         <div class="input-group">
           <span class="input-group-label"><i class="fa fa-sign-in" title="Arrived at"></i></span>
           <%= route_form.date_field :departed_at, class: 'input-group-field' %>
@@ -23,7 +23,7 @@
           <%= route_form.select :status, options_for_select(::Refinery::Shipping::Route.departure_status_options, route_form.object.status), {}, class: 'input-group-field' %>
         </div>
 
-      <% elsif route.route_arrival? %>
+      <% elsif route.route_type_is_for_arrival? %>
         <div class="input-group">
           <span class="input-group-label"><i class="fa fa-sign-out" title="Departed at"></i></span>
           <%= route_form.date_field :arrived_at, class: 'input-group-field' %>

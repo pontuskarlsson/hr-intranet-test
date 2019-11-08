@@ -10,6 +10,9 @@ module Refinery
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:article_code, :description]
 
+      configure_assign_by_label :order, class_name: '::Refinery::Business::Order'
+      configure_label :description
+
       validates :order_id,      presence: true
       validates :order_item_id, uniqueness: true, allow_blank: true
       validates :ordered_qty,   numericality: true
@@ -23,19 +26,6 @@ module Refinery
 
       after_save do
         order.sum_total_cost!
-      end
-
-      def label
-        description
-      end
-
-      def order_label
-        @order_label ||= order.try(:label)
-      end
-
-      def order_label=(label)
-        self.order = ::Refinery::Business::Order.find_by_label label
-        @order_label = label
       end
 
       def qty

@@ -35,3 +35,48 @@
         }
     }
 }
+
+.invoice_statement {
+    .plan-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 200px 1fr;
+
+        grid-template-areas:
+                "summary credits statistics"
+                "billables billables billables";
+
+        border: 1px solid #ccc;
+
+        .summary {
+            grid-area: summary;
+
+            background-color: #e9e9e9;
+            padding: 1rem;
+        }
+
+        .credits {
+            grid-area: credits;
+
+            background-color: #e9e9e9;
+            padding: 1rem;
+        }
+
+        .statistics {
+            grid-area: statistics;
+
+            background-color: #e9e9e9;
+            padding: 1rem;
+        }
+
+        .billables {
+            grid-area: billables;
+
+            > table {
+                thead, tbody, tbody > tr {
+                    background-color: #fff;
+                }
+            }
+        }
+    }
+}

@@ -3,10 +3,8 @@ module Refinery
     class Order < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_orders'
 
-      PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ', ' }
-
       TYPES = %w(PURCHASEORDER)
-      STATUSES = %w(draft confirmed )
+      STATUSES = %w(draft confirmed)
       CURRENCY_CODES = %w(EUR HKD SEK USD)
 
       belongs_to :buyer,        class_name: 'Company'
@@ -18,6 +16,11 @@ module Refinery
       #
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:order_number, :reference, :buyer_label, :seller_label, :order_date]
+
+      configure_assign_by_label :project, class_name: '::Refinery::Business::Project'
+      configure_enumerables :order_type,  TYPES
+      configure_enumerables :status,      STATUSES
+      configure_label :order_number, :reference, :order_date, sort: :desc
 
       validates :order_id,      uniqueness: true,           allow_blank: true
       validates :buyer_label,   presence: true
@@ -36,10 +39,6 @@ module Refinery
           self.seller_label = seller.label
         end
       end
-
-      def label
-        PROC_LABEL.call(order_number, reference, order_date)
-      end
       
       def buyer_label=(label)
         if buyer_label != label
@@ -57,41 +56,12 @@ module Refinery
         super
       end
 
-      def project_label
-        @project_label ||= project.try(:label)
-      end
-
-      def project_label=(label)
-        self.project = ::Refinery::Business::Project.find_by_label label
-        @project_label = label
-      end
-
-      def self.find_by_label(label)
-        find_by order_number: label.split(', ').first
-      end
-
-      def self.to_source
-        order(order_number: :desc).pluck(:order_number, :reference, :order_date).map(&PROC_LABEL).to_json.html_safe
-      end
-
       def qty
         shipped_qty.nil? ? ordered_qty : shipped_qty
       end
 
       def sum_total_cost!
         update_attributes(total_cost: order_items.sum(:total_cost))
-      end
-
-      def display_order_type
-        if order_type.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.order_types.#{order_type.downcase}"
-        end
-      end
-
-      def self.order_type_options
-        TYPES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.order_types.#{k.downcase}"), k] }
       end
 
     end

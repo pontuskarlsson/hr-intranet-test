@@ -3,8 +3,6 @@ module Refinery
     class Invoice < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_invoices'
 
-      PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ', ' }
-
       INVOICE_TYPES = %w(ACCREC ACCPAY)
       STATUSES = %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
       MANAGED_STATUSES = %w(draft submitted changed)
@@ -22,6 +20,13 @@ module Refinery
       #
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:invoice_number, :invoice_date, :reference]
+
+      configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
+      configure_assign_by_label :project, class_name: '::Refinery::Business::Project'
+      configure_enumerables :invoice_type,    INVOICE_TYPES
+      configure_enumerables :managed_status,  MANAGED_STATUSES
+      configure_enumerables :status,          STATUSES
+      configure_label :invoice_number, :invoice_date, :reference, sort: :desc
 
       validates :account_id,      presence: true
       validates :invoice_id,      uniqueness: true, allow_blank: true
@@ -85,36 +90,6 @@ module Refinery
         %w(AUTHORISED PAID).include? status
       end
 
-      def label
-        PROC_LABEL.call(invoice_number, invoice_date, reference)
-      end
-
-      def company_label
-        @company_label ||= company.try(:label)
-      end
-
-      def company_label=(label)
-        self.company = Company.find_by_label label
-        @company_label = label
-      end
-
-      def project_label
-        @project_label ||= project.try(:label)
-      end
-
-      def project_label=(label)
-        self.project = Project.find_by_label label
-        @project_label = label
-      end
-
-      def self.find_by_label(label)
-        find_by invoice_number: label.split(', ').first
-      end
-
-      def self.to_source
-        order(invoice_number: :desc).pluck(:invoice_number, :invoice_date, :reference).map(&PROC_LABEL).to_json.html_safe
-      end
-
       def self.from_params(params)
         active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
         archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
@@ -128,24 +103,6 @@ module Refinery
         else
           where('1=0')
         end
-      end
-
-      MANAGED_STATUSES.each do |ms|
-        define_method :"managed_status_is_#{ms}?" do
-          managed_status == ms
-        end
-      end
-
-      def display_managed_status
-        if managed_status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.managed_statuses.#{managed_status}"
-        end
-      end
-
-      def self.managed_status_options
-        MANAGED_STATUSES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.managed_statuses.#{k}"),k] }
       end
 
     end

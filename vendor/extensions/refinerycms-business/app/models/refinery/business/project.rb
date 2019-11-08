@@ -14,6 +14,10 @@ module Refinery
 
       acts_as_indexed :fields => [:code, :description, :company_label, :status]
 
+      configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
+      configure_enumerables :status, STATUSES
+      configure_label :code, :description
+
       validates :company_id,    presence: true
       validates :code,          uniqueness: true, allow_blank: true
       validates :start_date,    presence: true
@@ -31,27 +35,6 @@ module Refinery
       scope :current, -> { where(status: CURRENT_STATUSES) }
       scope :past, -> { where(status: STATUSES - CURRENT_STATUSES) }
 
-      def self.to_source
-        where(nil).pluck(:code, :description).map(&PROC_LABEL).to_json.html_safe
-      end
-
-      def self.find_by_label(label)
-        find_by_code label.split(' - ').first
-      end
-
-      def label
-        PROC_LABEL.call(code, description)
-      end
-
-      def company_label
-        @company_label ||= company.try(:label)
-      end
-
-      def company_label=(label)
-        self.company = Company.find_by_label label
-        @company_label = label
-      end
-
       def self.from_params(params)
         active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
         archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
@@ -65,18 +48,6 @@ module Refinery
         else
           where('1=0')
         end
-      end
-
-      def display_status
-        if status.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.statuses.#{status.downcase}"
-        end
-      end
-
-      def self.status_options
-        STATUSES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.statuses.#{k.downcase}"),k] }
       end
 
     end

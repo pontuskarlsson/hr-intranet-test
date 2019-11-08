@@ -7,7 +7,7 @@
   </span>
   <span class='actions'>
     
-    <%= link_to refinery_icon_tag("application_go.png"), refinery.business_invoice_path(invoice),
+    <%= link_to refinery_icon_tag("application_go.png"), invoice.invoice_type_is_accrec? ? refinery.business_invoice_path(invoice) : refinery.business_bill_path(invoice),
         :title => t('.view_live_html'),
         :target => "_blank" %>
     

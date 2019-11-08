@@ -82,7 +82,7 @@ module Refinery
               'remaining_minimum_qty' => mma['monthly_minimum_qty'].to_f,
               'base_amount_f' => base_amount,
               'discount_amount_f' => discount_amount,
-          )
+              )
         }
 
         qty_per_article_code = invoice.billables.includes(:article).each_with_object({}) { |billable, acc|
@@ -94,11 +94,13 @@ module Refinery
                 },
                 article: billable.article,
                 voucher_qty: 0.0,
+                billables: [],
             }
           end
 
           if billable.is_base_unit?
             acc[billable.article_code][:billable_qty] += billable.qty
+            acc[billable.article_code][:billables] << billable
           else
             raise ActiveRecord::ActiveRecordError, "cannot translate between billable units for #{billable.article_code}"
           end
@@ -110,6 +112,11 @@ module Refinery
             break if quantities[:billable_qty] <= quantities[:voucher_qty]
             break if (voucher = next_voucher_for article_code).nil?
 
+            billable = quantities[:billables].unshift
+
+            raise ActiveRecord::ActiveRecordError, "billable not found" if billable.nil?
+            raise ActiveRecord::ActiveRecordError, "billable quantity does not match voucher" unless billable.qty == 1.0
+
             pre_pay_from = invoice.invoice_items.pre_pay_redeem.build(unit_amount: -voucher.amount, quantity: 1.0)
 
             sales = sales_item_per quantities[:article], voucher.amount
@@ -118,6 +125,8 @@ module Refinery
 
             voucher.line_item_prepay_move_from = pre_pay_from
             voucher.line_item_sales_move_to = sales
+
+            billable.sales_invoice_item = sales
 
             redeemed_vouchers << voucher
           end
@@ -213,7 +222,7 @@ module Refinery
                   currency_code: invoice.currency_code,
                   valid_from: invoice.invoice_for_month,
                   valid_to: invoice.invoice_for_month + 1.year - 1.day,
-              )
+                  )
 
               sales.quantity += pre_pay_to.quantity
               discount.quantity += pre_pay_to.quantity if discount.present?

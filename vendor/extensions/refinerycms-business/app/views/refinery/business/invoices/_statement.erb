@@ -1,0 +1,45 @@
+<section class="invoice_statement">
+
+  <div class="plan-details">
+    <div class="summary">
+      Summary
+    </div>
+
+    <div class="credits">
+      Opening Balance
+    </div>
+
+    <div class="statistics">
+      Statistics
+    </div>
+
+    <div class="billables">
+      <table>
+        <tbody>
+        <% invoice.billables.includes(:article).group_by(&:article).each do |article, billables| %>
+          <tr class="table-header">
+            <th colspan="5"><%= article.name %></th>
+          </tr>
+          <tr class="table-header">
+            <th>Date</th>
+            <th>Staff</th>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Comments</th>
+          </tr>
+
+          <% billables.each do |billable| %>
+            <tr>
+              <td><%= billable.billable_date %></td>
+              <td><%= billable.assigned_to_label %></td>
+              <td><%= billable.description %></td>
+              <td><%= billable.display_qty %></td>
+              <td><%= billable.total_no_of_jobs %> Inspections</td>
+            </tr>
+          <% end %>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

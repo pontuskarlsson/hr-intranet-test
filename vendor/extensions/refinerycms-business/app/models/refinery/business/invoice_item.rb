@@ -20,6 +20,8 @@ module Refinery
                                     foreign_key: :line_item_discount_id,
                                     dependent: :nullify
 
+      configure_enumerables :transaction_type, TRANSACTION_TYPES
+
       delegate :is_voucher, to: :article, prefix: true, allow_nil: true
 
       validates :invoice_id,        presence: true
@@ -82,24 +84,6 @@ module Refinery
 
       def calculated_line_amount
         quantity * unit_amount unless quantity.nil?
-      end
-
-      TRANSACTION_TYPES.each do |tt|
-        define_method :"transaction_type_is_#{tt}?" do
-          transaction_type == tt
-        end
-      end
-
-      def display_transaction_type
-        if transaction_type.present?
-          ::I18n.t "activerecord.attributes.#{self.class.model_name.i18n_key}.transaction_types.#{transaction_type}"
-        end
-      end
-
-      def self.transaction_type_options
-        TRANSACTION_TYPES.reduce(
-            [[::I18n.t("refinery.please_select"), { disabled: true }]]
-        ) { |acc, k| acc << [::I18n.t("activerecord.attributes.#{model_name.i18n_key}.transaction_types.#{k}"),k] }
       end
 
     end
