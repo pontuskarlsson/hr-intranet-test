@@ -21,7 +21,6 @@ module Refinery
 
       transaction do
         each_nested_hash_for packages_attributes do |attr|
-          binding.pry
           update_package! attr
         end
 
