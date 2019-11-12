@@ -3,7 +3,9 @@ module Refinery
     class InvoiceItemsBuildForm < ApplicationTransForm
 
       attribute :invoice_for_month,           Date, default: proc { |f| f.invoice&.invoice_for_month }
-      attribute :monthly_minimums_attributes, Hash
+      attribute :plan_title,                  String, default: -> (f, _) { f.invoice&.plan_title }
+      attribute :plan_description,            String, default: -> (f, _) { f.invoice&.plan_description }
+      attribute :plan_monthly_minimums_attributes, Hash
 
       attr_accessor :invoice
 
@@ -18,10 +20,10 @@ module Refinery
             errors.add(:invoice, 'all Billables must have Article Codes assigned')
           end
 
-          if each_nested_hash_for(monthly_minimums_attributes).any? { |(mma, i)| mma['article_label'].present? }
+          if each_nested_hash_for(plan_monthly_minimums_attributes).any? { |(mma, i)| mma['article_label'].present? }
             errors.add(:invoice_for_month, 'must be present if monthly minimums are present') unless invoice_for_month.present?
           else
-            errors.add(:monthly_minimums_attributes, 'cannot be empty when there are no billables present') if invoice.billables.empty?
+            errors.add(:plan_monthly_minimums_attributes, 'cannot be empty when there are no billables present') if invoice.billables.empty?
           end
         end
       end
@@ -30,8 +32,12 @@ module Refinery
         self.invoice = model
       end
 
-      def monthly_minimums
-        []
+      def plan_monthly_minimums
+        if invoice.plan_monthly_minimums.present?
+          invoice.plan_monthly_minimums.map { |attr| OpenStruct.new(attr) }
+        else
+          []
+        end
       end
 
       transaction do
@@ -39,6 +45,10 @@ module Refinery
         invoice.reload
 
         invoice.invoice_for_month = invoice_for_month
+        invoice.plan_title = plan_title
+        invoice.plan_description = plan_description
+
+        parsed_monthly_minimums = []
 
         @opening_balance_by_code = invoice.company.vouchers.applicable_to(invoice).joins(:article).group("#{Refinery::Business::Article.table_name}.code").count
         @closing_balance_by_code = @opening_balance_by_code.dup
@@ -55,9 +65,10 @@ module Refinery
         # for the same Voucher article code, which price should apply to the additional Billables? For now,
         # we simply take the first occurrence and call that the primary price.
         #
-        article_codes = each_nested_hash_for(monthly_minimums_attributes).reject { |(attr, i)|
+        article_codes = each_nested_hash_for(plan_monthly_minimums_attributes).reject { |(attr, i)|
           attr['article_label'].blank?
         }.reduce([]) { |acc, (attr, i)|
+          parsed_monthly_minimums << attr
           acc << attr['article_label']
         }.uniq
         voucher_articles_by_code = Refinery::Business::Article.voucher.is_public.where(code: article_codes).each_with_object({}) { |a, acc| acc[a.code] = a }
@@ -68,7 +79,7 @@ module Refinery
         # Build and array from each nested hash from monthly minimums and merge the article into it. This
         # is important so that we can use the Voucher Article to check which Work Articles it can be
         # applied to.
-        monthly_minimum_articles = each_nested_hash_for(monthly_minimums_attributes).reject { |(attr, i)|
+        plan_monthly_minimum_articles = each_nested_hash_for(plan_monthly_minimums_attributes).reject { |(attr, i)|
           attr['article_label'].blank?
         }.map { |(mma, i)|
 
@@ -89,7 +100,7 @@ module Refinery
           if acc[billable.article_code].nil?
             acc[billable.article_code] = {
                 billable_qty: 0.0,
-                monthly_minimums: monthly_minimum_articles.select { |mma|
+                plan_monthly_minimums: plan_monthly_minimum_articles.select { |mma|
                   mma['voucher_article'].applicable_to?(billable.article_code)
                 },
                 article: billable.article,
@@ -136,26 +147,26 @@ module Refinery
           # If after applying vouchers, there are still billables left un-allocated...
           idx = 0
           loop do
-            monthly_minimum = quantities[:monthly_minimums][idx]
-            break if un_billed_qty <= 0 or monthly_minimum.nil?
+            plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
+            break if un_billed_qty <= 0 or plan_monthly_minimum.nil?
 
-            qty = monthly_minimum['remaining_minimum_qty']
+            qty = plan_monthly_minimum['remaining_minimum_qty']
             allocated_qty = [qty, un_billed_qty].min
 
-            # base_amount = monthly_minimum['base_amount'].to_f
-            # discount_amount = monthly_minimum['discount_type'] == 'percentage' ? monthly_minimum['discount_amount'].to_f * base_amount * 0.01 : monthly_minimum['discount_amount'].to_f
+            # base_amount = plan_monthly_minimum['base_amount'].to_f
+            # discount_amount = plan_monthly_minimum['discount_type'] == 'percentage' ? plan_monthly_minimum['discount_amount'].to_f * base_amount * 0.01 : plan_monthly_minimum['discount_amount'].to_f
             # discount_amount = discount_amount * -1 if discount_amount > 0
 
-            sales = sales_item_per quantities[:article], monthly_minimum['base_amount_f']
+            sales = sales_item_per quantities[:article], plan_monthly_minimum['base_amount_f']
             sales.quantity += allocated_qty
 
-            if monthly_minimum['discount_amount_f'] < 0
-              discount = discount_item_per sales, monthly_minimum['discount_amount_f']
+            if plan_monthly_minimum['discount_amount_f'] < 0
+              discount = discount_item_per sales, plan_monthly_minimum['discount_amount_f']
               discount.quantity += allocated_qty
             end
 
             un_billed_qty -= allocated_qty
-            monthly_minimum['remaining_minimum_qty'] -= allocated_qty
+            plan_monthly_minimum['remaining_minimum_qty'] -= allocated_qty
 
             idx += 1
           end
@@ -165,12 +176,12 @@ module Refinery
           # might not have been listed in the monthly minimum at all, in case we need to default to standard article
           # sales price.
           if un_billed_qty > 0
-            monthly_minimum = quantities[:monthly_minimums][0]
+            plan_monthly_minimum = quantities[:plan_monthly_minimums][0]
             article = quantities[:article]
 
-            if monthly_minimum.present?
-              base_amount = monthly_minimum['base_amount_f']
-              discount_amount = monthly_minimum['discount_amount_f']
+            if plan_monthly_minimum.present?
+              base_amount = plan_monthly_minimum['base_amount_f']
+              discount_amount = plan_monthly_minimum['discount_amount_f']
             else
               base_amount = article.sales_unit_price
               discount_amount = 0
@@ -191,17 +202,17 @@ module Refinery
         # if there is anything out of the monthly minimum quantities, that remain and we need
         # to issue vouchers for.
         #
-        monthly_minimum_articles.each do |monthly_minimum|
-          if monthly_minimum['remaining_minimum_qty'] > 0
-            if monthly_minimum['remaining_minimum_qty'].to_i != monthly_minimum['remaining_minimum_qty']
+        plan_monthly_minimum_articles.each do |plan_monthly_minimum|
+          if plan_monthly_minimum['remaining_minimum_qty'] > 0
+            if plan_monthly_minimum['remaining_minimum_qty'].to_i != plan_monthly_minimum['remaining_minimum_qty']
               raise ActiveRecord::ActiveRecordError, 'cannot issue partial vouchers (decimal quantities)'
             end
 
-            base_amount = monthly_minimum['base_amount_f']
-            discount_amount = monthly_minimum['discount_amount_f']
+            base_amount = plan_monthly_minimum['base_amount_f']
+            discount_amount = plan_monthly_minimum['discount_amount_f']
             amount = base_amount + discount_amount
 
-            sales = sales_item_per monthly_minimum['voucher_article'], base_amount
+            sales = sales_item_per plan_monthly_minimum['voucher_article'], base_amount
             discount = discount_item_per sales, discount_amount # Will return nil if discount_amount is 0
             sales_offset = sales_offset_item_per amount
 
@@ -209,15 +220,15 @@ module Refinery
               pre_pay_to = invoice.invoice_items.pre_pay.build(unit_amount: amount, quantity: 1.0)
 
               issued_vouchers << invoice.company.vouchers.build(
-                  article: monthly_minimum['voucher_article'],
+                  article: plan_monthly_minimum['voucher_article'],
                   line_item_sales_purchase: sales,
                   line_item_sales_discount: discount,
                   line_item_sales_move_from: sales_offset,
                   line_item_prepay_move_to: pre_pay_to,
                   base_amount: base_amount,
-                  discount_type: monthly_minimum['discount_type'],
-                  discount_amount: monthly_minimum['discount_type'] == 'fixed_amount' ? discount_amount : nil,
-                  discount_percentage: monthly_minimum['discount_type'] == 'percentage' ? discount_amount * 0.01 : nil,
+                  discount_type: plan_monthly_minimum['discount_type'],
+                  discount_amount: plan_monthly_minimum['discount_type'] == 'fixed_amount' ? discount_amount : nil,
+                  discount_percentage: plan_monthly_minimum['discount_type'] == 'percentage' ? discount_amount * 0.01 : nil,
                   amount: amount,
                   currency_code: invoice.currency_code,
                   valid_from: invoice.invoice_for_month,
@@ -228,12 +239,12 @@ module Refinery
               discount.quantity += pre_pay_to.quantity if discount.present?
               sales_offset.quantity += pre_pay_to.quantity
 
-              @closing_balance_by_code[monthly_minimum['voucher_article'].code] ||= 0
-              @closing_balance_by_code[monthly_minimum['voucher_article'].code] += 1
+              @closing_balance_by_code[plan_monthly_minimum['voucher_article'].code] ||= 0
+              @closing_balance_by_code[plan_monthly_minimum['voucher_article'].code] += 1
 
-              monthly_minimum['remaining_minimum_qty'] -= pre_pay_to.quantity
+              plan_monthly_minimum['remaining_minimum_qty'] -= pre_pay_to.quantity
 
-              break if monthly_minimum['remaining_minimum_qty'] <= 0
+              break if plan_monthly_minimum['remaining_minimum_qty'] <= 0
             end
           end
         end
@@ -246,7 +257,7 @@ module Refinery
           handled << informative_item_per("- - - Monthly Invoice for period #{invoice.invoice_for_month.at_beginning_of_month.iso8601} - #{invoice.invoice_for_month.at_end_of_month.iso8601}", line_item_order: line_item_order += 1)
         end
 
-        monthly_minimum_articles.each do |mma|
+        plan_monthly_minimum_articles.each do |mma|
           handled << informative_item_per("[#{mma['voucher_article'].code}] x #{mma['monthly_minimum_qty']} @ #{mma['base_amount_f']}#{ mma['discount_amount_f'] < 0 ? " (#{mma['discount_amount_f']})" : '' }", line_item_order: line_item_order += 1)
         end
 
@@ -324,6 +335,12 @@ module Refinery
 
         # We call :calculated_line_amount here, because :line_amount is not set until a before_save callback
         invoice.total_amount = invoice.invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.calculated_line_amount.to_f }
+
+        invoice.plan_monthly_minimums = parsed_monthly_minimums
+        invoice.plan_opening_balance = @opening_balance_by_code.values.reduce(&:+) || 0
+        invoice.plan_redeemed = redeemed_vouchers.count
+        invoice.plan_issued = issued_vouchers.count
+        invoice.plan_closing_balance = @closing_balance_by_code.values.reduce(&:+) || 0
 
         invoice.save!
 

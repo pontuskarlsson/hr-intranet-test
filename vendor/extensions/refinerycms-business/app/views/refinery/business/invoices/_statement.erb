@@ -1,45 +1,176 @@
-<section class="invoice_statement">
+<% content_for :head do %>
+  <style type="text/css">
+    .billables {
+      width: 100%;
+    }
+    .billables td, .billables th {
+      padding-bottom: 0.6rem;
+    }
+    .billables tfoot td, .billables tfoot th {
+      padding-top: 1rem;
+    }
+    .billables td:nth-child(1), .billables th:nth-child(1) { width: 60px; }
+    .billables td:nth-child(3), .billables th:nth-child(3) { width: 120px; }
+    .billables td:nth-child(4), .billables th:nth-child(4) { width: 120px; }
+    .billables td:nth-child(5), .billables th:nth-child(5) { width: 120px; }
 
-  <div class="plan-details">
-    <div class="summary">
-      Summary
-    </div>
+    .billables.total td:nth-child(1), .billables.total th:nth-child(1) { width: auto; }
+    .billables.total td:nth-child(2), .billables.total th:nth-child(2) { width: 120px; }
 
-    <div class="credits">
-      Opening Balance
-    </div>
+    table.summary_of_work > tbody > tr > td:nth-child(odd) {
+      width: 28%;
+    }
 
-    <div class="statistics">
-      Statistics
-    </div>
+    table.summary_of_work > tbody > tr > td:nth-child(even) {
+      width: 8%;
+    }
+  </style>
+<% end %>
 
-    <div class="billables">
-      <table>
-        <tbody>
-        <% invoice.billables.includes(:article).group_by(&:article).each do |article, billables| %>
-          <tr class="table-header">
-            <th colspan="5"><%= article.name %></th>
-          </tr>
-          <tr class="table-header">
-            <th>Date</th>
-            <th>Staff</th>
-            <th>Description</th>
-            <th>Qty</th>
-            <th>Comments</th>
-          </tr>
+<section class="invoice_plan_summary">
+  <h1 style="overflow: hidden; height: 2px;">Invoice</h1>
+  <h2><%= @invoice.plan_title %></h2>
+  <p class="italic"><%= @invoice.plan_description %></p>
 
-          <% billables.each do |billable| %>
-            <tr>
-              <td><%= billable.billable_date %></td>
-              <td><%= billable.assigned_to_label %></td>
-              <td><%= billable.description %></td>
-              <td><%= billable.display_qty %></td>
-              <td><%= billable.total_no_of_jobs %> Inspections</td>
-            </tr>
-          <% end %>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <table class="billables">
+    <thead>
+    <tr>
+      <th>Quantity</th>
+      <th>Description</th>
+      <th class="currency">Unit Price, <%= @invoice.currency_code %></th>
+      <th class="currency">Discount</th>
+      <th class="currency">Amount, <%= @invoice.currency_code %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% invoice.monthly_billables.each do |monthly_billable| %>
+      <tr>
+        <td><%= monthly_billable['monthly_minimum_qty'] %></td>
+        <td><%= monthly_billable['article'].name %></td>
+        <td class="currency"><%=number_to_currency monthly_billable['base_amount'].to_f, unit: '' %></td>
+        <td class="currency"><%=number_to_currency monthly_billable['discount_amount'].present? ? -monthly_billable['discount_amount'].to_f : '', unit: '' %></td>
+        <td class="currency"><%=number_to_currency (monthly_billable['base_amount'].to_f - monthly_billable['discount_amount'].to_f) * monthly_billable['monthly_minimum_qty'].to_f, unit: '' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th colspan="4" class="currency">Subtotal, <%= @invoice.currency_code %></th>
+      <th class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></th>
+    </tr>
+    </tfoot>
+  </table>
+
+  <hr style="margin-top: 2rem;"/>
+
+  <table class="billables total">
+    <tbody>
+      <tr>
+        <td class="currency">Subtotal, <%= @invoice.currency_code %></td>
+        <td class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></td>
+      </tr>
+      <tr>
+        <td class="currency">Invoice Total, <%= @invoice.currency_code %></td>
+        <td class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></td>
+      </tr>
+      <tr>
+        <td class="currency">Less Payments, <%= @invoice.currency_code %></td>
+        <td class="currency">-<%=number_to_currency 0, unit: '' %></td>
+      </tr>
+      <tr>
+        <td class="currency">&nbsp;</td>
+        <td class="currency">&nbsp;</td>
+      </tr>
+      <tr>
+        <th class="currency">Amount Due, <%= @invoice.currency_code %></th>
+        <th class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></th>
+      </tr>
+    </tbody>
+  </table>
 </section>
+
+<div class="alwaysbreak"></div>
+
+<section class="invoice_plan_statement">
+  <h1 style="overflow: hidden; height: 2px;">Summary</h1>
+  <h2><%= @invoice.plan_title %></h2>
+  <p class="italic"><%= @invoice.plan_description %></p>
+
+  <table class="summary_of_work">
+    <thead>
+    <tr>
+      <th>Statement of Work</th>
+      <th>&nbsp;</th>
+      <th>Credits - QC/QA Man Days</th>
+      <th>&nbsp;</th>
+      <th>Statistics</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        <table>
+          <tbody>
+          <tr>
+            <td>No. of Man Days</td>
+            <td class="number"><%=number_with_delimiter @invoice.number_of_man_days %></td>
+          </tr>
+          <tr>
+            <td>No. of Inspections</td>
+            <td class="number"><%=number_with_delimiter @invoice.number_of_inspections %></td>
+          </tr>
+          <tr>
+            <td>No. of Pieces Inspected</td>
+            <td class="number"><%=number_with_delimiter @invoice.number_of_pieces_inspected %></td>
+          </tr>
+          <tr>
+            <td>No. of Locations</td>
+            <td class="number"><%=number_with_delimiter @invoice.number_of_locations %></td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+
+      <td>&nbsp;</td>
+
+      <td>
+        <table>
+          <tbody>
+          <tr>
+            <td>Opening Balance</td>
+            <td class="number"><%=number_with_delimiter @invoice.plan_opening_balance %></td>
+          </tr>
+          <tr>
+            <td>Redeemed</td>
+            <td class="number"><%=number_with_delimiter @invoice.plan_redeemed %></td>
+          </tr>
+          <tr>
+            <td>Issued</td>
+            <td class="number"><%=number_with_delimiter @invoice.plan_issued %></td>
+          </tr>
+          <tr>
+            <td>Closing Balance</td>
+            <td class="number"><%=number_with_delimiter @invoice.plan_closing_balance %></td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+
+      <td>&nbsp;</td>
+
+      <td>
+        <table>
+          <tbody>
+          <tr>
+            <td>Pass Rate</td>
+            <td class="number"><%=number_to_percentage @invoice.total_pass_rate * 100, precision: 1 %></td>
+          </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</section>
+

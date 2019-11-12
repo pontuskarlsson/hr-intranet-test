@@ -1,4 +1,4 @@
-<%= f.fields_for :monthly_minimums, [OpenStruct.new], child_index: i do |mm_form| %>
+<%= f.fields_for :plan_monthly_minimums, [plan_monthly_minimum_struct], child_index: i do |mm_form| %>
   <span class="form-addable-remove">
     <% if mm_form.object.persisted? %>
       <%= mm_form.hidden_field :_destroy %>

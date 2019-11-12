@@ -1,15 +1,48 @@
-<!doctype html>
-<html>
-<head>
-
-</head>
-<body>
-<div style="text-align: center;">
-  STATEMENT
-  <%= wicked_pdf_image_tag 'happy-rabbit', style: 'width: 50px;' %>
-</div>
-<div style="margin: 6px 0; padding: 2px 0; text-align: center; border-top: 1px solid #000; border-bottom: 1px solid #000;">
-  <h1 style="margin: 0; padding: 0;"><%= @title %></h1>
-</div>
-</body>
-</html>
+<table style="width: 100%;">
+  <tbody>
+  <tr>
+    <td style="width: 33.3%;">&nbsp;</td>
+    <td style="width: 33.3%; text-align: center;">
+      <%= wicked_pdf_image_tag 'happy-rabbit', style: 'width: 60px;' %>
+    </td>
+    <td style="width: 33.3%; text-align: right;">
+      <h1 style="font-weight: 800;"><span class="section"></span></h1>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <p style="margin-bottom: 3px; font-weight: 700;">Customer</p>
+      <% if @invoice.company&.contact.present? %>
+        <% @invoice.company.contact.all_address_lines.each do |line| %>
+          <p style="line-height: 1rem; margin: 0;"><%= line %></p>
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <table class="document-summary-table">
+        <thead>
+        <tr>
+          <th>Invoice No.</th>
+          <th>Issue Date</th>
+          <th>Due Date</th>
+          <th>Billing Period</th>
+          <th>Your Reference</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><%= @invoice.invoice_number %></td>
+          <td><%= @invoice.display_invoice_date %></td>
+          <td><%= @invoice.display_due_date %></td>
+          <td><%= @invoice.display_billing_period %></td>
+          <td><%= @invoice.buyer_reference %></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<hr/>

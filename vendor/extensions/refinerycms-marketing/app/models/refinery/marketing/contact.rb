@@ -66,6 +66,10 @@ module Refinery
         self.zip = zip
       end
 
+      def all_address_lines
+        [name, address, city, zip, state, country].reject(&:blank?)
+      end
+
     end
   end
 end

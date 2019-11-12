@@ -25,8 +25,10 @@ module Refinery
           format.html { present(@page) }
           format.pdf {
             render pdf: "Invoice #{@invoice.invoice_number} - Statement #{DateTime.now.strftime('%d, %M, %Y')}",
-                   header: { html: { template: 'pdf/document_header', layout: 'layouts/pdf/none' } },
-                   window_status: "FLAG_FOR_PDF"
+                   layout: 'pdf/document_layout',
+                   header: { spacing: 5, html: { template: 'pdf/document_header' } },
+                   footer: { spacing: 5, html: { template: 'pdf/document_footer', locals: { account: @invoice.account } } },
+                   margin: { top: 70, bottom: 40, right: 10, left: 20 }
           }
         end
       end

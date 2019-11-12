@@ -165,6 +165,14 @@ module Refinery
         (registered_jobs || {}).keys
       end
 
+      def number_of_pieces_inspected
+        quality_assurance_jobs.reduce(0) { |acc, job| acc + job.inspection&.inspection_sample_size.to_i }
+      end
+
+      def location
+        quality_assurance_jobs.map(&:inspection).compact.map(&:manufacturer_label).reject(&:blank?).uniq.first
+      end
+
       def self.from_params(params)
         active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
         archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))

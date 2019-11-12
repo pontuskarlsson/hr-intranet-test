@@ -21,7 +21,7 @@ module Refinery
       acts_as_indexed :fields => [:code, :name]
 
       configure_assign_by_label :contact, class_name: '::Refinery::Marketing::Contact'
-      configure_label :code, :name
+      configure_label :code, :name, separator: ' '
 
       validates :name,          presence: true, uniqueness: true
       validates :code,          presence: true, uniqueness: true

@@ -4,9 +4,19 @@
              :include_object_name => true %>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell">
+    <div class="cell medium-6">
       <%= f.label :invoice_for_month %>
       <%= f.date_field :invoice_for_month %>
+    </div>
+
+    <div class="cell medium-6">
+      <%= f.label :plan_title %>
+      <%= f.text_field :plan_title %>
+    </div>
+
+    <div class="cell">
+      <%= f.label :plan_description %>
+      <%= f.text_area :plan_description %>
     </div>
   </div>
 
@@ -16,7 +26,13 @@
     </div>
 
     <div class="form-addable-record">
-      <%= render 'monthly_minimum_form', f: f, i: 0 %>
+      <% if f.object.plan_monthly_minimums.any? %>
+        <% f.object.plan_monthly_minimums.each_with_index do |plan_monthly_minimum_struct, i| %>
+          <%= render 'monthly_minimum_form', f: f, i: i, plan_monthly_minimum_struct: plan_monthly_minimum_struct %>
+        <% end %>
+      <% else %>
+        <%= render 'monthly_minimum_form', f: f, i: 0, plan_monthly_minimum_struct: OpenStruct.new %>
+      <% end %>
     </div>
 
     <% content_for :javascripts do %>
@@ -31,8 +47,8 @@
           onAddForm();
 
           Addable.partials["invoice-monthly-minimum"] = {
-            "attributes": { "__index__": <%= 1 %> },
-            "template": "<%= escape_javascript render('monthly_minimum_form', i: '__index__', f: f) %>",
+            "attributes": { "__index__": <%= f.object.plan_monthly_minimums.length + 1 %> },
+            "template": "<%= escape_javascript render('monthly_minimum_form', i: '__index__', f: f, plan_monthly_minimum_struct: OpenStruct.new) %>",
             "onAdd": onAddForm,
           };
         });

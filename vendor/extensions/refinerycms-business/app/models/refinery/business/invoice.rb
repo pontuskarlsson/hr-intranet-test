@@ -26,7 +26,10 @@ module Refinery
       configure_enumerables :invoice_type,    INVOICE_TYPES
       configure_enumerables :managed_status,  MANAGED_STATUSES
       configure_enumerables :status,          STATUSES
-      configure_label :invoice_number, :invoice_date, :reference, sort: :desc
+      configure_label :invoice_number, :invoice_date, :reference, sort: :desc, separator: ', '
+      display_date_for :invoice_date, :due_date
+
+      store :plan_details, accessors: [ :plan_title, :plan_description, :plan_monthly_minimums, :plan_opening_balance, :plan_redeemed, :plan_issued, :plan_closing_balance ], coder: JSON, prefix: :plan
 
       validates :account_id,      presence: true
       validates :invoice_id,      uniqueness: true, allow_blank: true
@@ -88,6 +91,55 @@ module Refinery
 
       def approved?
         %w(AUTHORISED PAID).include? status
+      end
+
+      def display_billing_period(format = '%b %e, %Y')
+        if invoice_for_month.present?
+          [
+              invoice_for_month.at_beginning_of_month.strftime(format),
+              invoice_for_month.at_end_of_month.strftime(format),
+          ].join(' - ')
+        else
+          '&nbsp;'.html_safe
+        end
+      end
+
+      def buyer_reference
+        'N/A'
+      end
+
+      def monthly_billables
+        @monthly_billables ||= Array(plan_monthly_minimums).map { |mm| mm.merge('article' => Article.find_by_label(mm['article_label'])) }
+      end
+
+      def number_of_man_days
+        billables.sum(:qty)
+      end
+
+      def number_of_inspections
+        billables.reduce(0) { |acc, billable| acc + billable.total_no_of_jobs }
+      end
+
+      def number_of_pieces_inspected
+        billables.reduce(0) do |acc, billable|
+          acc + billable.number_of_pieces_inspected
+        end
+      end
+
+      def number_of_locations
+        billables.map(&:location).uniq.count
+      end
+
+      def total_pass_rate
+        res = billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.each_with_object([0.0, 0.0]) do |inspection, acc|
+          acc[inspection.result_is_pass? ? 0 : 1] = inspection.po_qty
+        end
+
+        if res[0] + res[1] == 0
+          1.0
+        else
+          res[0].to_f / (res[0] + res[1])
+        end
       end
 
       def self.from_params(params)

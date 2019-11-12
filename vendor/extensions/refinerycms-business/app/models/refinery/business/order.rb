@@ -20,7 +20,7 @@ module Refinery
       configure_assign_by_label :project, class_name: '::Refinery::Business::Project'
       configure_enumerables :order_type,  TYPES
       configure_enumerables :status,      STATUSES
-      configure_label :order_number, :reference, :order_date, sort: :desc
+      configure_label :order_number, :reference, :order_date, sort: :desc, separator: ', '
 
       validates :order_id,      uniqueness: true,           allow_blank: true
       validates :buyer_label,   presence: true

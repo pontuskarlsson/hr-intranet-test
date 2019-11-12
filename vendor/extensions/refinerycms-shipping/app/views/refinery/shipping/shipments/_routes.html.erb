@@ -89,7 +89,7 @@
         }).data('ui-autocomplete');
 
         field._renderItem = function(ul, item) {
-          var $node = $('<li class="ui-menu-item"><div class="location-item"><span class="location-map"></span><span class="location-title"></span><span class="location-description"></span></div></li>');
+          var $node = $('<li class="ui-menu-item"><a class="location-item"><span class="location-map"></span><span class="location-title"></span><span class="location-description"></span></a></li>');
 
           $('.location-title', $node).html(item.name);
 

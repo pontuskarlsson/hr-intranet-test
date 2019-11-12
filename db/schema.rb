@@ -439,12 +439,12 @@ ActiveRecord::Schema.define(version: 20191031020220) do
     t.date     "invoice_date"
     t.date     "due_date"
     t.string   "status",             limit: 255
-    t.decimal  "total_amount",                   precision: 12, scale: 2, default: 0.0
-    t.decimal  "amount_due",                     precision: 12, scale: 2, default: 0.0
-    t.decimal  "amount_paid",                    precision: 12, scale: 2, default: 0.0
-    t.decimal  "amount_credited",                precision: 8,  scale: 2, default: 0.0
+    t.decimal  "total_amount",                     precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_due",                       precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_paid",                      precision: 12, scale: 2, default: 0.0
+    t.decimal  "amount_credited",                  precision: 8,  scale: 2, default: 0.0
     t.string   "currency_code",      limit: 255
-    t.decimal  "currency_rate",                  precision: 12, scale: 6, default: 1.0
+    t.decimal  "currency_rate",                    precision: 12, scale: 6, default: 1.0
     t.datetime "updated_date_utc"
     t.integer  "position",           limit: 4
     t.datetime "created_at"
@@ -459,8 +459,9 @@ ActiveRecord::Schema.define(version: 20191031020220) do
     t.integer  "to_contact_id",      limit: 4
     t.datetime "archived_at"
     t.string   "managed_status",     limit: 255
-    t.boolean  "is_managed",                                              default: false, null: false
+    t.boolean  "is_managed",                                                default: false, null: false
     t.date     "invoice_for_month"
+    t.text     "plan_details",       limit: 65535
   end
 
   add_index "refinery_business_invoices", ["account_id"], name: "index_refinery_business_invoices_on_account_id", using: :btree

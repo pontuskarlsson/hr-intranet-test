@@ -11,6 +11,7 @@ class AddFromAndToToInvoices < ActiveRecord::Migration
     add_column :refinery_business_invoices, :is_managed, :boolean, null: false, default: false
     add_column :refinery_business_invoices, :managed_status, :string
     add_column :refinery_business_invoices, :invoice_for_month, :date
+    add_column :refinery_business_invoices, :plan_details, :text
     add_index :refinery_business_invoices, :from_company_id, name: 'INDEX_rb_invoices_ON_from_company_id'
     add_index :refinery_business_invoices, :from_company_label, name: 'INDEX_rb_invoices_ON_from_company_label'
     add_index :refinery_business_invoices, :from_contact_id, name: 'INDEX_rb_invoices_ON_from_contact_id'

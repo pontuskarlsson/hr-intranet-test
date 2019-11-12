@@ -61,6 +61,11 @@ en:
         inspected_by_id: Inspected By
         document_id: Document
         result: Result
+        results:
+          hold: Hold
+          pass: Pass
+          reject: Reject
+          sort: Sort
         inspection_date: Inspection Date
         inspection_sample_size: Inspection Sample Size
         inspection_type: Inspection Type

@@ -31,12 +31,6 @@ class ReportsController < ApplicationController
     end
   end
 
-  def statement
-    respond_to do |format|
-      format.pdf { render pdf: "Invoice #{@invoice.invoice_number} - Statement #{DateTime.now.strftime('%d, %M, %Y')}", window_status: "FLAG_FOR_PDF" }
-    end
-  end
-
   private
 
   def inspections_scope

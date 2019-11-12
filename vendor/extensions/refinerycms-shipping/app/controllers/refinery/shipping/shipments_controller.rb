@@ -118,6 +118,12 @@ module Refinery
         redirect_to refinery.shipping_shipment_path(@shipment)
       end
 
+      def locations
+        respond_to do |format|
+          format.json
+        end
+      end
+
       protected
 
       def shipments_scope

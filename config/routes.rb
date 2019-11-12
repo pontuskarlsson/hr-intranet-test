@@ -26,7 +26,6 @@ HrIntranet::Application.routes.draw do
   match 'hooks/catch/:webhook_key(/:webhook_id)', to: 'hooks#catch', via: [:post, :put, :delete], as: :hooks_catch
 
   post 'reports/inspections', to: 'reports#inspections', as: :reports_inspections
-  post 'reports/statement/:id', to: 'reports#statement', as: :reports_statement
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
