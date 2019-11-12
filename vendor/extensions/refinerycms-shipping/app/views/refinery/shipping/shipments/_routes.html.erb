@@ -89,6 +89,14 @@
           }
         }).data('ui-autocomplete');
 
+        // Max items to render in dropdown is 5.
+        field._renderMenu = function( ul, items ) {
+          var that = this;
+          $.each(items.slice(0, 5), function (index, item) {
+            that._renderItemData(ul, item);
+          });
+        };
+
         field._renderItem = function(ul, item) {
           var $node = $('<li class="ui-menu-item"><a class="location-item"><span class="location-map"></span><span class="location-title"></span><span class="location-description"></span></a></li>');
 
