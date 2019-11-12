@@ -25,6 +25,7 @@ Refinery::Resources.configure do |config|
   # config.dragonfly_url_host = ""
   # config.datastore_root_path = "/vagrant/hr_intranet/public/system/refinery/resources"
   # config.content_disposition = :attachment
+  config.dragonfly_secret = ENV['DRAGONFLY_SECRET']
 
   # Configure Dragonfly custom storage backend
   # The custom_backend setting by default defers to the core setting for this but can be set just for resources.
