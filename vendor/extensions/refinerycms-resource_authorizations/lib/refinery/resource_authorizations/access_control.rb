@@ -26,7 +26,7 @@ module Refinery
               cond = parse_conditions(conditions)
 
               if role_title == 'User'
-                user&.id == cond[:user_id]
+                user && cond[:user_id] && user.id == cond[:user_id].to_i
 
               elsif @access.has_key? role_title
                 if role_titles.include? role_title
