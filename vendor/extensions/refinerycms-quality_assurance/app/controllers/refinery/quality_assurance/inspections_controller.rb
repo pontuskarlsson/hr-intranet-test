@@ -4,12 +4,12 @@ module Refinery
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_INSPECTIONS_URL
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :defects, :show]
-      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :defects, :show]
-      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :defects, :show, :update]
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :defects, :download, :show]
+      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :defects, :download, :show]
+      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :defects, :download, :show, :update]
 
       before_action :find_all_inspections,  only: [:index, :calendar, :defects, :show]
-      before_action :find_inspection,       except: [:index, :calendar, :defects, :new, :create]
+      before_action :find_inspection,       except: [:index, :calendar, :defects, :new, :create, :download]
 
       helper_method :filter_params, :calendar_params, :inspection_defects
 
@@ -17,6 +17,29 @@ module Refinery
         respond_to do |format|
           format.html { present(@page) }
           format.json
+        end
+      end
+
+      def download
+        @inspection_ids = []
+
+        if params[:resource_id]
+          @resource = Refinery::Resource.find(params[:resource_id])
+        else
+          @inspection_ids = inspections_scope.where(filter_params).where(id: params[:id]).pluck(:id)
+
+          if @inspection_ids.length <= 100
+            resources = ::Refinery::Resource.create_resources_with_access({ file: 'blank' }, {
+                'User' => { user_id: current_authentication_devise_user.id }
+            })
+            @resource = resources[0]
+
+            Delayed::Job.enqueue(::ZipInspectionsJob.new(@resource.id, @inspection_ids))
+          end
+        end
+
+        respond_to do |format|
+          format.js
         end
       end
 

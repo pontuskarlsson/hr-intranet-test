@@ -5,6 +5,7 @@ Refinery::Core::Engine.routes.draw do
     resources :inspections, :only => [:index, :show, :edit, :update] do
       get :calendar, on: :collection
       get :defects, on: :collection
+      post :download, on: :collection
     end
     resources :jobs, :only => [:index, :show, :edit, :update]
   end

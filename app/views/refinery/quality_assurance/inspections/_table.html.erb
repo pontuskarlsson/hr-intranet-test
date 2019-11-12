@@ -110,7 +110,7 @@
         buttons: [
           'excelHtml5',
           {
-            text: 'Report',
+            text: 'Summary Report',
             action: function(e, dt, node, config) {
               var data = dt.rows({ selected: true }).data();
               var resp;
@@ -123,6 +123,27 @@
 
               if (resp) {
                 var $form = $('<form action="/reports/inspections.pdf" method="post" target="_blank"></form>');
+                $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
+                data.each(function(dataRow) { $form.append('<input type="hidden" name="id[]" value="'+dataRow.id+'" />') });
+                $form.appendTo(document.body);
+                $form.submit();
+              }
+            }
+          },
+          {
+            text: 'Download Report(s)',
+            action: function(e, dt, node, config) {
+              var data = dt.rows({ selected: true }).data();
+              var resp;
+              if (data.length > 0) {
+                resp = confirm('You have selected '+data.length+' rows. Do you want to continue?');
+              } else {
+                data = dt.rows({ search: 'applied' }).data();
+                resp = confirm('There are '+data.length+' rows filtered. Do you want to continue?');
+              }
+
+              if (resp) {
+                var $form = $('<form action="<%= refinery.download_quality_assurance_inspections_path %>" method="post" data-remote="true"></form>');
                 $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
                 data.each(function(dataRow) { $form.append('<input type="hidden" name="id[]" value="'+dataRow.id+'" />') });
                 $form.appendTo(document.body);

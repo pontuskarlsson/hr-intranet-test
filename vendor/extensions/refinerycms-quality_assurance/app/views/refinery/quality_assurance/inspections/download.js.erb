@@ -1,0 +1,22 @@
+<% if @inspection_ids.length >= 100 %>
+  var dialog = $("<div id=\"inspections_download_dialog\" title=\"Download Report(s)\" style=\"min-width: 18rem;\">Cannot zip more than 100 files at a time.</div>");
+  dialog.appendTo('body').dialog();
+
+<% elsif @resource.file_name.present? %>
+  $('#inspections_download_dialog').remove();
+  var dialog = $("<div id=\"inspections_download_dialog\" title=\"Download Report(s)\" style=\"min-width: 18rem;\"><a href=\"<%= @resource.file.url %>\" download=\"true\"><i class=\"fa fa-download\"></i> Click here to download</a></div>");
+  dialog.appendTo('body').dialog();
+
+<% else %>
+  $('#inspections_download_dialog').remove();
+  var dialog = $("<div id=\"inspections_download_dialog\" title=\"Download Report(s)\" style=\"min-width: 18rem;\"><i class=\"fa fa-spinner fa-pulse\"></i> Please wait while we zip the selected reports.</div>");
+  dialog.appendTo('body').dialog();
+
+  setTimeout(function() {
+    var $form = $('<form action="<%= refinery.download_quality_assurance_inspections_path %>" method="post" data-remote="true"></form>');
+    $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
+    $form.append('<input type="hidden" name="resource_id" value="<%= @resource.id %>" />');
+    $form.appendTo(document.body);
+    $form.submit();
+  }, 3000);
+<% end %>

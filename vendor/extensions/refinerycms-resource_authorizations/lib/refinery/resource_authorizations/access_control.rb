@@ -23,9 +23,14 @@ module Refinery
 
           else
             access.scan(CTRL_REG).any? { |(role_title, conditions)|
-              if @access.has_key? role_title
+              cond = parse_conditions(conditions)
+
+              if role_title == 'User'
+                user&.id == cond[:user_id]
+
+              elsif @access.has_key? role_title
                 if role_titles.include? role_title
-                  @access[role_title].nil? || @access[role_title].call(user, parse_conditions(conditions))
+                  @access[role_title].nil? || @access[role_title].call(user, cond)
                 end
               end
             }
