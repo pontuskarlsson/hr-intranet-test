@@ -30,6 +30,7 @@ module Refinery
       acts_as_indexed :fields => [:company_label, :supplier_label, :manufacturer_label, :po_number, :result, :product_code, :product_description]
 
       configure_enumerables :result, RESULTS
+      configure_enumerables :inspection_type, INSPECTION_TYPES
 
       delegate :image_url, :preview_url, :thumb_url, to: :inspection_photo, prefix: true, allow_nil: true
       delegate :code, :company_label, :project_code, :status, to: :job, prefix: true, allow_nil: true
@@ -132,6 +133,16 @@ module Refinery
               [tot_cr+cr, tot_ma+ma, tot_mi+mi]
             }
         save!
+      end
+
+      def total_defects
+        total_critical + total_major + total_minor
+      end
+
+      def total_defects_fixable
+        inspection_defects.pluck(:critical, :major, :minor, :can_fix).inject(0) { |acc, (cr, ma, mi, can_fix)|
+          can_fix ? acc + cr + ma + mi : acc
+        }
       end
 
       def label

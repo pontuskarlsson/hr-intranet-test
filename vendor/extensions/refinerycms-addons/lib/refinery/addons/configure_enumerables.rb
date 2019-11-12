@@ -13,7 +13,7 @@ module Refinery
         def configure_enumerables(attribute, values, options = {})
 
           values.each do |value|
-            define_method :"#{attribute}_is_#{value.downcase}?" do
+            define_method :"#{attribute}_is_#{value.downcase.gsub('-', '_')}?" do
               send(attribute) == value
             end
           end

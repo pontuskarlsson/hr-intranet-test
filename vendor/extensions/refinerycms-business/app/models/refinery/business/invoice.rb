@@ -130,8 +130,8 @@ module Refinery
         billables.map(&:location).uniq.count
       end
 
-      def total_pass_rate
-        res = billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.each_with_object([0.0, 0.0]) do |inspection, acc|
+      def final_insp_pass_rate
+        res = billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.select(&:inspection_type_is_final?).each_with_object([0.0, 0.0]) do |inspection, acc|
           acc[inspection.result_is_pass? ? 0 : 1] = inspection.po_qty
         end
 
@@ -139,6 +139,18 @@ module Refinery
           1.0
         else
           res[0].to_f / (res[0] + res[1])
+        end
+      end
+
+      def inline_defects_found
+        billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.select(&:inspection_type_is_in_line?).reduce(0) do |acc, inspection|
+          acc + inspection.total_defects
+        end
+      end
+
+      def inline_defects_fixable
+        billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.select(&:inspection_type_is_in_line?).reduce(0) do |acc, inspection|
+          acc + inspection.total_defects_fixable
         end
       end
 

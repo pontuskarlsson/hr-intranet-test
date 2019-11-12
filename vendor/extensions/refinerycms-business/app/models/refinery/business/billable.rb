@@ -32,6 +32,7 @@ module Refinery
       configure_enumerables :billable_type, TYPES
       configure_enumerables :status,        STATUSES
       configure_label :id, :title, :assigned_to_label, :billable_date
+      display_date_for :billable_date
 
       delegate :invoice_number, :reference, to: :invoice, prefix: true, allow_nil: true
       delegate :label, to: :company, prefix: true, allow_nil: true

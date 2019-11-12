@@ -24,12 +24,24 @@
     table.summary_of_work > tbody > tr > td:nth-child(even) {
       width: 8%;
     }
+
+    table.details_of_work {
+      margin: 2rem 0 1rem;
+    }
+    table.details_of_work td, table.details_of_work th {
+      padding-bottom: 0.6rem;
+    }
+    table.details_of_work > tbody > tr > td:nth-child(1) { width: 100px; }
+    table.details_of_work > tbody > tr > td:nth-child(2) { width: 160px; }
+    table.details_of_work > tbody > tr > td:nth-child(3) { width: auto; }
+    table.details_of_work > tbody > tr > td:nth-child(4) { width: 80px; }
+    table.details_of_work > tbody > tr > td:nth-child(5) { width: 100px; }
   </style>
 <% end %>
 
 <section class="invoice_plan_summary">
   <h1 style="overflow: hidden; height: 2px;">Invoice</h1>
-  <h2><%= @invoice.plan_title %></h2>
+  <h2 style="margin: 0 0 0.5rem;"><%= @invoice.plan_title %></h2>
   <p class="italic"><%= @invoice.plan_description %></p>
 
   <table class="billables">
@@ -93,7 +105,7 @@
 
 <section class="invoice_plan_statement">
   <h1 style="overflow: hidden; height: 2px;">Summary</h1>
-  <h2><%= @invoice.plan_title %></h2>
+  <h2 style="margin: 0 0 0.5rem;"><%= @invoice.plan_title %></h2>
   <p class="italic"><%= @invoice.plan_description %></p>
 
   <table class="summary_of_work">
@@ -162,8 +174,16 @@
         <table>
           <tbody>
           <tr>
-            <td>Pass Rate</td>
-            <td class="number"><%=number_to_percentage @invoice.total_pass_rate * 100, precision: 1 %></td>
+            <td>Final Insp. Pass Rate</td>
+            <td class="number"><%=number_to_percentage @invoice.final_insp_pass_rate * 100, precision: 1, strip_insignificant_zeros: true %></td>
+          </tr>
+          <tr>
+            <td>In-line Defects Found</td>
+            <td class="number"><%=number_with_delimiter @invoice.inline_defects_found %></td>
+          </tr>
+          <tr>
+            <td>In-line Defects Fixable?</td>
+            <td class="number"><%=number_with_delimiter @invoice.inline_defects_fixable %></td>
           </tr>
           </tbody>
         </table>
@@ -171,6 +191,41 @@
     </tr>
     </tbody>
   </table>
+
+  <% @invoice.billables.group_by(&:article).each do |article, billables| %>
+    <table class="details_of_work">
+      <thead>
+      <tr>
+        <th colspan="5"><%= article.name %> During the Period</th>
+      </tr>
+      <tr>
+        <th>Date</th>
+        <th>Staff</th>
+        <th>Vendor</th>
+        <th class="number">Days</th>
+        <th class="number">Inspections</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% billables.each do |billable| %>
+        <tr>
+          <td><%= billable.display_billable_date %></td>
+          <td><%= billable.assigned_to_label %></td>
+          <td><%= billable.location %></td>
+          <td class="number"><%=number_with_delimiter billable.qty %></td>
+          <td class="number"><%= billable.total_no_of_jobs %></td>
+        </tr>
+      <% end %>
+      </tbody>
+      <tfoot>
+      <tr>
+        <th colspan="3">Total</th>
+        <th class="number"><%=number_with_delimiter billables.reduce(0) { |acc, b| acc + b.qty } %></th>
+        <th class="number"><%=number_with_delimiter billables.reduce(0) { |acc, b| acc + b.total_no_of_jobs } %></th>
+      </tr>
+      </tfoot>
+    </table>
+  <% end %>
 
 </section>
 

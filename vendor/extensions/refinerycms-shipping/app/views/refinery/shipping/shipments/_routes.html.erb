@@ -101,19 +101,7 @@
           var $node = $('<li class="ui-menu-item"><a class="location-item"><span class="location-map"></span><span class="location-title"></span><span class="location-description"></span></a></li>');
 
           $('.location-title', $node).html(item.name);
-
           setItem($('.location-item', $node), item);
-
-          // $('.location-description', $node).append($('<p></p>').html(item.description));
-          //
-          // setMap($('.location-map', $node)[0], item.lat, item.lng);
-          //
-          // var $ports = $('<div class="location-ports"><i class="fa fa-plane"></i><i class="fa fa-ship"></i><i class="fa fa-train"></i><i class="fa fa-truck"></i></div>');
-          // if (item.airport) { $('.fa-plane', $ports).addClass('port-active'); }
-          // if (item.railport) { $('.fa-train', $ports).addClass('port-active'); }
-          // if (item.roadport) { $('.fa-truck', $ports).addClass('port-active'); }
-          // if (item.seaport) { $('.fa-ship', $ports).addClass('port-active'); }
-          // $('.location-description', $node).append($ports);
 
           return $node.appendTo(ul);
         };
