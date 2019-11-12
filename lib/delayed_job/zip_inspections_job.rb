@@ -19,7 +19,22 @@ class ZipInspectionsJob < Struct.new(:resource_id, :inspection_ids)
             # - The original file, including the path to find it
             tempfiles << tmp_report = Tempfile.new
             inspection.resource.file.to_file(tmp_report.path)
-            zipfile.add(inspection.resource.file_name, tmp_report.path)
+
+            # Sometimes the length of a filename gets shortened and results in
+            # the distinguishing part of it being removed. So we must be aware
+            # of potential name conflicts and handle it.
+            basename = File.basename(inspection.resource.file_name)
+            extname = File.extname(inspection.resource.file_name)
+            idx = 1
+            loop do
+              begin
+                zipfile.add("#{basename}.#{extname}", tmp_report.path)
+                break
+              rescue ::Zip::EntryExistsError => e
+                idx += 1
+                basename = basename[0..87] << "_#{idx}"
+              end
+            end
           end
         end
         #zipfile.get_output_stream("myFile") { |f| f.write "myFile contains just this" }
