@@ -7,6 +7,7 @@ class CreateBusinessAccounts < ActiveRecord::Migration
       t.string   :consumer_key,    limit: 255
       t.string   :consumer_secret, limit: 255
       t.string   :encryption_key,  limit: 255
+      t.text     :bank_details
 
       t.integer :position
       t.timestamps

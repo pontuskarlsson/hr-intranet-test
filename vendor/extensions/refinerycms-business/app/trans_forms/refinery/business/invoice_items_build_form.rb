@@ -5,6 +5,7 @@ module Refinery
       attribute :invoice_for_month,           Date, default: proc { |f| f.invoice&.invoice_for_month }
       attribute :plan_title,                  String, default: -> (f, _) { f.invoice&.plan_title }
       attribute :plan_description,            String, default: -> (f, _) { f.invoice&.plan_description }
+      attribute :buyer_reference,             String, default: -> (f, _) { f.invoice&.buyer_reference }
       attribute :plan_monthly_minimums_attributes, Hash
 
       attr_accessor :invoice
@@ -46,6 +47,7 @@ module Refinery
 
         invoice.invoice_for_month = invoice_for_month
         invoice.plan_title = plan_title
+        invoice.buyer_reference = buyer_reference
         invoice.plan_description = plan_description
 
         parsed_monthly_minimums = []

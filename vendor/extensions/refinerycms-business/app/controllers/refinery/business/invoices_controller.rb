@@ -28,7 +28,7 @@ module Refinery
                    layout: 'pdf/document_layout',
                    header: { spacing: 5, html: { template: 'pdf/document_header' } },
                    footer: { spacing: 5, html: { template: 'pdf/document_footer', locals: { account: @invoice.account } } },
-                   margin: { top: 70, bottom: 40, right: 10, left: 20 }
+                   margin: { top: 70, bottom: 30, right: 10, left: 20 }
           }
         end
       end

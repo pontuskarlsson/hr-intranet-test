@@ -22,6 +22,11 @@
       text-align:  left;
       vertical-align: top;
     }
+
+    thead { display: table-header-group }
+    tfoot { display: table-row-group }
+    tr { page-break-inside: avoid }
+
     td.currency, th.currency, td.number, th.number {
       text-align: right;
     }
@@ -49,7 +54,8 @@
     }
 
     .footer, .footer p, .footer td, .footer th {
-      font-size: 8pt;
+      font-size: 6pt;
+      line-height: 6.5pt;
     }
     .footer p {
       margin: 0 0 0.5rem;

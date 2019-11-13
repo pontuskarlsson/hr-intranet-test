@@ -4,14 +4,19 @@
              :include_object_name => true %>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell medium-6">
+    <div class="cell medium-4">
       <%= f.label :invoice_for_month %>
       <%= f.date_field :invoice_for_month %>
     </div>
 
-    <div class="cell medium-6">
+    <div class="cell medium-4">
       <%= f.label :plan_title %>
       <%= f.text_field :plan_title %>
+    </div>
+
+    <div class="cell medium-4">
+      <%= f.label :buyer_reference %>
+      <%= f.text_field :buyer_reference %>
     </div>
 
     <div class="cell">
@@ -25,15 +30,17 @@
       <i class="fa fa-plus-square form-ctrl-add"></i>
     </div>
 
-    <div class="form-addable-record">
-      <% if f.object.plan_monthly_minimums.any? %>
-        <% f.object.plan_monthly_minimums.each_with_index do |plan_monthly_minimum_struct, i| %>
+    <% if f.object.plan_monthly_minimums.any? %>
+      <% f.object.plan_monthly_minimums.each_with_index do |plan_monthly_minimum_struct, i| %>
+        <div class="form-addable-record">
           <%= render 'monthly_minimum_form', f: f, i: i, plan_monthly_minimum_struct: plan_monthly_minimum_struct %>
-        <% end %>
-      <% else %>
-        <%= render 'monthly_minimum_form', f: f, i: 0, plan_monthly_minimum_struct: OpenStruct.new %>
+        </div>
       <% end %>
-    </div>
+    <% else %>
+      <div class="form-addable-record">
+        <%= render 'monthly_minimum_form', f: f, i: 0, plan_monthly_minimum_struct: OpenStruct.new %>
+      </div>
+    <% end %>
 
     <% content_for :javascripts do %>
       <script type="text/javascript">

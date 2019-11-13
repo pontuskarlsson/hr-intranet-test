@@ -7,27 +7,27 @@
   </span>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell large-3">
+    <div class="cell large-3 medium-6">
       <%= mm_form.label :monthly_minimum_qty, 'Monthly Minimum Qty' %>
       <%= mm_form.number_field :monthly_minimum_qty, placeholder: 'Monthly Minimum Qty' %>
     </div>
 
-    <div class="cell large-3">
+    <div class="cell large-3 medium-6">
       <%= mm_form.label :article_label %>
       <%= mm_form.text_field :article_label, placeholder: 'Article', class: 'js_article_field' %>
     </div>
 
-    <div class="cell large-2">
+    <div class="cell large-2 medium-4">
       <%= mm_form.label :base_amount %>
       <%= mm_form.number_field :base_amount, step: '0.01' %>
     </div>
 
-    <div class="cell large-2">
+    <div class="cell large-2 medium-4">
       <%= mm_form.label :discount_type %>
       <%= mm_form.select :discount_type, options_for_select(::Refinery::Business::Voucher.discount_type_options) %>
     </div>
 
-    <div class="cell large-2">
+    <div class="cell large-2 medium-4">
       <%= mm_form.label :discount_amount, 'Discount' %>
       <%= mm_form.number_field :discount_amount, step: '0.01' %>
     </div>

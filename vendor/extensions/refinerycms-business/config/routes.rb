@@ -23,6 +23,12 @@ Refinery::Core::Engine.routes.draw do
   # Admin routes
   namespace :business, :path => '' do
     namespace :admin, :path => "#{Refinery::Core.backend_route}/business" do
+      resources :accounts, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
       resources :articles, :except => :show do
         collection do
           post :update_positions

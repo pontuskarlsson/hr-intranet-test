@@ -3,9 +3,9 @@ require 'spec_helper'
 module Refinery
   module Business
     describe InvoiceItemsBuildForm do
-      let(:account) { FactoryGirl.create(:account) }
-      let(:invoice) { FactoryGirl.create(:invoice, account: account) }
-      let(:article) { FactoryGirl.create(:article_voucher, account: account) }
+      let(:accounts) { FactoryGirl.create(:accounts) }
+      let(:invoice) { FactoryGirl.create(:invoice, accounts: account) }
+      let(:article) { FactoryGirl.create(:article_voucher, accounts: account) }
       let(:monthly_minimum_attr) { { '0' => { 'article_label' => article.code, 'monthly_minimum_qty' => 10, 'base_amount' => 100 } } }
       let(:attr) { { invoice_for_month: '2019-01-01', monthly_minimums_attributes: monthly_minimum_attr } }
       let(:form) { InvoiceItemsBuildForm.new_in_model(invoice, attr) }
@@ -33,7 +33,7 @@ module Refinery
         end
 
         context 'when invoice has billables with article code' do
-          before { FactoryGirl.create(:billable_with_article, invoice: invoice, account: account) }
+          before { FactoryGirl.create(:billable_with_article, invoice: invoice, accounts: account) }
 
           it { is_expected.to be_valid }
         end
@@ -45,7 +45,7 @@ module Refinery
         end
 
         context 'when there are Billables present but no monthly minimum specified' do
-          before { FactoryGirl.create(:billable_with_article, invoice: invoice, account: account) }
+          before { FactoryGirl.create(:billable_with_article, invoice: invoice, accounts: account) }
 
           let(:attr) { { invoice_for_month: '2019-01-01' } }
 

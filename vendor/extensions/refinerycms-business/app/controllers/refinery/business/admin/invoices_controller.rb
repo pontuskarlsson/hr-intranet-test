@@ -15,7 +15,7 @@ module Refinery
               :updated_date_utc, :company_id, :company_label, :project_id, :project_label,
               :from_company_id, :from_company_label, :from_contact_id, :to_company_id,
               :to_company_label, :to_contact_id, :archived_at, :is_managed, :managed_status,
-              :invoice_for_month
+              :invoice_for_month, :buyer_reference, :seller_reference
           )
         end
 

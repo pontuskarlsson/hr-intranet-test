@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(version: 20191031020220) do
     t.integer  "position",        limit: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "bank_details",    limit: 65535
   end
 
   add_index "refinery_business_accounts", ["organisation"], name: "index_refinery_business_accounts_on_organisation", using: :btree
@@ -462,10 +463,13 @@ ActiveRecord::Schema.define(version: 20191031020220) do
     t.boolean  "is_managed",                                                default: false, null: false
     t.date     "invoice_for_month"
     t.text     "plan_details",       limit: 65535
+    t.string   "buyer_reference",    limit: 255
+    t.string   "seller_reference",   limit: 255
   end
 
   add_index "refinery_business_invoices", ["account_id"], name: "index_refinery_business_invoices_on_account_id", using: :btree
   add_index "refinery_business_invoices", ["archived_at"], name: "INDEX_rb_invoices_ON_archived_at", using: :btree
+  add_index "refinery_business_invoices", ["buyer_reference"], name: "INDEX_rb_invoices_ON_buyer_reference", using: :btree
   add_index "refinery_business_invoices", ["company_id"], name: "index_refinery_business_invoices_on_company_id", using: :btree
   add_index "refinery_business_invoices", ["contact_id"], name: "index_refinery_business_invoices_on_contact_id", using: :btree
   add_index "refinery_business_invoices", ["from_company_id"], name: "INDEX_rb_invoices_ON_from_company_id", using: :btree
@@ -480,6 +484,7 @@ ActiveRecord::Schema.define(version: 20191031020220) do
   add_index "refinery_business_invoices", ["managed_status"], name: "INDEX_rb_invoices_ON_managed_status", using: :btree
   add_index "refinery_business_invoices", ["position"], name: "index_refinery_business_invoices_on_position", using: :btree
   add_index "refinery_business_invoices", ["project_id"], name: "index_refinery_business_invoices_on_project_id", using: :btree
+  add_index "refinery_business_invoices", ["seller_reference"], name: "INDEX_rb_invoices_ON_seller_reference", using: :btree
   add_index "refinery_business_invoices", ["status"], name: "index_refinery_business_invoices_on_status", using: :btree
   add_index "refinery_business_invoices", ["to_company_id"], name: "INDEX_rb_invoices_ON_to_company_id", using: :btree
   add_index "refinery_business_invoices", ["to_company_label"], name: "INDEX_rb_invoices_ON_to_company_label", using: :btree

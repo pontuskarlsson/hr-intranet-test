@@ -48,10 +48,12 @@ module Refinery
               invoice.from_company = @account_company
               invoice.to_company = invoice.company
               invoice.to_contact_id = invoice.contact_id
+              invoice.seller_reference = invoice.reference
             else
               invoice.to_company = @account_company
               invoice.from_company = invoice.company
               invoice.from_contact_id = invoice.contact_id
+              invoice.buyer_reference = invoice.reference
             end
 
             invoice.save!

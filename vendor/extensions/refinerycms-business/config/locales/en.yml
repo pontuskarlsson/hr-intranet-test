@@ -6,6 +6,21 @@ en:
 
     business:
       admin:
+        accounts:
+          actions:
+            create_new: Add New Account
+            reorder: Reorder Accounts
+            reorder_done: Done Reordering Accounts
+          records:
+            title: Accounts
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Accounts yet. Click "Add New Account" to add your first account.
+          account:
+            view_live_html: View this account live <br/><em>(opens in a new window)</em>
+            edit: Edit this account
+            delete: Remove this account forever
+            preview: ''
+
         articles:
           actions:
             create_new: Add New Article
@@ -158,6 +173,7 @@ en:
             
         shared:
           links:
+            manage_accounts: Manage Accounts
             manage_articles: Manage Articles
             manage_billables: Manage Billables
             manage_budgets: Manage Budgets
@@ -168,6 +184,10 @@ en:
             manage_order_items: Manage Order Items
             manage_projects: Manage Projects
             manage_sections: Manage Sections
+
+      accounts:
+        show:
+          other: Other Accounts
 
       articles:
         show:
@@ -213,6 +233,14 @@ en:
 
   activerecord:
     attributes:
+      'refinery/business/account':
+        bank_details: Bank Details
+        consumer_key: Consumer Key
+        consumer_secret: Consumer Secret
+        encryption_key: Encryption Key
+        key_content: Key Content
+        organisation: Organisation
+
       'refinery/business/article':
         archived_at: Archived At
         code: Code
@@ -267,7 +295,9 @@ en:
           sales_offset: Sales Offset
 
       'refinery/business/invoice':
+        buyer_reference: Buyer Reference
         description: Description
+        invoice_for_month: Invoice For Month
         invoice_number: Invoice No.
         invoice_type: Invoice Type
         invoice_types:
@@ -279,6 +309,7 @@ en:
           submitted: Submitted
           changed: Changed
         reference: Reference
+        seller_reference: Seller Reference
         status: Status
         statuses:
           authorised: Authorised
