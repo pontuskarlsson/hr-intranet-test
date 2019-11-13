@@ -104,10 +104,6 @@ module Refinery
         end
       end
 
-      def buyer_reference
-        'N/A'
-      end
-
       def monthly_billables
         @monthly_billables ||= Array(plan_monthly_minimums).map { |mm| mm.merge('article' => Article.find_by_label(mm['article_label'])) }
       end
