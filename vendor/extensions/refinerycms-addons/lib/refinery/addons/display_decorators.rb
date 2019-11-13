@@ -17,7 +17,7 @@ module Refinery
 
           fields.each do |field|
             class_eval <<-RUBY_EVAL
-              def display_#{field}(format = '%b %e, %Y')
+              def display_#{field}(format = '%e %b %Y')
                 if #{field}.present?
                   #{field}.strftime(format)
                 else

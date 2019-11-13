@@ -93,7 +93,7 @@ module Refinery
         %w(AUTHORISED PAID).include? status
       end
 
-      def display_billing_period(format = '%b %e, %Y')
+      def display_billing_period(format = '%e %b %Y')
         if invoice_for_month.present?
           [
               invoice_for_month.at_beginning_of_month.strftime(format),
