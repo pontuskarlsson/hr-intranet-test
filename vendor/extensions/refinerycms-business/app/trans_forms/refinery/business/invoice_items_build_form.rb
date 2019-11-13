@@ -125,7 +125,7 @@ module Refinery
             break if quantities[:billable_qty] <= quantities[:voucher_qty]
             break if (voucher = next_voucher_for article_code).nil?
 
-            billable = quantities[:billables].unshift
+            billable = quantities[:billables].shift
 
             raise ActiveRecord::ActiveRecordError, "billable not found" if billable.nil?
             raise ActiveRecord::ActiveRecordError, "billable quantity does not match voucher" unless billable.qty == 1.0
