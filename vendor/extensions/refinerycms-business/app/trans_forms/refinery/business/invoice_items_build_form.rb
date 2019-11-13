@@ -101,18 +101,18 @@ module Refinery
         qty_per_article_code = invoice.billables.includes(:article).each_with_object({}) { |billable, acc|
           if acc[billable.article_code].nil?
             acc[billable.article_code] = {
-                billable_qty: 0.0,
+                #billable_qty: 0.0,
                 plan_monthly_minimums: plan_monthly_minimum_articles.select { |mma|
                   mma['voucher_article'].applicable_to?(billable.article_code)
                 },
                 article: billable.article,
-                voucher_qty: 0.0,
+                #voucher_qty: 0.0,
                 billables: [],
             }
           end
 
           if billable.is_base_unit?
-            acc[billable.article_code][:billable_qty] += billable.qty
+            #acc[billable.article_code][:billable_qty] += billable.qty
             acc[billable.article_code][:billables] << billable
           else
             raise ActiveRecord::ActiveRecordError, "cannot translate between billable units for #{billable.article_code}"
@@ -122,63 +122,41 @@ module Refinery
         qty_per_article_code.each do |article_code, quantities|
 
           loop do
-            break if quantities[:billable_qty] <= quantities[:voucher_qty]
+            #break if quantities[:billable_qty] <= quantities[:voucher_qty]
+            break if quantities[:billables].empty?
             break if (voucher = next_voucher_for article_code).nil?
 
+            # TODO: To allow for billables with qty other then 1.0, only remove billables here that matches voucher qty
             billable = quantities[:billables].shift
 
             raise ActiveRecord::ActiveRecordError, "billable not found" if billable.nil?
             raise ActiveRecord::ActiveRecordError, "billable quantity does not match voucher" unless billable.qty == 1.0
 
-            pre_pay_from = invoice.invoice_items.pre_pay_redeem.build(unit_amount: -voucher.amount, quantity: 1.0)
+            pre_pay_from = invoice.invoice_items.pre_pay_redeem.build(unit_amount: -voucher.amount, quantity: billable.qty)
 
             sales = sales_item_per quantities[:article], voucher.amount
             sales.quantity += pre_pay_from.quantity
-            quantities[:voucher_qty] += pre_pay_from.quantity
+            #quantities[:voucher_qty] += pre_pay_from.quantity
 
             voucher.line_item_prepay_move_from = pre_pay_from
             voucher.line_item_sales_move_to = sales
 
-            billable.sales_invoice_item = sales
+            billable.line_item_sales = sales
 
             redeemed_vouchers << voucher
           end
 
-          un_billed_qty = quantities[:billable_qty] - quantities[:voucher_qty]
+          #un_billed_qty = quantities[:billable_qty] - quantities[:voucher_qty]
 
           # If after applying vouchers, there are still billables left un-allocated...
           idx = 0
+          plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
           loop do
-            plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
-            break if un_billed_qty <= 0 or plan_monthly_minimum.nil?
+            # plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
+            # break if un_billed_qty <= 0 or plan_monthly_minimum.nil?
+            break if quantities[:billables].empty?
 
-            qty = plan_monthly_minimum['remaining_minimum_qty']
-            allocated_qty = [qty, un_billed_qty].min
-
-            # base_amount = plan_monthly_minimum['base_amount'].to_f
-            # discount_amount = plan_monthly_minimum['discount_type'] == 'percentage' ? plan_monthly_minimum['discount_amount'].to_f * base_amount * 0.01 : plan_monthly_minimum['discount_amount'].to_f
-            # discount_amount = discount_amount * -1 if discount_amount > 0
-
-            sales = sales_item_per quantities[:article], plan_monthly_minimum['base_amount_f']
-            sales.quantity += allocated_qty
-
-            if plan_monthly_minimum['discount_amount_f'] < 0
-              discount = discount_item_per sales, plan_monthly_minimum['discount_amount_f']
-              discount.quantity += allocated_qty
-            end
-
-            un_billed_qty -= allocated_qty
-            plan_monthly_minimum['remaining_minimum_qty'] -= allocated_qty
-
-            idx += 1
-          end
-
-          # If after applying monthly minimums, there are still billables left, take the first (if multiple) from
-          # the monthly minimum to act as primary price. But now we also need to be aware that the article code
-          # might not have been listed in the monthly minimum at all, in case we need to default to standard article
-          # sales price.
-          if un_billed_qty > 0
-            plan_monthly_minimum = quantities[:plan_monthly_minimums][0]
+            billable = quantities[:billables].shift
             article = quantities[:article]
 
             if plan_monthly_minimum.present?
@@ -189,14 +167,60 @@ module Refinery
               discount_amount = 0
             end
 
+            #qty = plan_monthly_minimum['remaining_minimum_qty']
+            #allocated_qty = [qty, un_billed_qty].min
+
             sales = sales_item_per quantities[:article], base_amount
-            sales.quantity += un_billed_qty
+            sales.quantity += billable.qty
+            billable.line_item_sales = sales
 
             if discount_amount < 0
               discount = discount_item_per sales, discount_amount
-              discount.quantity += un_billed_qty
+              discount.quantity += billable.qty
+              billable.line_item_discount = discount
+            end
+
+            #un_billed_qty -= allocated_qty
+
+            if plan_monthly_minimum && plan_monthly_minimum['remaining_minimum_qty'] > 0
+              plan_monthly_minimum['remaining_minimum_qty'] -= billable.qty
+
+              if plan_monthly_minimum['remaining_minimum_qty'] <= 0
+                idx += 1
+
+                if quantities[:plan_monthly_minimums][idx].present?
+                  plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
+                else
+                  plan_monthly_minimum = quantities[:plan_monthly_minimums][0]
+                end
+              end
             end
           end
+
+          # If after applying monthly minimums, there are still billables left, take the first (if multiple) from
+          # the monthly minimum to act as primary price. But now we also need to be aware that the article code
+          # might not have been listed in the monthly minimum at all, in case we need to default to standard article
+          # sales price.
+          # if un_billed_qty > 0
+          #   plan_monthly_minimum = quantities[:plan_monthly_minimums][0]
+          #   article = quantities[:article]
+          #
+          #   if plan_monthly_minimum.present?
+          #     base_amount = plan_monthly_minimum['base_amount_f']
+          #     discount_amount = plan_monthly_minimum['discount_amount_f']
+          #   else
+          #     base_amount = article.sales_unit_price
+          #     discount_amount = 0
+          #   end
+          #
+          #   sales = sales_item_per quantities[:article], base_amount
+          #   sales.quantity += un_billed_qty
+          #
+          #   if discount_amount < 0
+          #     discount = discount_item_per sales, discount_amount
+          #     discount.quantity += un_billed_qty
+          #   end
+          # end
 
         end
 

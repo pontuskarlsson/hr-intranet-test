@@ -207,7 +207,7 @@
       </tr>
       </thead>
       <tbody>
-      <% billables.each do |billable| %>
+      <% billables.sort_by(&:billable_date).each do |billable| %>
         <tr>
           <td><%= billable.display_billable_date %></td>
           <td><%= billable.assigned_to_label %></td>
