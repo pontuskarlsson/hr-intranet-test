@@ -120,7 +120,7 @@ module Refinery
 
       def locations
         respond_to do |format|
-          format.json
+          format.json { render json: Location.with_query(search_terms).limit(10), methods: [:label, :value] }
         end
       end
 
@@ -193,6 +193,14 @@ module Refinery
 
       def packages_form
         @packages_form ||= Refinery::Shipping::PackagesForm.new_in_model(@shipment, params[:shipment], current_authentication_devise_user)
+      end
+
+      def search_terms
+        if params[:term]
+          params[:term].to_s.split(' ').map { |t| "^#{t}" }.join(' ')
+        else
+          ''
+        end
       end
 
     end

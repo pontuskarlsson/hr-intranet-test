@@ -14,6 +14,7 @@ Refinery::Core::Engine.routes.draw do
         get :add_document
         post :create_document
         delete 'document/:document_id', to: 'shipments#destroy_document', as: :destroy_document
+        get :locations
       end
       resources :packages, only: [:create, :update, :destroy]
     end

@@ -75,7 +75,7 @@
     $(function(){
       $('.js_location_field').each(function(i, node) {
         var field = $(node).autocomplete({
-          source: <%= ::Refinery::Shipping::Location.to_source %>,
+          source: "<%= refinery.locations_shipping_shipment_path(@shipment) %>",
           minLength: 3,
           change: function(event, ui) {
             var item = ui.item || { id: null };
