@@ -128,7 +128,7 @@ module Refinery
 
       def final_insp_pass_rate
         res = billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.select(&:inspection_type_is_final?).each_with_object([0.0, 0.0]) do |inspection, acc|
-          acc[inspection.result_is_pass? ? 0 : 1] = inspection.po_qty
+          acc[inspection.result_is_pass? ? 0 : 1] += inspection.po_qty
         end
 
         if res[0] + res[1] == 0
