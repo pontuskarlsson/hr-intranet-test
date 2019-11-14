@@ -174,6 +174,10 @@ module Refinery
         quality_assurance_jobs.map(&:inspection).compact.map(&:manufacturer_label).reject(&:blank?).uniq.first
       end
 
+      def supplier
+        quality_assurance_jobs.map(&:inspection).compact.map(&:supplier_label).reject(&:blank?).uniq.first
+      end
+
       def self.from_params(params)
         active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
         archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))

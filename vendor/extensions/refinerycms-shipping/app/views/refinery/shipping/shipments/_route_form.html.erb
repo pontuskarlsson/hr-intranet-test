@@ -46,6 +46,13 @@
           <%= route_form.text_field :location_label, placeholder: 'Location', class: 'js_location_field' %>
         </div>
         <div class="location-description">
+          <% if [route.location_location_code, route.location_iata_code, route.location_icao_code].any?(&:present?) %>
+            <div>
+              <% if route.location_location_code.present? %><span class="tagDT">Code: <%= route.location_location_code %></span><% end %>
+              <% if route.location_iata_code.present? %><span class="tagDT">IATA: <%= route.location_iata_code %></span><% end %>
+              <% if route.location_icao_code.present? %><span class="tagDT">ICAO: <%= route.location_icao_code %></span><% end %>
+            </div>
+          <% end %>
           <% [route.location_description, route.location_street1, route.location_street2, route.location_city, route.location_postal_code, route.location_state, route.location_country].reject(&:blank?).each_with_index do |attr, i| %>
             <span><%= attr %></span>
           <% end %>

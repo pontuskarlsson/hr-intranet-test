@@ -12,6 +12,7 @@ module Refinery
 
       delegate :label, :description, :lat, :lng, :airport, :seaport, :railport, :roadport,
                :street1, :street2, :city, :postal_code, :state, :country, :country_code,
+               :location_code, :iata_code, :icao_code,
                to: :location, prefix: true, allow_nil: true
 
       configure_enumerables :route_type,  TYPES

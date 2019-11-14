@@ -211,7 +211,7 @@
         <tr>
           <td><%= billable.display_billable_date(billable.billable_date&.year == @invoice.invoice_for_month&.year ? '%e %b' : '%e %b %Y') %></td>
           <td><%= billable.assigned_to_label %></td>
-          <td><%= billable.location %></td>
+          <td><%= billable.supplier %></td>
           <td class="number"><%=number_with_delimiter billable.qty %></td>
           <td class="number"><%= billable.total_no_of_jobs %></td>
         </tr>
