@@ -30,6 +30,8 @@ module Refinery
         module ClassMethods
 
           def responds_to_data_tables(columns, options = {})
+            class_attribute :dt_columns
+            self.dt_columns = columns
 
             class_eval <<-RUBY_EVAL
               def self.dt_response(params)
@@ -49,17 +51,17 @@ module Refinery
                   end
                 }
 
-                if params[:start].present? && params[:length].present?
-                  filtered = filtered.offset(params[:start]).limit(params[:length])
-                end
+                data = filtered.select(dt_columns)
 
-                filtered.select(params[:columns].values.map { |h| h['data'] })
+                if params[:start].present? && params[:length].present?
+                  data = data.offset(params[:start]).limit(params[:length])
+                end
 
                 {
                     "draw" => params[:draw].to_i,
                     "recordsTotal" => scope.count,
                     "recordsFiltered": filtered.count,
-                    "data" => filtered
+                    "data" => data
                 }
               end
             RUBY_EVAL
