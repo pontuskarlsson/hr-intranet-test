@@ -6,6 +6,7 @@ module Refinery
   module Addons
     require 'refinery/addons/configure_enumerables'
     require 'refinery/addons/configure_label'
+    require 'refinery/addons/data_tables'
     require 'refinery/addons/display_decorators'
     require 'refinery/addons/engine'
 

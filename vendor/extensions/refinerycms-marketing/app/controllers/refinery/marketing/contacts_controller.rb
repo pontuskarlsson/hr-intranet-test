@@ -11,9 +11,13 @@ module Refinery
 
       def index
         @contacts = @contacts.order(name: :asc)
-        # you can use meta fields from your model instead (e.g. browser_title)
-        # by swapping @page for @contact in the line below:
-        present(@page)
+
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json {
+            render json: @contacts.dt_response(params) if server_side?
+          }
+        end
       end
 
       def show
@@ -41,6 +45,10 @@ module Refinery
         @contact = contacts_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
+      end
+
+      def server_side?
+        params.has_key? :draw
       end
 
     end

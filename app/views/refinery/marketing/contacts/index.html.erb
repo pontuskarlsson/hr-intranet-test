@@ -1,9 +1,8 @@
 <% content_for :body do %>
-  <h1>Contacts</h1>
-
-  <table class="display js_contacts_data_table" cellspacing="0" style="width: 100%;">
+  <table class="display js_contacts_data_table responsive nowrap" cellspacing="0" style="width: 100%;">
     <thead>
     <tr>
+      <th></th>
       <th>Name</th>
       <th>Code</th>
       <th>Email</th>
@@ -15,6 +14,7 @@
 
     <tfoot>
     <tr>
+      <th></th>
       <th>Name</th>
       <th>Code</th>
       <th>Email</th>
@@ -26,45 +26,37 @@
 
     <tbody>
     <tr>
-      <td colspan="6">Loading, please wait...</td>
+      <td colspan="7">Loading, please wait...</td>
     </tr>
     </tbody>
   </table>
 <% end %>
 
-<% content_for :stylesheets do %>
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.css"/>
-<% end %>
+<%= render 'refinery/datatable_dependencies' %>
 
 <% content_for :javascripts do %>
-  <script type="text/javascript" src="https://cdn.datatables.net/v/zf/dt-1.10.18/datatables.min.js"></script>
-
   <script type="text/javascript">
     $(function(){
       $('.js_contacts_data_table').dataTable({
-        "scrollCollapse": true,
+        "responsive":     true,
         "paging":         true,
         "ajax": "<%= refinery.marketing_contacts_path %>",
+        "serverSide": true,
+        "searchDelay": 500,
         "columns": [
-          { data: "name", "width": '20%', "render": function(data, type, row) {
-            const href = ["<%= refinery.marketing_contacts_path %>", row.id].join('/');
-            const className = ['fa fa-', (row.is_organisation ? 'building' : 'user')].join('');
-            return $('<a></a>')
-              .attr('href', href)
-              .html('<i class="' + className + '"></i> ' + data)
-              .prop('outerHTML');
-          } },
-          { data: "code", "width": '10%' },
-          { data: "email", "width": '25%', "render": function(data, type, row) { return ['<span style="white-space: pre-wrap; word-wrap: break-word;">',data ? data : '','</span>'].join('') } },
-          { data: "phone", "width": '15%', "render": function(data, type, row){
+          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.marketing_contacts_path %>") } },
+          { data: "name" },
+          { data: "code" },
+          { data: "email", "render": function(data, type, row) { return ['<span style="white-space: pre-wrap; word-wrap: break-word;">',data ? data : '','</span>'].join('') } },
+          { data: "phone", "render": function(data, type, row){
             if(typeof data == 'undefined' || data === null || data == ''){
               return row.mobile;
             }else{
               return data;
             }
           } },
-          { data: "country", "width": '15%' },
-          { data: "tags_joined_by_comma", "width": '15%', "render": function(data, type, row) {
+          { data: "country" },
+          { data: "tags_joined_by_comma", "render": function(data, type, row) {
             if (typeof data == 'string') {
               var tags = data.split(',');
               var list = [];

@@ -3,6 +3,8 @@ module Refinery
     class Contact < Refinery::Core::BaseModel
       self.table_name = 'refinery_contacts'
 
+      DT_COLUMNS = %w(id name code is_organisation organisation_name organisation_id email phone mobile country tags_joined_by_comma image_url)
+
       belongs_to :user,         class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :organisation, class_name: 'Contact'
       belongs_to :image,        class_name: '::Refinery::Image'
@@ -10,9 +12,11 @@ module Refinery
 
       #serialize :custom_fields, Hash
 
-      acts_as_indexed :fields => [:name, :email, :organisation_name]
+      acts_as_indexed :fields => [:name, :email, :organisation_name, :code, :phone, :country, :tags_joined_by_comma]
 
       configure_label :name
+
+      responds_to_data_tables DT_COLUMNS
 
       validates :base_id, uniqueness: true, allow_nil: true
       validates :insightly_id, uniqueness: true, allow_nil: true
