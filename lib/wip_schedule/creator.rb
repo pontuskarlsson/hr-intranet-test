@@ -13,14 +13,21 @@ module WipSchedule
     end
 
     def create_wip_file
-      airtable.orders_for(filter).each do |order|
-        excel.add_row order
+      orders = airtable.orders_for(filter)
+
+      if orders.any?
+        orders.each do |order|
+          excel.add_row order
+        end
+
+        excel.finalize!(app_id, filter)
+
+        excel.write(@tempfile)
+        true
+
+      else
+        false
       end
-
-      excel.finalize!(app_id, filter)
-
-      excel.write(@tempfile)
-      true
 
     rescue WipSchedule::Airtable::AirtableError => e
       @last_error = e
