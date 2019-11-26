@@ -25,32 +25,10 @@
 </table>
 
 <h3>Costs Summary</h3>
-<table class="cc-table">
-  <tbody>
-  <tr>
-    <th style="width: 150px;">Currency</th>
-    <td><%= shipment.rate_currency.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>Duty</th>
-    <td><%= shipment.duty_amount.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>Terminal Fee</th>
-    <td><%= shipment.terminal_fee_amount.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>Domestic Transp.</th>
-    <td><%= shipment.domestic_transportation_cost_amount.presence || 'N/A' %></td>
-  </tr>
-  <tr>
-    <th>Forwarding Fee</th>
-    <td><%= shipment.forwarding_fee_amount.presence || 'N/A' %></td>
-  </tr>
-
-  <tr>
-    <th>Freight Cost</th>
-    <td><%= shipment.freight_cost_amount.presence || 'N/A' %></td>
-  </tr>
-  </tbody>
-</table>
+<% if @shipment.costs.any? %>
+  <% @shipment.costs.group_by(&:currency_code).each do |currency_code, costs| %>
+    <p><%=number_to_currency costs.reduce(0.0) { |acc, cost| acc + cost.amount }, unit: "#{currency_code} " %></p>
+  <% end %>
+<% else %>
+  <p class="not_present">No costs added</p>
+<% end %>

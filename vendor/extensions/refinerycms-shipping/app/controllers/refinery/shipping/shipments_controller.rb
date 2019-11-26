@@ -11,7 +11,7 @@ module Refinery
       before_filter :find_shipments,      only: [:index]
       before_filter :find_shipment,       except: [:index, :create]
 
-      helper_method :default_package_fields, :items_form, :packages_form, :routes_form
+      helper_method :default_package_fields, :default_cost_fields, :costs_form, :items_form, :packages_form, :routes_form
 
       def index
         @shipment = Shipment.new(
@@ -159,6 +159,12 @@ module Refinery
         }
       end
 
+      def default_cost_fields
+        {
+            #currency_code: nil
+        }
+      end
+
       def destroy_attachment_and_document
         document = @shipment.documents.find params[:document_id]
         document.resource.destroy
@@ -172,6 +178,9 @@ module Refinery
         elsif params[:send_request]
           @shipment.update_status('requested')
 
+        elsif params[:costs_form]
+          costs_form.save
+
         elsif params[:items_form]
           items_form.save
 
@@ -181,6 +190,10 @@ module Refinery
         else
           @shipment.update_attributes(shipment_params)
         end
+      end
+
+      def costs_form
+        @costs_form ||= Refinery::Shipping::CostsForm.new_in_model(@shipment, params[:costs_form], current_authentication_devise_user)
       end
 
       def items_form

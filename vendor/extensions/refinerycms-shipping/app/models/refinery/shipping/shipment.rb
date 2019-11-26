@@ -109,6 +109,7 @@ module Refinery
       belongs_to :assigned_to,          class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :bill_to_account,      class_name: '::Refinery::Shipping::ShipmentAccount'
       belongs_to :project,              class_name: '::Refinery::Business::Project'
+      has_many :costs,                  dependent: :destroy
       has_many :documents,              dependent: :nullify
       has_many :shipment_parcels,       dependent: :destroy
       has_many :packages,               dependent: :destroy

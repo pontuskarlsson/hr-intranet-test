@@ -10,6 +10,7 @@
     <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th data-dt-search-input="true">Status</th><%- end %>
     <th data-dt-search-input="true">PO</th>
     <th data-dt-search-input="true">Style</th>
+    <th data-dt-search-input="true">Description</th>
     <%- if false %><th data-dt-search-input="true">Project Ref.</th><%- end %>
     <th data-dt-search-input="true">Customer</th>
     <th data-dt-search-input="true">Supplier</th>
@@ -37,6 +38,7 @@
     <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th>Status</th><%- end %>
     <th>PO</th>
     <th>Style</th>
+    <th>Description</th>
     <%- if false %><th>Project Reference</th><%- end %>
     <th>Customer</th>
     <th>Supplier</th>
@@ -52,6 +54,12 @@
     <th>Insp. Code</th>
   </tr>
   </tfoot>
+
+  <tbody>
+  <tr>
+    <td colspan="<%= page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) ? '22' : '21' %>">Loading, please wait...</td>
+  </tr>
+  </tbody>
 </table>
 
 <%= render 'refinery/datatable_dependencies' %>
@@ -74,6 +82,7 @@
             Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
           }
         },
+        "serverSide": true,
         "order": [[5, 'desc']],
         columnDefs: [ {
           orderable: false,
@@ -89,7 +98,8 @@
           { data: "inspection_date", render: dtDateRenderer },
           <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>{ data: "status" },<%- end %>
           { data: "po_number" },
-          { data: "product_label"},
+          { data: "product_code"},
+          { data: "product_description"},
 //          { data: "company_project_reference" },
           { data: "company_label" },
           { data: "supplier_label" },

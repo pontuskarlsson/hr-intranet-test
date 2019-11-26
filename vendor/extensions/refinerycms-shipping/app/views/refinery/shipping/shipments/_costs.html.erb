@@ -1,69 +1,30 @@
-<%= form_for shipment, url: [refinery, :shipping, shipment] do |f| %>
-<section class="contact-card">
-  <h3>Costs</h3>
+<% shipment.costs.build(default_cost_fields) if shipment.costs.empty? %>
 
-  <table class="cc-table">
-    <tbody>
-    <tr>
-      <th style="width: 150px;"><%= f.label :rate_currency, 'Currency' %></th>
-      <td><%= f.text_field :rate_currency, class: 'js_currency_field' %></td>
-    </tr>
-    <tr>
-      <th><%= f.label :duty_amount, 'Duty' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :duty_amount, class: 'input-group-field' %>
-          <span class="input-group-label js_currency_label"><%= f.object.rate_currency %></span>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th><%= f.label :terminal_fee_amount, 'Terminal Fee' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :terminal_fee_amount, class: 'input-group-field' %>
-          <span class="input-group-label js_currency_label"><%= f.object.rate_currency %></span>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th><%= f.label :domestic_transportation_cost_amount, 'Domestic Transp.' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :domestic_transportation_cost_amount, class: 'input-group-field' %>
-          <span class="input-group-label js_currency_label"><%= f.object.rate_currency %></span>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th><%= f.label :forwarding_fee_amount, 'Forwarding Fee' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :forwarding_fee_amount, class: 'input-group-field' %>
-          <span class="input-group-label js_currency_label"><%= f.object.rate_currency %></span>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th><%= f.label :freight_cost_amount, 'Freight Cost' %></th>
-      <td>
-        <div class="input-group">
-          <%= f.text_field :freight_cost_amount, class: 'input-group-field' %>
-          <span class="input-group-label js_currency_label"><%= f.object.rate_currency %></span>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</section>
+<%= form_for costs_form, url: [refinery, :shipping, shipment] do |f| %>
+  <%= hidden_field_tag 'update_costs', '1' %>
+
+  <div data-form-container="shipment-costs" class="form-addable">
+    <div class="form-addable-controls">
+      <i class="fa fa-plus-square form-ctrl-add"></i>
+    </div>
+
+    <% shipment.costs.each_with_index do |cost, i| %>
+      <div class="form-addable-record">
+        <%= render 'cost_form', f: f, cost: cost, i: i+1 %>
+      </div>
+    <% end %>
+
+    <% content_for :javascripts do %>
+      <script type="text/javascript">
+        $(document).ready(function() {
+          Addable.partials["shipment-costs"] = {
+            "attributes": { "__index__": <%= shipment.costs.length+1 %> },
+            "template": "<%= escape_javascript render('cost_form', cost: ::Refinery::Shipping::Cost.new(default_cost_fields), i: '__index__', f: f) %>",
+          };
+        });
+      </script>
+    <% end %>
+  </div>
 
   <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
-<% end %>
-
-<% content_for :javascripts do %>
-  <script type="text/javascript">
-      $(function(){
-          $('.js_currency_field').on('change', function() { $('.js_currency_label').html(this.value) });
-      });
-  </script>
 <% end %>

@@ -1,0 +1,22 @@
+class CreateShippingCosts < ActiveRecord::Migration
+
+  def change
+    create_table :refinery_shipping_costs do |t|
+      t.integer :shipment_id
+
+      t.string :cost_type
+      t.text :comments
+
+      t.string :currency_code
+      t.decimal :amount, precision: 13, scale: 4
+
+      t.timestamps
+    end
+
+    add_index :refinery_shipping_costs, :shipment_id
+    add_index :refinery_shipping_costs, :cost_type
+    add_index :refinery_shipping_costs, :currency_code
+    add_index :refinery_shipping_costs, :amount
+  end
+
+end

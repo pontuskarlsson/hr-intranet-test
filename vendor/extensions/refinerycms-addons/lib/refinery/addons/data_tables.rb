@@ -12,11 +12,6 @@ module Refinery
 
         module ClassMethods
 
-          def responds_to_data_tables(*fields)
-            options = fields.extract_options!
-
-          end
-
         end
       end
 
@@ -27,11 +22,16 @@ module Refinery
 
         end
 
+        def dt_data
+          (dt_columns + Array(dt_options[:methods])).each_with_object({}) { |col, acc| acc[col] = send(col) }
+        end
+
         module ClassMethods
 
           def responds_to_data_tables(columns, options = {})
-            class_attribute :dt_columns
+            class_attribute :dt_columns, :dt_options
             self.dt_columns = columns
+            self.dt_options = options
 
             class_eval <<-RUBY_EVAL
               def self.dt_response(params)
@@ -39,6 +39,19 @@ module Refinery
 
                 search = params[:search] && params[:search][:value]
                 filtered = search.present? ? with_query(search.split(' ').map { |t| "^\#{t}" }.join(' ')) : where(nil)
+                 
+                begin
+                  filtered = params[:columns].values.reduce(filtered) do |acc, col|
+                    if col[:search][:value].present? && (ar_col = columns_hash[col[:data]]).present?
+                      if ar_col.type == :string
+                        acc = acc.where("\#{ar_col.name} LIKE ?", "%\#{col[:search][:value]}%")
+                      end
+                    end
+                    acc
+                  end
+                rescue StandardError => e
+
+                end
 
                 total = scope.count
                 total_filtered = filtered.count
@@ -51,7 +64,7 @@ module Refinery
                   end
                 }
 
-                data = filtered.select(dt_columns)
+                data = filtered
 
                 if params[:start].present? && params[:length].present?
                   data = data.offset(params[:start]).limit(params[:length])
@@ -61,7 +74,7 @@ module Refinery
                     "draw" => params[:draw].to_i,
                     "recordsTotal" => scope.count,
                     "recordsFiltered": filtered.count,
-                    "data" => data
+                    "data" => data.map(&:dt_data)
                 }
               end
             RUBY_EVAL

@@ -16,7 +16,10 @@ module Refinery
       def index
         respond_to do |format|
           format.html { present(@page) }
-          format.json
+          format.json {
+            @inspections = @inspections.includes(inspection_defects: :defect, inspection_photo: :image)
+            render json: @inspections.dt_response(params) if server_side?
+          }
         end
       end
 
@@ -144,6 +147,10 @@ module Refinery
             acc << [inspection, inspection_defect]
           end
         }
+      end
+
+      def server_side?
+        params.has_key? :draw
       end
 
     end

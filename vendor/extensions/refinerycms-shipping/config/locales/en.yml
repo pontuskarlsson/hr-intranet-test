@@ -137,6 +137,18 @@ en:
 
   activerecord:
     attributes:
+      'refinery/shipping/cost':
+        comments: Comments
+        cost_type: Cost Type
+        cost_types:
+          domestic_transportation: Domestic Transportation
+          duty: Duty
+          forwarding_fee: Forwarding Fee
+          freight_cost: Freight Cost
+          terminal_fee: Terminal Fee
+          other: Other
+        shipment_id: Shipment
+
       'refinery/shipping/document':
         comments: Comments
         document_type: Document Type
