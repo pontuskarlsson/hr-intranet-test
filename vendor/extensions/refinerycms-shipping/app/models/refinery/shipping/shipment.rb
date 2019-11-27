@@ -28,6 +28,8 @@ module Refinery
       WEIGHT_UNITS = %w(kg lbs)
       VOLUME_UNITS = %w(CBM)
 
+      CURRENCIES = %w(EUR HKD CNY SEK USD)
+
       self.table_name = 'refinery_shipping_shipments'
 
 
@@ -130,6 +132,7 @@ module Refinery
       #validates :easypost_object_id,      uniqueness: true, allow_nil: true
       validates :weight_unit,             inclusion: WEIGHT_UNITS, allow_blank: true
       validates :volume_unit,             inclusion: VOLUME_UNITS, allow_blank: true
+      validates :rate_currency,           inclusion: CURRENCIES, allow_blank: true
 
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
       delegate :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email, to: :from_address, prefix: true, allow_nil: true
@@ -377,6 +380,10 @@ module Refinery
 
       def ready_to_request?
         status == 'draft' && needed_for_request.empty?
+      end
+
+      def total_cost_amount
+        costs.reduce(0.0) { |acc, cost| acc + (cost.invoice_amount || 0.0) }
       end
 
       class << self

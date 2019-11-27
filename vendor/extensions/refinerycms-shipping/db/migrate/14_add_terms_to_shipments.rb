@@ -17,6 +17,9 @@ class AddTermsToShipments < ActiveRecord::Migration
     add_column :refinery_shipping_shipments, :no_of_parcels_manual, :integer
     add_index :refinery_shipping_shipments, :no_of_parcels_manual
 
+    add_column :refinery_shipping_shipments, :invoice, :integer
+    add_index :refinery_shipping_shipments, :no_of_parcels_manual
+
   end
 
 end

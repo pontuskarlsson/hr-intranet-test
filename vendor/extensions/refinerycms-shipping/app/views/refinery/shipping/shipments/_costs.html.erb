@@ -3,6 +3,22 @@
 <%= form_for costs_form, url: [refinery, :shipping, shipment] do |f| %>
   <%= hidden_field_tag 'update_costs', '1' %>
 
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell medium-4 large-3 end">
+      <%= f.label :rate_currency, 'Invoice Currency' %>
+      <%= f.select :rate_currency, options_for_select(::Refinery::Shipping::Shipment::CURRENCIES, f.object.rate_currency), {}, class: 'input-group-field js_currency_code', style: 'flex: 0 0 70px;' %>
+    </div>
+  </div>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell medium-4 large-3 end">
+      <%= f.label :total_cost_amount, 'Total Amount' %>
+      <%= f.text_field :total_cost_amount, disabled: true, placeholder: 'Sum from Costs' %>
+    </div>
+  </div>
+
   <div data-form-container="shipment-costs" class="form-addable">
     <div class="form-addable-controls">
       <i class="fa fa-plus-square form-ctrl-add"></i>
@@ -21,6 +37,8 @@
             "attributes": { "__index__": <%= shipment.costs.length+1 %> },
             "template": "<%= escape_javascript render('cost_form', cost: ::Refinery::Shipping::Cost.new(default_cost_fields), i: '__index__', f: f) %>",
           };
+
+          $('.js_currency_code').on('change', function() { $('.js_currency_code_label').html(this.value) });
         });
       </script>
     <% end %>

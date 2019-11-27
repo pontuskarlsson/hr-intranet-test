@@ -10,6 +10,7 @@ class CreateShippingCosts < ActiveRecord::Migration
 
       t.string :currency_code
       t.decimal :amount, precision: 13, scale: 4
+      t.decimal :invoice_amount, precision: 13, scale: 4
 
       t.timestamps
     end
@@ -18,6 +19,7 @@ class CreateShippingCosts < ActiveRecord::Migration
     add_index :refinery_shipping_costs, :cost_type
     add_index :refinery_shipping_costs, :currency_code
     add_index :refinery_shipping_costs, :amount
+    add_index :refinery_shipping_costs, :invoice_amount
   end
 
 end

@@ -25,10 +25,4 @@
 </table>
 
 <h3>Costs Summary</h3>
-<% if @shipment.costs.any? %>
-  <% @shipment.costs.group_by(&:currency_code).each do |currency_code, costs| %>
-    <p><%=number_to_currency costs.reduce(0.0) { |acc, cost| acc + cost.amount }, unit: "#{currency_code} " %></p>
-  <% end %>
-<% else %>
-  <p class="not_present">No costs added</p>
-<% end %>
+<p><%=number_to_currency shipment.total_cost_amount, unit: "#{shipment.rate_currency} " %></p>

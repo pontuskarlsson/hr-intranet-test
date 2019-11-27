@@ -178,7 +178,7 @@ module Refinery
         elsif params[:send_request]
           @shipment.update_status('requested')
 
-        elsif params[:costs_form]
+        elsif params[:update_costs]
           costs_form.save
 
         elsif params[:items_form]
@@ -193,7 +193,7 @@ module Refinery
       end
 
       def costs_form
-        @costs_form ||= Refinery::Shipping::CostsForm.new_in_model(@shipment, params[:costs_form], current_authentication_devise_user)
+        @costs_form ||= Refinery::Shipping::CostsForm.new_in_model(@shipment, params[:shipment], current_authentication_devise_user)
       end
 
       def items_form

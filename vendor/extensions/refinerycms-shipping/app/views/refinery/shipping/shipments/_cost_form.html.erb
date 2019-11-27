@@ -7,7 +7,7 @@
   </span>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell medium-8 large-3">
+    <div class="cell medium-4 large-3">
       <%= cost_form.label :cost_type %>
       <%= cost_form.select :cost_type, options_for_select(Refinery::Shipping::Cost.cost_type_options, cost_form.object.cost_type) %>
     </div>
@@ -20,12 +20,20 @@
         </div>
         <div class="input-group-field">
           <%= cost_form.label :currency_code %>
-          <%= cost_form.text_field :currency_code, required: true %>
+          <%= cost_form.select :currency_code, options_for_select(::Refinery::Shipping::Shipment::CURRENCIES, cost_form.object.currency_code), {} %>
         </div>
       </div>
     </div>
 
-    <div class="cell large-6">
+    <div class="cell medium-4 large-3">
+      <%= cost_form.label :invoice_amount %>
+      <div class="input-group">
+        <%= cost_form.number_field :invoice_amount, placeholder: '0', step: '0.001', required: true, class: 'input-group-field' %>
+        <span class="input-group-label js_currency_code_label" style="flex: 0 0 70px;"><%= f.object.rate_currency %></span>
+      </div>
+    </div>
+
+    <div class="cell large-3">
       <%= cost_form.label :comments %>
       <%= cost_form.text_area :comments %>
     </div>

@@ -1,11 +1,16 @@
 module Refinery
   module Shipping
     class CostsForm < ApplicationTransForm
-      set_main_model :shipment
+
+      PROXY_ATTR = %w(rate_currency)
+      COST_ATTR = %w(cost_type comments currency_code amount invoice_amount)
+
+      set_main_model :shipment, proxy: { attributes: PROXY_ATTR }, class_name: '::Refinery::Shipping::Shipment'
 
       attribute :costs_attributes, Hash
+      attribute :total_cost_manual_amount, Decimal
 
-      delegate :persisted?, :costs, to: :shipment
+      delegate :persisted?, :costs, :total_cost_amount, to: :shipment
 
       validates :shipment, presence: true
 
@@ -17,7 +22,7 @@ module Refinery
 
       protected
 
-      def update_cost!(attr, allowed = %w(cost_type comments currency_code amount))
+      def update_cost!(attr, allowed = COST_ATTR)
         if attr['id'].present?
           cost = find_from! shipment.costs, attr['id']
           if attr['_destroy'] == '1'

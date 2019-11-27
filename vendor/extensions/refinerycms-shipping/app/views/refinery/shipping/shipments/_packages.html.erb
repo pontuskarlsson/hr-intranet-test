@@ -3,6 +3,8 @@
 <%= form_for packages_form, url: [refinery, :shipping, shipment] do |f| %>
   <%= hidden_field_tag 'update_packages', '1' %>
 
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+
   <div data-form-container="shipment-packages" class="form-addable">
     <div class="form-addable-controls">
       <i class="fa fa-plus-square form-ctrl-add"></i>

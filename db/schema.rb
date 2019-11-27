@@ -1320,18 +1320,20 @@ ActiveRecord::Schema.define(version: 20191126075638) do
   add_index "refinery_shipping_addresses", ["position"], name: "index_refinery_shipping_addresses_on_position", using: :btree
 
   create_table "refinery_shipping_costs", force: :cascade do |t|
-    t.integer  "shipment_id",   limit: 4
-    t.string   "cost_type",     limit: 255
-    t.text     "comments",      limit: 65535
-    t.string   "currency_code", limit: 255
-    t.decimal  "amount",                      precision: 13, scale: 4
+    t.integer  "shipment_id",    limit: 4
+    t.string   "cost_type",      limit: 255
+    t.text     "comments",       limit: 65535
+    t.string   "currency_code",  limit: 255
+    t.decimal  "amount",                       precision: 13, scale: 4
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "invoice_amount",               precision: 13, scale: 4
   end
 
   add_index "refinery_shipping_costs", ["amount"], name: "index_refinery_shipping_costs_on_amount", using: :btree
   add_index "refinery_shipping_costs", ["cost_type"], name: "index_refinery_shipping_costs_on_cost_type", using: :btree
   add_index "refinery_shipping_costs", ["currency_code"], name: "index_refinery_shipping_costs_on_currency_code", using: :btree
+  add_index "refinery_shipping_costs", ["invoice_amount"], name: "index_refinery_shipping_costs_on_invoice_amount", using: :btree
   add_index "refinery_shipping_costs", ["shipment_id"], name: "index_refinery_shipping_costs_on_shipment_id", using: :btree
 
   create_table "refinery_shipping_documents", force: :cascade do |t|

@@ -1,6 +1,8 @@
 <% shipment.items.build if shipment.items.empty? %>
 
 <%= form_for items_form, url: [refinery, :shipping, shipment] do |f| %>
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+
   <div data-form-container="shipment-items" class="form-addable">
     <div class="form-addable-controls">
       <i class="fa fa-plus-square form-ctrl-add"></i>
