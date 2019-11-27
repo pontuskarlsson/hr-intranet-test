@@ -146,6 +146,7 @@ en:
           forwarding_fee: Forwarding Fee
           freight_cost: Freight Cost
           terminal_fee: Terminal Fee
+          vat: VAT
           other: Other
         shipment_id: Shipment
 

@@ -3,7 +3,7 @@ module Refinery
     class Cost < Refinery::Core::BaseModel
       self.table_name = 'refinery_shipping_costs'
 
-      TYPES = %w(domestic_transportation duty forwarding_fee freight_cost terminal_fee other)
+      TYPES = %w(domestic_transportation duty forwarding_fee freight_cost terminal_fee vat other)
 
       belongs_to :shipment
 
