@@ -18,6 +18,9 @@ module Refinery
         each_nested_hash_for costs_attributes do |attr|
           update_cost! attr
         end
+
+        shipment.attributes = PROXY_ATTR.reduce({}) { |acc, p_attr| acc.merge(p_attr => send(p_attr)) }
+        shipment.save!
       end
 
       protected
