@@ -42,7 +42,7 @@
 <section class="invoice_plan_summary">
   <h1 style="overflow: hidden; height: 2px;">Invoice</h1>
   <h2 style="margin: 0 0 0.5rem;"><%= @invoice.plan_title %></h2>
-  <p class="italic"><%= @invoice.plan_description %></p>
+  <div class="italic"><%=simple_format @invoice.plan_description %></div>
 
   <table class="billables">
     <thead>
@@ -152,7 +152,7 @@
 <section class="invoice_plan_statement">
   <h1 style="overflow: hidden; height: 2px;">Summary</h1>
   <h2 style="margin: 0 0 0.5rem;"><%= @invoice.plan_title %></h2>
-  <p class="italic"><%= @invoice.plan_description %></p>
+  <div class="italic"><%=simple_format @invoice.plan_description %>
 
   <table class="summary_of_work">
     <thead>
