@@ -149,7 +149,7 @@ module Refinery
 
           elsif billable.article.sales_unit_price > 0
             sales = sales_item_per billable.article, billable.article.sales_unit_price
-            sales.quantity += billable.qty
+            sales.quantity += billable.qty.to_f
             billable.line_item_sales = sales
 
           else

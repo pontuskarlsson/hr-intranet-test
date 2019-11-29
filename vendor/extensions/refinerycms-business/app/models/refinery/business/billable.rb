@@ -70,6 +70,7 @@ module Refinery
       validate do
         if article.present?
           errors.add(:article_id, 'not allowed on this Billable') unless article.is_public or article.company == company
+          errors.add(:article_id, 'is from the wrong account') if invoice.present? && article.account != invoice.account
         end
 
         if line_item_sales.present?

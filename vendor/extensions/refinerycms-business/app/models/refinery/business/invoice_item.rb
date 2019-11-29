@@ -30,7 +30,7 @@ module Refinery
 
       validate do
         if article.present? && invoice.present?
-          errors.add(:article_id, 'belongs to the wrong account') unless invoice&.account_id == article.account_id
+          errors.add(:article_id, 'belongs to the wrong account') unless invoice.account_id == article.account_id
         end
       end
 

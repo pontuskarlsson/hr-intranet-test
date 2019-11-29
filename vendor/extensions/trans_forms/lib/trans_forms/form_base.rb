@@ -7,12 +7,13 @@ module TransForms
     include Virtus.model
 
     extend ActiveModel::Naming
-    extend ActiveModel::Callbacks
     include ActiveModel::Conversion
     include ActiveModel::Validations
     include ActiveModel::Validations::Callbacks
 
     include TransForms::Callbacks
+
+    attr_accessor :_last_error
 
     # Defines the class methods +before_save+, +around_save+ and +after_save+.
     define_model_callbacks :save
@@ -28,13 +29,15 @@ module TransForms
     end
 
     def save!
-      save || (raise ActiveRecord::RecordNotSaved.new(self))
+      valid? || raise(ActiveRecord::RecordInvalid.new(self))
+      save || (_last_error && raise(_last_error) || raise(ActiveRecord::RecordNotSaved))
     end
 
     # ActiveModel support.
     # Note that these methods will be overwritten if the +proxy+ option
     # is enabled in the call to +set_main_model+
     def persisted?; false end
+    def new_record?; !persisted? end
     def to_key; nil end
 
   protected
@@ -51,6 +54,12 @@ module TransForms
     rescue ActiveRecord::ActiveRecordError => e
       # Triggers callback
       after_save_on_error_callback e
+      self._last_error = e
+      if e.respond_to?(:record)
+        e.record.errors.each do |attribute, message|
+          errors.add(attribute, message)
+        end
+      end
       false
     end
 

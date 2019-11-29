@@ -65,8 +65,8 @@ module Refinery
         end
       end
 
-      describe '#save' do
-        subject { form.save }
+      describe '#save!' do
+        subject { form.save! }
 
         context 'when there are no previous InvoiceItems, no Billables, but a minimum' do
           let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: minimum_attr } }
@@ -83,6 +83,27 @@ module Refinery
             expect( invoice.invoice_items.sales_offset.sum(:line_amount) ).to eq -1_000
             expect( invoice.invoice_items.discount.sum(:line_amount) ).to eq 0
             expect( invoice.invoice_items.pre_pay.sum(:line_amount) ).to eq 1_000
+          end
+        end
+
+        context 'when there are no previous InvoiceItems, Billables, but no minimum' do
+          let(:billable) { FactoryGirl.create(:billable_with_article, invoice: invoice, article_sales_unit_price: 5_432) }
+          let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: {} } }
+
+          before { billable }
+
+          it { is_expected.to eq true }
+
+          it 'creates InvoiceItems' do
+            form.save
+
+            expect( invoice.reload.total_amount ).to eq 5_432
+            expect( invoice.invoice_items.sum(:line_amount) ).to eq 5_432
+
+            expect( invoice.invoice_items.sales.sum(:line_amount) ).to eq 5_432
+            expect( invoice.invoice_items.sales_offset.sum(:line_amount) ).to eq 0
+            expect( invoice.invoice_items.discount.sum(:line_amount) ).to eq 0
+            expect( invoice.invoice_items.pre_pay.sum(:line_amount) ).to eq 0
           end
         end
       end
