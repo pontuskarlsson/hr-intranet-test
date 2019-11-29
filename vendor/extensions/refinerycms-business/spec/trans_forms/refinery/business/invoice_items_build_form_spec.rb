@@ -6,8 +6,8 @@ module Refinery
       let(:account) { FactoryGirl.create(:account) }
       let(:invoice) { FactoryGirl.create(:invoice, account: account) }
       let(:article) { FactoryGirl.create(:article_voucher, account: account) }
-      let(:monthly_minimum_attr) { { '0' => { 'article_label' => article.code, 'monthly_minimum_qty' => 10, 'base_amount' => 100 } } }
-      let(:attr) { { invoice_for_month: '2019-01-01', plan_monthly_minimums_attributes: monthly_minimum_attr } }
+      let(:minimum_attr) { { '0' => { 'article_label' => article.code, 'qty' => 10, 'base_amount' => 100 } } }
+      let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: minimum_attr } }
       let(:form) { InvoiceItemsBuildForm.new_in_model(invoice, attr) }
       subject { form }
 
@@ -38,13 +38,13 @@ module Refinery
           it { is_expected.to be_valid }
         end
 
-        context 'when there are no Billables and no monthly minimum specified' do
+        context 'when there are no Billables and no minimum specified' do
           let(:attr) { {  } }
 
           it { is_expected.not_to be_valid }
         end
 
-        context 'when there are Billables present but no monthly minimum specified' do
+        context 'when there are Billables present but no minimum specified' do
           before { FactoryGirl.create(:billable_with_article, invoice: invoice, account: account) }
 
           let(:attr) { { invoice_for_month: '2019-01-01' } }
@@ -52,14 +52,14 @@ module Refinery
           it { is_expected.to be_valid }
         end
 
-        context 'when there are no Billables present but a monthly minimum specified' do
-          let(:attr) { { invoice_for_month: '2019-01-01', plan_monthly_minimums_attributes: monthly_minimum_attr } }
+        context 'when there are no Billables present but a minimum specified' do
+          let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: minimum_attr } }
 
           it { is_expected.to be_valid }
         end
 
-        context 'when there are no Billables present but a monthly minimum specified, but invoice_for_month is missing' do
-          let(:attr) { { plan_monthly_minimums_attributes: monthly_minimum_attr } }
+        context 'when there are no Billables present but a minimum specified, but invoice_for_month is missing' do
+          let(:attr) { { minimums_attributes: minimum_attr } }
 
           it { is_expected.not_to be_valid }
         end
@@ -68,8 +68,8 @@ module Refinery
       describe '#save' do
         subject { form.save }
 
-        context 'when there are no previous InvoiceItems, no Billables, but a monthly minimum' do
-          let(:attr) { { invoice_for_month: '2019-01-01', plan_monthly_minimums_attributes: monthly_minimum_attr } }
+        context 'when there are no previous InvoiceItems, no Billables, but a minimum' do
+          let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: minimum_attr } }
 
           it { is_expected.to eq true }
 

@@ -9,7 +9,6 @@
     <th>Qty</th>
     <th>Unit</th>
     <th>Unit Price</th>
-    <th>Discount</th>
     <th>Total Cost</th>
     <th data-dt-search-input="true">Status</th>
     <th data-dt-search-input="true">Manufacturer</th>
@@ -26,7 +25,6 @@
     <th>Qty</th>
     <th>Unit</th>
     <th>Unit Price</th>
-    <th>Discount</th>
     <th>Total Cost</th>
     <th>Status</th>
     <th data-dt-search-input="true">Manufacturer</th>
@@ -53,9 +51,8 @@
           { data: "qty" },
           { data: "qty_unit" },
           { data: "unit_price", "render": { "display": formatCurrency } },
-          { data: "discount" },
           { data: "total_cost", "render": { "display": formatCurrency } },
-          { data: "status" },
+          { data: "display_status" },
           { data: "manufacturer_label" },
         ],
         "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+

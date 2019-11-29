@@ -47,6 +47,11 @@ module Refinery
       validates :status,        inclusion: STATUSES
 
       before_validation do
+        if line_item_sales.present?
+          self.unit_price = line_item_sales.unit_amount
+          self.unit_price += line_item_discount.unit_amount if line_item_discount.present?
+        end
+
         self.total_cost = qty * unit_price * (1.0 - discount) if qty.present? && unit_price.present?
         
         if invoice.present?

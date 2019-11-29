@@ -6,7 +6,7 @@ module Refinery
       attribute :plan_title,                  String, default: -> (f, _) { f.invoice&.plan_title }
       attribute :plan_description,            String, default: -> (f, _) { f.invoice&.plan_description }
       attribute :buyer_reference,             String, default: -> (f, _) { f.invoice&.buyer_reference }
-      attribute :plan_monthly_minimums_attributes, Hash
+      attribute :minimums_attributes, Hash
 
       attr_accessor :invoice
 
@@ -21,10 +21,10 @@ module Refinery
             errors.add(:invoice, 'all Billables must have Article Codes assigned')
           end
 
-          if each_nested_hash_for(plan_monthly_minimums_attributes).any? { |(mma, i)| mma['article_label'].present? }
-            errors.add(:invoice_for_month, 'must be present if monthly minimums are present') unless invoice_for_month.present?
+          if each_nested_hash_for(minimums_attributes).any? { |(mma, i)| mma['article_label'].present? }
+            errors.add(:invoice_for_month, 'must be present if minimums are present') unless invoice_for_month.present?
           else
-            errors.add(:plan_monthly_minimums_attributes, 'cannot be empty when there are no billables present') if invoice.billables.empty?
+            errors.add(:minimums_attributes, 'cannot be empty when there are no billables present') if invoice.billables.empty?
           end
         end
       end
@@ -33,15 +33,17 @@ module Refinery
         self.invoice = model
       end
 
-      def plan_monthly_minimums
-        if invoice.plan_monthly_minimums.present?
-          invoice.plan_monthly_minimums.map { |attr| OpenStruct.new(attr) }
-        else
-          []
-        end
+      def minimums
+        invoice.minimums
       end
 
       transaction do
+
+        #
+        # STEP 1
+        #
+        # Delete previous invoice items and set the basic Invoice attributes
+        #
         invoice.invoice_items.each(&:destroy!)
         invoice.reload
 
@@ -50,12 +52,14 @@ module Refinery
         invoice.buyer_reference = buyer_reference
         invoice.plan_description = plan_description
 
-        parsed_monthly_minimums = []
-
         @opening_balance_by_code = invoice.company.vouchers.applicable_to(invoice).joins(:article).group("#{Refinery::Business::Article.table_name}.code").count
         @closing_balance_by_code = @opening_balance_by_code.dup
 
-        # Build a list of monthly minimum of Voucher article codes, as well as keep track of the prices and
+
+        #
+        # STEP 2
+        #
+        # Build a list of minimum charges of Voucher article codes, as well as keep track of the prices and
         # discounts for said Vouchers.
         #
         # Note that the same Voucher article codes can be submitted more than once, i.e. when there is one price
@@ -63,80 +67,65 @@ module Refinery
         # sure that we reach the total quantities for each Voucher article code occurrence and that the price
         # is correctly allocated.
         #
-        # The question is what happens when the Billables exceed the sum of multiple monthly minimum
+        # The question is what happens when the Billables exceed the sum of multiple minimum charges
         # for the same Voucher article code, which price should apply to the additional Billables? For now,
         # we simply take the first occurrence and call that the primary price.
         #
-        article_codes = each_nested_hash_for(plan_monthly_minimums_attributes).reject { |(attr, i)|
-          attr['article_label'].blank?
-        }.reduce([]) { |acc, (attr, i)|
-          parsed_monthly_minimums << attr
-          acc << attr['article_label']
-        }.uniq
+        article_codes = each_nested_hash_for(minimums_attributes).reduce([]) { |acc, (attr, i)|
+          acc | Array(attr['article_label'].presence)
+        }
         voucher_articles_by_code = Refinery::Business::Article.voucher.is_public.where(code: article_codes).each_with_object({}) { |a, acc| acc[a.code] = a }
 
         # Raises an error unless an actual Voucher Article was found for each supplied row
         raise ActiveRecord::RecordNotFound unless voucher_articles_by_code.length == article_codes.length
 
-        # Build and array from each nested hash from monthly minimums and merge the article into it. This
-        # is important so that we can use the Voucher Article to check which Work Articles it can be
-        # applied to.
-        plan_monthly_minimum_articles = each_nested_hash_for(plan_monthly_minimums_attributes).reject { |(attr, i)|
-          attr['article_label'].blank?
-        }.map { |(mma, i)|
+        minimum_charges = each_nested_hash_for(minimums_attributes).each_with_object([]) do |(attr, i), acc|
+          if attr['article_label'].present?
+            qty             = attr['qty'].to_f
+            base_amount     = attr['base_amount'].to_f
+            discount_amount = attr['discount_amount'].to_f
+            discount_amount = discount_amount * base_amount * 0.01 if attr['discount_type'] == 'percentage'
+            discount_amount = discount_amount * -1 if discount_amount > 0
 
-          base_amount = mma['base_amount'].to_f
-          discount_amount = mma['discount_amount'].to_f
-          discount_amount = discount_amount * base_amount * 0.01 if mma['discount_type'] == 'percentage'
-          discount_amount = discount_amount * -1 if discount_amount > 0
-
-          mma.merge(
-              'voucher_article' => voucher_articles_by_code[mma['article_label']],
-              'remaining_minimum_qty' => mma['monthly_minimum_qty'].to_f,
-              'base_amount_f' => base_amount,
-              'discount_amount_f' => discount_amount,
-              )
-        }
-
-        qty_per_article_code = invoice.billables.includes(:article).each_with_object({}) { |billable, acc|
-          if acc[billable.article_code].nil?
-            acc[billable.article_code] = {
-                #billable_qty: 0.0,
-                plan_monthly_minimums: plan_monthly_minimum_articles.select { |mma|
-                  mma['voucher_article'].applicable_to?(billable.article_code)
-                },
-                article: billable.article,
-                #voucher_qty: 0.0,
-                billables: [],
-            }
+            acc << Refinery::Business::Invoice::Charge.new(
+                qty,
+                attr['article_label'],
+                base_amount,
+                discount_amount,
+                attr['discount_type'],
+            )
           end
+        end
 
+
+        #
+        # STEP 3
+        #
+        # Go through each billable and create invoice items for them.
+        #
+        # First we try to allocate vouchers from the opening balance of credits.
+        #
+        # If no voucher could be used, we try to allocate the billable to the
+        # minimum amounts.
+        #
+        # If all minimum amounts have been allocated, try to allocate additional
+        # amounts to the first minimum that is applicable
+        #
+        # Lastly, if a billable is still un-allocated, add an additional charge
+        # and allocate to that one
+        #
+        invoice.billables.includes(:article).each do |billable|
           if billable.is_base_unit?
-            #acc[billable.article_code][:billable_qty] += billable.qty
-            acc[billable.article_code][:billables] << billable
+            handled_billables << billable
           else
             raise ActiveRecord::ActiveRecordError, "cannot translate between billable units for #{billable.article_code}"
           end
-        }
 
-        qty_per_article_code.each do |article_code, quantities|
-
-          loop do
-            #break if quantities[:billable_qty] <= quantities[:voucher_qty]
-            break if quantities[:billables].empty?
-            break if (voucher = next_voucher_for article_code).nil?
-
-            # TODO: To allow for billables with qty other then 1.0, only remove billables here that matches voucher qty
-            billable = quantities[:billables].shift
-
-            raise ActiveRecord::ActiveRecordError, "billable not found" if billable.nil?
-            raise ActiveRecord::ActiveRecordError, "billable quantity does not match voucher" unless billable.qty == 1.0
-
+          if (voucher = next_voucher_for billable.article_code).present?
             pre_pay_from = invoice.invoice_items.pre_pay_redeem.build(unit_amount: -voucher.amount, quantity: billable.qty)
 
-            sales = sales_item_per quantities[:article], voucher.amount
+            sales = sales_item_per billable.article, voucher.amount
             sales.quantity += pre_pay_from.quantity
-            #quantities[:voucher_qty] += pre_pay_from.quantity
 
             voucher.line_item_prepay_move_from = pre_pay_from
             voucher.line_item_sales_move_to = sales
@@ -144,136 +133,80 @@ module Refinery
             billable.line_item_sales = sales
 
             redeemed_vouchers << voucher
-          end
 
-          #un_billed_qty = quantities[:billable_qty] - quantities[:voucher_qty]
-
-          # If after applying vouchers, there are still billables left un-allocated...
-          idx = 0
-          plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
-          loop do
-            # plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
-            # break if un_billed_qty <= 0 or plan_monthly_minimum.nil?
-            break if quantities[:billables].empty?
-
-            billable = quantities[:billables].shift
-            article = quantities[:article]
-
-            if plan_monthly_minimum.present?
-              base_amount = plan_monthly_minimum['base_amount_f']
-              discount_amount = plan_monthly_minimum['discount_amount_f']
-            else
-              base_amount = article.sales_unit_price
-              discount_amount = 0
-            end
-
-            #qty = plan_monthly_minimum['remaining_minimum_qty']
-            #allocated_qty = [qty, un_billed_qty].min
-
-            sales = sales_item_per quantities[:article], base_amount
+          elsif (charge = minimum_charges.detect { |mc| mc.allocated_to?(billable.article_code, billable.qty) }).present? or
+                (charge = minimum_charges.detect { |mc| mc.applicable_to?(billable.article_code) }).present?
+            # Get a sales invoice item for the billable article code (not charge which is the voucher article)
+            sales = sales_item_per billable.article, charge.base_amount
             sales.quantity += billable.qty
             billable.line_item_sales = sales
 
-            if discount_amount < 0
-              discount = discount_item_per sales, discount_amount
+            if charge.discount_amount < 0
+              discount = discount_item_per sales, charge.discount_amount
               discount.quantity += billable.qty
               billable.line_item_discount = discount
             end
 
-            #un_billed_qty -= allocated_qty
+          elsif billable.article.sales_unit_price > 0
+            sales = sales_item_per billable.article, billable.article.sales_unit_price
+            sales.quantity += billable.qty
+            billable.line_item_sales = sales
 
-            if plan_monthly_minimum && plan_monthly_minimum['remaining_minimum_qty'] > 0
-              plan_monthly_minimum['remaining_minimum_qty'] -= billable.qty
-
-              if plan_monthly_minimum['remaining_minimum_qty'] <= 0
-                idx += 1
-
-                if quantities[:plan_monthly_minimums][idx].present?
-                  plan_monthly_minimum = quantities[:plan_monthly_minimums][idx]
-                else
-                  plan_monthly_minimum = quantities[:plan_monthly_minimums][0]
-                end
-              end
-            end
+          else
+            raise ActiveRecord::ActiveRecordError, "cannot determine price for article code #{billable.article_code}"
           end
-
-          # If after applying monthly minimums, there are still billables left, take the first (if multiple) from
-          # the monthly minimum to act as primary price. But now we also need to be aware that the article code
-          # might not have been listed in the monthly minimum at all, in case we need to default to standard article
-          # sales price.
-          # if un_billed_qty > 0
-          #   plan_monthly_minimum = quantities[:plan_monthly_minimums][0]
-          #   article = quantities[:article]
-          #
-          #   if plan_monthly_minimum.present?
-          #     base_amount = plan_monthly_minimum['base_amount_f']
-          #     discount_amount = plan_monthly_minimum['discount_amount_f']
-          #   else
-          #     base_amount = article.sales_unit_price
-          #     discount_amount = 0
-          #   end
-          #
-          #   sales = sales_item_per quantities[:article], base_amount
-          #   sales.quantity += un_billed_qty
-          #
-          #   if discount_amount < 0
-          #     discount = discount_item_per sales, discount_amount
-          #     discount.quantity += un_billed_qty
-          #   end
-          # end
-
         end
 
+
+        #
+        # STEP 4
+        #
         # After having gone through all billables and allocated them, we now need to check
-        # if there is anything out of the monthly minimum quantities, that remain and we need
+        # if there is anything out of the minimum quantities, that remain and we need
         # to issue vouchers for.
         #
-        plan_monthly_minimum_articles.each do |plan_monthly_minimum|
-          if plan_monthly_minimum['remaining_minimum_qty'] > 0
-            if plan_monthly_minimum['remaining_minimum_qty'].to_i != plan_monthly_minimum['remaining_minimum_qty']
+        minimum_charges.each do |charge|
+          if charge.unallocated > 0
+            if charge.unallocated != charge.unallocated.to_i
               raise ActiveRecord::ActiveRecordError, 'cannot issue partial vouchers (decimal quantities)'
             end
 
-            base_amount = plan_monthly_minimum['base_amount_f']
-            discount_amount = plan_monthly_minimum['discount_amount_f']
-            amount = base_amount + discount_amount
-
-            sales = sales_item_per plan_monthly_minimum['voucher_article'], base_amount
-            discount = discount_item_per sales, discount_amount # Will return nil if discount_amount is 0
-            sales_offset = sales_offset_item_per amount
+            # Get a sales invoice item for the voucher article code
+            sales = sales_item_per charge.article, charge.base_amount
+            discount = discount_item_per sales, charge.discount_amount # Will return nil if discount_amount is 0
+            sales_offset = sales_offset_item_per charge.unit_amount
 
             loop do
-              pre_pay_to = invoice.invoice_items.pre_pay.build(unit_amount: amount, quantity: 1.0)
+              break unless charge.allocate!(1.0)
+
+              pre_pay_to = invoice.invoice_items.pre_pay.build(unit_amount: charge.unit_amount, quantity: 1.0)
 
               issued_vouchers << invoice.company.vouchers.build(
-                  article: plan_monthly_minimum['voucher_article'],
+                  article: charge.article,
                   line_item_sales_purchase: sales,
                   line_item_sales_discount: discount,
                   line_item_sales_move_from: sales_offset,
                   line_item_prepay_move_to: pre_pay_to,
-                  base_amount: base_amount,
-                  discount_type: plan_monthly_minimum['discount_type'],
-                  discount_amount: plan_monthly_minimum['discount_type'] == 'fixed_amount' ? discount_amount : nil,
-                  discount_percentage: plan_monthly_minimum['discount_type'] == 'percentage' ? discount_amount * 0.01 : nil,
-                  amount: amount,
+                  base_amount: charge.base_amount,
+                  discount_type: charge.discount_type,
+                  discount_amount: charge.discount_type == 'fixed_amount' ? charge.discount_amount : nil,
+                  discount_percentage: charge.discount_type == 'percentage' ? charge.discount_amount * 0.01 : nil,
+                  amount: charge.unit_amount,
                   currency_code: invoice.currency_code,
                   valid_from: invoice.invoice_for_month,
                   valid_to: invoice.invoice_for_month + 1.year - 1.day,
-                  )
+              )
 
               sales.quantity += pre_pay_to.quantity
               discount.quantity += pre_pay_to.quantity if discount.present?
               sales_offset.quantity += pre_pay_to.quantity
 
-              @closing_balance_by_code[plan_monthly_minimum['voucher_article'].code] ||= 0
-              @closing_balance_by_code[plan_monthly_minimum['voucher_article'].code] += 1
-
-              plan_monthly_minimum['remaining_minimum_qty'] -= pre_pay_to.quantity
-
-              break if plan_monthly_minimum['remaining_minimum_qty'] <= 0
+              @closing_balance_by_code[charge.article_label] ||= 0
+              @closing_balance_by_code[charge.article_label] += pre_pay_to.quantity
             end
           end
         end
+
 
         # Time to add description items and set correct order
         #
@@ -283,8 +216,10 @@ module Refinery
           handled << informative_item_per("- - - Monthly Invoice for period #{invoice.invoice_for_month.at_beginning_of_month.iso8601} - #{invoice.invoice_for_month.at_end_of_month.iso8601}", line_item_order: line_item_order += 1)
         end
 
-        plan_monthly_minimum_articles.each do |mma|
-          handled << informative_item_per("[#{mma['voucher_article'].code}] x #{mma['monthly_minimum_qty']} @ #{mma['base_amount_f']}#{ mma['discount_amount_f'] < 0 ? " (#{mma['discount_amount_f']})" : '' }", line_item_order: line_item_order += 1)
+        minimum_charges.each do |charge|
+          if charge.qty > 0
+            handled << informative_item_per(charge.informative_description, line_item_order: line_item_order += 1)
+          end
         end
 
         # After initial plan description, we place all Sales transactions
@@ -362,7 +297,8 @@ module Refinery
         # We call :calculated_line_amount here, because :line_amount is not set until a before_save callback
         invoice.total_amount = invoice.invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.calculated_line_amount.to_f }
 
-        invoice.plan_monthly_minimums = parsed_monthly_minimums
+        invoice.minimums = minimum_charges
+        #invoice.additionals = additionals.values
         invoice.plan_opening_balance = @opening_balance_by_code.values.reduce(&:+) || 0
         invoice.plan_redeemed = redeemed_vouchers.count
         invoice.plan_issued = issued_vouchers.count
@@ -382,6 +318,12 @@ module Refinery
           v.line_item_prepay_move_from = v.line_item_prepay_move_from
           v.line_item_sales_move_to = v.line_item_sales_move_to
           v.save!
+        }
+
+        handled_billables.map { |b|
+          b.line_item_sales = b.line_item_sales
+          b.line_item_discount = b.line_item_discount
+          b.save!
         }
       end
 
@@ -403,6 +345,10 @@ module Refinery
 
       def redeemed_vouchers
         @redeemed_vouchers ||= []
+      end
+
+      def handled_billables
+        @handled_billables ||= []
       end
 
       # There should only be one sales item per item_code and unit amount

@@ -1,4 +1,4 @@
-<%= f.fields_for :plan_monthly_minimums, [plan_monthly_minimum_struct], child_index: i do |mm_form| %>
+<%= f.fields_for :minimums, [charge], child_index: i do |mm_form| %>
   <span class="form-addable-remove">
     <% if mm_form.object.persisted? %>
       <%= mm_form.hidden_field :_destroy %>
@@ -8,8 +8,8 @@
 
   <div class="grid-x grid-padding-x">
     <div class="cell large-3 medium-6">
-      <%= mm_form.label :monthly_minimum_qty, 'Monthly Minimum Qty' %>
-      <%= mm_form.number_field :monthly_minimum_qty, placeholder: 'Monthly Minimum Qty' %>
+      <%= mm_form.label :qty, 'Monthly Minimum Qty' %>
+      <%= mm_form.number_field :qty, placeholder: 'Monthly Minimum Qty' %>
     </div>
 
     <div class="cell large-3 medium-6">

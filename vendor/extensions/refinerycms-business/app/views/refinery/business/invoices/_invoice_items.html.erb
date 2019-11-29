@@ -25,20 +25,20 @@
     </div>
   </div>
 
-  <div data-form-container="invoice-monthly-minimum" class="form-addable">
+  <div data-form-container="invoice-minimum" class="form-addable">
     <div class="form-addable-controls">
       <i class="fa fa-plus-square form-ctrl-add"></i>
     </div>
 
-    <% if f.object.plan_monthly_minimums.any? %>
-      <% f.object.plan_monthly_minimums.each_with_index do |plan_monthly_minimum_struct, i| %>
+    <% if f.object.minimums.any? %>
+      <% f.object.minimums.each_with_index do |charge, i| %>
         <div class="form-addable-record">
-          <%= render 'monthly_minimum_form', f: f, i: i, plan_monthly_minimum_struct: plan_monthly_minimum_struct %>
+          <%= render 'minimum_form', f: f, i: i, charge: charge %>
         </div>
       <% end %>
     <% else %>
       <div class="form-addable-record">
-        <%= render 'monthly_minimum_form', f: f, i: 0, plan_monthly_minimum_struct: OpenStruct.new %>
+        <%= render 'minimum_form', f: f, i: 0, charge: Refinery::Business::Invoice::Charge.new %>
       </div>
     <% end %>
 
@@ -53,9 +53,9 @@
         $(function() {
           onAddForm();
 
-          Addable.partials["invoice-monthly-minimum"] = {
-            "attributes": { "__index__": <%= f.object.plan_monthly_minimums.length + 1 %> },
-            "template": "<%= escape_javascript render('monthly_minimum_form', i: '__index__', f: f, plan_monthly_minimum_struct: OpenStruct.new) %>",
+          Addable.partials["invoice-minimum"] = {
+            "attributes": { "__index__": <%= f.object.minimums.length + 1 %> },
+            "template": "<%= escape_javascript render('minimum_form', i: '__index__', f: f, charge: Refinery::Business::Invoice::Charge.new) %>",
             "onAdd": onAddForm,
           };
         });
