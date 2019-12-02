@@ -83,15 +83,9 @@ module Refinery
       end
 
       before_save do
-        if assigned_to.present?
-          self.assigned_to_label = assigned_to.full_name
-        end
-        if invoice.present?
-          self.archived_at = invoice.archived_at
-        end
-        if article.present?
-          self.article_code = article.code
-        end
+        self.assigned_to_label  = assigned_to.full_name   if assigned_to.present?
+        self.archived_at        = invoice.archived_at     if invoice.present?
+        self.article_code       = article.code            if article.present?
       end
 
       def display_qty

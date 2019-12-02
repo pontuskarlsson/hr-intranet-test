@@ -152,7 +152,7 @@
 <section class="invoice_plan_statement">
   <h1 style="overflow: hidden; height: 2px;">Summary</h1>
   <h2 style="margin: 0 0 0.5rem;"><%= @invoice.plan_title %></h2>
-  <div class="italic"><%=simple_format @invoice.plan_description %>
+  <div class="italic"><%=simple_format @invoice.plan_description %></div>
 
   <table class="summary_of_work">
     <thead>
@@ -170,19 +170,19 @@
         <table>
           <tbody>
           <tr>
-            <td>No. of Man Days</td>
+            <td>Man Days</td>
             <td class="number"><%=number_with_delimiter @invoice.number_of_man_days %></td>
           </tr>
           <tr>
-            <td>No. of Inspections</td>
+            <td>Inspections</td>
             <td class="number"><%=number_with_delimiter @invoice.number_of_inspections %></td>
           </tr>
           <tr>
-            <td>No. of Pieces Inspected</td>
+            <td>Pieces Inspected</td>
             <td class="number"><%=number_with_delimiter @invoice.number_of_pieces_inspected %></td>
           </tr>
           <tr>
-            <td>No. of Locations</td>
+            <td>Locations Visited</td>
             <td class="number"><%=number_with_delimiter @invoice.number_of_locations %></td>
           </tr>
           </tbody>
@@ -220,9 +220,18 @@
         <table>
           <tbody>
           <tr>
-            <td>Final Insp. Pass Rate</td>
-            <td class="number"><%=number_to_percentage @invoice.final_insp_pass_rate * 100, precision: 1, strip_insignificant_zeros: true %></td>
+            <td>In-line Inspections</td>
+            <td class="number"><%=number_with_precision @invoice.inspections('In-line').count, strip_insignificant_zeros: true %></td>
           </tr>
+          <tr>
+            <td>Final Inspections</td>
+            <td class="number"><%=number_with_precision @invoice.inspections('Final').count, strip_insignificant_zeros: true %></td>
+          </tr>
+          <tr>
+            <td>Final Insp. Pass Rate</td>
+            <td class="number"><%=number_to_percentage @invoice.final_insp_pass_rate * 100, strip_insignificant_zeros: true %></td>
+          </tr>
+          <% if false %>
           <tr>
             <td>In-line Defects Found</td>
             <td class="number"><%=number_with_precision @invoice.inline_defects_found, strip_insignificant_zeros: true %></td>
@@ -231,6 +240,7 @@
             <td>In-line Defects Fixable?</td>
             <td class="number"><%=number_with_precision @invoice.inline_defects_fixable, strip_insignificant_zeros: true %></td>
           </tr>
+          <% end %>
           </tbody>
         </table>
       </td>
@@ -258,7 +268,7 @@
           <td><%= billable.display_billable_date(billable.billable_date&.year == @invoice.invoice_for_month&.year ? '%e %b' : '%e %b %Y') %></td>
           <td><%= billable.assigned_to_label %></td>
           <td>
-            <%= "#{billable.supplier}, #{billable.manufacturer_label}".truncate(63) %>
+            <%= "#{billable.supplier} - #{billable.manufacturer_label}".truncate(63) %>
           </td>
           <td class="number"><%=number_with_delimiter billable.qty %></td>
           <td class="number"><%= billable.total_no_of_jobs %></td>

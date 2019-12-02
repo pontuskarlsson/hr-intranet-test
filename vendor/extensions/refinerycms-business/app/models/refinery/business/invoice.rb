@@ -214,6 +214,16 @@ module Refinery
         end
       end
 
+      def inspections(inspection_type = nil)
+        @_inspections ||= billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact
+
+        if inspection_type.nil?
+          @_inspections
+        else
+          @_inspections.select { |i| i.inspection_type == inspection_type.to_s }
+        end
+      end
+
       def inline_defects_found
         billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.select(&:inspection_type_is_in_line?).reduce(0) do |acc, inspection|
           acc + inspection.total_defects

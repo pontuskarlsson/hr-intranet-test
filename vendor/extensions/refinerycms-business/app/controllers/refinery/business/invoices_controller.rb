@@ -24,7 +24,7 @@ module Refinery
         respond_to do |format|
           format.html { present(@page) }
           format.pdf {
-            render pdf: "Invoice #{@invoice.invoice_number} - Statement #{DateTime.now.strftime('%d, %M, %Y')}",
+            render pdf: "#{@invoice.account.organisation} #{@invoice.invoice_number}",
                    layout: 'pdf/document_layout',
                    header: { spacing: 5, html: { template: 'pdf/document_header' } },
                    footer: { spacing: 5, html: { template: 'pdf/document_footer', locals: { account: @invoice.account } } },

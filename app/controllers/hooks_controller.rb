@@ -11,6 +11,7 @@ class HooksController < ApplicationController
       parse_wip
     elsif @webhook == 'topo'
       parse_topo unless request.delete?
+      ErrorMailer.webhook_notification_email('DELETE Request from Topo', params).deliver if request.delete?
     end
 
     render text: 'success', status: :ok
