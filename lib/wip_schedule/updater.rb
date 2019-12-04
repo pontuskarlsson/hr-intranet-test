@@ -80,7 +80,7 @@ module WipSchedule
           # Need to also check that both values or not blank, because api returns empty string for number values when they should be nil
           if column_value != at_order[col] && !(column_value.blank? && at_order[col].blank?)
             if WipSchedule::Excel::ONLY_IF_BLANK.include?(col) && at_order[col].present?
-              @results[:orders][order_id][:updates][col] = { error: "Tried to change #{col} from #{at_order[col].to_s} to #{changed_fields[col].to_s}. This is not allowed." }
+              @results[:orders][order_id][:updates][col] = { error: "Tried to change #{col} from #{at_order[col].to_s} to #{changed_fields[col].to_s}. This column is not allowed to be changed. If the original value was incorrect, Happy Rabbit can update manually." }
             else
               changed_fields[col] = column_value
               @results[:orders][order_id][:updates][col] = { from: at_order[col].to_s, to: changed_fields[col].to_s }
