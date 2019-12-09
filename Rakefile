@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-HrIntranet::Application.load_tasks
+Portal::Application.load_tasks

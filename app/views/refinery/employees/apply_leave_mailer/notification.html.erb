@@ -237,7 +237,7 @@
               <p>Start date: <%= @leave_of_absence.start_date %></p>
               <p>End date: <%= @leave_of_absence.end_date %></p>
 
-              <p>Click <a href="https://intra.happyrabbit.com/employees/annual_leaves">here</a> to review the application.</p>
+              <p>Click <a href="https://<%= ENV['MAIL_DEFAULT_HOST'] %>/employees/annual_leaves">here</a> to review the application.</p>
 
             </td>
           </tr>
@@ -262,7 +262,7 @@
           <a href="http://twitter.com/happyrabbitltd"><img src="https://s3-us-west-2.amazonaws.com/hr-mailchimp/responsive-template/images/twitter.png"></a>
         </div>
         <p><strong>Happy Rabbit Limited</strong></p>
-        <p><a href="http://intra.happyrabbit.com">intra.happyrabbit.com</a></p><p></p>
+        <p><a href="https://<%= ENV['MAIL_DEFAULT_HOST'] %>"><%= ENV['MAIL_DEFAULT_HOST'] %></a></p><p></p>
       </div><!-- /content -->
 
     </td>

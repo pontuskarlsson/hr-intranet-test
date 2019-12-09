@@ -1,7 +1,7 @@
 # Makes sure that the foreman process keeps the log up-to-date
 $stdout.sync = true
 
-HrIntranet::Application.configure do
+Portal::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on

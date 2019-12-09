@@ -23,7 +23,7 @@ Refinery::Resources.configure do |config|
   # config.dragonfly_secret = "e4c07b16cc3e896773fc03927e844adf8bd30091d3e4cee0"
   # config.dragonfly_url_format = "/system/resources/:job/:basename.:format"
   # config.dragonfly_url_host = ""
-  # config.datastore_root_path = "/vagrant/hr_intranet/public/system/refinery/resources"
+  # config.datastore_root_path = "/vagrant/public/system/refinery/resources"
   # config.content_disposition = :attachment
   config.dragonfly_secret = ENV['DRAGONFLY_SECRET']
 

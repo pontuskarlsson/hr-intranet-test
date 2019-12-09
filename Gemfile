@@ -88,4 +88,5 @@ end
 group :test do
   gem 'rspec-rails', '3.8.2'
   gem 'factory_girl_rails', '4.6.0', require: false
+  gem 'rspec-its' # for the model's validation tests.
 end

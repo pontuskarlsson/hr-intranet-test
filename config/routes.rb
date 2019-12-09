@@ -1,4 +1,4 @@
-HrIntranet::Application.routes.draw do
+Portal::Application.routes.draw do
 
   #root :to => 'home#index'
   #get 'services', to: 'home#services'

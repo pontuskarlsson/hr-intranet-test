@@ -40,7 +40,7 @@ Refinery::Images.configure do |config|
   # If you decide to trust file extensions replace :ext below with :format
   # config.dragonfly_url_format = "/system/images/:job/:basename.:ext"
   # config.dragonfly_url_host = ""
-  # config.datastore_root_path = "/vagrant/hr_intranet/public/system/refinery/images"
+  # config.datastore_root_path = "/vagrant/public/system/refinery/images"
   # config.trust_file_extensions = false
   config.dragonfly_secret = ENV['DRAGONFLY_SECRET']
 
