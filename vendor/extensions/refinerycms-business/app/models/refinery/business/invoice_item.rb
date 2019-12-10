@@ -7,16 +7,16 @@ module Refinery
 
       belongs_to :invoice, optional: true
       belongs_to :article,          foreign_key: :item_code, primary_key: :code, optional: true
-      has_many :purchased_vouchers, class_name: '::Refinery::Business::Voucher', optional: true,
+      has_many :purchased_vouchers, class_name: '::Refinery::Business::Voucher',
                                     foreign_key: :line_item_sales_purchase_id,
                                     dependent: :destroy
-      has_many :redeemed_vouchers,  class_name: '::Refinery::Business::Voucher', optional: true,
+      has_many :redeemed_vouchers,  class_name: '::Refinery::Business::Voucher',
                                     foreign_key: :line_item_sales_move_to_id,
                                     dependent: :nullify
-      has_many :sales_billables,    class_name: '::Refinery::Business::Billable', optional: true,
+      has_many :sales_billables,    class_name: '::Refinery::Business::Billable',
                                     foreign_key: :line_item_sales_id,
                                     dependent: :nullify
-      has_many :discount_billables, class_name: '::Refinery::Business::Billable', optional: true,
+      has_many :discount_billables, class_name: '::Refinery::Business::Billable',
                                     foreign_key: :line_item_discount_id,
                                     dependent: :nullify
 
