@@ -16,18 +16,9 @@ Gem::Specification.new do |s|
   s.test_files    = Dir['{spec}/**/*']
   s.require_paths = ['lib']
 
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.3.4'
 
-  s.add_dependency 'virtus'
-  s.add_dependency 'activemodel', '>= 3.1.0'
-  s.add_dependency 'activesupport', '>= 3.1.0'
-
-  s.add_development_dependency 'activerecord', '>= 3.1.0'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'database_cleaner'
-  s.add_development_dependency 'pry'
-  s.add_development_dependency 'codeclimate-test-reporter'
+  s.add_dependency 'virtus', '1.0.5'
+  s.add_dependency 'activemodel', '>= 4.2.0', '< 6'
+  s.add_dependency 'activesupport', '>= 4.2.0', '< 6'
 end

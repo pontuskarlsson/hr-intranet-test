@@ -6,8 +6,8 @@ module Refinery
       set_page PAGE_CONTACTS_URL
       allow_page_roles ROLE_CRM_MANAGER
 
-      before_filter :find_contacts, only: [:index]
-      before_filter :find_contact,  except: [:index, :new, :create]
+      before_action :find_contacts, only: [:index]
+      before_action :find_contact,  except: [:index, :new, :create]
 
       def index
         @contacts = @contacts.order(name: :asc)

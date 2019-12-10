@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   # Runtime dependencies
   s.add_dependency             'refinerycms-core',    '>= 2.1.2'
   s.add_dependency             'refinerycms-pages',   '>= 2.1.2'
-  s.add_dependency             'refinerycms-authentication-devise',   '~> 1.0.0'
+  s.add_dependency             'refinerycms-authentication-devise',   '>= 1.0.0'
 
   # Development dependencies (usually used for testing)
   s.add_development_dependency 'refinerycms-testing', '>= 2.1.2'

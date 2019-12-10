@@ -2,8 +2,8 @@ module Refinery
   module Calendar
     module Admin
       class GoogleCalendarsController < ::Refinery::AdminController
-        before_filter :find_users,      except: [:index, :destroy, :oauth2, :oauth2callback]
-        before_filter :find_calendars,  except: [:index, :destroy, :oauth2, :oauth2callback]
+        before_action :find_users,      except: [:index, :destroy, :oauth2, :oauth2callback]
+        before_action :find_calendars,  except: [:index, :destroy, :oauth2, :oauth2callback]
 
         crudify :'refinery/calendar/google_calendar',
                 :title_attribute => 'google_calendar_id',

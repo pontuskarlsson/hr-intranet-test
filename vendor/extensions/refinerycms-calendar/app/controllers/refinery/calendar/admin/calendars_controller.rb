@@ -2,7 +2,7 @@ module Refinery
   module Calendar
     module Admin
       class CalendarsController < ::Refinery::AdminController
-        before_filter :find_users, :except => [:index, :destroy]
+        before_action :find_users, :except => [:index, :destroy]
 
         crudify :'refinery/calendar/calendar',
                 :title_attribute => 'title',

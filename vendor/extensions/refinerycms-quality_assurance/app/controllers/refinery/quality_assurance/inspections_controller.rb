@@ -121,11 +121,11 @@ module Refinery
       end
 
       def filter_params
-        params.permit([:company_id, :manufacturer_id, :supplier_id, :business_section_id, :business_product_id])
+        params.permit([:company_id, :manufacturer_id, :supplier_id, :business_section_id, :business_product_id]).to_h
       end
 
       def calendar_params
-        params.permit(:start, :end)
+        params.permit(:start, :end).to_h
       end
 
       def inspection_params

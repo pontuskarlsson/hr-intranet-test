@@ -7,8 +7,8 @@ module Refinery
       STATUSES = %w(schedule_pending scheduled departed arrived)
 
       belongs_to :shipment
-      belongs_to :location
-      belongs_to :prior_route,    class_name: '::Refinery::Shipping::Route'
+      belongs_to :location, optional: true
+      belongs_to :prior_route,    class_name: '::Refinery::Shipping::Route', optional: true
 
       delegate :label, :description, :lat, :lng, :airport, :seaport, :railport, :roadport,
                :street1, :street2, :city, :postal_code, :state, :country, :country_code,

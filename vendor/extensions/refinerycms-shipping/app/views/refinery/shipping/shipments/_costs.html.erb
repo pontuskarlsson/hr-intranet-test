@@ -5,6 +5,10 @@
 
   <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
 
+  <%= render '/refinery/admin/error_messages',
+             :object => costs_form,
+             :include_object_name => true %>
+
   <div class="grid-x grid-padding-x">
     <div class="cell medium-4 large-3 end">
       <%= f.label :rate_currency, 'Invoice Currency' %>

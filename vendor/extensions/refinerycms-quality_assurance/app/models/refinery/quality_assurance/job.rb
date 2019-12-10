@@ -7,12 +7,12 @@ module Refinery
       JOB_TYPES = %w(Inspection)
       BILLABLE_TYPES = %w(ManDay)
 
-      belongs_to :assigned_to,      class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :company,          class_name: '::Refinery::Business::Company'
-      belongs_to :project,          class_name: '::Refinery::Business::Project'
-      belongs_to :section,          class_name: '::Refinery::Business::Section'
-      belongs_to :billable,         class_name: '::Refinery::Business::Billable'
-      belongs_to :visit
+      belongs_to :assigned_to,      class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :company,          class_name: '::Refinery::Business::Company', optional: true
+      belongs_to :project,          class_name: '::Refinery::Business::Project', optional: true
+      belongs_to :section,          class_name: '::Refinery::Business::Section', optional: true
+      belongs_to :billable,         class_name: '::Refinery::Business::Billable', optional: true
+      belongs_to :visit, optional: true
       has_one :inspection,          dependent: :nullify
 
       # Registers self as a possible Billable Job

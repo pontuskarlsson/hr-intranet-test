@@ -11,8 +11,8 @@ module Refinery
       SYNC_FROM_NOTHING = 2
       SYNC_FROM_SETTINGS = [SYNC_FROM_EVERYTHING, SYNC_FROM_EXCEPT_PRIVATE, SYNC_FROM_NOTHING]
 
-      belongs_to :user,             class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :primary_calendar, class_name: '::Refinery::Calendar::Calendar'
+      belongs_to :user,             class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :primary_calendar, class_name: '::Refinery::Calendar::Calendar', optional: true
       has_many :google_events,      dependent: :destroy
 
       attr_reader :access_code

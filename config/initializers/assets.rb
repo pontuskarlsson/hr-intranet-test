@@ -1,10 +1,16 @@
-# Enable the asset pipeline
-Rails.application.config.assets.enabled = true
+# Be sure to restart your server when you modify this file.
 
-# Version of your assets, change this if you want to expire all your assets
+# Version of your assets, change this if you want to expire all your assets.
 Rails.application.config.assets.version = '1.0'
 
+# Add additional assets to the asset load path.
+# Rails.application.config.assets.paths << Emoji.images_path
+# Add Yarn node_modules folder to the asset load path.
+Rails.application.config.assets.paths << Rails.root.join('node_modules')
+
 # Precompile additional assets.
+# application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+# Rails.application.config.assets.precompile += %w( search.js )
 Rails.application.config.assets.precompile += %w(
   calendars.js
   chosen.css
@@ -17,4 +23,6 @@ Rails.application.config.assets.precompile += %w(
   public.scss
   refinery/backend.scss
   refinery/calendar.css
+  refinery/calendar.js
+  refinery/core
 )

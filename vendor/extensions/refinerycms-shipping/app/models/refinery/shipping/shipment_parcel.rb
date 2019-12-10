@@ -10,7 +10,7 @@ module Refinery
 
       self.table_name = 'refinery_shipping_shipment_parcels'
 
-      belongs_to :shipment
+      belongs_to :shipment, optional: true
 
       #attr_reader :_validate_easypost, :_validate_international
       #attr_accessible :length, :width, :height, :weight, :predefined_package, :description, :quantity, :value, :origin_country, :contents_type

@@ -5,8 +5,8 @@ module Refinery
 
       RECORD_TYPES = %w(Vacation Expired Adjustment)
 
-      belongs_to :employee
-      belongs_to :annual_leave
+      belongs_to :employee, optional: true
+      belongs_to :annual_leave, optional: true
 
       #attr_accessible :record_date, :record_type, :record_value
 

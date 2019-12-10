@@ -72,7 +72,7 @@ module Refinery
       end
 
       def filter_params
-        params.permit([:company_id, :section_id, :assigned_to_id, :status, :billable_type, :inspection_date, :job_type, :code])
+        params.permit([:company_id, :section_id, :assigned_to_id, :status, :billable_type, :inspection_date, :job_type, :code]).to_h
       end
 
       def job_params

@@ -6,8 +6,8 @@ module Refinery
       set_page PAGE_INVOICES_URL
       allow_page_roles ROLE_INTERNAL_FINANCE
 
-      before_filter :find_invoices, only: [:index]
-      before_filter :find_invoice,  except: [:index, :new, :create]
+      before_action :find_invoices, only: [:index]
+      before_action :find_invoice,  except: [:index, :new, :create]
 
       helper_method :invoice_billables_form, :invoice_items_build_form
 
@@ -101,7 +101,7 @@ module Refinery
       end
 
       def filter_params
-        params.permit([:company_id, :project_id, :account_id, :contact_id, :status, :invoice_type])
+        params.permit([:company_id, :project_id, :account_id, :contact_id, :status, :invoice_type]).to_h
       end
 
       def invoice_billables_form

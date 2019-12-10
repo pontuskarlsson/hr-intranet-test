@@ -6,7 +6,7 @@ module Refinery
       set_page PAGE_PROJECTS_URL
       allow_page_roles ROLE_INTERNAL
 
-      before_filter :find_project
+      before_action :find_project
 
       def create
         @section = @project.sections.build(section_params)

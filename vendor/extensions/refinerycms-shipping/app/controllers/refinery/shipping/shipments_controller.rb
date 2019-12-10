@@ -8,8 +8,8 @@ module Refinery
       allow_page_roles ROLE_EXTERNAL,     only: [:index, :show, :edit, :update]
       allow_page_roles ROLE_EXTERNAL_FF,  only: [:index, :show, :edit, :update]
 
-      before_filter :find_shipments,      only: [:index]
-      before_filter :find_shipment,       except: [:index, :create]
+      before_action :find_shipments,      only: [:index]
+      before_action :find_shipment,       except: [:index, :create]
 
       helper_method :default_package_fields, :default_cost_fields, :costs_form, :items_form, :packages_form, :routes_form
 
@@ -148,7 +148,7 @@ module Refinery
       end
 
       def filter_params
-        params.permit([:shipper_company_id, :receiver_company_id, :consignee_company_id, :supplier_company_id, :project_id, :status, :courier_company_label])
+        params.permit([:shipper_company_id, :receiver_company_id, :consignee_company_id, :supplier_company_id, :project_id, :status, :courier_company_label]).to_h
       end
 
       def default_package_fields

@@ -6,8 +6,8 @@ module Refinery
       set_page PAGE_ORDERS_URL
       allow_page_roles ROLE_INTERNAL_FINANCE
 
-      before_filter :find_orders, only: [:index]
-      before_filter :find_order,  except: [:index, :import, :new, :create]
+      before_action :find_orders, only: [:index]
+      before_action :find_order,  except: [:index, :import, :new, :create]
 
       def index
         @orders = @orders.where(filter_params).order(updated_date_utc: :desc)
@@ -46,7 +46,7 @@ module Refinery
       end
 
       def filter_params
-        params.permit([:buyer_id, :seller_id, :order_type])
+        params.permit([:buyer_id, :seller_id, :order_type]).to_h
       end
 
     end

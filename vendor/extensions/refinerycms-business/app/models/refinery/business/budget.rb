@@ -4,7 +4,7 @@ module Refinery
 
       self.table_name = 'refinery_business_budgets'
 
-      belongs_to :customer_contact, class_name: '::Refinery::Marketing::Contact'
+      belongs_to :customer_contact, class_name: '::Refinery::Marketing::Contact', optional: true
       has_many :budget_items, dependent: :destroy
 
       #attr_accessible :description, :position, :customer_name, :from_date, :to_date,

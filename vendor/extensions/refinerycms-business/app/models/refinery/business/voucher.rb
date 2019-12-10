@@ -6,14 +6,14 @@ module Refinery
       STATUSES = %w(active reserved redeemed expired)
       DISCOUNT_TYPES = %w(fixed_amount percentage)
 
-      belongs_to :company
-      belongs_to :article
-      belongs_to :line_item_sales_purchase,   class_name: 'InvoiceItem'
-      belongs_to :line_item_sales_discount,   class_name: 'InvoiceItem'
-      belongs_to :line_item_sales_move_from,  class_name: 'InvoiceItem'
-      belongs_to :line_item_prepay_move_to,   class_name: 'InvoiceItem'
-      belongs_to :line_item_prepay_move_from, class_name: 'InvoiceItem'
-      belongs_to :line_item_sales_move_to,    class_name: 'InvoiceItem'
+      belongs_to :company, optional: true
+      belongs_to :article, optional: true
+      belongs_to :line_item_sales_purchase,   class_name: 'InvoiceItem', optional: true
+      belongs_to :line_item_sales_discount,   class_name: 'InvoiceItem', optional: true
+      belongs_to :line_item_sales_move_from,  class_name: 'InvoiceItem', optional: true
+      belongs_to :line_item_prepay_move_to,   class_name: 'InvoiceItem', optional: true
+      belongs_to :line_item_prepay_move_from, class_name: 'InvoiceItem', optional: true
+      belongs_to :line_item_sales_move_to,    class_name: 'InvoiceItem', optional: true
 
       configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
       configure_enumerables :discount_type, DISCOUNT_TYPES

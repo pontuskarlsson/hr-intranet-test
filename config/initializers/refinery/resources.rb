@@ -1,35 +1,46 @@
 # encoding: utf-8
 Refinery::Resources.configure do |config|
   # Configures the maximum allowed upload size (in bytes) for a file upload
-  # config.max_file_size = 52428800
+  # config.max_file_size = <%= Refinery::Resources.max_file_size.inspect %>
 
   # Configure how many resources per page should be displayed when a dialog is presented that contains resources
-  # config.pages_per_dialog = 12
+  # config.pages_per_dialog = <%= Refinery::Resources.pages_per_dialog.inspect %>
 
   # Configure how many resources per page should be displayed in the list of resources in the admin area
-  # config.pages_per_admin_index = 20
+  # config.pages_per_admin_index = <%= Refinery::Resources.pages_per_admin_index.inspect %>
+
+  # Configure allowed mime types for validation
+  # config.whitelisted_mime_types = <%= Refinery::Resources.whitelisted_mime_types.inspect %>
+
+  # Configure Dragonfly.
+  # Refer to config/initializers/refinery/dragonfly.rb for the full list of dragonfly configurations which can be used.
+  # This includes all dragonfly config for Dragonfly v 1.1.1
+
+  # config.dragonfly_verify_urls     = <%= Refinery::Resources.dragonfly_verify_urls.inspect %>
+  # config.dragonfly_secret          = <%= Refinery::Resources.dragonfly_secret.inspect %>
+  # config.dragonfly_url_host        = <%= Refinery::Resources.dragonfly_url_host.inspect %>
+  # config.dragonfly_datastore_root_path = <%= Refinery::Resources.dragonfly_datastore_root_path.inspect %>
+  # config.dragonfly_url_format       = <%= Refinery::Resources.dragonfly_url_format.inspect %>
 
   # Configure S3 (you can also use ENV for this)
-  # The s3_backend setting by default defers to the core setting for this but can be set just for resources.
-  # config.s3_backend = Refinery::Core.s3_backend
-  # config.s3_bucket_name = ENV['S3_BUCKET']
-  # config.s3_access_key_id = ENV['S3_KEY']
+  # The s3_datastore setting by default defers to the Refinery::Dragonfly setting for this but can be set just for images.
+  config.s3_datastore           = Refinery::Dragonfly.s3_datastore # Issue in 4.0.2 unless explicitly set. Will be fixed in next version
+  # config.s3_bucket_name       = ENV['S3_BUCKET']
+  # config.s3_access_key_id     = ENV['S3_KEY']
   # config.s3_secret_access_key = ENV['S3_SECRET']
-  # config.s3_region = ENV['S3_REGION']
+  # config.s3_region            = ENV['S3_REGION']
+  #
+  #  further S3 configuration options
+  # config.s3_fog_storage_options      = <%= Refinery::Resources.s3_fog_storage_options.inspect %>
+  # config.s3_root_path                = <%= Refinery::Resources.s3_root_path.inspect %>
+  # config.s3_storage_path             = <%= Refinery::Resources.s3_storage_path.inspect %>
+  # config.s3_storage_headers          = <%= Refinery::Resources.s3_storage_headers.inspect %>
+  # config.s3_url_host                 = <%= Refinery::Resources.s3_url_host.inspect %>
+  # config.s3_url_scheme               = <%= Refinery::Resources.s3_url_scheme.inspect %>
+  # config.s3_use_iam_profile          = <%= Refinery::Resources.s3_use_iam_profile.inspect %>
 
-  # Configure Dragonfly
-  # This is where in the middleware stack to insert the Dragonfly middleware
-  # config.dragonfly_insert_before = "ActionDispatch::Callbacks"
-  # config.dragonfly_secret = "e4c07b16cc3e896773fc03927e844adf8bd30091d3e4cee0"
-  # config.dragonfly_url_format = "/system/resources/:job/:basename.:format"
-  # config.dragonfly_url_host = ""
-  # config.datastore_root_path = "/vagrant/public/system/refinery/resources"
-  # config.content_disposition = :attachment
-  config.dragonfly_secret = ENV['DRAGONFLY_SECRET']
-
-  # Configure Dragonfly custom storage backend
-  # The custom_backend setting by default defers to the core setting for this but can be set just for resources.
-  # config.custom_backend_class = nil
-  # config.custom_backend_opts = {}
-
+  # Configure Dragonfly custom datastore
+  # The custom_datastore setting by default defers to the Refinery::Resources setting for this but can be set just for images.
+  # config.custom_datastore_class     = <%= Refinery::Resources.dragonfly_custom_datastore_class.inspect %>
+  # config.custom_datastore_opts      = <%= Refinery::Resources.dragonfly_custom_datastore_opts.inspect %>
 end

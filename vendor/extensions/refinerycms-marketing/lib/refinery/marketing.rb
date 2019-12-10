@@ -6,7 +6,6 @@ module Refinery
   module Marketing
     require 'refinery/marketing/configuration'
     require 'refinery/marketing/engine'
-    require 'refinery/marketing/base_synchroniser'
     require 'refinery/marketing/insightly'
     require 'refinery/marketing/insightly/client'
     require 'refinery/marketing/insightly/resource'

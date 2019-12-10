@@ -3,11 +3,11 @@ module Refinery
     class Parcel < Refinery::Core::BaseModel
       self.table_name = 'refinery_shipping_parcels'
 
-      belongs_to :shipping_document,  class_name: '::Refinery::Resource'
-      belongs_to :from_contact,       class_name: '::Refinery::Marketing::Contact'
-      belongs_to :to_user,            class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :received_by,        class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :assigned_to,        class_name: '::Refinery::Authentication::Devise::User'
+      belongs_to :shipping_document,  class_name: '::Refinery::Resource', optional: true
+      belongs_to :from_contact,       class_name: '::Refinery::Marketing::Contact', optional: true
+      belongs_to :to_user,            class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :received_by,        class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :assigned_to,        class_name: '::Refinery::Authentication::Devise::User', optional: true
 
       attr_writer :from, :to, :given_to
 

@@ -1,8 +1,8 @@
 module Refinery
   module Calendar
     class UserCalendar < Refinery::Core::BaseModel
-      belongs_to :user,  class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :calendar
+      belongs_to :user,  class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :calendar, optional: true
 
       validates :user_id,       presence: true
       validates :calendar_id,   presence: true, uniqueness: { scope: :user_id }

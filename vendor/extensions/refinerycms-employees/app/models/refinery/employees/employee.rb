@@ -3,10 +3,10 @@ module Refinery
     class Employee < Refinery::Core::BaseModel
       self.table_name = 'refinery_employees'
 
-      belongs_to :profile_image,      class_name: '::Refinery::Image'
-      belongs_to :user,               class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :reporting_manager,  class_name: '::Refinery::Employees::Employee'
-      belongs_to :contact,            class_name: '::Refinery::Marketing::Contact'
+      belongs_to :profile_image,      class_name: '::Refinery::Image', optional: true
+      belongs_to :user,               class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :reporting_manager,  class_name: '::Refinery::Employees::Employee', optional: true
+      belongs_to :contact,            class_name: '::Refinery::Marketing::Contact', optional: true
       has_many :employees,            dependent: :nullify, foreign_key: :reporting_manager_id
       has_many :leave_of_absences,    dependent: :destroy
       has_many :employment_contracts, dependent: :destroy

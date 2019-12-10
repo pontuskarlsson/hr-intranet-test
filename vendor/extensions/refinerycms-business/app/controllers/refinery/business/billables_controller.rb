@@ -7,8 +7,8 @@ module Refinery
       allow_page_roles ROLE_INTERNAL_FINANCE
       allow_page_roles ROLE_INTERNAL, only: [:index, :show]
 
-      before_filter :find_billables
-      before_filter :find_billable, except: [:index, :new, :create]
+      before_action :find_billables
+      before_action :find_billable, except: [:index, :new, :create]
 
       def index
         @billables = @billables.from_params(params).order(billable_date: :desc)
@@ -80,7 +80,7 @@ module Refinery
       end
 
       def filter_params
-        params.permit([:company_id, :project_id, :section_id, :billable_type, :article_code, :invoice_id, :status])
+        params.permit([:company_id, :project_id, :section_id, :billable_type, :article_code, :invoice_id, :status]).to_h
       end
       
     end

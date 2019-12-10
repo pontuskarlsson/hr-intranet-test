@@ -1,4 +1,8 @@
 <%= form_for shipment, url: [refinery, :shipping, shipment] do |f| %>
+  <%= render '/refinery/admin/error_messages',
+             :object => shipment,
+             :include_object_name => true %>
+
   <table class="cc-table">
     <tbody>
     <tr>

@@ -1,9 +1,9 @@
 module Refinery
   module Calendar
     class EventsController < ::ApplicationController
-      before_filter :find_page,           except: [:archive, :create]
-      before_filter :find_event,          except: [:archive, :new, :create, :index]
-      before_filter :auth_or_create_cal,  only: :create
+      before_action :find_page,           except: [:archive, :create]
+      before_action :find_event,          except: [:archive, :new, :create, :index]
+      before_action :auth_or_create_cal,  only: :create
 
 
       helper_method :personal_calendars

@@ -6,8 +6,8 @@ module Refinery
       set_page PAGE_PARCELS_URL
       allow_page_roles ROLE_INTERNAL
 
-      before_filter :find_all_parcels
-      before_filter :authorize_for_parcel, only: [:update, :sign, :pass_on]
+      before_action :find_all_parcels
+      before_action :authorize_for_parcel, only: [:update, :sign, :pass_on]
 
       def index
         @parcel = Parcel.new

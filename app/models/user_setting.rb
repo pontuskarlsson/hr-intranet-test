@@ -1,5 +1,5 @@
-class UserSetting < ActiveRecord::Base
-  belongs_to :user
+class UserSetting < ApplicationRecord
+  belongs_to :user, optional: true
 
   serialize :content, Hash
 

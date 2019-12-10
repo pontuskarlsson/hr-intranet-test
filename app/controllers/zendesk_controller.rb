@@ -1,7 +1,7 @@
 class ZendeskController < ApplicationController
   before_action :spam_filter, only: [:submit]
 
-  #skip_before_filter :authenticate_authentication_devise_user!
+  #skip_before_action :authenticate_authentication_devise_user!
 
   def submit
     @submitter = Portal::Zendesk::Submitter.new(params[:name], params[:email], 'Get in touch', params[:message])

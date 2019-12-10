@@ -8,8 +8,8 @@ module Refinery
       allow_page_roles ROLE_INTERNAL
       allow_page_roles ROLE_INTERNAL_FINANCE
 
-      before_filter :find_projects, only: [:index]
-      before_filter :find_project,  except: [:index, :create]
+      before_action :find_projects, only: [:index]
+      before_action :find_project,  except: [:index, :create]
 
       def index
         @projects = @projects.from_params(params).order(code: :asc)
@@ -86,7 +86,7 @@ module Refinery
       end
 
       def filter_params
-        params.permit([:company_id, :status])
+        params.permit([:company_id, :status]).to_h
       end
 
     end

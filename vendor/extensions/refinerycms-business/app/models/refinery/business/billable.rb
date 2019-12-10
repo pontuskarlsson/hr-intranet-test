@@ -14,14 +14,14 @@ module Refinery
       
       STATUSES = %w(draft job_completed to_be_invoiced invoiced paid cancelled)
 
-      belongs_to :company
+      belongs_to :company, optional: true
       #belongs_to :project
       #belongs_to :section
-      belongs_to :invoice
-      belongs_to :assigned_to,        class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :article
-      belongs_to :line_item_sales,    class_name: '::Refinery::Business::InvoiceItem'
-      belongs_to :line_item_discount, class_name: '::Refinery::Business::InvoiceItem'
+      belongs_to :invoice, optional: true
+      belongs_to :assigned_to,        class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :article, optional: true
+      belongs_to :line_item_sales,    class_name: '::Refinery::Business::InvoiceItem', optional: true
+      belongs_to :line_item_discount, class_name: '::Refinery::Business::InvoiceItem', optional: true
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
@@ -179,8 +179,8 @@ module Refinery
       end
 
       def self.from_params(params)
-        active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
-        archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
+        active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
+        archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))
 
         if active && archived
           where(nil)

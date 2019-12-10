@@ -4,22 +4,13 @@ Refinery::Core.configure do |config|
   config.rescue_not_found = Rails.env.production?
 
   # When true this will force SSL redirection in all Refinery backend controllers.
-  # config.force_ssl = false
+  # config.force_ssl = <%= Refinery::Core.force_ssl.inspect %>
 
-  config.s3_backend = !(ENV['S3_KEY'].nil? || ENV['S3_SECRET'].nil?)
-  config.s3_access_key_id =     ENV['S3_KEY']
-  config.s3_secret_access_key = ENV['S3_SECRET']
-  config.s3_bucket_name =       ENV['S3_BUCKET']
-  config.s3_region =            ENV['S3_REGION']
-
-  # Use a custom Dragonfly storage backend instead of the default
-  # file system for storing resources and images
-  # config.dragonfly_custom_backend_class = nil
-  # config.dragonfly_custom_backend_opts = {}
+  # Dragonfly and S3 configurations have moved to initializers/refinery/dragonfly.rb
 
   # Whenever Refinery caches anything and can set a cache key, it will add
   # a prefix to the cache key containing the string you set here.
-  # config.base_cache_key = :refinery
+  # config.base_cache_key = <%= Refinery::Core.base_cache_key.inspect %>
 
   # Site name
   config.site_name = 'Happy Rabbit Portal'
@@ -27,17 +18,15 @@ Refinery::Core.configure do |config|
   # This activates Google Analytics tracking within your website. If this
   # config is left blank or set to UA-xxxxxx-x then no remote calls to
   # Google Analytics are made.
-  # config.google_analytics_page_code = "UA-xxxxxx-x"
+  # config.google_analytics_page_code = <%= Refinery::Core.google_analytics_page_code.inspect %>
+
+  # This activates Matomo open web analytics tracking within your website. If the server config is
+  # left blank or set to analytics.example.org then the javascript tracking code will not be loaded.
+  # config.matomo_analytics_server = <%= Refinery::Core.matomo_analytics_server.inspect %>
+  # config.matomo_analytics_site_id = <%= Refinery::Core.matomo_analytics_site_id.inspect %>
 
   # Enable/disable authenticity token on frontend
   config.authenticity_token_on_frontend = true
-
-  # Should set this if concerned about DOS attacks. See
-  # http://markevans.github.com/dragonfly/file.Configuration.html#Configuration
-  config.dragonfly_secret = ENV['DRAGONFLY_SECRET']
-
-  # Add extra tags to the wymeditor whitelist e.g. = {'tag' => {'attributes' => {'1' => 'href'}}} or just {'tag' => {}}
-  # config.wymeditor_whitelist_tags = {}
 
   # Register extra javascript for backend
   # config.register_javascript "prototype-rails"
@@ -46,7 +35,16 @@ Refinery::Core.configure do |config|
   # config.register_stylesheet "custom", :media => 'screen'
   config.register_stylesheet 'refinery/backend', :media => 'screen'
 
-  # Specify a different backend path than the default of /refinery.
-  # config.backend_route = "refinery"
+  # Specify a different backend path than the default of <%= Refinery::Core.backend_route.inspect %>.
+  # Make sure you clear the `tmp/cache` directory after changing this setting.
+  # config.backend_route = <%= Refinery::Core.backend_route.inspect %>
+
+  # Specify a different Refinery::Core::Engine mount path than the default of <%= Refinery::Core.mounted_path.inspect %>.
+  # Make sure you clear the `tmp/cache` directory after changing this setting.
+  # config.mounted_path = <%= Refinery::Core.mounted_path.inspect %>
   config.mounted_path = '/'
+
+  # Specify the order Refinery plugins appear in the admin view.
+  # Plugins in the list are placed, as ordered, before any plugins not in the list.
+  # config.plugin_priority = %w(refinery_pages refinery_images)
 end

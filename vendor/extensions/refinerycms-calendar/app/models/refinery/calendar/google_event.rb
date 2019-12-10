@@ -1,8 +1,8 @@
 module Refinery
   module Calendar
     class GoogleEvent < Refinery::Core::BaseModel
-      belongs_to :google_calendar
-      belongs_to :event
+      belongs_to :google_calendar, optional: true
+      belongs_to :event, optional: true
 
       #attr_accessible :google_event_id, :last_synced_at, :event_id
 

@@ -16,15 +16,15 @@ module Refinery
 
       serialize :fields, Hash
 
-      belongs_to :job
-      belongs_to :inspected_by,       class_name: 'Refinery::Authentication::Devise::User'
-      belongs_to :business_product,   class_name: 'Refinery::Business::Product' # Not correct to let it be a belongs_to here, and maybe let Job handle...
-      belongs_to :business_section,   class_name: 'Refinery::Business::Section' # Let Job handle
-      belongs_to :company,            class_name: 'Refinery::Business::Company'
-      belongs_to :inspection_photo
-      belongs_to :manufacturer,       class_name: 'Refinery::Business::Company'
-      belongs_to :resource,           class_name: 'Refinery::Resource'
-      belongs_to :supplier,           class_name: 'Refinery::Business::Company'
+      belongs_to :job, optional: true
+      belongs_to :inspected_by,       class_name: 'Refinery::Authentication::Devise::User', optional: true
+      belongs_to :business_product,   class_name: 'Refinery::Business::Product', optional: true # Not correct to let it be a belongs_to here, and maybe let Job handle...
+      belongs_to :business_section,   class_name: 'Refinery::Business::Section', optional: true # Let Job handle
+      belongs_to :company,            class_name: 'Refinery::Business::Company', optional: true
+      belongs_to :inspection_photo, optional: true
+      belongs_to :manufacturer,       class_name: 'Refinery::Business::Company', optional: true
+      belongs_to :resource,           class_name: 'Refinery::Resource', optional: true
+      belongs_to :supplier,           class_name: 'Refinery::Business::Company', optional: true
       has_many :inspection_defects,   dependent: :destroy
       has_many :defects,              through: :inspection_defects
       has_many :inspection_photos,    dependent: :destroy

@@ -7,8 +7,8 @@ module Refinery
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL
 
-      before_filter :find_companies, only: [:index]
-      before_filter :find_company,  except: [:index, :new, :create]
+      before_action :find_companies, only: [:index]
+      before_action :find_company,  except: [:index, :new, :create]
 
       def index
         @companies = @companies.includes(:contact).order(code: :asc)

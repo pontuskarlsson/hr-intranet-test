@@ -1,7 +1,7 @@
 module Refinery
   module Employees
     class ChartOfAccountsController < ::ApplicationController
-      before_filter :find_page
+      before_action :find_page
 
       def index
         @xero_accounts = XeroAccount.all

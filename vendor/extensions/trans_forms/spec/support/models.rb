@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 end
 
 class PhoneNumber < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :user_id, presence: true
   validates :number,  presence: true, uniqueness: { scope: :user_id }

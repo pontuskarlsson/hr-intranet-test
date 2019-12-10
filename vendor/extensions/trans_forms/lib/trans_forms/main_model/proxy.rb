@@ -72,12 +72,6 @@ module TransForms
             attr_names = attributes.map(&:to_s)
             proxy_columns main_class.columns.reject(&REJECT_COLUMN_PROC).select { |c| attr_names.include?(c.name) }
           end
-
-        rescue ActiveRecord::StatementInvalid => e
-          # If this is being loaded in a rake task (i.e. db:migrate) then it will
-          # raise an error if the table does not exist. So we ignore this error
-          # here and assume that this is being verified at a later stage in the
-          # actual implementation specs.
         end
 
         # Given a set of ActiveRecord Columns, will setup attributes according
@@ -97,10 +91,12 @@ module TransForms
           case type
             when :integer                     then Integer
             when :float, :decimal             then Float
-            when :string, :text               then String
+            when :string, :text, :uuid        then String
             when :datetime, :timestamp, :time then DateTime
             when :date                        then Date
             when :boolean                     then Virtus::Attribute::Boolean # Boolean is not a standard Ruby class
+            else
+              raise "Could not match column type '#{type}' for #{model_name}"
           end
         end
 

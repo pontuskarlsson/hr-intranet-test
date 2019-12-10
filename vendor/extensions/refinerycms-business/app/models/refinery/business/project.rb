@@ -8,7 +8,7 @@ module Refinery
 
       PROC_LABEL = proc { |*attr| attr.reject(&:blank?).join ' - ' }
 
-      belongs_to :company
+      belongs_to :company, optional: true
       #has_many :invoices,       dependent: :nullify
       has_many :sections,       dependent: :destroy
 
@@ -36,8 +36,8 @@ module Refinery
       scope :past, -> { where(status: STATUSES - CURRENT_STATUSES) }
 
       def self.from_params(params)
-        active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
-        archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
+        active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
+        archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))
 
         if active && archived
           where(nil)

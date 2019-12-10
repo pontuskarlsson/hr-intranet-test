@@ -3,13 +3,12 @@ Refinery::Authentication::Devise::User.class_eval do
 
   accepts_nested_attributes_for :user_settings
 
-  #attr_accessible :full_name, :password_has_expired, :user_settings_attributes
-
   validates :full_name, presence: true
 
-  devise :password_expirable,
-         :invitable,
-         :expire_password_after => 10.years
+  devise :invitable
+  # devise :password_expirable,
+  #        :invitable,
+  #        :expire_password_after => 10.years
 
   acts_as_target devise_resource: :authentication_devise_user,
                  email: :email,
@@ -24,28 +23,12 @@ Refinery::Authentication::Devise::User.class_eval do
     full_name
   end
 
-  after_save do
-    if password_has_expired and !need_change_password?
-      # Means that the password_has_expired checkbox was clicked on save. We
-      # need to make the password expired.
-      need_change_password!
-    end
-  end
-
   scope :for_role, -> (title) {
     Refinery::Authentication::Devise::User.joins(:roles).where(refinery_authentication_devise_roles: { title: title })
   }
 
   def active_for_authentication?
     super && !deactivated
-  end
-
-  def password_has_expired=(val)
-    @password_has_expired = val == '1'
-  end
-
-  def password_has_expired
-    @password_has_expired ||= need_change_password?
   end
 
   def remember_me

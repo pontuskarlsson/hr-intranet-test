@@ -3,7 +3,7 @@ module Refinery
     class Show < Refinery::Core::BaseModel
       self.table_name = 'refinery_shows'
 
-      belongs_to :logo, :class_name => '::Refinery::Image'
+      belongs_to :logo, :class_name => '::Refinery::Image', optional: true
       has_many :brand_shows, dependent: :destroy
       has_many :marketing, through: :brand_shows
 

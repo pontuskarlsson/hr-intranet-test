@@ -5,9 +5,9 @@ module Refinery
 
       DT_COLUMNS = %w(id name code is_organisation organisation_name organisation_id email phone mobile country tags_joined_by_comma image_url)
 
-      belongs_to :user,         class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :organisation, class_name: 'Contact'
-      belongs_to :image,        class_name: '::Refinery::Image'
+      belongs_to :user,         class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :organisation, class_name: 'Contact', optional: true
+      belongs_to :image,        class_name: '::Refinery::Image', optional: true
       has_many :employees,      class_name: 'Contact', foreign_key: :organisation_id
 
       #serialize :custom_fields, Hash

@@ -7,8 +7,8 @@ module Refinery
 
       attr_accessor :new_user_email
 
-      belongs_to :company
-      belongs_to :user, class_name: 'Refinery::Authentication::Devise::User'
+      belongs_to :company, optional: true
+      belongs_to :user, class_name: 'Refinery::Authentication::Devise::User', optional: true
 
       validates :company_id,    presence: true
       validates :user_id,       presence: true, uniqueness: { scope: :company_id }

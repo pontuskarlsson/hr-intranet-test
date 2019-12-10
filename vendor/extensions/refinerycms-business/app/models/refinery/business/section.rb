@@ -7,7 +7,7 @@ module Refinery
 
       TYPES = %w(VBO QA)
 
-      belongs_to :project
+      belongs_to :project, optional: true
       has_many :sections, dependent: :destroy
       #has_many :billables, dependent: :nullify
 

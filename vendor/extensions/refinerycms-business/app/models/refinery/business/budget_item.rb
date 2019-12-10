@@ -3,7 +3,7 @@ module Refinery
     class BudgetItem < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_budget_items'
 
-      belongs_to :budget
+      belongs_to :budget, optional: true
 
       #attr_accessible :budget_id, :description, :no_of_products, :no_of_skus, :price, :quantity, :margin, :comments, :position
 

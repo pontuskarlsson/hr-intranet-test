@@ -1,11 +1,11 @@
 module Refinery
   module Employees
     class AnnualLeavesController < ::ApplicationController
-      before_filter :find_employee
-      before_filter :find_all_annual_leaves,    only: [:index]
-      before_filter :find_annual_leave,         except: [:index, :create, :approve, :reject]
-      before_filter :find_approvable_loa,       only: [:approve, :reject]
-      before_filter :find_page
+      before_action :find_employee
+      before_action :find_all_annual_leaves,    only: [:index]
+      before_action :find_annual_leave,         except: [:index, :create, :approve, :reject]
+      before_action :find_approvable_loa,       only: [:approve, :reject]
+      before_action :find_page
 
       def index
         @leave_of_absence = @employee.leave_of_absences.build

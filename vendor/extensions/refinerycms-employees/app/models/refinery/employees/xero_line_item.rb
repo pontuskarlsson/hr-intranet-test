@@ -3,7 +3,7 @@ module Refinery
     class XeroLineItem < Refinery::Core::BaseModel
       self.table_name = 'refinery_xero_line_items'
 
-      belongs_to :xero_receipt
+      belongs_to :xero_receipt, optional: true
       belongs_to :xero_account
 
       # This is where we store information about selected

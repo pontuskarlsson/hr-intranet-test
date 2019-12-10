@@ -3,7 +3,7 @@ module Refinery
     class ShipmentAccount < Refinery::Core::BaseModel
       self.table_name = 'refinery_shipping_shipment_accounts'
 
-      belongs_to :contact,  class_name: '::Refinery::Marketing::Contact'
+      belongs_to :contact,  class_name: '::Refinery::Marketing::Contact', optional: true
       has_many :shipments,  foreign_key: :bill_to_account_id, dependent: :nullify
 
       attr_writer :contact_name

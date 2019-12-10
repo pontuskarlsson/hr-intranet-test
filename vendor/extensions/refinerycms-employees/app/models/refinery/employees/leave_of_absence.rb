@@ -32,8 +32,8 @@ module Refinery
       }.freeze
 
       belongs_to :employee
-      belongs_to :event,          class_name: '::Refinery::Calendar::Event', dependent: :destroy
-      belongs_to :doctors_note,   class_name: '::Refinery::Resource'
+      belongs_to :event,          class_name: '::Refinery::Calendar::Event', dependent: :destroy, optional: true
+      belongs_to :doctors_note,   class_name: '::Refinery::Resource', optional: true
 
       attr_writer :employee_name, :i_am_sick_today
       #attr_accessible :start_date, :start_half_day, :end_date, :end_half_day, :doctors_note_id, :employee_name,

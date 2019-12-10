@@ -4,14 +4,14 @@ FactoryGirl.define do
     xero_expense_claim
     employee { |xero_receipt| xero_receipt.xero_expense_claim.employee }
     xero_contact
-    status Refinery::Employees::XeroReceipt::STATUS_DRAFT
-    total 100
+    status { Refinery::Employees::XeroReceipt::STATUS_DRAFT }
+    total { 100 }
 
 
     factory :xero_receipt_with_line_items do
 
       transient do
-        no_of_line_items 1
+        no_of_line_items { 1 }
       end
 
       after(:create) do |xero_receipt, evaluator|

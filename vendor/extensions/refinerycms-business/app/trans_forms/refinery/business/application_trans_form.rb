@@ -15,7 +15,8 @@ module Refinery
       attr_accessor :current_user
 
       def self.new_in_model(model, params = {}, current_user = nil)
-        new((params || {}).merge(model: model, current_user: current_user))
+        p = params.is_a?(ActionController::Parameters) ? params.to_unsafe_h : params || {}
+        new(p.merge(model: model, current_user: current_user))
       end
 
 

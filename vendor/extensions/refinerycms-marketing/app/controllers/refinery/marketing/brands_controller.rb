@@ -4,8 +4,8 @@ module Refinery
 
       BRANDS_PER_PAGE = 12
 
-      before_filter :find_all_brands
-      before_filter :find_page
+      before_action :find_all_brands
+      before_action :find_page
 
       helper_method :no_of_pages, :current_page
 

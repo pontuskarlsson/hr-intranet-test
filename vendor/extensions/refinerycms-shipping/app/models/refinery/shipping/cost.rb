@@ -5,7 +5,7 @@ module Refinery
 
       TYPES = %w(domestic_transportation duty forwarding_fee freight_cost terminal_fee vat other)
 
-      belongs_to :shipment
+      belongs_to :shipment, optional: true
 
       configure_enumerables :cost_type, TYPES
 

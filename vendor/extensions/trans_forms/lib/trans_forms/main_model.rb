@@ -74,15 +74,19 @@ module TransForms
         class_attribute :main_model, :_class_name
       end
 
-      # Called from FormError to collect error messages from all possible
-      # models involved in the form transaction.
+      # Instance method to retrieve the current main model instance
       def main_instance
         send main_model
       end
 
       # Combines the errors from the FormModel as well as the main model instances
       def errors
-        @errors ||= TransForms::FormErrors.new(self)
+        @errors ||= ActiveModel::Errors.new(self)
+        if respond_to?(:main_instance) && main_instance && main_instance.errors.any?
+          main_instance.errors
+        else
+          @errors
+        end
       end
 
       # In it's default implementation, this method will look at the class name
@@ -118,7 +122,7 @@ module TransForms
         end
       end
 
-    protected
+      protected
 
       # This method is assigned to the after_save_on_error callback
       #
@@ -142,7 +146,7 @@ module TransForms
         if record.class.model_name.is_a?(ActiveModel::Name)
           record.class.model_name.element
         else
-          record.class.model_name.underscore
+          record.class.model_name.param_key
         end
       end
 

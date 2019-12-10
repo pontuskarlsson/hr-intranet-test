@@ -8,9 +8,6 @@
     <%= link_to t('.create_new'), refinery.new_marketing_admin_contact_path,
                  :class => "add_icon" %>
   </li>
-  <li>
-    <%= link_to t('.synchronise'), refinery.synchronise_marketing_admin_contacts_path, method: :post, confirm: t('.confirm_synchronise') %>
-  </li>
 <% if !searching? && ::Refinery::Marketing::Admin::ContactsController.sortable? && ::Refinery::Marketing::Contact.many? %>
   <li>
     <%= link_to t('.reorder', :what => "Contacts"),

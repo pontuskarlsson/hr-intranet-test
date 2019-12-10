@@ -9,7 +9,7 @@ module Refinery
         class_attribute :allowed_page_roles, :page_title
         self.allowed_page_roles = {}
 
-        before_filter :find_and_auth_page
+        before_action :find_and_auth_page
 
         helper_method :page_role?
       end

@@ -1,8 +1,8 @@
 module Refinery
   module Employees
     class ReceiptsController < ::ApplicationController
-      before_filter :find_expense_claim
-      before_filter :find_receipt,      except: [:new, :create]
+      before_action :find_expense_claim
+      before_action :find_receipt,      except: [:new, :create]
 
       helper_method :active_tracking_categories
 

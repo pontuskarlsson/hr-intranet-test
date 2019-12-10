@@ -2,7 +2,7 @@ module Refinery
   module Business
     module Admin
       class BudgetsController < ::Refinery::AdminController
-        skip_before_filter :verify_authenticity_token, only: [:import]
+        skip_before_action :verify_authenticity_token, only: [:import]
 
         crudify :'refinery/business/budget',
                 :title_attribute => 'description',

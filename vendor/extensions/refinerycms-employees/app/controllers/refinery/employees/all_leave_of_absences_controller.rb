@@ -1,7 +1,7 @@
 module Refinery
   module Employees
     class AllLeaveOfAbsencesController < ::ApplicationController
-      before_filter :find_page
+      before_action :find_page
 
       def index
         @employees = ::Refinery::Employees::Employee.current

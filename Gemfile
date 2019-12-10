@@ -1,15 +1,10 @@
 source 'https://rubygems.org'
 #ruby '2.3.4'
 
-gem 'rails', '4.2.11'
+gem 'rails', '5.1.7'
+gem 'i18n', '~> 0.7'
 
 gem 'mysql2'
-
-# Gems used only for assets and not required
-# in production environments by default.
-gem 'sass', '3.7.3'
-gem 'sass-rails',   '5.0.7'
-gem 'coffee-rails', '4.2.2'
 
 gem 'uglifier', '4.1.20'
 
@@ -26,14 +21,14 @@ gem 'delayed_job', '4.1.5'
 gem 'jbuilder'
 
 # Refinery CMS
-gem 'refinerycms', '3.0.6'
-gem 'refinerycms-authentication-devise', '1.0.4'
-#gem 'refinerycms-news', '2.1.2'
-gem 'refinerycms-news', github: 'refinery/refinerycms-news', branch: 'master'
-gem 'refinerycms-page-images', '3.0.0'
-gem 'refinerycms-acts-as-indexed', '3.0.0'
-gem 'refinerycms-testing', '3.0.6'
-gem 'refinerycms-wymeditor', '1.1.0'
+gem 'refinerycms', '4.0.2'
+gem 'refinerycms-authentication-devise', '~> 2.0.0'
+gem 'refinerycms-news'
+# gem 'refinerycms-news', github: 'refinery/refinerycms-news', branch: 'master'
+gem 'refinerycms-page-images'
+gem 'refinerycms-acts-as-indexed'
+gem 'refinerycms-testing'
+gem 'refinerycms-wymeditor'
 gem 'refinerycms-addons',       path: 'vendor/extensions'
 gem 'refinerycms-calendar',     path: 'vendor/extensions'
 gem 'refinerycms-marketing',    path: 'vendor/extensions'
@@ -46,10 +41,10 @@ gem 'refinerycms-resource_authorizations', path: 'vendor/extensions'
 gem 'refinerycms-quality_assurance', path: 'vendor/extensions'
 
 # Invitable
-gem 'devise_invitable', '1.6.1'
+gem 'devise_invitable', '2.0.1'
 
 # Specify specific version to prevent deprecation messages from 5.1 version
-gem 'globalize', '5.0.1'
+gem 'globalize', '5.1.0'
 
 # Needed for S3 storage
 gem 'fog-aws'
@@ -60,7 +55,8 @@ gem 'wicked_pdf', '1.1.0'
 gem 'wkhtmltopdf-binary'
 
 # Need for password expiration
-gem 'devise_security_extension'
+#gem 'devise_security_extension'
+
 gem 'trans_forms', path: 'vendor/extensions'
 
 # Workaround to get the latest version of xeroizer that is not available from rubygems yet
@@ -77,6 +73,7 @@ gem 'zendesk_api', '1.17'
 gem 'activity_notification'
 
 group :development do
+  gem 'listen', '~> 3.0'
   gem 'thin', '1.7.2'
   gem 'foreman', '0.78.0'
 end
@@ -86,7 +83,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'rspec-rails', '3.8.2'
-  gem 'factory_girl_rails', '4.6.0', require: false
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
   gem 'rspec-its' # for the model's validation tests.
 end

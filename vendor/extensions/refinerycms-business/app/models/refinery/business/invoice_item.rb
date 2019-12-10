@@ -5,18 +5,18 @@ module Refinery
 
       TRANSACTION_TYPES = %w(sales sales_offset discount pre_pay pre_pay_redeem)
 
-      belongs_to :invoice
-      belongs_to :article,          foreign_key: :item_code, primary_key: :code
-      has_many :purchased_vouchers, class_name: '::Refinery::Business::Voucher',
+      belongs_to :invoice, optional: true
+      belongs_to :article,          foreign_key: :item_code, primary_key: :code, optional: true
+      has_many :purchased_vouchers, class_name: '::Refinery::Business::Voucher', optional: true,
                                     foreign_key: :line_item_sales_purchase_id,
                                     dependent: :destroy
-      has_many :redeemed_vouchers,  class_name: '::Refinery::Business::Voucher',
+      has_many :redeemed_vouchers,  class_name: '::Refinery::Business::Voucher', optional: true,
                                     foreign_key: :line_item_sales_move_to_id,
                                     dependent: :nullify
-      has_many :sales_billables,    class_name: '::Refinery::Business::Billable',
+      has_many :sales_billables,    class_name: '::Refinery::Business::Billable', optional: true,
                                     foreign_key: :line_item_sales_id,
                                     dependent: :nullify
-      has_many :discount_billables, class_name: '::Refinery::Business::Billable',
+      has_many :discount_billables, class_name: '::Refinery::Business::Billable', optional: true,
                                     foreign_key: :line_item_discount_id,
                                     dependent: :nullify
 

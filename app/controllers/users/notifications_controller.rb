@@ -1,5 +1,5 @@
 class Users::NotificationsController < ActivityNotification::NotificationsController
-  before_filter :authenticate_authentication_devise_user!
+  before_action :authenticate_authentication_devise_user!
 
   # GET /:target_type/:target_id/notifications
   # def index

@@ -41,9 +41,9 @@ module Refinery
       # Courier
       # The company that ships the parcel
       #
-      belongs_to :shipper_company,      class_name: '::Refinery::Business::Company'
-      belongs_to :from_contact,         class_name: '::Refinery::Marketing::Contact'
-      belongs_to :from_address,         class_name: '::Refinery::Shipping::Address', dependent: :destroy
+      belongs_to :shipper_company,      class_name: '::Refinery::Business::Company',  optional: true
+      belongs_to :from_contact,         class_name: '::Refinery::Marketing::Contact', optional: true
+      belongs_to :from_address,         class_name: '::Refinery::Shipping::Address',  optional: true, dependent: :destroy
 
 
       # RECEIVER
@@ -55,9 +55,9 @@ module Refinery
       # Courier
       # The company that receives the parcel
       #
-      belongs_to :receiver_company,     class_name: '::Refinery::Business::Company'
-      belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact'
-      belongs_to :to_address,           class_name: '::Refinery::Shipping::Address', dependent: :destroy
+      belongs_to :receiver_company,     class_name: '::Refinery::Business::Company',  optional: true
+      belongs_to :to_contact,           class_name: '::Refinery::Marketing::Contact', optional: true
+      belongs_to :to_address,           class_name: '::Refinery::Shipping::Address',  optional: true, dependent: :destroy
 
 
       # CONSIGNEE
@@ -69,8 +69,8 @@ module Refinery
       # Courier
       # The company that pays for the shipment.
       #
-      belongs_to :consignee_company,    class_name: '::Refinery::Business::Company'
-      belongs_to :consignee_address,    class_name: '::Refinery::Shipping::Address', dependent: :destroy
+      belongs_to :consignee_company,    class_name: '::Refinery::Business::Company',  optional: true
+      belongs_to :consignee_address,    class_name: '::Refinery::Shipping::Address',  optional: true, dependent: :destroy
 
 
       # SUPPLIER
@@ -83,7 +83,7 @@ module Refinery
       # Courier
       # N/A
       #
-      belongs_to :supplier_company,     class_name: '::Refinery::Business::Company'
+      belongs_to :supplier_company,     class_name: '::Refinery::Business::Company', optional: true
 
 
       # FORWARDER
@@ -94,7 +94,7 @@ module Refinery
       # Courier
       # N/A
       #
-      belongs_to :forwarder_company,    class_name: '::Refinery::Business::Company'
+      belongs_to :forwarder_company,    class_name: '::Refinery::Business::Company', optional: true
 
       # COURIER
       #
@@ -104,13 +104,13 @@ module Refinery
       # Courier
       # The Courier company
       #
-      belongs_to :courier_company,      class_name: '::Refinery::Business::Company'
+      belongs_to :courier_company,      class_name: '::Refinery::Business::Company', optional: true
 
 
-      belongs_to :created_by,           class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :assigned_to,          class_name: '::Refinery::Authentication::Devise::User'
-      belongs_to :bill_to_account,      class_name: '::Refinery::Shipping::ShipmentAccount'
-      belongs_to :project,              class_name: '::Refinery::Business::Project'
+      belongs_to :created_by,           class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :assigned_to,          class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :bill_to_account,      class_name: '::Refinery::Shipping::ShipmentAccount', optional: true
+      belongs_to :project,              class_name: '::Refinery::Business::Project', optional: true
       has_many :costs,                  dependent: :destroy
       has_many :documents,              dependent: :nullify
       has_many :shipment_parcels,       dependent: :destroy
@@ -398,8 +398,8 @@ module Refinery
         end
 
         def from_params(params)
-          active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
-          archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
+          active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
+          archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))
 
           if active && archived
             where(nil)

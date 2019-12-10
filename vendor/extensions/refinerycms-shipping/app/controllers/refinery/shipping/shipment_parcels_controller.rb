@@ -6,8 +6,8 @@ module Refinery
       set_page PAGE_SHIPMENTS_URL
       allow_page_roles ROLE_INTERNAL
 
-      before_filter :find_shipment
-      before_filter :find_shipment_parcel, only: [:show, :update, :destroy]
+      before_action :find_shipment
+      before_action :find_shipment_parcel, only: [:show, :update, :destroy]
 
       def index
         @shipment = Shipment.new

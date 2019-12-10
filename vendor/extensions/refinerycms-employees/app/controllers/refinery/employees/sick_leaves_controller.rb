@@ -1,10 +1,10 @@
 module Refinery
   module Employees
     class SickLeavesController < ::ApplicationController
-      before_filter :find_employee
-      before_filter :find_all_sick_leaves,  only: [:index]
-      before_filter :find_sick_leave,       except: [:index, :new, :create]
-      before_filter :find_page
+      before_action :find_employee
+      before_action :find_all_sick_leaves,  only: [:index]
+      before_action :find_sick_leave,       except: [:index, :new, :create]
+      before_action :find_page
 
       def index
         # you can use meta fields from your model instead (e.g. browser_title)

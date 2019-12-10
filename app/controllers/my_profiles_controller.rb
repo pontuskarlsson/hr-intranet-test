@@ -1,6 +1,6 @@
 class MyProfilesController < ApplicationController
 
-  before_filter :find_page
+  before_action :find_page
 
   def show
     present(@page)

@@ -11,9 +11,9 @@ module Refinery
 
       serialize :fields, Hash
 
-      belongs_to :inspection
-      belongs_to :inspection_defect
-      belongs_to :image,            class_name: '::Refinery::Image'
+      belongs_to :inspection, optional: true
+      belongs_to :inspection_defect, optional: true
+      belongs_to :image,            class_name: '::Refinery::Image', optional: true
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #

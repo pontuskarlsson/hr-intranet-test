@@ -6,8 +6,8 @@ module Refinery
       set_page PAGE_BUDGETS_URL
       allow_page_roles ROLE_INTERNAL
 
-      before_filter :find_all_budgets
-      before_filter :find_budget, except: [:index, :new, :create]
+      before_action :find_all_budgets
+      before_action :find_budget, except: [:index, :new, :create]
 
       def index
         present(@page)

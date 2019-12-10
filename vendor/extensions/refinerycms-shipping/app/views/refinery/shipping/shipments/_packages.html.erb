@@ -5,6 +5,10 @@
 
   <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
 
+  <%= render '/refinery/admin/error_messages',
+             :object => packages_form,
+             :include_object_name => true %>
+
   <div data-form-container="shipment-packages" class="form-addable">
     <div class="form-addable-controls">
       <i class="fa fa-plus-square form-ctrl-add"></i>

@@ -2,7 +2,7 @@
 FactoryGirl.define do
   factory :shipment_parcel, class: Refinery::Shipping::ShipmentParcel do
     shipment
-    description 'T-Shirts'
+    description { 'T-Shirts' }
     #
     # # A factory that creates a Shipment with a courier that
     # # can be handled by EasyPost

@@ -1,7 +1,7 @@
 Refinery::Admin::PagesController.class_eval do
 
-  before_filter :find_available_roles,  :only => [:new, :create, :edit, :update]
-  before_filter :extract_roles,         :only => [:create, :update]
+  before_action :find_available_roles,  :only => [:new, :create, :edit, :update]
+  before_action :extract_roles,         :only => [:create, :update]
 
 
   protected

@@ -7,9 +7,9 @@ module Refinery
       STATUSES = %w(draft confirmed)
       CURRENCY_CODES = %w(EUR HKD SEK USD)
 
-      belongs_to :buyer,        class_name: 'Company'
-      belongs_to :seller,       class_name: 'Company'
-      belongs_to :project
+      belongs_to :buyer,        class_name: 'Company', optional: true
+      belongs_to :seller,       class_name: 'Company', optional: true
+      belongs_to :project, optional: true
       has_many :order_items,    dependent: :destroy
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:

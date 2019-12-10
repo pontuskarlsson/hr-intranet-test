@@ -1,6 +1,6 @@
 Refinery::AdminController.class_eval do
 
-  before_filter :set_user_time_zone
+  before_action :set_user_time_zone
 
   private
   def set_user_time_zone

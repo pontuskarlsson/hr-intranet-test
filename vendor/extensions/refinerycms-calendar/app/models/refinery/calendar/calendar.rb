@@ -1,7 +1,7 @@
 module Refinery
   module Calendar
     class Calendar < Refinery::Core::BaseModel
-      belongs_to :user,           class_name: '::Refinery::Authentication::Devise::User'
+      belongs_to :user,           class_name: '::Refinery::Authentication::Devise::User', optional: true
       has_many :user_calendars,   dependent: :destroy
       has_many :users,            through: :user_calendars
       has_many :events,           dependent: :destroy

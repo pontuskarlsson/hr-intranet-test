@@ -7,8 +7,8 @@ module Refinery
 
       serialize :voucher_constraint, Hash
 
-      belongs_to :account
-      belongs_to :company
+      belongs_to :account, optional: true
+      belongs_to :company, optional: true
       has_many :billables,        dependent: :nullify
 
       acts_as_indexed :fields => [:code, :name, :description]

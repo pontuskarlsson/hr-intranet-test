@@ -64,11 +64,11 @@ module Refinery
       MANAGED_STATUSES = %w(draft submitted changed)
       CURRENCY_CODES = %w(USD HKD EUR SEK CNY THB)
 
-      belongs_to :account
-      belongs_to :company
-      belongs_to :from_company, class_name: 'Company'
-      belongs_to :to_company,   class_name: 'Company'
-      belongs_to :project
+      belongs_to :account, optional: true
+      belongs_to :company, optional: true
+      belongs_to :from_company, class_name: 'Company', optional: true
+      belongs_to :to_company,   class_name: 'Company', optional: true
+      belongs_to :project, optional: true
       has_many :billables,      dependent: :nullify
       has_many :invoice_items,  dependent: :destroy
 
@@ -237,8 +237,8 @@ module Refinery
       end
 
       def self.from_params(params)
-        active = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:active, true))
-        archived = ActiveRecord::Type::Boolean.new.type_cast_from_user(params.fetch(:archived, true))
+        active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
+        archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))
 
         if active && archived
           where(nil)

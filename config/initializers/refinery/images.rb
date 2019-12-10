@@ -1,5 +1,8 @@
 # encoding: utf-8
 Refinery::Images.configure do |config|
+
+  #  Refinery::Images configuration
+
   # Configures the maximum allowed upload size (in bytes) for an image
   # config.max_image_size = 5242880
 
@@ -16,8 +19,11 @@ Refinery::Images.configure do |config|
   # Configure image sizes
   # config.user_image_sizes = {:small=>"110x110>", :medium=>"225x255>", :large=>"450x450>"}
 
-  # Configure white-listed mime types for validation
-  # config.whitelisted_mime_types = ["image/jpeg", "image/png", "image/gif", "image/tiff"]
+  # Configure image ratios
+  # config.user_image_ratios = <%= Refinery::Images.user_image_ratios.inspect %>
+
+  # Configure allowed mime types for validation
+  # config.allowed_mime_types = ["image/jpeg", "image/png", "image/gif", "image/tiff"]
 
   # Configure image view options
   # config.image_views = [:grid, :list]
@@ -25,28 +31,38 @@ Refinery::Images.configure do |config|
   # Configure default image view
   # config.preferred_image_view = :grid
 
+  # Configure Dragonfly.
+  # Refer to config/initializers/refinery/dragonfly.rb for the full list of dragonfly configurations which can be used.
+  # This includes all dragonfly config for Dragonfly v 1.1.1
+
+  config.dragonfly_name = :refinery_images
+  # config.dragonfly_verify_urls = <%= Refinery::Images.dragonfly_verify_urls.inspect %>
+  # config.dragonfly_secret = "e4c07b16cc3e896773fc03927e844adf8bd30091d3e4cee0"
+  # config.dragonfly_url_host = ""
+  # config.dragonfly_datastore_root_path = "/vagrant/public/system/refinery/images"
+  # config.dragonfly_url_format = "/system/images/:job/:basename.:ext"
+
+
+  # Configure Dragonfly custom datastore
+  # The custom_datastore setting by default defers to the Refinery::Images setting for this but can be set just for images.
+  # config.dragonfly_custom_datastore_class = nil
+  # config.dragonfly_custom_datastore_opts = {}
+
   # Configure S3 (you can also use ENV for this)
-  # The s3_backend setting by default defers to the core setting for this but can be set just for images.
-  # config.s3_backend = Refinery::Core.s3_backend
+  # The s3_datastore setting by default defers to the Refinery::Dragonfly setting for this but can be set just for images.
+  config.s3_datastore = Refinery::Dragonfly.s3_datastore # Issue in 4.0.2 unless explicitly set. Will be fixed in next version
   # config.s3_bucket_name = ENV['S3_BUCKET']
   # config.s3_access_key_id = ENV['S3_KEY']
   # config.s3_secret_access_key = ENV['S3_SECRET']
   # config.s3_region = ENV['S3_REGION']
-
-  # Configure Dragonfly
-  # This is where in the middleware stack to insert the Dragonfly middleware
-  # config.dragonfly_insert_before = "ActionDispatch::Callbacks"
-  # config.dragonfly_secret = "e4c07b16cc3e896773fc03927e844adf8bd30091d3e4cee0"
-  # If you decide to trust file extensions replace :ext below with :format
-  # config.dragonfly_url_format = "/system/images/:job/:basename.:ext"
-  # config.dragonfly_url_host = ""
-  # config.datastore_root_path = "/vagrant/public/system/refinery/images"
-  # config.trust_file_extensions = false
-  config.dragonfly_secret = ENV['DRAGONFLY_SECRET']
-
-  # Configure Dragonfly custom storage backend
-  # The custom_backend setting by default defers to the core setting for this but can be set just for images.
-  # config.custom_backend_class = nil
-  # config.custom_backend_opts = {}
+  #
+  #  further S3 configuration options
+  # config.s3_fog_storage_options = <%= Refinery::Images.s3_fog_storage_options.inspect %>
+  # config.s3_root_path = <%= Refinery::Images.s3_root_path.inspect %>
+  # config.s3_storage_path = <%= Refinery::Images.s3_storage_path.inspect %>
+  # config.s3_storage_headers = <%= Refinery::Images.s3_storage_headers.inspect %>
+  # config.s3_url_host = <%= Refinery::Images.s3_url_host.inspect %>
+  # config.s3_url_scheme = <%= Refinery::Images.s3_url_scheme.inspect %>
+  # config.s3_use_iam_profile = <%= Refinery::Images.s3_use_iam_profile.inspect %>
 
 end

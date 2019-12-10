@@ -28,7 +28,6 @@ Refinery::Core::Engine.routes.draw do
       resources :contacts, :except => :show do
         collection do
           post :update_positions
-          post :synchronise
         end
       end
     end

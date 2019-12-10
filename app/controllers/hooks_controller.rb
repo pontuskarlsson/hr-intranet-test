@@ -3,8 +3,8 @@ require 'wip_schedule'
 class HooksController < ApplicationController
   CALENDAR_FUNCTION = 'QCSchedule'
 
-  before_filter :verify_hook
-  skip_before_filter :verify_authenticity_token, :authenticate_authentication_devise_user!
+  before_action :verify_hook
+  skip_before_action :verify_authenticity_token, :authenticate_authentication_devise_user!
 
   def catch
     if @webhook == 'wip'
@@ -14,11 +14,11 @@ class HooksController < ApplicationController
       ErrorMailer.webhook_notification_email('DELETE Request from Topo', params).deliver if request.delete?
     end
 
-    render text: 'success', status: :ok
+    render plain: 'success', status: :ok
 
   rescue StandardError => e
     ErrorMailer.webhook_error_email(e, params).deliver
-    render text: 'failed', status: '400'
+    render plain: 'failed', status: '400'
   end
 
   protected

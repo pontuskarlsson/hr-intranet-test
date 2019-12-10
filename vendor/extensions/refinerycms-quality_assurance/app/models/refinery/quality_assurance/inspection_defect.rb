@@ -3,8 +3,8 @@ module Refinery
     class InspectionDefect < Refinery::Core::BaseModel
       self.table_name = 'refinery_quality_assurance_inspection_defects'
 
-      belongs_to :inspection
-      belongs_to :defect
+      belongs_to :inspection, optional: true
+      belongs_to :defect, optional: true
       has_many :inspection_photos, dependent: :nullify
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:

@@ -5,7 +5,7 @@ module Refinery
 
       CALENDAR_FUNCTION_PREFIX = 'PublicHolidays_'
 
-      belongs_to :event,          class_name: '::Refinery::Calendar::Event', dependent: :destroy
+      belongs_to :event,          class_name: '::Refinery::Calendar::Event', dependent: :destroy, optional: true
 
       #attr_accessible :holiday_date, :half_day, :country, :title
 

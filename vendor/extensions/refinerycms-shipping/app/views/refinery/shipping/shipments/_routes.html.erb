@@ -2,6 +2,10 @@
 
   <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
 
+  <%= render '/refinery/admin/error_messages',
+             :object => routes_form,
+             :include_object_name => true %>
+
   <div class="grid-x grid-padding-x">
     <div class="cell">
       <%= render 'route_form', shipment: shipment, route: shipment.route_origin, f: f, i: 0 %>

@@ -5,7 +5,7 @@ module Refinery
 
       TYPES = %w(port warehouse)
 
-      belongs_to :owner,          class_name: '::Refinery::Business::Company'
+      belongs_to :owner,          class_name: '::Refinery::Business::Company', optional: true
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #

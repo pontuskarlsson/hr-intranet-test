@@ -6,9 +6,9 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery
 
-  before_filter :authenticate_authentication_devise_user!
+  before_action :authenticate_authentication_devise_user!
 
-  before_filter :set_user_time_zone
+  before_action :set_user_time_zone
 
   helper_method :filter_params
 

@@ -3,7 +3,7 @@ module Refinery
     class OrderItem < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_order_items'
 
-      belongs_to :order
+      belongs_to :order, optional: true
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #

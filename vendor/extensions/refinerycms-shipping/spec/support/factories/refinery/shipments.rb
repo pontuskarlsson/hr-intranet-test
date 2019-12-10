@@ -5,12 +5,12 @@ FactoryGirl.define do
     assigned_to { |shipment| shipment.created_by }
     association :from_address, factory: :shipment_address
     association :to_address, factory: :shipment_address
-    bill_to ::Refinery::Shipping::Shipment::BILL_TO.first
+    bill_to { ::Refinery::Shipping::Shipment::BILL_TO.first }
 
     # A factory that creates a Shipment with a courier that
     # can be handled by EasyPost
     factory :shipment_with_easypost do
-      courier_company_label ::Refinery::Shipping::Shipment::COURIERS.detect { |_,v| v[:easypost] }[0]
+      courier_company_label { ::Refinery::Shipping::Shipment::COURIERS.detect { |_,v| v[:easypost] }[0] }
 
       # A factory to create associated with addresses that makes the shipment
       # an international shipment.

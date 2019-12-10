@@ -1,9 +1,9 @@
 module Refinery
   module CustomLists
     class ListRowsController < ::ApplicationController
-      before_filter :find_custom_list
-      before_filter :find_list_row,   only: [:edit, :update, :destroy]
-      before_filter :find_page
+      before_action :find_custom_list
+      before_action :find_list_row,   only: [:edit, :update, :destroy]
+      before_action :find_page
 
       def create
         @list_row_creator = ListRowCreator.new({ custom_list: @custom_list }.reverse_merge(params[:list_row_creator]))

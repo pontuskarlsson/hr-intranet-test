@@ -1,9 +1,9 @@
 module Refinery
   module Employees
     class ExpenseClaimsController < ::ApplicationController
-      before_filter :find_expense_claim,        except: [:index, :new, :create]
-      before_filter :find_all_expense_claims,   only: :index
-      before_filter :find_page
+      before_action :find_expense_claim,        except: [:index, :new, :create]
+      before_action :find_all_expense_claims,   only: :index
+      before_action :find_page
 
       def index
         # you can use meta fields from your model instead (e.g. browser_title)
