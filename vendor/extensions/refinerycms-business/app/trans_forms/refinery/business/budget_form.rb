@@ -15,11 +15,6 @@ module Refinery
       # Method needed for FormHelpers to use +fields_for+ method.
       delegate :budget_items, to: :budget
 
-      before_save do
-        self.from_date = Date.new(year.to_i, ::Refinery::Business::QUARTERS[quarter].first, 1)
-        self.to_date = from_date + 3.months - 1.day
-      end
-
       # A method to return a list of BudgetItems for the Budget. It will make sure
       # that there are items present even if none have previously been added.
       def budget_items_for_list
@@ -41,6 +36,9 @@ module Refinery
       end
 
       transaction do
+        self.from_date = Date.new(year.to_i, ::Refinery::Business::QUARTERS[quarter].first, 1)
+        self.to_date = from_date + 3.months - 1.day
+
         # Attributes that can be assigned directly
         %w(customer_name description from_date to_date comments).each do |attr|
           budget.send("#{attr}=", send(attr))
