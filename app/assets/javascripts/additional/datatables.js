@@ -148,7 +148,7 @@ function initDataTableRowClick(dt, hasSelect) {
 
 function idColumnRendererFor(baseUrl) {
   return function(data, type, row) {
-    const href = [baseUrl, row.id].join('/');
+    var href = [baseUrl, row.id].join('/');
     return '<div class="hidden-title"><a href="'+href+'" data-dt-row-link>'+row.code+'</a></div>';
   };
 }
