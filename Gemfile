@@ -14,8 +14,7 @@ gem 'chartkick'
 
 # Background worker
 gem 'daemons'
-gem 'delayed_job_active_record', '4.1.3'
-gem 'delayed_job', '4.1.5'
+gem 'delayed_job_active_record', '4.1.4'
 
 # To use Jbuilder templates for JSON
 gem 'jbuilder'
