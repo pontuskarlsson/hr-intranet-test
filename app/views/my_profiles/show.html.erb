@@ -5,8 +5,9 @@
       <div class="cell medium-3">
         <ul class="vertical tabs" data-tabs id="example-tabs">
           <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Profile</a></li>
+          <li class="tabs-title"><a href="#panel2v" aria-selected="true">Authorizations</a></li>
           <% current_authentication_devise_user.companies.each_with_index do |company, i| %>
-            <li class="tabs-title"><a href="#panel2v<%= i %>">Account: <%= company.name %></a></li>
+            <li class="tabs-title"><a href="#panel3v<%= i %>">Account: <%= company.name %></a></li>
           <% end %>
         </ul>
       </div>
@@ -44,8 +45,12 @@
             <% end %>
           </div>
 
+          <div class="tabs-panel" id="panel2v">
+            <%= render 'authorized_applications' %>
+          </div>
+
           <% current_authentication_devise_user.companies.each_with_index do |company, i| %>
-            <div class="tabs-panel" id="panel2v<%= i %>">
+            <div class="tabs-panel" id="panel3v<%= i %>">
               <h3><%= company.name %></h3>
             </div>
           <% end %>

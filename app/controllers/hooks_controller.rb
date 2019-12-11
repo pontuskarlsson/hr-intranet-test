@@ -6,6 +6,27 @@ class HooksController < ApplicationController
   before_action :verify_hook
   skip_before_action :verify_authenticity_token, :authenticate_authentication_devise_user!
 
+  def create
+    ErrorMailer.webhook_notification_email('Create HOOK', params).deliver
+    head :created
+    return
+
+    hook = Hook.new(hook_params)
+    if hook.save
+      # The Zapier documentation says to return 201 - Created.
+      render json: hook.to_json(only: :id), status: :created
+    else
+      head :not_saved
+    end
+  end
+
+  def destroy
+    hook = Hook.find(params[:id]) if params[:id]
+    hook = Hook.find_by(subscription_url: params[:subscription_url]).destroy if hook.nil? && params[:subscription_url]
+    hook&.destroy
+    head :ok
+  end
+
   def catch
     if @webhook == 'wip'
       parse_wip
@@ -97,6 +118,12 @@ class HooksController < ApplicationController
     end
 
     extracted_file
+  end
+
+  def hook_params
+    params[:event_name] ||= params[:name]
+    params[:hook] = params
+    params.require(:hook).permit(:event_name, :target_url, :owner_id, :owner_class_name, :subscription_url)
   end
 
 end

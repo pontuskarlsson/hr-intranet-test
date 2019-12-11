@@ -3,6 +3,8 @@ class MyProfilesController < ApplicationController
   before_action :find_page
 
   def show
+    @applications = ::Doorkeeper::Application.authorized_for(current_refinery_user)
+
     present(@page)
   end
 

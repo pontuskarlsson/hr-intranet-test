@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   mount Refinery::Core::Engine, :at => '/'
 
   match 'hooks/catch/:webhook_key(/:webhook_id)', to: 'hooks#catch', via: [:post, :put, :delete], as: :hooks_catch
+  resources :hooks, only: %i(create destroy)
 
   post 'reports/inspections', to: 'reports#inspections', as: :reports_inspections
   # The priority is based upon order of creation:
