@@ -12,7 +12,7 @@ class HooksController < ApplicationController
     rest_hook = current_resource_owner.rest_hooks.build(hook_params)
     if rest_hook.save
       # The Zapier documentation says to return 201 - Created.
-      render json: hook.to_json(only: :id), status: :created
+      render json: rest_hook.to_json(only: :id), status: :created
     else
       head :not_saved
     end
