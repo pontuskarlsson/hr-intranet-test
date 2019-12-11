@@ -11,6 +11,8 @@ Refinery::Authentication::Devise::User.class_eval do
            foreign_key: :resource_owner_id,
            dependent: :delete_all # or :destroy if you need callbacks
 
+  has_many :rest_hooks, foreign_key: :user_id, dependent: :destroy
+
   accepts_nested_attributes_for :user_settings
 
   validates :full_name, presence: true

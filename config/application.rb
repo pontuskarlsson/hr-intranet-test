@@ -44,7 +44,7 @@ module Portal
 
     # Configure generator behavior
     config.generators do |g|
-      g.fixture_replacement :factory_girl, dir: 'spec/factories', suffix: 'factory'
+      g.fixture_replacement :factory_bot, dir: 'spec/factories', suffix: 'factory'
       g.assets false
     end
 

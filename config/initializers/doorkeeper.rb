@@ -219,5 +219,5 @@ Doorkeeper.configure do
 
   # WWW-Authenticate Realm (default "Doorkeeper").
   #
-  realm "HappyRabbitPortal"
+  realm "Happy Rabbit Portal Webhook"
 end

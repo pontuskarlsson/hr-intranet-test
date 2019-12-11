@@ -8,11 +8,9 @@ class HooksController < ApplicationController
 
   def create
     ErrorMailer.webhook_notification_email('Create HOOK', params).deliver
-    head :created
-    return
 
-    hook = Hook.new(hook_params)
-    if hook.save
+    rest_hook = current_resource_owner.rest_hooks.build(hook_params)
+    if rest_hook.save
       # The Zapier documentation says to return 201 - Created.
       render json: hook.to_json(only: :id), status: :created
     else
@@ -21,8 +19,10 @@ class HooksController < ApplicationController
   end
 
   def destroy
-    hook = Hook.find(params[:id]) if params[:id]
-    hook = Hook.find_by(subscription_url: params[:subscription_url]).destroy if hook.nil? && params[:subscription_url]
+    ErrorMailer.webhook_notification_email('Destroy HOOK', params).deliver
+
+    hook = RestHook.find(params[:id]) if params[:id]
+    hook = RestHook.find_by(hook_url: params[:hook_url]).destroy if hook.nil? && params[:hook_url]
     hook&.destroy
     head :ok
   end
@@ -121,7 +121,11 @@ class HooksController < ApplicationController
   end
 
   def hook_params
-    params.require(:hook).permit(:event_name, :target_url, :owner_id, :owner_class_name, :subscription_url)
+    params.require(:hook).permit(:event_name, :hook_url)
+  end
+
+  def current_resource_owner
+    ::Refinery::Authentication::Devise::User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end
 
 end
