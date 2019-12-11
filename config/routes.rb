@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get 'me', to: 'credentials#me', as: :me
+
+      namespace :quality_assurance do
+        resources :inspections, only: %i(index)
+      end
     end
   end
 
