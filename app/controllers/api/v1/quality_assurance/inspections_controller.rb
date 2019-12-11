@@ -1,4 +1,4 @@
-class Api::V1::Shipping::InspectionsController < Api::V1::ApiController
+class Api::V1::QualityAssurance::InspectionsController < Api::V1::ApiController
   before_action :find_inspections,  only: %i(index)
 
   def index
