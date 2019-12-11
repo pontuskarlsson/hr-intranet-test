@@ -1,4 +1,5 @@
 class Api::V1::ApiController < ApplicationController
+  skip_before_action :authenticate_authentication_devise_user!
   before_action :doorkeeper_authorize!
   respond_to    :json
 
