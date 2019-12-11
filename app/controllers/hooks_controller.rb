@@ -1,9 +1,9 @@
 require 'wip_schedule'
 
 class HooksController < ApplicationController
-  CALENDAR_FUNCTION = 'QCSchedule'
+  before_action :verify_hook,             only: %i(catch)
+  before_action :doorkeeper_authorize!,   except: %i(catch)
 
-  before_action :verify_hook
   skip_before_action :verify_authenticity_token, :authenticate_authentication_devise_user!
 
   def create
@@ -121,8 +121,6 @@ class HooksController < ApplicationController
   end
 
   def hook_params
-    params[:event_name] ||= params[:name]
-    params[:hook] = params
     params.require(:hook).permit(:event_name, :target_url, :owner_id, :owner_class_name, :subscription_url)
   end
 
