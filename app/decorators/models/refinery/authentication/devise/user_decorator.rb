@@ -1,6 +1,16 @@
 Refinery::Authentication::Devise::User.class_eval do
   has_many :user_settings, dependent: :destroy
 
+  has_many :access_grants,
+           class_name: 'Doorkeeper::AccessGrant',
+           foreign_key: :resource_owner_id,
+           dependent: :delete_all # or :destroy if you need callbacks
+
+  has_many :access_tokens,
+           class_name: 'Doorkeeper::AccessToken',
+           foreign_key: :resource_owner_id,
+           dependent: :delete_all # or :destroy if you need callbacks
+
   accepts_nested_attributes_for :user_settings
 
   validates :full_name, presence: true

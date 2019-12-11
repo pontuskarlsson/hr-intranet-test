@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   # Workaround to avoid problem with user accessing other
   # engines while password is expired.
-  delegate :authentication_devise_user_password_expired_path, to: :refinery
+  delegate :authentication_devise_user_password_expired_path, :root_path, to: :refinery
 
   def authenticate_authentication_devise_user!
     super && ((current_authentication_devise_user.last_active_at && current_authentication_devise_user.last_active_at > 1.minutes.ago) || current_authentication_devise_user.touch(:last_active_at))
@@ -52,6 +52,14 @@ class ApplicationController < ActionController::Base
       session[:authentication_devise_user_return_to]
     end
   end
+
+  def current_resource_owner
+    User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+  end
+
+  # def current_user
+  #   current_resource_owner
+  # end
 
   private
   def set_user_time_zone
