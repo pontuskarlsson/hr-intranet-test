@@ -3,6 +3,12 @@ Rails.application.routes.draw do
   # OAuth
   use_doorkeeper
 
+  namespace :api do
+    namespace :v1 do
+      get 'me', to: 'credentials#me', as: :me
+    end
+  end
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   #root :to => 'home#index'
