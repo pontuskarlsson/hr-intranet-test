@@ -14,7 +14,7 @@ class RestHook < ApplicationRecord
   end
 
   def self.register_event(event_name)
-    _registered_events ||= []
+    self._registered_events ||= []
 
     raise 'duplicate event names' if _registered_events.include? event_name.to_s
 

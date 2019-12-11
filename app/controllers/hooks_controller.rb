@@ -14,7 +14,7 @@ class HooksController < ApplicationController
       # The Zapier documentation says to return 201 - Created.
       render json: rest_hook.to_json(only: :id), status: :created
     else
-      head :not_saved
+      head :forbidden
     end
   end
 
