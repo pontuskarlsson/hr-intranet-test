@@ -8,7 +8,7 @@ class RestHook < ApplicationRecord
   serialize :scope, Hash
 
   validates :user_id,     presence: true
-  validates :event_name,  inclusion: -> { registered_events }
+  validates :event_name,  inclusion: { in: -> { registered_events } }
 
   def registered_events
     self._registered_events || []
