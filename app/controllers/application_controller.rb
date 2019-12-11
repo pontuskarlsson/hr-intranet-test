@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # def self.force_ssl; super unless Rails.env.development? | Rails.env.test?; end
   # force_ssl
 
-  protect_from_forgery
+  protect_from_forgery unless: -> { oauth? }
 
   before_action :authenticate_authentication_devise_user!
 
@@ -60,6 +60,10 @@ class ApplicationController < ActionController::Base
   # def current_user
   #   current_resource_owner
   # end
+
+  def oauth?
+    false
+  end
 
   private
   def set_user_time_zone
