@@ -19,7 +19,7 @@ class ErrorMailer < ApplicationMailer
   end
 
   def webhook_notification_email(msgs, params)
-    @msgs = msgs
+    @msgs = Array(msgs)
     @params = params
     @filename = params[:file].respond_to?(:original_filename) && params[:file].original_filename || 'N/A'
     mail(to: 'daniel.viklund@happyrabbit.com', subject: 'Webhook Notification')
