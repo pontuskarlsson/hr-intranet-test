@@ -8,8 +8,6 @@ module Refinery
             app = ::Dragonfly.app(app_name)
 
             app.configure do
-              #app.datastore.storage_headers = Refinery::ResourceAuthorizations.config.s3_storage_headers
-
               before_serve do |job, env|
                 user = env['warden'].user
                 throw :halt, [401, {"Content-Type" => "text/plain"}, ["Unauthorized"]] unless user

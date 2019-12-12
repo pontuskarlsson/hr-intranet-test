@@ -3,12 +3,11 @@ require 'wip_schedule'
 class HooksController < ApplicationController
   before_action :verify_hook,             only: %i(catch)
   before_action :doorkeeper_authorize!,   except: %i(catch)
+  before_action :ignore_test_requests,    only: %i(create)
 
   skip_before_action :verify_authenticity_token, :authenticate_authentication_devise_user!
 
   def create
-    ErrorMailer.webhook_notification_email('Create HOOK', params).deliver
-
     rest_hook = current_resource_owner.rest_hooks.build(hook_params)
     if rest_hook.save
       # The Zapier documentation says to return 201 - Created.
@@ -16,15 +15,21 @@ class HooksController < ApplicationController
     else
       head :forbidden
     end
+
+  rescue StandardError => e
+    ErrorMailer.webhook_notification_email(['Create HOOK', e.message], params).deliver
+    head :forbidden
   end
 
   def destroy
-    ErrorMailer.webhook_notification_email('Destroy HOOK', params).deliver
-
-    hook = RestHook.find(params[:id]) if params[:id]
-    hook = RestHook.find_by(hook_url: params[:hook_url]).destroy if hook.nil? && params[:hook_url]
+    hook = current_resource_owner.rest_hooks.find(params[:id]) if params[:id]
+    hook = current_resource_owner.rest_hooks.find_by(hook_url: params[:hook_url]).destroy if hook.nil? && params[:hook_url]
     hook&.destroy
     head :ok
+
+  rescue StandardError => e
+    ErrorMailer.webhook_notification_email(['Create HOOK', e.message], params).deliver
+    head :forbidden
   end
 
   def catch
@@ -126,6 +131,14 @@ class HooksController < ApplicationController
 
   def current_resource_owner
     ::Refinery::Authentication::Devise::User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+  end
+
+  def ignore_test_requests
+    if params[:hook_url] && params[:hook_url]['fake-subscription-url']
+      render json: { id: 'fake-id' }, status: :created
+    end
+  rescue StandardError
+
   end
 
 end

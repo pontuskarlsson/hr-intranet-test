@@ -13,7 +13,7 @@ PATH
       refinerycms-core (>= 3.0.6)
     refinerycms-business (1.0)
       countries
-      jbuilder (= 2.9.0)
+      jbuilder (>= 2.9.0)
       refinerycms-addons
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing

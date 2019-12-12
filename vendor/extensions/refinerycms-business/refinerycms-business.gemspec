@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency             'refinerycms-page_roles',  '>= 1.0'
   s.add_dependency             'refinerycms-resource_authorizations'
   s.add_dependency             'refinerycms-addons'
-  s.add_dependency             'jbuilder',            '2.9.0'
+  s.add_dependency             'jbuilder',            '>=2.9.0'
   s.add_dependency             'trans_forms'
   s.add_dependency             'countries'
   s.add_dependency             'xeroizer'
