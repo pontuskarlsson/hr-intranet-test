@@ -3,7 +3,7 @@ json.array! @inspections.includes(:inspection_defects) do |inspection|
   json.(inspection, :company_id, :company_label, :company_code)
   json.(inspection, :supplier_id, :supplier_label, :supplier_code)
   json.(inspection, :manufacturer_id, :manufacturer_label, :manufacturer_code)
-  json.(inspection, :inspected_by_id, :inspected_by_label)
+  json.(inspection, :inspected_by_id, :inspected_by_name)
   json.(inspection, :project_code, :company_project_reference)
 
   json.(inspection, :result, :inspection_date, :status)
