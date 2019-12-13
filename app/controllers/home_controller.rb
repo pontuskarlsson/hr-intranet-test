@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  #layout 'public'
+  layout 'public'
 
   before_action :redirect_external, except: [:privacy_policy, :terms_conditions]
 
@@ -19,7 +19,7 @@ class HomeController < ApplicationController
 
   end
 
-  def careers
+  def journal
 
   end
 

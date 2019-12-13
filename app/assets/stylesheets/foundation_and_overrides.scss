@@ -2,6 +2,7 @@
 
 @import 'settings';
 @import 'foundation';
+@import 'foundation-extras/footer';
 
 // If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
 //
@@ -57,12 +58,12 @@
 
 @import 'foundation-extras/contact_us';
 @import 'foundation-extras/data_fields';
-@import 'foundation-extras/footer';
 
 
-html, body, #wrap {height: 100%;}
-body > #wrap {height: auto; min-height: 100%;}
-main {padding-bottom: 500px;}
+html { height: 100%; }
+body, #wrap {min-height: 100%; position: relative;}
+body > #wrap {height: auto; min-height: 100vh;}
+main {padding-bottom: 520px;}
 main > .grid-container { margin-bottom: 1rem;}
 @media print, screen and (min-width: 40em) {
     main {padding-bottom: 385px;}
@@ -88,7 +89,7 @@ main > .grid-container { margin-bottom: 1rem;}
     border-color: $black transparent transparent;
 }
 
-.top-bar {
+.top-bar, .title-bar {
     a:not(.button) {
         color: $black;
 
@@ -96,6 +97,67 @@ main > .grid-container { margin-bottom: 1rem;}
             color: $primary-color;
         }
     }
+
+    .button {
+        margin-bottom: 0;
+        min-width: 120px;
+
+        &:not(.primary) {
+            background: none;
+            border: 1px solid $primary-color;
+            color: $primary-color;
+        }
+    }
+
+    .button, button, input {
+        &:not(:last-child) {
+            margin-right: 12px;
+        }
+    }
+
+    .input-group {
+        margin: 0;
+
+        input {
+            max-width: none;
+        }
+    }
+
+    .menu-icon {
+        width: 30px;
+        height: 24px;
+
+        &::after {
+            height: 4px;
+            box-shadow: 0 9px 0 #30384B, 0 18px 0 #30384B;
+        }
+    }
+
+    .top-bar-right {
+        text-align: right;
+        flex: 1 1 auto;
+    }
+
+    .title-bar-right {
+        // Take twice as much width as .title-bar-left
+        flex: 2 1 0px;
+    }
+}
+
+.show-when-stuck {
+    width: 0;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+
+    -webkit-transition: width 0.3s ease-in-out;
+    -moz-transition: width 0.3s ease-in-out;
+    -o-transition: width 0.3s ease-in-out;
+    transition: width 0.3s ease-in-out;
+}
+
+.is-stuck .show-when-stuck {
+    width: 400px;
 }
 
 section {
@@ -108,6 +170,7 @@ section {
 
     &.who-we-are {
         padding: 160px 0 200px;
+        background-color: #DFC68C;
     }
 
     &.about-location {

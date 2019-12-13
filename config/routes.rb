@@ -1,4 +1,14 @@
+require_relative '../lib/portal_subdomain'
+require_relative '../lib/www_subdomain'
+
 Rails.application.routes.draw do
+
+  get 'home', to: 'home#index'
+  get 'about', to: 'home#about'
+  get 'contact', to: 'home#contact'
+  get 'journal', to: 'home#journal'
+  get 'privacy-policy', to: 'home#privacy_policy'
+  get 'terms-conditions', to: 'home#terms_conditions'
 
   # OAuth
   use_doorkeeper
@@ -17,11 +27,6 @@ Rails.application.routes.draw do
 
   #root :to => 'home#index'
   #get 'services', to: 'home#services'
-  get 'about', to: 'home#about'
-  get 'contact', to: 'home#contact'
-  get 'careers', to: 'home#careers'
-  get 'privacy-policy', to: 'home#privacy_policy'
-  get 'terms-conditions', to: 'home#terms_conditions'
 
   post 'zendesk/submit', to: 'zendesk#submit'
 
