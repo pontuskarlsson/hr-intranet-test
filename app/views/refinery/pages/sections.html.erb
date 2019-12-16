@@ -1,0 +1,8 @@
+<% if @page.try(:live?) %>
+  <% @page.parts.each do |section| %>
+    <%=raw section.body %>
+  <% end %>
+
+<% else %>
+  <%= render '/refinery/draft_page_message' -%>
+<% end %>

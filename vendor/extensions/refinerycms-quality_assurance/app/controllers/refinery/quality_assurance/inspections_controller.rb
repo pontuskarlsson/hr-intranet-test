@@ -98,16 +98,7 @@ module Refinery
     protected
 
       def inspections_scope
-        @inspections ||=
-            if page_role?(ROLE_INTERNAL) or page_role?(ROLE_INTERNAL_MANAGER)
-              Inspection.where(nil)
-            elsif page_role? ROLE_INSPECTOR
-              Inspection.inspected_by(current_authentication_devise_user)
-            elsif page_role? ROLE_EXTERNAL
-              Inspection.for_companies(current_authentication_devise_user.companies)
-            else
-              Inspection.where('1=0')
-            end
+        @inspections ||= Inspection.for_user_roles(current_authentication_devise_user, @auth_role_titles)
       end
 
       def find_all_inspections

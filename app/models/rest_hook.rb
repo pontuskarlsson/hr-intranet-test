@@ -9,6 +9,23 @@ class RestHook < ApplicationRecord
 
   validates :event_name,  inclusion: { in: -> (r) { r.registered_events } }
 
+  # Trigger method always returns the hooks that apply, even if they
+  # were triggered (production) or not (dev & test).
+  #
+  def self.trigger(event_name, encoded_record)
+    hooks = self.hooks(event_name, owner)
+    return if hooks.empty?
+
+    return hooks unless Rails.env.production?
+
+    # Trigger each hook
+    hooks.each do |hook|
+      RestClient.post(hook.hook_url, encoded_record) do |response|
+        hook.destroy if response.code.eql? 410
+      end
+    end
+  end
+
   def registered_events
     self._registered_events || []
   end

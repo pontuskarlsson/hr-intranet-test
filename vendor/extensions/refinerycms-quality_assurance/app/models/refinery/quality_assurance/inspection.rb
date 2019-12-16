@@ -1,6 +1,8 @@
 module Refinery
   module QualityAssurance
     class Inspection < Refinery::Core::BaseModel
+      include ::Refinery::ResourceAuthorizations::Grants
+
       self.table_name = 'refinery_quality_assurance_inspections'
 
       RESULTS = %w(Pass Sort Hold Reject)
@@ -86,11 +88,33 @@ module Refinery
       
       scope :recent, -> (no_of_records) { order(inspection_date: :desc).limit(no_of_records) }
       scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
+      scope :for_company_user, -> (user) { for_companies(user.companies) }
       scope :inspected_by, -> (user) { where(inspected_by_id: user.id) }
       scope :similar_to, -> (inspection) { where.not(id: inspection.id).where(inspection.attributes.slice('company_id', 'supplier_id')) }
       scope :final, -> { where(inspection_type: 'Final') }
       scope :all_final, -> { where(inspection_type: ['Final', 'Re-Final']) }
       scope :inline, -> { where(inspection_type: 'In-line') }
+
+      grant_all ROLE_INTERNAL, ROLE_INTERNAL_MANAGER
+      grant_conditional ROLE_INSPECTOR, scope: :inspected_by, user_scope: :has_inspected
+      grant_conditional ROLE_EXTERNAL, scope: :for_company_user
+
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+
+        if titles.include?(ROLE_INTERNAL) or titles.include?(ROLE_INTERNAL_MANAGER)
+          where(nil)
+
+        elsif titles.include? ROLE_INSPECTOR
+          inspected_by(user)
+
+        elsif titles.include? ROLE_EXTERNAL
+          for_companies(user.companies)
+
+        else
+          where('1=0')
+        end
+      end
 
       def self.top_defects
         inspection_ids = where(nil).pluck(:id)

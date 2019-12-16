@@ -165,7 +165,15 @@ section {
     padding: 80px 0;
 
     &.grey-section {
-        background-color: #f8f6f8;
+        background-color: $hr-grey-color;
+    }
+
+    &.gold-section {
+        background-color: $hr-gold-color;
+    }
+
+    &.blue-section {
+        background-color: $hr-blue-color;
     }
 
     &.who-we-are {
