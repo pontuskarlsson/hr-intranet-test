@@ -28,6 +28,12 @@
           <th>Customer</th>
           <td><%= inspection.company_label %></td>
         </tr>
+        <% if inspection.brand_label.present? %>
+        <tr>
+          <th>Brand</th>
+          <td><%= inspection.brand_label %></td>
+        </tr>
+        <% end %>
         <tr>
           <th>Supplier</th>
           <td><%= inspection.supplier_label %></td>
