@@ -32,13 +32,15 @@ module Portal
           product_category: 'ProductCategory',
           season: 'Season',
           brand_label: 'Brand',
-          pps_available: 'PPSAvailable',
-          pps_approved: 'PPSApproved',
+         pps_available: 'PPSAvailable',
+         pps_approved: 'PPSApproved',
           pps_comments: 'PPSComments',
-          tp_available: 'TPAvailable',
-          tp_approved: 'TPApproved',
+         tp_available: 'TPAvailable',
+         tp_approved: 'TPApproved',
           tp_comments: 'TPComments'
       }.freeze
+
+      BOOLEAN_ATTRIBUTES = %i(pps_available pps_approved tp_available tp_approved)
 
       SYNC_JOB_ATTRIBUTES = {
           company_code: 'CustomerCode',
@@ -72,8 +74,14 @@ module Portal
 
         inspection.job = job
         inspection.attributes = SYNC_INSPECTION_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
-          acc[local] = data[remote]
+          if BOOLEAN_ATTRIBUTES.include? local
+            acc[local] = boolean_from_yes_no_na data[remote]
+          else
+            acc[local] = data[remote]
+          end
         }
+
+
 
         inspection.fields = payload
         inspection.company = company_from inspection.company_code, inspection.company_label
@@ -210,6 +218,16 @@ module Portal
             Refinery::QualityAssurance::ROLE_EXTERNAL => { inspection_id: inspection.id }
         })
         resources[0]
+      end
+
+      # Return either True, False or nil
+      #
+      def boolean_from_yes_no_na(val)
+        if val == 'Yes'
+          true
+        elsif val == 'No'
+          false
+        end
       end
 
     end
