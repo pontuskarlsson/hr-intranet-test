@@ -5,6 +5,7 @@ module Refinery
 
       REGEX_MEASUREMENT = /\AMeasurement\.[0-9]+\.MeasurementPhoto\z|\Acc\.[0-9]+\.cd\z/
       REGEX_PRODUCT = /\AProduct\.[0-9]+\.ProductPhoto\z|\Afp\.[0-9]+\.fq\z/
+      REGEX_SAMPLE = /\ASamplePhotos\.[0-9]+\.SamplePhoto\z/
       REGEX_PREVIEW = /\APreview\z|\Ad\z/
       REGEX_DEFECT = /\ADefect\.[0-9]+\.DefectPhoto\.[0-9]+\.DefectPhotoCanvas\z|\Acj\.[0-9]+\.do\.[0-9]+\.dp\z/
 
@@ -53,8 +54,12 @@ module Refinery
         (fields['key'] || '')[REGEX_DEFECT]
       end
 
+      def sample_photo?
+        (fields['key'] || '')[REGEX_SAMPLE]
+      end
+
       def other_photo?
-        !measurement_photo? && !product_photo? && !preview_photo? && !defect_photo?
+        !measurement_photo? && !product_photo? && !preview_photo? && !defect_photo? && !sample_photo?
       end
 
     end

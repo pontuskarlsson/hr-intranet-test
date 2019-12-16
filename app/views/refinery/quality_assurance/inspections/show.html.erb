@@ -99,6 +99,10 @@
             <th>Inspected By</th>
             <td><%= @inspection.inspected_by_name %></td>
           </tr>
+          <tr>
+            <th>Comment</th>
+            <td><%= @inspection.summary_comment %></td>
+          </tr>
           </tbody>
         </table>
 
@@ -188,7 +192,8 @@
       <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Chart</a></li>
       <li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Measurements</a></li>
       <li class="tabs-title"><a data-tabs-target="panel4" href="#panel4">Product Photos</a></li>
-      <li class="tabs-title"><a data-tabs-target="panel5" href="#panel5">Other Photos</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel5" href="#panel5">PPS & Techpack</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel6" href="#panel6">Other Photos</a></li>
     </ul>
 
     <div class="tabs-content" data-tabs-content="example-tabs">
@@ -248,6 +253,39 @@
       </div>
 
       <div class="tabs-panel" id="panel5">
+        <section class="contact-card">
+          <table class="cc-table">
+            <tbody>
+            <tr>
+              <th style="text-align: center;">PPS Available</th>
+              <td style="text-align: center;"><%= @inspection.display_pps_available %></td>
+              <th style="text-align: center;">Techpack Available</th>
+              <td style="text-align: center;"><%= @inspection.display_tp_available %></td>
+            </tr>
+            <tr>
+              <th style="text-align: center;">Approved by Customer</th>
+              <td style="text-align: center;"><%= @inspection.display_pps_approved %></td>
+              <th style="text-align: center;">Techpack by Customer</th>
+              <td style="text-align: center;"><%= @inspection.display_tp_approved %></td>
+            </tr>
+            <tr>
+              <th style="text-align: center;">Comments</th>
+              <td style="text-align: center;"><%=simple_format @inspection.pps_comments %></td>
+              <th style="text-align: center;">Comments</th>
+              <td style="text-align: center;"><%=simple_format @inspection.tp_comments %></td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="block-css-grid">
+          <% @inspection.inspection_photos.non_defects.select(&:sample_photo?).each do |inspection_photo| %>
+            <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="tabs-panel" id="panel6">
         <div class="block-css-grid">
           <% @inspection.inspection_photos.non_defects.select(&:other_photo?).each do |inspection_photo| %>
             <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>

@@ -189,6 +189,42 @@ module Refinery
           '&nbsp;'.html_safe
         end
       end
+      
+      def display_pps_available
+        if pps_available.nil?
+          'N/A'
+        else
+          pps_available ? 'Yes' : 'No'
+        end
+      end
+
+      def display_pps_approved
+        if pps_approved.nil?
+          'N/A'
+        else
+          pps_approved ? 'Yes' : 'No'
+        end
+      end
+
+      def display_tp_available
+        if tp_available.nil?
+          'N/A'
+        else
+          tp_available ? 'Yes' : 'No'
+        end
+      end
+
+      def display_tp_approved
+        if tp_approved.nil?
+          'N/A'
+        else
+          tp_approved ? 'Yes' : 'No'
+        end
+      end
+
+      def summary_comment
+        fields && fields.dig('data', 'SummaryComment')
+      end
 
       # def assign_code!
       #   self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code, prefix: 'QA-', pad_length: 6) if code.blank?
