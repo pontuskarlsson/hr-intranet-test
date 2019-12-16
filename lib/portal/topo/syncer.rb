@@ -28,7 +28,16 @@ module Portal
           product_code: 'StyleNr',
           product_description: 'ProductDescription',
           supplier_code: 'SupplierCode',
-          supplier_label: 'Supplier'
+          supplier_label: 'Supplier',
+          product_category: 'ProductCategory',
+          season: 'Season',
+          brand_label: 'Brand',
+          pps_available: 'PPSAvailable',
+          pps_approved: 'PPSApproved',
+          pps_comments: 'PPSComments',
+          tp_available: 'TPAvailable',
+          tp_approved: 'TPApproved',
+          tp_comments: 'TPComments'
       }.freeze
 
       SYNC_JOB_ATTRIBUTES = {

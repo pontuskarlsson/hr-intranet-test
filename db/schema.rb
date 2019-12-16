@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191126075638) do
+ActiveRecord::Schema.define(version: 20191211083204) do
 
   create_table "activity_notifications", force: :cascade do |t|
     t.integer  "target_id",       limit: 4,     null: false
@@ -1188,9 +1188,19 @@ ActiveRecord::Schema.define(version: 20191126075638) do
     t.string   "project_code",              limit: 255
     t.string   "code",                      limit: 255
     t.integer  "job_id",                    limit: 4
+    t.string   "product_category",          limit: 255
+    t.string   "season",                    limit: 255
+    t.string   "brand_label",               limit: 255
+    t.boolean  "pps_available"
+    t.boolean  "pps_approved"
+    t.text     "pps_comments",              limit: 65535
+    t.boolean  "tp_available"
+    t.boolean  "tp_approved"
+    t.text     "tp_comments",               limit: 65535
   end
 
   add_index "refinery_quality_assurance_inspections", ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["brand_label"], name: "index_refinery_quality_assurance_inspections_on_brand_label", using: :btree
   add_index "refinery_quality_assurance_inspections", ["business_product_id"], name: "index_qa_inspections_on_business_product_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["business_section_id"], name: "index_qa_inspections_on_business_section_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["code"], name: "index_refinery_quality_assurance_inspections_on_code", using: :btree
@@ -1209,14 +1219,20 @@ ActiveRecord::Schema.define(version: 20191126075638) do
   add_index "refinery_quality_assurance_inspections", ["po_qty"], name: "index_qa_inspections_on_po_qty", using: :btree
   add_index "refinery_quality_assurance_inspections", ["po_type"], name: "index_qa_inspections_on_po_type", using: :btree
   add_index "refinery_quality_assurance_inspections", ["position"], name: "index_qa_inspections_on_position", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["pps_approved"], name: "index_refinery_quality_assurance_inspections_on_pps_approved", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["pps_available"], name: "index_refinery_quality_assurance_inspections_on_pps_available", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["product_category"], name: "index_refinery_quality_assurance_inspections_on_product_category", using: :btree
   add_index "refinery_quality_assurance_inspections", ["product_code"], name: "index_qa_inspections_on_product_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["product_description"], name: "index_qa_inspections_on_product_description", using: :btree
   add_index "refinery_quality_assurance_inspections", ["project_code"], name: "index_refinery_quality_assurance_inspections_on_project_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["resource_id"], name: "index_qa_inspections_on_resource_id", using: :btree
   add_index "refinery_quality_assurance_inspections", ["result"], name: "index_qa_inspections_on_result", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["season"], name: "index_refinery_quality_assurance_inspections_on_season", using: :btree
   add_index "refinery_quality_assurance_inspections", ["status"], name: "index_refinery_quality_assurance_inspections_on_status", using: :btree
   add_index "refinery_quality_assurance_inspections", ["supplier_code"], name: "index_qa_inspections_on_supplier_code", using: :btree
   add_index "refinery_quality_assurance_inspections", ["supplier_id"], name: "index_qa_inspections_on_supplier_id", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["tp_approved"], name: "index_refinery_quality_assurance_inspections_on_tp_approved", using: :btree
+  add_index "refinery_quality_assurance_inspections", ["tp_available"], name: "index_refinery_quality_assurance_inspections_on_tp_available", using: :btree
 
   create_table "refinery_quality_assurance_jobs", force: :cascade do |t|
     t.integer  "company_id",                limit: 4
