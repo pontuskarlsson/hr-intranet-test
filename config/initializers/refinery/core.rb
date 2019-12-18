@@ -18,7 +18,7 @@ Refinery::Core.configure do |config|
   # This activates Google Analytics tracking within your website. If this
   # config is left blank or set to UA-xxxxxx-x then no remote calls to
   # Google Analytics are made.
-  # config.google_analytics_page_code = <%= Refinery::Core.google_analytics_page_code.inspect %>
+  config.google_analytics_page_code = ENV['GOOGLE_ANALYTICS_ACCOUNT']
 
   # This activates Matomo open web analytics tracking within your website. If the server config is
   # left blank or set to analytics.example.org then the javascript tracking code will not be loaded.
