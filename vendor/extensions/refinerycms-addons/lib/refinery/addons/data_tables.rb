@@ -33,7 +33,7 @@ module Refinery
             self.dt_columns = columns
             self.dt_options = options
 
-            class_eval <<-RUBY_EVAL
+            class_eval <<-RUBY_EVAL, __FILE__, __LINE__
               def self.dt_response(params)
                 scope = where(nil)
 
@@ -56,7 +56,7 @@ module Refinery
                 total = scope.count
                 total_filtered = filtered.count
 
-                filtered = Hash(params[:order]).values.inject(filtered) { |s, order|
+                filtered = Hash(params.permit(:order)).values.inject(filtered) { |s, order|
                   begin
                     s.order(params[:columns][order['column']]['data'] => order['dir'])
                   rescue StandardError => e

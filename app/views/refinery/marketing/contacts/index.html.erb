@@ -37,7 +37,7 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function(){
-      $('.js_contacts_data_table').dataTable({
+      var dt = $('.js_contacts_data_table').DataTable({
         "responsive":     true,
         "paging":         true,
         "ajax": "<%= refinery.marketing_contacts_path %>",
@@ -73,6 +73,8 @@
           } }
         ]
       });
+
+      initDataTable(dt);
     });
   </script>
 <% end %>
