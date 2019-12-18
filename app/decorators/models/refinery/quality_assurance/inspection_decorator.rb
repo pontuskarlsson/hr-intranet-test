@@ -67,6 +67,8 @@ Refinery::QualityAssurance::Inspection.class_eval do
     @tbv << 'PO is missing' if po_number.blank?
     @tbv << 'Result is missing' if result.blank?
     @tbv << 'Inspection type is missing' if inspection_type.blank?
+    @tbv << 'Incorrect Brand' if brand_label == 'Stay In Place' && company&.code != '00375'
+    @tbv << 'Incorrect Brand' if brand_label == 'Wood Wood' && company&.code != '00008'
     # @tbv << 'PO Number contains the slash (/) character. If multiple POs are inspected, then the comma (,) character should be used to separate them' if (po_number || '')['/']
     # @tbv << 'Colour contains the slash (/) character. This could be correct if a variant is a combination of colours, but if there are multiple variants inspected, the comma (,) character should be used' if (product_colour_variants || '')['/']
     # inspection_defects.each do |inspection_defect|
