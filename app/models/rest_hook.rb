@@ -13,7 +13,7 @@ class RestHook < ApplicationRecord
   # were triggered (production) or not (dev & test).
   #
   def self.trigger(event_name, encoded_record)
-    hooks = self.hooks(event_name, owner)
+    hooks = where(event_name: event_name)
     return if hooks.empty?
 
     return hooks unless Rails.env.production?
