@@ -79,6 +79,7 @@ module Refinery
           end
           redirect_to refinery.quality_assurance_inspection_path(@inspection), status: :see_other
         else
+          find_all_inspections
           @similar_inspections = @inspections.similar_to(@inspection).recent(10)
           present(@page)
           render :show
@@ -89,6 +90,7 @@ module Refinery
         if @inspection.update_attributes(inspection_params)
           redirect_to refinery.quality_assurance_inspection_path(@inspection), status: :see_other
         else
+          find_all_inspections
           @similar_inspections = @inspections.similar_to(@inspection).recent(10)
           present(@page)
           render :show
@@ -98,14 +100,14 @@ module Refinery
     protected
 
       def inspections_scope
-        @inspections ||= Inspection.for_user_roles(current_authentication_devise_user, @auth_role_titles)
-        @inspections_test ||= Inspection.for_user_roles_test(current_authentication_devise_user, @auth_role_titles)
+        @inspections_scope ||= Inspection.for_user_roles(current_authentication_devise_user, @auth_role_titles)
+        @inspections_scope_test ||= Inspection.for_user_roles_test(current_authentication_devise_user, @auth_role_titles)
 
-        if @inspections.map(&:id) != @inspections_test.map(&:id)
+        if @inspections_scope.map(&:id) != @inspections_scope_test.map(&:id)
           ErrorMailer.webhook_notification_email('+for_user_roles+ mismatch', params.to_unsafe_h).deliver_later
         end
 
-        @inspections
+        @inspections_scope
       end
 
       def find_all_inspections
