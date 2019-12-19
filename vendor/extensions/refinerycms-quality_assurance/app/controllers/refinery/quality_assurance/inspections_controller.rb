@@ -99,6 +99,13 @@ module Refinery
 
       def inspections_scope
         @inspections ||= Inspection.for_user_roles(current_authentication_devise_user, @auth_role_titles)
+        @inspections_test ||= Inspection.for_user_roles_test(current_authentication_devise_user, @auth_role_titles)
+
+        if @inspections.map(&:id) != @inspections_test.map(&:id)
+          ErrorMailer.webhook_notification_email('+for_user_roles+ mismatch', params.to_unsafe_h).deliver_later
+        end
+
+        @inspections
       end
 
       def find_all_inspections

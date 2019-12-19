@@ -96,8 +96,8 @@ module Refinery
       scope :inline, -> { where(inspection_type: 'In-line') }
 
       grant_all ROLE_INTERNAL, ROLE_INTERNAL_MANAGER
-      grant_conditional ROLE_INSPECTOR, scope: :inspected_by, user_scope: :has_inspected
-      grant_conditional ROLE_EXTERNAL, scope: :for_company_user
+      grant_conditional ROLE_INSPECTOR, scope: :inspected_by,       reverse_scope: :has_inspected
+      grant_conditional ROLE_EXTERNAL,  scope: :for_company_user,   reverse_scope: :company_inspections
 
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)

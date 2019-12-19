@@ -35,10 +35,6 @@ Refinery::Authentication::Devise::User.class_eval do
     full_name
   end
 
-  scope :for_role, -> (title) {
-    Refinery::Authentication::Devise::User.joins(:roles).where(refinery_authentication_devise_roles: { title: title })
-  }
-
   def active_for_authentication?
     super && !deactivated
   end

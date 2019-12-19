@@ -23,6 +23,18 @@ Refinery::QualityAssurance::Inspection.class_eval do
                      # notifier: :user,
                      email_allowed: :is_email_allowed?
 
+  after_save do
+    if status_changed? && status == 'Notified'
+      delay.trigger_zap(RestHook::INSPECTION_NEW)
+    end
+  end
+
+  def trigger_zap(event)
+    encoded_record = Jbuilder.encode { |json| to_builder json }
+    user_ids = Refinery::Authentication::Devise::User.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER).pluck(:id)
+    RestHook.where(user_id: user_ids).trigger(event, encoded_record)
+  end
+
   def notifiable_path(target, key)
     refinery.quality_assurance_inspection_path(self)
   end
