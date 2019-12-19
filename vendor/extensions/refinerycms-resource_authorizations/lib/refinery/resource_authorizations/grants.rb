@@ -43,7 +43,7 @@ module Refinery
         def for_user_roles_test(user, role_titles = nil)
           titles = role_titles || user.roles.pluck(:title)
 
-          if false && (titles & _grant_all).any?
+          if (titles & _grant_all).any?
             # Grant All role present, no need to go through the granted
             # scopes.
             #
