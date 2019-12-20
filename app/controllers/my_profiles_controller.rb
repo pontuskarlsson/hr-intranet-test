@@ -9,7 +9,7 @@ class MyProfilesController < ApplicationController
   end
 
   def update
-    if current_refinery_user.update_attributes(user_params)
+    if profile_updated?
       flash[:notice] = 'Successfully updated profile settings'
       redirect_to my_profile_path
     else
@@ -26,6 +26,18 @@ class MyProfilesController < ApplicationController
 
   def user_params
     params.require(:user).permit(:full_name)
+  end
+
+  def contact_params
+    params.require(:contact).permit(:first_name, :last_name, :phone)
+  end
+
+  def profile_updated?
+    if current_authentication_devise_user.contact.present?
+      current_authentication_devise_user.contact.update_attributes(contact_params)
+    else
+      current_refinery_user.update_attributes(user_params)
+    end
   end
 
 end

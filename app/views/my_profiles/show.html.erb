@@ -33,7 +33,7 @@
 
                 <%= f.submit 'Save Changes', class: 'button' %>
               <% end %>
-            <% else %> %>
+            <% else %>
               <%= form_for current_authentication_devise_user, url: my_profile_path do |f| %>
                 <div class='field'>
                   <%= f.label :full_name %>
