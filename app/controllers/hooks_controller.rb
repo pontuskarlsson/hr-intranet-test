@@ -28,7 +28,7 @@ class HooksController < ApplicationController
     head :ok
 
   rescue StandardError => e
-    ErrorMailer.webhook_notification_email(['Create HOOK', e.message], params).deliver
+    ErrorMailer.webhook_notification_email(['Destroy HOOK', e.message], params).deliver
     head :forbidden
   end
 
