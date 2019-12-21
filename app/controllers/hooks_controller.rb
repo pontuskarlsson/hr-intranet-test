@@ -22,7 +22,7 @@ class HooksController < ApplicationController
   end
 
   def destroy
-    hook = current_resource_owner.rest_hooks.find(params[:id]) if params[:id]
+    hook = current_resource_owner.rest_hooks.find(params[:id]) if params[:id] && params[:id] != 'not_an_id'
     hook = current_resource_owner.rest_hooks.find_by(hook_url: params[:hook_url]).destroy if hook.nil? && params[:hook_url]
     hook&.destroy
     head :ok
