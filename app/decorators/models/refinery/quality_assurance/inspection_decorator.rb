@@ -107,9 +107,17 @@ Refinery::QualityAssurance::Inspection.class_eval do
     json.(self, :acc_critical, :acc_major, :acc_minor, :total_critical, :total_major, :total_minor)
 
     json.defects inspection_defects do |inspection_defect|
-      json.(inspection_defect, :id, :defect_id, :inspection_id)
-      json.(inspection_defect, :critical, :major, :minor, :comments, :defect_label, :can_fix)
+      inspection_defect.to_builder json
     end
+
+    json.photos inspection_photos do |inspection_photo|
+      inspection_photo.to_builder json
+    end
+
+    json.document_url expiring_url
+    json.location_url refinery.quality_assurance_inspection_path(self)
+
+    json.(self, :created_at, :updated_at)
   end
 
 end

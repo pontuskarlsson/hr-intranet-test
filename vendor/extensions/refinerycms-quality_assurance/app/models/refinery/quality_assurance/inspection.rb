@@ -250,6 +250,10 @@ module Refinery
         fields && fields.dig('data', 'SummaryComment')
       end
 
+      def expiring_url(expires = 1.week.from_now - 1.second)
+        resource&.file&.remote_url expires: expires
+      end
+
       # def assign_code!
       #   self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code, prefix: 'QA-', pad_length: 6) if code.blank?
       # end

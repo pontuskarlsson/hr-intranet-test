@@ -38,28 +38,36 @@ module Refinery
         end
       end
 
+      def key
+        fields['key'] || ''
+      end
+
       def measurement_photo?
-        (fields['key'] || '')[REGEX_MEASUREMENT]
+        key[REGEX_MEASUREMENT]
       end
 
       def product_photo?
-        (fields['key'] || '')[REGEX_PRODUCT]
+        key[REGEX_PRODUCT]
       end
 
       def preview_photo?
-        (fields['key'] || '')[REGEX_PREVIEW]
+        key[REGEX_PREVIEW]
       end
 
       def defect_photo?
-        (fields['key'] || '')[REGEX_DEFECT]
+        key[REGEX_DEFECT]
       end
 
       def sample_photo?
-        (fields['key'] || '')[REGEX_SAMPLE]
+        key[REGEX_SAMPLE]
       end
 
       def other_photo?
         !measurement_photo? && !product_photo? && !preview_photo? && !defect_photo? && !sample_photo?
+      end
+
+      def expiring_url(expires = 1.week.from_now - 1.second)
+        image&.image&.remote_url expires: expires
       end
 
     end
