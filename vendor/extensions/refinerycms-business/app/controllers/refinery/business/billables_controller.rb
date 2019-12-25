@@ -8,9 +8,20 @@ module Refinery
       allow_page_roles ROLE_INTERNAL, only: [:index, :show]
 
       before_action :find_billables
-      before_action :find_billable, except: [:index, :new, :create]
+      before_action :find_billable, except: [:index, :calendar, :new, :create]
+
+      helper_method :calendar_params
 
       def index
+        @billables = @billables.from_params(params).order(billable_date: :desc)
+
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json
+        end
+      end
+
+      def calendar
         @billables = @billables.from_params(params).order(billable_date: :desc)
 
         respond_to do |format|
@@ -81,6 +92,10 @@ module Refinery
 
       def filter_params
         params.permit([:company_id, :project_id, :section_id, :billable_type, :article_code, :invoice_id, :status]).to_h
+      end
+
+      def calendar_params
+        params.permit(:start, :end).to_h
       end
       
     end

@@ -1,5 +1,7 @@
 <% content_for :body do %>
-
+  <p><%= link_to refinery.calendar_business_billables_path(filter_params) do %>
+    <i class="fa fa-calendar"></i> View Calendar
+  <% end %></p>
   <%= render 'table', billables: @billables, ajax: refinery.business_billables_path(filter_params), table_id: 'js_billable_table', options: {} %>
 
 <% end %>

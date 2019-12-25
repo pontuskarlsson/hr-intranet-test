@@ -1,0 +1,76 @@
+<% content_for :body do %>
+  <div id='calendar-billables'></div>
+  <div id='billables-summary'></div>
+<% end %>
+
+<% content_for :stylesheets do %>
+<%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/core/main.min.css' %>
+<%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/daygrid/main.min.css' %>
+<%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/list/main.min.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+<script type="text/javascript" src="https://unpkg.com/@fullcalendar/core/main.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@fullcalendar/daygrid/main.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@fullcalendar/list/main.min.js"></script>
+
+
+<script type="text/javascript">
+  $(function() {
+    var renderSummary = function(events) {
+      $('#billables-summary').html('');
+
+      var summary = events.reduce(function(acc, event) {
+        var companies = [event.company_label, event.manufacturer_label].join(' | ');
+        if (!acc[event.assigned_to_label]) {
+          acc[event.assigned_to_label] = {};
+        }
+        if (!acc[event.assigned_to_label][companies]) {
+          acc[event.assigned_to_label][companies] = 0;
+        }
+        acc[event.assigned_to_label][companies] += 1;
+        return acc;
+      }, {});
+
+      var $table = $('<table><thead><tr><td>Inspector</td><td>Tot. No. of Days</td><td>Companies</td><td>No. of days</td></tr></thead><tbody></tbody></table>');
+
+      Object.keys(summary).forEach(function(assigned_to) {
+        Object.keys(summary[assigned_to]).forEach(function(manufacturer, i) {
+          var $row = $('<tr></tr>');
+          if (i === 0) {
+            $('<td rowspan="'+Object.keys(summary[assigned_to]).length+'"></td>').text(assigned_to).appendTo($row);
+            var tot = Object.values(summary[assigned_to]).reduce(function(acc, days) { return acc + days; });
+            $('<td rowspan="'+Object.keys(summary[assigned_to]).length+'"></td>').text(tot).appendTo($row);
+          }
+          $('<td></td>').text(manufacturer).appendTo($row);
+          $('<td></td>').text(summary[assigned_to][manufacturer]).appendTo($row);
+          $row.appendTo($table, 'tbody');
+        });
+      });
+
+      $table.appendTo('#billables-summary');
+    };
+
+    var calendar = new FullCalendar.Calendar(document.getElementById('calendar-billables'), {
+      plugins: ['dayGrid'],
+      defaultDate: '<%= [@billables.order(billable_date: :desc).first.try(:billable_date), Date.today].reject(&:nil?).min.to_s %>',
+      events: {
+        url: '<%= refinery.calendar_business_billables_path(filter_params.merge(format: :json)) %>',
+        success: renderSummary,
+      },
+      eventDataTransform: function(eventData) {
+        return {
+          title: [eventData.assigned_to_label, eventData.company_label, eventData.manufacturer_label].join(' | '),
+          start: eventData.billable_date,
+          end: eventData.billable_date,
+          allDay: true,
+          url: ['<%= refinery.business_billables_path %>/', eventData.id].join('')
+        };
+      },
+    });
+    calendar.render();
+  });
+</script>
+<% end %>
+
+<%= render '/refinery/content_page' %>
