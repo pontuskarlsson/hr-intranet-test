@@ -7,6 +7,11 @@
 <%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/core/main.min.css' %>
 <%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/daygrid/main.min.css' %>
 <%= stylesheet_link_tag 'https://unpkg.com/@fullcalendar/list/main.min.css' %>
+<style type="text/css">
+  #billables-summary td, #billables-summary th {
+    vertical-align: top;
+  }
+</style>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -66,6 +71,11 @@
           allDay: true,
           url: ['<%= refinery.business_billables_path %>/', eventData.id].join('')
         };
+      },
+      eventRender: function(e) {
+        var $el = $(e.el);
+        $el.attr('title', e.event.title);
+        new Foundation.Tooltip($el);
       },
     });
     calendar.render();
