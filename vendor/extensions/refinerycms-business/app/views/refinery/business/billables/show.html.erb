@@ -2,87 +2,60 @@
   <h2><%= @billable.title %></h2>
 
   <section class="contact-card">
-    <table class="cc-table">
-      <tbody>
-      <tr>
-        <th style="width: 150px;">Title</th>
-        <td><%= @billable.title %></td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td><%= @billable.description %></td>
-      </tr>
-      <tr>
-        <th>Company</th>
-        <td>
-          <% if @billable.company.present? %>
-            <%= link_to @billable.company.label, refinery.business_company_path(@billable.company) %>
-          <% else %>
-            N/A
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Assigned To</th>
-        <td><%= @billable.assigned_to_label %></td>
-      </tr>
-      <tr>
-        <th>Date</th>
-        <td><%= @billable.billable_date %></td>
-      </tr>
-      <tr>
-        <th>Manufacturer</th>
-        <td><%= @billable.manufacturer_label %></td>
-      </tr>
-      <tr>
-        <th>Invoice</th>
-        <td>
-          <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
-            <%= form_for @billable, url: refinery.business_billable_path(@billable) do |f| %>
-              <div class="input-group">
-                <% if @billable.invoice.present? %>
-                  <div class="input-group-button">
-                    <%= link_to 'Go to', refinery.business_invoice_path(@billable.invoice), class: 'button' %>
-                  </div>
-                <% end %>
-                <%= f.text_field :invoice_label, :class => 'js_invoice_field input-group-field' -%>
-                <div class="input-group-button">
-                  <%= f.submit 'Update', class: 'button' %>
-                </div>
-              </div>
+    <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+      <%= render 'form' %>
+    <% else %>
+      <table class="cc-table">
+        <tbody>
+        <tr>
+          <th style="width: 150px;">Title</th>
+          <td><%= @billable.title %></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%= @billable.description %></td>
+        </tr>
+        <tr>
+          <th>Company</th>
+          <td>
+            <% if @billable.company.present? %>
+              <%= link_to @billable.company.label, refinery.business_company_path(@billable.company) %>
+            <% else %>
+              N/A
             <% end %>
-          <% else %>
-            <%= @billable.invoice_invoice_number.presence || 'N/A' %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Article Code</th>
-        <td>
-          <% if page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
-            <%= form_for @billable, url: refinery.business_billable_path(@billable) do |f| %>
-              <div class="input-group">
-                <%= f.text_field :article_code, :class => 'input-group-field js_article_field' -%>
-                <div class="input-group-button">
-                  <%= f.submit 'Update', class: 'button' %>
-                </div>
-              </div>
-            <% end %>
-          <% else %>
-            <%= @billable.article_code || 'N/A' %>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Status</th>
-        <td><%= @billable.display_status %></td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td><%= @billable.display_billable_type %></td>
-      </tr>
-      </tbody>
-    </table>
+          </td>
+        </tr>
+        <tr>
+          <th>Assigned To</th>
+          <td><%= @billable.assigned_to_label %></td>
+        </tr>
+        <tr>
+          <th>Date</th>
+          <td><%= @billable.billable_date %></td>
+        </tr>
+        <tr>
+          <th>Manufacturer</th>
+          <td><%= @billable.manufacturer_label %></td>
+        </tr>
+        <tr>
+          <th>Invoice</th>
+          <td><%= @billable.invoice_invoice_number.presence || 'N/A' %></td>
+        </tr>
+        <tr>
+          <th>Article Code</th>
+          <td><%= @billable.article_code || 'N/A' %></td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td><%= @billable.display_status %></td>
+        </tr>
+        <tr>
+          <th>Type</th>
+          <td><%= @billable.display_billable_type %></td>
+        </tr>
+        </tbody>
+      </table>
+    <% end %>
 
     <h3>Cost</h3>
     <table class="cc-table">
