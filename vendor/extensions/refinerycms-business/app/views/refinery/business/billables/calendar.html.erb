@@ -37,7 +37,8 @@
         return acc;
       }, {});
 
-      var $table = $('<table><thead><tr><td>Inspector</td><td>Tot. No. of Days</td><td>Customer</td><td>Supplier</td><td>Manufacturer</td><td>No. of days</td></tr></thead><tbody></tbody></table>');
+      var $table = $('<table><thead><tr><td>Inspector</td><td>Tot. No. of Days</td><td>Customer</td><td>Supplier</td><td>Manufacturer</td><td>No. of days</td></tr></thead><tbody></tbody><tfoot><tfoot></table>');
+      var tot_days = 0;
 
       Object.keys(summary).forEach(function(assigned_to) {
         Object.keys(summary[assigned_to]).forEach(function(manufacturer, i) {
@@ -45,6 +46,7 @@
           if (i === 0) {
             $('<td rowspan="'+Object.keys(summary[assigned_to]).length+'"></td>').text(assigned_to).appendTo($row);
             var tot = Object.values(summary[assigned_to]).reduce(function(acc, days) { return acc + days; });
+            tot_days += tot;
             $('<td rowspan="'+Object.keys(summary[assigned_to]).length+'"></td>').text(tot).appendTo($row);
           }
           var companies = manufacturer.split(' | ');
@@ -55,6 +57,11 @@
           $row.appendTo($table, 'tbody');
         });
       });
+
+      var $row = $('<tr></tr>');
+      $('<th>Sum</th>').appendTo($row);
+      $('<td colspan="5"></td>').text(tot_days).appendTo($row);
+      $row.appendTo($table, 'tfoot');
 
       $table.appendTo('#billables-summary');
     };
