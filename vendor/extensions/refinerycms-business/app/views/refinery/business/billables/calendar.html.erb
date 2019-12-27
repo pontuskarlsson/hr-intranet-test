@@ -26,7 +26,7 @@
       $('#billables-summary').html('');
 
       var summary = events.reduce(function(acc, event) {
-        var companies = [event.company_label, event.manufacturer_label].join(' | ');
+        var companies = [event.company_label, event.supplier_label, event.manufacturer_label].join(' | ');
         if (!acc[event.assigned_to_label]) {
           acc[event.assigned_to_label] = {};
         }
@@ -37,7 +37,7 @@
         return acc;
       }, {});
 
-      var $table = $('<table><thead><tr><td>Inspector</td><td>Tot. No. of Days</td><td>Companies</td><td>No. of days</td></tr></thead><tbody></tbody></table>');
+      var $table = $('<table><thead><tr><td>Inspector</td><td>Tot. No. of Days</td><td>Customer</td><td>Supplier</td><td>Manufacturer</td><td>No. of days</td></tr></thead><tbody></tbody></table>');
 
       Object.keys(summary).forEach(function(assigned_to) {
         Object.keys(summary[assigned_to]).forEach(function(manufacturer, i) {
@@ -47,7 +47,10 @@
             var tot = Object.values(summary[assigned_to]).reduce(function(acc, days) { return acc + days; });
             $('<td rowspan="'+Object.keys(summary[assigned_to]).length+'"></td>').text(tot).appendTo($row);
           }
-          $('<td></td>').text(manufacturer).appendTo($row);
+          var companies = manufacturer.split(' | ');
+          $('<td></td>').text(companies[0]).appendTo($row);
+          $('<td></td>').text(companies[1]).appendTo($row);
+          $('<td></td>').text(companies[2]).appendTo($row);
           $('<td></td>').text(summary[assigned_to][manufacturer]).appendTo($row);
           $row.appendTo($table, 'tbody');
         });
@@ -65,7 +68,7 @@
       },
       eventDataTransform: function(eventData) {
         return {
-          title: [eventData.assigned_to_label, eventData.company_label, eventData.manufacturer_label].join(' | '),
+          title: [eventData.assigned_to_label, eventData.company_label, eventData.supplier_label, eventData.manufacturer_label].join(' | '),
           start: eventData.billable_date,
           end: eventData.billable_date,
           allDay: true,

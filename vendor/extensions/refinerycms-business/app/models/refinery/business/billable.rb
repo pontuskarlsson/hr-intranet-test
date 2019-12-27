@@ -118,6 +118,15 @@ module Refinery
         }.uniq.compact.join(', ')
       end
 
+      def supplier_label
+        ::Refinery::QualityAssurance::Job
+        all_jobs.select { |j|
+          j.respond_to? :inspection
+        }.map { |j|
+          j.inspection&.supplier_label
+        }.uniq.compact.join(', ')
+      end
+
       def is_base_unit?
         qty_unit == units_for_type.first
       end
