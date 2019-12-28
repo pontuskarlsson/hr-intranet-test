@@ -269,6 +269,9 @@
           <td><%= billable.assigned_to_label %></td>
           <td>
             <%= "#{billable.supplier} - #{billable.manufacturer_label}".truncate(63) %>
+            <% if billable.description.present? %>
+              <div class="italic"><%=simple_format billable.description %></div>
+            <% end %>
           </td>
           <td class="number"><%=number_with_delimiter billable.qty %></td>
           <td class="number"><%= billable.total_no_of_jobs %></td>
