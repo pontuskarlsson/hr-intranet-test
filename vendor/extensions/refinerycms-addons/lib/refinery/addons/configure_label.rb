@@ -47,7 +47,7 @@ module Refinery
             end
   
             def #{assoc}_label=(label)
-              self.#{assoc} = label.presence && #{options[:class_name]}.find_by_label label
+              self.#{assoc} = label.presence && #{options[:class_name]}.find_by_label(label)
               @#{assoc}_label = label
             end
           RUBY_EVAL
