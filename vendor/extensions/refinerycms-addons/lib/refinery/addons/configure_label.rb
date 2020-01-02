@@ -28,7 +28,10 @@ module Refinery
           end
 
           define_singleton_method(:find_by_label) do |label|
-            find_by options[:find_by_field] => label.split(options[:separator])[options[:find_by_field_position]]
+            if label.present?
+              label_part = label.split(options[:separator])[options[:find_by_field_position]]
+              find_by options[:find_by_field] => label_part if label_part.present?
+            end
           end
 
           define_method(:label) do
@@ -47,7 +50,7 @@ module Refinery
             end
   
             def #{assoc}_label=(label)
-              self.#{assoc} = label.presence && #{options[:class_name]}.find_by_label(label)
+              self.#{assoc} = #{options[:class_name]}.find_by_label label
               @#{assoc}_label = label
             end
           RUBY_EVAL
