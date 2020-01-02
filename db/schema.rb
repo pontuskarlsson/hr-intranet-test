@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191211083204) do
+ActiveRecord::Schema.define(version: 20200102082206) do
 
   create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "target_id", null: false
@@ -1019,7 +1019,6 @@ ActiveRecord::Schema.define(version: 20191211083204) do
   create_table "refinery_page_parts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "refinery_page_id"
     t.string "slug"
-    t.text "body"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1052,7 +1051,6 @@ ActiveRecord::Schema.define(version: 20191211083204) do
   create_table "refinery_pages", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "parent_id"
     t.string "path"
-    t.string "slug"
     t.boolean "show_in_menu", default: true
     t.string "link_url"
     t.string "menu_match"
@@ -1066,7 +1064,7 @@ ActiveRecord::Schema.define(version: 20191211083204) do
     t.string "layout_template"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "custom_slug"
+    t.integer "children_count", default: 0, null: false
     t.index ["depth"], name: "index_refinery_pages_on_depth"
     t.index ["id"], name: "index_refinery_pages_on_id"
     t.index ["lft"], name: "index_refinery_pages_on_lft"

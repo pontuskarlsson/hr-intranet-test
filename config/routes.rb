@@ -4,6 +4,7 @@ require_relative '../lib/www_subdomain'
 Rails.application.routes.draw do
 
   get 'home', to: 'home#index'
+  get 'home/services', to: 'home#services'
   get 'about', to: 'home#about'
   get 'contact', to: 'home#contact'
   get 'journal', to: 'home#journal'
