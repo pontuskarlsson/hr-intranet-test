@@ -5,7 +5,7 @@ module Refinery
 
       set_page PAGE_BILLABLES_URL
       allow_page_roles ROLE_INTERNAL_FINANCE
-      allow_page_roles ROLE_INTERNAL, only: [:index, :show]
+      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :show]
 
       before_action :find_billables
       before_action :find_billable, except: [:index, :calendar, :new, :create]

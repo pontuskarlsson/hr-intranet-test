@@ -98,7 +98,7 @@ Refinery::QualityAssurance::Inspection.class_eval do
     json.(self, :inspected_by_id, :inspected_by_name)
     json.(self, :project_code, :company_project_reference)
 
-    json.(self, :result, :inspection_date, :status)
+    json.(self, :result, :inspection_date, :status, :summary_comment)
 
     json.(self, :po_number, :po_type, :po_qty, :available_qty)
     json.(self, :product_code, :product_description, :product_colour_variants)
