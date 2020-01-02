@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_user_time_zone
 
-  helper_method :filter_params
+  helper_method :filter_params, :header_menu_pages
 
   # Workaround to avoid problem with user accessing other
   # engines while password is expired.
@@ -63,6 +63,10 @@ class ApplicationController < ActionController::Base
 
   def oauth?
     false
+  end
+
+  def header_menu_pages
+    Refinery::Page.find_by_link_url('/home')&.children || []
   end
 
   private
