@@ -57,7 +57,7 @@ module Refinery
       end
 
       def zip
-        attributes[:zip]
+        attributes['zip']
       end
 
 
