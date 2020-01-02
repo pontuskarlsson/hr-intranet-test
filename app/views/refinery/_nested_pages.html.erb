@@ -4,7 +4,7 @@
       <li>
         <%= link_to page.title, page.link_url.presence || '#' %>
         <% if page.children.any? %>
-          <%= render 'refinery/pages/nested_pages', child_pages: page.children %>
+          <%= render 'refinery/nested_pages', child_pages: page.children %>
         <% end %>
       </li>
     <% end %>

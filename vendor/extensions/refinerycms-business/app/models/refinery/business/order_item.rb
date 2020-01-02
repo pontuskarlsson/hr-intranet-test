@@ -21,7 +21,7 @@ module Refinery
 
       before_save do
         self.line_item_number ||= (order.order_items.maximum(:line_item_number) || 0) + 1 if line_item_number.nil? or line_item_number.zero?
-        self.total_cost = qty * ordered_qty
+        self.total_cost = qty * unit_price
       end
 
       after_save do
