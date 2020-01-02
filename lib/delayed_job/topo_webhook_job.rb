@@ -10,7 +10,7 @@ class TopoWebhookJob < Struct.new(:payload)
 
       elsif syncer.inspection
         if syncer.inspection.status == 'Inspected'
-          if syncer.inspection.to_be_verified.any? || syncer.inspection.company_code == '00441' # Special handling required
+          if syncer.inspection.to_be_verified.any?
             syncer.inspection.notify :'refinery/authentication/devise/users', key: 'inspection.verify'
 
           else

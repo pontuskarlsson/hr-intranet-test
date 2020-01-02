@@ -13,6 +13,10 @@ Refinery::QualityAssurance::Inspection.class_eval do
                        elsif key == 'inspection.verify'
                          users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER)
 
+                       elsif inspection.company_code == '00441'
+                         users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) +
+                         users.for_role(Refinery::QualityAssurance::ROLE_EXTERNAL).for_companies(inspection.company).for_meta(product_category: inspection.product_category)
+
                        else
                          users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) +
                          users.for_role(Refinery::QualityAssurance::ROLE_EXTERNAL).for_companies(inspection.company)
