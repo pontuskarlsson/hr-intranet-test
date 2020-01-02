@@ -80,6 +80,10 @@ main > .grid-container { margin-bottom: 1rem;}
 .clearfix {display: block;}
 /* End hide from IE-mac */
 
+html,body{font-size:18px;}
+h1{font-weight:800;}
+h2,h3{font-weight:bold;}
+h5,h6{text-tranform:capitalize;}
 
 .dropdown.menu > li.menu-logo {
     a { padding: 0; }

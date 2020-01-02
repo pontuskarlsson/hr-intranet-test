@@ -2,14 +2,16 @@ class HomeController < ApplicationController
   layout 'public'
 
   before_action :redirect_external, except: [:privacy_policy, :terms_conditions]
-  before_action :find_page,         only: %i(about)
+  before_action :find_page,         except: [:privacy_policy, :terms_conditions]
 
   def index
-
+    template = @page.link_url == "/" ? "home" : "show"
+    render template: "refinery/pages/#{@page.view_template.presence || template}"
   end
 
   def services
-
+    template = @page.link_url == "/" ? "home" : "show"
+    render template: "refinery/pages/#{@page.view_template.presence || template}"
   end
 
   def about
@@ -18,11 +20,13 @@ class HomeController < ApplicationController
   end
 
   def contact
-
+    template = @page.link_url == "/" ? "home" : "show"
+    render template: "refinery/pages/#{@page.view_template.presence || template}"
   end
 
   def journal
-
+    template = @page.link_url == "/" ? "home" : "show"
+    render template: "refinery/pages/#{@page.view_template.presence || template}"
   end
 
   def privacy_policy
@@ -42,7 +46,7 @@ class HomeController < ApplicationController
   end
 
   def find_page
-    @page = ::Refinery::Page.find_by_link_url!('/about')
+    @page = ::Refinery::Page.find_by_link_url!(request.original_fullpath)
   rescue ActiveRecord::RecordNotFound
     render_404
   end
