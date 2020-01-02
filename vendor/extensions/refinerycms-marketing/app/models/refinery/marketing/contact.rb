@@ -71,7 +71,11 @@ module Refinery
       end
 
       def all_address_lines
-        [name, address, city, zip, state, country].reject(&:blank?)
+        if country == 'Sweden'
+          [name, address, [zip, city].reject(&:blank?).join(' '), country].reject(&:blank?)
+        else
+          [name, address, city, zip, state, country].reject(&:blank?)
+        end
       end
 
     end
