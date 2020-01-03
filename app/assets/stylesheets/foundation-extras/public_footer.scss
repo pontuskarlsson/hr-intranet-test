@@ -1,0 +1,60 @@
+footer {
+    position: absolute;
+    margin-top: -820px; /* negative value of footer height */
+    height: 820px;
+    clear:both;
+    bottom: 0;
+    width: 100%;
+
+    background-color: $primary-color;
+    color: $white;
+    padding: 20px 0 10px;
+
+    p {
+        font-size: 14px;
+        margin: 0;
+    }
+
+    ul {
+        list-style-type: none;
+        margin-left: 0;
+    }
+
+    .contact-us, .follow-us {
+        margin-bottom: 20px;
+
+        i.fa {
+            display: inline-block;
+            border-radius: 60px;
+            padding: 0.5em 0.6em;
+            background-color: $white;
+        }
+    }
+
+    .footer-left, .footer-right, .footer-left a, .footer-right a {
+        font-size: 12px;
+        /*color: #999;*/
+        margin-top: 20px;
+    }
+    .footer-left {
+        float: left;
+
+        span {
+            padding-right: 3px;
+        }
+
+        span:not(:first-child) {
+            border-left: 1px solid #999;
+            padding-left: 5px;
+        }
+    }
+    .footer-right { float: right; }
+}
+
+@media print, screen and (min-width: 40em) {
+    footer {
+        padding: 80px 0 40px;
+        margin-top: -685px; /* negative value of footer height */
+        height: 685px;
+    }
+}

@@ -4,12 +4,29 @@ Refinery::Pages.configure do |config|
   # config.types.register :home do |home|
   #   home.parts = [{slug: "intro", title: "Intro"}, {slug: "body", title: "Body}]
   # end
+  config.types.register :about do |about|
+    about.parts = [{slug: 'who-we-are', title: 'Who We Are'}, {slug: 'location', title: 'Location'}]
+  end
+
+  config.types.register :services do |about|
+    about.parts = [
+        {slug: 'intro', title: 'Intro'},
+        {slug: 'tech', title: 'Tech', meta: 'test'},
+        {slug: 'sustainability', title: 'Sustainability'},
+        {slug: 'sourcing', title: 'Sourcing'},
+        {slug: 'design', title: 'Design'},
+        {slug: 'development', title: 'Development'},
+        {slug: 'production', title: 'Production'},
+        {slug: 'quality', title: 'Quality'},
+        {slug: 'logistics', title: 'Logistics'},
+    ]
+  end
 
   # Configure global page default parts
   # config.default_parts = [{:title=>"Body", :slug=>"body"}, {:title=>"Side Body", :slug=>"side_body"}]
 
   # Configure whether to allow adding new page parts
-  config.new_page_parts = true
+  # config.new_page_parts = true
 
   # Configure whether to enable marketable_urls
   # config.marketable_urls = true

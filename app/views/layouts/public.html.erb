@@ -15,7 +15,7 @@
   <%= stylesheet_link_tag 'foundation_and_overrides' %>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css" />
   <%= stylesheet_link_tag 'public' %>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <%= yield :stylesheets %>
 
   <%= render '/refinery/google_analytics' %>
@@ -117,14 +117,14 @@
 <% end %>
 
 
-<main>
+<main<% if @page.present? %> class="page-<%= @page.slug %>"<% end %>>
   <%= yield %>
 </main>
 
 </div>
 
 <footer>
-  <%= render '/refinery/footer' -%>
+  <%= render '/refinery/public_footer' -%>
 </footer>
 
 </body>

@@ -79,7 +79,7 @@ $hr-blue-color: #30384B;
 $hr-grey-color: #f8f6f8;
 $hr-gold-color: #DFC68C;
 $light-gray: #e6e6e6;
-$medium-gray: #cacaca;
+$medium-gray: #7a7c7e;
 $dark-gray: #8a8a8a;
 $black: #0a0a0a;
 $white: #f6f4f3; // HR Colour
@@ -139,8 +139,8 @@ $header-font-weight: $global-weight-normal;
 $header-font-style: normal;
 $font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
 $header-color: inherit;
-$header-lineheight: 1.4;
-$header-margin-bottom: 0.5rem;
+$header-lineheight: 1;
+$header-margin-bottom: 1rem;
 $header-styles: (
   small: (
     'h1': ('font-size': 24),
@@ -152,7 +152,7 @@ $header-styles: (
   ),
   medium: (
     'h1': ('font-size': 174),
-    'h2': ('font-size': 72),
+    'h2': ('font-size': 48),
     'h3': ('font-size': 38),
     'h4': ('font-size': 24),
     'h5': ('font-size': 18),
@@ -205,7 +205,7 @@ $abbr-underline: 1px dotted $black;
 
 $lead-font-size: $global-font-size * 1.25;
 $lead-lineheight: 1.6;
-$subheader-lineheight: 1.4;
+$subheader-lineheight: 1;
 $subheader-color: $dark-gray;
 $subheader-font-weight: $global-weight-normal;
 $subheader-margin-top: 0.2rem;
