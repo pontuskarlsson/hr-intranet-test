@@ -122,7 +122,8 @@ Refinery::QualityAssurance::Inspection.class_eval do
     json.location_url refinery.quality_assurance_inspection_url(self, host: ENV['MAIL_DEFAULT_HOST'], protocol: 'https')
     json.preview_url inspection_photos.detect { |ip| ip.preview_photo? }&.expiring_url
 
-    json.(self, :created_at, :updated_at)
+    json.created_at created_at.as_json
+    json.created_at updated_at.as_json
   end
 
 end
