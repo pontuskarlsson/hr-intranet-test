@@ -6,17 +6,9 @@
     </span>
   </span>
   <span class='actions'>
-    
-    <%= link_to refinery_icon_tag("application_go.png"), refinery.shipping_package_path(package),
-        :title => t('.view_live_html'),
-        :target => "_blank" %>
-    
-    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_shipping_admin_package_path(package),
-         :title => t('.edit') %>
-    <%= link_to refinery_icon_tag("delete.png"), refinery.shipping_admin_package_path(package),
-        :class => "cancel confirm-delete",
-        :title => t('.delete'),
-        :confirm => t('message', :scope => 'refinery.admin.delete', :title => package.to_address.try(:name)),
-        :method => :delete %>
+    <%= action_icon(:edit,    refinery.edit_shipping_admin_package_path(package), t('.edit') ) %>
+    <%= action_icon(:delete,  refinery.shipping_admin_package_path(package), t('.delete'),
+                    { class: "cancel confirm-delete",
+                      data: {confirm: t('message',  scope: 'refinery.admin.delete', title: package.shipment&.code)}}  ) %>
   </span>
 </li>

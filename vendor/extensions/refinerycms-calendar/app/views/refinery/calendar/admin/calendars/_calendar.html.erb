@@ -4,12 +4,9 @@
 
   </span>
   <span class='actions'>
-    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_calendar_admin_calendar_path(calendar),
-         :title => t('.edit') %>
-    <%= link_to refinery_icon_tag("delete.png"), refinery.calendar_admin_calendar_path(calendar),
-        :class => "cancel confirm-delete",
-        :title => t('.delete'),
-        :confirm => t('message', :scope => 'refinery.admin.delete', :title => calendar.title),
-        :method => :delete %>
+    <%= action_icon(:edit,    refinery.edit_calendar_admin_calendar_path(calendar), t('.edit') ) %>
+    <%= action_icon(:delete,  refinery.calendar_admin_calendar_path(calendar), t('.delete'),
+                    { class: "cancel confirm-delete",
+                      data: {confirm: t('message',  scope: 'refinery.admin.delete', title: calendar.title)}}  ) %>
   </span>
 </li>

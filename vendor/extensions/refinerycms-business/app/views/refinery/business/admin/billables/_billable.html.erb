@@ -5,18 +5,12 @@
       <%= t('.preview', billable_date: billable.billable_date, assigned_to_label: billable.assigned_to_label) %>
     </span>
   </span>
+
   <span class='actions'>
-    
-    <%= link_to refinery_icon_tag("application_go.png"), refinery.business_billable_path(billable),
-        :title => t('.view_live_html'),
-        :target => "_blank" %>
-    
-    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_business_admin_billable_path(billable),
-         :title => t('.edit') %>
-    <%= link_to refinery_icon_tag("delete.png"), refinery.business_admin_billable_path(billable),
-        :class => "cancel confirm-delete",
-        :title => t('.delete'),
-        :confirm => t('message', :scope => 'refinery.admin.delete', :title => billable.label),
-        :method => :delete %>
+    <%= action_icon(:preview, refinery.business_billable_path(billable), t('.view_live_html')) %>
+    <%= action_icon(:edit,    refinery.edit_business_admin_billable_path(billable), t('.edit') ) %>
+    <%= action_icon(:delete,  refinery.business_admin_billable_path(billable), t('.delete'),
+                    { class: "cancel confirm-delete",
+                      data: {confirm: t('message',  scope: 'refinery.admin.delete', title: billable.label)}}  ) %>
   </span>
 </li>
