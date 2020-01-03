@@ -45,34 +45,14 @@
     <div class="top-bar" id="responsive-menu">
       <div class="top-bar-left">
         <ul class="vertical large-horizontal dropdown menu" data-responsive-menu="accordion large-dropdown">
-          <li class="menu-logo show-for-large">
+          <li class="menu-home hide-when-stuck">
+            <%= link_to 'Happy Rabbit', '/home' %>
+          </li>
+          <li class="menu-logo show-when-stuck">
             <%= link_to '/home' do %>
               <%= image_tag 'happy-rabbit', style: 'height: 32px; margin: 3px 0;' %>
             <% end %>
           </li>
-          <% if false %>
-          <li class="has-submenu">
-            <%= link_to 'Services', '/services' %>
-            <ul class="submenu menu vertical" data-submenu>
-              <li><%= link_to 'Overview', '/services' %></li>
-              <li><%= link_to 'Consulting Services', '/services#consulting' %></li>
-              <li><%= link_to 'Sourcing Services', '/services#sourcing' %></li>
-              <li><%= link_to 'Quality Assurance', '/services#quality-assurance' %></li>
-            </ul>
-          </li>
-          <li>
-            <%= link_to 'Services', '/services' %>
-          </li>
-          <li>
-            <%= link_to 'About', '/about' %>
-          </li>
-          <li>
-            <%= link_to 'Journal', '/journal' %>
-          </li>
-          <li>
-            <%= link_to 'Contact', '/contact' %>
-          </li>
-          <% end %>
           <% header_menu_pages.each do |root| %>
             <% if root.children.any? %>
               <li class="has-submenu">
@@ -91,15 +71,6 @@
       </div>
       <div class="top-bar-right show-for-large">
         <%= link_to 'Sign In', '/', class: 'button' %>
-
-        <div class="show-when-stuck">
-          <div class="input-group">
-            <input class="input-group-field" type="email" placeholder="Your email...">
-            <div class="input-group-button">
-              <input type="submit" class="button primary" value="Get Started">
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

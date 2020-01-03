@@ -85,9 +85,37 @@ h1 {margin-bottom: 2rem;}
 h1,h2,h3{font-weight:800;}
 h5,h6{text-transform:uppercase; color: $medium-gray; letter-spacing: .8px;}
 
+.sticky {
+    &:not(.is-stuck) {
+        .show-when-stuck {
+            display: none;
+            //
+            //-webkit-transition: width 0.3s ease-in-out;
+            //-moz-transition: width 0.3s ease-in-out;
+            //-o-transition: width 0.3s ease-in-out;
+            //transition: width 0.3s ease-in-out;
+        }
+    }
+
+    &.is-stuck {
+        .show-when-stuck {
+            display: list-item;
+        }
+
+        .hide-when-stuck {
+            display: none;
+        }
+    }
+}
 .dropdown.menu > li.menu-logo {
+    width: 138px;
     a { padding: 0; }
-    img { height: 2.4rem; }
+    img { height: 2rem; }
+}
+
+.dropdown.menu > li.menu-home {
+    width: 138px;
+    font-weight: bold;
 }
 
 .dropdown.menu > li.is-dropdown-submenu-parent:not(.is-active) > a::after {
@@ -95,6 +123,8 @@ h5,h6{text-transform:uppercase; color: $medium-gray; letter-spacing: .8px;}
 }
 
 .top-bar, .title-bar {
+    font-size: 16px;
+
     a:not(.button) {
         color: $black;
 
@@ -147,22 +177,6 @@ h5,h6{text-transform:uppercase; color: $medium-gray; letter-spacing: .8px;}
         // Take twice as much width as .title-bar-left
         flex: 2 1 0px;
     }
-}
-
-.show-when-stuck {
-    width: 0;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-
-    -webkit-transition: width 0.3s ease-in-out;
-    -moz-transition: width 0.3s ease-in-out;
-    -o-transition: width 0.3s ease-in-out;
-    transition: width 0.3s ease-in-out;
-}
-
-.is-stuck .show-when-stuck {
-    width: 400px;
 }
 
 section {

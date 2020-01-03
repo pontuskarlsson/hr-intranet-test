@@ -10,6 +10,11 @@ footer {
     color: $white;
     padding: 20px 0 10px;
 
+    h1,h2,h3,h4,h5,h6, a, a:link, a:visited, a:hover {
+        text-transform: none;
+        color: $white;
+    }
+
     p {
         font-size: 14px;
         margin: 0;
@@ -21,13 +26,12 @@ footer {
     }
 
     .contact-us, .follow-us {
-        margin-bottom: 20px;
+        margin-bottom: 40px;
 
         i.fa {
+            font-size: 24px;
             display: inline-block;
-            border-radius: 60px;
-            padding: 0.5em 0.6em;
-            background-color: $white;
+            margin: 0 3px 0 ;
         }
     }
 
