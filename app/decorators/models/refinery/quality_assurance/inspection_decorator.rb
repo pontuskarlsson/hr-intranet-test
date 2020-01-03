@@ -123,7 +123,7 @@ Refinery::QualityAssurance::Inspection.class_eval do
     json.preview_url inspection_photos.detect { |ip| ip.preview_photo? }&.expiring_url
 
     json.created_at created_at.as_json
-    json.created_at updated_at.as_json
+    json.updated_at updated_at.as_json
   end
 
 end
