@@ -15,18 +15,15 @@ class HomeController < ApplicationController
   end
 
   def about
-    template = @page&.link_url == "/" ? "home" : "show"
-    render template: "refinery/pages/#{@page&.view_template.presence || template}"
+
   end
 
   def contact
-    template = @page&.link_url == "/" ? "home" : "show"
-    render template: "refinery/pages/#{@page&.view_template.presence || template}"
+
   end
 
   def journal
-    template = @page&.link_url == "/" ? "home" : "show"
-    render template: "refinery/pages/#{@page&.view_template.presence || template}"
+
   end
 
   def privacy_policy
