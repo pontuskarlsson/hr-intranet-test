@@ -192,6 +192,11 @@ section {
         }
     }
 
+    &.section-integrations {
+        background-color: $hr-blue-color;
+        color: $white;
+    }
+
     &.grey-section {
         background-color: $hr-grey-color;
     }

@@ -1,29 +1,77 @@
-<%- intro_section = @page.parts.first %>
-<section class="section-<%= intro_section.slug %>">
-  <div class="grid-container">
-    <div class="grid-x grid-padding-x">
-      <div class="cell">
-        <%=raw intro_section.body %>
-      </div>
-    </div>
-  </div>
-</section>
-
+<%- page_images = @page.images.to_a %>
 <% @page.parts[1..-1].each_with_index do |section, i| %>
-  <% page_image = @page.images[i] %>
-  <section class="section-<%= section.slug %>">
-    <div class="grid-container">
-      <div class="grid-x grid-padding-x">
-        <div class="cell medium-6 small-order-1<% if i.even? %> medium-order-2<% end %>">
-          <% if page_image.present? %>
-            <%= image_tag page_image.image.thumb('425x425#').url, style: 'width: 100%;' %>
-          <% end %>
-        </div>
-
-        <div class="cell medium-6 small-order-2<% if i.even? %> medium-order-1<% end %>">
-          <%=raw section.body %>
+  <% if section.slug == 'intro' %>
+    <section class="section-<%= section.slug %>">
+      <div class="grid-container">
+        <div class="grid-x grid-padding-x">
+          <div class="cell">
+            <%=raw section.body %>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+  <% elsif section.slug == 'integrations' %>
+    <section class="section-<%= section.slug %>">
+      <div class="grid-container">
+        <div class="grid-x grid-padding-x">
+          <div class="cell">
+            <%=raw section.body %>
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            Zapier
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            <i class="fa fa-dropbox"></i> Dropbox
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            Google
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            Office 365
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            Slack
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            Asana
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            Trello
+          </div>
+
+          <div class="cell medium-3 small-1 text-align-center">
+            Xero
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  <% else %>
+    <% page_image = page_images.shift %>
+    <section class="section-<%= section.slug %>">
+      <div class="grid-container">
+        <div class="grid-x grid-padding-x">
+          <div class="cell medium-6 small-order-1<% if i.even? %> medium-order-2<% end %>">
+            <% if page_image.present? %>
+              <%= image_tag page_image.image.thumb('425x425#').url, style: 'width: 100%;' %>
+            <% end %>
+          </div>
+
+          <div class="cell medium-6 small-order-2<% if i.even? %> medium-order-1<% end %>">
+            <%=raw section.body %>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
 <% end %>
