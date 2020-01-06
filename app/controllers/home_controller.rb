@@ -1,8 +1,8 @@
 class HomeController < ApplicationController
   layout 'public'
 
-  before_action :redirect_external, except: [:privacy_policy, :terms_conditions]
-  before_action :find_page,         except: [:privacy_policy, :terms_conditions]
+  before_action :redirect_external, except: [:legal]
+  before_action :find_page
 
   def index
     template = @page&.link_url == "/" ? "home" : "show"
@@ -31,7 +31,8 @@ class HomeController < ApplicationController
   end
 
   def legal
-
+    template = @page&.link_url == "/" ? "home" : "show"
+    render template: "refinery/pages/#{@page&.view_template.presence || template}"
   end
 
   private
@@ -44,8 +45,7 @@ class HomeController < ApplicationController
 
   def find_page
     @page = ::Refinery::Page.find_by_link_url(request.original_fullpath)
-  rescue ActiveRecord::RecordNotFound
-    not_found
+    not_found unless @page.present?
   end
 
 end

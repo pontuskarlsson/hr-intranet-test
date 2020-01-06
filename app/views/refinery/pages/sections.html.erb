@@ -1,20 +1,15 @@
 <%- page_images = @page.images.to_a %>
-<% @page.parts[1..-1].each_with_index do |section, i| %>
-  <% if section.slug == 'intro' %>
-    <section class="section-<%= section.slug %>">
-      <div class="grid-container">
-        <div class="grid-x grid-padding-x">
+<% @page.parts.each_with_index do |section, i| %>
+  <section class="section-<%= section.slug %>">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+
+        <% if section.slug == 'intro' %>
           <div class="cell">
             <%=raw section.body %>
           </div>
-        </div>
-      </div>
-    </section>
 
-  <% elsif section.slug == 'integrations' %>
-    <section class="section-<%= section.slug %>">
-      <div class="grid-container">
-        <div class="grid-x grid-padding-x">
+        <% elsif section.slug == 'integrations' %>
           <div class="cell">
             <%=raw section.body %>
           </div>
@@ -51,15 +46,17 @@
             Xero
           </div>
 
-        </div>
-      </div>
-    </section>
+        <% elsif section.slug == 'submenu' %>
+          <div class="cell">
+            <ul class="vertical large-horizontal dropdown menu" data-responsive-menu="accordion large-dropdown">
+              <% @page.children.each do |page| %>
+                <li><%= link_to page.title, refinery.url_for(page.url) %></li>
+              <% end %>
+            </ul>
+          </div>
 
-  <% else %>
-    <% page_image = page_images.shift %>
-    <section class="section-<%= section.slug %>">
-      <div class="grid-container">
-        <div class="grid-x grid-padding-x">
+        <% else %>
+          <% page_image = page_images.shift %>
           <div class="cell medium-6 small-order-1<% if i.even? %> medium-order-2<% end %>">
             <% if page_image.present? %>
               <%= image_tag page_image.image.thumb('425x425#').url, style: 'width: 100%;' %>
@@ -69,9 +66,9 @@
           <div class="cell medium-6 small-order-2<% if i.even? %> medium-order-1<% end %>">
             <%=raw section.body %>
           </div>
-        </div>
-      </div>
-    </section>
-  <% end %>
+        <% end %>
 
+      </div>
+    </div>
+  </section>
 <% end %>

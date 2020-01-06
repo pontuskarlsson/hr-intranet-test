@@ -21,14 +21,13 @@ Rails.application.routes.draw do
   get 'resources', to: 'home#resources'
   get 'resources/glossary', to: 'home#resources'
   get 'resources/faq', to: 'home#resources'
-  get 'privacy-policy', to: 'home#legal'
-  get 'cookie-policy', to: 'home#legal'
   get 'legal', to: 'home#legal'
-  get 'terms-of-use', to: 'home#legal'
-  get 'service-terms-conditions', to: 'home#legal'
-  get 'subprocessors', to: 'home#legal'
-  get 'ccpa', to: 'home#legal'
-  get 'ccpa-service-provider', to: 'home#legal'
+  get 'legal/privacy-policy', to: 'home#legal_doc'
+  get 'legal/cookie-policy', to: 'home#legal_doc'
+  get 'legal/terms-of-use', to: 'home#legal_doc'
+  get 'legal/service-terms-conditions', to: 'home#legal_doc'
+  get 'legal/subprocessors', to: 'home#legal_doc'
+  get 'legal/ccpa', to: 'home#legal_doc'
 
   # OAuth
   use_doorkeeper
