@@ -30,11 +30,7 @@ class HomeController < ApplicationController
 
   end
 
-  def privacy_policy
-
-  end
-
-  def terms_conditions
+  def legal
 
   end
 

@@ -21,8 +21,13 @@ Rails.application.routes.draw do
   get 'resources', to: 'home#resources'
   get 'resources/glossary', to: 'home#resources'
   get 'resources/faq', to: 'home#resources'
-  get 'privacy-policy', to: 'home#privacy_policy'
-  get 'terms-conditions', to: 'home#terms_conditions'
+  get 'privacy-policy', to: 'home#legal'
+  get 'cookie-policy', to: 'home#legal'
+  get 'legal', to: 'home#legal'
+  get 'terms-of-use', to: 'home#legal'
+  get 'service-terms-conditions', to: 'home#legal'
+  get 'subprocessors', to: 'home#legal'
+  get 'ccpa', to: 'home#legal'
 
   # OAuth
   use_doorkeeper
