@@ -17,7 +17,9 @@ module Refinery
 
         respond_to do |format|
           format.html { present(@page) }
-          format.json
+          format.json {
+            render json: @billables.dt_response(params) if server_side?
+          }
         end
       end
 

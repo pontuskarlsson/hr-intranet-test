@@ -47,10 +47,6 @@ module Refinery
         error_404
       end
 
-      def server_side?
-        params.has_key? :draw
-      end
-
     end
   end
 end

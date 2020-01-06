@@ -13,7 +13,13 @@ module Refinery
 
       def index
         @bills = @bills.from_params(params).order(updated_date_utc: :desc)
-        present(@page)
+
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json {
+            render json: @bills.dt_response(params) if server_side?
+          }
+        end
       end
 
       def show

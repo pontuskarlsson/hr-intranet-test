@@ -34,6 +34,11 @@ module Refinery
       configure_label :id, :title, :assigned_to_label, :billable_date
       display_date_for :billable_date
 
+      responds_to_data_tables :id, :title, :billable_date, :assigned_to_label, :article_code, :qty,
+                              :qty_unit, :unit_price, :discount, :total_cost, :status,
+                              company: [:name],
+                              invoice: [:invoice_number, :reference]
+
       delegate :invoice_number, :reference, to: :invoice, prefix: true, allow_nil: true
       delegate :label, to: :company, prefix: true, allow_nil: true
 

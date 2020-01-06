@@ -23,6 +23,8 @@ module Refinery
       configure_assign_by_label :contact, class_name: '::Refinery::Marketing::Contact'
       configure_label :code, :name, separator: ' '
 
+      responds_to_data_tables :id, :name, :code, contact: [:country, :phone, :website, :email]
+
       validates :name,          presence: true, uniqueness: true
       validates :code,          presence: true, uniqueness: true
       validates :contact_id,    presence: true, uniqueness: true

@@ -54,10 +54,11 @@
             Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
           }
         },
+        "serverSide": true,
         "order": [[3, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_billables_path %>") } },
-          { data: "company_label" },
+          { data: "company_name" },
           { data: "title" },
           { data: "billable_date", "render": dtDateRenderer },
           { data: "assigned_to_label" },

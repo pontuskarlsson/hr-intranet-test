@@ -48,6 +48,7 @@
             Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
           }
         },
+        "serverSide": true,
         "order": [[5, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_bills_path %>") } },

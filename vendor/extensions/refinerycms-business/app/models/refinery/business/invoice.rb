@@ -85,6 +85,10 @@ module Refinery
       configure_label :invoice_number, :invoice_date, :reference, sort: :desc, separator: ', '
       display_date_for :invoice_date, :due_date
 
+      responds_to_data_tables :id, :invoice_number, :reference, :invoice_date, :due_date, :status, :currency_code,
+                              :total_amount, :amount_paid, :amount_due,
+                              company: [:name]
+
       store :plan_details, accessors: [ :plan_title, :plan_description, :plan_minimums, :plan_additionals, :plan_opening_balance, :plan_redeemed, :plan_issued, :plan_closing_balance ], coder: JSON, prefix: :plan
 
       validates :account_id,      presence: true

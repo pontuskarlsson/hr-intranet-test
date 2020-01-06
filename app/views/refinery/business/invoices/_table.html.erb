@@ -48,12 +48,13 @@
             Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
           }
         },
+        "serverSide": true,
         "order": [[5, 'desc']],
         "columns": [
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_invoices_path %>") } },
           { data: "invoice_number" },
           { data: "reference" },
-          { data: function(row, type, set, meta) { return row.company && row.company.name || null; } },
+          { data: "company_name" },
           { data: "invoice_date", render: dtDateRenderer },
           { data: "due_date" },
           { data: "status" },

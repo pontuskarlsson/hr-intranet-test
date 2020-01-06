@@ -15,7 +15,12 @@ module Refinery
         @company = Company.new
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @company in the line below:
-        present(@page)
+        respond_to do |format|
+          format.html { present(@page) }
+          format.json {
+            render json: @companies.dt_response(params) if server_side?
+          }
+        end
       end
 
       def show
