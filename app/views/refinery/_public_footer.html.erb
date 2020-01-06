@@ -5,25 +5,25 @@
     </div>
 
     <div class="cell medium-2 medium-offset-6">
-      <h5>Resources</h5>
+      <h5><%= link_to 'Resources', '/resources' %></h5>
       <ul>
-        <li>Journal</li>
-        <li>Glossary</li>
-        <li>FAQs</li>
+        <li><%= link_to 'Journal', '/journal' %></li>
+        <li><%= link_to 'Glossary', '/resources/glossary' %></li>
+        <li><%= link_to 'FAQs', '/resources/faq' %></li>
       </ul>
     </div>
 
     <div class="cell medium-2 end">
-      <h5>Company</h5>
+      <h5><%= link_to 'Company', '/about' %></h5>
       <ul>
-        <li>About Us</li>
-        <li>News</li>
-        <li>Media</li>
-        <li>Careers</li>
-        <li>Sustainability</li>
+        <li><%= link_to 'About', '/about' %></li>
+        <li><%= link_to 'News', '/news' %></li>
+        <li><%= link_to 'Media', '/about/media' %></li>
+        <li><%= link_to 'Careers', '/about/careers' %></li>
+        <li><%= link_to 'Sustainability', '/home/services/sustainability' %></li>
       </ul>
 
-      <h5>Contact Us</h5>
+      <h5><%= link_to 'Contact Us', '/contact' %></h5>
       <p class="contact-us">
         <a href="https://wa.me/85258043980"><i class="fa fa-whatsapp"></i></a>
         <a href="https://t.me/happyrabbit"><i class="fa fa-telegram"></i></a>

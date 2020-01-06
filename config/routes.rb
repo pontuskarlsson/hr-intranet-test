@@ -14,8 +14,13 @@ Rails.application.routes.draw do
   get 'home/services/quality', to: 'home#services'
   get 'home/services/logistics', to: 'home#services'
   get 'about', to: 'home#about'
+  get 'media', to: 'home#about'
+  get 'careers', to: 'home#about'
   get 'contact', to: 'home#contact'
   get 'journal', to: 'home#journal'
+  get 'resources', to: 'home#resources'
+  get 'resources/glossary', to: 'home#resources'
+  get 'resources/faq', to: 'home#resources'
   get 'privacy-policy', to: 'home#privacy_policy'
   get 'terms-conditions', to: 'home#terms_conditions'
 
