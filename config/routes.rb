@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get 'service-terms-conditions', to: 'home#legal'
   get 'subprocessors', to: 'home#legal'
   get 'ccpa', to: 'home#legal'
+  get 'ccpa-service-provider', to: 'home#legal'
 
   # OAuth
   use_doorkeeper
