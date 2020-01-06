@@ -86,6 +86,7 @@ h1,h2,h3{font-weight:800;}
 h5,h6{text-transform:uppercase; color: $medium-gray; letter-spacing: .8px;}
 
 .sticky {
+    z-index: 1;
     &:not(.is-stuck) {
         .show-when-stuck {
             display: none;
