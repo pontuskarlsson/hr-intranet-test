@@ -25,6 +25,11 @@ footer {
         margin-left: 0;
     }
 
+    button, input[type=button], input[type=submit] {
+        border: 2px solid $white;
+        margin-left: 1rem;
+    }
+
     .contact-us, .follow-us {
         margin-bottom: 40px;
 
