@@ -4,12 +4,7 @@
     <div class="grid-container">
       <div class="grid-x grid-padding-x">
 
-        <% if section.slug == 'intro' %>
-          <div class="cell">
-            <%=raw section.body %>
-          </div>
-
-        <% elsif section.slug == 'integrations' %>
+        <% if section.slug == 'integrations' %>
           <div class="cell">
             <%=raw section.body %>
           </div>
@@ -55,7 +50,7 @@
             </ul>
           </div>
 
-        <% else %>
+        <% elsif section.slug[/_resp_img$/] %>
           <% page_image = page_images.shift %>
           <div class="cell medium-6 small-order-1<% if i.even? %> medium-order-2<% end %>">
             <% if page_image.present? %>
@@ -64,6 +59,11 @@
           </div>
 
           <div class="cell medium-6 small-order-2<% if i.even? %> medium-order-1<% end %>">
+            <%=raw section.body %>
+          </div>
+
+        <% else %>
+          <div class="cell">
             <%=raw section.body %>
           </div>
         <% end %>
