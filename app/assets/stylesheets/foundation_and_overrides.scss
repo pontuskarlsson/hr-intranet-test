@@ -85,6 +85,10 @@ h1 {margin-bottom: 2rem;}
 h1,h2,h3{font-weight:800;}
 h5,h6{text-transform:uppercase; color: $medium-gray; letter-spacing: .8px;}
 
+a.button {
+    text-decoration: none;
+}
+
 .sticky {
     z-index: 1;
     &:not(.is-stuck) {
@@ -199,6 +203,27 @@ section {
     &.section-integrations {
         background-color: $hr-blue-color;
         color: $white;
+        text-align: center;
+
+
+        img {
+            max-height: 2.5rem;
+            max-width: 125px;
+            margin-bottom: 2rem;
+
+            &.logo-dropbox, &.logo-asana {
+                margin-top: 10px;
+            }
+            &.logo-office-365 {
+                margin-top: 5px;
+            }
+            &.logo-slack {
+                margin-top: 8px;
+            }
+            &.logo-xero {
+                margin-height: 2.2rem;
+            }
+        }
     }
 
     &.grey-section {
@@ -418,5 +443,10 @@ section {
                 margin-left: 50%;
             }
         }
+    }
+
+    img.resp-img {
+        width: 100%;
+        margin-bottom: 2rem;
     }
 }
