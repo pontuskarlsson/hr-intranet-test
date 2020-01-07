@@ -27,7 +27,8 @@ class HomeController < ApplicationController
   end
 
   def resources
-
+    template = @page&.link_url == "/" ? "home" : "show"
+    render template: "refinery/pages/#{@page&.view_template.presence || template}"
   end
 
   def legal
