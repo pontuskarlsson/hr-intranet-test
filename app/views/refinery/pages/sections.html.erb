@@ -1,4 +1,8 @@
-<%- page_images = @page.images.to_a %>
+<%-
+  page_images = @page.images.to_a
+  resp_img_idx = 0
+%>
+
 <% @page.parts.each_with_index do |section, i| %>
   <section class="section-<%= section.slug %>">
     <div class="grid-container">
@@ -52,15 +56,20 @@
 
         <% elsif section.slug[/_resp_img$/] %>
           <% page_image = page_images.shift %>
-          <div class="cell medium-6 small-order-1<% if i.even? %> medium-order-2<% end %>">
+          <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.thumb('425x425#').url, class: 'resp-img' %>
+              <% if page_image.image.image_name[/\.gif$/] %>
+                <%= image_tag page_image.image.url, class: 'resp-img' %>
+              <% else %>
+                <%= image_tag page_image.image.thumb('425x425#').url, class: 'resp-img' %>
+              <% end %>
             <% end %>
           </div>
 
-          <div class="cell medium-6 small-order-2<% if i.even? %> medium-order-1<% end %>">
+          <div class="cell medium-6 small-order-2<% if resp_img_idx.even? %> medium-order-1<% end %>">
             <%=raw section.body %>
           </div>
+          <%- resp_img_idx += 1 %>
 
         <% else %>
           <div class="cell">
