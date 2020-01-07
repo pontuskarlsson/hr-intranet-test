@@ -1,0 +1,38 @@
+<div id='new_page_part_dialog' style='display: none'>
+  <div class='field'>
+    <table>
+      <tbody>
+      <tr>
+        <td>
+          <label for='new_page_part_title'><%= t('.title')  %></label>
+          <input id='new_page_part_title' value='' class='larger widest' />
+
+          <label for='new_page_part_slug'><%= t('.slug')  %></label>
+          <input id='new_page_part_slug' value='' class='larger widest' />
+
+          <input id='new_page_part_index' type='hidden' value='<%= @page.parts.size %>' />
+        </td>
+        <td style="font-size: 9px; width: 40%;">
+          <% if @page.view_template == 'sections' %>
+            <h5>Special section names:</h5>
+            <ul>
+              <li>"Intro": Large paragraph fonts than normal</li>
+              <li>"Integrations": Pre-defined section with integration logos</li>
+              <li>End with "Resp Img": Responsive columns with text and image</li>
+            </ul>
+          <% end %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <%= render '/refinery/admin/form_actions', :f => f,
+  :continue_editing => false,
+  :submit_button_id => "new_page_part_save",
+  :cancel_button_id => "new_page_part_cancel",
+  :hide_delete => true %>
+</div>
+
+<% content_for :after_javascript_libraries do %>
+<%= javascript_include_tag 'speakingurl' %>
+<% end %>
