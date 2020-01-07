@@ -44,7 +44,7 @@ class HomeController < ApplicationController
   end
 
   def find_page
-    @page = ::Refinery::Page.find_by_link_url(request.original_fullpath)
+    @page = ::Refinery::Page.find_by_link_url(request.original_fullpath.chomp('/'))
     not_found unless @page.present?
   end
 

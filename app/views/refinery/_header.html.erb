@@ -12,12 +12,12 @@
         <% end %>
       </li>
 
-      <% header_menu_items.roots.each do |root| %>
-        <% if root.children.any? %>
+      <% header_menu_items.each do |root| %>
+        <% if (sub_items = header_menu_items(root)).any? %>
           <li class="has-submenu">
             <%= link_to root.title, refinery.url_for(root.url) %>
             <ul class="submenu menu vertical">
-              <% root.children.each do |child| %>
+              <% sub_items.each do |child| %>
                 <li><%= link_to child.title, refinery.url_for(child.url) %></li>
               <% end %>
             </ul>

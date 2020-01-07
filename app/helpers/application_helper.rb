@@ -26,8 +26,12 @@ module ApplicationHelper
     end + thumbnail
   end
 
-  def header_menu_items
-    Refinery::Menu.new(Refinery::Page.fast_access_menu(current_refinery_user.try(:roles) || []))
+  def header_menu_items(parent_page = nil)
+    if parent_page.present?
+      parent_page.children.fast_access_menu Array(current_refinery_user.try(:roles))
+    else
+      Refinery::Page.roots.fast_access_menu Array(current_refinery_user.try(:roles))
+    end
   end
 
   def header_menu
