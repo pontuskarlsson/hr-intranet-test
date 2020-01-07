@@ -47,7 +47,7 @@
           </div>
 
         <% elsif section.slug == 'submenu' %>
-          <div class="cell">
+          <div class="cell text-align-center">
             <ul class="vertical dropdown menu" data-responsive-menu="accordion large-dropdown">
               <% @page.children.each do |page| %>
                 <li><%= link_to page.title, refinery.url_for(page.url) %></li>
