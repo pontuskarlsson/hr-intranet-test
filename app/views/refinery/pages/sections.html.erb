@@ -58,7 +58,7 @@
           <% page_image = page_images.shift %>
           <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">
             <% if page_image.present? %>
-              <% if page_image.image.image_name[/\.gif$/] %>
+              <% if page_image.image_name[/\.gif$/] %>
                 <%= image_tag page_image.image.url, class: 'resp-img' %>
               <% else %>
                 <%= image_tag page_image.image.thumb('425x425#').url, class: 'resp-img' %>
