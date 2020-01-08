@@ -26,57 +26,7 @@
 </head>
 <body>
 <div id="wrap">
-
-<div class="top-bar-container" data-sticky-container>
-  <div class="sticky sticky-topbar" data-sticky data-options="anchor: main; marginTop: 0; stickyOn: large;">
-    <div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="large">
-      <div class="title-bar-left">
-        <%= link_to '/home' do %>
-          <%= image_tag 'happy-rabbit', style: 'height: 32px; margin: 3px 0;' %>
-        <% end %>
-      </div>
-      <div class="title-bar-right">
-        <%= link_to 'Sign In', '/', class: 'button' %>
-
-        <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
-      </div>
-    </div>
-
-    <div class="top-bar" id="responsive-menu">
-      <div class="top-bar-left">
-        <ul class="vertical large-horizontal dropdown menu" data-responsive-menu="accordion large-dropdown">
-          <li class="menu-home hide-when-stuck">
-            <%= link_to 'Happy Rabbit', '/home' %>
-          </li>
-          <li class="menu-logo show-when-stuck">
-            <%= link_to '/home' do %>
-              <%= image_tag 'happy-rabbit', style: 'height: 32px; margin: 3px 0;' %>
-            <% end %>
-          </li>
-          <% header_menu_pages.each do |root| %>
-            <% if root.children.any? %>
-              <li class="has-submenu">
-                <%= link_to root.title, refinery.url_for(root.url) %>
-                <ul class="submenu menu vertical">
-                  <% root.children.each do |child| %>
-                    <li><%= link_to child.title, refinery.url_for(child.url) %></li>
-                  <% end %>
-                </ul>
-              </li>
-            <% else %>
-              <li><%= link_to root.title, refinery.url_for(root.url) %></li>
-            <% end %>
-          <% end %>
-        </ul>
-      </div>
-      <div class="top-bar-right show-for-large">
-        <%= link_to 'Sign In', '/', class: 'button' %>
-
-        <%= link_to 'Get Started', '/', class: 'button primary' %>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render '/refinery/public_header' %>
 
 <% if flash.any? %>
   <div id="message">

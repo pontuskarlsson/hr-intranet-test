@@ -89,6 +89,13 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
     text-decoration: none;
 }
 
+.top-bar, .top-bar ul:not(.submenu):not(.accordion-menu) {
+    -webkit-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
+    background-color: transparent;
+}
+
 .sticky {
     z-index: 1;
     &:not(.is-stuck) {
@@ -110,11 +117,14 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
         .hide-when-stuck {
             display: none;
         }
+        .top-bar {
+            background-color: $white;
+        }
     }
 }
 .dropdown.menu > li.menu-logo {
     width: 138px;
-    a { padding: 0; }
+    a { padding: 0 1rem; }
     img { height: 2rem; }
 }
 
@@ -253,6 +263,10 @@ section {
             &.logo-under-armour { margin-top: 7px; }
             &.logo-wood-wood { margin-top: 30px; max-width: 170px; }
         }
+
+        p {
+            font-size: 24pt;
+        }
     }
 
     &.large-section {
@@ -264,6 +278,10 @@ section {
     &.black-section {
         background-color: $black;
         color: $white;
+
+        a, a:link, a:visited, a:hover {
+            color: $white;
+        }
     }
 
     &.grey-section {
