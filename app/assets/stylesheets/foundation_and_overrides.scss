@@ -85,7 +85,7 @@ h1 {margin-bottom: 2rem;}
 h1,h2,h3{font-weight:800;}
 h5,h6{text-transform:uppercase; color: $medium-gray; letter-spacing: .8px;}
 
-a.button {
+a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
     text-decoration: none;
 }
 
@@ -226,6 +226,17 @@ section {
         }
     }
 
+    &.large-section {
+        p {
+            font-size: 24pt;
+        }
+    }
+
+    &.black-section {
+        background-color: $black;
+        color: $white;
+    }
+
     &.grey-section {
         background-color: $hr-grey-color;
     }
@@ -236,6 +247,30 @@ section {
 
     &.blue-section {
         background-color: $hr-blue-color;
+        color: $white;
+    }
+
+    &.bg-img-section {
+        background-repeat: no-repeat;
+        background-position: center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+        min-height:425px;
+    }
+
+    &.bg-fix-img-section {
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+
+        min-height:425px;
     }
 
     &.who-we-are {

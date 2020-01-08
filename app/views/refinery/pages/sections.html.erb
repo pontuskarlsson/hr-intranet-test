@@ -4,7 +4,19 @@
 %>
 
 <% @page.parts.each_with_index do |section, i| %>
-  <section class="section-<%= section.slug %>">
+  <%-
+    background = section.slug[/bg_[a-z]+/]
+    offset = section.slug['_offset']
+    class_name = case background
+                 when 'bg_black' then 'black-section'
+                 when 'bg_blue' then 'blue-section'
+                 when 'bg_grey' then 'grey-section'
+                 when 'bg_gold' then 'gold-section'
+                 when 'bg_img' then 'bg-img-section'
+                 else ''
+                 end
+  %>
+  <section class="section-<%= section.slug %> <%= section.slug['large'] ? 'large-section' : '' %> <%= class_name %>" <% if background == 'bg_img' && (bg_image = page_images.shift).present? %> style="background-image: url(<%= bg_image.image.url %>);"<% end %>>
     <div class="grid-container">
       <div class="grid-x grid-padding-x">
 
@@ -54,15 +66,11 @@
             </ul>
           </div>
 
-        <% elsif section.slug[/_resp_img$/] %>
+        <% elsif section.slug[/resp_img/] %>
           <% page_image = page_images.shift %>
           <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">
             <% if page_image.present? %>
-              <% if page_image.image_name[/\.gif$/] %>
-                <%= image_tag page_image.image.url, class: 'resp-img' %>
-              <% else %>
-                <%= image_tag page_image.image.thumb('425x425#').url, class: 'resp-img' %>
-              <% end %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
             <% end %>
           </div>
 
@@ -70,6 +78,37 @@
             <%=raw section.body %>
           </div>
           <%- resp_img_idx += 1 %>
+
+        <% elsif section.slug[/resp_2_img/] %>
+          <% page_image = page_images.shift %>
+          <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">
+            <% if page_image.present? %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
+            <% end %>
+          </div>
+
+          <% page_image = page_images.shift %>
+          <div class="cell medium-6 small-order-2<% if resp_img_idx.even? %> medium-order-1<% end %>">
+            <% if page_image.present? %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
+            <% end %>
+          </div>
+
+        <% elsif section.slug[/full_img/] %>
+          <% page_image = page_images.shift %>
+          <div class="cell">
+            <% if page_image.present? %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
+            <% end %>
+          </div>
+
+        <% elsif section.slug[/cen_img/] %>
+          <% page_image = page_images.shift %>
+          <div class="cell medium-6 medium-offset-3 end">
+            <% if page_image.present? %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
+            <% end %>
+          </div>
 
         <% else %>
           <div class="cell">
