@@ -13,7 +13,7 @@ Refinery::Core.configure do |config|
   # config.base_cache_key = <%= Refinery::Core.base_cache_key.inspect %>
 
   # Site name
-  config.site_name = 'Happy Rabbit Portal'
+  config.site_name = 'Happy Rabbit'
 
   # This activates Google Analytics tracking within your website. If this
   # config is left blank or set to UA-xxxxxx-x then no remote calls to
