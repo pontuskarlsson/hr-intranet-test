@@ -74,6 +74,9 @@
             <% end %>
           </div>
 
+        <% elsif section.slug[/manual/] %>
+          <%=raw section.body %>
+
         <% else %>
           <div class="cell">
             <%=raw section.body %>
