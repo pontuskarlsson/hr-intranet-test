@@ -86,50 +86,56 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
 }
 
 .top-bar, .title-bar, .top-bar ul:not(.submenu):not(.accordion-menu) {
-    -webkit-transition: background-color 100ms linear;
-    -ms-transition: background-color 100ms linear;
-    transition: background-color 100ms linear;
+    -webkit-transition: background-color 200ms linear;
+    -ms-transition: background-color 200ms linear;
+    transition: background-color 200ms linear;
     background-color: transparent;
 }
 
 .sticky {
     z-index: 1;
-    &:not(.is-stuck) {
-        .show-when-stuck {
-            display: none;
-            //
-            //-webkit-transition: width 0.3s ease-in-out;
-            //-moz-transition: width 0.3s ease-in-out;
-            //-o-transition: width 0.3s ease-in-out;
-            //transition: width 0.3s ease-in-out;
+
+    .menu-home .menu-home-container {
+        position: relative;
+        height: 100%;
+
+        .menu-home-text, .menu-home-logo {
+            position: absolute;
+            overflow: hidden;
+
+            -webkit-transition: height 0.2s ease-in-out;
+            -moz-transition: height 0.2s ease-in-out;
+            -o-transition: height 0.2s ease-in-out;
+            transition: height 0.2s ease-in-out;
         }
+        .menu-home-text { top: 0; }
+        .menu-home-logo { bottom: 2px; }
+    }
+
+    &:not(.is-stuck) {
+        .menu-home-text { height: 38px; }
+        .menu-home-logo { height: 0; }
     }
 
     &.is-stuck {
-        .show-when-stuck {
-            display: list-item;
-        }
+        .menu-home-text { height: 0; }
+        .menu-home-logo { height: 38px; }
 
-        .hide-when-stuck {
-            display: none;
-        }
         .top-bar, .title-bar {
             background-color: $white;
         }
     }
-}
-.dropdown.menu > li.menu-logo {
-    width: 138px;
-    a { padding: 0 1rem 0 0; }
-    img { height: 2rem; }
 }
 
 .dropdown.menu > li.menu-home {
     width: 138px;
     font-weight: bold;
 
-    a {
-        padding-left: 0;
+    a { padding-left: 0; }
+
+    a.menu-logo {
+        padding: 0 1rem 0 0;
+        img { height: 2rem; }
     }
 }
 

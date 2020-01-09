@@ -20,13 +20,17 @@
     <div class="top-bar" id="responsive-menu">
       <div class="top-bar-left">
         <ul class="vertical large-horizontal dropdown menu" data-responsive-menu="accordion large-dropdown">
-          <li class="menu-home hide-when-stuck">
-            <%= link_to 'Happy Rabbit', home_page_url %>
-          </li>
-          <li class="menu-logo show-when-stuck">
-            <%= link_to home_page_url do %>
-              <%= image_tag 'happy-rabbit', style: 'height: 32px; margin: 3px 0;' %>
-            <% end %>
+          <li class="menu-home">
+            <div class="menu-home-container">
+              <span class="menu-home-text">
+                <%= link_to 'Happy Rabbit', home_page_url %>
+              </span>
+              <span class="menu-home-logo">
+                <%= link_to home_page_url, class: 'menu-logo' do %>
+                  <%= image_tag 'happy-rabbit', style: 'height: 32px; margin: 3px 0;' %>
+                <% end %>
+              </span>
+            </div>
           </li>
           <% header_menu_pages.each do |root| %>
             <% if root.children.any? %>
