@@ -85,7 +85,7 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
     text-decoration: none;
 }
 
-.top-bar, .top-bar ul:not(.submenu):not(.accordion-menu) {
+.top-bar, .title-bar, .top-bar ul:not(.submenu):not(.accordion-menu) {
     -webkit-transition: background-color 100ms linear;
     -ms-transition: background-color 100ms linear;
     transition: background-color 100ms linear;
@@ -113,20 +113,24 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
         .hide-when-stuck {
             display: none;
         }
-        .top-bar {
+        .top-bar, .title-bar {
             background-color: $white;
         }
     }
 }
 .dropdown.menu > li.menu-logo {
     width: 138px;
-    a { padding: 0 1rem; }
+    a { padding: 0 1rem 0 0; }
     img { height: 2rem; }
 }
 
 .dropdown.menu > li.menu-home {
     width: 138px;
     font-weight: bold;
+
+    a {
+        padding-left: 0;
+    }
 }
 
 .dropdown.menu > li.is-dropdown-submenu-parent:not(.is-active) > a::after {
@@ -186,9 +190,14 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
         }
     }
 
+    .top-bar-left {
+        padding-left: 24px;
+    }
+
     .top-bar-right {
         text-align: right;
         flex: 1 1 auto;
+        padding-right: 24px;
     }
 
     .title-bar-right {

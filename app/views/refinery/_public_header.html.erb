@@ -2,7 +2,7 @@
 <div id="topAnchor" style="position: absolute; top: 0; height: 30px;"></div>
 <% end %>
 <div class="top-bar-container" data-sticky-container<% if is_home_page? %> style="position: absolute; height: 70px; top: 30px; width: 100%;"<% end %>>
-  <div class="sticky-topbar sticky" data-sticky data-options="marginTop: 0; stickyOn: large;"<% if is_home_page? %> data-top-anchor="topAnchor:bottom"<% end %>>
+  <div class="sticky-topbar sticky" data-sticky data-options="marginTop: 0;"<% if is_home_page? %> data-top-anchor="topAnchor:bottom"<% end %>>
     <div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="large">
       <div class="title-bar-left">
         <%= link_to home_page_url do %>
@@ -10,10 +10,7 @@
         <% end %>
       </div>
       <div class="title-bar-right">
-        <span class="hide-for-small-only">
-          <%= link_to 'Log In', home_page_url, class: 'button' %>
-        </span>
-
+        <%= link_to 'Log In', home_page_url, class: 'button hide-for-small-only' %>
         <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
 
         <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
@@ -49,7 +46,6 @@
       </div>
       <div class="top-bar-right show-for-large">
         <%= link_to 'Log In', home_page_url, class: 'button' %>
-
         <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
       </div>
     </div>
