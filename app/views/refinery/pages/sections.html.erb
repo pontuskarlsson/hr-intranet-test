@@ -6,118 +6,29 @@
 <% @page.parts.each_with_index do |section, i| %>
   <%-
     background = section.slug[/bg_[a-z]+/]
-    offset = section.slug['_offset']
+    offset = section.slug['offset']
     class_name = case background
                  when 'bg_black' then 'black-section'
                  when 'bg_blue' then 'blue-section'
                  when 'bg_grey' then 'grey-section'
                  when 'bg_gold' then 'gold-section'
                  when 'bg_img' then 'bg-img-section'
+                 when 'bg_whole' then 'bg-whole-section'
                  else ''
                  end
   %>
-  <section id="section<%= i %>" class="section-<%= section.slug %> <%= section.slug['large'] ? 'large-section' : '' %> <%= class_name %>" <% if background == 'bg_img' && (bg_image = page_images.shift).present? %> style="background-image: url(<%= bg_image.image.url %>);"<% end %>>
+  <section id="section<%= i %>" class="section-<%= section.slug %> <%= section.slug['large'] ? 'large-section' : '' %> <%= class_name %>" <% if background =~ /bg_img|bg_whole/ && (bg_image = page_images.shift).present? %> style="background-image: url(<%= bg_image.image.url %>);"<% end %>>
     <div class="grid-container">
       <div class="grid-x grid-padding-x">
 
         <% if section.slug == 'integrations' %>
-          <div class="cell">
-            <%=raw section.body %>
-          </div>
+          <%= render 'refinery/pages/sections/integrations', page: @page, section: section %>
 
-          <div class="cell large-3 medium-4 small-6 text-align-center">
-            <%= image_tag 'logos/logo_zapier', class: 'logo-zapier' %>
-          </div>
-
-          <div class="cell large-3 medium-4 small-6 text-align-center">
-            <%= image_tag 'logos/logo_dropbox', class: 'logo-dropbox' %>
-          </div>
-
-          <div class="cell large-3 medium-4 small-6 text-align-center">
-            <%= image_tag 'logos/logo_google', class: 'logo-google' %>
-          </div>
-
-          <div class="cell large-3 medium-4 small-6 text-align-center">
-            <%= image_tag 'logos/logo_office_365', class: 'logo-office-365' %>
-          </div>
-
-          <div class="cell large-3 medium-4 small-6 text-align-center">
-            <%= image_tag 'logos/logo_slack', class: 'logo-slack' %>
-          </div>
-
-          <div class="cell large-3 medium-4 small-6 text-align-center">
-            <%= image_tag 'logos/logo_asana', class: 'logo-asana' %>
-          </div>
-
-          <div class="cell large-3 medium-4 small-6 text-align-center hide-for-medium-only">
-            <%= image_tag 'logos/logo_trello', class: 'logo-trello' %>
-          </div>
-
-          <div class="cell large-3 medium-4 small-6 text-align-center hide-for-medium-only">
-            <%= image_tag 'logos/logo_xero', class: 'logo-xero' %>
-          </div>
-
-          <% elsif section.slug == 'clients' %>
-            <div class="cell">
-              <%=raw section.body %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_acne_studios', class: 'logo-acne-studios' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_adidas', class: 'logo-adidas' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_bjorn_borg', class: 'logo-bjorn-borg' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_canyon', class: 'logo-canyon' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_columbia', class: 'logo-columbia' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_depalma_workwear', class: 'logo-depalma-workwear' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_eytys', class: 'logo-eytys' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_hunter_boot', class: 'logo-hunter-boot' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_poc', class: 'logo-poc' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_swarovski', class: 'logo-swarovski' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_under_armour', class: 'logo-under-armour' %>
-            </div>
-
-            <div class="cell large-3 medium-4 small-6 text-align-center">
-              <%= image_tag 'logos/logo_wood_wood', class: 'logo-wood-wood' %>
-            </div>
+        <% elsif section.slug == 'clients' %>
+          <%= render 'refinery/pages/sections/clients', page: @page, section: section %>
 
         <% elsif section.slug == 'submenu' %>
-          <div class="cell text-align-center">
-            <ul class="vertical dropdown menu" data-responsive-menu="accordion large-dropdown">
-              <% @page.children.each do |page| %>
-                <li><%= link_to page.title, refinery.url_for(page.url) %></li>
-              <% end %>
-            </ul>
-          </div>
+          <%= render 'refinery/pages/sections/submenu', page: @page, section: section %>
 
         <% elsif section.slug[/resp_img/] %>
           <% page_image = page_images.shift %>

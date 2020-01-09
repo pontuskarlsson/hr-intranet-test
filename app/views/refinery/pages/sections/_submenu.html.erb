@@ -1,0 +1,7 @@
+<div class="cell text-align-center">
+  <ul class="vertical dropdown menu" data-responsive-menu="accordion large-dropdown">
+    <% page.children.each do |child| %>
+      <li><%= link_to child.title, refinery.url_for(child.url) %></li>
+    <% end %>
+  </ul>
+</div>
