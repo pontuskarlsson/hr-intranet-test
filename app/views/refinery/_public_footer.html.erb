@@ -1,19 +1,11 @@
 <div class="grid-container">
   <div class="grid-x">
-    <div class="cell">
-      <h3>Happy Rabbit</h3>
+    <div class="cell medium-3 large-6">
+      <h5>Happy Rabbit</h5>
+      <ul></ul>
     </div>
 
-    <div class="cell medium-2 medium-offset-6">
-      <h5>Resources</h5>
-      <ul>
-        <li><%= link_to 'Journal', '/journal' %></li>
-        <li><%= link_to 'Glossary', '/glossary' %></li>
-        <li><%= link_to 'FAQs', '/faq' %></li>
-      </ul>
-    </div>
-
-    <div class="cell medium-2 end">
+    <div class="cell medium-3 large-2">
       <h5>Company</h5>
       <ul>
         <li><%= link_to 'About', '/about' %></li>
@@ -23,7 +15,18 @@
         <li><%= link_to 'Sustainability', '/sustainability' %></li>
         <li><%= link_to 'Legal', '/legal' %></li>
       </ul>
+    </div>
 
+    <div class="cell medium-3 large-2">
+      <h5>Resources</h5>
+      <ul>
+        <li><%= link_to 'Journal', '/journal' %></li>
+        <li><%= link_to 'Glossary', '/glossary' %></li>
+        <li><%= link_to 'FAQs', '/faq' %></li>
+      </ul>
+    </div>
+
+    <div class="cell medium-3 large-2">
       <h5>Follow Us</h5>
       <p class="follow-us">
         <a href="https://www.linkedin.com/company/happy-rabbit-limited/"><i class="fa fa-linkedin"></i></a>
@@ -33,17 +36,8 @@
       </p>
     </div>
 
-    <div class="cell medium-5 end">
-      <div class="input-group">
-        <input class="input-group-field" type="email" placeholder="Your email...">
-        <div class="input-group-button">
-          <input type="submit" class="button" value="Sign Me Up!">
-        </div>
-      </div>
-    </div>
-
     <div class="cell">
-      <p>© <%= Date.today.year %> Happy Rabbit Group. All rights reserved.</p>
+      <p>© <%= Date.today.year %> Happy Rabbit Group</p>
     </div>
   </div>
 </div>
