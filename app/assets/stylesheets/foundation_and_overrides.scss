@@ -549,7 +549,13 @@ section.page-section {
 }
 
 article.blog_post {
-    section.details {
-        margin-bottom: 2rem;
+    margin-bottom: 2rem;
+
+    header {
+        margin: 2rem 0;
+    }
+
+    img {
+        margin-bottom: 1.5rem;
     }
 }
