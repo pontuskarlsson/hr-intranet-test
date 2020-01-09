@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200102082206) do
+ActiveRecord::Schema.define(version: 20200109062838) do
 
   create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "target_id", null: false
@@ -198,17 +198,28 @@ ActiveRecord::Schema.define(version: 20200102082206) do
   end
 
   create_table "refinery_blog_categories", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "cached_slug"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "slug"
     t.index ["id"], name: "index_refinery_blog_categories_on_id"
+    t.index ["slug"], name: "index_refinery_blog_categories_on_slug"
   end
 
   create_table "refinery_blog_categories_blog_posts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "blog_category_id"
     t.integer "blog_post_id"
     t.index ["blog_category_id", "blog_post_id"], name: "index_blog_categories_blog_posts_on_bc_and_bp"
+  end
+
+  create_table "refinery_blog_category_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "refinery_blog_category_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.string "slug"
+    t.index ["locale"], name: "index_refinery_blog_category_translations_on_locale"
+    t.index ["refinery_blog_category_id"], name: "index_a0315945e6213bbe0610724da0ee2de681b77c31"
   end
 
   create_table "refinery_blog_comments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -218,10 +229,24 @@ ActiveRecord::Schema.define(version: 20200102082206) do
     t.string "email"
     t.text "body"
     t.string "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["blog_post_id"], name: "index_refinery_blog_comments_on_blog_post_id"
     t.index ["id"], name: "index_refinery_blog_comments_on_id"
+  end
+
+  create_table "refinery_blog_post_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "refinery_blog_post_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "body"
+    t.text "custom_teaser"
+    t.string "custom_url"
+    t.string "slug"
+    t.string "title"
+    t.index ["locale"], name: "index_refinery_blog_post_translations_on_locale"
+    t.index ["refinery_blog_post_id"], name: "index_refinery_blog_post_translations_on_refinery_blog_post_id"
   end
 
   create_table "refinery_blog_posts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -229,13 +254,19 @@ ActiveRecord::Schema.define(version: 20200102082206) do
     t.text "body"
     t.boolean "draft"
     t.datetime "published_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer "user_id"
-    t.string "cached_slug"
     t.string "custom_url"
     t.text "custom_teaser"
+    t.string "source_url"
+    t.string "source_url_title"
+    t.integer "access_count", default: 0
+    t.string "slug"
+    t.string "username"
+    t.index ["access_count"], name: "index_refinery_blog_posts_on_access_count"
     t.index ["id"], name: "index_refinery_blog_posts_on_id"
+    t.index ["slug"], name: "index_refinery_blog_posts_on_slug"
   end
 
   create_table "refinery_brand_shows", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -1291,6 +1322,7 @@ ActiveRecord::Schema.define(version: 20200102082206) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.string "title"
     t.index ["name"], name: "index_refinery_settings_on_name"
   end
 
@@ -1844,18 +1876,19 @@ ActiveRecord::Schema.define(version: 20200102082206) do
 
   create_table "taggings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "tag_id"
-    t.integer "taggable_id"
     t.string "taggable_type"
-    t.integer "tagger_id"
+    t.integer "taggable_id"
     t.string "tagger_type"
+    t.integer "tagger_id"
     t.string "context"
     t.datetime "created_at"
-    t.index ["tag_id"], name: "index_taggings_on_tag_id"
-    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
+    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
   end
 
   create_table "tags", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
+    t.integer "taggings_count", default: 0
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "user_settings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

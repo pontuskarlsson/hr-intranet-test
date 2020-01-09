@@ -20,7 +20,6 @@ Rails.application.routes.draw do
   get 'sustainability',     to: 'home#company'
   get 'contact',            to: 'home#company'
 
-  get 'journal',            to: 'home#journal'
   get 'news',               to: 'home#news'
 
   get 'resources',          to: 'home#resources' # Redirect to first sub-page

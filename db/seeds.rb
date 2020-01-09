@@ -41,9 +41,6 @@ Refinery::Shipping::Engine.load_seed
 # Added by Refinery CMS Employees extension
 Refinery::Employees::Engine.load_seed
 
-# Added by Refinery CMS Store extension
-Refinery::Store::Engine.load_seed
-
 # Added by Refinery CMS CustomLists extension
 Refinery::CustomLists::Engine.load_seed
 
@@ -55,3 +52,6 @@ Refinery::QualityAssurance::Engine.load_seed
 
 # Added by Refinery CMS ResourceAuthorizations extension
 Refinery::ResourceAuthorizations::Engine.load_seed
+
+# Added by Refinery CMS Blog engine
+Refinery::Blog::Engine.load_seed

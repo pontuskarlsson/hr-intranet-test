@@ -24,10 +24,6 @@ class HomeController < ApplicationController
     render template: "refinery/pages/#{@page&.view_template.presence || template}"
   end
 
-  def journal
-
-  end
-
   def news
     template = @page&.link_url == "/" ? "home" : "show"
     render template: "refinery/pages/#{@page&.view_template.presence || template}"

@@ -1,7 +1,7 @@
 $footer-height: 670px;
 $footer-medium-height: 374px;
 
-footer {
+footer.page-footer {
     position: absolute;
     clear:both;
     bottom: 0;
@@ -67,7 +67,7 @@ footer {
 }
 
 /* Small view */
-footer {
+footer.page-footer {
     padding: 40px 0;
     margin-top: -$footer-height; /* negative value of footer height */
     height: $footer-height;
@@ -76,7 +76,7 @@ main { padding-bottom: $footer-height; }
 
 /* Medium and up view */
 @media print, screen and (min-width: 40em) {
-    footer {
+    footer.page-footer {
         padding: 60px 0 40px;
         margin-top: -$footer-medium-height; /* negative value of footer height */
         height: $footer-medium-height;
