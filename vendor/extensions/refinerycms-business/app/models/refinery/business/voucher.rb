@@ -53,7 +53,7 @@ module Refinery
           line_item_prepay_move_to.description = "[#{article&.code}{code:#{code}}] issued to #{company_label}, issued: #{valid_from&.to_date&.iso8601}, expires: #{valid_to&.to_date&.iso8601}"
           line_item_prepay_move_to.save || errors.add(:line_item_prepay_move_to_id, 'failed to update')
         end
-        errors.empty?
+        throw :abort if errors.any?
       end
 
       after_save do
@@ -61,7 +61,7 @@ module Refinery
           line_item_prepay_move_from.description = "[#{article&.code}{code:#{code}}] redeemed"
           line_item_prepay_move_from.save || errors.add(:line_item_prepay_move_from_id, 'failed to update')
         end
-        errors.empty?
+        throw :abort if errors.any?
       end
 
       scope :active, -> { where(status: 'active') }

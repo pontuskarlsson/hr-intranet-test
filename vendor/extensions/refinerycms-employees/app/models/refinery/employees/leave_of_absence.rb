@@ -100,7 +100,7 @@ module Refinery
           end
         end
 
-        errors.empty? # Rollback if any errors are present
+        throw :abort if errors.any?
       end
 
       scope :sick_leaves,     -> { where(absence_type_id: TYPE_SICK_LEAVE) }

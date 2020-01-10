@@ -67,7 +67,7 @@ module Refinery
               line_item_sales_move_to_id: nil,
           )
         end
-        errors.empty?
+        throw :abort if errors.any?
       end
 
       scope :in_order,        -> { order(line_item_order: :asc) }

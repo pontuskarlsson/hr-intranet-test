@@ -61,7 +61,9 @@ module Refinery
         end
 
         if contact && contact.code != code
-          contact.update_attributes code: code
+          unless contact.update_attributes code: code
+            throw :abort
+          end
         end
       end
 
