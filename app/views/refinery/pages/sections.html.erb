@@ -33,6 +33,9 @@
         <% elsif section.slug == 'submenu' %>
           <%= render 'refinery/pages/sections/submenu', page: @page, section: section %>
 
+        <% elsif section.slug == 'quality_plans' %>
+          <%= render 'refinery/pages/sections/quality_plans', page: @page, section: section %>
+
         <% elsif section.slug[/resp_img/] %>
           <% page_image = page_images.shift %>
           <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">

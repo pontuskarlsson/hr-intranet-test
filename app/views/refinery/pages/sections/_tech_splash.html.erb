@@ -14,11 +14,13 @@
       function fadeTechImage($el, arr, i) {
         setTimeout(function() {
           $el.css('opacity', 0);
+          var $img = $('<img />').attr('src', arr[i]).css('opacity', 0);
 
           setTimeout(function() {
-            $el.attr('src', arr[i]);
-            $el.css('opacity', 1);
-            fadeTechImage($el, arr, (i + 1) % arr.length);
+            $img.insertAfter($el);
+            $el.remove();
+            $img.css('opacity', 1);
+            fadeTechImage($img, arr, (i + 1) % arr.length);
           }, 200);
         }, 2200);
       }
