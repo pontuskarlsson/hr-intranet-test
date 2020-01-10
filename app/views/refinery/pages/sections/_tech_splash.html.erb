@@ -1,0 +1,48 @@
+<div class="tech-splash">
+  <div class="tech-splash-outer">
+    <div class="tech-splash-inner">
+      <%= image_tag 'animations/Home_Design-Black', class: 'tech-product-areas' %>
+      <%= image_tag 'animations/Home_Tech-Black' %>
+      <%= image_tag 'animations/Home_Sustainability-Black', class: 'tech-services' %>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      function fadeTechImage($el, arr, i) {
+        setTimeout(function() {
+          $el.css('opacity', 0);
+
+          setTimeout(function() {
+            $el.attr('src', arr[i]);
+            $el.css('opacity', 1);
+            fadeTechImage($el, arr, (i + 1) % arr.length);
+          }, 200);
+        }, 2200);
+      }
+
+      fadeTechImage($('.tech-product-areas'), <%= [
+        asset_path('animations/Home_Accessories-Black'),
+        asset_path('animations/Home_Bags-Black'),
+        asset_path('animations/Home_Eyewear-Black'),
+        asset_path('animations/Home_Fashion-Black'),
+        asset_path('animations/Home_Footwear-Black'),
+        asset_path('animations/Home_Sportswear-Black'),
+      ].to_json.html_safe %>, 1);
+
+      setTimeout(function() {
+        fadeTechImage($('.tech-services'), <%= [
+          asset_path('animations/Home_Design-Black'),
+          asset_path('animations/Home_Development-Black'),
+          asset_path('animations/Home_Logistics-Black'),
+          asset_path('animations/Home_Production-Black'),
+          asset_path('animations/Home_Quality-Black'),
+          asset_path('animations/Home_Sourcing-Black'),
+          asset_path('animations/Home_Sustainability-Black'),
+        ].to_json.html_safe %>, 1);
+      }, 1200);
+    });
+  </script>
+<% end %>

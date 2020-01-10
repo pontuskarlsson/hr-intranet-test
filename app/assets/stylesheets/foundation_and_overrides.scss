@@ -583,6 +583,38 @@ section.page-section {
         width: 100%;
         margin-bottom: 2rem;
     }
+
+    .tech-splash {
+        /* 964.04 / (3 * 141 + 2 * 29) */
+        margin: 10vh 10vw 3rem;
+        //max-height: 80vh;
+        position: relative;
+
+        .tech-splash-outer {
+            position: relative;
+            padding-top: 50%;
+
+            .tech-splash-inner {
+                position: absolute;
+                top: 0;
+                height: 100%;
+                width: 100%;
+                text-align: center;
+
+                img {
+                    display: block;
+                    margin: 0 auto 3%;
+                    height: 29.3%;
+
+                    -webkit-transition: opacity 0.2s ease-in-out;
+                    -moz-transition: opacity 0.2s ease-in-out;
+                    -ms-transition: opacity 0.2s ease-in-out;
+                    -o-transition: opacity 0.2s ease-in-out;
+                    transition: opacity 0.2s ease-in-out;
+                }
+            }
+        }
+    }
 }
 
 article.blog_post {
