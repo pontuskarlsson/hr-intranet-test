@@ -25,30 +25,33 @@
 
 </head>
 <body>
-<div id="wrap">
-<%= render '/refinery/public_header' %>
+<div class="off-canvas-wrapper">
+  <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+    <div id="wrap">
+    <%= render '/refinery/public_header' %>
 
-<% if flash.any? %>
-  <div id="message">
-    <% flash.each do |key, value| %>
-      <div class="flash flash_<%= key %>" >
-        <%= value %>
-        <%= link_to 'X', 'javascript:void(0)', class: 'flash_close' %>
+    <% if flash.any? %>
+      <div id="message">
+        <% flash.each do |key, value| %>
+          <div class="flash flash_<%= key %>" >
+            <%= value %>
+            <%= link_to 'X', 'javascript:void(0)', class: 'flash_close' %>
+          </div>
+        <% end %>
       </div>
     <% end %>
+
+
+    <main<% if @page.present? %> class="page-<%= @page.slug %>"<% end %>>
+      <%= yield %>
+    </main>
+
+    </div>
+
+    <footer class="page-footer">
+      <%= render '/refinery/public_footer' -%>
+    </footer>
   </div>
-<% end %>
-
-
-<main<% if @page.present? %> class="page-<%= @page.slug %>"<% end %>>
-  <%= yield %>
-</main>
-
 </div>
-
-<footer class="page-footer">
-  <%= render '/refinery/public_footer' -%>
-</footer>
-
 </body>
 </html>

@@ -1,8 +1,29 @@
+<div class="off-canvas position-right" id="offCanvas" data-off-canvas>
+  <div class="off-canvas-content">
+    <div class="off-canvas-header">
+      <button class="close-button" aria-label="Close menu" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <ul class="vertical menu" data-accordion-menu>
+      <% header_menu_pages.each do |root| %>
+        <li><%= link_to root.title, refinery.url_for(root.url) %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="off-canvas-footer">
+    <%= link_to 'Log In', home_page_url, class: 'button' %>
+    <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
+  </div>
+</div>
+
 <% if is_home_page? %>
 <div id="topAnchor" style="position: absolute; top: 0; height: 30px;"></div>
 <% end %>
 <div class="top-bar-container" data-sticky-container<% if is_home_page? %> style="position: absolute; height: 70px; top: 30px; width: 100%;"<% end %>>
-  <div class="sticky-topbar sticky" data-sticky data-options="marginTop: 0;"<% if is_home_page? %> data-top-anchor="topAnchor:bottom"<% end %>>
+  <div class="sticky-topbar sticky" data-sticky data-sticky-on="small" data-options="marginTop: 0;"<% if is_home_page? %> data-top-anchor="topAnchor:bottom"<% end %>>
     <div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="large">
       <div class="title-bar-left">
         <%= link_to home_page_url do %>
@@ -13,7 +34,7 @@
         <%= link_to 'Log In', home_page_url, class: 'button hide-for-small-only' %>
         <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
 
-        <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
+        <button class="menu-icon" type="button" data-toggle="offCanvas"></button>
       </div>
     </div>
 

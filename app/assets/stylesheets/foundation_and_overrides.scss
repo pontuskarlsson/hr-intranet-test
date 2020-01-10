@@ -63,7 +63,7 @@
 
 html { height: 100%; }
 body, #wrap {min-height: 100%; position: relative;}
-body > #wrap {height: auto; min-height: 100vh;}
+body  #wrap {height: auto; min-height: 100vh;}
 main > .grid-container { margin-bottom: 1rem;}
 .clearfix:after {content: ".";
     display: block;
@@ -83,6 +83,37 @@ h5,h6{text-transform:uppercase; color: $medium-gray; letter-spacing: .8px;}
 
 a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
     text-decoration: none;
+}
+
+.off-canvas {
+    text-align: center;
+
+    .off-canvas-content {
+        padding-bottom: 67px;
+        text-align: center;
+
+        .off-canvas-header {
+            text-align: center;
+            height: 67px;
+        }
+    }
+
+    .off-canvas-footer {
+        height: 67px;
+        position: absolute;
+        clear:both;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .close-button {
+        outline: none;
+    }
+}
+@media print, screen and (min-width: 40em) {
+    .off-canvas {
+        height: 385px;
+    }
 }
 
 .top-bar, .title-bar, .top-bar ul:not(.submenu):not(.accordion-menu) {
