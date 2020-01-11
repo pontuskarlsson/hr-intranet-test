@@ -100,13 +100,27 @@ module Refinery
           end
 
           def dt_filter_column(acc, col)
-            if col[:search][:value].present? && (dt_col = dt_columns[col[:data]]).present?
+            val = col[:search][:value]
+
+            if val.present? && (dt_col = dt_columns[col[:data]]).present?
               klass = dt_col[:class_name] ? dt_col[:class_name].constantize : self
-              if (ar_col = klass.columns_hash[dt_col[:column]]).present? && ar_col.type == :string
+
+              if (ar_col = klass.columns_hash[dt_col[:column]]).present?
                 if dt_col[:assoc]
                   acc = acc.includes(dt_col[:assoc]).where.not(klass.table_name => { ar_col.name => nil })
                 end
-                acc = acc.where("#{klass.table_name}.#{ar_col.name} LIKE ?", "%#{col[:search][:value]}%")
+
+                if ar_col.type == :string
+                  acc = acc.where("#{klass.table_name}.#{ar_col.name} LIKE ?", "%#{val}%")
+
+                elsif ar_col.type == :date
+                  if val[':']
+                    from, to = val.split(':').map(&:to_date)
+                    acc = acc.where(klass.table_name => { ar_col.name => from..to })
+                  else
+                    acc = acc.where(klass.table_name => { ar_col.name => val })
+                  end
+                end
               end
             end
             acc

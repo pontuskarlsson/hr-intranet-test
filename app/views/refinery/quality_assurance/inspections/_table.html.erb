@@ -6,7 +6,7 @@
     <th>Photo</th>
     <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
     <th data-dt-search-select="Pass,Reject,Hold">Result</th>
-    <th data-dt-search-date="true">Insp. Date</th>
+    <th data-dt-search-input="true">Insp. Date</th>
     <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th data-dt-search-input="true">Status</th><%- end %>
     <th data-dt-search-input="true">PO</th>
     <th data-dt-search-input="true">Style</th>
@@ -82,6 +82,7 @@
             Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
           }
         },
+        "serverSide": true,
         "order": [[5, 'desc']],
         columnDefs: [ {
           orderable: false,

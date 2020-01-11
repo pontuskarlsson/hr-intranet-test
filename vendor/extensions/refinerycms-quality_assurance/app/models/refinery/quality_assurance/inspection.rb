@@ -11,11 +11,6 @@ module Refinery
 
       STATUSES = %w(Draft Planned Booked Inspected Notified Alerted Delivered Confirmed)
 
-      DT_COLUMNS = %w(id code company_label supplier_label manufacturer_label inspection_date inspection_type result
-                      po_number po_qty company_project_reference project_code po_qty available_qty inspection_sample_size
-                      inspected_by_name product_code product_description product_colour_variants product_code
-                      product_description status)
-
       serialize :fields, Hash
 
       belongs_to :job, optional: true
@@ -39,7 +34,11 @@ module Refinery
       configure_enumerables :result, RESULTS
       configure_enumerables :inspection_type, INSPECTION_TYPES
 
-      responds_to_data_tables DT_COLUMNS, methods: [:chart_defects, :inspection_photo_image_url, :inspection_photo_preview_url, :inspection_photo_thumb_url]
+      responds_to_data_tables :id, :code, :company_label, :supplier_label, :manufacturer_label, :inspection_date, :inspection_type, :result,
+                              :po_number, :po_qty, :company_project_reference, :project_code, :po_qty, :available_qty, :inspection_sample_size,
+                              :inspected_by_name, :product_code, :product_description, :product_colour_variants, :product_code,
+                              :product_description, :status,
+                              methods: [:chart_defects, :inspection_photo_image_url, :inspection_photo_preview_url, :inspection_photo_thumb_url]
 
       delegate :image_url, :preview_url, :thumb_url, to: :inspection_photo, prefix: true, allow_nil: true
       delegate :code, :company_label, :project_code, :status, to: :job, prefix: true, allow_nil: true

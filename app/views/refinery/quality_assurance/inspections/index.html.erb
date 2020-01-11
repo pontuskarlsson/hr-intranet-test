@@ -1,5 +1,6 @@
 <% content_for :body do %>
   <div class="grid-x grid-padding-x">
+    <% if false %>
     <div class="cell medium-3">
       <ul class="vertical tabs" data-tabs id="example-tabs">
         <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Pass Rate</a></li>
@@ -22,7 +23,7 @@
         </div>
       </div>
     </div>
-
+    <% end %>
 
     <div class="cell" style="margin-top: 2rem;">
       <%= render 'table', table_id: 'js_inspections_data_table', options: {}, inspections: @inspections %>
