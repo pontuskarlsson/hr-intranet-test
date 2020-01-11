@@ -38,16 +38,6 @@ module Refinery
           before { shipment.status = 'not_valid_status' }
           it { is_expected.not_to be_valid }
         end
-
-        context 'when :easypost_object_id is present' do
-          before { shipment.easypost_object_id = 'order_12345678' }
-          it { is_expected.to be_valid }
-        end
-
-        context 'when :easypost_object_id is already present' do
-          before { shipment.easypost_object_id = 'order_12345678'; FactoryGirl.create(:shipment, easypost_object_id: shipment.easypost_object_id) }
-          it { is_expected.not_to be_valid }
-        end
       end
 
       describe '#before_validation' do

@@ -79,6 +79,10 @@ group :development do
   gem 'listen', '~> 3.0'
   gem 'thin', '1.7.2'
   gem 'foreman', '0.78.0'
+
+  # Memory usage benchmarking
+  gem 'derailed_benchmarks'
+  gem 'stackprof'
 end
 
 group :development, :test do

@@ -6,7 +6,6 @@ module Refinery
   module Shipping
     require 'refinery/shipping/engine'
     require 'refinery/shipping/configuration'
-    require 'refinery/shipping/easy_post'
 
     PAGE_PARCELS_URL = '/shipping/parcels'
     PAGE_SHIPMENTS_URL = '/shipping/shipments'

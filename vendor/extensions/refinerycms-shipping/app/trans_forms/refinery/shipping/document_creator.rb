@@ -1,5 +1,3 @@
-require 'easypost'
-
 module Refinery
   module Shipping
     class DocumentCreator < ApplicationTransForm

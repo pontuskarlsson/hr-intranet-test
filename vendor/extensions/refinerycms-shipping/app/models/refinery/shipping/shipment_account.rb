@@ -13,7 +13,6 @@ module Refinery
       validates :contact_id,    presence: true
       validates :description,   presence: true
       validates :account_no,    presence: true
-      #validates :courier,       inclusion: Shipment.easypost_couriers
 
       def contact_name
         @contact_name ||= contact.try(:name)

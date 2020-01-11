@@ -7,17 +7,6 @@ module Refinery
       COURIER_UPS = 'UPS'
       COURIER_DHL = 'DHLExpress'
 
-      COURIERS = { COURIER_SF    => { easypost: false,
-                                      parcels: %w() },
-                   COURIER_FEDEX => { easypost: false,
-                                      parcels: %w() },
-                   COURIER_UPS   => { easypost: true,
-                                      parcels: %w(UPSLetter UPSExpressBox UPS25kgBox UPS10kgBox Tube Pak Pallet SmallExpressBox MediumExpressBox LargeExpressBox) },
-                   COURIER_DHL   => { easypost: true,
-                                      service: 'ExpressWorldwideNonDoc',
-                                      parcels: %w(JumboDocument JumboParcel Document DHLFlyer Domestic ExpressDocument DHLExpressEnvelope JumboBox JumboJuniorDocument JuniorJumboBox JumboJuniorParcel OtherDHLPackaging Parcel YourPackaging) }
-      }.freeze
-
       BILL_TO = ['Sender', 'Receiver', '3rd Party']
 
       #EASYPOST_STATUSES = %w(unknown pre_transit in_transit out_for_delivery return_to_sender delivered failure cancelled)
@@ -127,9 +116,6 @@ module Refinery
 
       validates :from_address_id,         uniqueness: true, allow_nil: true
       validates :to_address_id,           uniqueness: true, allow_nil: true
-      #validates :bill_to,                 inclusion: BILL_TO, if: :shipped_by_easypost?
-      #validates :status,                  inclusion: EASYPOST_STATUSES, if: :shipped_by_easypost?
-      #validates :easypost_object_id,      uniqueness: true, allow_nil: true
       validates :weight_unit,             inclusion: WEIGHT_UNITS, allow_blank: true
       validates :volume_unit,             inclusion: VOLUME_UNITS, allow_blank: true
       validates :rate_currency,           inclusion: CURRENCIES, allow_blank: true
@@ -263,16 +249,6 @@ module Refinery
         created_by_id == user.id || assigned_to_id == user.id
       end
 
-      # def easypost_courier
-      #   {
-      #       'DHL' => 'DHL'
-      #   }[courier_company_label]
-      # end
-
-      # def courier_predefined_packages
-      #   (COURIERS[easypost_courier] || {})[:parcels] || []
-      # end
-
       def international?
         from_address.country != to_address.country
       end
@@ -303,10 +279,6 @@ module Refinery
       def shipped_by_courier?
         courier_company_label.present?
       end
-
-      # def shipped_by_easypost?
-      #   mode == 'easypost'
-      # end
 
       def supplier_different_from_shipper?
         supplier_company_label.present? && supplier_company_label != shipper_company_label
@@ -387,9 +359,6 @@ module Refinery
       end
 
       class << self
-        # def easypost_couriers
-        #   COURIERS.select { |_,v| v[:easypost] }.keys
-        # end
 
         # Only used by background tracker at the moment
         def shipped_not_delivered

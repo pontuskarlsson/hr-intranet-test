@@ -84,17 +84,6 @@ module Refinery
         end
       end
 
-      # def easypost_ship
-      #   @easypost_shipper = Refinery::Shipping::EasypostShipper.new({ shipment: @shipment }.reverse_merge(params[:shipment] || {}))
-      #   if @easypost_shipper.save
-      #     flash[:notice] = 'Shipment successfully Updated.'
-      #     redirect_to refinery.shipping_shipment_path(@shipment)
-      #   else
-      #     present(@page)
-      #     render action: :show
-      #   end
-      # end
-
       def add_document
         @document_creator = ::Refinery::Shipping::DocumentCreator.new_in_model(@shipment)
       end
