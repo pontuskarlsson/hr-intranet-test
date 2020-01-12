@@ -46,6 +46,9 @@ gem 'devise_invitable', '2.0.1'
 # OAuth
 gem 'doorkeeper'
 
+# RestClient
+gem 'rest-client'
+
 # Specify specific version to prevent deprecation messages from 5.1 version
 gem 'globalize', '5.1.0'
 
