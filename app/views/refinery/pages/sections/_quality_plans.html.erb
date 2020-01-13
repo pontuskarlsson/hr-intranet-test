@@ -1,35 +1,42 @@
 <%-
+  pay_as_you_go = {
+    'Single' => { header_title: 'Single', header_number: 1, header_text: "manday voucher", header_promo: '', cta: 'Purchase', features: [
+      { large: '$350', text: 'per voucher' },
+      { large: '$350', text: 'in total' },
+    ] },
+    '5-Pack' => { header_title: '5-Pack', header_number: 5, header_text: "manday vouchers", header_promo: '', cta: 'Purchase', features: [
+      { large: '$350', text: 'per voucher' },
+      { large: '$1,750', text: 'in total' },
+    ] },
+    '10-Pack' => { header_title: '10-Pack', header_number: 10, header_text: "manday vouchers", header_promo: '', cta: 'Purchase', features: [
+      { large: '$350', text: 'per voucher' },
+      { large: '$3,500', text: 'in total' },
+    ] },
+  }
+
   plans = {
-    'Small' => { header_title: 'Small', header_number: 5, header_text: "mandays or more\nper month", header_promo: '', features: [
+    'Small' => { header_title: 'Small', header_number: 5, header_text: "mandays or more\nper month", header_promo: '', cta: 'Get Started', features: [
       { large: '2%', text: 'discount' },
       { large: '$343', text: 'per manday' },
       { large: '$1,715', text: 'and up monthly' },
     ] },
-    'Medium' => { header_title: 'Medium', header_number: 10, header_text: "mandays or more\nper month", header_promo: 'Most popular', features: [
+    'Medium' => { header_title: 'Medium', header_number: 10, header_text: "mandays or more\nper month", header_promo: 'Most popular', cta: 'Get Started', features: [
       { large: '6%', text: 'discount' },
       { large: '$329', text: 'per manday' },
       { large: '$3,290', text: 'and up monthly' },
     ] },
-    'Large' => { header_title: 'Large', header_number: 20, header_text: "mandays or more\nper month", header_promo: '', features: [
+    'Large' => { header_title: 'Large', header_number: 20, header_text: "mandays or more\nper month", header_promo: '', cta: 'Get Started', features: [
       { large: '8%', text: 'discount' },
       { large: '$322', text: 'per manday' },
       { large: '$6,440', text: 'and up monthly' },
     ] },
-    'X-Large' => { header_title: 'X-Large', header_number: 30, header_text: "mandays or more\nper month", header_promo: '', features: [
+    'X-Large' => { header_title: 'X-Large', header_number: 30, header_text: "mandays or more\nper month", header_promo: '', cta: 'Get Started', features: [
       { large: '10%', text: 'discount' },
       { large: '$315', text: 'per manday' },
       { large: '$9,450', text: 'and up monthly' },
     ] },
   }
 %>
-
-<div class="grid-container">
-  <div class="grid-x grid-padding-x">
-    <div class="cell">
-      <%=raw section.body %>
-    </div>
-  </div>
-</div>
 
 <div class="text-align-center">
   <ul class="tabs tabs-no-border" data-tabs id="pricing-tabs">
@@ -39,16 +46,102 @@
 </div>
 
 <div class="tabs-content tabs-no-border" data-tabs-content="pricing-tabs">
-  <div class="tabs-panel is-active" id="panel-pay-as-you-go">
+  <div class="tabs-panel is-active tabs-panel-pay-as-you-go" id="panel-pay-as-you-go">
     <div class="grid-container">
       <div class="grid-x grid-padding-x">
-        <div class="cell">
-          <p>Pay as you go.</p>
+        <div class="cell text-align-center larger-paragraphs">
+          <p>
+            Pay-as-you-go is a good choice if you want to try out our services without long term commitment.
+            Payment by credit card makes it easy to get going.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="show-for-small-only">
+      <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit data-options="autoPlay: false; infiniteWrap: false; swipe: true;">
+        <div class="orbit-wrapper">
+          <div class="orbit-controls">
+            <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
+            <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
+          </div>
+          <ul class="orbit-container">
+            <li class="orbit-slide">
+              <figure class="orbit-figure pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', pay_as_you_go['Single'] %>
+              </figure>
+            </li>
+            <li class="is-active orbit-slide">
+              <figure class="orbit-figure pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', pay_as_you_go['5-Pack'] %>
+              </figure>
+            </li>
+            <li class="orbit-slide">
+              <figure class="orbit-figure pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', pay_as_you_go['10-Pack'] %>
+              </figure>
+            </li>
+          </ul>
+        </div>
+        <nav class="orbit-bullets">
+          <button data-slide="0">
+            <span class="show-for-sr">Small</span>
+          </button>
+          <button class="is-active" data-slide="1">
+            <span class="show-for-sr">Medium</span>
+            <span class="show-for-sr" data-slide-active-label>Current Slide</span>
+          </button>
+          <button data-slide="2">
+            <span class="show-for-sr">Large</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+
+    <div class="show-for-medium">
+      <div class="grid-container">
+        <div class="grid-x grid-x-padding">
+          <div class="cell">
+            <div class="pricing-container">
+              <div class="pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', pay_as_you_go['Single'] %>
+              </div>
+
+              <div class="pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', pay_as_you_go['5-Pack'] %>
+              </div>
+
+              <div class="pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', pay_as_you_go['10-Pack'] %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="cell text-align-center">
+          <p><em>Vouchers are valid for 1 year from the date they were purchased.</em></p>
+          <p><em>Pre-payment by credit only.</em></p>
         </div>
       </div>
     </div>
   </div>
+
+
+  <!-- Monthly Plans Start -->
   <div class="tabs-panel tabs-panel-plans" id="panel-plans">
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="cell text-align-center larger-paragraphs">
+          <p>Our monthly plans offers discount based on your level of commitment. Well suited for business that know the
+          requirements for quality in production and can commit to a continuous volume of work.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="show-for-small-only">
       <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit data-options="autoPlay: false; infiniteWrap: false; swipe: true;">
         <div class="orbit-wrapper">
@@ -81,14 +174,17 @@
         </div>
         <nav class="orbit-bullets">
           <button data-slide="0">
-            <span class="show-for-sr">Basic Plan</span>
+            <span class="show-for-sr">Small</span>
           </button>
           <button class="is-active" data-slide="1">
-            <span class="show-for-sr">Premium Plan</span>
+            <span class="show-for-sr">Medium</span>
             <span class="show-for-sr" data-slide-active-label>Current Slide</span>
           </button>
           <button data-slide="2">
-            <span class="show-for-sr">Premium Plus Plan</span>
+            <span class="show-for-sr">Large</span>
+          </button>
+          <button data-slide="2">
+            <span class="show-for-sr">X-Large</span>
           </button>
         </nav>
       </div>
@@ -116,6 +212,20 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x">
+        <div class="cell text-align-center">
+          <p><em>All plans have a minimum contract period of 9 months and will be automatically renewed month-by-month. A 3 month written notice can be given after 6 months.</em></p>
+          <p><em>A monthly minimum will be charged at the end of every month.
+            If the minimum number of mandays is not used up for a particular month, vouchers will be issued and
+            automatically redeemed in subsequent months.</em></p>
+          <p><em>Issued vouchers are valid as long as the subscription is still active, or for a maximum period of 12
+            months after they were issued.</em></p>
+          <p><em>Payment to be made by bank transfer within 30 days, subject to credit approval.</em></p>
         </div>
       </div>
     </div>

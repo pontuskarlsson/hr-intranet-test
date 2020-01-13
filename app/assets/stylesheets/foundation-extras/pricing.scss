@@ -22,7 +22,7 @@
     }
 }
 
-.tabs-panel-plans {
+.tabs-panel-plans, .tabs-panel-pay-as-you-go {
     padding: 0;
 
     .orbit-previous, .orbit-next {
@@ -49,10 +49,17 @@
     grid-template-columns: repeat(4, calc(25% - 20px));
     grid-template-rows: minmax(150px, 1fr);
     overflow-x: scroll;
+    margin-top: 1rem;
 
     @include breakpoint(medium up) {
         overflow-x: visible;
     }
+}
+
+.tabs-panel-pay-as-you-go .pricing-container {
+    grid-template-columns: repeat(3, calc(33% - 20px));
+    width: 76%;
+    margin: 0 auto;
 }
 
 .pricing-item {
@@ -165,6 +172,7 @@
 
         @include breakpoint(medium only) {
             height: 43px;
+
             .button {
                 position: absolute;
                 top: 0;
@@ -173,6 +181,7 @@
                 height: 100%;
                 margin: 0;
                 padding: 0.85rem 0.5rem;
+                min-width: 110px;
             }
         }
     }
