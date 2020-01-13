@@ -1,3 +1,28 @@
+<%-
+  plans = {
+    'Small' => { header_title: 'Small', header_number: 5, header_text: "mandays or more\nper month", header_promo: '', features: [
+      { large: '2%', text: 'discount' },
+      { large: '$343', text: 'per manday' },
+      { large: '$1,715', text: 'and up monthly' },
+    ] },
+    'Medium' => { header_title: 'Medium', header_number: 10, header_text: "mandays or more\nper month", header_promo: 'Most popular', features: [
+      { large: '6%', text: 'discount' },
+      { large: '$329', text: 'per manday' },
+      { large: '$3,290', text: 'and up monthly' },
+    ] },
+    'Large' => { header_title: 'Large', header_number: 20, header_text: "mandays or more\nper month", header_promo: '', features: [
+      { large: '8%', text: 'discount' },
+      { large: '$322', text: 'per manday' },
+      { large: '$6,440', text: 'and up monthly' },
+    ] },
+    'X-Large' => { header_title: 'X-Large', header_number: 30, header_text: "mandays or more\nper month", header_promo: '', features: [
+      { large: '10%', text: 'discount' },
+      { large: '$315', text: 'per manday' },
+      { large: '$9,450', text: 'and up monthly' },
+    ] },
+  }
+%>
+
 <div class="grid-container">
   <div class="grid-x grid-padding-x">
     <div class="cell">
@@ -9,7 +34,7 @@
 <div class="text-align-center">
   <ul class="tabs tabs-no-border" data-tabs id="pricing-tabs">
     <li class="tabs-title is-active"><a href="#panel-pay-as-you-go" aria-selected="true">Pay-as-you-go</a></li>
-    <li class="tabs-title"><a data-tabs-target="panel-plans" href="#panel-plans">Plans</a></li>
+    <li class="tabs-title"><a data-tabs-target="panel-plans" href="#panel-plans">Monthly Plans</a></li>
   </ul>
 </div>
 
@@ -34,74 +59,22 @@
           <ul class="orbit-container">
             <li class="orbit-slide">
               <figure class="orbit-figure pricing-item">
-                <header class="pricing-header">
-                  <h2>Basic</h2>
-                  <div class="price">
-                    <span class="currency">$</span>
-                    <span class="value">343</span>
-                    <span class="duration">MD</span>
-                  </div>
-                </header>
-
-                <div class="pricing-body">
-                  <ul class="pricing-features">
-                    <li><em>5</em> Man Days (MD)</li>
-                    <li><em>2%</em> Discount</li>
-                    <!-- other features here -->
-                  </ul>
-                </div>
-
-                <footer class="pricing-footer">
-                  <a class="select" href="#">Select</a>
-                </footer>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Small'] %>
               </figure>
             </li>
             <li class="is-active orbit-slide">
               <figure class="orbit-figure pricing-item">
-                <header class="pricing-header">
-                  <h2>Premium</h2>
-                  <div class="price">
-                    <span class="currency">$</span>
-                    <span class="value">336</span>
-                    <span class="duration">MD</span>
-                  </div>
-                </header>
-
-                <div class="pricing-body">
-                  <ul class="pricing-features">
-                    <li><em>10</em> Man Days (MD)</li>
-                    <li><em>4%</em> Discount</li>
-                    <!-- other features here -->
-                  </ul>
-                </div>
-
-                <footer class="pricing-footer">
-                  <a class="select" href="#">Select</a>
-                </footer>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Medium'] %>
               </figure>
             </li>
             <li class="orbit-slide">
               <figure class="orbit-figure pricing-item">
-                <header class="pricing-header">
-                  <h2>Premium Plus</h2>
-                  <div class="price">
-                    <span class="currency">$</span>
-                    <span class="value">329</span>
-                    <span class="duration">MD</span>
-                  </div>
-                </header>
-
-                <div class="pricing-body">
-                  <ul class="pricing-features">
-                    <li><em>20</em> Man Days (MD)</li>
-                    <li><em>6%</em> Discount</li>
-                    <!-- other features here -->
-                  </ul>
-                </div>
-
-                <footer class="pricing-footer">
-                  <a class="select" href="#">Select</a>
-                </footer>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Large'] %>
+              </figure>
+            </li>
+            <li class="orbit-slide">
+              <figure class="orbit-figure pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['X-Large'] %>
               </figure>
             </li>
           </ul>
@@ -127,72 +100,19 @@
           <div class="cell">
             <div class="pricing-container">
               <div class="pricing-item">
-                <header class="pricing-header">
-                  <h2>Basic</h2>
-                  <div class="price">
-                    <span class="currency">$</span>
-                    <span class="value">343</span>
-                    <span class="duration">MD</span>
-                  </div>
-                </header>
-
-                <div class="pricing-body">
-                  <ul class="pricing-features">
-                    <li><em>5</em> Man Days (MD)</li>
-                    <li><em>2%</em> Discount</li>
-                    <!-- other features here -->
-                  </ul>
-                </div>
-
-                <footer class="pricing-footer">
-                  <a class="select" href="#">Select</a>
-                </footer>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Small'] %>
               </div>
 
               <div class="pricing-item">
-                <header class="pricing-header">
-                  <h2>Premium</h2>
-                  <div class="price">
-                    <span class="currency">$</span>
-                    <span class="value">336</span>
-                    <span class="duration">MD</span>
-                  </div>
-                </header>
-
-                <div class="pricing-body">
-                  <ul class="pricing-features">
-                    <li><em>10</em> Man Days (MD)</li>
-                    <li><em>4%</em> Discount</li>
-                    <!-- other features here -->
-                  </ul>
-                </div>
-
-                <footer class="pricing-footer">
-                  <a class="select" href="#">Select</a>
-                </footer>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Medium'] %>
               </div>
 
               <div class="pricing-item">
-                <header class="pricing-header">
-                  <h2>Premium Plus</h2>
-                  <div class="price">
-                    <span class="currency">$</span>
-                    <span class="value">329</span>
-                    <span class="duration">MD</span>
-                  </div>
-                </header>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Large'] %>
+              </div>
 
-                <div class="pricing-body">
-                  <ul class="pricing-features">
-                    <li><em>20</em> Man Days (MD)</li>
-                    <li><em>6%</em> Discount</li>
-                    <!-- other features here -->
-                  </ul>
-                </div>
-
-                <footer class="pricing-footer">
-                  <a class="select" href="#">Select</a>
-                </footer>
+              <div class="pricing-item">
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['X-Large'] %>
               </div>
             </div>
           </div>

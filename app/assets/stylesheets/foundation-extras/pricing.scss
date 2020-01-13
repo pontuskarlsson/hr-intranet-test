@@ -1,8 +1,32 @@
+#pricing-tabs {
+    margin-bottom: 3rem;
+
+    .tabs-title {
+        width: 250px;
+        margin: 0 1rem;
+        border-bottom: 3px solid $medium-gray;
+
+        &.is-active {
+            border-color: $black;
+
+            a, a:focus {
+                color: $black;
+            }
+        }
+
+        a, a:focus {
+            color: $medium-gray;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+    }
+}
+
 .tabs-panel-plans {
     padding: 0;
 
     .orbit-previous, .orbit-next {
-        color: $light-gray;
+        color: $medium-gray;
 
         &:hover {
             background: none;
@@ -22,9 +46,8 @@
 .pricing-container {
     display: grid;
     grid-gap: 20px;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, calc(25% - 20px));
     grid-template-rows: minmax(150px, 1fr);
-    padding: 0 40px;
     overflow-x: scroll;
 
     @include breakpoint(medium up) {
@@ -34,48 +57,58 @@
 
 .pricing-item {
     position: relative;
-    margin: 1rem 0.3rem;
+    margin: 2rem 0.3rem;
     box-shadow: 0 16px 24px -4px rgba(0,0,0,0.16);
 
     .pricing-header {
         height: auto;
-        padding: 1.9em .9em 1.6em;
+        padding: 0 .9em 0;
         pointer-events: auto;
         text-align: center;
         color: #173d50;
         background-color: transparent;
 
-        h2 {
-            font-size: 1.8rem;
-            letter-spacing: 2px;
-            margin-bottom: 3px;
-            font-weight: 700;
-            text-transform: uppercase;
+        p {
+            line-height: 1.2;
         }
 
-        .price {
-            .currency {
-                display: inline-block;
-                margin-top: 10px;
-                vertical-align: top;
-                font-size: 2rem;
-                font-weight: 700;
-                color: rgba(23,61,80,.4);
-            }
-            .value {
-                font-size: 5rem;
-                font-weight: 300;
-            }
-            .duration {
-                font-size: 1.4rem;
-                color: rgba(23,61,80,.4);
-                font-weight: 700;
-                text-transform: uppercase;
+        .pricing-header-promo {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            height: 40px;
+            background-color: $hr-green-color;
+            color: $black;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-                &::before {
-                    content: '/';
-                    margin-right: 2px;
+        .pricing-header-banner {
+            background-color: $hr-blue-color;
+            color: $white;
+            margin: 0 -0.9em 1rem;
+            padding: 1rem;
+
+            h2 {
+                font-size: 1.8rem;
+                margin-bottom: 3px;
+                font-weight: normal;
+
+                @include breakpoint(medium only) {
+                    font-size: 1rem;
                 }
+            }
+        }
+
+        .number {
+            font-size: 7rem;
+            font-weight: bold;
+            line-height: 1;
+
+            @include breakpoint(medium only) {
+                font-size: 3rem;
             }
         }
     }
@@ -92,35 +125,55 @@
             li {
                 float: none;
                 width: auto;
-                padding: 1em;
-                font-size: 1.4rem;
+                padding: 1rem;
+                font-size: 1rem;
                 text-align: center;
-                white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                line-height: 1.2;
 
                 &:nth-of-type(2n+1) {
                     background-color: rgba(23,61,80,.06);
+                }
+
+                .feature-large {
+                    display: block;
+                    font-size: 2rem;
+                    line-height: 1;
+                }
+
+                @include breakpoint(medium only) {
+                    padding: 0.5rem 0.2rem;
+                    font-size: 1rem;
+
+                    .feature-large {
+                        font-size: 1.4rem;
+                    }
                 }
             }
         }
     }
 
     .pricing-footer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 80px;
+        position: relative;
+        height: 93px;
         width: 100%;
 
-        .select {
-            display: block;
-            height: 100%;
-            /* hide button text on mobile */
-            overflow: hidden;
-            text-indent: 100%;
-            white-space: nowrap;
-            color: transparent;
+        .button {
+            margin: 25px 0.5rem;
+        }
+
+        @include breakpoint(medium only) {
+            height: 43px;
+            .button {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0.85rem 0.5rem;
+            }
         }
     }
 }

@@ -1,0 +1,31 @@
+<header class="pricing-header">
+  <% if header_promo.present? %>
+    <div class="pricing-header-promo">
+      <span class="hide-for-medium-only">Most </span>Popular
+    </div>
+  <% end %>
+  <div class="pricing-header-banner">
+    <h2><%= header_title %></h2>
+  </div>
+  <div class="number">
+    <%= header_number %>
+  </div>
+  <%=simple_format header_text %>
+</header>
+
+<div class="pricing-body">
+  <ul class="pricing-features">
+    <% features.each do |feature| %>
+      <li>
+        <% if feature[:large].present? %><span class="feature-large"><%= feature[:large] %></span><% end %>
+        <%= feature[:text] %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<footer class="pricing-footer">
+  <div class="text-align-center">
+    <a class="button primary" href="#">Get Started</a>
+  </div>
+</footer>
