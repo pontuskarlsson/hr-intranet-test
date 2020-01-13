@@ -172,6 +172,13 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
     }
 }
 
+.is-dropdown-submenu {
+    padding: 0.8rem 0;
+    min-width: 140px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-radius: 3px;
+}
+
 .dropdown.menu > li.is-dropdown-submenu-parent:not(.is-active) > a::after {
     border-color: $black transparent transparent;
 }
