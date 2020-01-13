@@ -20,6 +20,10 @@
   <section id="section<%= i %>" class="page-section section-<%= section.slug %> <%= section.slug['large'] ? 'large-section' : '' %> <%= class_name %>" <% if background =~ /bg_img|bg_whole/ && (bg_image = page_images.shift).present? %> style="background-image: url(<%= bg_image.image.url %>);"<% end %>>
     <% if section.slug['tech_splash'] %>
       <%= render 'refinery/pages/sections/tech_splash', page: @page, section: section %>
+
+    <% elsif section.slug == 'quality_plans' %>
+      <%= render 'refinery/pages/sections/quality_plans', page: @page, section: section %>
+
     <% else %>
     <div class="grid-container">
       <div class="grid-x grid-padding-x">
@@ -32,9 +36,6 @@
 
         <% elsif section.slug == 'submenu' %>
           <%= render 'refinery/pages/sections/submenu', page: @page, section: section %>
-
-        <% elsif section.slug == 'quality_plans' %>
-          <%= render 'refinery/pages/sections/quality_plans', page: @page, section: section %>
 
         <% elsif section.slug[/resp_img/] %>
           <% page_image = page_images.shift %>

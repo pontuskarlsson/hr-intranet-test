@@ -1,0 +1,126 @@
+.tabs-panel-plans {
+    padding: 0;
+
+    .orbit-previous, .orbit-next {
+        color: $light-gray;
+
+        &:hover {
+            background: none;
+            color: $hr-blue-color;
+        }
+    }
+
+    .orbit-bullets button {
+        background-color: $medium-gray;
+
+        &.is-active {
+            background-color: $hr-blue-color;
+        }
+    }
+}
+
+.pricing-container {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: minmax(150px, 1fr);
+    padding: 0 40px;
+    overflow-x: scroll;
+
+    @include breakpoint(medium up) {
+        overflow-x: visible;
+    }
+}
+
+.pricing-item {
+    position: relative;
+    margin: 1rem 0.3rem;
+    box-shadow: 0 16px 24px -4px rgba(0,0,0,0.16);
+
+    .pricing-header {
+        height: auto;
+        padding: 1.9em .9em 1.6em;
+        pointer-events: auto;
+        text-align: center;
+        color: #173d50;
+        background-color: transparent;
+
+        h2 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 3px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .price {
+            .currency {
+                display: inline-block;
+                margin-top: 10px;
+                vertical-align: top;
+                font-size: 2rem;
+                font-weight: 700;
+                color: rgba(23,61,80,.4);
+            }
+            .value {
+                font-size: 5rem;
+                font-weight: 300;
+            }
+            .duration {
+                font-size: 1.4rem;
+                color: rgba(23,61,80,.4);
+                font-weight: 700;
+                text-transform: uppercase;
+
+                &::before {
+                    content: '/';
+                    margin-right: 2px;
+                }
+            }
+        }
+    }
+
+    .pricing-body {
+        overflow-x: visible;
+        /* smooth scrolling on touch devices */
+        -webkit-overflow-scrolling: touch;
+
+        .pricing-features {
+            list-style: none;
+            margin: 0;
+
+            li {
+                float: none;
+                width: auto;
+                padding: 1em;
+                font-size: 1.4rem;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+
+                &:nth-of-type(2n+1) {
+                    background-color: rgba(23,61,80,.06);
+                }
+            }
+        }
+    }
+
+    .pricing-footer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 80px;
+        width: 100%;
+
+        .select {
+            display: block;
+            height: 100%;
+            /* hide button text on mobile */
+            overflow: hidden;
+            text-indent: 100%;
+            white-space: nowrap;
+            color: transparent;
+        }
+    }
+}
