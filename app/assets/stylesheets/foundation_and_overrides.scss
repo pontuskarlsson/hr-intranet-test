@@ -56,10 +56,11 @@
 //
 // @include motion-ui-transitions;
 // @include motion-ui-animations;
-
+@import 'cookies_eu';
 @import 'foundation-extras/contact_us';
 @import 'foundation-extras/data_fields';
 @import 'foundation-extras/pricing';
+@import 'foundation-extras/cookies';
 
 
 html { height: 100%; }

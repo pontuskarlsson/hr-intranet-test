@@ -13,5 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require foundation
+//= require cookies_eu
 
 $(function(){ $(document).foundation(); });

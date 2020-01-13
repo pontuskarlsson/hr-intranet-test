@@ -11,6 +11,7 @@ gem 'uglifier', '4.1.20'
 gem 'jquery-rails', '4.3.3'
 gem 'foundation-rails', '6.5.3.0'
 gem 'chartkick'
+gem 'cookies_eu'
 
 # Background worker
 gem 'daemons'

@@ -17,6 +17,7 @@
 //= require Chart.bundle
 //= require chartkick
 //= require_tree ./additional
+//= require cookies_eu
 
 
 $(function(){ $(document).foundation(); });
