@@ -203,8 +203,8 @@ module Portal
         })
 
       ensure
-        file.close
-        file.unlink
+        file&.close
+        file&.unlink
       end
 
       def create_resource!(inspection, url, file_name)
@@ -225,8 +225,8 @@ module Portal
         }).first
 
       ensure
-        file.close
-        file.unlink
+        file&.close
+        file&.unlink
       end
 
       # Return either True, False or nil
@@ -266,7 +266,7 @@ module Portal
 
       def tmp_filename
         [
-            Pathname.new(uri.path).basename,
+            Pathname.new(uri.path).basename.to_s,
             Pathname.new(uri.path).extname
         ]
       end
