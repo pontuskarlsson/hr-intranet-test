@@ -144,14 +144,22 @@ $header-lineheight: 1;
 $header-margin-bottom: 1rem;
 $header-styles: (
   small: (
-    'h1': ('font-size': 24),
-    'h2': ('font-size': 20),
-    'h3': ('font-size': 19),
+    'h1': ('font-size': 48),
+    'h2': ('font-size': 38),
+    'h3': ('font-size': 24),
     'h4': ('font-size': 18),
-    'h5': ('font-size': 17),
-    'h6': ('font-size': 16),
+    'h5': ('font-size': 12),
+    'h6': ('font-size': 12),
   ),
   medium: (
+    'h1': ('font-size': 96),
+    'h2': ('font-size': 48),
+    'h3': ('font-size': 38),
+    'h4': ('font-size': 24),
+    'h5': ('font-size': 18),
+    'h6': ('font-size': 12),
+  ),
+  large: (
     'h1': ('font-size': 174),
     'h2': ('font-size': 48),
     'h3': ('font-size': 38),

@@ -261,6 +261,14 @@ section.page-section {
 
         p {
             font-size: 24pt;
+
+            @include breakpoint(small only){
+                font-size: 18pt;
+            }
+
+            @include breakpoint(medium only){
+                margin-left: 20pt;
+            }
         }
     }
 
@@ -320,6 +328,14 @@ section.page-section {
 
         p {
             font-size: 24pt;
+
+            @include breakpoint(small only){
+                font-size: 18pt;
+            }
+
+            @include breakpoint(medium only){
+                margin-left: 20pt;
+            }
         }
     }
 
@@ -347,7 +363,13 @@ section.page-section {
 
         .larger-paragraphs {
             p {
-                font-size: 24pt;
+                @include breakpoint(small only){
+                    font-size: 18pt;
+                }
+
+                @include breakpoint(medium only){
+                    margin-left: 20pt;
+                }
             }
         }
     }
@@ -355,6 +377,14 @@ section.page-section {
     &.large-section {
         p {
             font-size: 24pt;
+
+            @include breakpoint(small only){
+                font-size: 18pt;
+            }
+
+            @include breakpoint(medium only){
+                margin-left: 20pt;
+            }
         }
     }
 
