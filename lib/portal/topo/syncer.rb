@@ -186,13 +186,13 @@ module Portal
       end
 
       def create_image!(inspection, url, file_name)
-        raise 'Inspection must be saved before creating an image' unless inspection.persisted?
+        file = LocalResource.new(URI.parse(url)).file
 
-        file = Tempfile.new([File.basename(file_name, File.extname(file_name)), File.extname(file_name)]).tap do |file|
-          file.binmode
-          file.write(open(url).read)
-          file.close
-        end
+        # file = Tempfile.new([File.basename(file_name, File.extname(file_name)), File.extname(file_name)]).tap do |file|
+        #   file.binmode
+        #   file.write(open(url).read)
+        #   file.close
+        # end
 
         file.class.class_eval { attr_accessor :original_filename }
         file.original_filename = file_name
@@ -201,23 +201,32 @@ module Portal
             Refinery::QualityAssurance::ROLE_INTERNAL => { inspection_id: inspection.id },
             Refinery::QualityAssurance::ROLE_EXTERNAL => { inspection_id: inspection.id }
         })
+
+      ensure
+        file.close
+        file.unlink
       end
 
       def create_resource!(inspection, url, file_name)
-        file = Tempfile.new([File.basename(file_name, File.extname(file_name)), File.extname(file_name)]).tap do |file|
-          file.binmode
-          file.write(open(url).read)
-          file.close
-        end
+        file = LocalResource.new(URI.parse(url)).file
+
+        # file = Tempfile.new([File.basename(file_name, File.extname(file_name)), File.extname(file_name)]).tap do |file|
+        #   file.binmode
+        #   file.write(open(url).read)
+        #   file.close
+        # end
 
         file.class.class_eval { attr_accessor :original_filename }
         file.original_filename = file_name
 
-        resources = ::Refinery::Resource.create_resources_with_access({ file: file }, {
+        ::Refinery::Resource.create_resources_with_access({ file: file }, {
             Refinery::QualityAssurance::ROLE_INTERNAL => { inspection_id: inspection.id },
             Refinery::QualityAssurance::ROLE_EXTERNAL => { inspection_id: inspection.id }
-        })
-        resources[0]
+        }).first
+
+      ensure
+        file.close
+        file.unlink
       end
 
       # Return either True, False or nil
@@ -229,7 +238,42 @@ module Portal
           false
         end
       end
+    end
 
+    class LocalResource
+      attr_reader :uri
+
+      def initialize(uri)
+        @uri = uri
+      end
+
+      def file
+        @file ||= Tempfile.new(tmp_filename, tmp_folder, encoding: encoding).tap do |f|
+          io.rewind
+          f.write(io.read)
+          f.close
+        end
+      end
+
+      def io
+        @io ||= uri.open
+      end
+
+      def encoding
+        io.rewind
+        io.read.encoding
+      end
+
+      def tmp_filename
+        [
+            Pathname.new(uri.path).basename,
+            Pathname.new(uri.path).extname
+        ]
+      end
+
+      def tmp_folder
+        '/tmp'
+      end
     end
   end
 end
