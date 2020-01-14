@@ -2,7 +2,7 @@
   <ul class="dropdown menu" data-dropdown-menu>
     <li class="has-submenu">
       <a href="#">
-        <% if current_authentication_devise_user.has_unopened_notifications? %>
+        <% if false && current_authentication_devise_user.has_unopened_notifications? %>
           <span class="notification_count"><span class="unopened"><%= current_authentication_devise_user.unopened_notification_count %></span></span>
         <% end %>
         <%= current_authentication_devise_user.full_name %>
