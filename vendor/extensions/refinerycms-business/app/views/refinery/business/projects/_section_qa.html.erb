@@ -36,69 +36,98 @@
       </tbody>
     </table>
 
-    <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
-      <% if section.quality_assurance_jobs.any? %>
-        <table class="display responsive nowrap dt-project-billables" style="width: 100%;">
-          <thead>
+    <% if section.quality_assurance_jobs.any? %>
+      <table class="display responsive nowrap dt-project-billables" style="width: 100%;">
+        <thead>
+        <tr>
+          <th>Billable</th>
+          <th>Date</th>
+          <th data-dt-search-input="true">Assigned To</th>
+          <th data-dt-search-input="true">Supplier</th>
+          <th data-dt-search-input="true">Invoice</th>
+          <th>Unit Price</th>
+          <th>Unit Disc.</th>
+          <th>Tot. Cost</th>
+          <th>Alloc. %</th>
+          <th>Alloc. Cost</th>
+          <th>Job(s)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% section.jobs_and_allocations.each_pair do |billable, allocations| %>
           <tr>
-            <th>Billable</th>
-            <th>Date</th>
-            <th data-dt-search-input="true">Assigned To</th>
-            <th data-dt-search-input="true">Supplier</th>
-            <th data-dt-search-input="true">Invoice</th>
-            <th>Unit Price</th>
-            <th>Unit Disc.</th>
-            <th>Tot. Cost</th>
-            <th>Alloc. %</th>
-            <th>Alloc. Cost</th>
-            <th>Job(s)</th>
-          </tr>
-          </thead>
-          <tbody>
-          <% section.jobs_and_allocations.each_pair do |billable, allocations| %>
-            <tr>
-              <td>
-                <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
-                  <%= link_to billable.title, refinery.business_billable_path(billable) %>
-                <% else %>
-                  <%= billable.title %>
-                <% end %>
-                </td>
-              <td><%= billable.billable_date %></td>
-              <td><%= billable.assigned_to_label %></td>
-              <td><%= billable.supplier_label %></td>
-              <td>
-                <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
-                  <%= link_to billable.invoice_label, refinery.business_invoice_path(billable.invoice) %>
-                <% else %>
-                  <%= billable.invoice_label %>
-                <% end %>
+            <td>
+              <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
+                <%= link_to billable.title, refinery.business_billable_path(billable) %>
+              <% else %>
+                <%= billable.title %>
+              <% end %>
               </td>
-              <td><%= billable.unit_price %></td>
-              <td><%= billable.discount %></td>
-              <td><%= billable.total_cost %></td>
-              <%- allocated_perc = Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs -%>
-              <td><%=number_to_human allocated_perc * 100 %>%</td>
-              <td><%= allocated_perc * billable.total_cost %></td>
-              <td>
-                <p><%= allocations[:jobs].count %> Jobs. <a data-toggle="panel<%= billable.id %>">Show</a></p>
+            <td><%= billable.billable_date %></td>
+            <td><%= billable.assigned_to_label %></td>
+            <td><%= billable.supplier_label %></td>
+            <td>
+              <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
+                <%= link_to billable.invoice_label, refinery.business_invoice_path(billable.invoice) %>
+              <% else %>
+                <%= billable.invoice_label %>
+              <% end %>
+            </td>
+            <td><%= billable.unit_price %></td>
+            <td><%= billable.discount %></td>
+            <td><%= billable.total_cost %></td>
+            <%- allocated_perc = Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs -%>
+            <td><%=number_to_human allocated_perc * 100 %>%</td>
+            <td><%= allocated_perc * billable.total_cost %></td>
+            <td>
+              <p><%= allocations[:jobs].count %> Jobs. <a data-toggle="panel<%= billable.id %>">Show</a></p>
 
-                <div class="hidden" id="panel<%= billable.id %>" data-toggler=".hidden">
-                  <% allocations[:jobs].each_with_index do |job, i| %>
-                    <p><%= link_to job.title, refinery.quality_assurance_job_path(job) %></p>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-      <% end %>
+              <div class="hidden" id="panel<%= billable.id %>" data-toggler=".hidden">
+                <% allocations[:jobs].each_with_index do |job, i| %>
+                  <p><%= link_to job.title, refinery.quality_assurance_job_path(job) %></p>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
     <% end %>
   </div>
 
   <div class="tabs-panel" id="qa-panel2">
     <h5>Allocated Cost by supplier</h5>
+
+    <%= column_chart [], stacked: true, id: 'js-qa-supplier-chart', colors: ['#48A9A6', '#C1666B', '#D4B483'], background_colors: ['#48A9A6', '#C1666B', '#D4B483'], thousands: ',' %>
+
+    <% content_for :javascripts do %>
+      <script type="text/javascript">
+        $(function() {
+          $(document).on('draw.dt', '.dt-project-supplier-summary', function() {
+            var $dt = $('.dt-project-supplier-summary').dataTable();
+            var chart = Chartkick.charts['js-qa-supplier-chart'];
+
+            var supplierIdx = {};
+            var nextIdx = 0;
+            var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
+              console.log(dataRow)
+              if (typeof supplierIdx[dataRow[0]] == 'undefined') {
+                supplierIdx[dataRow[0]] = nextIdx;
+                acc[0].data.push([dataRow[0], 0]);
+                nextIdx++;
+              }
+
+              acc[0].data[supplierIdx[dataRow[0]]][1] += (parseFloat(dataRow[3]) || 0);
+
+              return acc;
+            }, [{ name: 'Tot. Alloc. Cost', data: [] }]);
+
+            chart.updateData(data);
+          });
+        });
+      </script>
+    <% end %>
+
 
     <% if section.quality_assurance_jobs.any? %>
       <table class="display responsive nowrap dt-project-supplier-summary" style="width: 100%;">
@@ -118,7 +147,7 @@
             <td><%= supplier_label %></td>
             <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + billable.qty } %></td>
             <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + allocations[:jobs].count } %></td>
-            <td class="text-align-right"><%=number_to_currency jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
+            <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
           </tr>
         <% end %>
         </tbody>
