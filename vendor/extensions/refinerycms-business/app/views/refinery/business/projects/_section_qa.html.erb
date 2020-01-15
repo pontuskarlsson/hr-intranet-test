@@ -29,7 +29,7 @@
   </tbody>
 </table>
 
-<% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+<% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
   <% if section.quality_assurance_jobs.any? %>
     <table>
       <thead>
