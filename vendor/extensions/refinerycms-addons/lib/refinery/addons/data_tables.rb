@@ -88,7 +88,12 @@ module Refinery
             data = filtered
 
             if params[:start].present? && params[:length].present?
-              data = data.offset(params[:start]).limit(params[:length])
+              length = params[:length].to_i
+              start = params[:start].to_i
+
+              if length != -1
+                data = data.offset([0, start].max).limit([0, length].max)
+              end
             end
 
             {
