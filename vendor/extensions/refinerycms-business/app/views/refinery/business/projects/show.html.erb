@@ -1,19 +1,61 @@
 <% content_for :body do %>
-  <div class="grid-x grid-padding-x">
-    <div class="cell">
-      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
-        <%= render 'add_section_to_project', project: @project %>
-      <% end %>
+  <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+    <%= render 'add_section_to_project', section: @section %>
+  <% end %>
 
-      <h2><%= @project.code %></h2>
-      <h5><%= @project.company_label %></h5>
-      <h5><%= @project.description %></h5>
+  <h3><%= @project.code %></h3>
+  <section class="contact-card">
 
-      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
-        <p><%= link_to 'Edit', refinery.edit_business_project_path(@project), class: 'button' %></p>
+    <h3>Project Details</h3>
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th>Code</th>
+        <td><%= @project.code %></td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td><%= @project.description %></td>
+      </tr>
+      <tr>
+        <th>Company</th>
+        <td>
+          <% if @project.company.present? %>
+            <%= link_to @project.company_label, refinery.business_company_path(@project.company) %>
+          <% else %>
+            <%= @project.company_label %>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>Reference</th>
+        <td><%= @project.company_reference %></td>
+      </tr>
+      <tr>
+        <th>Timeline</th>
+        <td><%= @project.start_date %> - <%= @project.end_date || 'Current' %></td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td><%= @project.display_status %></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+      <p><%= link_to 'Edit', refinery.edit_business_project_path(@project), class: 'button' %></p>
+    <% end %>
+
+    <% if @project.sections.any? %>
+      <% @project.sections.each_with_index do |section, i| %>
+        <h3>Project Scope: <%= section.section_type %></h3>
+        <%= render "section_#{section.section_type.downcase}", section: section %>
       <% end %>
-    </div>
-  </div>
+    <% else %>
+      <p>No sections added.</p>
+    <% end %>
+
+  </section>
 <% end %>
 
 <%= render '/refinery/content_page' %>
