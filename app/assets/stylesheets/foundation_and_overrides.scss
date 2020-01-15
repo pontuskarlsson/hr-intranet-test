@@ -438,6 +438,16 @@ section.page-section {
         height: 100vh;
         background-position: center center;
         background-size: cover;
+
+        .arrow-down {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+
+            border-top: 15px solid $black;
+            margin-top: 10px;
+        }
     }
 
     &.who-we-are {
