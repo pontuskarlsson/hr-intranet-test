@@ -38,14 +38,14 @@
 
     <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
       <% if section.quality_assurance_jobs.any? %>
-        <table class="dt-project-billables">
+        <table class="display responsive nowrap dt-project-billables" style="width: 100%;">
           <thead>
           <tr>
             <th>Billable</th>
             <th>Date</th>
-            <th>Assigned To</th>
-            <th>Supplier</th>
-            <th>Invoice</th>
+            <th data-dt-search-input="true">Assigned To</th>
+            <th data-dt-search-input="true">Supplier</th>
+            <th data-dt-search-input="true">Invoice</th>
             <th>Unit Price</th>
             <th>Unit Disc.</th>
             <th>Tot. Cost</th>
@@ -101,7 +101,7 @@
     <h5>Allocated Cost by supplier</h5>
 
     <% if section.quality_assurance_jobs.any? %>
-      <table>
+      <table class="display responsive nowrap dt-project-supplier-summary" style="width: 100%;">
         <thead>
         <tr>
           <th>Supplier</th>
@@ -132,7 +132,7 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
-      var dt = $('.dt-project-billables').DataTable({
+      var dtBill = $('.dt-project-billables').DataTable({
         "responsive": true,
         "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'B><'medium-6 columns cell'f>r>" +
           "t" +
@@ -141,6 +141,19 @@
           'excelHtml5'
         ]
       });
+
+      var dtSupp = $('.dt-project-supplier-summary').DataTable({
+        "responsive": true,
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'B><'medium-6 columns cell'f>r>" +
+          "t" +
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5'
+        ]
+      });
+
+      initDataTable(dtBill);
+      initDataTable(dtSupp);
     });
   </script>
 <% end %>
