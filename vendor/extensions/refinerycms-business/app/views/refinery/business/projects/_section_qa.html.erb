@@ -37,9 +37,14 @@
         <th>Billable</th>
         <th>Date</th>
         <th>Assigned To</th>
+        <th>Supplier</th>
         <th>Invoice</th>
-        <th>Allocated Here</th>
-        <th>Job</th>
+        <th>Unit Price</th>
+        <th>Unit Disc.</th>
+        <th>Tot. Cost</th>
+        <th>Alloc. %</th>
+        <th>Alloc. Cost</th>
+        <th>Job(s)</th>
       </tr>
       </thead>
       <tbody>
@@ -48,6 +53,7 @@
           <td><%= link_to billable.title, refinery.business_billable_path(billable) %></td>
           <td><%= billable.billable_date %></td>
           <td><%= billable.assigned_to_label %></td>
+          <td><%= billable.supplier_label %></td>
           <td>
             <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
               <%= link_to billable.invoice_label, refinery.business_invoice_path(billable.invoice) %>
@@ -55,13 +61,20 @@
               <%= billable.invoice_label %>
             <% end %>
           </td>
+          <td><%=number_to_currency billable.unit_price %></td>
+          <td><%=number_to_currency billable.discount %></td>
+          <td><%=number_to_currency billable.total_cost %></td>
+          <%- allocated_perc = Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs -%>
+          <td><%=number_to_human allocated_perc * 100 %>%</td>
+          <td><%=number_to_currency allocated_perc * billable.total_cost %></td>
           <td>
-            <%= number_to_human Rational(100) * allocations[:jobs].count / billable.total_no_of_jobs %>%
-          </td>
-          <td>
-            <% allocations[:jobs].each_with_index do |job, i| %>
-            <p><%= link_to job.title, refinery.quality_assurance_job_path(job) %></p>
-            <% end %>
+            <p><%= allocations[:jobs].count %> Jobs. <a data-toggle="panel<%= billable.id %>">Show</a></p>
+
+            <div class="hidden" id="panel<%= billable.id %>" data-toggler=".hidden">
+              <% allocations[:jobs].each_with_index do |job, i| %>
+                <p><%= link_to job.title, refinery.quality_assurance_job_path(job) %></p>
+              <% end %>
+            </div>
           </td>
         </tr>
       <% end %>
