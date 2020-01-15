@@ -1,33 +1,52 @@
-<table class="cc-table">
-  <tbody>
-  <tr>
-    <th style="width: 120px;">Type</th>
-    <td><%= section.section_type %></td>
-  </tr>
-  <tr>
-    <th>Description</th>
-    <td><%= section.description %></td>
-  </tr>
-  <tr>
-      <th>No. of Billables</th>
-    <td>
-      Total of <%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days
-      <% if (not_invoiced = section.jobs_and_allocations.keys.select { |b| b.invoice.nil? }).any? %>
-        (<%=number_to_human not_invoiced.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days not invoiced)
+<div class="grid-x grid-x-padding">
+  <div class="cell medium-6">
+    <table class="cc-table">
+      <tbody>
+      <tr>
+        <th style="width: 120px;">Type</th>
+        <td><%= section.section_type %></td>
+      </tr>
+      <tr>
+        <th>Description</th>
+        <td><%= section.description %></td>
+      </tr>
+      <tr>
+        <th>No. of Billables</th>
+        <td>
+          Total of <%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days
+          <% if (not_invoiced = section.jobs_and_allocations.keys.select { |b| b.invoice.nil? }).any? %>
+            (<%=number_to_human not_invoiced.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days not invoiced)
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th>No. of Jobs</th>
+        <td>
+          <p>
+            <%= section.quality_assurance_jobs.count %>,
+            <%= link_to 'View All', refinery.quality_assurance_jobs_path(section_id: section.id) %>
+          </p>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cell medium-6">
+    <h5>Allocated Cost by supplier</h5>
+
+    <table>
+      <tbody>
+      <% section.jobs_and_allocations.group_by { |billable, _| billable.supplier_label }.each_pair do |supplier_label, jobs_and_allocations| %>
+        <tr>
+          <th style="text-align: left;"><%= supplier_label %></th>
+          <td><%=number_to_currency jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
+        </tr>
       <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th>No. of Jobs</th>
-    <td>
-      <p>
-        <%= section.quality_assurance_jobs.count %>,
-        <%= link_to 'View All', refinery.quality_assurance_jobs_path(section_id: section.id) %>
-      </p>
-    </td>
-  </tr>
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
   <% if section.quality_assurance_jobs.any? %>
