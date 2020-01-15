@@ -50,14 +50,16 @@ module Refinery
       validates :qty_unit,      inclusion: PRODUCT_UNITS,     if: :billable_type_is_product?
       validates :qty_unit,      inclusion: TIME_UNITS,        if: :billable_type_is_time?
       validates :status,        inclusion: STATUSES
+      validates :unit_price,    numericality: { greater_than_or_equal_to: 0.0 }
+      validates :discount,      numericality: { less_than_or_equal_to: 0.0 }
+      validates :total_cost,    numericality: { greater_than_or_equal_to: 0.0 }
 
       before_validation do
-        if line_item_sales.present?
-          self.unit_price = line_item_sales.unit_amount
-          self.unit_price += line_item_discount.unit_amount if line_item_discount.present?
-        end
+        self.unit_price = line_item_sales.unit_amount if line_item_sales.present?
+        self.discount = line_item_discount.unit_amount if line_item_discount.present?
 
-        self.total_cost = qty * unit_price * (1.0 - discount) if qty.present? && unit_price.present?
+        # Discount is a negative value if present so add it to unit price in calculations
+        self.total_cost = qty * (unit_price + discount) if qty.present? && unit_price.present?
         
         if invoice.present?
           if invoice.status == 'PAID'
