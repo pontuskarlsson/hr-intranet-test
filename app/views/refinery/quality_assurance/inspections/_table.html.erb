@@ -76,6 +76,10 @@
           selector: 'td:nth-child(2)'
         },
         "paging":         true,
+        "lengthMenu": [
+          [ 10, 25, 50, 100, -1 ],
+          [ '10', '25', '50', '100', 'All' ]
+        ],
         "ajax": {
           "url": "<%= refinery.quality_assurance_inspections_path %>",
           "data": function(d) {
