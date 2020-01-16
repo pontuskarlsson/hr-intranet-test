@@ -44,7 +44,7 @@
           <th>Date</th>
           <th data-dt-search-input="true">Assigned To</th>
           <th data-dt-search-input="true">Supplier</th>
-          <th data-dt-search-input="true">Invoice</th>
+          <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %><th data-dt-search-input="true">Invoice</th><% end %>
           <th>Unit Price</th>
           <th>Unit Disc.</th>
           <th>Tot. Cost</th>
@@ -66,13 +66,15 @@
             <td><%= billable.billable_date %></td>
             <td><%= billable.assigned_to_label %></td>
             <td><%= billable.supplier_label %></td>
-            <td>
-              <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
-                <%= link_to billable.invoice_label, refinery.business_invoice_path(billable.invoice) %>
-              <% else %>
-                <%= billable.invoice_label %>
-              <% end %>
-            </td>
+            <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
+              <td>
+                <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
+                  <%= link_to billable.invoice_label, refinery.business_invoice_path(billable.invoice) %>
+                <% else %>
+                  <%= billable.invoice_label %>
+                <% end %>
+              </td>
+            <% end %>
             <td class="text-align-right"><%=number_to_currency billable.unit_price, unit: '' %></td>
             <td class="text-align-right"><%=number_to_currency billable.discount, unit: '' %></td>
             <td class="text-align-right"><%=number_to_currency billable.total_cost, unit: '' %></td>
@@ -124,6 +126,26 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
+      $(document).on('draw.dt', '.dt-project-supplier-summary', function() {
+        var $dt = $('.dt-project-supplier-summary').dataTable();
+        var chart = Chartkick.charts['js-qa-supplier-chart'];
+
+        var supplierIdx = {};
+        var nextIdx = 0;
+        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
+          if (typeof supplierIdx[dataRow[0]] == 'undefined') {
+            supplierIdx[dataRow[0]] = nextIdx;
+            acc[0].data.push([dataRow[0], 0]);
+            nextIdx++;
+          }
+
+          acc[0].data[supplierIdx[dataRow[0]]][1] += (parseFloat(dataRow[3]) || 0);
+
+          return acc;
+        }, [{ name: 'Tot. Alloc. Cost', data: [] }]);
+        chart.updateData(data);
+      });
+
       var dtBill = $('.dt-project-billables').DataTable({
         "responsive": true,
         "order": [[1, 'desc']],
@@ -147,27 +169,6 @@
 
       initDataTable(dtBill);
       initDataTable(dtSupp);
-
-      $(document).on('draw.dt', '.dt-project-supplier-summary', function() {
-        var $dt = $('.dt-project-supplier-summary').dataTable();
-        var chart = Chartkick.charts['js-qa-supplier-chart'];
-
-        var supplierIdx = {};
-        var nextIdx = 0;
-        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
-          if (typeof supplierIdx[dataRow[0]] == 'undefined') {
-            supplierIdx[dataRow[0]] = nextIdx;
-            acc[0].data.push([dataRow[0], 0]);
-            nextIdx++;
-          }
-
-          acc[0].data[supplierIdx[dataRow[0]]][1] += (parseFloat(dataRow[3]) || 0);
-
-          return acc;
-        }, [{ name: 'Tot. Alloc. Cost', data: [] }]);
-
-        chart.updateData(data);
-      });
     });
   </script>
 <% end %>
