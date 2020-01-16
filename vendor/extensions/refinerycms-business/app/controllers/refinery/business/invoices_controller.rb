@@ -12,7 +12,7 @@ module Refinery
       helper_method :invoice_billables_form, :invoice_items_build_form
 
       def index
-        @invoices = @invoices.from_params(params).order(updated_date_utc: :desc)
+        @invoices = @invoices.from_params(params)
 
         respond_to do |format|
           format.html { present(@page) }

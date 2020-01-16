@@ -68,22 +68,16 @@ module Refinery
 
             column_filter = method(:dt_filter_column)
             filtered = params[:columns].values.inject(filtered, &column_filter)
-            # filtered = params[:columns].values.inject(filtered) do |acc, col|
-            #   if col[:search][:value].present? && (ar_col = columns_hash[col[:data]]).present?
-            #     if ar_col.type == :string
-            #       acc = acc.where("#{ar_col.name} LIKE ?", "%#{col[:search][:value]}%")
-            #     end
-            #   end
-            #   acc
-            # end
 
-            filtered = Hash(params.permit(:order)).values.inject(filtered) { |s, order|
+            if params[:order]
               begin
-                s.order(params[:columns][order['column']]['data'] => order['dir'])
+                filtered = params[:order].to_unsafe_hash.values.inject(filtered) { |s, order|
+                  s.order(params[:columns][order['column']]['data'] => order['dir'])
+                }
               rescue StandardError => e
-                s
+                nil
               end
-            }
+            end
 
             data = filtered
 

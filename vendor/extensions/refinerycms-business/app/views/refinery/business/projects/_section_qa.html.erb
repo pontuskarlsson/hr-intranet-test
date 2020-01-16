@@ -92,35 +92,6 @@
 
     <%= column_chart [], stacked: true, id: 'js-qa-supplier-chart', colors: ['rgb(86, 106, 229)'], background_colors: ['rgb(86, 106, 229)'], thousands: ',' %>
 
-    <% content_for :javascripts do %>
-      <script type="text/javascript">
-        $(function() {
-          $(document).on('draw.dt', '.dt-project-supplier-summary', function() {
-            var $dt = $('.dt-project-supplier-summary').dataTable();
-            var chart = Chartkick.charts['js-qa-supplier-chart'];
-
-            var supplierIdx = {};
-            var nextIdx = 0;
-            var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
-              console.log(dataRow)
-              if (typeof supplierIdx[dataRow[0]] == 'undefined') {
-                supplierIdx[dataRow[0]] = nextIdx;
-                acc[0].data.push([dataRow[0], 0]);
-                nextIdx++;
-              }
-
-              acc[0].data[supplierIdx[dataRow[0]]][1] += (parseFloat(dataRow[3]) || 0);
-
-              return acc;
-            }, [{ name: 'Tot. Alloc. Cost', data: [] }]);
-
-            chart.updateData(data);
-          });
-        });
-      </script>
-    <% end %>
-
-
     <% if section.quality_assurance_jobs.any? %>
       <table class="display responsive nowrap dt-project-supplier-summary" style="width: 100%;">
         <thead>
@@ -175,6 +146,27 @@
 
       initDataTable(dtBill);
       initDataTable(dtSupp);
+
+      $(document).on('draw.dt', '.dt-project-supplier-summary', function() {
+        var $dt = $('.dt-project-supplier-summary').dataTable();
+        var chart = Chartkick.charts['js-qa-supplier-chart'];
+
+        var supplierIdx = {};
+        var nextIdx = 0;
+        var data = $dt.api().rows({ search: 'applied' }).data().reduce(function(acc, dataRow) {
+          if (typeof supplierIdx[dataRow[0]] == 'undefined') {
+            supplierIdx[dataRow[0]] = nextIdx;
+            acc[0].data.push([dataRow[0], 0]);
+            nextIdx++;
+          }
+
+          acc[0].data[supplierIdx[dataRow[0]]][1] += (parseFloat(dataRow[3]) || 0);
+
+          return acc;
+        }, [{ name: 'Tot. Alloc. Cost', data: [] }]);
+
+        chart.updateData(data);
+      });
     });
   </script>
 <% end %>
