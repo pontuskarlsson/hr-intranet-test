@@ -19,7 +19,7 @@
         <th>No. of Billables</th>
         <td>
           Total of <%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days
-          <% if (not_invoiced = section.jobs_and_allocations.keys.select { |b| b.invoice.nil? }).any? %>
+          <% false && if (not_invoiced = section.jobs_and_allocations.keys.select { |b| b.invoice.nil? }).any? %>
             (<%=number_to_human not_invoiced.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days not invoiced)
           <% end %>
         </td>
@@ -73,13 +73,13 @@
                 <%= billable.invoice_label %>
               <% end %>
             </td>
-            <td class="text-align-right"><%= billable.unit_price %></td>
-            <td class="text-align-right"><%= billable.discount %></td>
-            <td class="text-align-right"><%= billable.total_cost %></td>
+            <td class="text-align-right"><%=number_to_currency billable.unit_price, unit: '' %></td>
+            <td class="text-align-right"><%=number_to_currency billable.discount, unit: '' %></td>
+            <td class="text-align-right"><%=number_to_currency billable.total_cost, unit: '' %></td>
             <%- allocated_perc = Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs -%>
             <td class="text-align-right"><%=number_to_human allocated_perc * 100 %>%</td>
-            <td class="text-align-right"><%= allocated_perc * billable.total_cost %></td>
-            <td class="text-align-right"><%= allocations[:jobs].count %></td>
+            <td class="text-align-right"><%=number_to_currency allocated_perc * billable.total_cost, unit: '' %></td>
+            <td class="text-align-right"><%=number_with_delimiter allocations[:jobs].count %></td>
           </tr>
         <% end %>
         </tbody>
@@ -108,9 +108,9 @@
         }.each_pair do |supplier_label, jobs_and_allocations| %>
           <tr>
             <td><%= supplier_label %></td>
-            <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + billable.qty } %></td>
-            <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + allocations[:jobs].count } %></td>
-            <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
+            <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + billable.qty }, delimiter: ',', strip_insignificant_zeros: true %></td>
+            <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + allocations[:jobs].count }, delimiter: ',', strip_insignificant_zeros: true %></td>
+            <td class="text-align-right"><%=number_to_currency jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost }, unit: '' %></td>
           </tr>
         <% end %>
         </tbody>
@@ -126,6 +126,7 @@
     $(function() {
       var dtBill = $('.dt-project-billables').DataTable({
         "responsive": true,
+        "order": [[1, 'desc']],
         "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'B><'medium-6 columns cell'f>r>" +
           "t" +
           "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
