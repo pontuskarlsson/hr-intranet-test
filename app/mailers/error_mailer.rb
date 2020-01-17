@@ -3,12 +3,14 @@ class ErrorMailer < ApplicationMailer
   def error_email(error, additional = [])
     @error = error
     @additional = additional
-    mail(to: 'daniel.viklund@happyrabbit.com', subject: 'An error occoured on the Intranet')
+    mail(to: 'daniel.viklund@happyrabbit.com', subject: 'An error occoured on the Portal')
   end
 
-  def notification_email(msgs)
+  def notification_email(msgs, params = nil)
     @msgs = msgs
-    mail(to: 'daniel.viklund@happyrabbit.com', subject: 'Intranet: Notification')
+    @params = params
+    @filename = params && params[:file].respond_to?(:original_filename) && params[:file].original_filename || 'N/A'
+    mail(to: 'daniel.viklund@happyrabbit.com', subject: 'Portal: Notification')
   end
 
   def webhook_error_email(error, params)

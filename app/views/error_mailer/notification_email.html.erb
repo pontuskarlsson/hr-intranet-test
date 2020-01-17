@@ -1,0 +1,15 @@
+<h1>Portal Notification</h1>
+<p>
+  The notification message is:<br />
+  <% @msgs.each do |msg| %>
+    <%= msg %><br/>
+  <% end %>
+</p>
+<p>
+  Caused by:<br />
+  <%= @filename %>
+</p>
+<p>
+  Params:<br />
+  <%= @params.inspect %>
+</p>

@@ -1,0 +1,12 @@
+Portal Notification
+
+The notification message is:
+<% @msgs.each do |msg| %>
+  <%= msg %>
+<% end %>
+
+Caused by:
+<%= @filename %>
+
+Params:
+<%= @params.inspect %>
