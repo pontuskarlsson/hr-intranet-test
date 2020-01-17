@@ -374,6 +374,13 @@ section.page-section {
         }
     }
 
+    &.section-newsletter {
+        .input-group-button input {
+            font-size: 0.6rem;
+            margin-left: 1rem;
+        }
+    }
+
     &.large-section {
         p {
             font-size: 24pt;
@@ -696,7 +703,7 @@ section.page-section {
 }
 
 article.blog_post {
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 
     header {
         margin: 2rem 0;

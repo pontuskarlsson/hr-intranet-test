@@ -14,6 +14,8 @@
         <li><%= link_to 'Careers', '/careers' %></li>
         <li><%= link_to 'Sustainability', '/sustainability' %></li>
         <li><%= link_to 'Legal', '/legal' %></li>
+        <%# Remove the blank row when Media is re-added to menu. Letting an empty item remain to avoid height adjustments on footer %>
+        <% if true %><li>&nbsp;</li><% end %>
       </ul>
     </div>
 

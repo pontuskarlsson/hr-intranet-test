@@ -14,5 +14,6 @@
 //= require jquery_ujs
 //= require foundation
 //= require cookies_eu
+//= require additional/flash
 
 $(function(){ $(document).foundation(); });
