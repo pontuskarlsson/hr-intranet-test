@@ -6,7 +6,7 @@ module Refinery
       before_action :find_page
 
       def create
-        @list_row_creator = ListRowCreator.new({ custom_list: @custom_list }.reverse_merge(params[:list_row_creator]))
+        @list_row_creator = ListRowCreator.new({ custom_list: @custom_list }.reverse_merge(params[:list_row_creator].to_unsafe_h))
         @list_row_creator.save
         redirect_to_page
       end
@@ -16,7 +16,7 @@ module Refinery
       end
 
       def update
-        @list_row_updater = ListRowUpdater.new({ list_row: @list_row }.reverse_merge(params[:list_row_updater]))
+        @list_row_updater = ListRowUpdater.new({ list_row: @list_row }.reverse_merge(params[:list_row_updater].to_unsafe_h))
         @list_row_updater.save
         redirect_to_page
       end
