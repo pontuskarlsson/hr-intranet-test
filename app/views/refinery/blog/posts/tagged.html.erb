@@ -1,0 +1,19 @@
+<% content_for :title, "#{t('.posts_tagged')} “#{h(@tag_name.titleize)}”".html_safe  %>
+
+<% content_for :body do %>
+  <section class="page-section">
+    <h2 class="text-align-center">Tagged by: <%= h(@tag_name.titleize) %></h2>
+  </section>
+
+  <% if @posts.any? %>
+    <section id="blog_posts" class="page-section">
+      <%= render :partial => "/refinery/blog/shared/post", :collection => @posts %>
+      <%= will_paginate @posts %>
+    </section>
+  <% else %>
+    <p><%= t('.no_blog_articles_yet') %></p>
+  <% end %>
+<% end %>
+
+<%= render "/refinery/public_content_page" %>
+<% content_for :stylesheets, stylesheet_link_tag('refinery/blog/frontend') %>

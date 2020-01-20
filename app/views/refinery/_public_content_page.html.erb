@@ -1,9 +1,8 @@
 <% if @page.try(:live?) %>
-  <%- body_contents = [@page.part_with_slug('body').try(:body), content_for(:body)].reject(&:blank?) -%>
   <div class="grid-container">
     <div class="grid-x grid-padding-x">
       <div class="cell">
-        <%=raw body_contents.join %>
+        <%= content_for :body %>
       </div>
     </div>
   </div>

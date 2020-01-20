@@ -7,12 +7,15 @@ footer.page-footer {
     bottom: 0;
     width: 100%;
 
-    background-color: $primary-color;
-    color: $white;
+    background-color: $hr-gold-color;
+    color: $black;
 
-    h1,h2,h3,h4,h5,h6, a, a:link, a:visited, a:hover {
+    h1,h2,h3,h4,h5,h6 {
+        color: $black;
+    }
+    a, a:link, a:visited, a:hover {
         text-decoration: none;
-        color: $white;
+        color: $primary-color;
     }
     h5,h6 {
         font-weight: bold;

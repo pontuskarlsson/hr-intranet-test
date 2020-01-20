@@ -1,0 +1,57 @@
+article.blog-teaser {
+    display: grid;
+    grid-template-columns: 20rem 1fr;
+    grid-template-rows: 20rem;
+    grid-template-areas: "thumb teaser";
+    grid-column-gap: 4rem;
+    margin-bottom: 5rem;
+
+    .blog-thumb {
+        grid-area: thumb;
+
+        .image-box {
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+            width: 100%;
+        }
+        .image-box img {
+            max-width: 100%;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            height: auto;
+            transform: scale(1);
+        }
+    }
+
+    &:hover {
+        .image-box img {
+            transform: scale(1.1);
+        }
+    }
+
+    .blog-teaser-content {
+        grid-area: teaser;
+
+        /* Do not implement text alignment from post content in teaser */
+        .text-align-center, .text-align-right {
+            text-align: left;
+        }
+
+        footer {
+            .tagged {
+                display: inline-block;
+
+                a {
+                    text-decoration: none;
+                }
+
+                &::before {
+                    content: '|';
+                    width: 1rem;
+                }
+            }
+        }
+    }
+}
