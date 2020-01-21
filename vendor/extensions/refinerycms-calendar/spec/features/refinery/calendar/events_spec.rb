@@ -10,8 +10,8 @@ describe Refinery do
       describe 'events list' do
         context 'when events are in public calendars' do
           before(:each) do
-            FactoryGirl.create(:event, title: 'UniqueTitleOne')
-            FactoryGirl.create(:event, title: 'UniqueTitleTwo')
+            FactoryBot.create(:event, title: 'UniqueTitleOne')
+            FactoryBot.create(:event, title: 'UniqueTitleTwo')
           end
 
           it 'shows two items' do
@@ -23,10 +23,10 @@ describe Refinery do
 
         context 'when events are in private calendar' do
           before(:each) do
-            calendar = FactoryGirl.create(:calendar, user: logged_in_user, private: true)
-            FactoryGirl.create(:event, title: 'UniqueTitleOne', calendar: calendar)
-            calendar = FactoryGirl.create(:calendar, private: true, user: FactoryGirl.create(:authentication_devise_user))
-            FactoryGirl.create(:event, title: 'UniqueTitleTwo', calendar: calendar)
+            calendar = FactoryBot.create(:calendar, user: logged_in_user, private: true)
+            FactoryBot.create(:event, title: 'UniqueTitleOne', calendar: calendar)
+            calendar = FactoryBot.create(:calendar, private: true, user: FactoryBot.create(:authentication_devise_user))
+            FactoryBot.create(:event, title: 'UniqueTitleTwo', calendar: calendar)
           end
 
           it 'only shows events from own private calendar' do
@@ -39,7 +39,7 @@ describe Refinery do
       end
 
       describe 'create' do
-        let(:calendar) { FactoryGirl.create(:calendar) }
+        let(:calendar) { FactoryBot.create(:calendar) }
         before(:each) do
           calendar
           visit refinery.calendar_events_path
@@ -62,8 +62,8 @@ describe Refinery do
 
       describe 'edit' do
         context 'when it is from users own calendar' do
-          let(:event) { FactoryGirl.create(:event,  title: 'A title',
-                                                    calendar: FactoryGirl.create(:calendar, user: logged_in_user)) }
+          let(:event) { FactoryBot.create(:event,  title: 'A title',
+                                                    calendar: FactoryBot.create(:calendar, user: logged_in_user)) }
           it 'should succeed' do
             visit refinery.calendar_event_path(event)
             click_link 'Edit Details'
@@ -77,7 +77,7 @@ describe Refinery do
         end
 
         context 'when it is not from users own calendar' do
-          let(:event) { FactoryGirl.create(:event,  title: 'A title') }
+          let(:event) { FactoryBot.create(:event,  title: 'A title') }
           it 'should not be able to edit' do
             visit refinery.calendar_event_path(event)
             page.should have_no_content('Edit Details')
@@ -87,7 +87,7 @@ describe Refinery do
 
       describe 'destroy' do
         context 'when it is from users own calendar' do
-          let(:event) { FactoryGirl.create(:event, calendar: FactoryGirl.create(:calendar, user: logged_in_user)) }
+          let(:event) { FactoryBot.create(:event, calendar: FactoryBot.create(:calendar, user: logged_in_user)) }
           it 'should succeed' do
             visit refinery.calendar_event_path(event)
             click_link 'Remove Event'
@@ -97,7 +97,7 @@ describe Refinery do
         end
 
         context 'when it is not from users own calendar' do
-          let(:event) { FactoryGirl.create(:event) }
+          let(:event) { FactoryBot.create(:event) }
           it 'should not be able to remove' do
             visit refinery.calendar_event_path(event)
             page.should have_no_content('Remove Event')

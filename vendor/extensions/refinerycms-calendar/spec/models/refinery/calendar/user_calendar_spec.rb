@@ -4,7 +4,7 @@ module Refinery
   module Calendar
     describe UserCalendar do
       describe 'validations' do
-        let(:user_calendar) { FactoryGirl.build(:user_calendar) }
+        let(:user_calendar) { FactoryBot.build(:user_calendar) }
         subject { user_calendar }
 
         it { is_expected.to be_valid }
@@ -20,7 +20,7 @@ module Refinery
         end
 
         context 'when user and calendar is already present' do
-          before { FactoryGirl.create(:user_calendar, user: user_calendar.user, calendar: user_calendar.calendar) }
+          before { FactoryBot.create(:user_calendar, user: user_calendar.user, calendar: user_calendar.calendar) }
           it { is_expected.not_to be_valid }
         end
       end

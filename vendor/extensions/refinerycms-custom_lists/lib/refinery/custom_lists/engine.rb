@@ -11,6 +11,9 @@ module Refinery
           plugin.name = "custom_lists"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.custom_lists_admin_custom_lists_path }
           plugin.pathname = root
+
+          # Menu match controls access to the admin backend routes.
+          plugin.menu_match = %r{refinery/custom_lists(/.*)?$}
         end
       end
 

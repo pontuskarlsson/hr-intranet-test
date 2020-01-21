@@ -5,12 +5,12 @@ describe Refinery do
   describe "Employees" do
     describe "annual_leaves" do
       refinery_login_with_devise :authentication_devise_user
-      let(:employee) { FactoryGirl.create(:employee, user: logged_in_user) }
+      let(:employee) { FactoryBot.create(:employee, user: logged_in_user) }
 
       describe "list of annual leaves" do
         before do
-          FactoryGirl.create(:annual_leave, employee: employee, start_date: '2014-10-09')
-          FactoryGirl.create(:annual_leave, employee: employee, start_date: '2014-10-16')
+          FactoryBot.create(:annual_leave, employee: employee, start_date: '2014-10-09')
+          FactoryBot.create(:annual_leave, employee: employee, start_date: '2014-10-16')
         end
 
         it "shows two items" do
@@ -24,12 +24,12 @@ describe Refinery do
         let(:country) { ::Refinery::Employees::Countries::COUNTRIES.first }
 
         before(:each) do
-          FactoryGirl.create(:employment_contract, employee: employee, start_date: '2013-01-01', country: country)
+          FactoryBot.create(:employment_contract, employee: employee, start_date: '2013-01-01', country: country)
         end
 
         context 'when it is half-day public holiday' do
           before(:each) do
-            FactoryGirl.create(:public_holiday, country: country, holiday_date: '2014-12-24', half_day: true, title: 'Christmas Eve')
+            FactoryBot.create(:public_holiday, country: country, holiday_date: '2014-12-24', half_day: true, title: 'Christmas Eve')
           end
 
           it 'counts the AL as half a day' do
@@ -46,7 +46,7 @@ describe Refinery do
 
       describe "removing annual leave" do
         context "when it belongs to the logged in user" do
-          let(:annual_leave) { FactoryGirl.create(:annual_leave, employee: employee) }
+          let(:annual_leave) { FactoryBot.create(:annual_leave, employee: employee) }
           it "should succeed" do
             expect( annual_leave.employee.user ).to eq logged_in_user
 

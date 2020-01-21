@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "venues list" do
           before(:each) do
-            FactoryGirl.create(:venue, :name => "UniqueTitleOne")
-            FactoryGirl.create(:venue, :name => "UniqueTitleTwo")
+            FactoryBot.create(:venue, :name => "UniqueTitleOne")
+            FactoryBot.create(:venue, :name => "UniqueTitleTwo")
           end
 
           it "shows two items" do
@@ -47,7 +47,7 @@ describe Refinery do
           end
 
           context "duplicate" do
-            before(:each) { FactoryGirl.create(:venue, :name => "UniqueTitle") }
+            before(:each) { FactoryBot.create(:venue, :name => "UniqueTitle") }
 
             it "should fail" do
               visit refinery.calendar_admin_venues_path
@@ -65,7 +65,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before(:each) { FactoryGirl.create(:venue, :name => "A name") }
+          before(:each) { FactoryBot.create(:venue, :name => "A name") }
 
           it "should succeed" do
             visit refinery.calendar_admin_venues_path
@@ -83,7 +83,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before(:each) { FactoryGirl.create(:venue, :name => "UniqueTitleOne") }
+          before(:each) { FactoryBot.create(:venue, :name => "UniqueTitleOne") }
 
           it "should succeed" do
             visit refinery.calendar_admin_venues_path

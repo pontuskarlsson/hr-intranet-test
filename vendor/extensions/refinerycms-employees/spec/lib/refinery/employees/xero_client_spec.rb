@@ -3,11 +3,11 @@ require 'spec_helper'
 module Refinery
   module Employees
     describe XeroClient do
-      let(:xero_api_key_file) { FactoryGirl.create(:xero_api_key_file) }
+      let(:xero_api_key_file) { FactoryBot.create(:xero_api_key_file) }
       let(:xero_client) { XeroClient.new(xero_api_key_file.organisation) }
 
       describe '#sync_accounts' do
-        let(:xero_account) { FactoryGirl.create(:xero_account, guid: "00000000-0000-0000-1234-000000000000", name: 'Travel') }
+        let(:xero_account) { FactoryBot.create(:xero_account, guid: "00000000-0000-0000-1234-000000000000", name: 'Travel') }
         let(:account) { Xeroizer::Record::Account.build({ account_id: "00000000-0000-0000-1234-000000000000", name: 'Office Expense', code: '1234' }, nil) }
 
         it 'makes an existing XeroAccount inactive if does not find any matching Account in Xero' do
@@ -40,7 +40,7 @@ module Refinery
       end
 
       describe '#sync_contacts' do
-        let(:xero_contact) { FactoryGirl.create(:xero_contact, guid: "00000000-0000-0000-1234-000000000000", name: 'Foo Bar') }
+        let(:xero_contact) { FactoryBot.create(:xero_contact, guid: "00000000-0000-0000-1234-000000000000", name: 'Foo Bar') }
         let(:contact) { Xeroizer::Record::Contact.build({ contact_id: "00000000-0000-0000-1234-000000000000", name: 'Jane Deer' }, nil) }
         it 'makes an existing XeroContact inactive if does not find any matching Contact in Xero' do
           XeroClient.any_instance.stub(:all_contacts).and_return([])

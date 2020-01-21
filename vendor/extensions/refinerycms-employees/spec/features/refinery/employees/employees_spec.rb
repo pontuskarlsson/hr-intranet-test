@@ -9,9 +9,9 @@ describe Refinery do
       describe 'employee directory' do
         context 'when only two out of three employees has active employment contract' do
           before do
-            FactoryGirl.create(:employee_with_contract, full_name: 'Jack Bower')
-            FactoryGirl.create(:employee_with_contract, full_name: 'Bruce Wayne')
-            FactoryGirl.create(:employee, full_name: 'James Bond')
+            FactoryBot.create(:employee_with_contract, full_name: 'Jack Bower')
+            FactoryBot.create(:employee_with_contract, full_name: 'Bruce Wayne')
+            FactoryBot.create(:employee, full_name: 'James Bond')
           end
 
           it 'shows two items' do

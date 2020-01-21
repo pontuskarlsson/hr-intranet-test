@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "annual_leaves list" do
           before do
-            FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-09")
-            FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-02")
+            FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-09")
+            FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-02")
           end
 
           it "shows two items" do
@@ -21,7 +21,7 @@ describe Refinery do
         end
 
         describe "create" do
-          let(:employee) { FactoryGirl.create(:employee) }
+          let(:employee) { FactoryBot.create(:employee) }
           before do
             visit refinery.employees_admin_leave_of_abesences_path
 
@@ -51,7 +51,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-02") }
+          before { FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-02") }
 
           it "should succeed" do
             visit refinery.employees_admin_leave_of_abesences_path
@@ -69,7 +69,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:leave_of_abesence, :start_date => "2014-10-02") }
+          before { FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-02") }
 
           it "should succeed" do
             visit refinery.employees_admin_leave_of_abesences_path

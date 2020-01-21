@@ -4,7 +4,7 @@ module Refinery
   module Calendar
     describe Venue do
       describe "validations" do
-        let(:venue) { FactoryGirl.build(:venue) }
+        let(:venue) { FactoryBot.build(:venue) }
         it 'validates name presence' do
           expect( venue ).to be_valid
 

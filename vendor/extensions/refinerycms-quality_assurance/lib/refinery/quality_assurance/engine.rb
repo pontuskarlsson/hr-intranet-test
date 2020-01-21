@@ -20,7 +20,9 @@ module Refinery
           plugin.name = "quality_assurance"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.quality_assurance_admin_inspections_path }
           plugin.pathname = root
-          
+
+          # Menu match controls access to the admin backend routes.
+          plugin.menu_match = %r{refinery/quality_assurance(/.*)?$}
         end
       end
 

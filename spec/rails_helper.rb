@@ -12,8 +12,8 @@ require 'rspec/rails'
 # option on the command line or in ~/.rspec, .rspec or `.rspec-local`.
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
-# FactoryGirl.definition_file_paths += Dir[Rails.root.join("vendor/extensions/*/spec/support/factories")]
-# FactoryGirl.reload
+# FactoryBot.definition_file_paths += Dir[Rails.root.join("vendor/extensions/*/spec/support/factories")]
+# FactoryBot.reload
 
 # Makes sure that delayed methods are executed at once in test env
 Delayed::Worker.delay_jobs = false
@@ -43,4 +43,8 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, type: :controller
   config.extend ControllerMacros,     type: :controller
   config.include ControllerHelpers,   type: :controller
+
+  config.before(:suite) do
+    Rails.application.load_seed # loading seeds
+  end
 end

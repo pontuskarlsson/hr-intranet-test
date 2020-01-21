@@ -5,7 +5,7 @@ module Refinery
     describe Inspection do
       describe "validations", type: :model do
         subject do
-          FactoryGirl.create(:inspection)
+          FactoryBot.create(:inspection)
         end
 
         it { should be_valid }

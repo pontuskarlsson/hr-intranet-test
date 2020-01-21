@@ -4,7 +4,7 @@ module Refinery
   module Calendar
     describe Event do
       describe 'validations' do
-        let(:event) { FactoryGirl.build(:event) }
+        let(:event) { FactoryBot.build(:event) }
         subject { event }
 
         it { is_expected.to be_valid }
@@ -27,10 +27,10 @@ module Refinery
 
       describe 'upcoming events' do
         before :each do
-          FactoryGirl.create(:event, starts_at: 2.hours.ago)
-          FactoryGirl.create(:event, starts_at: 2.hours.from_now)
-          FactoryGirl.create(:event, starts_at: 2.days.from_now)
-          FactoryGirl.create(:event, starts_at: 2.weeks.from_now)
+          FactoryBot.create(:event, starts_at: 2.hours.ago)
+          FactoryBot.create(:event, starts_at: 2.hours.from_now)
+          FactoryBot.create(:event, starts_at: 2.days.from_now)
+          FactoryBot.create(:event, starts_at: 2.weeks.from_now)
         end
 
         it 'only includes upcoming event' do
@@ -40,13 +40,13 @@ module Refinery
 
       describe 'tomorrow events' do
         before :each do
-          FactoryGirl.create(:event, starts_at: Date.tomorrow - 2.hours)
-          FactoryGirl.create(:event, starts_at: Date.tomorrow.beginning_of_day)
-          FactoryGirl.create(:event, starts_at: Date.tomorrow + 2.hours)
-          FactoryGirl.create(:event, starts_at: Date.tomorrow + 6.hours)
-          FactoryGirl.create(:event, starts_at: Date.tomorrow + 12.hours)
-          FactoryGirl.create(:event, starts_at: Date.yesterday, ends_at: 2.days.from_now)
-          FactoryGirl.create(:event, starts_at: Date.tomorrow + 2.days)
+          FactoryBot.create(:event, starts_at: Date.tomorrow - 2.hours)
+          FactoryBot.create(:event, starts_at: Date.tomorrow.beginning_of_day)
+          FactoryBot.create(:event, starts_at: Date.tomorrow + 2.hours)
+          FactoryBot.create(:event, starts_at: Date.tomorrow + 6.hours)
+          FactoryBot.create(:event, starts_at: Date.tomorrow + 12.hours)
+          FactoryBot.create(:event, starts_at: Date.yesterday, ends_at: 2.days.from_now)
+          FactoryBot.create(:event, starts_at: Date.tomorrow + 2.days)
         end
 
         it 'only includes events for tomorrow' do

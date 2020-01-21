@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe XeroAccount do
       describe 'validations' do
-        let(:xero_account) { FactoryGirl.build(:xero_account) }
+        let(:xero_account) { FactoryBot.build(:xero_account) }
         subject { xero_account }
 
         it { is_expected.to be_valid }
@@ -15,7 +15,7 @@ module Refinery
         end
 
         context 'when guid is already present' do
-          before { FactoryGirl.create(:xero_account, guid: xero_account.guid) }
+          before { FactoryBot.create(:xero_account, guid: xero_account.guid) }
           it { is_expected.not_to be_valid }
         end
 
@@ -30,7 +30,7 @@ module Refinery
         end
 
         context 'when code is already present' do
-          before { FactoryGirl.create(:xero_account, code: xero_account.code) }
+          before { FactoryBot.create(:xero_account, code: xero_account.code) }
           it { is_expected.not_to be_valid }
         end
       end

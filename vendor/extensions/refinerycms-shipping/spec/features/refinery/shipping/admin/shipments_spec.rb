@@ -8,8 +8,8 @@ describe Refinery do
         refinery_login_with_devise :authentication_devise_user
 
         describe "shipments list" do
-          let(:shipment1) { FactoryGirl.create(:shipment) }
-          let(:shipment2) { FactoryGirl.create(:shipment) }
+          let(:shipment1) { FactoryBot.create(:shipment) }
+          let(:shipment2) { FactoryBot.create(:shipment) }
           before do
             shipment1; shipment2
           end
@@ -22,9 +22,9 @@ describe Refinery do
         end
 
         describe "create" do
-          let(:contact1) { FactoryGirl.create(:contact) }
-          let(:contact2) { FactoryGirl.create(:contact) }
-          let(:user) { FactoryGirl.create(:authentication_devise_user) }
+          let(:contact1) { FactoryBot.create(:contact) }
+          let(:contact2) { FactoryBot.create(:contact) }
+          let(:user) { FactoryBot.create(:authentication_devise_user) }
           before do
             contact1; contact2; user # Creates records before loading form
 
@@ -48,7 +48,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:shipment) }
+          before { FactoryBot.create(:shipment) }
 
           it "should succeed" do
             visit refinery.shipping_admin_shipments_path
@@ -62,7 +62,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:shipment) }
+          before { FactoryBot.create(:shipment) }
 
           it "should succeed" do
             visit refinery.shipping_admin_shipments_path

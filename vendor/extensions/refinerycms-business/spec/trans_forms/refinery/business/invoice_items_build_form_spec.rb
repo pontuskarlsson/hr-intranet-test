@@ -3,9 +3,9 @@ require 'spec_helper'
 module Refinery
   module Business
     describe InvoiceItemsBuildForm do
-      let(:account) { FactoryGirl.create(:account) }
-      let(:invoice) { FactoryGirl.create(:invoice, account: account) }
-      let(:article) { FactoryGirl.create(:article_voucher, account: account) }
+      let(:account) { FactoryBot.create(:account) }
+      let(:invoice) { FactoryBot.create(:invoice, account: account) }
+      let(:article) { FactoryBot.create(:article_voucher, account: account) }
       let(:minimum_attr) { { '0' => { 'article_label' => article.code, 'qty' => 10, 'base_amount' => 100 } } }
       let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: minimum_attr } }
       let(:form) { InvoiceItemsBuildForm.new_in_model(invoice, attr) }
@@ -15,25 +15,25 @@ module Refinery
         it { is_expected.to be_valid }
 
         context 'when invoice is not associated with a Company' do
-          let(:invoice) { FactoryGirl.create(:invoice, company: nil) }
+          let(:invoice) { FactoryBot.create(:invoice, company: nil) }
 
           it { is_expected.not_to be_valid }
         end
 
         context 'when invoice is not managed' do
-          let(:invoice) { FactoryGirl.create(:invoice, is_managed: false) }
+          let(:invoice) { FactoryBot.create(:invoice, is_managed: false) }
 
           it { is_expected.not_to be_valid }
         end
 
         context 'when invoice has billables without article code' do
-          before { FactoryGirl.create(:billable, invoice: invoice, article: nil) }
+          before { FactoryBot.create(:billable, invoice: invoice, article: nil) }
 
           it { is_expected.not_to be_valid }
         end
 
         context 'when invoice has billables with article code' do
-          before { FactoryGirl.create(:billable_with_article, invoice: invoice, account: account) }
+          before { FactoryBot.create(:billable_with_article, invoice: invoice, account: account) }
 
           it { is_expected.to be_valid }
         end
@@ -45,7 +45,7 @@ module Refinery
         end
 
         context 'when there are Billables present but no minimum specified' do
-          before { FactoryGirl.create(:billable_with_article, invoice: invoice, account: account) }
+          before { FactoryBot.create(:billable_with_article, invoice: invoice, account: account) }
 
           let(:attr) { { invoice_for_month: '2019-01-01' } }
 
@@ -87,7 +87,7 @@ module Refinery
         end
 
         context 'when there are no previous InvoiceItems, Billables, but no minimum' do
-          let(:billable) { FactoryGirl.create(:billable_with_article, invoice: invoice, article_sales_unit_price: 5_432) }
+          let(:billable) { FactoryBot.create(:billable_with_article, invoice: invoice, article_sales_unit_price: 5_432) }
           let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: {} } }
 
           before { billable }

@@ -9,8 +9,8 @@ describe Refinery do
 
         describe 'xero_accounts list' do
           before do
-            FactoryGirl.create(:xero_account, code: '9912')
-            FactoryGirl.create(:xero_account, code: '8854')
+            FactoryBot.create(:xero_account, code: '9912')
+            FactoryBot.create(:xero_account, code: '8854')
           end
 
           it 'shows two items' do
@@ -21,7 +21,7 @@ describe Refinery do
         end
 
         describe 'edit' do
-          before { FactoryGirl.create(:xero_account, code: '5431') }
+          before { FactoryBot.create(:xero_account, code: '5431') }
 
           it 'should succeed' do
             visit refinery.employees_admin_xero_accounts_path

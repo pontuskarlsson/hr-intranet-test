@@ -96,7 +96,7 @@ module Refinery
       belongs_to :courier_company,      class_name: '::Refinery::Business::Company', optional: true
 
 
-      belongs_to :created_by,           class_name: '::Refinery::Authentication::Devise::User', optional: true
+      belongs_to :created_by,           class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :assigned_to,          class_name: '::Refinery::Authentication::Devise::User', optional: true
       belongs_to :bill_to_account,      class_name: '::Refinery::Shipping::ShipmentAccount', optional: true
       belongs_to :project,              class_name: '::Refinery::Business::Project', optional: true
@@ -119,6 +119,7 @@ module Refinery
       validates :weight_unit,             inclusion: WEIGHT_UNITS, allow_blank: true
       validates :volume_unit,             inclusion: VOLUME_UNITS, allow_blank: true
       validates :rate_currency,           inclusion: CURRENCIES, allow_blank: true
+      validates :created_by_id,           presence: true
 
       delegate :name, to: :to_contact,    prefix: true, allow_nil: true
       delegate :name, :street1, :street2, :city, :zip, :state, :country, :phone, :email, to: :from_address, prefix: true, allow_nil: true

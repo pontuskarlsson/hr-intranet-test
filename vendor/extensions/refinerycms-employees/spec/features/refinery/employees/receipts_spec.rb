@@ -6,15 +6,15 @@ describe Refinery do
     describe "receipts" do
       refinery_login_with_devise :authentication_devise_user
       before(:each) do
-        FactoryGirl.create(:employee, user: logged_in_user)
+        FactoryBot.create(:employee, user: logged_in_user)
       end
       let(:employee) { logged_in_user.employee }
-      let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: employee, added_by: logged_in_user) }
+      let(:xero_expense_claim) { FactoryBot.create(:xero_expense_claim, employee: employee, added_by: logged_in_user) }
 
       describe "adding new receipt" do
-        let(:xero_contact) { FactoryGirl.create(:xero_contact) }
-        let(:xero_account) { FactoryGirl.create(:xero_account) }
-        let(:xero_tracking_category) { FactoryGirl.create(:xero_tracking_category) }
+        let(:xero_contact) { FactoryBot.create(:xero_contact) }
+        let(:xero_account) { FactoryBot.create(:xero_account) }
+        let(:xero_tracking_category) { FactoryBot.create(:xero_tracking_category) }
         before(:each) do
           xero_contact
           xero_account
@@ -47,7 +47,7 @@ describe Refinery do
         end
 
         context 'when expense claim is added by current user but for another employee' do
-          let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: FactoryGirl.create(:employee), added_by: logged_in_user) }
+          let(:xero_expense_claim) { FactoryBot.create(:xero_expense_claim, employee: FactoryBot.create(:employee), added_by: logged_in_user) }
 
           it "succeeds" do
             visit refinery.employees_expense_claim_path(xero_expense_claim)
@@ -90,7 +90,7 @@ describe Refinery do
       end
 
       describe 'editing line items' do
-        let(:xero_receipt) { FactoryGirl.create(:xero_receipt_with_line_items, xero_expense_claim: xero_expense_claim) }
+        let(:xero_receipt) { FactoryBot.create(:xero_receipt_with_line_items, xero_expense_claim: xero_expense_claim) }
         before(:each) do
           xero_receipt
         end
@@ -125,7 +125,7 @@ describe Refinery do
 
       describe 'removing receipt' do
         context 'when it is not submitted' do
-          let(:xero_receipt) { FactoryGirl.create(:xero_receipt, xero_expense_claim: xero_expense_claim) }
+          let(:xero_receipt) { FactoryBot.create(:xero_receipt, xero_expense_claim: xero_expense_claim) }
 
           it 'succeeds' do
             visit refinery.employees_expense_claim_receipt_path(xero_receipt.xero_expense_claim, xero_receipt)
@@ -137,7 +137,7 @@ describe Refinery do
         end
 
         context 'when it is submitted' do
-          let(:xero_receipt) { FactoryGirl.create(:xero_receipt, xero_expense_claim: xero_expense_claim, status: Refinery::Employees::XeroReceipt::STATUS_SUBMITTED) }
+          let(:xero_receipt) { FactoryBot.create(:xero_receipt, xero_expense_claim: xero_expense_claim, status: Refinery::Employees::XeroReceipt::STATUS_SUBMITTED) }
 
           it 'cannot be clicked' do
             visit refinery.employees_expense_claim_receipt_path(xero_receipt.xero_expense_claim, xero_receipt)

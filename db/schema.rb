@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20200109062838) do
 
-  create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "target_id", null: false
     t.string "target_type", null: false
     t.integer "notifiable_id", null: false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["target_type", "target_id"], name: "index_notifications_on_target_id_and_type"
   end
 
-  create_table "delayed_jobs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "delayed_jobs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "notifications_subscriptions", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "notifications_subscriptions", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "target_id", null: false
     t.string "target_type", null: false
     t.string "key", null: false
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["target_type", "target_id"], name: "index_subscriptions_on_target_id_and_type"
   end
 
-  create_table "oauth_access_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "oauth_access_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.bigint "resource_owner_id", null: false
     t.bigint "application_id", null: false
     t.string "token", null: false
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["token"], name: "index_oauth_access_grants_on_token", unique: true
   end
 
-  create_table "oauth_access_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "oauth_access_tokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.bigint "resource_owner_id"
     t.bigint "application_id"
     t.string "token", null: false
@@ -97,7 +97,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
   end
 
-  create_table "oauth_applications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "oauth_applications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name", null: false
     t.string "uid", null: false
     t.string "secret", null: false
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "refinery_annual_leave_records", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_annual_leave_records", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "employee_id"
     t.integer "annual_leave_id"
     t.string "record_type"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["record_type"], name: "index_refinery_annual_leave_records_on_record_type"
   end
 
-  create_table "refinery_annual_leaves", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_annual_leaves", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "employee_id"
     t.integer "event_id"
     t.date "start_date"
@@ -139,18 +139,18 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["start_date"], name: "index_refinery_annual_leaves_on_start_date"
   end
 
-  create_table "refinery_authentication_devise_roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_authentication_devise_roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "title"
   end
 
-  create_table "refinery_authentication_devise_roles_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_authentication_devise_roles_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "user_id"
     t.integer "role_id"
     t.index ["role_id", "user_id"], name: "refinery_roles_users_role_id_user_id"
     t.index ["user_id", "role_id"], name: "refinery_roles_users_user_id_role_id"
   end
 
-  create_table "refinery_authentication_devise_user_plugins", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_authentication_devise_user_plugins", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "user_id"
     t.string "name"
     t.integer "position"
@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["user_id", "name"], name: "refinery_user_plugins_user_id_name", unique: true
   end
 
-  create_table "refinery_authentication_devise_users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_authentication_devise_users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "username", null: false
     t.string "email", null: false
     t.string "encrypted_password", null: false
@@ -197,7 +197,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["topo_id"], name: "index_refinery_authentication_devise_users_on_topo_id"
   end
 
-  create_table "refinery_blog_categories", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_blog_categories", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "slug"
@@ -205,13 +205,13 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["slug"], name: "index_refinery_blog_categories_on_slug"
   end
 
-  create_table "refinery_blog_categories_blog_posts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_blog_categories_blog_posts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "blog_category_id"
     t.integer "blog_post_id"
     t.index ["blog_category_id", "blog_post_id"], name: "index_blog_categories_blog_posts_on_bc_and_bp"
   end
 
-  create_table "refinery_blog_category_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_blog_category_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_blog_category_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -222,7 +222,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_blog_category_id"], name: "index_a0315945e6213bbe0610724da0ee2de681b77c31"
   end
 
-  create_table "refinery_blog_comments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_blog_comments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "blog_post_id"
     t.boolean "spam"
     t.string "name"
@@ -235,7 +235,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["id"], name: "index_refinery_blog_comments_on_id"
   end
 
-  create_table "refinery_blog_post_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_blog_post_translations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_blog_post_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -249,7 +249,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_blog_post_id"], name: "index_refinery_blog_post_translations_on_refinery_blog_post_id"
   end
 
-  create_table "refinery_blog_posts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_blog_posts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "title"
     t.text "body"
     t.boolean "draft"
@@ -269,7 +269,11 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["slug"], name: "index_refinery_blog_posts_on_slug"
   end
 
-  create_table "refinery_brand_shows", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_blog_test_users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
+    t.string "username"
+  end
+
+  create_table "refinery_brand_shows", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "brand_id"
     t.integer "show_id"
     t.datetime "created_at", null: false
@@ -278,7 +282,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["show_id"], name: "index_refinery_brand_shows_on_show_id"
   end
 
-  create_table "refinery_brands", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_brands", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
     t.string "website"
     t.integer "logo_id"
@@ -288,7 +292,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "refinery_business_accounts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_accounts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "organisation"
     t.text "key_content"
     t.string "consumer_key"
@@ -302,7 +306,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_business_accounts_on_position"
   end
 
-  create_table "refinery_business_articles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_articles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "item_id"
     t.string "code"
     t.string "name"
@@ -337,7 +341,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["updated_date_utc"], name: "index_refinery_business_articles_on_updated_date_utc"
   end
 
-  create_table "refinery_business_billables", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_billables", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "company_id"
     t.integer "project_id"
     t.integer "section_id"
@@ -384,7 +388,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["unit_price"], name: "index_refinery_business_billables_on_unit_price"
   end
 
-  create_table "refinery_business_budget_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_budget_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "budget_id"
     t.string "description"
     t.integer "no_of_products", default: 0, null: false
@@ -399,7 +403,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["budget_id"], name: "index_refinery_business_budget_items_on_budget_id"
   end
 
-  create_table "refinery_business_budgets", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_budgets", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "description", default: "", null: false
     t.string "customer_name", default: "", null: false
     t.integer "customer_contact_id"
@@ -423,7 +427,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["description"], name: "index_refinery_business_budgets_on_description"
   end
 
-  create_table "refinery_business_companies", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_companies", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "contact_id"
     t.string "code"
     t.string "name"
@@ -440,7 +444,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_business_companies_on_position"
   end
 
-  create_table "refinery_business_company_users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_company_users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "company_id"
     t.integer "user_id"
     t.string "role"
@@ -453,7 +457,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["user_id"], name: "index_refinery_business_company_users_on_user_id"
   end
 
-  create_table "refinery_business_invoice_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_invoice_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "invoice_id"
     t.string "line_item_id"
     t.string "description"
@@ -480,7 +484,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["transaction_type"], name: "INDEX_rb_invoice_items_ON_transaction_type"
   end
 
-  create_table "refinery_business_invoices", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_invoices", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "account_id"
     t.string "invoice_id"
     t.string "contact_id"
@@ -541,7 +545,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["total_amount"], name: "index_refinery_business_invoices_on_total_amount"
   end
 
-  create_table "refinery_business_number_series", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_number_series", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "identifier"
     t.integer "last_counter"
     t.integer "position"
@@ -555,7 +559,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_business_number_series_on_position"
   end
 
-  create_table "refinery_business_order_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_order_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "order_id"
     t.string "order_item_id"
     t.integer "line_item_number"
@@ -584,7 +588,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["unit_price"], name: "index_refinery_business_order_items_on_unit_price"
   end
 
-  create_table "refinery_business_orders", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_orders", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "order_id"
     t.integer "buyer_id"
     t.string "buyer_label"
@@ -644,7 +648,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["version_number"], name: "index_refinery_business_orders_on_version_number"
   end
 
-  create_table "refinery_business_projects", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_projects", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "company_id"
     t.string "code"
     t.text "description"
@@ -664,7 +668,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["status"], name: "index_refinery_business_projects_on_status"
   end
 
-  create_table "refinery_business_sections", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_sections", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "project_id"
     t.string "section_type"
     t.text "description"
@@ -681,7 +685,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["start_date"], name: "index_refinery_business_sections_on_start_date"
   end
 
-  create_table "refinery_business_vouchers", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_business_vouchers", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "company_id"
     t.integer "article_id"
     t.integer "line_item_sales_purchase_id"
@@ -718,7 +722,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["valid_to"], name: "INDEX_rb_vouchers_ON_valid_to"
   end
 
-  create_table "refinery_calendar_calendars", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_calendar_calendars", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "title"
     t.string "function"
     t.integer "user_id"
@@ -733,7 +737,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["user_id"], name: "index_refinery_calendar_calendars_on_user_id"
   end
 
-  create_table "refinery_calendar_events", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_calendar_events", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "title"
     t.string "registration_link"
     t.string "excerpt"
@@ -750,7 +754,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["calendar_id"], name: "index_refinery_calendar_events_on_calendar_id"
   end
 
-  create_table "refinery_calendar_google_calendars", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_calendar_google_calendars", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "user_id"
     t.integer "primary_calendar_id"
     t.string "google_calendar_id"
@@ -764,7 +768,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["user_id"], name: "index_rcgc_on_user_id"
   end
 
-  create_table "refinery_calendar_google_events", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_calendar_google_events", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "google_calendar_id"
     t.integer "event_id"
     t.string "google_event_id"
@@ -776,7 +780,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["google_event_id"], name: "index_rcge_on_google_event_id"
   end
 
-  create_table "refinery_calendar_user_calendars", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_calendar_user_calendars", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "user_id"
     t.integer "calendar_id"
     t.boolean "inactive", default: false, null: false
@@ -788,7 +792,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["user_id"], name: "index_refinery_calendar_user_calendars_on_user_id"
   end
 
-  create_table "refinery_calendar_venues", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_calendar_venues", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
     t.string "address"
     t.string "url"
@@ -798,7 +802,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "refinery_contacts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_contacts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "base_id"
     t.string "name"
     t.string "first_name"
@@ -865,14 +869,14 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["xero_hrt_id"], name: "index_refinery_contacts_on_xero_hrt_id"
   end
 
-  create_table "refinery_custom_lists_custom_lists", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_custom_lists_custom_lists", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "title"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "refinery_custom_lists_list_cells", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_custom_lists_list_cells", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "list_row_id"
     t.integer "list_column_id"
     t.string "value"
@@ -884,7 +888,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["value"], name: "index_refinery_custom_lists_list_cells_on_value"
   end
 
-  create_table "refinery_custom_lists_list_columns", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_custom_lists_list_columns", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "custom_list_id"
     t.string "title"
     t.string "column_type"
@@ -895,7 +899,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_custom_lists_list_columns_on_position"
   end
 
-  create_table "refinery_custom_lists_list_rows", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_custom_lists_list_rows", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "custom_list_id"
     t.integer "position"
     t.datetime "created_at", null: false
@@ -904,7 +908,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_custom_lists_list_rows_on_position"
   end
 
-  create_table "refinery_employees", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_employees", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "user_id"
     t.integer "profile_image_id"
     t.string "employee_no"
@@ -929,7 +933,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["user_id"], name: "index_refinery_employees_on_user_id"
   end
 
-  create_table "refinery_employment_contracts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_employment_contracts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "employee_id", null: false
     t.date "start_date", null: false
     t.date "end_date"
@@ -943,7 +947,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["start_date"], name: "index_refinery_employment_contracts_on_start_date"
   end
 
-  create_table "refinery_image_page_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_image_page_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_image_page_id"
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -953,7 +957,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_image_page_id"], name: "index_186c9a170a0ab319c675aa80880ce155d8f47244"
   end
 
-  create_table "refinery_image_pages", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_image_pages", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "image_id"
     t.integer "page_id"
     t.integer "position"
@@ -963,7 +967,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["page_id"], name: "index_refinery_image_pages_on_page_id"
   end
 
-  create_table "refinery_image_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_image_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_image_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -974,7 +978,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_image_id"], name: "index_refinery_image_translations_on_refinery_image_id"
   end
 
-  create_table "refinery_images", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_images", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "image_mime_type"
     t.string "image_name"
     t.integer "image_size"
@@ -989,7 +993,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["authorizations_access"], name: "index_refinery_images_on_authorizations_access"
   end
 
-  create_table "refinery_leave_of_absences", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_leave_of_absences", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "employee_id"
     t.integer "event_id"
     t.integer "doctors_note_id"
@@ -1011,7 +1015,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["status"], name: "index_refinery_leave_of_absences_on_status"
   end
 
-  create_table "refinery_news_item_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_news_item_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_news_item_id"
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1024,7 +1028,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_news_item_id"], name: "index_refinery_news_item_translations_fk"
   end
 
-  create_table "refinery_news_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_news_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "title"
     t.text "body"
     t.datetime "publish_date"
@@ -1037,7 +1041,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["id"], name: "index_refinery_news_items_on_id"
   end
 
-  create_table "refinery_page_part_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_page_part_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_page_part_id"
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1047,7 +1051,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_page_part_id"], name: "index_refinery_page_part_translations_on_refinery_page_part_id"
   end
 
-  create_table "refinery_page_parts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_page_parts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_page_id"
     t.string "slug"
     t.integer "position"
@@ -1058,7 +1062,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_page_id"], name: "index_refinery_page_parts_on_refinery_page_id"
   end
 
-  create_table "refinery_page_roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_page_roles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "page_id"
     t.integer "role_id"
     t.datetime "created_at", null: false
@@ -1066,7 +1070,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["page_id", "role_id"], name: "index_refinery_page_roles_on_page_id_and_role_id"
   end
 
-  create_table "refinery_page_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_page_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_page_id"
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1079,7 +1083,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_page_id"], name: "index_refinery_page_translations_on_refinery_page_id"
   end
 
-  create_table "refinery_pages", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_pages", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "parent_id"
     t.string "path"
     t.boolean "show_in_menu", default: true
@@ -1103,7 +1107,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["rgt"], name: "index_refinery_pages_on_rgt"
   end
 
-  create_table "refinery_public_holidays", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_public_holidays", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "event_id"
     t.string "title"
     t.string "country"
@@ -1115,7 +1119,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["holiday_date"], name: "index_refinery_public_holidays_on_holiday_date"
   end
 
-  create_table "refinery_quality_assurance_defects", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_quality_assurance_defects", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "category_code"
     t.string "category_name"
     t.integer "defect_code"
@@ -1129,7 +1133,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["defect_name"], name: "index_qa_defects_on_defect_name"
   end
 
-  create_table "refinery_quality_assurance_inspection_defects", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_quality_assurance_inspection_defects", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "inspection_id"
     t.integer "defect_id"
     t.integer "critical", default: 0, null: false
@@ -1144,7 +1148,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["inspection_id"], name: "index_qa_inspection_defects_on_inspection_id"
   end
 
-  create_table "refinery_quality_assurance_inspection_photos", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_quality_assurance_inspection_photos", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "inspection_id"
     t.integer "inspection_defect_id"
     t.integer "image_id"
@@ -1158,7 +1162,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["inspection_id"], name: "index_qa_inspection_photos_on_inspection_id"
   end
 
-  create_table "refinery_quality_assurance_inspections", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_quality_assurance_inspections", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "company_id"
     t.integer "supplier_id"
     t.string "supplier_label"
@@ -1203,17 +1207,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.string "project_code"
     t.string "code"
     t.integer "job_id"
-    t.string "product_category"
-    t.string "season"
-    t.string "brand_label"
-    t.boolean "pps_available"
-    t.boolean "pps_approved"
-    t.text "pps_comments"
-    t.boolean "tp_available"
-    t.boolean "tp_approved"
-    t.text "tp_comments"
     t.index ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id"
-    t.index ["brand_label"], name: "index_refinery_quality_assurance_inspections_on_brand_label"
     t.index ["business_product_id"], name: "index_qa_inspections_on_business_product_id"
     t.index ["business_section_id"], name: "index_qa_inspections_on_business_section_id"
     t.index ["code"], name: "index_refinery_quality_assurance_inspections_on_code"
@@ -1232,23 +1226,17 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["po_qty"], name: "index_qa_inspections_on_po_qty"
     t.index ["po_type"], name: "index_qa_inspections_on_po_type"
     t.index ["position"], name: "index_qa_inspections_on_position"
-    t.index ["pps_approved"], name: "index_refinery_quality_assurance_inspections_on_pps_approved"
-    t.index ["pps_available"], name: "index_refinery_quality_assurance_inspections_on_pps_available"
-    t.index ["product_category"], name: "index_refinery_quality_assurance_inspections_on_product_category"
     t.index ["product_code"], name: "index_qa_inspections_on_product_code"
     t.index ["product_description"], name: "index_qa_inspections_on_product_description"
     t.index ["project_code"], name: "index_refinery_quality_assurance_inspections_on_project_code"
     t.index ["resource_id"], name: "index_qa_inspections_on_resource_id"
     t.index ["result"], name: "index_qa_inspections_on_result"
-    t.index ["season"], name: "index_refinery_quality_assurance_inspections_on_season"
     t.index ["status"], name: "index_refinery_quality_assurance_inspections_on_status"
     t.index ["supplier_code"], name: "index_qa_inspections_on_supplier_code"
     t.index ["supplier_id"], name: "index_qa_inspections_on_supplier_id"
-    t.index ["tp_approved"], name: "index_refinery_quality_assurance_inspections_on_tp_approved"
-    t.index ["tp_available"], name: "index_refinery_quality_assurance_inspections_on_tp_available"
   end
 
-  create_table "refinery_quality_assurance_jobs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_quality_assurance_jobs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "company_id"
     t.string "company_code"
     t.string "company_label"
@@ -1290,7 +1278,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["title"], name: "index_qa_inspection_jobs_on_title"
   end
 
-  create_table "refinery_resource_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_resource_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "refinery_resource_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -1300,7 +1288,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["refinery_resource_id"], name: "index_refinery_resource_translations_on_refinery_resource_id"
   end
 
-  create_table "refinery_resources", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_resources", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "file_mime_type"
     t.string "file_name"
     t.integer "file_size"
@@ -1312,7 +1300,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["authorizations_access"], name: "index_refinery_resources_on_authorizations_access"
   end
 
-  create_table "refinery_settings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_settings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
     t.text "value"
     t.boolean "destroyable", default: true
@@ -1326,7 +1314,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["name"], name: "index_refinery_settings_on_name"
   end
 
-  create_table "refinery_shipping_addresses", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_addresses", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "easy_post_id"
     t.string "name"
     t.string "company"
@@ -1345,15 +1333,15 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_shipping_addresses_on_position"
   end
 
-  create_table "refinery_shipping_costs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_costs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "shipment_id"
     t.string "cost_type"
     t.text "comments"
     t.string "currency_code"
     t.decimal "amount", precision: 13, scale: 4
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.decimal "invoice_amount", precision: 13, scale: 4
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amount"], name: "index_refinery_shipping_costs_on_amount"
     t.index ["cost_type"], name: "index_refinery_shipping_costs_on_cost_type"
     t.index ["currency_code"], name: "index_refinery_shipping_costs_on_currency_code"
@@ -1361,7 +1349,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["shipment_id"], name: "index_refinery_shipping_costs_on_shipment_id"
   end
 
-  create_table "refinery_shipping_documents", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_documents", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "shipment_id"
     t.integer "resource_id"
     t.string "document_type"
@@ -1373,7 +1361,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["shipment_id"], name: "index_refinery_shipping_documents_on_shipment_id"
   end
 
-  create_table "refinery_shipping_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "shipment_id"
     t.integer "order_id"
     t.string "order_label"
@@ -1397,7 +1385,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["shipment_id"], name: "index_refinery_shipping_items_on_shipment_id"
   end
 
-  create_table "refinery_shipping_locations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_locations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
     t.text "description"
     t.integer "owner_id"
@@ -1453,7 +1441,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["verified_at"], name: "index_refinery_shipping_locations_on_verified_at"
   end
 
-  create_table "refinery_shipping_packages", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_packages", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "shipment_id"
     t.string "name"
     t.string "package_type"
@@ -1476,7 +1464,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["shipment_id"], name: "index_refinery_shipping_packages_on_shipment_id"
   end
 
-  create_table "refinery_shipping_parcels", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_parcels", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.date "parcel_date"
     t.string "from_name"
     t.integer "from_contact_id"
@@ -1501,7 +1489,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["to_user_id"], name: "index_refinery_shipping_parcels_on_to_user_id"
   end
 
-  create_table "refinery_shipping_routes", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_routes", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "shipment_id"
     t.integer "location_id"
     t.string "route_type"
@@ -1525,7 +1513,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["status"], name: "index_refinery_shipping_routes_on_status"
   end
 
-  create_table "refinery_shipping_shipment_accounts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_shipment_accounts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "contact_id"
     t.string "description"
     t.string "courier"
@@ -1540,7 +1528,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_shipping_shipment_accounts_on_position"
   end
 
-  create_table "refinery_shipping_shipment_parcels", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_shipment_parcels", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "shipment_id"
     t.integer "length"
     t.integer "width"
@@ -1558,7 +1546,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["position"], name: "index_refinery_shipping_shipment_parcels_on_position"
   end
 
-  create_table "refinery_shipping_shipments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shipping_shipments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "from_contact_id"
     t.integer "from_address_id"
     t.integer "to_contact_id"
@@ -1670,7 +1658,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["to_contact_label"], name: "index_refinery_shipping_shipments_on_to_contact_label"
   end
 
-  create_table "refinery_shows", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_shows", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
     t.string "website"
     t.integer "logo_id"
@@ -1683,7 +1671,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "refinery_sick_leaves", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_sick_leaves", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "employee_id"
     t.integer "event_id"
     t.integer "doctors_note_id"
@@ -1701,7 +1689,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["start_date"], name: "index_refinery_sick_leaves_on_start_date"
   end
 
-  create_table "refinery_xero_accounts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_accounts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "guid"
     t.string "code"
     t.string "name"
@@ -1727,7 +1715,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["inactive"], name: "index_refinery_xero_accounts_on_inactive"
   end
 
-  create_table "refinery_xero_api_keyfiles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_api_keyfiles", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "organisation"
     t.text "key_content"
     t.datetime "created_at", null: false
@@ -1738,7 +1726,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["organisation"], name: "index_refinery_xero_api_keyfiles_on_organisation"
   end
 
-  create_table "refinery_xero_contacts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_contacts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "guid"
     t.string "contact_number"
     t.string "contact_status"
@@ -1763,7 +1751,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["inactive"], name: "index_refinery_xero_contacts_on_inactive"
   end
 
-  create_table "refinery_xero_expense_claim_attachments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_expense_claim_attachments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "xero_expense_claim_id"
     t.integer "resource_id"
     t.string "guid"
@@ -1774,7 +1762,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["xero_expense_claim_id"], name: "refinery_xeca_on_xero_expense_claim_id"
   end
 
-  create_table "refinery_xero_expense_claims", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_expense_claims", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "employee_id"
     t.string "description"
     t.string "guid"
@@ -1795,7 +1783,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["updated_date_utc"], name: "index_refinery_xero_expense_claims_on_updated_date_utc"
   end
 
-  create_table "refinery_xero_line_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_line_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "xero_receipt_id"
     t.integer "xero_account_id"
     t.string "item_code"
@@ -1814,7 +1802,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["xero_receipt_id"], name: "index_refinery_xero_line_items_on_xero_receipt_id"
   end
 
-  create_table "refinery_xero_receipts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_receipts", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "employee_id"
     t.integer "xero_expense_claim_id"
     t.string "guid"
@@ -1839,7 +1827,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["xero_expense_claim_id"], name: "index_refinery_xero_receipts_on_xero_expense_claim_id"
   end
 
-  create_table "refinery_xero_tracking_categories", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "refinery_xero_tracking_categories", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "guid"
     t.string "name"
     t.string "status"
@@ -1851,7 +1839,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["status"], name: "index_refinery_xero_tracking_categories_on_status"
   end
 
-  create_table "rest_hooks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "rest_hooks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.bigint "user_id"
     t.string "event_name"
     t.string "hook_url"
@@ -1863,7 +1851,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["user_id"], name: "index_rest_hooks_on_user_id"
   end
 
-  create_table "seo_meta", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "seo_meta", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "seo_meta_id"
     t.string "seo_meta_type"
     t.string "browser_title"
@@ -1874,7 +1862,7 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["seo_meta_id", "seo_meta_type"], name: "id_type_index_on_seo_meta"
   end
 
-  create_table "taggings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "taggings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -1885,13 +1873,13 @@ ActiveRecord::Schema.define(version: 20200109062838) do
     t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
   end
 
-  create_table "tags", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "tags", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "user_settings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_settings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer "user_id"
     t.string "identifier"
     t.text "content"

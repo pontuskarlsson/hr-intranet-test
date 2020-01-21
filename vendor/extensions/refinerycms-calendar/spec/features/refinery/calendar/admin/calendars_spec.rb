@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "calendars list" do
           before(:each) do
-            FactoryGirl.create(:calendar, :title => "UniqueTitleOne")
-            FactoryGirl.create(:calendar, :title => "UniqueTitleTwo")
+            FactoryBot.create(:calendar, :title => "UniqueTitleOne")
+            FactoryBot.create(:calendar, :title => "UniqueTitleTwo")
           end
 
           it "shows two items" do
@@ -47,7 +47,7 @@ describe Refinery do
           end
 
           context "duplicate" do
-            before(:each) { FactoryGirl.create(:calendar, :title => "UniqueTitle") }
+            before(:each) { FactoryBot.create(:calendar, :title => "UniqueTitle") }
 
             it "should fail" do
               visit refinery.calendar_admin_calendars_path
@@ -65,7 +65,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before(:each) { FactoryGirl.create(:calendar, :title => "A title") }
+          before(:each) { FactoryBot.create(:calendar, :title => "A title") }
 
           it "should succeed" do
             visit refinery.calendar_admin_calendars_path
@@ -83,7 +83,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before(:each) { FactoryGirl.create(:calendar, :title => "UniqueTitleOne") }
+          before(:each) { FactoryBot.create(:calendar, :title => "UniqueTitleOne") }
 
           it "should succeed" do
             visit refinery.calendar_admin_calendars_path

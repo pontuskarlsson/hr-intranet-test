@@ -7,8 +7,8 @@ describe Refinery do
 
       describe "contact list" do
         before(:each) do
-          FactoryGirl.create(:contact, name: 'Unique Name 1')
-          FactoryGirl.create(:contact, name: 'Unique Name 2')
+          FactoryBot.create(:contact, name: 'Unique Name 1')
+          FactoryBot.create(:contact, name: 'Unique Name 2')
         end
 
         it "displays a list of contacts" do
@@ -21,7 +21,7 @@ describe Refinery do
       end
 
       describe "contact details" do
-        let(:contact) { FactoryGirl.create(:contact) }
+        let(:contact) { FactoryBot.create(:contact) }
 
         it "displays the details of a specific contact" do
           visit refinery.marketing_contact_path(contact)
@@ -32,9 +32,9 @@ describe Refinery do
 
         context "when other contacts has same tags" do
           before(:each) do
-            FactoryGirl.create(:contact, name: 'Similar contact 1', tags_joined_by_comma: contact.tags_joined_by_comma)
-            FactoryGirl.create(:contact, name: 'Similar contact 2', tags_joined_by_comma: contact.tags_joined_by_comma)
-            FactoryGirl.create(:contact, name: 'Not the same tags 1', tags_joined_by_comma: 'unlikely, different')
+            FactoryBot.create(:contact, name: 'Similar contact 1', tags_joined_by_comma: contact.tags_joined_by_comma)
+            FactoryBot.create(:contact, name: 'Similar contact 2', tags_joined_by_comma: contact.tags_joined_by_comma)
+            FactoryBot.create(:contact, name: 'Not the same tags 1', tags_joined_by_comma: 'unlikely, different')
           end
           it "displays a list of similar contacts" do
             visit refinery.marketing_contact_path(contact)
@@ -46,11 +46,11 @@ describe Refinery do
         end
 
         context "when contact is organisation" do
-          let(:contact) { FactoryGirl.create(:contact, is_organisation: true) }
+          let(:contact) { FactoryBot.create(:contact, is_organisation: true) }
           before(:each) do
-            FactoryGirl.create(:contact, name: 'John Doe', organisation: contact)
-            FactoryGirl.create(:contact, name: 'Bruce Wayne', organisation: contact)
-            FactoryGirl.create(:contact, name: 'Clark Kent')
+            FactoryBot.create(:contact, name: 'John Doe', organisation: contact)
+            FactoryBot.create(:contact, name: 'Bruce Wayne', organisation: contact)
+            FactoryBot.create(:contact, name: 'Clark Kent')
           end
           it "displays a list of employees" do
             visit refinery.marketing_contact_path(contact)

@@ -127,7 +127,7 @@ module Refinery
       end
 
       after_save do
-        if archived_at_changed?
+        if saved_change_to_archived_at?
           billables.update_all(archived_at: archived_at)
         end
       end

@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "employees list" do
           before do
-            FactoryGirl.create(:employee, :employee_no => "UniqueTitleOne")
-            FactoryGirl.create(:employee, :employee_no => "UniqueTitleTwo")
+            FactoryBot.create(:employee, :employee_no => "UniqueTitleOne")
+            FactoryBot.create(:employee, :employee_no => "UniqueTitleTwo")
           end
 
           it "shows two items" do
@@ -48,7 +48,7 @@ describe Refinery do
           end
 
           context "duplicate" do
-            before { FactoryGirl.create(:employee, :employee_no => "UniqueTitle") }
+            before { FactoryBot.create(:employee, :employee_no => "UniqueTitle") }
 
             it "should fail" do
               visit refinery.employees_admin_employees_path
@@ -66,7 +66,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:employee, :employee_no => "A employee_no") }
+          before { FactoryBot.create(:employee, :employee_no => "A employee_no") }
 
           it "should succeed" do
             visit refinery.employees_admin_employees_path
@@ -84,7 +84,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:employee, :employee_no => "UniqueTitleOne") }
+          before { FactoryBot.create(:employee, :employee_no => "UniqueTitleOne") }
 
           it "should succeed" do
             visit refinery.employees_admin_employees_path

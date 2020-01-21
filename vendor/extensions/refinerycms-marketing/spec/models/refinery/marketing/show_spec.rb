@@ -4,7 +4,7 @@ module Refinery
   module Marketing
     describe Show do
       describe 'validations' do
-        let(:show) { FactoryGirl.build(:show) }
+        let(:show) { FactoryBot.build(:show) }
 
         it 'validates show presence' do
           expect(show).to be_valid
@@ -15,7 +15,7 @@ module Refinery
         it 'validates name uniqueness' do
           expect(show).to be_valid
 
-          FactoryGirl.create(:show, name: show.name)
+          FactoryBot.create(:show, name: show.name)
           expect(show).not_to be_valid
         end
       end

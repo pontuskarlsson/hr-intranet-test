@@ -4,7 +4,7 @@ module Refinery
   module Shipping
     describe ShipmentParcel do
       describe 'validations' do
-        let(:shipment_parcel) { FactoryGirl.build(:shipment_parcel) }
+        let(:shipment_parcel) { FactoryBot.build(:shipment_parcel) }
         subject { shipment_parcel }
 
         it { is_expected.to be_valid }
@@ -25,7 +25,7 @@ module Refinery
         # end
         #
         # describe '#valid_for_easypost?' do
-        #   let(:shipment_parcel) { FactoryGirl.build(:shipment_parcel_with_easypost) }
+        #   let(:shipment_parcel) { FactoryBot.build(:shipment_parcel_with_easypost) }
         #   subject { shipment_parcel.valid_for_easypost? }
         #
         #   it { is_expected.to eq true }
@@ -71,7 +71,7 @@ module Refinery
         #   end
         #
         #   describe 'that ships Internationally' do
-        #     let(:shipment_parcel) { FactoryGirl.build(:shipment_parcel_international) }
+        #     let(:shipment_parcel) { FactoryBot.build(:shipment_parcel_international) }
         #     subject { shipment_parcel.valid_for_easypost?(true) }
         #
         #     it { is_expected.to eq true }

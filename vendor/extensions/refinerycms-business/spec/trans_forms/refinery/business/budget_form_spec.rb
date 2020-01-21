@@ -51,7 +51,7 @@ module Refinery
         #   end
         #
         #   context 'when an existing Contact matches the :customer_name' do
-        #     let(:contact) { FactoryGirl.create(:contact) }
+        #     let(:contact) { FactoryBot.create(:contact) }
         #     let(:attr) { { description: 'Budget Q4', from_date: '2011-02-03', to_date: '2011-04-05', comments: 'new comments', customer_name: contact.name } }
         #
         #     it 'creates a Budget' do
@@ -83,7 +83,7 @@ module Refinery
         #   end
         #
         #   context 'when Budget with :description already exists' do
-        #     before { FactoryGirl.create(:budget, description: 'A Description') }
+        #     before { FactoryBot.create(:budget, description: 'A Description') }
         #     let(:attr) { { description: 'A Description', from_date: '2011-02-03', to_date: '2011-04-05', comments: 'new comments', customer_name: 'Customer Name' } }
         #
         #     it 'cannot create a Budget' do
@@ -93,7 +93,7 @@ module Refinery
         # end
         #
         # describe 'for an existing Budget' do
-        #   let(:budget) { FactoryGirl.create(:budget) }
+        #   let(:budget) { FactoryBot.create(:budget) }
         #   before { budget } # Makes sure it is created to handle counters correctly
         #
         #   context 'when updated attributes are present' do

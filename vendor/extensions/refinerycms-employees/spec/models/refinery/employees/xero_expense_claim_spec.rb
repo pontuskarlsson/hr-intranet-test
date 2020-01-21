@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe XeroExpenseClaim do
       describe 'validations' do
-        let(:xero_expense_claim) { FactoryGirl.build(:xero_expense_claim) }
+        let(:xero_expense_claim) { FactoryBot.build(:xero_expense_claim) }
         subject { xero_expense_claim }
 
         it { is_expected.to be_valid }

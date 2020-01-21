@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "contacts list" do
           before do
-            FactoryGirl.create(:contact, :name => "UniqueTitleOne")
-            FactoryGirl.create(:contact, :name => "UniqueTitleTwo")
+            FactoryBot.create(:contact, :name => "UniqueTitleOne")
+            FactoryBot.create(:contact, :name => "UniqueTitleTwo")
           end
 
           it "shows two items" do
@@ -50,7 +50,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:contact, :name => "A name") }
+          before { FactoryBot.create(:contact, :name => "A name") }
 
           it "should succeed" do
             visit refinery.marketing_admin_contacts_path
@@ -68,7 +68,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:contact, :name => "UniqueTitleOne") }
+          before { FactoryBot.create(:contact, :name => "UniqueTitleOne") }
 
           it "should succeed" do
             visit refinery.marketing_admin_contacts_path

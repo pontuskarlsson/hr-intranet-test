@@ -6,15 +6,15 @@ describe Refinery do
     describe "expense_claims" do
       refinery_login_with_devise :authentication_devise_user
       before(:each) do
-        FactoryGirl.create(:employee, user: logged_in_user)
+        FactoryBot.create(:employee, user: logged_in_user)
       end
       let(:employee) { logged_in_user.employee }
 
       describe "list of expense claims" do
         context "when expense claims are present" do
           before do
-            FactoryGirl.create(:xero_expense_claim, description: 'September Expenses', employee: employee)
-            FactoryGirl.create(:xero_expense_claim, description: 'October Expenses', employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_SUBMITTED)
+            FactoryBot.create(:xero_expense_claim, description: 'September Expenses', employee: employee)
+            FactoryBot.create(:xero_expense_claim, description: 'October Expenses', employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_SUBMITTED)
           end
 
           it "shows two items" do
@@ -35,9 +35,9 @@ describe Refinery do
 
         context 'when it was created by current user' do
           before do
-            other_employee = FactoryGirl.create(:employee)
-            FactoryGirl.create(:xero_expense_claim, description: 'September Expenses', added_by: logged_in_user, employee: other_employee)
-            FactoryGirl.create(:xero_expense_claim, description: 'October Expenses', employee: other_employee)
+            other_employee = FactoryBot.create(:employee)
+            FactoryBot.create(:xero_expense_claim, description: 'September Expenses', added_by: logged_in_user, employee: other_employee)
+            FactoryBot.create(:xero_expense_claim, description: 'October Expenses', employee: other_employee)
           end
 
           it 'displays expense claim from other employee' do
@@ -50,7 +50,7 @@ describe Refinery do
       end
 
       describe "adding new expense claim" do
-        before { FactoryGirl.create(:employment_contract, employee: employee) }
+        before { FactoryBot.create(:employment_contract, employee: employee) }
         it "created an expense claim" do
           visit refinery.employees_expense_claims_path
 
@@ -63,8 +63,8 @@ describe Refinery do
         end
 
         context 'when adding for another employee ' do
-          let(:other_employee) { FactoryGirl.create(:employee) }
-          before { FactoryGirl.create(:employment_contract, employee: other_employee) }
+          let(:other_employee) { FactoryBot.create(:employee) }
+          before { FactoryBot.create(:employment_contract, employee: other_employee) }
 
           it 'created an expense claim' do
             visit refinery.employees_expense_claims_path
@@ -82,9 +82,9 @@ describe Refinery do
       end
 
       describe 'edit' do
-        let(:other_employee) { FactoryGirl.create(:employee) }
-        let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: employee, description: 'A Description', added_by: logged_in_user) }
-        before { FactoryGirl.create(:employment_contract, employee: other_employee) }
+        let(:other_employee) { FactoryBot.create(:employee) }
+        let(:xero_expense_claim) { FactoryBot.create(:xero_expense_claim, employee: employee, description: 'A Description', added_by: logged_in_user) }
+        before { FactoryBot.create(:employment_contract, employee: other_employee) }
         it 'should succeed' do
           visit refinery.employees_expense_claim_path(xero_expense_claim)
           click_link 'Edit'
@@ -101,7 +101,7 @@ describe Refinery do
 
       describe "removing expense claim" do
         context "when it is not submitted" do
-          let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED) }
+          let(:xero_expense_claim) { FactoryBot.create(:xero_expense_claim, employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED) }
 
           it "succeeds" do
             visit refinery.employees_expense_claim_path(xero_expense_claim)
@@ -113,7 +113,7 @@ describe Refinery do
         end
 
         context "when it is submitted" do
-          let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim, employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_SUBMITTED) }
+          let(:xero_expense_claim) { FactoryBot.create(:xero_expense_claim, employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_SUBMITTED) }
 
           it "cannot be clicked" do
             visit refinery.employees_expense_claim_path(xero_expense_claim)
@@ -136,7 +136,7 @@ describe Refinery do
         end
 
         context "when it is the current user's employee" do
-          let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim_with_receipts, employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED) }
+          let(:xero_expense_claim) { FactoryBot.create(:xero_expense_claim_with_receipts, employee: employee, status: Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED) }
 
           it "succeeds" do
             visit refinery.employees_expense_claim_path(xero_expense_claim)
@@ -146,7 +146,7 @@ describe Refinery do
         end
 
         context "when it is another employee's" do
-          let(:xero_expense_claim) { FactoryGirl.create(:xero_expense_claim_with_receipts, status: Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED) }
+          let(:xero_expense_claim) { FactoryBot.create(:xero_expense_claim_with_receipts, status: Refinery::Employees::XeroExpenseClaim::STATUS_NOT_SUBMITTED) }
 
           it "cannot be clicked" do
             visit refinery.employees_expense_claim_path(xero_expense_claim)

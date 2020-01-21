@@ -3,7 +3,7 @@ require 'spec_helper'
 module Refinery
   module Shipping
     describe ShipmentAddressUpdater do
-      let(:shipment) { FactoryGirl.create(:shipment) }
+      let(:shipment) { FactoryBot.create(:shipment) }
       let(:attr) { {} }
       let(:shipment_address_updater) { ShipmentAddressUpdater.new({ shipment: shipment }.reverse_merge(attr)) }
       subject { shipment_address_updater }

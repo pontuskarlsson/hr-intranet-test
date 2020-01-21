@@ -5,7 +5,7 @@ module Refinery
     describe PageRole do
       describe "validations" do
         subject do
-          FactoryGirl.create(:page_role)
+          FactoryBot.create(:page_role)
         end
 
         it { should be_valid }

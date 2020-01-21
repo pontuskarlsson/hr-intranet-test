@@ -1,9 +1,9 @@
 module Refinery
   module Business
     class Engine < Rails::Engine
-      extend Refinery::Engine
-      isolate_namespace Refinery::Business
+      include Refinery::Engine
 
+      isolate_namespace Refinery::Business
       engine_name :refinery_business
 
       initializer 'resource-authorization-hooks-for-business-engine' do |app|
@@ -18,12 +18,14 @@ module Refinery
           plugin.name = "business"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.business_admin_companies_path }
           plugin.pathname = root
-          
+
+          # Menu match controls access to the admin backend routes.
+          plugin.menu_match = %r{refinery/business(/.*)?$}
         end
       end
 
       config.after_initialize do
-        Refinery.register_extension(Refinery::Business)
+        Refinery.register_engine(Refinery::Business)
       end
     end
   end

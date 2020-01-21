@@ -5,12 +5,12 @@ describe Refinery do
   describe "Business" do
     describe "Admin" do
       describe "budgets" do
-        refinery_login_with_devise :authentication_devise_user
+        refinery_login
 
         describe "budgets list" do
           before do
-            FactoryGirl.create(:budget, :description => "UniqueTitleOne")
-            FactoryGirl.create(:budget, :description => "UniqueTitleTwo")
+            FactoryBot.create(:budget, :description => "UniqueTitleOne")
+            FactoryBot.create(:budget, :description => "UniqueTitleTwo")
           end
 
           it "shows two items" do
@@ -47,7 +47,7 @@ describe Refinery do
           end
 
           context "duplicate" do
-            before { FactoryGirl.create(:budget, :description => "UniqueTitle") }
+            before { FactoryBot.create(:budget, :description => "UniqueTitle") }
 
             it "should fail" do
               visit refinery.business_admin_budgets_path
@@ -65,7 +65,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:budget, :description => "A order_id") }
+          before { FactoryBot.create(:budget, :description => "A order_id") }
 
           it "should succeed" do
             visit refinery.business_admin_budgets_path
@@ -83,7 +83,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:budget, :description => "UniqueTitleOne") }
+          before { FactoryBot.create(:budget, :description => "UniqueTitleOne") }
 
           it "should succeed" do
             visit refinery.business_admin_budgets_path

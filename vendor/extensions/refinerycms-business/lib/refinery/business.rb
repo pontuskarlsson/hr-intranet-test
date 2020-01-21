@@ -13,6 +13,8 @@ module Refinery
     require 'refinery/business/xero/client'
     require 'refinery/business/xero/syncer'
 
+    autoload :Version, 'refinery/business/version'
+
     ROLE_EXTERNAL = 'Business:External'
     ROLE_INTERNAL = 'Business:Internal'
     ROLE_INTERNAL_FINANCE = 'Business:Internal:Finance'
@@ -38,6 +40,10 @@ module Refinery
 
       def root
         @root ||= Pathname.new(File.expand_path('../../../', __FILE__))
+      end
+
+      def version
+        ::Refinery::Business::Version.to_s
       end
 
       def factory_paths

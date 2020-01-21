@@ -28,7 +28,6 @@ gem 'refinerycms-blog', github: 'refinery/refinerycms-blog', ref: '684036e9efbea
 # gem 'refinerycms-news', github: 'refinery/refinerycms-news', branch: 'master'
 gem 'refinerycms-page-images'
 gem 'refinerycms-acts-as-indexed'
-gem 'refinerycms-testing'
 gem 'refinerycms-wymeditor'
 gem 'refinerycms-addons',       path: 'vendor/extensions'
 gem 'refinerycms-calendar',     path: 'vendor/extensions'
@@ -95,6 +94,13 @@ end
 
 group :test do
   gem 'rspec-rails'
-  gem 'factory_bot_rails', '4.10.0'
   gem 'rspec-its' # for the model's validation tests.
+
+  # Place testing after all other refinery modules. Otherwise the engines might not be registered when FactoryBot paths
+  # are loaded.
+  #
+  # Don't manually add FactoryBot to Gemfile. That is already being included by refincercms-testing and manually adding
+  # it here will cause non-module factories to be loaded twice, causing errors.
+  #
+  gem 'refinerycms-testing'
 end

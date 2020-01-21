@@ -4,7 +4,7 @@ module Refinery
   module Business
     describe Budget do
       describe 'validations' do
-        let(:budget) { FactoryGirl.build(:budget) }
+        let(:budget) { FactoryBot.build(:budget) }
         subject { budget }
 
         it { is_expected.to be_valid }
@@ -15,7 +15,7 @@ module Refinery
         end
 
         context 'when :description is already present' do
-          before { FactoryGirl.create(:budget, description: budget.description) }
+          before { FactoryBot.create(:budget, description: budget.description) }
           it { is_expected.not_to be_valid }
         end
       end

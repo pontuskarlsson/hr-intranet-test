@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "public_holidays list" do
           before do
-            FactoryGirl.create(:public_holiday, :title => "New Years Day")
-            FactoryGirl.create(:public_holiday, :title => "Christmas Day")
+            FactoryBot.create(:public_holiday, :title => "New Years Day")
+            FactoryBot.create(:public_holiday, :title => "Christmas Day")
           end
 
           it "shows two items" do
@@ -51,7 +51,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:public_holiday, :title => "Christmas Day") }
+          before { FactoryBot.create(:public_holiday, :title => "Christmas Day") }
 
           it "should succeed" do
             visit refinery.employees_admin_public_holidays_path
@@ -69,7 +69,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:public_holiday, :title => "Christmas Day") }
+          before { FactoryBot.create(:public_holiday, :title => "Christmas Day") }
 
           it "should succeed" do
             visit refinery.employees_admin_public_holidays_path

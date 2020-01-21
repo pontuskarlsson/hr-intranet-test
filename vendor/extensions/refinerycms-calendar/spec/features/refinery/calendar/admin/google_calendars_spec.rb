@@ -9,8 +9,8 @@ describe Refinery do
 
         describe 'google calendars list' do
           before(:each) do
-            FactoryGirl.create(:google_calendar, :google_calendar_id => 'UniqueTitleOne')
-            FactoryGirl.create(:google_calendar, :google_calendar_id => 'UniqueTitleTwo')
+            FactoryBot.create(:google_calendar, :google_calendar_id => 'UniqueTitleOne')
+            FactoryBot.create(:google_calendar, :google_calendar_id => 'UniqueTitleTwo')
           end
 
           it 'shows two items' do
@@ -21,8 +21,8 @@ describe Refinery do
         end
 
         describe 'create' do
-          let(:user) { FactoryGirl.create(:authentication_devise_user) }
-          let(:calendar) { FactoryGirl.create(:calendar, user: user) }
+          let(:user) { FactoryBot.create(:authentication_devise_user) }
+          let(:calendar) { FactoryBot.create(:calendar, user: user) }
           before(:each) do
             user; calendar
             visit refinery.calendar_admin_google_calendars_path
@@ -54,7 +54,7 @@ describe Refinery do
         end
 
         describe 'edit' do
-          before(:each) { FactoryGirl.create(:google_calendar, :google_calendar_id => 'A title') }
+          before(:each) { FactoryBot.create(:google_calendar, :google_calendar_id => 'A title') }
 
           it 'should succeed' do
             visit refinery.calendar_admin_google_calendars_path
@@ -102,7 +102,7 @@ describe Refinery do
         end
 
         describe 'destroy' do
-          before(:each) { FactoryGirl.create(:google_calendar, :google_calendar_id => "UniqueTitleOne") }
+          before(:each) { FactoryBot.create(:google_calendar, :google_calendar_id => "UniqueTitleOne") }
 
           it 'should succeed' do
             visit refinery.calendar_admin_google_calendars_path

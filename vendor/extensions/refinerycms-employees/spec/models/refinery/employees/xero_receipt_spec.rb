@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe XeroReceipt do
       describe 'validations' do
-        let(:xero_receipt) { FactoryGirl.build(:xero_receipt) }
+        let(:xero_receipt) { FactoryBot.build(:xero_receipt) }
         subject { xero_receipt }
 
         it { is_expected.to be_valid }

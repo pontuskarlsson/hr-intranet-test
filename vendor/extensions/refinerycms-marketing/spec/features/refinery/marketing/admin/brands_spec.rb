@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "brands list" do
           before do
-            FactoryGirl.create(:brand, :name => "UniqueTitleOne")
-            FactoryGirl.create(:brand, :name => "UniqueTitleTwo")
+            FactoryBot.create(:brand, :name => "UniqueTitleOne")
+            FactoryBot.create(:brand, :name => "UniqueTitleTwo")
           end
 
           it "shows two items" do
@@ -47,7 +47,7 @@ describe Refinery do
           end
 
           context "duplicate" do
-            before { FactoryGirl.create(:brand, :name => "UniqueTitle") }
+            before { FactoryBot.create(:brand, :name => "UniqueTitle") }
 
             it "should fail" do
               visit refinery.marketing_admin_brands_path
@@ -65,7 +65,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:brand, :name => "A name") }
+          before { FactoryBot.create(:brand, :name => "A name") }
 
           it "should succeed" do
             visit refinery.marketing_admin_brands_path
@@ -83,7 +83,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:brand, :name => "UniqueTitleOne") }
+          before { FactoryBot.create(:brand, :name => "UniqueTitleOne") }
 
           it "should succeed" do
             visit refinery.marketing_admin_brands_path

@@ -4,7 +4,7 @@ module Refinery
   module Business
     describe BudgetItem do
       describe 'validations' do
-        let(:budget_item) { FactoryGirl.build(:budget_item) }
+        let(:budget_item) { FactoryBot.build(:budget_item) }
         subject { budget_item }
 
         it { is_expected.to be_valid }

@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe LeaveOfAbsence do
       describe 'validations' do
-        let(:leave_of_absence) { FactoryGirl.build(:leave_of_absence) }
+        let(:leave_of_absence) { FactoryBot.build(:leave_of_absence) }
         subject { leave_of_absence }
 
         it { is_expected.to be_valid }
@@ -29,7 +29,7 @@ module Refinery
         before { leave_of_absence }
 
         context 'when it only has a start date but no end date' do
-          let(:leave_of_absence) { FactoryGirl.create(:leave_of_absence, start_date: '2014-12-12') }
+          let(:leave_of_absence) { FactoryBot.create(:leave_of_absence, start_date: '2014-12-12') }
 
           it {
             expect(leave_of_absence.event).to be_persisted
@@ -39,7 +39,7 @@ module Refinery
         end
 
         context 'when it has both a start date and an end date' do
-          let(:leave_of_absence) { FactoryGirl.create(:leave_of_absence, start_date: '2014-12-12', end_date: '2014-12-19') }
+          let(:leave_of_absence) { FactoryBot.create(:leave_of_absence, start_date: '2014-12-12', end_date: '2014-12-19') }
 
           it {
             expect(leave_of_absence.event).to be_persisted
@@ -51,7 +51,7 @@ module Refinery
 
       describe 'on update' do
         context 'when end date was removed' do
-          let(:leave_of_absence) { FactoryGirl.create(:leave_of_absence, start_date: '2014-12-12', end_date: '2014-12-19') }
+          let(:leave_of_absence) { FactoryBot.create(:leave_of_absence, start_date: '2014-12-12', end_date: '2014-12-19') }
           before { leave_of_absence.update_attributes(end_date: nil) }
 
           it { expect(leave_of_absence.event.reload.ends_at).to be_nil }

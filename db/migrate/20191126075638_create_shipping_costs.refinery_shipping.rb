@@ -1,5 +1,5 @@
 # This migration comes from refinery_shipping (originally 20)
-class CreateShippingCosts < ActiveRecord::Migration
+class CreateShippingCosts < ActiveRecord::Migration[5.0]
 
   def change
     create_table :refinery_shipping_costs do |t|

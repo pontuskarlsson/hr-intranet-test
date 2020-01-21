@@ -24,7 +24,7 @@ end
 def each_run
   Rails.cache.clear
   ActiveSupport::Dependencies.clear
-  FactoryGirl.reload
+  FactoryBot.reload
 
   # Requires supporting files with custom matchers and macros, etc,
   # in ./support/ and its subdirectories including factories.

@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe XeroLineItem do
       describe 'validations' do
-        let(:xero_line_item) { FactoryGirl.build(:xero_line_item) }
+        let(:xero_line_item) { FactoryBot.build(:xero_line_item) }
         subject { xero_line_item }
 
         it { is_expected.to be_valid }

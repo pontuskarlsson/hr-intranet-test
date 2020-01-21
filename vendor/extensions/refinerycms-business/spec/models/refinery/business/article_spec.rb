@@ -4,7 +4,7 @@ module Refinery
   module Business
     describe Article do
       describe 'validations' do
-        let(:article) { FactoryGirl.build(:article) }
+        let(:article) { FactoryBot.build(:article) }
         subject { article }
 
         it { is_expected.to be_valid }
@@ -15,7 +15,7 @@ module Refinery
         end
 
         context 'when :code is already present' do
-          before { FactoryGirl.create(:article, code: article.code) }
+          before { FactoryBot.create(:article, code: article.code) }
           it { is_expected.not_to be_valid }
         end
 
@@ -30,12 +30,12 @@ module Refinery
         end
 
         context 'when :is_public is false and :company is present' do
-          before { article.is_public = false; article.company = FactoryGirl.create(:company) }
+          before { article.is_public = false; article.company = FactoryBot.create(:company) }
           it { is_expected.to be_valid }
         end
 
         context 'when :is_public is true and :company is present' do
-          before { article.is_public = true; article.company = FactoryGirl.create(:company) }
+          before { article.is_public = true; article.company = FactoryBot.create(:company) }
           it { is_expected.not_to be_valid }
         end
 

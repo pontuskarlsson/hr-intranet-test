@@ -25,6 +25,9 @@ module Refinery
           plugin.name = "shipping"
           plugin.url = proc { Refinery::Core::Engine.routes.url_helpers.shipping_admin_shipments_path }
           plugin.pathname = root
+
+          # Menu match controls access to the admin backend routes.
+          plugin.menu_match = %r{refinery/shipping(/.*)?$}
         end
       end
 

@@ -5,7 +5,7 @@ module Refinery
     describe CustomList do
       describe "validations" do
         subject do
-          FactoryGirl.create(:custom_list,
+          FactoryBot.create(:custom_list,
           :title => "Refinery CMS")
         end
 

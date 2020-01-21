@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe XeroTrackingCategory do
       describe 'validations' do
-        let(:xero_tracking_category) { FactoryGirl.build(:xero_tracking_category) }
+        let(:xero_tracking_category) { FactoryBot.build(:xero_tracking_category) }
         subject { xero_tracking_category }
 
         it { is_expected.to be_valid }
@@ -25,7 +25,7 @@ module Refinery
         end
 
         context 'when there is two other Active categories' do
-          before { FactoryGirl.create_list(:xero_tracking_category, 2, status: XeroTrackingCategory::STATUS_ACTIVE) }
+          before { FactoryBot.create_list(:xero_tracking_category, 2, status: XeroTrackingCategory::STATUS_ACTIVE) }
           before { xero_tracking_category.status = XeroTrackingCategory::STATUS_ACTIVE }
           it { is_expected.not_to be_valid }
         end

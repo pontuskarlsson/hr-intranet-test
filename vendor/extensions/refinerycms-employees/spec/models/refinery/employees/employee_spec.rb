@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe Employee do
       describe "validations" do
-        let(:employee) { FactoryGirl.build(:employee) }
+        let(:employee) { FactoryBot.build(:employee) }
 
         it 'validates employee_no presence' do
           expect(employee).to be_valid
@@ -21,19 +21,19 @@ module Refinery
         it 'validates employee_no uniqueness' do
           expect(employee).to be_valid
 
-          FactoryGirl.create(:employee, employee_no: employee.employee_no)
+          FactoryBot.create(:employee, employee_no: employee.employee_no)
           expect(employee).not_to be_valid
         end
       end
 
       describe '.current scope' do
-        let(:active_employee_1) { FactoryGirl.create(:employee) }
-        let(:active_employee_2) { FactoryGirl.create(:employee) }
-        let(:previous_employee) { FactoryGirl.create(:employee) }
+        let(:active_employee_1) { FactoryBot.create(:employee) }
+        let(:active_employee_2) { FactoryBot.create(:employee) }
+        let(:previous_employee) { FactoryBot.create(:employee) }
         before :each do
-          FactoryGirl.create(:employment_contract, employee: active_employee_1, start_date: Date.today - 1.year, end_date: Date.today + 1.week)
-          FactoryGirl.create(:employment_contract, employee: active_employee_2, start_date: Date.today, end_date: nil)
-          FactoryGirl.create(:employment_contract, employee: previous_employee, start_date: Date.today - 1.year, end_date: Date.today - 1.month)
+          FactoryBot.create(:employment_contract, employee: active_employee_1, start_date: Date.today - 1.year, end_date: Date.today + 1.week)
+          FactoryBot.create(:employment_contract, employee: active_employee_2, start_date: Date.today, end_date: nil)
+          FactoryBot.create(:employment_contract, employee: previous_employee, start_date: Date.today - 1.year, end_date: Date.today - 1.month)
         end
 
         it 'only returns Employees with active employment contracts' do

@@ -27,16 +27,14 @@ module Refinery
         end
       end
 
-      after_save do
-        if changes[:id].nil? # Only perform on update, not create
-          if changes[:default_rgb_code].present?
-            # Update all user_calendars that still have the same rgb_code as
-            # the previous default_rgb_code (meaning the user never manually updated).
-            #
-            #   changes[:default_rgb_code] index 0 => old value
-            #   changes[:default_rgb_code] index 1 => new value
-            user_calendars.update_all({ rgb_code: changes[:default_rgb_code][1] }, { rgb_code: changes[:default_rgb_code][0] })
-          end
+      after_update do
+        if changes[:default_rgb_code].present?
+          # Update all user_calendars that still have the same rgb_code as
+          # the previous default_rgb_code (meaning the user never manually updated).
+          #
+          #   changes[:default_rgb_code] index 0 => old value
+          #   changes[:default_rgb_code] index 1 => new value
+          user_calendars.update_all({ rgb_code: changes[:default_rgb_code][1] }, { rgb_code: changes[:default_rgb_code][0] })
         end
       end
 

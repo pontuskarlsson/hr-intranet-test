@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "employment_contracts list" do
           before do
-            FactoryGirl.create(:employment_contract, start_date: '2013-01-01')
-            FactoryGirl.create(:employment_contract, start_date: '2014-01-01')
+            FactoryBot.create(:employment_contract, start_date: '2013-01-01')
+            FactoryBot.create(:employment_contract, start_date: '2014-01-01')
           end
 
           it "shows two items" do
@@ -21,7 +21,7 @@ describe Refinery do
         end
 
         describe "create" do
-          let(:employee) { FactoryGirl.create(:employee) }
+          let(:employee) { FactoryBot.create(:employee) }
           before do
             visit refinery.employees_admin_employment_contracts_path
 
@@ -51,7 +51,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:employment_contract, :start_date => "2012-01-01") }
+          before { FactoryBot.create(:employment_contract, :start_date => "2012-01-01") }
 
           it "should succeed" do
             visit refinery.employees_admin_employment_contracts_path
@@ -69,7 +69,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:employment_contract, start_date: '2012-01-01') }
+          before { FactoryBot.create(:employment_contract, start_date: '2012-01-01') }
 
           it "should succeed" do
             visit refinery.employees_admin_employment_contracts_path

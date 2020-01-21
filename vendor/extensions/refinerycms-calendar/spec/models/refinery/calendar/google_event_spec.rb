@@ -7,7 +7,7 @@ module Refinery
       before { allow_any_instance_of(::Google::Event).to receive(:save) { true } }
 
       describe 'validations' do
-        let(:google_event) { FactoryGirl.build(:google_event) }
+        let(:google_event) { FactoryBot.build(:google_event) }
         subject { google_event }
 
         it { is_expected.to be_valid }
@@ -23,7 +23,7 @@ module Refinery
         end
 
         context 'when google_calendar and event is already present' do
-          before { FactoryGirl.create(:google_event, google_calendar: google_event.google_calendar, event: google_event.event) }
+          before { FactoryBot.create(:google_event, google_calendar: google_event.google_calendar, event: google_event.event) }
           it { is_expected.not_to be_valid }
         end
       end

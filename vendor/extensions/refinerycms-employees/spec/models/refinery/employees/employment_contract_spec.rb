@@ -4,7 +4,7 @@ module Refinery
   module Employees
     describe EmploymentContract do
       describe "validations" do
-        let(:employment_contract) { FactoryGirl.build(:employment_contract) }
+        let(:employment_contract) { FactoryBot.build(:employment_contract) }
 
         it 'validates employee presence' do
           expect(employment_contract).to be_valid

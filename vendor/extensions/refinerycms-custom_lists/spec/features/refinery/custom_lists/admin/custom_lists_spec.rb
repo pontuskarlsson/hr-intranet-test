@@ -9,8 +9,8 @@ describe Refinery do
 
         describe "custom_lists list" do
           before do
-            FactoryGirl.create(:custom_list, :title => "UniqueTitleOne")
-            FactoryGirl.create(:custom_list, :title => "UniqueTitleTwo")
+            FactoryBot.create(:custom_list, :title => "UniqueTitleOne")
+            FactoryBot.create(:custom_list, :title => "UniqueTitleTwo")
           end
 
           it "shows two items" do
@@ -47,7 +47,7 @@ describe Refinery do
           end
 
           context "duplicate" do
-            before { FactoryGirl.create(:custom_list, :title => "UniqueTitle") }
+            before { FactoryBot.create(:custom_list, :title => "UniqueTitle") }
 
             it "should fail" do
               visit refinery.custom_lists_admin_custom_lists_path
@@ -65,7 +65,7 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryGirl.create(:custom_list, :title => "A title") }
+          before { FactoryBot.create(:custom_list, :title => "A title") }
 
           it "should succeed" do
             visit refinery.custom_lists_admin_custom_lists_path
@@ -83,7 +83,7 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryGirl.create(:custom_list, :title => "UniqueTitleOne") }
+          before { FactoryBot.create(:custom_list, :title => "UniqueTitleOne") }
 
           it "should succeed" do
             visit refinery.custom_lists_admin_custom_lists_path
