@@ -145,7 +145,7 @@ module Refinery
       end
 
       def self.defects_by_category
-        categories = Defect.uniq.pluck(:category_code, :category_name).inject({}) { |acc, (code, name)| acc.merge(code => { name: name, defects: 0 }) }
+        categories = Defect.where(nil).uniq.pluck(:category_code, :category_name).inject({}) { |acc, (code, name)| acc.merge(code => { name: name, defects: 0 }) }
         defects = includes(inspection_defects: :defect).each_with_object(categories) do |insp, acc|
           insp.inspection_defects.map do |inspection_defect|
             if inspection_defect.defect
