@@ -3,7 +3,9 @@
 <head>
   <meta charset='utf-8' />
   <%= wicked_pdf_stylesheet_link_tag "pdf" -%>
+  <% if false %>
   <%= wicked_pdf_stylesheet_link_tag "foundation_and_overrides_portal" -%>
+  <% end %>
   <%= wicked_pdf_stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" %>
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
@@ -14,11 +16,19 @@
       background-color: #fff;
     }
 
+    table { border-collapse: collapse; width: 100%; }
+    table td, table th {
+      text-align:  left;
+      vertical-align: top;
+    }
+
     thead { display: table-header-group }
-
     tfoot { display: table-row-group }
-
     tr { page-break-inside: avoid }
+
+    td.currency, th.currency, td.number, th.number {
+      text-align: right;
+    }
 
     h5 {
       margin: 0;

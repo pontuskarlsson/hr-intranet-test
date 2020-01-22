@@ -3,10 +3,12 @@
   <div style="margin-bottom: 2rem;">
     <table class="cc-table">
       <tbody>
+      <% if false %>
       <tr>
         <th>Company</th>
         <td><%= scope.map(&:company).uniq.length == 1 ? scope.first.company.try(:name) : '(Multiple)' %></td>
       </tr>
+      <% end %>
       <tr>
         <th>Supplier</th>
         <td><%= scope.map(&:supplier).uniq.length == 1 ? scope.first.supplier.try(:name) : '(Multiple)' %></td>
