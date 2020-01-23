@@ -16,8 +16,18 @@
                  when 'bg_whole' then 'bg-whole-section'
                  else ''
                  end
+
+    foreground = section.slug[/fg_[a-z]+/]
+    fg_class_name = case foreground
+                    when 'fg_black' then 'black-fg-section'
+                    when 'fg_blue' then 'blue-fg-section'
+                    when 'fg_grey' then 'grey-fg-section'
+                    when 'fg_gold' then 'gold-fg-section'
+                    when 'fg_white' then 'white-fg-section'
+                    else ''
+                    end
   %>
-  <section id="section<%= i %>" class="page-section section-<%= section.slug %> <%= section.slug['large'] ? 'large-section' : '' %> <%= class_name %>" <% if background =~ /bg_img|bg_whole/ && (bg_image = page_images.shift).present? %> style="background-image: url(<%= bg_image.image.url %>);"<% end %>>
+  <section id="section<%= i %>" class="page-section section-<%= section.slug %> <%= section.slug['large'] ? 'large-section' : '' %> <%= class_name %> <%= fg_class_name %>" <% if background =~ /bg_img|bg_whole/ && (bg_image = page_images.shift).present? %> style="background-image: url(<%= bg_image.image.url %>);"<% end %>>
     <% if section.slug['tech_splash'] %>
       <%= render 'refinery/pages/sections/tech_splash', page: @page, section: section %>
 

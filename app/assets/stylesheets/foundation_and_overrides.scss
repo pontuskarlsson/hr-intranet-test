@@ -418,6 +418,26 @@ section.page-section {
         color: $white;
     }
 
+    &.black-fg-section {
+        color: $black;
+    }
+
+    &.grey-fg-section {
+        color: $hr-grey-color;
+    }
+
+    &.gold-fg-section {
+        color: $hr-gold-color;
+    }
+
+    &.blue-fg-section {
+        color: $hr-blue-color;
+    }
+
+    &.white-fg-section {
+        color: $white;
+    }
+
     &.bg-img-section {
         background-repeat: no-repeat;
         background-position: center center;
