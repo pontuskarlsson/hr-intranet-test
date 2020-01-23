@@ -11,8 +11,6 @@
       <%= render :partial => "/refinery/blog/shared/post", :collection => @posts %>
       <%= will_paginate @posts %>
     </section>
-  <% else %>
-    <p><%= t('.no_blog_articles_yet') %></p>
   <% end %>
 <% end %>
 
