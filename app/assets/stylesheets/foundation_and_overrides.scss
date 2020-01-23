@@ -257,6 +257,15 @@ section.page-section {
     position: relative;
     padding: 80px 0;
 
+    h1:before {
+        content: "";
+        margin-left: -100%;
+    }
+    h1:after {
+        content: "";
+        margin-right: -100%;
+    }
+
     &.section-intro {
         padding: 80px 0 0;
 
@@ -466,6 +475,20 @@ section.page-section {
         height: 100vh;
         background-position: center center;
         background-size: cover;
+
+        &:not(.section-bg_whole_tech_splash) {
+            display: grid;
+            grid-template-rows: 1fr auto 3fr;
+            grid-template-columns: 1fr auto 1fr;
+            grid-template-areas:
+                    "empty empty empty"
+                    "left container right"
+                    "foot foot foot";
+        }
+
+        .grid-container {
+            grid-area: container;
+        }
 
         .arrow-down {
             width: 0;
