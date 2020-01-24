@@ -32,7 +32,7 @@
       </nav>
 
       <% if @page.self_and_ancestors[2].present? && (pages = @page.self_and_ancestors[1].children.select { |p| p.user_authorized?(current_authentication_devise_user) }).count > 1 %>
-        <ul class="menu simple sub-menu" style="margin-bottom: 1rem;">
+        <ul class="menu simple sub-menu section-menu">
           <% pages.each do |page| %>
             <% if page == @page %>
               <li class="current"><%= @page.title %></li>
