@@ -6,6 +6,6 @@ Rails.application.config.session_store :redis_store, {
     servers: [
         { host: ENV['REDIS_HOST'], port: 6379, db: 0 },
     ],
-    key: '_happy_rabbit_session',
+    key: Rails.env.production? ? "_happy_rabbit_session" : "_hr_#{Rails.env}_session",
     domain: :all
 }
