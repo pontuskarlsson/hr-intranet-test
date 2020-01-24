@@ -5,6 +5,7 @@ gem 'rails', '5.1.7'
 gem 'i18n', '~> 0.7'
 
 gem 'mysql2'
+gem 'redis-rails'
 
 gem 'uglifier', '4.1.20'
 
