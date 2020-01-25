@@ -257,6 +257,14 @@ section.page-section {
     position: relative;
     padding: 80px 0;
 
+    &.no-top-padding {
+        padding-top: 0;
+    }
+
+    &.no-bottom-padding {
+        padding-bottom: 0;
+    }
+
     h1:before {
         content: "";
         margin-left: -100%;
@@ -282,14 +290,8 @@ section.page-section {
         }
     }
 
-    &.section-integrations {
-        background-color: $hr-blue-color;
-        color: $white;
-        text-align: center;
-
-        .cell {
-            margin-bottom: 1rem;
-        }
+    .cell.integr-logo-cell {
+        margin-top: 1rem;
 
         img {
             max-height: 2.5rem;

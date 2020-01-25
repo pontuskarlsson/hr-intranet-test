@@ -1,12 +1,18 @@
 class HomeController < ApplicationController
   layout 'public'
 
-  before_action :redirect_external, except: [:legal]
+  before_action :redirect_external, except: [:legal, :index]
   before_action :find_page
 
+  skip_before_action :authenticate_authentication_devise_user!, only: [:index, :legal]
+
   def index
-    template = @page&.link_url == "/" ? "home" : "show"
-    render template: "refinery/pages/#{@page&.view_template.presence || template}"
+    if restrict_public_pages?
+      render template: 'refinery/launching_soon'
+    else
+      template = @page&.link_url == "/" ? "home" : "show"
+      render template: "refinery/pages/#{@page&.view_template.presence || template}"
+    end
   end
 
   def services
@@ -42,7 +48,7 @@ class HomeController < ApplicationController
   private
 
   def redirect_external
-    unless current_authentication_devise_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
+    unless current_authentication_devise_user && current_authentication_devise_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
       redirect_to refinery.root_path
     end
   end
