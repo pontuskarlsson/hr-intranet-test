@@ -15,9 +15,9 @@
 
       <nav aria-label="You are here:" role="navigation">
         <ul class="breadcrumbs">
-          <li><a href="/">Home</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
           <% @page.self_and_ancestors.each do |page| %>
-            <% if page.title != 'Home' %>
+            <% if page.title != 'Dashboard' %>
               <li>
                 <% if page == @page %><span class="show-for-sr">Current: </span><% end %>
                 <% if page.link_url %>

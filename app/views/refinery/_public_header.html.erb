@@ -16,7 +16,7 @@
   </div>
 
   <div class="off-canvas-footer">
-    <%= link_to 'Log In', 'https://portal.happyrabbit.com/refinery/users/login', class: 'button' %>
+    <%= link_to 'Log In', login_url, class: 'button' %>
     <% unless restrict_public_pages? %>
     <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
     <% end %>
@@ -35,7 +35,7 @@
         <% end %>
       </div>
       <div class="title-bar-right">
-        <%= link_to 'Log In', 'https://portal.happyrabbit.com/refinery/users/login', class: 'button hide-for-small-only' %>
+        <%= link_to 'Log In', login_url, class: 'button hide-for-small-only' %>
         <% unless restrict_public_pages? %>
         <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
         <% end %>
@@ -79,7 +79,7 @@
         </ul>
       </div>
       <div class="top-bar-right show-for-large">
-        <%= link_to 'Log In', 'https://portal.happyrabbit.com/refinery/users/login', class: 'button' %>
+        <%= link_to 'Log In', login_url, class: 'button' %>
         <% unless restrict_public_pages? %>
         <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
         <% end %>

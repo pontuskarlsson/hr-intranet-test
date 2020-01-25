@@ -6,11 +6,12 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery unless: -> { oauth? }
 
+  before_action :redirect_domain
   before_action :authenticate_authentication_devise_user!
 
   before_action :set_user_time_zone
 
-  helper_method :filter_params, :header_menu_pages, :home_page_url, :is_home_page?, :restrict_public_pages?
+  helper_method :filter_params, :header_menu_pages, :home_page_url, :is_home_page?, :restrict_public_pages?, :login_url
 
   # Workaround to avoid problem with user accessing other
   # engines while password is expired.
@@ -29,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(resource_or_scope)
-    refinery.login_path
+    "#{request.protocol}#{WWWSubdomain.domain}"
   end
 
   def after_update_path_for(resource_or_scope)
@@ -47,7 +48,7 @@ class ApplicationController < ActionController::Base
 
   def return_to_or_root_path(resource_or_scope)
     if !session[:authentication_devise_user_return_to] || (session[:authentication_devise_user_return_to][/^\/refinery/] && !resource_or_scope.has_role?(:refinery))
-      refinery.root_path
+      portal_root_url
     else
       session[:authentication_devise_user_return_to]
     end
@@ -66,11 +67,11 @@ class ApplicationController < ActionController::Base
   end
 
   def home_page_url
-    '/home'
+    '/'
   end
 
   def is_home_page?
-    request.original_fullpath.chomp('/') == home_page_url
+    request.original_fullpath.chomp == home_page_url
   end
 
   def header_menu_pages
@@ -81,7 +82,21 @@ class ApplicationController < ActionController::Base
     current_authentication_devise_user.nil?
   end
 
+  def login_url
+    "#{request.protocol}#{PortalSubdomain.domain}"
+  end
+
+  def portal_root_url
+    "#{request.protocol}#{PortalSubdomain.domain}/dashboard"
+  end
+
   private
+  def redirect_domain
+    unless PortalSubdomain.matches? request
+      redirect_to "#{request.protocol}#{PortalSubdomain.domain}#{request.fullpath}"
+    end
+  end
+
   def set_user_time_zone
     Time.zone = 'Hong Kong'
   end

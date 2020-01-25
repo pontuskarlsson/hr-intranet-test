@@ -5,10 +5,14 @@ class PortalSubdomain
   end
 
   def self.portal
+    ENV['SUBDOMAIN_PORTAL']
+  end
+
+  def self.domain
     if Rails.env.production?
-      'portal'
+      "#{portal}.happyrabbit.com"
     else
-      'portal-dev'
+      "#{portal}.happyrabbit.com:5000"
     end
   end
 

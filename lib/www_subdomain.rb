@@ -5,10 +5,22 @@ class WWWSubdomain
   end
 
   def self.www
+    ENV['SUBDOMAIN_PUBLIC']
+  end
+
+  def self.domain
     if Rails.env.production?
-      'www'
+      "#{www}.happyrabbit.com"
     else
-      'www-dev'
+      "#{www}.happyrabbit.com:5000"
+    end
+  end
+
+  def self.protocol
+    if Rails.env.production?
+      'https'
+    else
+      'http'
     end
   end
 

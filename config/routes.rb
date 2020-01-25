@@ -3,28 +3,21 @@ require_relative '../lib/www_subdomain'
 
 Rails.application.routes.draw do
 
-  get 'home',                           to: 'home#index'
-  get 'services',                       to: 'home#services'
-  get 'services/tech',                  to: 'home#services'
-  get 'services/sustainability',        to: 'home#services'
-  get 'services/sourcing',              to: 'home#services'
-  get 'services/design',                to: 'home#services'
-  get 'services/development',           to: 'home#services'
-  get 'services/production',            to: 'home#services'
-  get 'services/quality',               to: 'home#services'
-  get 'services/logistics',             to: 'home#services'
+  root                                  to: 'home#index'
+  get 'services(/*sections)',           to: 'home#sections'
 
-  get 'about',              to: 'home#company'
-  get 'media',              to: 'home#company'
-  get 'careers',            to: 'home#company'
-  get 'sustainability',     to: 'home#company'
-  get 'contact',            to: 'home#company'
+  get 'about',                          to: 'home#sections'
+  get 'media',                          to: 'home#sections'
+  get 'careers',                        to: 'home#sections'
+  get 'sustainability',                 to: 'home#sections'
+  get 'contact',                        to: 'home#sections'
 
-  get 'news',               to: 'home#news'
+  get 'news',                           to: 'home#sections'
 
-  get 'resources',          to: 'home#resources' # Redirect to first sub-page
-  get 'glossary',           to: 'home#resources'
-  get 'faq',                to: 'home#resources'
+  get 'resources',                      to: 'home#sections' # Redirect to first sub-page
+  get 'glossary',                       to: 'home#sections'
+  get 'faq',                            to: 'home#sections'
+  get 'quality(/*terms)',               to: 'home#sections'
 
   get 'legal',                          to: 'home#legal'
   get 'legal/privacy-policy',           to: 'home#legal'
@@ -33,6 +26,8 @@ Rails.application.routes.draw do
   get 'legal/service-terms-conditions', to: 'home#legal'
   get 'legal/subprocessors',            to: 'home#legal'
   get 'legal/ccpa',                     to: 'home#legal'
+
+  get 'dashboard',                      to: 'portal#dashboard'
 
   # OAuth
   use_doorkeeper
