@@ -29,7 +29,7 @@ class HomeController < ApplicationController
 
   def redirect_external
     unless current_authentication_devise_user && current_authentication_devise_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
-      redirect_to refinery.root_path
+      redirect_to portal_root_url
     end
   end
 

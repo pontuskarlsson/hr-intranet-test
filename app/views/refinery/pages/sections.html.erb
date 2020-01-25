@@ -47,7 +47,7 @@
         <% if section.slug['integration_logos'] %>
           <%= render 'refinery/pages/sections/integrations', page: @page, section: section %>
 
-        <% elsif section.slug == 'clients' %>
+        <% elsif section.slug['client_logos'] %>
           <%= render 'refinery/pages/sections/clients', page: @page, section: section %>
 
         <% elsif section.slug == 'submenu' %>
