@@ -54,12 +54,6 @@ $contact-us-section-bg: $body-background;
     align-items: center;
     justify-content: space-between;
 
-    input[type=submit] {
-        border-radius: 5000px;
-        padding-left: 2rem;
-        padding-right: 2rem;
-    }
-
     .contact-us-file-button {
         background: transparent;
         color: $dark-gray;
