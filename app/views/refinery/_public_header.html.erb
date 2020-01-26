@@ -29,7 +29,7 @@
   <div class="off-canvas-footer">
     <%= link_to 'Log In', login_url, class: 'button' %>
     <% unless restrict_public_pages? %>
-    <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
+    <%= link_to 'Get Started', new_signup_path, class: 'button primary' %>
     <% end %>
   </div>
 </div>
@@ -48,7 +48,7 @@
       <div class="title-bar-right">
         <%= link_to 'Log In', login_url, class: 'button hide-for-small-only' %>
         <% unless restrict_public_pages? %>
-        <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
+        <%= link_to 'Get Started', new_signup_path, class: 'button primary' %>
         <% end %>
 
         <button class="menu-icon" type="button" data-toggle="offCanvas"></button>
@@ -92,7 +92,7 @@
       <div class="top-bar-right show-for-large">
         <%= link_to 'Log In', login_url, class: 'button' %>
         <% unless restrict_public_pages? %>
-        <%= link_to 'Get Started', home_page_url, class: 'button primary' %>
+        <%= link_to 'Get Started', new_signup_path, class: 'button primary' %>
         <% end %>
       </div>
     </div>

@@ -1,9 +1,5 @@
 class ApplicationController < ActionController::Base
 
-  # Forcing all communication over SSL
-  # def self.force_ssl; super unless Rails.env.development? | Rails.env.test?; end
-  # force_ssl
-
   protect_from_forgery unless: -> { oauth? }
 
   before_action :redirect_domain
@@ -79,7 +75,7 @@ class ApplicationController < ActionController::Base
   end
 
   def restrict_public_pages?
-    current_authentication_devise_user.nil? || !current_authentication_devise_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
+    false # current_authentication_devise_user.nil? || !current_authentication_devise_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
   end
 
   def login_url

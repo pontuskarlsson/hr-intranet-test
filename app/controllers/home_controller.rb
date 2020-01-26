@@ -1,10 +1,10 @@
 class HomeController < ApplicationController
   layout 'public'
 
-  before_action :redirect_external, except: [:legal, :index]
+  #before_action :redirect_external, except: [:legal, :index]
   before_action :find_page
 
-  skip_before_action :authenticate_authentication_devise_user!, only: [:index, :legal]
+  skip_before_action :authenticate_authentication_devise_user!
 
   def index
     if restrict_public_pages?

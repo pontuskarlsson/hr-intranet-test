@@ -27,6 +27,10 @@ Refinery::Authentication::Devise::User.class_eval do
                  email_allowed: ->(user, notifiable, key) { user.active_for_authentication? && user.accepted_or_not_invited? },
                  batch_email_allowed: ->(user, key) { user.active_for_authentication? && user.accepted_or_not_invited? }
 
+  before_validation(on: :create) do
+    self.username = email.gsub(/[^A-Za-z]/, '_') if email.present? && username.blank?
+  end
+
   def printable_name
     full_name
   end
