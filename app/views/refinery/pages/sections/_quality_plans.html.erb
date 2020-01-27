@@ -1,21 +1,21 @@
 <%-
   pay_as_you_go = {
     'Single' => { header_title: 'Single', header_number: 1, header_text: "manday voucher", header_promo: '', cta: {
-      label: 'Purchase', url: purchase_path(qty: 1, item: 'manday')
+      label: 'Purchase', url: new_purchase_path(qty: 1, item: 'manday')
     }, features: [
       { large: '0%', text: 'discount' },
       { large: '$350', text: 'per voucher' },
       { large: '$350', text: 'in total' },
     ] },
     '5-Pack' => { header_title: '5-Pack', header_number: 5, header_text: "manday vouchers", header_promo: '', cta: {
-      label: 'Purchase', url: purchase_path(qty: 5, item: 'manday')
+      label: 'Purchase', url: new_purchase_path(qty: 5, item: 'manday')
     }, features: [
       { large: '2%', text: 'discount' },
       { large: '$343', text: 'per voucher' },
       { large: '$1,715', text: 'in total' },
     ] },
     '10-Pack' => { header_title: '10-Pack', header_number: 10, header_text: "manday vouchers", header_promo: '', cta: {
-      label: 'Purchase', url: purchase_path(qty: 10, item: 'manday')
+      label: 'Purchase', url: new_purchase_path(qty: 10, item: 'manday')
     }, features: [
       { large: '4%', text: 'discount' },
       { large: '$336', text: 'per voucher' },

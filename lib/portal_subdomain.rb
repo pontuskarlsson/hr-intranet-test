@@ -16,4 +16,16 @@ class PortalSubdomain
     end
   end
 
+  def self.protocol
+    if Rails.env.production?
+      'https://'
+    else
+      'http://'
+    end
+  end
+
+  def self.protocol_domain
+    "#{protocol}#{domain}"
+  end
+
 end

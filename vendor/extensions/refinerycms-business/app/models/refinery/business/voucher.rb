@@ -5,6 +5,7 @@ module Refinery
 
       STATUSES = %w(active reserved redeemed expired)
       DISCOUNT_TYPES = %w(fixed_amount percentage)
+      SOURCES = %w(invoice purchase)
 
       belongs_to :company, optional: true
       belongs_to :article, optional: true
@@ -18,6 +19,7 @@ module Refinery
       configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
       configure_enumerables :discount_type, DISCOUNT_TYPES
       configure_enumerables :status,        STATUSES
+      configure_enumerables :source,        SOURCES
       configure_label :description
 
       delegate :applicable_to?, :code, to: :article, prefix: true, allow_nil: true
@@ -25,9 +27,9 @@ module Refinery
       validates :article_id,      presence: true
       validates :status,          inclusion: STATUSES
       validates :discount_type,   inclusion: DISCOUNT_TYPES, allow_blank: true
-      validates :line_item_sales_purchase_id, presence: true
-      validates :line_item_sales_move_from_id, presence: true
-      validates :line_item_prepay_move_to_id, presence: true
+      validates :line_item_sales_purchase_id, presence: true, if: :source_is_invoice?
+      validates :line_item_sales_move_from_id, presence: true, if: :source_is_invoice?
+      validates :line_item_prepay_move_to_id, presence: true, if: :source_is_invoice?
       validates :line_item_sales_move_to_id, presence: true, if: -> { line_item_prepay_move_from_id.present? }
 
       validate do
@@ -49,9 +51,11 @@ module Refinery
       end
 
       after_create do
-        if line_item_prepay_move_to&.description.blank?
-          line_item_prepay_move_to.description = "[#{article&.code}{code:#{code}}] issued to #{company_label}, issued: #{valid_from&.to_date&.iso8601}, expires: #{valid_to&.to_date&.iso8601}"
-          line_item_prepay_move_to.save || errors.add(:line_item_prepay_move_to_id, 'failed to update')
+        if source_is_invoice?
+          if line_item_prepay_move_to&.description.blank?
+            line_item_prepay_move_to.description = "[#{article&.code}{code:#{code}}] issued to #{company_label}, issued: #{valid_from&.to_date&.iso8601}, expires: #{valid_to&.to_date&.iso8601}"
+            line_item_prepay_move_to.save || errors.add(:line_item_prepay_move_to_id, 'failed to update')
+          end
         end
         throw :abort if errors.any?
       end

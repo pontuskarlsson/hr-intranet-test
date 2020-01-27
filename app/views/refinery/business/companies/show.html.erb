@@ -13,6 +13,7 @@
       <% if current_authentication_devise_user.has_role?(::Refinery::Business::ROLE_INTERNAL_FINANCE) %>
         <li class="tabs-title"><a href="#panel4v">Xero Integration</a></li>
       <% end %>
+      <li class="tabs-title"><a href="#panel5v">Credits</a></li>
     </ul>
   </div>
   <div class="cell medium-9">
@@ -89,6 +90,28 @@
           </section>
         </div>
       <% end %>
+
+      <div class="tabs-panel" id="panel5v">
+        <section class="contact-card">
+          <h3>Credits</h3>
+          <% if (credits = @company.vouchers.active.includes(:article).group(:article).count).any? %>
+
+            <table class="cc-table">
+              <tbody>
+              <% credits.each_pair do |article, count| %>
+                <tr>
+                  <th style="width: 120px;"><%= article.name %></th>
+                  <td><%=number_with_delimiter count, delimiter: ',' %> credits available</td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+
+          <% else %>
+            <p class="italic">No credits available.</p>
+          <% end %>
+        </section>
+      </div>
     </div>
   </div>
 

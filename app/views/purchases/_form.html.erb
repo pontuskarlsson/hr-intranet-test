@@ -1,0 +1,121 @@
+<%= form_for @purchase, url: purchases_path, remote: true do |f| %>
+  <%= f.hidden_field :article_code %>
+  <div class="grid-container">
+    <div class="grid-x grid-padding-x">
+      <div class="cell medium-8">
+        <div class="hr-box-shadow" style="padding: 1rem;">
+          <h3>Selected Items</h3>
+
+          <hr/>
+
+          <h5><%= f.object.article_name %></h5>
+          <p><%= f.object.article_description %></p>
+
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-2">
+              <h6>Unit price</h6>
+            </div>
+            <div class="cell medium-2">
+              <h6><%= f.label :qty %></h6>
+            </div>
+          </div>
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-2">
+              <p><%=number_to_currency f.object.article_sales_unit_price, delimiter: ',', unit: 'USD ' %></p>
+            </div>
+            <div class="cell medium-2">
+              <%= f.number_field :qty, style: 'width: 50px;', class: 'js_purchase_qty_field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cell medium-4">
+        <div class="hr-box-shadow" style="padding: 1rem;">
+          <h3>Total</h3>
+
+          <hr/>
+
+          <div class="grid-x grid-padding-x">
+            <div class="cell small-6">
+              <h6>Sub-total</h6>
+            </div>
+            <div class="cell small-6 text-align-right">
+              <span class="js_purchase_sub_total"><%=number_to_currency f.object.sub_total_cost, delimiter: ',', unit: 'USD ' %></span>
+            </div>
+
+            <div class="cell small-6">
+              <h6>Total Discount</h6>
+            </div>
+            <div class="cell small-6 text-align-right">
+              <span class="js_purchase_total_discount"><%=number_to_currency f.object.total_discount, delimiter: ',', unit: 'USD ' %></span>
+            </div>
+          </div>
+
+          <hr/>
+
+          <div class="grid-x grid-padding-x">
+            <div class="cell small-6">
+              <h6>Total</h6>
+            </div>
+            <div class="cell small-6 text-align-right">
+              <span class="js_purchase_total"><%=number_to_currency f.object.total_cost, delimiter: ',', unit: 'USD ' %></span>
+            </div>
+          </div>
+
+          <hr/>
+
+          <h6>Discount Code</h6>
+          <%= f.text_field :discount_code %>
+          <% if f.object.discount_double? %>
+            <p>2-for-1 Promo code! You will receive an additional
+              <span class="bold"><span class="js_discount_additional"><%= [f.object.qty&.to_i || 0, 10].min %></span>
+              Manday(s)</span> for a total of
+              <span class="bold"><span class="js_discount_total"><%= (f.object.qty&.to_i || 0) + [f.object.qty&.to_i || 0, 10].min %></span>
+              Mandays</span>.
+            </p>
+          <% end %>
+
+          <hr/>
+
+          <% content_for :javascripts do %>
+            <script type="text/javascript">
+              $(function() {
+                $('.js_purchase_qty_field').on('change', function() {
+                  var val = parseInt($(this).val());
+
+                  var sub_total = val * 350
+                  $('.js_purchase_sub_total').html('USD '+ sub_total.toFixed(2));
+
+                  var discount = 0;
+                  if (val >= 10) {
+                    discount = val * 350 * -0.04
+                  } else if (val >= 5) {
+                    discount = val * 350 * -0.02
+                  }
+                  $('.js_purchase_total_discount').html('USD '+ discount.toFixed(2));
+
+                  $('.js_purchase_total').html('USD ' + (sub_total + discount).toFixed(2));
+
+                  <% if f.object.discount_double? %>
+                    $('.js_discount_additional').html(Math.min(val, 10));
+                    $('.js_discount_total').html(val + Math.min(val, 10));
+                  <% end %>
+                })
+              });
+            </script>
+          <% end %>
+
+          <p><%= f.submit 'Checkout', class: 'button success' %></p>
+
+          <h6>We accept:</h6>
+          <p class="we-accept">
+            <i class="fa fa-cc-visa"></i>
+            <i class="fa fa-cc-mastercard"></i>
+            <i class="fa fa-cc-amex"></i>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

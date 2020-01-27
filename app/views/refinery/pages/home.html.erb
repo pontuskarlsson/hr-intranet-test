@@ -38,6 +38,33 @@
         <p class="italic">No Upcoming Events</p>
       <% end %>
     </section>
+
+  <% elsif current_authentication_devise_user.has_role?(Refinery::Business::ROLE_EXTERNAL) %>
+    <section class="page-part">
+      <div class="page-part-header">
+        QUICK LINKS
+      </div>
+
+      <ul>
+        <li><%= link_to 'Purchase Credits', purchases_path %></li>
+        <% if current_authentication_devise_user.has_role?(Refinery::QualityAssurance::ROLE_EXTERNAL) %>
+          <li><%= link_to 'View Inspections', refinery.quality_assurance_inspections_path %></li>
+          <% end %>
+      </ul>
+    </section>
+
+    <% if current_authentication_devise_user.companies.count == 1 %>
+      <% if (credits = current_authentication_devise_user.companies.first.vouchers.active.count) > 0 %>
+        <section class="page-part">
+          <div class="page-part-header">
+            CREDITS
+          </div>
+
+          <p>You currently have <%= credits %> issued Credits available.</p>
+          <p>Click <%= link_to 'here', refinery.business_companies_path %> to view details.</p>
+        </section>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>
 

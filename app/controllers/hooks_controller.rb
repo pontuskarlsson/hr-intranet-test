@@ -38,6 +38,8 @@ class HooksController < ApplicationController
     elsif @webhook == 'topo'
       parse_topo unless request.delete?
       ErrorMailer.webhook_notification_email('DELETE Request from Topo', params).deliver if request.delete?
+    elsif @webhook == 'stripe'
+      parse_stripe
     end
 
     render plain: 'success', status: :ok
@@ -59,6 +61,9 @@ class HooksController < ApplicationController
     elsif params[:webhook_key] == 'topo'
       @webhook = 'topo'
       authenticate
+
+    elsif params[:webhook_key] == ENV['WEBHOOK_STRIPE_KEY']
+      @webhook = 'topo'
 
     else
       render nothing: true, status: :not_found
@@ -101,6 +106,12 @@ class HooksController < ApplicationController
 
   rescue StandardError => e
     ErrorMailer.webhook_notification_email([e.message], params).deliver
+  end
+
+  def parse_stripe
+    ErrorMailer.webhook_notification_email('Webhook received from Stripe', params).deliver
+    Delayed::Job.enqueue(Portal::Stripe::WebhookJob.new(params[:object] && params[:object].to_unsafe_h))
+    Delayed::Job.enqueue(StripeWebhookJob.new(params[:object] && params[:object].to_unsafe_h))
   end
 
   def params_file

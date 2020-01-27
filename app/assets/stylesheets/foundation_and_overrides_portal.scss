@@ -57,9 +57,11 @@
 //
 // @include motion-ui-transitions;
 // @include motion-ui-animations;
+@import 'foundation-extras/generic';
 @import 'foundation-extras/login_sign_up';
 @import 'foundation-extras/portal_card';
 @import 'foundation-extras/statistics';
+@import 'foundation-extras/wizard';
 
 html { height: 100%; }
 body, #wrap {min-height: 100%; position: relative;}

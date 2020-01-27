@@ -5,24 +5,39 @@ class PurchaseForm < ApplicationTransForm
   attribute :qty,                         Integer
 
 
-  attribute :company_name,                String
+  attribute :company_id,                  String
   attribute :country,                     String
   attribute :full_name,                   String
 
   attribute :stripe_session_id,           String
 
-  has_wizard steps: %w(products details payment)
+  delegate :name, :description, :sales_unit_price, to: :article, prefix: true, allow_nil: true
+
+  def sub_total
+    if article.present?
+      qty * article_sales_unit_price
+    else
+      0.0
+    end
+  end
+
+  def total_discount
+    if qty >= 10
+      - sub_total * 0.02
+    elsif qty >= 5
+      - sub_total * 0.02
+    else
+      0.0
+    end
+  end
+
+  def total
+    sub_total + total_discount
+  end
 
   validate do
-    if wizard_validates?('products')
-      errors.add(:article_code, :missing) unless article_code.present?
-      errors.add(:qty, :invalid) unless qty.is_a?(Integer) && qty > 0
-    end
-    if wizard_validates?('details')
-      errors.add(:company_name, :missing) unless company_name.present?
-      errors.add(:country, :missing) unless country.present?
-      errors.add(:full_name, :missing) unless full_name.present?
-    end
+    errors.add(:article_code, :missing) unless article_code.present?
+    errors.add(:qty, :invalid) unless qty.is_a?(Integer) && qty > 0
   end
 
   transaction do
@@ -31,5 +46,8 @@ class PurchaseForm < ApplicationTransForm
 
   private
 
+  def article
+    @article ||= Refinery::Business::Article.find_by code: article_code
+  end
 
 end

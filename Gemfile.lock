@@ -535,6 +535,7 @@ GEM
       sprockets (>= 3.0.0)
     stackprof (0.2.15)
     stringex (2.5.2)
+    stripe (5.14.0)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
@@ -632,6 +633,7 @@ DEPENDENCIES
   rubyzip
   spreadsheet (= 1.1.7)
   stackprof
+  stripe (= 5.14.0)
   thin (= 1.7.2)
   trans_forms!
   uglifier (= 4.1.20)
