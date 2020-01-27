@@ -9,7 +9,18 @@
     <% unless restrict_public_pages? %>
     <ul class="vertical menu" data-accordion-menu>
       <% header_menu_pages.each do |root| %>
-        <li><%= link_to root.title, refinery.url_for(root.url) %></li>
+        <% if root.children.any? %>
+          <li class="has-submenu">
+            <%= link_to root.title, refinery.url_for(root.url) %>
+            <ul class="submenu menu vertical">
+              <% root.children.each do |child| %>
+                <li><%= link_to child.title, refinery.url_for(child.url) %></li>
+              <% end %>
+            </ul>
+          </li>
+        <% else %>
+          <li><%= link_to root.title, refinery.url_for(root.url) %></li>
+        <% end %>
       <% end %>
     </ul>
     <% end %>

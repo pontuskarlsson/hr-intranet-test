@@ -115,7 +115,7 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
 }
 @media print, screen and (min-width: 40em) {
     .off-canvas {
-        height: 385px;
+        height: auto;
     }
 }
 
@@ -184,9 +184,19 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
     border-color: $black transparent transparent;
 }
 
-.is-submenu-item a, .is-submenu-item button {
-    padding: 0.2rem 1rem;
+.menu > li.is-accordion-submenu-parent > a::after {
+    // Does not seem to be working...
+    border-color: $black transparent transparent;
 }
+
+.is-submenu-item:not(.is-accordion-submenu-item) {
+    a, button {
+        padding: 0.2rem 1rem;
+    }
+}
+//.is-submenu-item a, .is-submenu-item button {
+//
+//}
 
 .button {
     margin-bottom: 0;
