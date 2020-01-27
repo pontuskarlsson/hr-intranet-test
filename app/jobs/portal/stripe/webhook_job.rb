@@ -1,14 +1,14 @@
 module Portal
   module Stripe
-    class WebhookJob < Struct.new(:object)
+    class WebhookJob < Struct.new(:type, :data)
 
       # def enqueue(job)
       #
       # end
 
       def perform
-        case object['object']
-        when 'checkout.session' then perform_checkout_session
+        case type
+        when 'checkout.session.completed' then perform_checkout_session
         else raise 'Unknown object'
         end
       end
@@ -37,6 +37,7 @@ module Portal
 
       def perform_checkout_session
         ActiveRecord::Base.transaction do
+          object = data['object']
           purchase = Purchase.find_by_happy_rabbit_reference_id! object['client_reference_id']
           purchase.status = 'paid'
           purchase.save!
