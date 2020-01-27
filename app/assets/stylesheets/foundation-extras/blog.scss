@@ -1,3 +1,16 @@
+article.blog_post {
+    margin-bottom: 4rem;
+
+    header {
+        margin: 2rem 0;
+    }
+
+    img {
+        margin-bottom: 1.5rem;
+    }
+}
+
+
 article.blog-teaser {
     display: grid;
     grid-template-columns: 20rem 1fr;

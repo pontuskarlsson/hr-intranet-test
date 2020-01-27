@@ -61,7 +61,7 @@
 @import 'foundation-extras/data_fields';
 @import 'foundation-extras/pricing';
 @import 'foundation-extras/cookies';
-@import 'foundation-extras/blog_teaser';
+@import 'foundation-extras/blog';
 
 
 html { height: 100%; }
@@ -486,27 +486,6 @@ section.page-section {
         }
     }
 
-    &.who-we-are {
-        padding: 160px 0 200px;
-        background-color: #DFC68C;
-    }
-
-    &.about-location {
-        padding: 160px 0 200px;
-    }
-
-    &.about-brands {
-        padding: 160px 0 200px;
-    }
-
-    &.about-vendors {
-        padding: 160px 0 200px;
-    }
-
-    &.section-careers {
-        padding: 160px 0 200px;
-    }
-
     &.our-services {
 
         .grid-container {
@@ -728,17 +707,5 @@ section.page-section {
                 }
             }
         }
-    }
-}
-
-article.blog_post {
-    margin-bottom: 4rem;
-
-    header {
-        margin: 2rem 0;
-    }
-
-    img {
-        margin-bottom: 1.5rem;
     }
 }
