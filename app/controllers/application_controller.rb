@@ -56,6 +56,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def pop_stored_location
+    session.delete(:authentication_devise_user_return_to)
+  end
+
   def current_resource_owner
     User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
   end

@@ -37,7 +37,7 @@ class PurchasesController < ApplicationController
 
   private
 
-  def purchase_params(allowed = %i(qty article_code))
+  def purchase_params(allowed = %i(qty article_code discount_code))
     params.require(:purchase).permit(allowed)
   end
 
