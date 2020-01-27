@@ -9,7 +9,7 @@ class PurchasesController < ApplicationController
 
   def new
     @purchase = Purchase.new(article_code: params[:item], qty: params[:qty], discount_code: params[:discount_code])
-    @purchase.article_code = 'VOUCHER-QCQA-DAY' # The only one we sell right now
+    @purchase.article_code = 'VOUCHER-QAQC-DAY' # The only one we sell right now
     @purchase.calculate_cost
   end
 
@@ -20,7 +20,7 @@ class PurchasesController < ApplicationController
       if @purchase.save # Not saved
         format.js
       else
-        format.html { render action: :new }
+        format.js { render action: :new }
       end
     end
   end
