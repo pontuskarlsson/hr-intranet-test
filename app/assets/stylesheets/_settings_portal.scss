@@ -68,16 +68,19 @@
 $global-font-size: 100%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
+
+$hr-blue-color: #30384B;
+$hr-grey-color: #f8f6f8;
+$hr-gold-color: #dac088;
+$hr-green-color: #1dad72;
+
 $foundation-palette: (
         primary: #30384B,
         secondary: #767676,
-        success: #3adb76,
+        success: $hr-green-color,
         warning: #ffae00,
         alert: #cc4b37,
 );
-$hr-blue-color: #30384B;
-$hr-grey-color: #f8f6f8;
-$hr-gold-color: #ffdfa6;
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
