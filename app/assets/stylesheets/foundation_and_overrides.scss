@@ -427,6 +427,10 @@ section.page-section {
     &.blue-section {
         background-color: $hr-blue-color;
         color: $white;
+
+        a, a:visited, a:active, a:hover {
+            color: $white;
+        }
     }
 
     &.black-fg-section {
