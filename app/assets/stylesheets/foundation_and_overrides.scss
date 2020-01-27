@@ -250,6 +250,13 @@ a.button,h1 a,h2 a,h3 a,h4 a,h5 a,h6 a {
     .title-bar-right {
         // Take twice as much width as .title-bar-left
         flex: 2 1 0px;
+
+        @include breakpoint(small only) {
+            .button {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+        }
     }
 }
 
