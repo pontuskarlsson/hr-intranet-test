@@ -19,13 +19,7 @@ Rails.application.routes.draw do
   get 'faq',                            to: 'home#sections'
   get 'quality(/*terms)',               to: 'home#sections'
 
-  get 'legal',                          to: 'home#legal'
-  get 'legal/privacy-policy',           to: 'home#legal'
-  get 'legal/cookie-policy',            to: 'home#legal'
-  get 'legal/terms-of-use',             to: 'home#legal'
-  get 'legal/service-terms-conditions', to: 'home#legal'
-  get 'legal/subprocessors',            to: 'home#legal'
-  get 'legal/ccpa',                     to: 'home#legal'
+  get 'legal(/*sections)',              to: 'home#legal'
 
   get 'dashboard',                      to: 'portal#dashboard'
 

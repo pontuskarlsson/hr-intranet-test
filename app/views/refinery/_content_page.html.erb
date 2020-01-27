@@ -13,6 +13,7 @@
       </span>
       <% end %>
 
+      <% unless @page.menu_match == '^/404$' %>
       <nav aria-label="You are here:" role="navigation">
         <ul class="breadcrumbs">
           <li><a href="/dashboard">Dashboard</a></li>
@@ -30,6 +31,7 @@
           <% end %>
         </ul>
       </nav>
+      <% end %>
 
       <% if @page.self_and_ancestors[2].present? && (pages = @page.self_and_ancestors[1].children.select { |p| p.user_authorized?(current_authentication_devise_user) }).count > 1 %>
         <ul class="menu simple sub-menu section-menu">

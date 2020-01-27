@@ -10,18 +10,18 @@ class HomeController < ApplicationController
     if restrict_public_pages?
       render template: 'refinery/launching_soon'
     else
-      template = @page&.link_url == "/" ? "home" : "show"
+      template = 'sections'
       render template: "refinery/pages/#{@page&.view_template.presence || template}"
     end
   end
 
   def sections
-    template = @page&.link_url == "/" ? "home" : "show"
+    template = 'sections'
     render template: "refinery/pages/#{@page&.view_template.presence || template}"
   end
 
   def legal
-    template = @page&.link_url == "/" ? "home" : "show"
+    template = 'sections'
     render template: "refinery/pages/#{@page&.view_template.presence || template}"
   end
 
