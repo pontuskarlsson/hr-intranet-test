@@ -63,7 +63,7 @@ class HooksController < ApplicationController
       authenticate
 
     elsif params[:webhook_key] == ENV['WEBHOOK_STRIPE_KEY']
-      @webhook = 'topo'
+      @webhook = 'stripe'
 
     else
       render nothing: true, status: :not_found
@@ -111,7 +111,6 @@ class HooksController < ApplicationController
   def parse_stripe
     ErrorMailer.webhook_notification_email('Webhook received from Stripe', params).deliver
     Delayed::Job.enqueue(Portal::Stripe::WebhookJob.new(params[:object] && params[:object].to_unsafe_h))
-    Delayed::Job.enqueue(StripeWebhookJob.new(params[:object] && params[:object].to_unsafe_h))
   end
 
   def params_file
