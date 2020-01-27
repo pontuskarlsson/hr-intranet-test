@@ -5,7 +5,7 @@ class HooksController < ApplicationController
   before_action :doorkeeper_authorize!,   except: %i(catch)
   before_action :ignore_test_requests,    only: %i(create)
 
-  skip_before_action :verify_authenticity_token, :authenticate_authentication_devise_user!
+  skip_before_action :authenticate_authentication_devise_user!
 
   def create
     rest_hook = current_resource_owner.rest_hooks.build(hook_params)
