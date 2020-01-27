@@ -20,6 +20,23 @@
             text-decoration: none;
         }
     }
+
+    @include breakpoint(small only) {
+        width: 100%;
+        margin-bottom: 1rem;
+
+        .tabs-title {
+            width: 45%;
+            margin: 0 2.5%;
+            white-space: nowrap;
+            overflow: hidden;
+
+            a, a:focus, a[aria-selected="true"] {
+                font-size: 1rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+    }
 }
 
 .tabs-panel-plans, .tabs-panel-pay-as-you-go {
@@ -72,7 +89,6 @@
         padding: 0 .9em 0;
         pointer-events: auto;
         text-align: center;
-        color: #173d50;
         background-color: transparent;
 
         p {
