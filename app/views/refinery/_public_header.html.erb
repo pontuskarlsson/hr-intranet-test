@@ -12,7 +12,7 @@
         <% if root.children.any? %>
           <li class="has-submenu">
             <%= link_to root.title, refinery.url_for(root.url) %>
-            <ul class="submenu menu vertical">
+            <ul class="submenu menu vertical" style="margin-bottom: 1rem;">
               <% root.children.each do |child| %>
                 <li><%= link_to child.title, refinery.url_for(child.url) %></li>
               <% end %>
