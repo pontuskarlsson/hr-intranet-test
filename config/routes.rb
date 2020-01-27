@@ -23,6 +23,9 @@ Rails.application.routes.draw do
 
   get 'dashboard',                      to: 'portal#dashboard'
 
+  get 'purchase',                       to: 'purchase#new_purchase', as: :purchase
+  post 'purchase',                      to: 'purchase#create_purchase'
+
   # OAuth
   use_doorkeeper
 

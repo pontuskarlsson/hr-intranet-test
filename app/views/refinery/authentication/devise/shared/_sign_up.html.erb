@@ -1,0 +1,71 @@
+<%= form_for @sign_up_form, :url => refinery.signup_path do |f| -%>
+
+  <%= render '/refinery/admin/error_messages', :object => @sign_up_form, :include_object_name => true %>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <h2 class="text-align-center">Create your account</h2>
+      <p class="text-align-center">Your portal account is your way of interacting with Happy Rabbit and all of our services.</p>
+    </div>
+
+    <div class="cell">
+      <%= f.text_field :company_name, placeholder: 'Company Name*' %>
+    </div>
+
+    <div class="cell">
+      <%= f.text_field :full_name, placeholder: 'Your Name*' %>
+    </div>
+
+    <div class="cell">
+      <%= f.text_field :email, placeholder: 'Email Address*' %>
+    </div>
+
+    <div class="cell medium-6">
+      <%= f.password_field :password, placeholder: 'Password*' %>
+    </div>
+
+    <div class="cell medium-6">
+      <%= f.password_field :password_confirmation, placeholder: 'Confirm Password*' %>
+    </div>
+
+    <div class="cell text-align-center">
+      <%= f.submit 'Sign Up', class: 'button primary' %>
+    </div>
+  </div>
+
+<% end -%>
+
+<% if Rails.env.development? %>
+<div class="grid-x grid-padding-x">
+  <div class="cell">
+    <div class="providers">
+      <p class="text-align-center">or sign up with one of these services</p>
+    </div>
+  </div>
+
+  <div class="cell medium-6 text-align-center">
+    <a href="#" class="button">
+      <i class="fa fa-google"></i>
+      Google
+    </a>
+  </div>
+
+  <div class="cell medium-6 text-align-center">
+    <a href="#" class="button">
+      <i class="fa fa-facebook"></i>
+      Facebook
+    </a>
+  </div>
+
+  <div class="cell text-align-center">
+    <div class="agree-to-terms">
+      <p>
+        By clicking this button, you agree to our
+        <%= link_to 'Terms of Use', '/legal/terms-of-use', target: '_blank' %>,
+        <%= link_to 'Service Terms & Conditions', '/legal/service-terms-conditions', target: '_blank' %> and
+        <%= link_to 'Privacy Policy', '/legal/privacy-policy', target: '_blank' %>.
+      </p>
+    </div>
+  </div>
+</div>
+<% end %>

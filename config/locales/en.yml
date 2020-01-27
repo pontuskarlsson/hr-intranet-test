@@ -31,3 +31,12 @@
 
 en:
   hello: "Hello world"
+
+  support:
+    errors:
+      messages:
+        missing: "%{attribute} is missing!"
+        invalid: "%{attribute} is invalid!"
+        duplicate: "%{attribute} is duplicate!"
+        not_allowed: "%{attribute} is not allowed!"
+        not_matching: "%{attribute} is not matching!"

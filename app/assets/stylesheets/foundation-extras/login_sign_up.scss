@@ -1,0 +1,89 @@
+body.login {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: 1fr auto 3fr;
+    grid-template-areas: "top top top" "left dialogue right" "bottom bottom bottom";
+
+    .login-sign-up {
+        grid-area: dialogue;
+    }
+}
+
+.login-sign-up {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    width: 640px;
+
+    .tabs {
+        border-bottom: 0;
+        background: $light-gray;
+
+        li.tabs-title {
+            width: 50%;
+            text-align: center;
+            border-bottom: 1px solid $medium-gray;
+            font-weight: bold;
+            text-transform: uppercase;
+
+            a {
+                color: rgba($black, 0.5);
+                text-decoration: none;
+            }
+
+            &:not(:first-child) {
+                border-left: 1px solid $medium-gray;
+            }
+
+            &.is-active {
+                border-bottom-color: $white;
+
+                a[aria-selected="true"] {
+                    background: $white;
+                    color: $black;
+                }
+            }
+        }
+    }
+
+    .providers {
+        border-top: 1px solid $light-gray;
+        padding-top: 1rem;
+    }
+
+    .agree-to-terms {
+        border-top: 1px solid $light-gray;
+        padding-top: 1rem;
+        color: $medium-gray;
+
+        p {
+            font-size: 0.75rem;
+
+            a {
+                text-decoration: none;
+                border-bottom: 1px dotted $medium-gray;
+            }
+        }
+    }
+
+    .button {
+        width: 150px;
+        margin-bottom: 1rem;
+    }
+
+    .fieldWithErrors {
+        input {
+            border-color: $alert-color;
+        }
+    }
+
+    @include breakpoint(small only){
+        width: 100%;
+
+        .tabs {
+            li.tabs-title {
+
+            }
+        }
+    }
+}
+
+

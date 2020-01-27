@@ -89,7 +89,7 @@ module TransForms
       raise 'No block given' unless block_given?
       yield
     rescue ActiveRecord::ActiveRecordError => e
-      errors[attr] = e.message
+      errors.add(attr, e.message)
       raise e
     end
 

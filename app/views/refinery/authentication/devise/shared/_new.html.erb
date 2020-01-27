@@ -1,0 +1,15 @@
+<div class="login-sign-up">
+  <ul class="tabs" data-tabs id="portal-user-tabs">
+    <li class="tabs-title<% if active_tab == 'sign_up' %> is-active<% end %>"><a href="#panelSignUp"<% if active_tab == 'sign_up' %> aria-selected="true"<% end %>>Sign Up</a></li>
+    <li class="tabs-title<% if active_tab == 'login' %> is-active<% end %>"><a data-tabs-target="panelLogin" href="#panelLogin"<% if active_tab == 'login' %> aria-selected="true"<% end %>>Login</a></li>
+  </ul>
+
+  <div class="tabs-content" data-tabs-content="portal-user-tabs">
+    <div class="tabs-panel<% if active_tab == 'sign_up' %> is-active<% end %>" id="panelSignUp">
+      <%= render 'refinery/authentication/devise/shared/sign_up' %>
+    </div>
+    <div class="tabs-panel<% if active_tab == 'login' %> is-active<% end %>" id="panelLogin">
+      <%= render 'refinery/authentication/devise/shared/login' %>
+    </div>
+  </div>
+</div>

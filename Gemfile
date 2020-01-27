@@ -69,6 +69,8 @@ gem 'trans_forms', path: 'vendor/extensions'
 # Workaround to get the latest version of xeroizer that is not available from rubygems yet
 gem 'xeroizer', '2.20.0'
 
+#gem 'stripe', '5.14.0'
+
 gem 'roo', '2.7.1'
 gem 'spreadsheet', '1.1.7'
 gem 'airtable', git: 'https://github.com/Airtable/airtable-ruby'

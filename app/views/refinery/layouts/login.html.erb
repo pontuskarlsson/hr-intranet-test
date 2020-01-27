@@ -1,27 +1,11 @@
 <!DOCTYPE html>
 <%= render '/refinery/html_tag' %>
-  <head>
-    <%= render '/refinery/head' %>
-  </head>
-  <body class='login <%= I18n.locale %>'>
-    <div id='tooltip_container'></div>
-    <header class="text-center">
-      <h1><%= yield :header %></h1>
-    </header>
+<head>
+  <%= render 'refinery/public_head' %>
+</head>
+<body class='login <%= I18n.locale %>'>
 
-    <div class="grid-x grid-padding-x">
-      <div class="medium-offset-2 medium-8 large-offset-3 large-6 cell end">
-        <div id="page_container">
-          <div id="page">
-            <div id="content" class="clearfix" style="padding: 1rem;">
-              <div id="flash_container">
-                <%= render '/refinery/message' %>
-              </div>
-              <%= yield %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+  <%= yield %>
+
+</body>
 </html>

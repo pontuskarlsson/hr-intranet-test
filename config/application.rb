@@ -48,5 +48,7 @@ module Portal
       g.assets false
     end
 
+     #config.stripe.signing_secrets = [ENV.fetch('STRIPE_SIGNING_SECRET')]
+
   end
 end

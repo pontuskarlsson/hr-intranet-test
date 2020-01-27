@@ -13,4 +13,8 @@ Devise.setup do |config|
   # Configure the parent class responsible to send e-mails.
   config.parent_mailer = 'ApplicationMailer'
 
+  # config.warden do |manager|
+  #   manager.failure_app = Portal::FailureApp
+  # end
+
 end

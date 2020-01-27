@@ -1,0 +1,18 @@
+<%= wizard_controller_tag(form) %>
+<div class="paragraph"></div>
+
+<%= form_for form, :url => purchase_path, remote: true do |f| %>
+  <%= hidden_field_tag :wizard_session_id, wizard_session_id %>
+  <%= hidden_field_tag :wizard_back, '1', disabled: true %>
+  <%= hidden_field_tag :wizard_create, '1', disabled: true %>
+
+  <div class="paragraph">
+    <%= render "#{form.wizard_current_step}_step", f: f %>
+  </div>
+
+  <p>
+    <%= f.submit 'Back', disabled: form.wizard_first_step?, class: 'button', onClick: "$(\"#wizard_back\").attr('disabled', false);" %>
+    <%= f.submit 'Next', disabled: form.wizard_last_step?, class: 'button primary' %>
+    <%= f.submit 'Create', disabled: !form.wizard_creatable?, class: 'button', onClick: "$(\"#wizard_create\").attr('disabled', false);" %>
+  </p>
+<% end %>

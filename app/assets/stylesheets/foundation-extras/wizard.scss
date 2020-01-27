@@ -1,0 +1,50 @@
+div.wizard {
+    position: relative;
+    clear: both;
+    height: 40px;
+
+    div.w-step {
+        display:inline;
+        float: left;
+        position: relative;
+        height: 30px;
+        line-height: 28px;
+        padding: 0 5px;
+
+        text-transform: uppercase;
+        font-family: "Helvetica Neue", sans-serif;
+        font-size: 8pt;
+
+        background-color: $light-gray;
+
+        -webkit-border-bottom-left-radius: 15px;
+        -webkit-border-bottom-right-radius: 15px;
+        -webkit-border-top-left-radius: 15px;
+        -webkit-border-top-right-radius: 15px;
+        border-radius: 15px 15px 15px 15px;
+
+        &.w-step-current {
+            font-weight: bold;
+            background-color: $hr-blue-color;
+            color: $white;
+
+            &.w-step-error {
+                background-color: rgb(232,164,164);
+            }
+        }
+
+        &.w-step-done {
+            background-color: $hr-green-color;
+        }
+    }
+
+    div.w-divider {
+        display:inline;
+        float: left;
+        position: relative;
+        height: 15px;
+        width: 20px;
+        border-bottom:  1px solid rgb(12,12,12);
+    }
+
+}

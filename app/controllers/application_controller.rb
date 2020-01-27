@@ -1,4 +1,10 @@
 class ApplicationController < ActionController::Base
+  include Portal::Wizard::ActionController
+  helper Portal::Wizard::Helper
+
+  def self.protect_from_forgery(options = {})
+    #super options.merge(prepend: true, with: :null_session)
+  end
 
   protect_from_forgery unless: -> { oauth? }
 

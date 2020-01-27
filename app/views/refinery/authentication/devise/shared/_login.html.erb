@@ -1,0 +1,25 @@
+<%= form_for resource, :as => resource_name,
+             :url => refinery.authentication_devise_user_session_path do |f| %>
+  <div class="grid-x grid-x-padding">
+    <div class="cell">
+      <%= f.text_field :login, placeholder: 'Email Address' %>
+    </div>
+
+    <div class="cell">
+      <%= f.password_field :password, :autocomplete => 'off', placeholder: 'Password' %>
+    </div>
+
+    <div class="cell">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me, 'Remember me' %>
+    </div>
+
+    <div class="cell text-align-center">
+      <%= f.submit 'Login', class: 'button primary' %>
+    </div>
+
+    <div class="cell">
+      <p style="margin-top: 1rem;"><%= link_to 'I forgot my password', refinery.new_authentication_devise_user_password_path %></p>
+    </div>
+  </div>
+<% end -%>
