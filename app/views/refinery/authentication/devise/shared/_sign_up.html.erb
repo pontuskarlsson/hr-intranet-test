@@ -9,23 +9,27 @@
     </div>
 
     <div class="cell">
-      <%= f.text_field :company_name, placeholder: 'Company Name*' %>
-    </div>
-
-    <div class="cell">
-      <%= f.text_field :full_name, placeholder: 'Your Name*' %>
-    </div>
-
-    <div class="cell">
-      <%= f.text_field :email, placeholder: 'Email Address*' %>
+      <%= f.text_field :company_name, placeholder: 'Company Name*', required: true %>
     </div>
 
     <div class="cell medium-6">
-      <%= f.password_field :password, placeholder: 'Password*' %>
+      <%= f.text_field :first_name, placeholder: 'First Name*', required: true %>
     </div>
 
     <div class="cell medium-6">
-      <%= f.password_field :password_confirmation, placeholder: 'Confirm Password*' %>
+      <%= f.text_field :last_name, placeholder: 'Last Name*', required: true %>
+    </div>
+
+    <div class="cell">
+      <%= f.text_field :email, placeholder: 'Email Address*', required: true %>
+    </div>
+
+    <div class="cell medium-6">
+      <%= f.password_field :password, placeholder: 'Password*', required: true %>
+    </div>
+
+    <div class="cell medium-6">
+      <%= f.password_field :password_confirmation, placeholder: 'Confirm Password*', required: true %>
     </div>
 
     <div class="cell text-align-center">

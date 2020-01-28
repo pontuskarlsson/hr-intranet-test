@@ -209,6 +209,8 @@ ActiveRecord::Schema.define(version: 20200127054500) do
     t.boolean "deactivated", default: false, null: false
     t.string "topo_id"
     t.datetime "last_active_at"
+    t.string "first_name"
+    t.string "last_name"
     t.index ["full_name"], name: "index_refinery_authentication_devise_users_on_full_name"
     t.index ["id"], name: "index_refinery_authentication_devise_users_on_id"
     t.index ["invitation_token"], name: "index_refinery_authentication_devise_users_on_invitation_token", unique: true
@@ -725,6 +727,7 @@ ActiveRecord::Schema.define(version: 20200127054500) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "code"
+    t.string "source"
     t.index ["article_id"], name: "INDEX_rb_vouchers_ON_article_id"
     t.index ["code"], name: "INDEX_rb_vouchers_ON_code"
     t.index ["company_id"], name: "INDEX_rb_vouchers_ON_company_id"
@@ -736,6 +739,7 @@ ActiveRecord::Schema.define(version: 20200127054500) do
     t.index ["line_item_sales_move_from_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_move_from_id"
     t.index ["line_item_sales_move_to_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_move_to_id"
     t.index ["line_item_sales_purchase_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_purchase_id"
+    t.index ["source"], name: "index_refinery_business_vouchers_on_source"
     t.index ["status"], name: "INDEX_rb_vouchers_ON_status"
     t.index ["valid_from"], name: "INDEX_rb_vouchers_ON_valid_from"
     t.index ["valid_to"], name: "INDEX_rb_vouchers_ON_valid_to"

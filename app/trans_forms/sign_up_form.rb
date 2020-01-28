@@ -6,13 +6,15 @@ class SignUpForm < ApplicationTransForm
   ].freeze
 
   attribute :company_name, String
-  attribute :full_name, String
+  attribute :first_name, String
+  attribute :last_name, String
   attribute :email, String
   attribute :password, String
   attribute :password_confirmation, String
 
   validates :company_name, presence: true
-  validates :full_name, presence: true
+  validates :first_name, presence: true
+  validates :last_name, presence: true
   validates :email, presence: true
   validates :password, presence: true
   validates :password_confirmation, presence: true
@@ -24,7 +26,7 @@ class SignUpForm < ApplicationTransForm
       errors.add(:password_confirmation, :does_not_match)
     end
     if Refinery::Business::Company.where(name: company_name).exists?
-      errors.add(:company_name, :not_allowed)
+      errors.add(:company_name, :already_exists)
     end
   end
 
@@ -45,7 +47,7 @@ class SignUpForm < ApplicationTransForm
   private
 
   def user_params
-    attributes.slice(:full_name, :email, :password, :password_confirmation)
+    attributes.slice(:first_name, :last_name, :email, :password, :password_confirmation)
   end
 
   def company_params

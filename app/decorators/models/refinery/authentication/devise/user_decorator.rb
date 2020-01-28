@@ -31,6 +31,7 @@ Refinery::Authentication::Devise::User.class_eval do
 
   before_validation(on: :create) do
     self.username = email.gsub(/[^A-Za-z]/, '_') if email.present? && username.blank?
+    self.full_name = [first_name, last_name].reject(&:blank?).join(' ') if full_name.blank?
   end
 
   def printable_name

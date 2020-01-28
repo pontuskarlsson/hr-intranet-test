@@ -37,7 +37,7 @@
     <% elsif section.slug == 'map_zendesk' %>
       <%= render 'refinery/pages/sections/map_zendesk', page: @page, section: section %>
 
-    <% elsif section.slug == 'newsletter' %>
+    <% elsif section.slug['newsletter'] %>
       <%= render 'refinery/pages/sections/newsletter', page: @page, section: section %>
 
     <% else %>

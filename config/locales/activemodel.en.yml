@@ -1,0 +1,8 @@
+en:
+  activemodel:
+    errors:
+      models:
+        sign_up_form:
+          attributes:
+            company_name:
+              already_exists: already exists.

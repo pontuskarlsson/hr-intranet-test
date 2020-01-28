@@ -33,7 +33,7 @@ Refinery::Authentication::Devise::UsersController.class_eval do
     end
   end
 
-  def sign_up_form_params(allowed = %i(company_name full_name email password password_confirmation))
+  def sign_up_form_params(allowed = %i(company_name first_name last_name email password password_confirmation))
     params.require(:sign_up_form).permit(allowed)
   end
 

@@ -1,10 +1,12 @@
 <% content_for :body do %>
   <%- page_content = @page.content_for(Refinery::Pages.default_parts.first[:slug].to_sym) if Refinery::Pages.default_parts.any? -%>
   <% if page_content.present? %>
-    <section class="page-section section-<%= Refinery::Pages.default_parts.first[:slug] %>">
+    <section class="page-section no-bottom-padding section-<%= Refinery::Pages.default_parts.first[:slug] %>">
       <%=raw page_content %>
     </section>
   <% end %>
+
+  <%= render 'refinery/pages/sections/newsletter' %>
 
   <% if @posts.any? %>
     <section id="blog_posts" class="page-section">
