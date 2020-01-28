@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200127054500) do
+ActiveRecord::Schema.define(version: 20200128122041) do
 
   create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "target_id", null: false
@@ -478,6 +478,19 @@ ActiveRecord::Schema.define(version: 20200127054500) do
     t.index ["user_id"], name: "index_refinery_business_company_users_on_user_id"
   end
 
+  create_table "refinery_business_documents", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "company_id"
+    t.integer "resource_id"
+    t.string "document_type"
+    t.text "comments"
+    t.text "meta"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_refinery_business_documents_on_company_id"
+    t.index ["document_type"], name: "index_refinery_business_documents_on_document_type"
+    t.index ["resource_id"], name: "index_refinery_business_documents_on_resource_id"
+  end
+
   create_table "refinery_business_invoice_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "invoice_id"
     t.string "line_item_id"
@@ -687,6 +700,33 @@ ActiveRecord::Schema.define(version: 20200127054500) do
     t.index ["position"], name: "index_refinery_business_projects_on_position"
     t.index ["start_date"], name: "index_refinery_business_projects_on_start_date"
     t.index ["status"], name: "index_refinery_business_projects_on_status"
+  end
+
+  create_table "refinery_business_requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "code"
+    t.integer "company_id"
+    t.integer "created_by_id"
+    t.integer "requested_by_id"
+    t.string "participants"
+    t.string "request_type"
+    t.string "status"
+    t.string "subject"
+    t.date "request_date"
+    t.text "description"
+    t.text "comments"
+    t.datetime "archived_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archived_at"], name: "index_refinery_business_requests_on_archived_at"
+    t.index ["code"], name: "index_refinery_business_requests_on_code"
+    t.index ["company_id"], name: "index_refinery_business_requests_on_company_id"
+    t.index ["created_by_id"], name: "index_refinery_business_requests_on_created_by_id"
+    t.index ["participants"], name: "index_refinery_business_requests_on_participants"
+    t.index ["request_date"], name: "index_refinery_business_requests_on_request_date"
+    t.index ["request_type"], name: "index_refinery_business_requests_on_request_type"
+    t.index ["requested_by_id"], name: "index_refinery_business_requests_on_requested_by_id"
+    t.index ["status"], name: "index_refinery_business_requests_on_status"
+    t.index ["subject"], name: "index_refinery_business_requests_on_subject"
   end
 
   create_table "refinery_business_sections", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

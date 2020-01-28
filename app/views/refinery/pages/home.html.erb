@@ -54,6 +54,15 @@
     </section>
 
     <% if current_authentication_devise_user.companies.count == 1 %>
+      <section class="page-part">
+        <div class="page-part-header">
+          REQUESTS
+        </div>
+
+        <p>Please send a request here and upload any supporting documents to start a new project with Happy Rabbit.</p>
+        <p><%= link_to 'New Request', refinery.new_business_request_path, class: 'button primary' %></p>
+      </section>
+
       <% if (credits = current_authentication_devise_user.companies.first.vouchers.active.count) > 0 %>
         <section class="page-part">
           <div class="page-part-header">

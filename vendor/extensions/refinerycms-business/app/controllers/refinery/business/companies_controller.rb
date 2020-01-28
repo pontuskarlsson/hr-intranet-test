@@ -41,6 +41,20 @@ module Refinery
         end
       end
 
+      def add_document
+        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company)
+      end
+
+      def create_document
+        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company, params[:document], current_authentication_devise_user)
+        if @document_creator.save
+          flash[:notice] = 'Successfully added Document(s)'
+        else
+          flash[:alert] = 'Failed to add Document(s)'
+        end
+        redirect_to refinery.shipping_shipment_path(@shipment)
+      end
+
       protected
 
       def company_scope

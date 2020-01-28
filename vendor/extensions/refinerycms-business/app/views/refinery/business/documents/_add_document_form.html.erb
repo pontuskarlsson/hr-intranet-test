@@ -1,0 +1,31 @@
+<%= form_for @document_creator, :url => refinery.business_company_documents_path(@company),
+           :remote => true, :html => { :multipart => true } do |f| %>
+  <%= hidden_field_tag :callback, params[:callback] %>
+<section class="contact-card">
+  <%= render '/refinery/admin/error_messages',
+             :object => @document_creator,
+             :include_object_name => false %>
+
+  <table class="cc-table">
+    <tbody>
+    <tr>
+      <th style="width: 120px;"><%= f.label :document_type, 'Type' %></th>
+      <td style="width: 200px;"><%= f.select :document_type, options_for_select(::Refinery::Business::Document.document_type_options, f.object.document_type) -%></td>
+    </tr>
+    <tr>
+      <th><%= f.label :comments %></th>
+      <td><%= f.text_field :comments %></td>
+    </tr>
+    <tr>
+      <th><%= f.label :file %></th>
+      <td>
+        <%= f.label :file, 'Add File(s)', class: 'button' %>
+        <%= f.file_field :file, :multiple => true, class: 'show-for-sr js_append_selected_files' %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p><%= f.submit 'Upload', class: 'button' %></p>
+</section>
+<% end %>

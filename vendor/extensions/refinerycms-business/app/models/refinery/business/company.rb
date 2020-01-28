@@ -8,6 +8,7 @@ module Refinery
       has_many :parcels,        through: :contact
       has_many :invoices,       dependent: :nullify
       has_many :projects,       dependent: :destroy
+      has_many :documents,      dependent: :nullify
       has_many :billables,      dependent: :destroy
       has_many :users,          through: :company_users
       has_many :seller_orders,  dependent: :nullify,    class_name: 'Order',  foreign_key: 'seller_id'

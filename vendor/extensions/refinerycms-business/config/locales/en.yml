@@ -354,6 +354,20 @@ en:
           closed: Closed
           archived: Archived
 
+      'refinery/business/request':
+        description: Description
+        request_type: Type
+        request_types:
+          inspection: Inspection
+          other: Other
+          sourcing: Sourcing
+        status: Status
+        statuses:
+          draft: Draft
+          requested: Requested
+          resolved: Resolved
+        title: Title
+
       'refinery/business/section':
         description: Description
 

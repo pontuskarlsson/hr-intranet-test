@@ -1,0 +1,9 @@
+
+
+<% content_for :body do %>
+  <p><%= link_to 'Add Request', refinery.new_business_request_path, class: 'button primary' %></p>
+
+  <%= render 'table', requests: @requests, ajax: refinery.business_requests_path(filter_params), table_id: 'js_request_table', options: {} %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

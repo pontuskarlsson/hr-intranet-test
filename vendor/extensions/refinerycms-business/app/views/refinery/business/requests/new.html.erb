@@ -1,0 +1,63 @@
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="cell medium-offset-2 medium-8 large-offset-3 large-6">
+      <%= form_for @request_form, url: refinery.business_requests_path do |f| %>
+        <h2>New Request</h2>
+
+        <%= render '/refinery/admin/error_messages',
+                   :object => @request_form,
+                   :include_object_name => false %>
+
+        <% if current_authentication_devise_user.companies.count == 1 %>
+          <%= f.hidden_field :company_label, value: current_authentication_devise_user.companies.first.label %>
+
+        <% else %>
+          <h5><%= f.label :company_label, 'From' %></h5>
+          <%= f.text_field :company_label, :class => 'js_company_field' -%>
+
+          <% content_for :javascripts do -%>
+            <script>
+              $(document).ready(function() {
+                $('.js_company_field').autocomplete({
+                  source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %>
+                });
+              });
+            </script>
+          <% end -%>
+        <% end %>
+
+        <h5><%= f.label :subject %></h5>
+        <%= f.text_field :subject, required: true %>
+
+        <h5><%= f.label :request_type, 'Type'%></h5>
+        <%= f.select :request_type, options_for_select(::Refinery::Business::Request.request_type_options, f.object.request_type) -%>
+
+        <h5><%= f.label :description %></h5>
+        <%= f.text_area :description %>
+
+        <% if false && current_authentication_devise_user.companies.count == 1 %>
+          <h5>Documents</h5>
+          <div class="js_request_files_cont"></div>
+          <div><%= link_to 'Add Document', refinery.new_business_company_document_path(current_authentication_devise_user.companies.first, callback: 'addDocumentsToForm'), remote: true, class: 'button' %></div>
+        <% end %>
+
+        <h5><%= f.label :file, 'Add File(s)' %></h5>
+        <%= f.file_field :file, multiple: true %>
+
+        <p><%= f.submit 'Send', class: 'button primary' %></p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% content_for :javascripts do -%>
+  <script>
+    function addDocumentsToForm(documents) {
+
+    }
+  </script>
+<% end -%>
+
+<% content_for :stylesheets do -%>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end -%>

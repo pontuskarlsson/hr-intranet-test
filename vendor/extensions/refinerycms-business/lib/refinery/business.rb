@@ -26,6 +26,7 @@ module Refinery
     PAGE_INVOICES_URL     = '/business/invoices'
     PAGE_ORDERS_URL       = '/business/orders'
     PAGE_PROJECTS_URL     = '/business/projects'
+    PAGE_REQUESTS_URL     = '/business/requests'
     PAGE_SECTIONS_URL     = '/business/sections'
 
     QUARTERS = {

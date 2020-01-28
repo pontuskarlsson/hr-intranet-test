@@ -1,0 +1,50 @@
+<table class="display" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Subject</th>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Type</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Code</th>
+    <th>Subject</th>
+    <th>Date</th>
+    <th>Status</th>
+    <th>Type</th>
+  </tr>
+  </tfoot>
+
+  <tbody>
+  <% requests.each do |request| %>
+    <tr>
+      <td>
+        <%= link_to refinery.business_request_path(request) do %>
+          <i class="fa fa-arrow-right"></i>
+        <% end %>
+      </td>
+      <td>
+        <%= request.code %>
+      </td>
+      <td>
+        <%= request.subject %>
+      </td>
+      <td>
+        <%= request.request_date %>
+      </td>
+      <td>
+        <%= request.display_status %>
+      </td>
+      <td>
+        <%= request.display_request_type %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

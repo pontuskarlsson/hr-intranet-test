@@ -7,7 +7,9 @@ Refinery::Core::Engine.routes.draw do
     end
     resources :bills, :only => [:index, :show]
     resources :budgets, :only => [:index, :show, :new, :create, :update]
-    resources :companies, :only => [:index, :show, :create]
+    resources :companies, :only => [:index, :show, :create] do
+      resources :documents, only: [:new, :create]
+    end
     resources :invoices, :only => [:index, :show, :create, :update] do
       patch :add_billables, to: 'invoices#add_billables', on: :member
       post :build, on: :member
@@ -19,6 +21,7 @@ Refinery::Core::Engine.routes.draw do
     resources :projects, :only => [:index, :show, :edit, :update, :new, :create] do
       resources :sections, only: [:create, :update]
     end
+    resources :requests, :except => [:destroy]
     resources :sections, :only => [:index, :show]
   end
 
@@ -80,6 +83,12 @@ Refinery::Core::Engine.routes.draw do
       end
 
       resources :projects, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :requests, :except => :show do
         collection do
           post :update_positions
         end

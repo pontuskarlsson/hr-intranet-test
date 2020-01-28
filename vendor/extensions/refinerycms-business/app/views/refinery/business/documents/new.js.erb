@@ -1,0 +1,3 @@
+$('#business_document_dialog').remove();
+var dialog = $("<div id=\"business_document_dialog\" title=\"Add Documents\" style=\"min-width: 12rem;\"><%=escape_javascript render('add_document_form') %></div>");
+dialog.appendTo('body').dialog();
