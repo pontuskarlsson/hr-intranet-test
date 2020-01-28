@@ -1,5 +1,13 @@
 GIT
-  remote: git://github.com/refinery/refinerycms-blog.git
+  remote: https://github.com/Airtable/airtable-ruby
+  revision: 041a8baf8ae59279630912d6ff329faa64398cb2
+  specs:
+    airtable (0.1.1)
+      activesupport (>= 3.0)
+      httparty (~> 0.14.0)
+
+GIT
+  remote: https://github.com/refinery/refinerycms-blog
   revision: 684036e9efbea667b286a850e5028d3a53b578bf
   ref: 684036e9efbea667b286a850e5028d3a53b578bf
   specs:
@@ -14,14 +22,6 @@ GIT
       refinerycms-settings (~> 4.0)
       responders (~> 2.0)
       seo_meta (~> 3.0, >= 3.0.0)
-
-GIT
-  remote: https://github.com/Airtable/airtable-ruby
-  revision: 041a8baf8ae59279630912d6ff329faa64398cb2
-  specs:
-    airtable (0.1.1)
-      activesupport (>= 3.0)
-      httparty (~> 0.14.0)
 
 PATH
   remote: vendor/extensions
