@@ -24,7 +24,7 @@ module Refinery
       end
 
       def new
-        @request_form = RequestForm.new_in_model(Request.new)
+        @request_form = RequestForm.new_in_model(Request.new, new_request_params)
         present(@page)
       end
 
@@ -70,6 +70,16 @@ module Refinery
         @request = requests_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
+      end
+
+      def new_request_params
+        case params[:plan]
+        when 'Small' then { subject: 'Monthly Plan: Small', description: 'I am interested in signing up for the Small QA/QC monthly plan, minimum 5 Mandays per month.' }
+        when 'Medium' then { subject: 'Monthly Plan: Medium', description: 'I am interested in signing up for the Medium QA/QC monthly plan, minimum 10 Mandays per month.' }
+        when 'Large' then { subject: 'Monthly Plan: Large', description: 'I am interested in signing up for the Large QA/QC monthly plan, minimum 20 Mandays per month.' }
+        when 'X-Large' then { subject: 'Monthly Plan: X-Large', description: 'I am interested in signing up for the X-Large QA/QC monthly plan, minimum 30 Mandays per month.' }
+        else nil
+        end
       end
 
       def update_request_params

@@ -12,17 +12,7 @@ module Refinery
       transaction do
         self.request = ::Refinery::Business::Request.create!(request_params)
 
-        create_resources!
-
-        @documents = []
-        @resources.each do |resource|
-          @documents << request.company.documents.create!(
-              resource_id: resource.id,
-              request_id: request.id,
-              document_type: 'other',
-              comments: "Uploaded together with Request #{request.code}"
-          )
-        end
+        create_resources! if file.present?
       end
 
       private
@@ -41,6 +31,16 @@ module Refinery
       def create_resources!
         @resources = ::Refinery::Resource.create_resources_with_access({ file: file }, roles_and_conditions)
         (@resources = @resources.select(&:valid?)).any? || (raise ::ActiveRecord::RecordNotSaved, @resources[0])
+
+        @documents = []
+        @resources.each do |resource|
+          @documents << request.company.documents.create!(
+              resource_id: resource.id,
+              request_id: request.id,
+              document_type: 'other',
+              comments: "Uploaded together with Request #{request.code}"
+          )
+        end
       end
     end
   end
