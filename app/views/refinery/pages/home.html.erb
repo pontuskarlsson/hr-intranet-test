@@ -40,39 +40,67 @@
     </section>
 
   <% elsif current_authentication_devise_user.has_role?(Refinery::Business::ROLE_EXTERNAL) %>
-    <section class="page-part">
-      <div class="page-part-header">
-        QUICK LINKS
-      </div>
-
-      <ul>
-        <li><%= link_to 'Purchase Credits', purchases_path %></li>
-        <% if current_authentication_devise_user.has_role?(Refinery::QualityAssurance::ROLE_EXTERNAL) %>
-          <li><%= link_to 'View Inspections', refinery.quality_assurance_inspections_path %></li>
-          <% end %>
-      </ul>
-    </section>
 
     <% if current_authentication_devise_user.companies.count == 1 %>
-      <section class="page-part">
-        <div class="page-part-header">
-          REQUESTS
+      <div class="widget">
+        <header>
+          Requests
+        </header>
+
+        <div class="widget-body">
+          <% if (requests = current_authentication_devise_user.companies.first.requests.recent).any? %>
+            <% requests.each do |request| %>
+              <div class="widget-item">
+                <span class="widget-item-trail"><%= request.request_date %></span>
+                <%= link_to refinery.business_request_path(request) do -%>
+                  <%= request.code %>
+                  <span class="widget-type"><%= request.display_request_type %></span>
+                <%- end %>
+                <div>
+                <%= request.subject %>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="widget-item">
+              <p class="italic">You have 0 credits available.</p>
+            </div>
+          <% end %>
+
+          <%= link_to 'New Request', refinery.new_business_request_path, class: 'button cta' %>
+
+          <p class="widget-subtext">
+            Please send a request here and upload any supporting documents to start a new project with Happy Rabbit.
+          </p>
         </div>
+      </div>
 
-        <p>Please send a request here and upload any supporting documents to start a new project with Happy Rabbit.</p>
-        <p><%= link_to 'New Request', refinery.new_business_request_path, class: 'button primary' %></p>
-      </section>
+      <div class="widget">
+        <header>
+          Credits
+        </header>
 
-      <% if (credits = current_authentication_devise_user.companies.first.vouchers.active.count) > 0 %>
-        <section class="page-part">
-          <div class="page-part-header">
-            CREDITS
-          </div>
+        <div class="widget-body">
+          <% if (credits = current_authentication_devise_user.companies.first.vouchers.active.group(:article_id).count).any? %>
+            <% credits.each do |article_id, count| %>
+              <div class="widget-item">
+                <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available
+              </div>
+            <% end %>
+          <% else %>
+            <div class="widget-item">
+              <p class="italic">You have 0 credits available.</p>
+            </div>
+          <% end %>
 
-          <p>You currently have <%= credits %> issued Credits available.</p>
-          <p>Click <%= link_to 'here', refinery.business_companies_path %> to view details.</p>
-        </section>
-      <% end %>
+          <%= link_to 'Purchase Credits', purchases_path, class: 'button cta' %>
+
+          <p class="widget-subtext">
+            Credits are issued when you don't use the minimum from your plan.
+            They can also be purchased separately.
+          </p>
+        </div>
+      </div>
     <% end %>
   <% end %>
 <% end %>

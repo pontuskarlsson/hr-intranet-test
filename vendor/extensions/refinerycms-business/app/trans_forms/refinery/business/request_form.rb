@@ -3,6 +3,7 @@ module Refinery
     class RequestForm < ApplicationTransForm
       set_main_model :request, class_name: '::Refinery::Business::Request', proxy: { attributes: :all }
 
+      attribute :request_date,      Date, default: proc { Date.today }
       attribute :company_label,     String
       attribute :file
 

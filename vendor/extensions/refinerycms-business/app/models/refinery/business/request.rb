@@ -34,13 +34,17 @@ module Refinery
       validates :request_type,          inclusion: REQUEST_TYPES
       validates :status,                inclusion: STATUSES
       validates :subject,               presence: true
+      validates :request_date,          presence: true
 
       before_validation do
-        self.code = NumberSerie.next_counter!(self.class, :code) if code.blank?
+        self.code = NumberSerie.next_counter!(self.class, :code, prefix: 'REQ') if code.blank?
 
         self.status = 'requested' if status.blank?
         self.participants ||= [created_by_id, requested_by_id].uniq.join(',')
+        self.request_date ||= Date.today
       end
+
+      scope :recent, -> (no_of_records = 10) { order(request_date: :desc).limit(no_of_records) }
 
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)

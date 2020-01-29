@@ -26,14 +26,23 @@
           <% end -%>
         <% end %>
 
+        <div class="grid-x grid-padding-x">
+          <div class="cell medium-6">
+            <h5><%= f.label :request_type, 'Type' %></h5>
+            <%= f.select :request_type, options_for_select(::Refinery::Business::Request.request_type_options, f.object.request_type) -%>
+          </div>
+
+          <div class="cell medium-6">
+            <h5><%= f.label :request_date %></h5>
+            <%= f.date_field :request_date, required: true -%>
+          </div>
+        </div>
+
         <h5><%= f.label :subject %></h5>
         <%= f.text_field :subject, required: true %>
 
-        <h5><%= f.label :request_type, 'Type'%></h5>
-        <%= f.select :request_type, options_for_select(::Refinery::Business::Request.request_type_options, f.object.request_type) -%>
-
         <h5><%= f.label :description %></h5>
-        <%= f.text_area :description %>
+        <%= f.text_area :description, style: 'min-height: 10rem;' %>
 
         <% if false && current_authentication_devise_user.companies.count == 1 %>
           <h5>Documents</h5>

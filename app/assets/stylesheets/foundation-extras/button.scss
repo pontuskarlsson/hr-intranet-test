@@ -1,0 +1,17 @@
+.button {
+    //margin-bottom: 0;
+    min-width: 130px;
+    text-transform: uppercase;
+    font-size: 0.6rem;
+    letter-spacing: 1.8px;
+
+    &:not(.primary):not(.secondary):not(.success):not(:hover) {
+        background: none;
+        border: 1px solid $primary-color;
+        color: $primary-color;
+    }
+}
+
+.button-group .button {
+    font-size: 0.6rem;
+}

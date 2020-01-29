@@ -1,0 +1,78 @@
+div.widget {
+    width: calc(100% - 30px);
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+    background: $white;
+    display: block;
+    border-radius: 3px;
+    border: 1px solid #d6d6d6;
+
+    header {
+        width: 100%;
+        margin: -10px -12px;
+        padding: 10px 12px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        background: $light-gray;
+        box-sizing: content-box;
+    }
+
+    div.widget-body {
+        margin-top: 9px;
+        font-size: 0.9rem;
+        line-height: 1.2rem;
+        padding-bottom: 5px;
+        overflow-wrap: break-word;
+        background: $white;
+
+        a.widget-link, div.widget-item {
+            display: block;
+            padding: 6px 12px 4px;
+            font-size: 0.9rem;
+            width: 100%;
+            margin-left: -12px;
+            box-sizing: content-box;
+            border-bottom: 1px solid #dbdbdb;
+
+            &:first-child {
+                border-top: 1px solid #dbdbdb;
+            }
+
+            .widget-item-trail {
+                float: right;
+                color: $dark-gray;
+                font-size: 0.6rem;
+            }
+
+            .widget-type {
+                display: inline-block;
+                border: 1px solid #c2c2c2;
+                color: #737373;
+                padding: 0px 5px;
+                font-size: 0.77em;
+                border-radius: 3px;
+                margin-bottom: 3px;
+                line-height: 1.3em;
+            }
+        }
+
+        a.cta {
+            margin: 15px auto 0;
+            width: 85%;
+            text-align: center;
+            display: block;
+        }
+
+        p {
+            margin: 14px 0px 8px;
+
+            &.widget-subtext {
+                text-align: center;
+                font-style: italic;
+                font-size: 0.8rem;
+            }
+        }
+    }
+}

@@ -57,10 +57,12 @@
 //
 // @include motion-ui-transitions;
 // @include motion-ui-animations;
+@import 'foundation-extras/button';
 @import 'foundation-extras/generic';
 @import 'foundation-extras/login_sign_up';
 @import 'foundation-extras/portal_card';
 @import 'foundation-extras/statistics';
+@import 'foundation-extras/widget';
 @import 'foundation-extras/wizard';
 
 html { height: 100%; }
@@ -106,6 +108,14 @@ main > .grid-container { margin-bottom: 1rem;}
         &:hover {
             color: $primary-color;
         }
+    }
+}
+
+.action-bar {
+    float: right;
+
+    .button, button, input {
+        margin-bottom: 0;
     }
 }
 
