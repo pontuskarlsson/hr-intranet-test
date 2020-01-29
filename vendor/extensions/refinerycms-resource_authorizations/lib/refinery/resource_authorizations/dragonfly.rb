@@ -10,7 +10,7 @@ module Refinery
             app.configure do
               before_serve do |job, env|
                 user = env['warden'].user
-                throw :halt, [401, {"Content-Type" => "text/plain"}, ["Unauthorized"]] unless user
+                #throw :halt, [401, {"Content-Type" => "text/plain"}, ["Unauthorized"]] unless user
 
                 if job.fetch_step
                   klass, col = case job.app.name
