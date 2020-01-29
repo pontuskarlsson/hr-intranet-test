@@ -109,29 +109,6 @@ ActiveRecord::Schema.define(version: 20200128122041) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
-  create_table "purchases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "user_id"
-    t.integer "company_id"
-    t.string "status"
-    t.string "stripe_checkout_session_id"
-    t.string "stripe_payment_intent_id"
-    t.string "stripe_event_id"
-    t.string "discount_code"
-    t.decimal "sub_total_cost", precision: 13, scale: 4, default: "0.0", null: false
-    t.decimal "total_discount", precision: 13, scale: 4, default: "0.0", null: false
-    t.decimal "total_cost", precision: 13, scale: 4, default: "0.0", null: false
-    t.text "meta"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["company_id"], name: "index_purchases_on_company_id"
-    t.index ["discount_code"], name: "index_purchases_on_discount_code"
-    t.index ["status"], name: "index_purchases_on_status"
-    t.index ["stripe_checkout_session_id"], name: "index_purchases_on_stripe_checkout_session_id"
-    t.index ["stripe_event_id"], name: "index_purchases_on_stripe_event_id"
-    t.index ["stripe_payment_intent_id"], name: "index_purchases_on_stripe_payment_intent_id"
-    t.index ["user_id"], name: "index_purchases_on_user_id"
-  end
-
   create_table "refinery_annual_leave_records", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "employee_id"
     t.integer "annual_leave_id"
@@ -702,6 +679,29 @@ ActiveRecord::Schema.define(version: 20200128122041) do
     t.index ["position"], name: "index_refinery_business_projects_on_position"
     t.index ["start_date"], name: "index_refinery_business_projects_on_start_date"
     t.index ["status"], name: "index_refinery_business_projects_on_status"
+  end
+
+  create_table "refinery_business_purchases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.integer "company_id"
+    t.string "status"
+    t.string "stripe_checkout_session_id"
+    t.string "stripe_payment_intent_id"
+    t.string "stripe_event_id"
+    t.string "discount_code"
+    t.decimal "sub_total_cost", precision: 13, scale: 4, default: "0.0", null: false
+    t.decimal "total_discount", precision: 13, scale: 4, default: "0.0", null: false
+    t.decimal "total_cost", precision: 13, scale: 4, default: "0.0", null: false
+    t.text "meta"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_refinery_business_purchases_on_company_id"
+    t.index ["discount_code"], name: "index_refinery_business_purchases_on_discount_code"
+    t.index ["status"], name: "index_refinery_business_purchases_on_status"
+    t.index ["stripe_checkout_session_id"], name: "index_refinery_business_purchases_on_stripe_checkout_session_id"
+    t.index ["stripe_event_id"], name: "index_refinery_business_purchases_on_stripe_event_id"
+    t.index ["stripe_payment_intent_id"], name: "index_refinery_business_purchases_on_stripe_payment_intent_id"
+    t.index ["user_id"], name: "index_refinery_business_purchases_on_user_id"
   end
 
   create_table "refinery_business_requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
