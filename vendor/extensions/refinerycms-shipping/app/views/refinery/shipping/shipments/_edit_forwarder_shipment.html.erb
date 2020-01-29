@@ -1,6 +1,6 @@
 <%= form_for @shipment, url: refinery.shipping_shipment_path(@shipment) do |f| %>
   <div>
-    <%= f.submit 'Save', class: 'button' %>
+    <%= f.submit 'Save', class: 'button primary' %>
     <%= link_to 'Cancel', refinery.shipping_shipment_path(@shipment) %>
   </div>
 

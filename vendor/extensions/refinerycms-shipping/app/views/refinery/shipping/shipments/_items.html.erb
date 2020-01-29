@@ -1,7 +1,7 @@
 <% shipment.items.build if shipment.items.empty? %>
 
 <%= form_for items_form, url: [refinery, :shipping, shipment] do |f| %>
-  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button primary' %></div>
 
   <%= render '/refinery/admin/error_messages',
              :object => items_form,
@@ -43,5 +43,5 @@
     <% end %>
   </div>
 
-  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button' %></div>
+  <div style="margin-top: 1rem;"><%= f.submit 'Save changes', class: 'button primary' %></div>
 <% end %>

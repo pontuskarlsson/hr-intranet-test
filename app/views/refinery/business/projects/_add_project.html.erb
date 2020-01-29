@@ -1,5 +1,5 @@
 <% content_for :actions do %>
-  <p><button class="button" data-open="js_project_form">Add new Project</button></p>
+  <button class="button" data-open="js_project_form">New Project</button>
 
   <div class="reveal" id="js_project_form" data-reveal>
     <%= render 'form', project: @project %>

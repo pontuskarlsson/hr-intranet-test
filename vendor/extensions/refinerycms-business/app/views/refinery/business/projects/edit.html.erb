@@ -37,7 +37,7 @@
           <%= f.select :status, options_for_select(::Refinery::Business::Project.status_options, f.object.status) %>
         </div>
 
-        <%= f.submit 'Save', class: 'button' %>
+        <%= f.submit 'Save', class: 'button primary' %>
       <% end %>
     </div>
   </div>

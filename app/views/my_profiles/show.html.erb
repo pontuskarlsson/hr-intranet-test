@@ -31,7 +31,7 @@
                   <%= f.text_field :phone %>
                 </div>
 
-                <%= f.submit 'Save Changes', class: 'button' %>
+                <%= f.submit 'Save Changes', class: 'button primary' %>
               <% end %>
             <% else %>
               <%= form_for current_authentication_devise_user, url: my_profile_path do |f| %>
@@ -40,7 +40,7 @@
                   <%= f.text_field :full_name %>
                 </div>
 
-                <%= f.submit 'Save Changes', class: 'button' %>
+                <%= f.submit 'Save Changes', class: 'button primary' %>
               <% end %>
             <% end %>
           </div>

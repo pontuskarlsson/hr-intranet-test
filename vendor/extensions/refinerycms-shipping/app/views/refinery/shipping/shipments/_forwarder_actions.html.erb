@@ -3,10 +3,10 @@
     <% if shipment.ready_to_request? %>
       <%= form_tag refinery.shipping_shipment_path(@shipment), method: :put do %>
         <%= hidden_field_tag 'send_request', '1' %>
-        <%= submit_tag 'Send Request', class: 'button' %>
+        <%= submit_tag 'Send Request', class: 'button primary' %>
       <% end %>
     <% else %>
-      <%= link_to 'Send Request', 'javascript:void(0)', class: 'button', disabled: true %>
+      <%= link_to 'Send Request', 'javascript:void(0)', class: 'button primary', disabled: true %>
       <span class="fa fa-question has-tip" data-tooltip="true" aria-haspopup="true" title="<%= shipment.needed_for_request.join(', ') %>"></span>
     <% end %>
   <% end %>
