@@ -38,7 +38,7 @@ module Portal
       def perform_checkout_session
         ActiveRecord::Base.transaction do
           object = data['object']
-          purchase = Purchase.find_by_happy_rabbit_reference_id! object['client_reference_id']
+          purchase = ::Refinery::Business::Purchase.find_by_happy_rabbit_reference_id! object['client_reference_id']
           purchase.status = 'paid'
           purchase.save!
 
