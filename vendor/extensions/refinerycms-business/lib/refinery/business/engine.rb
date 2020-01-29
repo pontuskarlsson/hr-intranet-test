@@ -9,7 +9,20 @@ module Refinery
       initializer 'resource-authorization-hooks-for-business-engine' do |app|
         ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Business::ROLE_INTERNAL
         ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Business::ROLE_EXTERNAL do |user, conditions|
-          user.present? && conditions.has_key?(:contact_id) # Allow external users to see contact profile pictures
+          if user.present?
+            if conditions.has_key?(:contact_id) # Allow external users to see contact profile pictures
+              true
+
+            elsif conditions.has_key?(:company_id)
+              user.company_ids.include? conditions[:company_id].to_i
+
+            else
+              false
+            end
+
+          else
+            false
+          end
         end
       end
 

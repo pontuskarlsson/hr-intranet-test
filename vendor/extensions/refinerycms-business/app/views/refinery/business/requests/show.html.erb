@@ -46,6 +46,25 @@
         <th>Type</th>
         <td><%= @request.display_request_type %></td>
       </tr>
+      <tr>
+        <th>Documents</th>
+        <td>
+          <% if @request.documents.any? %>
+            <ul style="list-style: none; margin-left: 0;">
+              <% @request.documents.each do |document| %>
+                <% if (resource = document.resource).present? %>
+                  <li><%= link_to resource.file.url, download: '' do %>
+                    <i class="fa fa-file-o"></i> <%= resource.file_name %>
+                  <% end %></li>
+                <% end %>
+              <% end %>
+            </ul>
+
+          <% else %>
+            <span class="italic">No documents attached.</span>
+          <% end %>
+        </td>
+      </tr>
       </tbody>
     </table>
   </section>
