@@ -1,0 +1,9 @@
+<% if false %>
+<% content_for :body do %>
+  <%= render 'table', table_id: 'js_purchases_table' %>
+<% end %>
+
+<%= render '/refinery/content_page' %>
+<% else %>
+  <%= render 'table', table_id: 'js_purchases_table' %>
+<% end %>

@@ -5,6 +5,7 @@ module Refinery
   autoload :BusinessGenerator, 'generators/refinery/business_generator'
 
   module Business
+    require 'refinery/business/configuration'
     require 'refinery/business/engine'
     require 'refinery/business/job'
     require 'refinery/business/xero/sync/contacts'

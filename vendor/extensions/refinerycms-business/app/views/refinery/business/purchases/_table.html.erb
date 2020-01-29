@@ -1,0 +1,58 @@
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th></th>
+    <th>Date</th>
+    <th>Description</th>
+    <th style="text-align: right;">Tot. Amount</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th>Date</th>
+    <th>Description</th>
+    <th style="text-align: right;">Tot. Amount</th>
+    <th>Status</th>
+  </tr>
+  </tfoot>
+</table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        "paging":         true,
+        "ajax": {
+          "url": "<%= refinery.business_purchases_path %>",
+          "data": function(d) {
+            Object.assign(d, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
+        "serverSide": true,
+        "order": [[1, 'desc']],
+        "columns": [
+//          { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_purchases_path %>") } },
+          { data: "id", "render": { "display": idColumnRendererFor("#") } },
+          { data: "created_at", render: dtDateTimeRenderer },
+          { data: "article_code" },
+          { data: "total_cost", render: formatCurrency },
+          { data: "status" },
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5'
+        ]
+      });
+
+      initDataTable(dt);
+    });
+  </script>
+<% end %>

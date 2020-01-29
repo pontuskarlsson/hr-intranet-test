@@ -486,8 +486,10 @@ ActiveRecord::Schema.define(version: 20200128122041) do
     t.text "meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "request_id"
     t.index ["company_id"], name: "index_refinery_business_documents_on_company_id"
     t.index ["document_type"], name: "index_refinery_business_documents_on_document_type"
+    t.index ["request_id"], name: "index_refinery_business_documents_on_request_id"
     t.index ["resource_id"], name: "index_refinery_business_documents_on_resource_id"
   end
 

@@ -21,6 +21,12 @@ Refinery::Core::Engine.routes.draw do
     resources :projects, :only => [:index, :show, :edit, :update, :new, :create] do
       resources :sections, only: [:create, :update]
     end
+    resources :purchases, only: [:index, :new, :create, :show] do
+      collection do
+        match 'success', to: 'purchases#success', via: [:get, :post]
+        match 'cancel', to: 'purchases#cancel', via: [:get, :post]
+      end
+    end
     resources :requests, :except => [:destroy]
     resources :sections, :only => [:index, :show]
   end

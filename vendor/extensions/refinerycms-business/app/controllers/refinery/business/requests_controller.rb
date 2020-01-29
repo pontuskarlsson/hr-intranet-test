@@ -58,23 +58,16 @@ module Refinery
 
       protected
 
-      def request_scope
-        @requests =
-            if page_role? ROLE_INTERNAL
-              Refinery::Business::Request.where(nil)
-            elsif page_role? ROLE_EXTERNAL
-              Refinery::Business::Request.where(company_id: current_authentication_devise_user.company_ids)
-            else
-              Refinery::Business::Request.where('1=0')
-            end
+      def requests_scope
+        @requests = Refinery::Business::Request.for_user_roles(current_authentication_devise_user)
       end
 
       def find_requests
-        @requests = request_scope.where(filter_params)
+        @requests = requests_scope.where(filter_params)
       end
 
       def find_request
-        @request = request_scope.find(params[:id])
+        @request = requests_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

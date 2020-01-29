@@ -23,13 +23,6 @@ Rails.application.routes.draw do
 
   get 'dashboard',                      to: 'portal#dashboard'
 
-  resources :purchases, only: [:index, :new, :create, :show] do
-    collection do
-      match 'success', to: 'purchases#success', via: [:get, :post]
-      match 'cancel', to: 'purchases#cancel', via: [:get, :post]
-    end
-  end
-
   # OAuth
   use_doorkeeper
 

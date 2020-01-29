@@ -172,6 +172,17 @@ var dtDateRenderer = {
   'display': function(data) { return data; }
 };
 
+var dtDateTimeRenderer = {
+  '_': function(data) { return new Date(data); },
+  'display': function(data) {
+    try {
+      return new Date(data).toLocaleDateString();
+    } catch(e) {
+      return '';
+    }
+  }
+};
+
 function dtOnDrawSetImgSrc() {
   $('.js_dt_img').each(function(i, img) {
     var $img = $(img);
