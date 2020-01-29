@@ -61,10 +61,6 @@
                 </div>
               </div>
             <% end %>
-          <% else %>
-            <div class="widget-item">
-              <p class="italic">You have 0 credits available.</p>
-            </div>
           <% end %>
 
           <%= link_to 'New Request', refinery.new_business_request_path, class: 'button cta' %>
@@ -87,10 +83,6 @@
                 <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available
               </div>
             <% end %>
-          <% else %>
-            <div class="widget-item">
-              <p class="italic">You have 0 credits available.</p>
-            </div>
           <% end %>
 
           <%= link_to 'Purchase Credits', refinery.new_business_purchase_path, class: 'button cta' %>
