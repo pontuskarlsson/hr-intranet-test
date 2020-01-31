@@ -15,6 +15,7 @@ Rails.application.config.assets.precompile += %w(
   calendars.js
   chosen.css
   chosen.jquery.min.js
+  fonts.scss
   foundation_and_overrides
   foundation_and_overrides_portal
   jquery-ui.css

@@ -8,12 +8,17 @@
 <%= csrf_meta_tags if Refinery::Core.authenticity_token_on_frontend -%>
 <%= yield :meta %>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css" />
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css"></noscript>
+
 <%= stylesheet_link_tag 'public' %>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<%= stylesheet_link_tag 'fonts', rel: 'preload', as: 'style', onload: "this.onload=null;this.rel='stylesheet'" %>
+<%= stylesheet_link_tag 'fonts' # Duplicate declaration afterwards because no support for preload in FireFox
+%>
+
+<%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', rel: 'preload', as: 'style', onload: "this.onload=null;this.rel='stylesheet'" %>
+<%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' # Duplicate declaration afterwards because no support for preload in FireFox
+%>
+
 <%= yield :stylesheets %>
-
-<%= render '/refinery/google_analytics' %>
-
-<%= javascript_include_tag 'modernizr-min' %>
-<%= javascript_include_tag 'public' %>

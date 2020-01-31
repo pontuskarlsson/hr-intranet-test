@@ -35,6 +35,9 @@
     </footer>
   </div>
 </div>
+<%= render '/refinery/google_analytics' %>
+<%= javascript_include_tag 'modernizr-min' %>
+<%= javascript_include_tag 'public' %>
 <%= yield :javascripts -%>
 <%= javascript_include_tag 'https://checkout.stripe.com/checkout.js' %>
 </body>
