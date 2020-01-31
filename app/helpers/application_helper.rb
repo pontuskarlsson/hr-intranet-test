@@ -81,6 +81,52 @@ module ApplicationHelper
     end
   end
 
+  # This tag is used on the responsive section layouts. Full width refers to
+  # the full grid-container width.
+  #
+  # The maximum grid-container width listed in _settings.scss is 1024px.
+  #
+  # The XY Grid currently implemented through foundation, is configured for
+  # the following widths:
+  #
+  #   Large >= 1024px > Medium >= 640px > Small >= 0
+  #
+  # This means that an image dedicated for the Medium layout, will be displayed
+  # on screen-widths in the range from 640px to 1023px.
+  #
+  # That would mean to use 1024px (rounded up from 1023px) width for Medium to
+  # reduce image size as much as possible, while still maintaining full image
+  # quality. And since the grid will never grow wider than 1024px, regardless
+  # of screen width, we can use the same interchange for Medium and up, only
+  # keeping a small "mobile" specific size.
+  #
+  # When it comes to the half grid section, note that it is only half on medium
+  # and up, i.e. "cell medium-6". That means on a Small layout, it would still
+  # have a maximum of 639px width.
+  #
+  # For Medium and up however, given that the grid-container is at most 1024px,
+  # and that the grid-gutter for medium up is 30px, that means a medium-6 cell
+  # can be at most
+  #
+  def image_interchange_tag(image, width = 'full', options = {})
+    if width == 'full'
+      dimensions = {
+          small: '640',
+          medium: '1024',
+      }
+    elsif width == 'half'
+
+    else
+      return image_tag image.url, options
+    end
+
+    options['data-interchange'] =
+        "[#{image.url(small_dimensions)}, small],"<<
+        "[assets/img/interchange/medium.jpg, medium],"<<
+        "[assets/img/interchange/large.jpg, large]"
+    tag('img', options)
+  end
+
   def method_missing(method_name, *arguments, &block)
     if method_name.to_s =~ /\A(.*)_path\z/ && refinery.respond_to?(method_name)
       refinery.send(method_name, *arguments, &block)

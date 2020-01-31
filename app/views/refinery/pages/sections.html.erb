@@ -27,7 +27,16 @@
                     else ''
                     end
   %>
-  <section id="section<%= i %>" class="page-section section-<%= section.slug %> <%= section.slug['no_top_padding'] ? 'no-top-padding' : '' %> <%= section.slug['no_bottom_padding'] ? 'no-bottom-padding' : '' %> <%= section.slug['large'] ? 'large-section' : '' %> <%= class_name %> <%= fg_class_name %>" <% if background =~ /bg_img|bg_whole/ && (bg_image = page_images.shift).present? %> style="background-image: url(<%= bg_image.image.url %>);"<% end %>>
+  <section id="section<%= i
+           -%>" class="page-section section-<%= section.slug
+           -%> <%= section.slug['no_top_padding'] ? 'no-top-padding' : ''
+           -%> <%= section.slug['no_bottom_padding'] ? 'no-bottom-padding' : ''
+           -%> <%= section.slug['large'] ? 'large-section' : ''
+           -%> <%= class_name %> <%= fg_class_name %>"
+           <%- if background =~ /bg_img|bg_whole/ && (bg_image = page_images.shift).present? -%>
+             style="background-image: url(<%= bg_image.image.url %>);"
+           <%- end -%>>
+
     <% if section.slug['tech_splash'] %>
       <%= render 'refinery/pages/sections/tech_splash', page: @page, section: section %>
 
@@ -57,7 +66,7 @@
           <% page_image = page_images.shift %>
           <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.url, class: 'resp-img' %>
+              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
             <% end %>
           </div>
 
@@ -68,16 +77,16 @@
 
         <% elsif section.slug[/resp_2_img/] %>
           <% page_image = page_images.shift %>
-          <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">
+          <div class="cell medium-6">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.url, class: 'resp-img' %>
+              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
             <% end %>
           </div>
 
           <% page_image = page_images.shift %>
-          <div class="cell medium-6 small-order-2<% if resp_img_idx.even? %> medium-order-1<% end %>">
+          <div class="cell medium-6">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.url, class: 'resp-img' %>
+              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
             <% end %>
           </div>
 
@@ -85,7 +94,7 @@
           <% page_image = page_images.shift %>
           <div class="cell">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.url, class: 'resp-img' %>
+              <%= image_tag page_image.image.thumb('1084x1600>').url, class: 'resp-img' %>
             <% end %>
           </div>
 
@@ -93,7 +102,7 @@
           <% page_image = page_images.shift %>
           <div class="cell medium-6 medium-offset-3 end">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.url, class: 'resp-img' %>
+              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
             <% end %>
           </div>
 
