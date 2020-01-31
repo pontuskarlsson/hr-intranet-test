@@ -66,7 +66,7 @@
           <% page_image = page_images.shift %>
           <div class="cell medium-6 small-order-1<% if resp_img_idx.even? %> medium-order-2<% end %>">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
             <% end %>
           </div>
 
@@ -79,14 +79,14 @@
           <% page_image = page_images.shift %>
           <div class="cell medium-6">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
             <% end %>
           </div>
 
           <% page_image = page_images.shift %>
           <div class="cell medium-6">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
             <% end %>
           </div>
 
@@ -94,7 +94,7 @@
           <% page_image = page_images.shift %>
           <div class="cell">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.thumb('1084x1600>').url, class: 'resp-img' %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
             <% end %>
           </div>
 
@@ -102,7 +102,7 @@
           <% page_image = page_images.shift %>
           <div class="cell medium-6 medium-offset-3 end">
             <% if page_image.present? %>
-              <%= image_tag page_image.image.thumb('600x1200>').url, class: 'resp-img' %>
+              <%= image_tag page_image.image.url, class: 'resp-img' %>
             <% end %>
           </div>
 
