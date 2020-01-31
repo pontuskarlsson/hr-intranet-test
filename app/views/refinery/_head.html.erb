@@ -10,9 +10,21 @@
 <%= yield :meta %>
 
 <%= stylesheet_link_tag 'foundation_and_overrides_portal' %>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css" />
+
+<%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css', rel: 'preload', as: 'style', onload: "this.onload=null;this.rel='stylesheet'" %>
+<%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/motion-ui@1.2.3/dist/motion-ui.min.css' # Duplicate declaration afterwards because no support for preload in FireFox
+%>
+
 <%= stylesheet_link_tag "application" %>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<%= stylesheet_link_tag 'fonts', rel: 'preload', as: 'style', onload: "this.onload=null;this.rel='stylesheet'" %>
+<%= stylesheet_link_tag 'fonts' # Duplicate declaration afterwards because no support for preload in FireFox
+%>
+
+<%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', rel: 'preload', as: 'style', onload: "this.onload=null;this.rel='stylesheet'" %>
+<%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' # Duplicate declaration afterwards because no support for preload in FireFox
+%>
+
 <%= yield :stylesheets %>
 
 <%= render '/refinery/google_analytics' %>
