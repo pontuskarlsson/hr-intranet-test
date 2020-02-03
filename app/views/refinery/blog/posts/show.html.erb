@@ -2,8 +2,8 @@
   <%= raw %(<meta property="og:title" content="#{@post.title}">) -%>
   <%= raw %(<meta property="og:description" content="Offering tour packages for individuals or groups.">) -%>
   <% if (image = @post.images.first).present? %>
-    <%= raw %(<meta property="og:image" content="#{image.image.thumb('1200x630#').url}">) -%>
-    <%= raw %(<meta property="twitter:image" content="#{image.image.thumb(' 280x150#').url}">) -%>
+    <%= raw %(<meta property="og:image" content="#{image.image.thumb('1200x630#').url(host: WWWSubdomain.host)}">) -%>
+    <%= raw %(<meta property="twitter:image" content="#{image.image.thumb(' 280x150#').url(host: WWWSubdomain.host)}">) -%>
   <% end %>
   <%= raw %(<meta property="og:url" content="#{refinery.blog_post_url(@post)}">) -%>
 <% end %>

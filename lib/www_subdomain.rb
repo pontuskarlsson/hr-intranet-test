@@ -24,4 +24,8 @@ class WWWSubdomain
     end
   end
 
+  def self.host
+    "#{protocol}://#{domain}"
+  end
+
 end
