@@ -1,4 +1,5 @@
 <% content_for :meta do %>
+  <%= raw %(<meta property="twitter:card" content="summary">) -%>
   <%= raw %(<meta property="og:title" content="#{@post.title}">) -%>
   <%= raw %(<meta property="og:description" content="Offering tour packages for individuals or groups.">) -%>
   <% if (image = @post.images.first).present? %>
