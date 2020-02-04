@@ -195,6 +195,7 @@ module Refinery
                   currency_code: invoice.currency_code,
                   valid_from: invoice.invoice_for_month,
                   valid_to: invoice.invoice_for_month + 1.year - 1.day,
+                  source: 'invoice',
               )
 
               sales.quantity += pre_pay_to.quantity
