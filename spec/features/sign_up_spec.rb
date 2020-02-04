@@ -24,24 +24,33 @@ describe Refinery do
               end
             end
 
-            it "creates a new user" do
-              expect{ action }.to change{Refinery::Authentication::Devise::User.count}.by 1
+            it "does not show any error messages" do
+              action
 
-#              expect(page).not_to have_content("There were problems with the following fields")
+              expect(page).not_to have_content("There were problems with the following fields")
+            end
+
+            it "creates a new user with business external role" do
+              expect{ action }.to change{Refinery::Authentication::Devise::User.count}.by 1
 
               user = Refinery::Authentication::Devise::User.last
               expect(user.first_name).to eq 'John'
               expect(user.last_name).to eq 'Doe'
               expect(user.full_name).to eq 'John Doe'
+
+              expect(user.roles.pluck(:title)).to include Refinery::Business::ROLE_EXTERNAL
             end
 
-            it "creates a new unverified company" do
+            it "creates a new unverified company with user as owner" do
               expect{ action }.to change{ Refinery::Business::Company.count}.by 1
 
               company = Refinery::Business::Company.last
               expect(company).not_to be_is_verified
               expect(company.name).to eq 'A new Company name'
               expect(company.code).to be_blank
+
+              expect(company.company_users.count).to eq 1
+              expect(company.company_users.first.role).to eq "Owner"
             end
           end
         end

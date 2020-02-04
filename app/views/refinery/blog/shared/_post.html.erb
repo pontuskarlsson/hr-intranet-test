@@ -12,15 +12,6 @@
     <div class="blog-teaser-content">
       <header>
         <h2 class="text-align-center"><%= link_to post.title, refinery.blog_post_path(post) %></h2>
-      </header>
-      <section class="clearfix">
-        <% if blog_post_teaser_enabled? %>
-          <%= blog_post_teaser(post) %>
-        <% else %>
-          <%= post.body.html_safe %>
-        <% end %>
-      </section>
-      <footer>
         <section class="details">
           <time datetime="<%=l post.published_at.to_date, :format => :default %>" class="posted_at">
             <%#= t('created_at', :scope => 'refinery.blog.shared.posts', :when => l(post.published_at.to_date, :format => :long)) %>
@@ -40,8 +31,15 @@
             </aside>
           <% end %>
         </section>
-
-
+      </header>
+      <section class="clearfix">
+        <% if blog_post_teaser_enabled? %>
+          <%= blog_post_teaser(post) %>
+        <% else %>
+          <%= post.body.html_safe %>
+        <% end %>
+      </section>
+      <footer>
         <% if false %>
         <p>
           <% if blog_post_teaser_enabled? && post.custom_teaser.present? %>
