@@ -5,7 +5,7 @@ describe Refinery do
   describe "Employees" do
     describe "Admin" do
       describe "leave_of_absences" do
-        refinery_login_with_devise :authentication_devise_user
+        refinery_login
 
         describe "annual_leaves list" do
           before do

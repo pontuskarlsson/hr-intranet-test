@@ -52,6 +52,7 @@ PATH
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing (>= 1.0)
       refinerycms-page_roles (>= 1.0)
+      refinerycms-resource_authorizations
       xeroizer
     refinerycms-marketing (1.0)
       faraday (~> 0.15.4)
@@ -78,6 +79,7 @@ PATH
       refinerycms-core (>= 2.1.2)
       refinerycms-marketing
       refinerycms-page_roles (>= 1.0)
+      refinerycms-resource_authorizations
       trans_forms
     trans_forms (0.2.2)
       activemodel (>= 4.2.0, < 6)

@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency             'refinerycms-calendar',        '>= 2.1'
   s.add_dependency             'refinerycms-marketing',       '>= 1.0'
   s.add_dependency             'refinerycms-page_roles',      '>= 1.0'
+  s.add_dependency             'refinerycms-resource_authorizations'
   s.add_dependency             'xeroizer'
 
   # Development dependencies (usually used for testing)

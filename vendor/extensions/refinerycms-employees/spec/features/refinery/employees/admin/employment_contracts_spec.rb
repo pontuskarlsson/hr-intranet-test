@@ -5,7 +5,7 @@ describe Refinery do
   describe "EmploymentContracts" do
     describe "Admin" do
       describe "employment_contracts" do
-        refinery_login_with_devise :authentication_devise_user
+        refinery_login
 
         describe "employment_contracts list" do
           before do

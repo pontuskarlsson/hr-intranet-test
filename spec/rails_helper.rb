@@ -47,4 +47,9 @@ RSpec.configure do |config|
   config.before(:suite) do
     Rails.application.load_seed # loading seeds
   end
+
+  config.before(:each) do
+    allow(WWWSubdomain).to receive(:matches?) { true }
+    allow(PortalSubdomain).to receive(:matches?) { true }
+  end
 end

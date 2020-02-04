@@ -6,6 +6,10 @@ module Refinery
 
       engine_name :refinery_employees
 
+      initializer 'resource-authorization-hooks-for-employees-engine' do |app|
+        ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Employees::ROLE_EMPLOYEE
+      end
+
       before_inclusion do
         Refinery::Plugin.register do |plugin|
           plugin.name = "employees"

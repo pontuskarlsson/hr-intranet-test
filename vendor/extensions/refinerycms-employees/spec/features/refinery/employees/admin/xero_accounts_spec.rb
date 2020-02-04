@@ -5,7 +5,7 @@ describe Refinery do
   describe 'Employees' do
     describe 'Admin' do
       describe 'xero_accounts' do
-        refinery_login_with_devise :authentication_devise_user
+        refinery_login
 
         describe 'xero_accounts list' do
           before do
