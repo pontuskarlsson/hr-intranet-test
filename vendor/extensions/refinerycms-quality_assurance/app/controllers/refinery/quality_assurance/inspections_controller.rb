@@ -111,7 +111,7 @@ module Refinery
       end
 
       def find_all_inspections
-        @inspections = inspections_scope.where(filter_params).order(inspection_date: :desc)
+        @inspections = inspections_scope.where(filter_params)
       end
 
       def find_inspection

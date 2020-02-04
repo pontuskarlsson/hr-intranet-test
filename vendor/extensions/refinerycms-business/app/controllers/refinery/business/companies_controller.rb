@@ -11,7 +11,7 @@ module Refinery
       before_action :find_company,  except: [:index, :new, :create]
 
       def index
-        @companies = @companies.includes(:contact).order(code: :asc)
+        @companies = @companies.includes(:contact)
         @company = Company.new
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @company in the line below:

@@ -72,7 +72,16 @@ module Refinery
             if params[:order]
               begin
                 filtered = params[:order].to_unsafe_hash.values.inject(filtered) { |s, order|
-                  s.order(params[:columns][order['column']]['data'] => order['dir'])
+                  if (col = dt_columns[params[:columns][order['column']]['data']]).present?
+                    if col[:class_name]
+                      arel_order_col = col[:class_name].constantize.arel_table[col[:column]]
+                      s.left_outer_joins(col[:assoc].to_sym).order(arel_order_col.send(order['dir']))
+                    else
+                      s.order(col[:column] => order['dir'])
+                    end
+                  else
+                    s
+                  end
                 }
               rescue StandardError => e
                 nil
@@ -90,6 +99,8 @@ module Refinery
               end
             end
 
+            assocs = dt_columns.values.reduce([]) { |acc, col| col[:assoc] ? acc | [col[:assoc]] : acc }.map(&:to_sym)
+            data = assocs.any? ? data.includes(*assocs) : data
             {
                 "draw" => params[:draw].to_i,
                 "recordsTotal" => scope.count,

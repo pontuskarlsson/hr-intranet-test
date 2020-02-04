@@ -13,7 +13,7 @@ module Refinery
       helper_method :calendar_params
 
       def index
-        @requests = @requests.from_params(params).order(request_date: :desc)
+        @requests = @requests.from_params(params)
 
         respond_to do |format|
           format.html { present(@page) }

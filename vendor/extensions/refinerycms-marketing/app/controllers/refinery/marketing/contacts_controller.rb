@@ -10,8 +10,6 @@ module Refinery
       before_action :find_contact,  except: [:index, :new, :create]
 
       def index
-        @contacts = @contacts.order(name: :asc)
-
         respond_to do |format|
           format.html { present(@page) }
           format.json {

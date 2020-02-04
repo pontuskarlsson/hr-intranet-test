@@ -13,7 +13,7 @@ module Refinery
       helper_method :calendar_params
 
       def index
-        @billables = @billables.from_params(params).order(billable_date: :desc)
+        @billables = @billables.from_params(params)
 
         respond_to do |format|
           format.html { present(@page) }

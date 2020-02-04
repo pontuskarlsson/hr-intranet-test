@@ -19,6 +19,8 @@ Refinery::Authentication::Devise::UsersController.class_eval do
       sign_in(@sign_up_form.user)
       redirect_back_or_default(portal_root_url)
 
+      ErrorMailer.notification_email('New user signup').deliver_later
+
     else
       render :new
     end
