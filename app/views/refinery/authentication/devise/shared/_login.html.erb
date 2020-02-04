@@ -2,10 +2,12 @@
              :url => refinery.authentication_devise_user_session_path do |f| %>
   <div class="grid-x grid-x-padding">
     <div class="cell">
+      <span class="sr-only"><%= f.label :login %></span>
       <%= f.text_field :login, placeholder: 'Email Address' %>
     </div>
 
     <div class="cell">
+      <span class="sr-only"><%= f.label :password %></span>
       <%= f.password_field :password, :autocomplete => 'off', placeholder: 'Password' %>
     </div>
 
@@ -15,7 +17,7 @@
     </div>
 
     <div class="cell text-align-center">
-      <%= f.submit 'Login', class: 'button primary' %>
+      <%= f.submit 'Login', class: 'button primary', id: 'Sign in' %>
     </div>
 
     <div class="cell">

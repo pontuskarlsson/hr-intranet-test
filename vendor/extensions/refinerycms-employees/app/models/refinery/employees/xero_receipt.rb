@@ -23,7 +23,6 @@ module Refinery
 
       validates :xero_expense_claim_id,   presence: true
       validates :xero_contact_id,         presence: true
-      validates :employee_id,             presence: true
       validates :status,                  inclusion: STATUSES
       validates :total,                   numericality: { greater_than_or_equal_to: 0 }
 

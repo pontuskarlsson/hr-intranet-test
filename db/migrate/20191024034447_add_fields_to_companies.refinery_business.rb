@@ -7,6 +7,12 @@ class AddFieldsToCompanies < ActiveRecord::Migration
 
     add_column :refinery_business_companies, :city, :string
     add_index :refinery_business_companies, :city
+
+    add_column :refinery_business_companies, :verified_at, :datetime
+    add_index :refinery_business_companies, :verified_at
+
+    add_column :refinery_business_companies, :verified_by_id, :integer
+    add_index :refinery_business_companies, :verified_by_id
   end
 
 end

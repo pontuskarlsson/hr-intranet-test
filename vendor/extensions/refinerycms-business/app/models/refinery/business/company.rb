@@ -23,17 +23,17 @@ module Refinery
       acts_as_indexed :fields => [:code, :name]
 
       configure_assign_by_label :contact, class_name: '::Refinery::Marketing::Contact'
-      configure_label :code, :name, separator: ' '
+      configure_label :code, :name, separator: ' ', limit_to_scope: :is_verified
 
       responds_to_data_tables :id, :name, :code, contact: [:country, :phone, :website, :email]
 
       validates :name,          presence: true, uniqueness: true
-      validates :code,          presence: true, uniqueness: true
+      validates :code,          uniqueness: true, allow_blank: true
       validates :contact_id,    presence: true, uniqueness: true
       validates :country_code,  inclusion: ISO3166::Country.codes, allow_blank: true
 
       before_validation do
-        if code.blank?
+        if code.blank? && is_verified?
           self.code = NumberSerie.next_counter!(self.class, :code)
         end
 
@@ -58,16 +58,20 @@ module Refinery
       # It also handles assigning the code to the linked contact.
       #
       after_save do
-        Refinery::Marketing::Contact.where(code: code).where.not(id: contact_id).each do |c|
-          c.update_attributes code: nil
-        end
+        if code.present?
+          Refinery::Marketing::Contact.where(code: code).where.not(id: contact_id).each do |c|
+            c.update_attributes code: nil
+          end
 
-        if contact && contact.code != code
-          unless contact.update_attributes code: code
-            throw :abort
+          if contact && contact.code != code
+            unless contact.update_attributes code: code
+              throw :abort
+            end
           end
         end
       end
+
+      scope :is_verified, -> { where.not(verified_at: nil) }
 
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
@@ -83,6 +87,10 @@ module Refinery
 
       def country
         country_code.present? ? ISO3166::Country[country_code].name : nil
+      end
+
+      def is_verified?
+        verified_at.present?
       end
 
     end

@@ -434,12 +434,16 @@ ActiveRecord::Schema.define(version: 20200128122041) do
     t.datetime "updated_at"
     t.string "country_code"
     t.string "city"
+    t.datetime "verified_at"
+    t.integer "verified_by_id"
     t.index ["city"], name: "index_refinery_business_companies_on_city"
     t.index ["code"], name: "index_refinery_business_companies_on_code"
     t.index ["contact_id"], name: "index_refinery_business_companies_on_contact_id"
     t.index ["country_code"], name: "index_refinery_business_companies_on_country_code"
     t.index ["name"], name: "index_refinery_business_companies_on_name"
     t.index ["position"], name: "index_refinery_business_companies_on_position"
+    t.index ["verified_at"], name: "index_refinery_business_companies_on_verified_at"
+    t.index ["verified_by_id"], name: "index_refinery_business_companies_on_verified_by_id"
   end
 
   create_table "refinery_business_company_users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

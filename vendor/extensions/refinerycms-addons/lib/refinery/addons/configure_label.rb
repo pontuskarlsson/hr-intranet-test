@@ -22,15 +22,20 @@ module Refinery
           options[:sort] ||= :asc
 
           define_singleton_method(:to_source) do
-            order(options[:find_by_field] => options[:sort]).pluck(*attributes).map { |*attr|
-              attr.reject(&:blank?).join options[:separator]
-            }.to_json.html_safe
+            scope = options[:limit_to_scope].present? ? send(options[:limit_to_scope]) : where(nil)
+            scope.order(options[:find_by_field] => options[:sort]).pluck(*attributes).map { |*attr|
+              if attr[0].present? # Skip if the first attribute is blank, since +find_by_label+ cannot find it anyway.
+                attr.reject(&:blank?).join options[:separator]
+              end
+            }.compact.to_json.html_safe
           end
 
           define_singleton_method(:find_by_label) do |label|
             if label.present?
               label_part = label.split(options[:separator])[options[:find_by_field_position]]
-              find_by options[:find_by_field] => label_part if label_part.present?
+
+              scope = options[:limit_to_scope].present? ? send(options[:limit_to_scope]) : where(nil)
+              scope.find_by options[:find_by_field] => label_part if label_part.present?
             end
           end
 

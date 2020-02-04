@@ -9,12 +9,12 @@ describe Refinery do
 
         describe "annual_leaves list" do
           before do
-            FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-09")
-            FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-02")
+            FactoryBot.create(:leave_of_absence, :start_date => "2014-10-09")
+            FactoryBot.create(:leave_of_absence, :start_date => "2014-10-02")
           end
 
           it "shows two items" do
-            visit refinery.employees_admin_leave_of_abesences_path
+            visit refinery.employees_admin_leave_of_absences_path
             page.should have_content("2014-10-09")
             page.should have_content("2014-10-02")
           end
@@ -23,7 +23,7 @@ describe Refinery do
         describe "create" do
           let(:employee) { FactoryBot.create(:employee) }
           before do
-            visit refinery.employees_admin_leave_of_abesences_path
+            visit refinery.employees_admin_leave_of_absences_path
 
             click_link "Add New Leave Of Absence"
           end
@@ -51,10 +51,10 @@ describe Refinery do
         end
 
         describe "edit" do
-          before { FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-02") }
+          before { FactoryBot.create(:leave_of_absence, :start_date => "2014-10-02") }
 
           it "should succeed" do
-            visit refinery.employees_admin_leave_of_abesences_path
+            visit refinery.employees_admin_leave_of_absences_path
 
             within ".actions" do
               click_link "Edit this leave of absence"
@@ -69,10 +69,10 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before { FactoryBot.create(:leave_of_abesence, :start_date => "2014-10-02") }
+          before { FactoryBot.create(:leave_of_absence, :start_date => "2014-10-02") }
 
           it "should succeed" do
-            visit refinery.employees_admin_leave_of_abesences_path
+            visit refinery.employees_admin_leave_of_absences_path
 
             click_link "Remove this leave of absence forever"
 

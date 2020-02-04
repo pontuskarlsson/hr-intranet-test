@@ -19,11 +19,6 @@ module Refinery
           it { is_expected.not_to be_valid }
         end
 
-        context 'when employee is missing' do
-          before { xero_receipt.employee = nil }
-          it { is_expected.not_to be_valid }
-        end
-
         context 'when status is included in the list of statuses' do
           before { xero_receipt.status = 'not-listed' }
           it { is_expected.not_to be_valid }

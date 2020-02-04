@@ -1,7 +1,7 @@
 
 FactoryBot.define do
   factory :google_calendar, :class => Refinery::Calendar::GoogleCalendar do
-    user
+    association :user, factory: :authentication_devise_user
     primary_calendar { |google_calendar| FactoryBot.create(:calendar, user: google_calendar.user) }
     sequence(:google_calendar_id) { |n| "00000000000-#{n}" }
 

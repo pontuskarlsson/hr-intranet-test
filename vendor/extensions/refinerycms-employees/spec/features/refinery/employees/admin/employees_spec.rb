@@ -15,8 +15,9 @@ describe Refinery do
 
           it "shows two items" do
             visit refinery.employees_admin_employees_path
-            page.should have_content("UniqueTitleOne")
-            page.should have_content("UniqueTitleTwo")
+
+            expect(page).to have_content("UniqueTitleOne")
+            expect(page).to have_content("UniqueTitleTwo")
           end
         end
 
@@ -33,8 +34,8 @@ describe Refinery do
               fill_in "Full Name", :with => "John Doe"
               click_button "Save"
 
-              page.should have_content("'Employee no 001' was successfully added.")
-              Refinery::Employees::Employee.count.should == 1
+              expect(page).to have_content("'Employee no 001' was successfully added.")
+              expect( Refinery::Employees::Employee.count ).to eq 1
             end
           end
 
@@ -42,8 +43,8 @@ describe Refinery do
             it "should fail" do
               click_button "Save"
 
-              page.should have_content("Employee No can't be blank")
-              Refinery::Employees::Employee.count.should == 0
+              expect(page).to have_content("Employee No can't be blank")
+              expect( Refinery::Employees::Employee.count ).to eq 0
             end
           end
 
@@ -58,8 +59,8 @@ describe Refinery do
               fill_in "Employee No", :with => "UniqueTitle"
               click_button "Save"
 
-              page.should have_content("There were problems")
-              Refinery::Employees::Employee.count.should == 1
+              expect(page).to have_content("There were problems")
+              expect( Refinery::Employees::Employee.count ).to eq 1
             end
           end
 
@@ -78,8 +79,8 @@ describe Refinery do
             fill_in "Employee No", :with => "A different employee_no"
             click_button "Save"
 
-            page.should have_content("'A different employee_no' was successfully updated.")
-            page.should have_no_content("A employee_no")
+            expect(page).to have_content("'A different employee_no' was successfully updated.")
+            expect(page).to have_content("A employee_no")
           end
         end
 
@@ -91,8 +92,8 @@ describe Refinery do
 
             click_link "Remove this employee forever"
 
-            page.should have_content("'UniqueTitleOne' was successfully removed.")
-            Refinery::Employees::Employee.count.should == 0
+            expect(page).to have_content("'UniqueTitleOne' was successfully removed.")
+            expect( Refinery::Employees::Employee.count ).to eq 0
           end
         end
 
