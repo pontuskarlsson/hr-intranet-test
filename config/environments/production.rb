@@ -85,4 +85,10 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.active_job.queue_adapter = :delayed_job
+
+  config.after_initialize do
+    ::ActsAsIndexed.configure do |config|
+      config.index_file = ['/var/app/support/aai_index']
+    end
+  end
 end
