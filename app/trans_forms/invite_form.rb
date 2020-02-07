@@ -25,7 +25,7 @@ class InviteForm < ApplicationTransForm
 
   transaction do
     self.user = Refinery::Authentication::Devise::User.invite!(user_params, current_user)  do |u|
-      u.set_username!
+      u.set_default_attributes!
       u.skip_invitation = true
     end
 

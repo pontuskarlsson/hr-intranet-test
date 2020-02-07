@@ -1,1 +1,7 @@
-$('#js_invite_form').html(<%= render('invite_form').to_json.html_safe %>);
+<% if invite_form.errors.any? %>
+  $('.js_invite_form_content').html(<%= render('invite_form').to_json.html_safe %>);
+<% else %>
+  $('.js_settings_user_panel').html(<%= render('users').to_json.html_safe %>);
+  $('#js_invite_form').foundation('close');
+  $('.js_invite_form_content').html(<%= render('invite_form').to_json.html_safe %>);
+<% end %>

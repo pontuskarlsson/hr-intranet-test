@@ -258,7 +258,7 @@ module Refinery
           end
           contact.save
 
-        rescue URI::InvalidURIError, Dragonfly::Job::FetchUrl::ErrorResponse => e
+        rescue URI::InvalidURIError, ::Dragonfly::Job::FetchUrl::ErrorResponse => e
           contact.image_url = nil
           contact.image_id = nil
         end

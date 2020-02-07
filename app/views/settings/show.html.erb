@@ -22,51 +22,25 @@
         </div>
 
         <div class="tabs-panel" id="panel2v">
-          <% if false %>
           <span class="action-bar">
             <button class="button" data-open="js_invite_form">Invite</button>
 
             <div class="reveal" id="js_invite_form" data-reveal>
-              <%= render 'invite_form' %>
+              <div class="js_invite_form_content">
+                <%= render 'invite_form' %>
+              </div>
 
               <button class="close-button" data-close aria-label="Close modal" type="button">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           </span>
-          <% end %>
 
           <h5><i class="fa fa-user"></i>Users</h5>
 
-          <ul class="business-cards bc-grid">
-            <% @company.users.each do |user| %>
-              <li class="business-card">
-                <% if user.contact&.image.present? %>
-                  <div class="profile-image">
-                    <%= dragonfly_reveal_tag user.contact.image, 40, 40 %>
-                  </div>
-                <% else %>
-                  <i class="fa fa-user"></i>
-                <% end %>
-                <h4><%= user.full_name %></h4>
-                <p class="bc-attribute"><%= user.email %></p>
-                <p class="bc-attribute"><%= user.contact&.phone %></p>
-                <p class="bc-attribute"><%= user.contact&.mobile %></p>
-
-                <p class="bc-attribute"><%= user.contact&.country %></p>
-                <p class="bc-attribute"><%= user.contact&.country %></p>
-                <p class="bc-attribute">
-                  <span style="color: #999; font-size: 10px;">
-                  <% if user.last_active_at.nil? %>
-                    has never signed in
-                  <% else %>
-                    last active <%= time_ago_in_words user.last_active_at %> ago
-                  <% end %>
-                </span>
-                </p>
-              </li>
-            <% end %>
-          </ul>
+          <div class="js_settings_user_panel" style="clear: both;">
+            <%= render 'users' %>
+          </div>
         </div>
 
         <div class="tabs-panel" id="panel3v">

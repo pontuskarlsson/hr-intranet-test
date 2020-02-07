@@ -19,6 +19,8 @@ class SettingsController < ApplicationController
     respond_to do |format|
       if invite_form.save
         format.html { redirect_to setting_path(@company, anchor: 'settings-users') }
+        # New empty form
+        format.js { @invite_form = InviteForm.new_in_model(@company, {}, current_authentication_devise_user) }
       else
         format.html { render action: :show }
         format.js

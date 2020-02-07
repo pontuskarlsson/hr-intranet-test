@@ -74,7 +74,6 @@ module Portal
 
             def clear_session!(force = false)
               if force
-                binding.pry
                 reset_session
               else
                 session.delete(:wizard_#{model_name}_session_id)
