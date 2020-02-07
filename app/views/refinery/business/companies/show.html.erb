@@ -1,6 +1,12 @@
 <div class="grid-x grid-padding-x">
   <div class="cell">
-    <h2><%= @company.label %></h2>
+    <h2>
+      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+        <%= @company.label %>
+      <% else %>
+        <%= @company.name %>
+      <% end %>
+    </h2>
   </div>
 
   <div class="cell medium-3">

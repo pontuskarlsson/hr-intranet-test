@@ -44,6 +44,9 @@ Rails.application.routes.draw do
   post 'zendesk/submit', to: 'zendesk#submit'
 
   resource :my_profile
+  resources :settings, only: [:show, :update] do
+    post :invite, on: :member
+  end
   notify_to :users,     controller: 'users/notifications_with_devise'
   subscribed_by :users, controller: 'users/subscriptions_with_devise'
 

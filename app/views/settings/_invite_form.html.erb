@@ -1,0 +1,50 @@
+<%= form_for invite_form, url: invite_setting_path(@company), remote: true do |f| -%>
+  <%= render '/refinery/admin/error_messages', :object => invite_form, :include_object_name => true %>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <div class='field'>
+        <%= f.label :first_name -%>
+        <%= f.text_field :first_name -%>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class='field'>
+        <%= f.label :last_name -%>
+        <%= f.text_field :last_name -%>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class='field'>
+        <%= f.label :email -%>
+        <%= f.text_field :email -%>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class='field'>
+        <%= f.label :company_role -%>
+        <%= f.select :company_role, options_for_select(::Refinery::Business::CompanyUser::ROLES, f.object.company_role) -%>
+      </div>
+    </div>
+
+    <div class="cell">
+      <div class='field t1'>
+        <%= f.submit 'Add', class: 'tiny button round' %>
+      </div>
+    </div>
+  </div>
+<% end -%>
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function(){
+    });
+  </script>
+<% end %>

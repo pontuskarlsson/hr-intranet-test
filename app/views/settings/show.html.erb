@@ -1,0 +1,109 @@
+<div class="grid-container">
+  <div class="grid-x grid-margin-x">
+    <div class="cell medium-3">
+      <ul class="vertical tabs" data-tabs id="example-tabs">
+        <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Company Details</a></li>
+        <li class="tabs-title"><a href="#panel2v" aria-selected="true">Users</a></li>
+        <li class="tabs-title"><a href="#panel3v" aria-selected="true">Billing</a></li>
+        <li class="tabs-title"><a href="#panel4v" aria-selected="true">Standards</a></li>
+      </ul>
+    </div>
+    <div class="cell medium-9">
+      <div class="tabs-content" data-tabs-content="example-tabs">
+        <div class="tabs-panel is-active" id="panel1v">
+          <%= form_for @company, url: setting_path(@company) do |f| %>
+            <div class='field'>
+              <%= f.label :name %>
+              <%= f.text_field :name %>
+            </div>
+
+            <%= f.submit 'Save Changes', class: 'button primary' %>
+          <% end %>
+        </div>
+
+        <div class="tabs-panel" id="panel2v">
+          <% if false %>
+          <span class="action-bar">
+            <button class="button" data-open="js_invite_form">Invite</button>
+
+            <div class="reveal" id="js_invite_form" data-reveal>
+              <%= render 'invite_form' %>
+
+              <button class="close-button" data-close aria-label="Close modal" type="button">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </span>
+          <% end %>
+
+          <h5><i class="fa fa-user"></i>Users</h5>
+
+          <ul class="business-cards bc-grid">
+            <% @company.users.each do |user| %>
+              <li class="business-card">
+                <% if user.contact&.image.present? %>
+                  <div class="profile-image">
+                    <%= dragonfly_reveal_tag user.contact.image, 40, 40 %>
+                  </div>
+                <% else %>
+                  <i class="fa fa-user"></i>
+                <% end %>
+                <h4><%= user.full_name %></h4>
+                <p class="bc-attribute"><%= user.email %></p>
+                <p class="bc-attribute"><%= user.contact&.phone %></p>
+                <p class="bc-attribute"><%= user.contact&.mobile %></p>
+
+                <p class="bc-attribute"><%= user.contact&.country %></p>
+                <p class="bc-attribute"><%= user.contact&.country %></p>
+                <p class="bc-attribute">
+                  <span style="color: #999; font-size: 10px;">
+                  <% if user.last_active_at.nil? %>
+                    has never signed in
+                  <% else %>
+                    last active <%= time_ago_in_words user.last_active_at %> ago
+                  <% end %>
+                </span>
+                </p>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="tabs-panel" id="panel3v">
+          <div class="grid-x grid-padding-x">
+            <div class="cell medium-6">
+              <h3>Credits</h3>
+              <% if (credits = @company.vouchers.active.group(:article_id).count).any? %>
+                <% credits.each do |article_id, count| %>
+                  <div class="widget-item">
+                    <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available
+                  </div>
+                <% end %>
+
+              <% else %>
+                <p class="italic">You do not have any credits yet.</p>
+              <% end %>
+
+              <%= link_to 'Purchase Credits', refinery.new_business_purchase_path, class: 'button cta' %>
+            </div>
+
+            <div class="cell medium-6">
+              <h3>Plan</h3>
+              <p class="italic">You are not currently on any monthly plan.</p>
+              <p>
+                <%= link_to 'Request Plan', refinery.new_business_request_path, class: 'button cta' %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabs-panel" id="panel4v">
+          <h3>Quality Standards</h3>
+          <p class="italic">We are working on a new feature to let each company select
+            which quality standard(s) is used. Stay tuned!</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

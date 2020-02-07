@@ -28,7 +28,7 @@ Refinery::Authentication::Devise::User.class_eval do
                  batch_email_allowed: ->(user, key) { user.active_for_authentication? && user.accepted_or_not_invited? }
 
   before_validation(on: :create) do
-    self.username = email.gsub(/[^A-Za-z]/, '_') if email.present? && username.blank?
+    set_username! if username.blank?
     self.full_name = [first_name, last_name].reject(&:blank?).join(' ') if full_name.blank?
   end
 
@@ -79,6 +79,10 @@ Refinery::Authentication::Devise::User.class_eval do
 
   def self.to_recipients
     select([:email, :full_name]).map(&:recipient)
+  end
+
+  def set_username!
+    self.username = email.gsub(/[^A-Za-z]/, '_') if email.present?
   end
 
 end
