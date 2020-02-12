@@ -1,3 +1,4 @@
+# This migration comes from refinery_business (originally 26)
 class CreateBusinessPlans < ActiveRecord::Migration[5.1]
   def change
     create_table :refinery_business_plans do |t|

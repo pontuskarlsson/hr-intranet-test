@@ -8,6 +8,12 @@ module Refinery
           @article ||= Article.find_by_label(article_label) || raise(ActiveRecord::RecordNotFound)
         end
 
+        def article_name
+          article.name
+        rescue ::ActiveRecord::RecordNotFound => e
+          'N/A'
+        end
+
         def unit_amount
           # Discount amount is a negative value so we add it when calculating total_amount
           base_amount.to_f + discount_amount.to_f

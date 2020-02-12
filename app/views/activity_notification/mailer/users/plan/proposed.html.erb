@@ -1,0 +1,11 @@
+<%- @plan = @notification.notifiable -%>
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>You have received a proposed monthly plan from us.</p>
+
+<p><%= link_to "Please review the content and terms on our Portal", move_notification_url_for(@notification, open: true) %>.</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>

@@ -1,0 +1,102 @@
+<section class="contract_plan_summary">
+  <h1 style="overflow: hidden; height: 2px;">Contract</h1>
+  <h2 style="margin: 0 0 0.5rem;"><%= @plan.title %></h2>
+  <div class="italic"><%=simple_format @plan.description %></div>
+
+  <table class="billables">
+    <thead>
+    <tr>
+      <th>Min. Qty</th>
+      <th>Description</th>
+      <th class="currency">Base Unit Price</th>
+      <th class="currency">Unit Discount</th>
+      <th class="currency">Final Unit Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @plan.charges.each do |charge| %>
+      <tr>
+        <td><%=number_with_precision charge.qty, strip_insignificant_zeros: true %></td>
+        <td><%= charge.article_name %> - Minimum</td>
+        <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
+        <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
+        <td class="currency"><%=number_to_currency charge.unit_amount, unit: '' %></td>
+      </tr>
+    <% end %>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th colspan="5" class="currency">All prices are in <%= @plan.currency_code %>.</th>
+    </tr>
+    </tfoot>
+  </table>
+
+  <h3>Terms</h3>
+
+  <h5>Payment Terms</h5>
+  <p><%= @plan.payment_terms_days %> Days</p>
+
+  <h5>Contract period</h5>
+  <p><%= @plan.describe_contract_period %></p>
+
+  <h5>Validity</h5>
+  <p>
+    Any unused Man Days will carry over to the following month and be used
+    on a “First in First Out” basis and expire after 12 months from invoice date
+    or on the first day after contract period ends, whichever comes first.
+  </p>
+
+  <h3>Included Services</h3>
+  <ul class="fa-ul">
+    <li>
+      <span class="fa-li"><i class="fa fa-check-square"></i></span>
+      All QC reports, invoices, statements, etc. are available on the customer portal on our website.
+    </li>
+    <li>
+      <span class="fa-li"><i class="fa fa-check-square"></i></span>
+      Full access to all current and future customer features on website, incl. dashboards, WIP, logistics, etc. as long as you’re on this plan or higher plan.
+    </li>
+  </ul>
+
+</section>
+
+<% content_for :head do %>
+  <style type="text/css">
+    .billables {
+      width: 100%;
+    }
+    .billables td, .billables th {
+      padding-bottom: 0.6rem;
+    }
+    .billables tfoot td, .billables tfoot th {
+      padding-top: 1rem;
+    }
+    .billables td:nth-child(1), .billables th:nth-child(1) { width: 60px; }
+    .billables td:nth-child(3), .billables th:nth-child(3) { width: 120px; }
+    .billables td:nth-child(4), .billables th:nth-child(4) { width: 120px; }
+    .billables td:nth-child(5), .billables th:nth-child(5) { width: 120px; }
+
+    .billables.total td:nth-child(1), .billables.total th:nth-child(1) { width: auto; }
+    .billables.total td:nth-child(2), .billables.total th:nth-child(2) { width: 120px; }
+
+    table.summary_of_work > tbody > tr > td:nth-child(odd) {
+      width: 28%;
+    }
+
+    table.summary_of_work > tbody > tr > td:nth-child(even) {
+      width: 8%;
+    }
+
+    table.details_of_work {
+      margin: 2rem 0 1rem;
+    }
+    table.details_of_work td, table.details_of_work th {
+      padding-bottom: 0.6rem;
+    }
+    table.details_of_work > tbody > tr > td:nth-child(1) { width: 100px; }
+    table.details_of_work > tbody > tr > td:nth-child(2) { width: 160px; }
+    table.details_of_work > tbody > tr > td:nth-child(3) { width: auto; }
+    table.details_of_work > tbody > tr > td:nth-child(4) { width: 80px; }
+    table.details_of_work > tbody > tr > td:nth-child(5) { width: 100px; }
+  </style>
+<% end %>

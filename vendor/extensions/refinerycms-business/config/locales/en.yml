@@ -140,6 +140,21 @@ en:
             edit: Edit this order
             delete: Remove this order forever
             preview: '%{reference}, %{description}'
+
+        plans:
+          actions:
+            create_new: Add New Plan
+            reorder: Reorder Plans
+            reorder_done: Done Reordering Plans
+          records:
+            title: Plans
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Plans yet. Click "Add New Plan" to add your first plan.
+          plan:
+            view_live_html: View this plan live <br/><em>(opens in a new window)</em>
+            edit: Edit this plan
+            delete: Remove this plan forever
+            preview: '%{title}, %{company_label} - %{status}'
             
         projects:
           actions:
@@ -182,6 +197,7 @@ en:
             manage_number_series: Manage Number Series
             manage_orders: Manage Orders
             manage_order_items: Manage Order Items
+            manage_plans: Manage Plans
             manage_projects: Manage Projects
             manage_sections: Manage Sections
 
@@ -220,6 +236,10 @@ en:
       orders:
         show:
           other: Other Orders
+
+      plans:
+        show:
+          other: Other Plans
 
       projects:
         show:
@@ -339,6 +359,28 @@ en:
       'refinery/business/order_item':
         description: Description
         article_code: Article Code
+
+      'refinery/business/plan':
+        company_id: Company
+        company_label: Company
+        confirmed_at: Confirmed At
+        confirmed_by_id: Confirmed By
+        description: Description
+        end_date: End Date
+        min_contract_period_months: Min. Contract Period (months)
+        notice_given_at: Notice Given At
+        notice_given_by_id: Notice Given By
+        notice_period_months: Notice Period (months)
+        payment_terms_dats: Payment Terms (days)
+        reference: Reference
+        start_date: Start Date
+        status: Status
+        statuses:
+          confirmed: Confirmed
+          draft: Draft
+          proposed: Proposed
+          rejected: Proposed
+        title: Title
 
       'refinery/business/project':
         code: Code

@@ -7,6 +7,7 @@ module Refinery
       has_many :company_users,  dependent: :destroy
       has_many :parcels,        through: :contact
       has_many :invoices,       dependent: :nullify
+      has_many :plans,          dependent: :nullify
       has_many :projects,       dependent: :destroy
       has_many :requests,       dependent: :nullify
       has_many :documents,      dependent: :nullify
@@ -27,7 +28,8 @@ module Refinery
 
       responds_to_data_tables :id, :name, :code, contact: [:country, :phone, :website, :email]
 
-      validates :name,          presence: true, uniqueness: true
+      validates :name,          presence: true
+      validates :name,          uniqueness: true, if: :is_verified?
       validates :code,          uniqueness: true, allow_blank: true
       validates :contact_id,    presence: true, uniqueness: true
       validates :country_code,  inclusion: ISO3166::Country.codes, allow_blank: true

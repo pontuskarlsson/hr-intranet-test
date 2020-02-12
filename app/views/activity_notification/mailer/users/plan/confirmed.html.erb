@@ -1,0 +1,23 @@
+<%- @plan = @notification.notifiable -%>
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>We have just received confirmation of the plan "<%= @plan.title %>".</p>
+
+<p>
+  It was confirmed by
+  <% if @plan.confirmed_by == @target %>
+    you
+  <% else %>
+    <%= @plan.confirmed_by_full_name %>
+  <% end %>
+  at <%= @plan.display_confirmed_at %>.
+</p>
+
+<p>You can find the contract attached here,</p>
+
+<p>For more details, <%= link_to "see inspection on our Portal", move_notification_url_for(@notification, open: true) %>.</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>

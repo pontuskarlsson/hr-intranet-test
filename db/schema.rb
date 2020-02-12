@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200128122041) do
+ActiveRecord::Schema.define(version: 20200210075429) do
 
   create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "target_id", null: false
@@ -663,6 +663,38 @@ ActiveRecord::Schema.define(version: 20200128122041) do
     t.index ["total_cost"], name: "index_refinery_business_orders_on_total_cost"
     t.index ["updated_date_utc"], name: "index_refinery_business_orders_on_updated_date_utc"
     t.index ["version_number"], name: "index_refinery_business_orders_on_version_number"
+  end
+
+  create_table "refinery_business_plans", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "company_id"
+    t.integer "contract_id"
+    t.string "reference"
+    t.string "title"
+    t.text "description"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "status"
+    t.datetime "confirmed_at"
+    t.integer "confirmed_by_id"
+    t.integer "payment_terms_days", default: 0, null: false
+    t.integer "notice_period_months", default: 0, null: false
+    t.integer "min_contract_period_months", default: 0, null: false
+    t.datetime "notice_given_at"
+    t.integer "notice_given_by_id"
+    t.text "content"
+    t.text "meta"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_refinery_business_plans_on_company_id"
+    t.index ["confirmed_at"], name: "index_refinery_business_plans_on_confirmed_at"
+    t.index ["confirmed_by_id"], name: "index_refinery_business_plans_on_confirmed_by_id"
+    t.index ["end_date"], name: "index_refinery_business_plans_on_end_date"
+    t.index ["notice_given_at"], name: "index_refinery_business_plans_on_notice_given_at"
+    t.index ["notice_given_by_id"], name: "index_refinery_business_plans_on_notice_given_by_id"
+    t.index ["reference"], name: "index_refinery_business_plans_on_reference"
+    t.index ["start_date"], name: "index_refinery_business_plans_on_start_date"
+    t.index ["status"], name: "index_refinery_business_plans_on_status"
+    t.index ["title"], name: "index_refinery_business_plans_on_title"
   end
 
   create_table "refinery_business_projects", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

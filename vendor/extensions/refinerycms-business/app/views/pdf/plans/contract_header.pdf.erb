@@ -1,0 +1,20 @@
+<% content_for :header_summary do %>
+  <table class="document-summary-table">
+    <thead>
+    <tr>
+      <th>Reference</th>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Start Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><%= @plan.reference %></td>
+      <td><%= @plan.title %></td>
+      <td><%= @plan.display_status %></td>
+      <td><%= @plan.display_start_date %></td>
+    </tr>
+    </tbody>
+  </table>
+<% end %>

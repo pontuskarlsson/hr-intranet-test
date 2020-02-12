@@ -9,6 +9,7 @@ module Refinery
     require 'refinery/resource_authorizations/dragonfly'
     require 'refinery/resource_authorizations/engine'
     require 'refinery/resource_authorizations/grants'
+    require 'refinery/resource_authorizations/helpers'
 
     class << self
       attr_writer :root

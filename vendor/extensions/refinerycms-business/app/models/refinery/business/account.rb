@@ -5,6 +5,7 @@ module Refinery
 
       has_many :invoices
       has_many :articles
+      has_many :plans
 
       validates :organisation,    presence: true, uniqueness: true
       validates :key_content,     presence: true

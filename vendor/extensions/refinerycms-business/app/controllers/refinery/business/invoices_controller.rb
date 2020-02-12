@@ -32,8 +32,8 @@ module Refinery
           format.pdf {
             render pdf: "#{@invoice.account.organisation} #{@invoice.invoice_number}",
                    layout: 'pdf/document_layout',
-                   header: { spacing: 5, html: { template: 'pdf/document_header' } },
-                   footer: { spacing: 5, html: { template: 'pdf/document_footer', locals: { account: @invoice.account } } },
+                   header: { spacing: 5, html: { template: 'pdf/invoices/statement_header', layout: 'pdf/header_layout', locals: { company: @invoice.company } } },
+                   footer: { spacing: 5, html: { template: 'pdf/invoices/statement_footer', layout: 'pdf/footer_layout', locals: { account: @invoice.account } } },
                    margin: { top: 68, bottom: 32, right: 10, left: 20 }
           }
         end

@@ -1,0 +1,137 @@
+<span class="action-bar">
+  <% if @plan.status_is_confirmed? %>
+    <% if @plan.contract&.resource.present? %>
+      <%= link_to 'Print Contract', @plan.contract.resource.file.url, class: 'button' %>
+    <% end %>
+
+  <% elsif @plan.status_is_proposed? %>
+    <%= link_to 'Print Contract', refinery.contract_business_plan_path(@plan, format: :pdf), class: 'button' %>
+
+    <button class="button primary" data-open="js_confirm_contract_form">Sign / Accept</button>
+
+    <div class="reveal" id="js_confirm_contract_form" data-reveal>
+      <div class="js_confirm_form_content">
+        <%= render 'confirm_form', plan: @plan %>
+      </div>
+
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <% end %>
+</span>
+
+<h2>
+  <%= @plan.reference %>
+  <span style="font-size: 1rem; color: #333;">(<%= @plan.display_status %>)</span>
+</h2>
+
+<section class="contact-card">
+  <div class="grid-x grid-padding-x">
+    <div class="cell medium-6">
+      <h3>Summary</h3>
+      <table class="cc-table">
+        <tbody>
+        <tr>
+          <th style="width: 100px;">Reference</th>
+          <td><%= @plan.reference %></td>
+        </tr>
+        <tr>
+          <th>Title</th>
+          <td><%= @plan.title %></td>
+        </tr>
+        <tr>
+          <th>Description</th>
+          <td><%=simple_format @plan.description %></td>
+        </tr>
+        <tr>
+          <th>Start Date</th>
+          <td><%= @plan.start_date %></td>
+        </tr>
+        <tr>
+          <th>End Date</th>
+          <td><%= @plan.end_date %></td>
+        </tr>
+        <tr>
+          <th>Status</th>
+          <td><%= @plan.display_status %></td>
+        </tr>
+        <% if @plan.status_is_confirmed? %>
+          <tr>
+            <th>Confirmed By</th>
+            <td><%= @plan.confirmed_by_full_name %></td>
+          </tr>
+          <tr>
+            <th>Confirmed At</th>
+            <td><%= @plan.display_confirmed_at %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cell medium-6">
+      <h3>Terms</h3>
+      <table class="cc-table">
+        <tbody>
+        <tr>
+          <th style="width: 120px;">Payment Terms</th>
+          <td><%= @plan.payment_terms_days %> Days</td>
+        </tr>
+        <tr>
+          <th>Contract period</th>
+          <td><%= @plan.describe_contract_period %></td>
+        </tr>
+        <tr>
+          <th>Validity</th>
+          <td>
+            Any unused Man Days will carry over to the following month and be used
+            on a “First in First Out” basis and expire after 12 months from invoice date
+            or on the first day after contract period ends, whichever comes first.
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cell">
+      <h3>Plan Content</h3>
+      <table class="invoice_grid_table">
+        <thead>
+        <tr>
+          <th class="number">Min. Qty</th>
+          <th>Item</th>
+          <th class="currency">Unit Base Cost</th>
+          <th class="currency">Unit Discount</th>
+          <th class="currency">Final Unit Cost</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @plan.charges.each do |charge| %>
+          <tr>
+            <td class="number"><%=number_with_precision charge.qty, delimiter: ',', strip_insignificant_zeros: true %></td>
+            <td><%= charge.article_name %></td>
+            <td class="currency"><%=number_to_currency charge.base_amount, delimiter: ',', unit: 'USD ' %></td>
+            <td class="currency"><%=number_to_currency charge.discount_amount, delimiter: ',', unit: 'USD ' %></td>
+            <td class="currency"><%=number_to_currency charge.unit_amount, delimiter: ',', unit: 'USD ' %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cell">
+      <h3>Included Services</h3>
+      <ul class="fa-ul">
+        <li>
+          <span class="fa-li"><i class="fa fa-check-square"></i></span>
+          All QC reports, invoices, statements, etc. are available on the customer portal on our website.
+        </li>
+        <li>
+          <span class="fa-li"><i class="fa fa-check-square"></i></span>
+          Full access to all current and future customer features on website, incl. dashboards, WIP, logistics, etc. as long as you’re on this plan or higher plan.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>

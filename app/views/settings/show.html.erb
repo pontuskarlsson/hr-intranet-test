@@ -63,7 +63,28 @@
 
             <div class="cell medium-6">
               <h3>Plan</h3>
-              <p class="italic">You are not currently on any monthly plan.</p>
+              <% if @company.plans.non_draft.any? %>
+                <table>
+                  <thead>
+                  <tr>
+                    <th>Reference</th>
+                    <th>Start Date</th>
+                    <th>Status</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% @company.plans.non_draft.each do |plan| %>
+                    <tr>
+                      <td><%= link_to plan.reference, refinery.business_plan_path(plan) %></td>
+                      <td><%= plan.start_date %></td>
+                      <td><%= plan.display_status %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              <% else %>
+                <p class="italic">You are not currently on any plan.</p>
+              <% end %>
               <p>
                 <%= link_to 'Request Plan', refinery.new_business_request_path, class: 'button cta' %>
               </p>

@@ -1,0 +1,55 @@
+<%= form_for [refinery, :confirm, :business, confirm_plan_form] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+             :object => confirm_plan_form,
+             :include_object_name => true %>
+
+  <div class='field'>
+    <%= check_box_tag 'confirm', '1', false, class: 'js_confirm_checkbox' %>
+    <%= label_tag 'confirm', 'I accept and confirm the terms in this agreement.' -%>
+  </div>
+
+  <div class='field'>
+    <%= label_tag 'confirmed_by', 'Confirmed by' -%>
+    <%= text_field_tag 'confirmed_by', '', :class => 'js_confirmed_by_field', disabled: true -%>
+    <%= f.hidden_field :confirmed_by_id, class: 'js_confirmed_by_hidden' %>
+  </div>
+
+  <div style="height: 2rem;">
+    <p class="js_confirmed_at italic"></p>
+  </div>
+
+  <div class='field'>
+    <%= f.submit 'Submit', class: 'button primary js_confirm_submit', disabled: true -%>
+  </div>
+
+  <p class="italic">
+    Once you have accepted, you will receive an email confirmation with the contract
+    attached.
+  </p>
+<% end -%>
+
+<% content_for :stylesheets do -%>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      $('body').on('change', '.js_confirm_checkbox', function(evt) {
+        if ($(this).is(':checked')) {
+          $('.js_confirmed_by_field').val(<%= current_authentication_devise_user.full_name.to_json.html_safe %>);
+          $('.js_confirmed_by_hidden').val(<%= current_authentication_devise_user.id %>);
+          var date = new Date();
+          $('.js_confirmed_at').text(["Confirmed at", date.toLocaleDateString()].join(' '));
+          $('.js_confirm_submit').attr('disabled', false);
+
+        } else {
+          $('.js_confirmed_by_field').val('');
+          $('.js_confirmed_by_hidden').val('');
+          $('.js_confirmed_at').text('');
+          $('.js_confirm_submit').attr('disabled', true);
+        }
+      });
+    });
+  </script>
+<% end -%>

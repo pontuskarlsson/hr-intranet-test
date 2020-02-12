@@ -18,6 +18,10 @@ Refinery::Core::Engine.routes.draw do
     resources :orders, :only => [:index, :show] do
       resources :order_items, only: [:index]
     end
+    resources :plans, :only => [:index, :show, :update] do
+      get :contract, on: :member
+      patch :confirm, on: :member
+    end
     resources :projects, :only => [:index, :show, :edit, :update, :new, :create] do
       resources :sections, only: [:create, :update]
     end
@@ -83,6 +87,12 @@ Refinery::Core::Engine.routes.draw do
       end
 
       resources :orders, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+
+      resources :plans, :except => :show do
         collection do
           post :update_positions
         end

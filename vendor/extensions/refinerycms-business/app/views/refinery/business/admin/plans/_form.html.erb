@@ -1,0 +1,106 @@
+<%= form_for [refinery, :business_admin, @plan] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @plan,
+              :include_object_name => true %>
+
+  <div class='field'>
+    <%= f.label :account_id -%>
+    <%= f.select :account_id, options_from_collection_for_select(::Refinery::Business::Account.all, :id, :organisation, f.object.account_id) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :company_label -%>
+    <%= f.text_field :company_label, :class => 'js_contact_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :reference -%>
+    <%= f.text_field :reference -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :title -%>
+    <%= f.text_field :title -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :description -%>
+    <%= f.text_area :description -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :currency_code -%>
+    <%= f.select :currency_code, options_for_select(::Refinery::Business::Invoice::CURRENCY_CODES, f.object.currency_code) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :status -%>
+    <%= f.select :status, options_for_select(::Refinery::Business::Plan::STATUSES, f.object.status) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :start_date -%>
+    <%= f.date_field :start_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :end_date -%>
+    <%= f.date_field :end_date -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :confirmed_at -%>
+    <%= f.date_field :confirmed_at -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :confirmed_by_label -%>
+    <%= f.text_field :confirmed_by_label, :class => 'js_user_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :notice_given_at -%>
+    <%= f.date_field :notice_given_at -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :notice_given_by_label -%>
+    <%= f.text_field :notice_given_by_label, :class => 'js_user_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :payment_terms_days -%>
+    <%= f.text_field :payment_terms_days -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :notice_period_months -%>
+    <%= f.text_field :notice_period_months -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :min_contract_period_months -%>
+    <%= f.text_field :min_contract_period_months -%>
+  </div>
+
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.business.admin.plans.plan'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @plan.reference) -%>
+<% end -%>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function(){
+      page_options.init(false, '', '');
+
+      $('.js_contact_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %>
+      });
+
+      $('.js_user_field').autocomplete({
+        source: <%= ::Refinery::Authentication::Devise::User.to_source %>
+      });
+    });
+  </script>
+<% end -%>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <%= render 'layouts/pdf/shared_layout' %>
+
+  <%= yield :head %>
+
+  <script>
+    function number_pages() {
+      var vars={};
+      var x=document.location.search.substring(1).split('&');
+      for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+      var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+      for(var i in x) {
+        var y = document.getElementsByClassName(x[i]);
+        for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+      }
+    }
+  </script>
+</head>
+<body onload="number_pages()">
+<section class="footer">
+  <p style="font-weight: 800;"><%= local_assigns[:account]&.organisation %></p>
+  <p class="italic" style="color: #b4b4b4;">A Member of the Happy Rabbit Group</p>
+
+  <table>
+    <thead>
+    <tr>
+      <th style="width: 25%;">Address</th>
+      <th style="width: 25%;">Contact</th>
+      <th style="width: 40%;">Bank</th>
+      <th style="width: 10%;">&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        2104, Wai Wah Commercial Centre,<br/>
+        6 Wilmer Street<br/>
+        Sai Ying Pun<br/>
+        Hong Kong
+      </td>
+      <td>
+        <span style="display: inline-block; width: 20px;">T</span>+852 5804 3980<br/>
+        <span style="display: inline-block; width: 20px;">E</span>finance@happyrabbit.com<br/>
+        <span style="display: inline-block; width: 20px;">I</span>www.happyrabbit.com
+      </td>
+      <td>
+        <%=simple_format local_assigns[:account]&.bank_details %>
+      </td>
+      <td style="vertical-align: bottom; text-align: right; font-size: 12pt;">
+        <p style="font-size: 10pt;">Page <span class="page"></span> of <span class="topage"></span></p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+</body>
+</html>

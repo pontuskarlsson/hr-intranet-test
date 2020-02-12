@@ -24,11 +24,12 @@ module Refinery
 
           before do
             visit refinery.login_path
+            within "#panelLogin" do
+              fill_in "Username or email", with: logged_in_user.username
+              fill_in "Password", with: "refinerycms"
 
-            fill_in "Username or email", with: logged_in_user.username
-            fill_in "Password", with: "refinerycms"
-
-            click_button "Sign in"
+              click_button "Sign in"
+            end
           end
         end
 
