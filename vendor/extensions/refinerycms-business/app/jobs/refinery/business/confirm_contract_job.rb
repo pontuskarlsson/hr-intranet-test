@@ -87,8 +87,12 @@ module Refinery
       end
 
       def notify_users
-        Refinery::Authentication::Devise::User.where(id: user_id).to_a +
-            Refinery::Authentication::Devise::User.for_role('Superuser').to_a
+        [
+            Refinery::Authentication::Devise::User.find_by_id(user_id),
+            plan.contact_person,
+            plan.account_manager,
+            *Refinery::Authentication::Devise::User.for_role('Superuser').to_a,
+        ].compact.uniq
       end
 
     end
