@@ -80,7 +80,7 @@
         <% end %>
         <tr>
           <th>Currency</th>
-          <td>All prices are in <%= @plan.currency_code %></td>
+          <td><%= @plan.currency_code %></td>
         </tr>
         </tbody>
       </table>
@@ -119,12 +119,12 @@
       <table class="invoice_grid_table">
         <thead>
         <tr>
-          <th class="number">Min. Qty / Month</th>
+          <th class="number" style="width: 90px;">Min. Qty / Month</th>
           <th>Item</th>
           <th class="currency">Unit Base Cost</th>
           <th class="currency">Unit Discount</th>
           <th class="currency">Final Unit Cost</th>
-          <th class="currency">Min. Tot. Cost / Month</th>
+          <th class="currency" style="width: 130px;">Min. Tot. Cost / Month</th>
         </tr>
         </thead>
         <tbody>
@@ -133,7 +133,7 @@
             <td class="number"><%=number_with_precision charge.qty, delimiter: ',', strip_insignificant_zeros: true %></td>
             <td><%= charge.article_name %></td>
             <td class="currency"><%=number_to_currency charge.base_amount, delimiter: ',', unit: 'USD ' %></td>
-            <td class="currency"><%=number_to_currency charge.discount_amount, delimiter: ',', unit: 'USD ' %></td>
+            <td class="currency"><%=number_to_currency charge.discount_amount, delimiter: ',', unit: 'USD ', negative_format: '%u-%n' %></td>
             <td class="currency"><%=number_to_currency charge.unit_amount, delimiter: ',', unit: 'USD ' %></td>
             <td class="currency"><%=number_to_currency charge.total_amount, delimiter: ',', unit: 'USD ' %></td>
           </tr>

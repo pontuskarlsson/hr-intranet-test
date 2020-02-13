@@ -48,5 +48,9 @@ module Portal
       g.assets false
     end
 
+     config.after_initialize do
+       ::ActivityNotification::Mailer.send(:include, ::NotificationMailerHelper)
+     end
+
   end
 end
