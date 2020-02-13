@@ -6,6 +6,8 @@
       <th>Title</th>
       <th>Status</th>
       <th>Start Date</th>
+      <th>Your Reference</th>
+      <th>Account Manager</th>
     </tr>
     </thead>
     <tbody>
@@ -14,6 +16,8 @@
       <td><%= @plan.title %></td>
       <td><%= @plan.display_status %></td>
       <td><%= @plan.display_start_date %></td>
+      <td><%= @plan.contact_person_full_name %></td>
+      <td><%= @plan.account_manager_full_name %></td>
     </tr>
     </tbody>
   </table>

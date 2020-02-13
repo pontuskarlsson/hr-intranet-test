@@ -10,6 +10,18 @@ FactoryBot.define do
     password_confirmation "refinerycms"
 
     full_name { 'Refinery CMS' }
+
+    factory :authentication_devise_user_with_roles do
+      transient do
+        role_titles []
+      end
+
+      after(:create) do |user, evaluator|
+        user.roles = evaluator.role_titles.map { |title|
+          ::Refinery::Authentication::Devise::Role[title]
+        }
+      end
+    end
   end
 
   factory :authentication_devise_refinery_user, :parent => :authentication_devise_user do

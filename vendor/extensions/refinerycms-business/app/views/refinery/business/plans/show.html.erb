@@ -37,6 +37,18 @@
           <td><%= @plan.reference %></td>
         </tr>
         <tr>
+          <th>Company</th>
+          <td><%= @plan.company_name %></td>
+        </tr>
+        <tr>
+          <th>Your Reference</th>
+          <td><%= @plan.contact_person_full_name %></td>
+        </tr>
+        <tr>
+          <th>Account Manager</th>
+          <td><%= @plan.account_manager_full_name %></td>
+        </tr>
+        <tr>
           <th>Title</th>
           <td><%= @plan.title %></td>
         </tr>
@@ -66,12 +78,16 @@
             <td><%= @plan.display_confirmed_at %></td>
           </tr>
         <% end %>
+        <tr>
+          <th>Currency</th>
+          <td>All prices are in <%= @plan.currency_code %></td>
+        </tr>
         </tbody>
       </table>
     </div>
 
     <div class="cell medium-6">
-      <h3>Terms</h3>
+      <h3 style="margin-bottom: 0.5rem;">Terms</h3>
       <table class="cc-table">
         <tbody>
         <tr>
@@ -79,16 +95,20 @@
           <td><%= @plan.payment_terms_days %> Days</td>
         </tr>
         <tr>
-          <th>Contract period</th>
+          <th>Contract Period</th>
           <td><%= @plan.describe_contract_period %></td>
         </tr>
         <tr>
           <th>Validity</th>
           <td>
-            Any unused Man Days will carry over to the following month and be used
+            Any unused Mandays will carry over to the following month and be used
             on a “First in First Out” basis and expire after 12 months from invoice date
             or on the first day after contract period ends, whichever comes first.
           </td>
+        </tr>
+        <tr>
+          <th>Min. Contract Value</th>
+          <td><%=number_to_currency @plan.min_contract_value, delimiter: ',', unit: 'USD ' %></td>
         </tr>
         </tbody>
       </table>
@@ -99,11 +119,12 @@
       <table class="invoice_grid_table">
         <thead>
         <tr>
-          <th class="number">Min. Qty</th>
+          <th class="number">Min. Qty / Month</th>
           <th>Item</th>
           <th class="currency">Unit Base Cost</th>
           <th class="currency">Unit Discount</th>
           <th class="currency">Final Unit Cost</th>
+          <th class="currency">Min. Tot. Cost / Month</th>
         </tr>
         </thead>
         <tbody>
@@ -114,6 +135,7 @@
             <td class="currency"><%=number_to_currency charge.base_amount, delimiter: ',', unit: 'USD ' %></td>
             <td class="currency"><%=number_to_currency charge.discount_amount, delimiter: ',', unit: 'USD ' %></td>
             <td class="currency"><%=number_to_currency charge.unit_amount, delimiter: ',', unit: 'USD ' %></td>
+            <td class="currency"><%=number_to_currency charge.total_amount, delimiter: ',', unit: 'USD ' %></td>
           </tr>
         <% end %>
         </tbody>
@@ -121,7 +143,7 @@
     </div>
 
     <div class="cell">
-      <h3>Included Services</h3>
+      <h3>Notes</h3>
       <ul class="fa-ul">
         <li>
           <span class="fa-li"><i class="fa fa-check-square"></i></span>

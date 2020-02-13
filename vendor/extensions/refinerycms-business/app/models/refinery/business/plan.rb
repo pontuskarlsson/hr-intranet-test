@@ -13,6 +13,8 @@ module Refinery
                                   optional: true
       belongs_to :notice_given_by,class_name: '::Refinery::Authentication::Devise::User',
                                   optional: true
+      belongs_to :contact_person, class_name: '::Refinery::Authentication::Devise::User'
+      belongs_to :account_manager,class_name: '::Refinery::Authentication::Devise::User'
       belongs_to :contract,       class_name: 'Document',
                                   optional: true
 
@@ -21,6 +23,8 @@ module Refinery
       configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
       configure_assign_by_label :confirmed_by, class_name: '::Refinery::Authentication::Devise::User'
       configure_assign_by_label :notice_given_by, class_name: '::Refinery::Authentication::Devise::User'
+      configure_assign_by_label :contact_person, class_name: '::Refinery::Authentication::Devise::User'
+      configure_assign_by_label :account_manager, class_name: '::Refinery::Authentication::Devise::User'
       configure_enumerables :status, STATUSES
 
       configure_label :reference
@@ -29,7 +33,10 @@ module Refinery
 
       store :content, accessors: [ :plan_charges, :included_services ], coder: JSON, prefix: :plan
 
-      delegate :full_name, to: :confirmed_by, prefix: true
+      delegate :full_name, to: :confirmed_by, prefix: true, allow_nil: true
+      delegate :full_name, to: :contact_person, prefix: true, allow_nil: true
+      delegate :full_name, to: :account_manager, prefix: true, allow_nil: true
+      delegate :name, to: :company, prefix: true, allow_nil: true
 
       validates :company_id,      presence: true
       validates :reference,       presence: true, uniqueness: true
@@ -39,6 +46,12 @@ module Refinery
       validate do
         if contract.present?
           errors.add(:contract_id, :invalid) unless contract.company_id == company_id
+        end
+        if contact_person.present?
+          errors.add(:contact_person_id, :invalid) unless contact_person.company_ids.include? company_id
+        end
+        if account_manager.present?
+          errors.add(:account_manager_id, :invalid) unless account_manager.has_role?(::Refinery::Business::ROLE_INTERNAL)
         end
       end
 
@@ -81,6 +94,10 @@ module Refinery
         HEREDOC
       end
 
+      def min_contract_value
+        (notice_period_months + min_contract_period_months) * charges.reduce(0) { |acc, charge| acc + charge.total_amount  }
+      end
+
       acts_as_notifiable :'refinery/authentication/devise/users',
                          targets: ->(inspection, key) {
                            # Disable automatic assignment for now and only use explicitly by calling
@@ -112,8 +129,8 @@ module Refinery
 
       def overriding_notification_email_subject(target, key)
         case key
-        when 'plan.confirmed' then "Happy Rabbit monthly plan confirmed!"
-        when 'plan.proposed' then "Happy Rabbit monthly plan proposed!"
+        when 'plan.confirmed' then "Happy Rabbit Monthly Plan Confirmed!"
+        when 'plan.proposed' then "Happy Rabbit Monthly Plan Proposed!"
         end
       end
 

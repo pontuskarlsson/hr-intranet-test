@@ -5,6 +5,8 @@ Refinery::Authentication::Devise::User.class_eval do
   has_many :purchases, foreign_key: :user_id,   class_name: 'Refinery::Business::Purchase', dependent: :nullify
   has_many :confirmed_plans, foreign_key: :confirmed_by_id, class_name: '::Refinery::Business::Plan'
   has_many :noticed_given_plans, foreign_key: :notice_given_by_id, class_name: '::Refinery::Business::Plan'
+  has_many :contact_person_plans, foreign_key: :contact_person_id, class_name: '::Refinery::Business::Plan'
+  has_many :account_manager_plans, foreign_key: :account_manager_id, class_name: '::Refinery::Business::Plan'
 
   configure_label :email
 

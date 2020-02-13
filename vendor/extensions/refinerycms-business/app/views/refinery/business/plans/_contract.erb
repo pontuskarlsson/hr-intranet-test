@@ -11,6 +11,7 @@
       <th class="currency">Base Unit Price</th>
       <th class="currency">Unit Discount</th>
       <th class="currency">Final Unit Price</th>
+      <th class="currency">Min. Monthly Price</th>
     </tr>
     </thead>
     <tbody>
@@ -21,41 +22,39 @@
         <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
         <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
         <td class="currency"><%=number_to_currency charge.unit_amount, unit: '' %></td>
+        <td class="currency"><%=number_to_currency charge.total_amount, unit: '' %></td>
       </tr>
     <% end %>
     </tbody>
     <tfoot>
     <tr>
-      <th colspan="5" class="currency">All prices are in <%= @plan.currency_code %>.</th>
+      <th colspan="6" class="currency">All prices are in <%= @plan.currency_code %>.</th>
     </tr>
     </tfoot>
   </table>
 
-  <h3>Terms</h3>
+  <h3 style="margin-bottom: 0.5rem;">Terms</h3>
 
   <h5>Payment Terms</h5>
   <p><%= @plan.payment_terms_days %> Days</p>
 
-  <h5>Contract period</h5>
+  <h5>Contract Period</h5>
   <p><%= @plan.describe_contract_period %></p>
 
   <h5>Validity</h5>
   <p>
-    Any unused Man Days will carry over to the following month and be used
+    Any unused Mandays will carry over to the following month and be used
     on a “First in First Out” basis and expire after 12 months from invoice date
     or on the first day after contract period ends, whichever comes first.
   </p>
 
-  <h3>Included Services</h3>
-  <ul class="fa-ul">
-    <li>
-      <span class="fa-li"><i class="fa fa-check-square"></i></span>
-      All QC reports, invoices, statements, etc. are available on the customer portal on our website.
-    </li>
-    <li>
-      <span class="fa-li"><i class="fa fa-check-square"></i></span>
-      Full access to all current and future customer features on website, incl. dashboards, WIP, logistics, etc. as long as you’re on this plan or higher plan.
-    </li>
+  <h5>Min. Contract Value</h5>
+  <p><%=number_to_currency @plan.min_contract_value, delimiter: ',', unit: 'USD ' %></p>
+
+  <h3>Notes</h3>
+  <ul>
+    <li>All QC reports, invoices, statements, etc. are available on the customer portal on our website.</li>
+    <li>Full access to all current and future customer features on website, incl. dashboards, WIP, logistics, etc. as long as you’re on this plan or higher plan.</li>
   </ul>
 
 </section>

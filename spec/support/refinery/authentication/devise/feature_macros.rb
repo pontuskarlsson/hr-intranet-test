@@ -11,9 +11,6 @@ module Refinery
         def refinery_login_with_devise(factory)
           let!(:logged_in_user) { FactoryBot.create(factory) }
 
-          # Create the User first
-          before { logged_in_user }
-
           # Check if after the :logged_in_user is created, there is any "Refinery User" (User with the Refinery role).
           # Create one if not any present. Otherwise all requests will be redirected to create an initial User.
           before do

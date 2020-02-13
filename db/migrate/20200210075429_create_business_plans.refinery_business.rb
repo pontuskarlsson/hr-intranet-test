@@ -21,6 +21,8 @@ class CreateBusinessPlans < ActiveRecord::Migration[5.1]
       t.integer :notice_given_by_id
       t.text :content
       t.text :meta
+      t.integer :contact_person_id
+      t.integer :account_manager_id
 
       t.timestamps
     end
@@ -36,5 +38,7 @@ class CreateBusinessPlans < ActiveRecord::Migration[5.1]
     add_index :refinery_business_plans, :confirmed_by_id
     add_index :refinery_business_plans, :notice_given_at
     add_index :refinery_business_plans, :notice_given_by_id
+    add_index :refinery_business_plans, :contact_person_id
+    add_index :refinery_business_plans, :account_manager_id
   end
 end
