@@ -3,7 +3,7 @@
 @import 'settings_portal';
 @import 'foundation';
 @import 'foundation-extras/data_fields';
-@import 'foundation-extras/footer';
+@import 'foundation-extras/public_footer';
 
 // If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
 //
@@ -67,7 +67,7 @@
 html { height: 100%; }
 body, #wrap {min-height: 100%; position: relative;}
 body > #wrap {height: auto; min-height: 100vh;}
-main {padding-bottom: 520px;}
+//main {padding-bottom: 520px;}
 main > .grid-container { margin-bottom: 1rem;}
 @media print, screen and (min-width: 40em) {
     main {padding-bottom: 385px;}
