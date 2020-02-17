@@ -12,6 +12,12 @@
     }
 }
 
+.button-group {
+    .button {
+        min-width: 1px;
+    }
+}
+
 .button-group .button {
     font-size: 0.6rem;
 }
