@@ -21,6 +21,9 @@ describe Refinery do
         end
 
         describe "create" do
+          let!(:company) { FactoryBot.create(:company) }
+          let!(:account) { FactoryBot.create(:account) }
+
           before do
             visit refinery.business_admin_plans_path
 
@@ -28,13 +31,7 @@ describe Refinery do
           end
 
           context "valid data" do
-            let(:company) { FactoryBot.create(:company) }
-            let(:account) { FactoryBot.create(:account) }
-            before { company; account }
-
             it "should succeed" do
-              click_link "Add New Plan" # Click link again after account has been created
-
               fill_in "Company", :with => company.label
               select account.organisation, :from => "Account"
               fill_in "Title", :with => "My Monthly Plan"

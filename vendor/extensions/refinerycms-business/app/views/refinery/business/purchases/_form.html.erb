@@ -1,9 +1,17 @@
-<%= form_for @purchase, url: refinery.business_purchases_path, remote: true do |f| %>
+<% content_for :javascripts do %>
+  <script src="https://js.stripe.com/v3/"></script>
+<% end %>
+
+<%= form_for purchase, url: refinery.business_purchases_path, remote: true do |f| %>
   <%= f.hidden_field :article_code %>
   <div class="grid-container">
     <div class="grid-x grid-padding-x">
       <div class="cell medium-8">
         <div class="hr-box-shadow" style="padding: 1rem;">
+          <%= render '/refinery/admin/error_messages',
+                     :object => purchase,
+                     :include_object_name => true %>
+
           <h3>Selected Items</h3>
 
           <hr/>
@@ -24,7 +32,7 @@
               <p><%=number_to_currency f.object.article_sales_unit_price, delimiter: ',', unit: 'USD ' %></p>
             </div>
             <div class="cell medium-2">
-              <%= f.number_field :qty, style: 'width: 50px;', class: 'js_purchase_qty_field' %>
+              <%= f.number_field :qty, value: f.object.qty.presence || 1, style: 'width: 50px;', class: 'js_purchase_qty_field' %>
             </div>
           </div>
         </div>

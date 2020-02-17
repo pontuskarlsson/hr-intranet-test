@@ -1,7 +1,3 @@
-<% content_for :javascripts do %>
-  <script src="https://js.stripe.com/v3/"></script>
-<% end %>
-
 <div id="purchase_form">
-  <%= render 'form' %>
+  <%= render 'form', purchase: @purchase %>
 </div>

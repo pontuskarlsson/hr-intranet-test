@@ -361,6 +361,7 @@ en:
         article_code: Article Code
 
       'refinery/business/plan':
+        account_id: Account
         company_id: Company
         company_label: Company
         confirmed_at: Confirmed At

@@ -2,6 +2,7 @@ Refinery::Authentication::Devise::Role.where(title: Refinery::QualityAssurance::
 role_internal_manager = Refinery::Authentication::Devise::Role.where(title: Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER).first_or_create
 Refinery::Authentication::Devise::Role.where(title: Refinery::QualityAssurance::ROLE_EXTERNAL).first_or_create
 Refinery::Authentication::Devise::Role.where(title: Refinery::QualityAssurance::ROLE_INSPECTOR).first_or_create
+business_ext_role = Refinery::Authentication::Devise::Role.where(title: Refinery::Business::ROLE_EXTERNAL).first
 
 Refinery::I18n.frontend_locales.each do |lang|
   I18n.locale = lang
@@ -13,6 +14,7 @@ Refinery::I18n.frontend_locales.each do |lang|
   end if defined?(Refinery::User)
 
   [
+      [Refinery::QualityAssurance::PAGE_CREDITS_URL, 'Credits', business_ext_role],
       [Refinery::QualityAssurance::PAGE_INSPECTIONS_URL, 'Inspections'],
       [Refinery::QualityAssurance::PAGE_JOBS_URL, 'Jobs', role_internal_manager],
       [Refinery::QualityAssurance::PAGE_INSPECTIONS_CALENDAR, 'Calendar', role_internal_manager],

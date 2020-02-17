@@ -75,6 +75,18 @@ module Refinery
       scope :valid_for_date, -> (date) { where("#{table_name}.valid_from <= :date AND #{table_name}.valid_to >= :date", date: date) }
       scope :first_in_first_out, -> { order(code: :asc) }
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+
+        if titles.include? ROLE_INTERNAL
+          where(nil)
+        elsif titles.include? ROLE_EXTERNAL
+          where(company_id: user.company_ids)
+        else
+          where('1=0')
+        end
+      end
+
       def self.applicable_to(invoice, article_code = '')
         scope = invoice.invoice_for_month.present? ? active.valid_for_date(invoice.invoice_for_month) : active
 

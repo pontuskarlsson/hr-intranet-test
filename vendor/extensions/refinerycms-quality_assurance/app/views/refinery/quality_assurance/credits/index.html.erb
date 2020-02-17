@@ -1,0 +1,28 @@
+<% content_for :body do %>
+  <div class="grid-container">
+    <div class="grid-x grid-margin-x">
+      <div class="cell" style="margin-bottom: 1rem;">
+        <h3>Credits</h3>
+        <% if (credits = @credits.active.group(:article_id).count).any? %>
+          <% credits.each do |article_id, count| %>
+            <div class="widget-item">
+              <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available
+            </div>
+          <% end %>
+
+        <% else %>
+          <p class="italic">You do not have any credits yet.</p>
+        <% end %>
+      </div>
+
+      <div class="cell">
+        <h3>Purchase Credits</h3>
+        <div id="purchase_form">
+          <%= render 'refinery/business/purchases/form', purchase: purchase %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render 'refinery/content_page' %>
