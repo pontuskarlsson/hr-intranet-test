@@ -139,7 +139,10 @@
             nextIdx++;
           }
 
-          acc[0].data[supplierIdx[dataRow[0]]][1] += (parseFloat(dataRow[3]) || 0);
+          var val = parseFloat(dataRow[3]);
+          if (!isNaN(val)) {
+            acc[0].data[supplierIdx[dataRow[0]]][1] += val;
+          }
 
           return acc;
         }, [{ name: 'Tot. Alloc. Cost', data: [] }]);
