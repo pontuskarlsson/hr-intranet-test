@@ -8,6 +8,22 @@ article.blog_post {
     img {
         margin-bottom: 1.5rem;
     }
+
+    .tagged {
+        display: inline-block;
+
+        a {
+            text-decoration: none;
+            //border-radius: 1rem;
+            padding: 0.25rem 0.5rem;
+            background-color: $primary-color;
+            color: $white;
+        }
+
+        &::before {
+            width: 1rem;
+        }
+    }
 }
 
 
@@ -55,6 +71,14 @@ article.blog-teaser {
             text-align: left;
         }
 
+        a {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
         section.details {
             margin-bottom: 0.5rem;
         }
@@ -65,10 +89,13 @@ article.blog-teaser {
 
                 a {
                     text-decoration: none;
+                    //border-radius: 1rem;
+                    padding: 0.25rem 0.5rem;
+                    background-color: $primary-color;
+                    color: $white;
                 }
 
                 &::before {
-                    content: '|';
                     width: 1rem;
                 }
             }
