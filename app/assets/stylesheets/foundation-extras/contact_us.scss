@@ -62,7 +62,7 @@ $contact-us-section-bg: $body-background;
 
 .contact-us-list {
     list-style-type: none;
-    margin: 0;
+    margin: 0 0 2rem;
 
     li {
         vertical-align: middle;
@@ -74,6 +74,7 @@ $contact-us-section-bg: $body-background;
     }
 
     li .fa {
+
         color: $dark-gray;
     }
 
