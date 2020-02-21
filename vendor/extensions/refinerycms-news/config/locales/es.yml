@@ -1,0 +1,37 @@
+es:
+  refinery:
+    plugins:
+      refinerycms_news:
+        title: Noticias
+        description: Proporciona una seccion de noticias similar a un blog
+    news:
+      admin:
+        items:
+          item:
+            view_live_html: "Ver este elemento en tu web <br/><em>(abre una nueva ventana)</em>"
+            edit: "Editar esta noticia"
+            delete: "Borrar completamente esta noticia"
+            published: Publicada
+          index:
+            create: "Crear noticia"
+            item: Noticia
+            no_items_yet: 'Aún no hay noticias. Haz click en "Crear noticia" para añadir la primera.'
+      items:
+        show:
+          back_to_index: "Volver al listado de noticias"
+          published: Publicada
+        recent_posts:
+          recent_posts: Artículos recientes
+        index:
+          published: Publicada
+          read_more: Leer más
+          no_items_yet: Aún no hay ninguna noticia.
+  activerecord:
+    attributes:
+      'refinery/news/item':
+        title: Título
+        body: Contenido
+        publish_date: Fecha de publicación
+        expiration_date: Fecha de expiración
+    models:
+      'refinery/news/item': Noticia

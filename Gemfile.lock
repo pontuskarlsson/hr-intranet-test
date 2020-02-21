@@ -59,6 +59,12 @@ PATH
       refinerycms-core (>= 2.1.2)
       refinerycms-page_roles (>= 1.0)
       refinerycms-resource_authorizations
+    refinerycms-news (4.0.0)
+      acts_as_indexed (~> 0.8.0)
+      friendly_id (~> 5.1, < 5.3)
+      globalize (>= 4.0.0, < 5.2)
+      refinerycms-core (~> 4.0.0)
+      refinerycms-settings (~> 4.0.0)
     refinerycms-page_roles (1.0)
       refinerycms-authentication-devise (>= 1.0.0)
       refinerycms-core (>= 2.1.2)
@@ -178,8 +184,8 @@ GEM
     concurrent-ruby (1.1.5)
     cookies_eu (1.7.6)
       js_cookie_rails (~> 2.2.0)
-    countries (3.0.0)
-      i18n_data (~> 0.8.0)
+    countries (3.0.1)
+      i18n_data (~> 0.10.0)
       sixarm_ruby_unaccent (~> 1.1)
       unicode_utils (~> 1.4)
     crass (1.0.5)
@@ -286,7 +292,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    i18n_data (0.8.0)
+    i18n_data (0.10.0)
     ice_nine (0.11.2)
     inflection (1.0.0)
     insensitive_hash (0.3.3)
@@ -301,7 +307,7 @@ GEM
       railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.2.0)
+    json (2.3.0)
     jwt (2.2.1)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -428,7 +434,6 @@ GEM
       globalize (>= 5.1.0.beta1, < 5.2)
       refinerycms-core (= 4.0.2)
       refinerycms-dragonfly (~> 1.0)
-    refinerycms-news (0.9.8.4)
     refinerycms-page-images (4.0.0)
       decorators (~> 2.0)
       globalize (~> 5.1.0)
@@ -620,7 +625,7 @@ DEPENDENCIES
   refinerycms-custom_lists!
   refinerycms-employees!
   refinerycms-marketing!
-  refinerycms-news
+  refinerycms-news!
   refinerycms-page-images
   refinerycms-page_roles!
   refinerycms-quality_assurance!

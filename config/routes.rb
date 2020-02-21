@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'sustainability',                 to: 'home#sections'
   get 'contact',                        to: 'home#sections'
 
-  get 'news',                           to: 'home#sections'
+  #get 'news',                           to: 'home#sections'
 
   get 'resources',                      to: 'home#sections' # Redirect to first sub-page
   get 'glossary',                       to: 'home#sections'

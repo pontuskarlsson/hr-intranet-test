@@ -1,0 +1,37 @@
+bg:
+  refinery:
+    plugins:
+      refinerycms_news:
+        title: Новини
+        description: Осигурява опростена секция за новини
+    news:
+      admin:
+        items:
+          item:
+            view_live_html: "Преглед на тази новина <br/><em>(ще се отвори се в нов прозорец)</em>"
+            edit: "Редакция на тази новина"
+            delete: "Премахване на тази новина завинаги"
+            published: Публикувано на
+          index:
+            create: "Добавяне на новина"
+            item: Новини
+            no_items_yet: 'Все още няма новини. Натиснете "Добавяне на новина", за да въведете новина.'
+      items:
+        show:
+          back_to_index: "Обратно към всички новини"
+          published: Публикувано на
+        recent_posts:
+          recent_posts: Последни публикации
+        index:
+          published: Публикувано на
+          read_more: Цялата новина
+          no_items_yet: Все още няма публикувани новини.
+  activerecord:
+    attributes:
+      'refinery/news/item':
+        title: Заглавие
+        body: Съдържание
+        publish_date: Дата на публикуване
+        expiration_date: Крайна дата
+    models:
+      'refinery/news/item': Новина

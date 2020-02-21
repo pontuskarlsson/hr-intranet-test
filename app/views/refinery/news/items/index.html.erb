@@ -1,29 +1,17 @@
-<div class="grid-x grid-padding-x">
-  <div class="medium-8 cell">
-    <%=raw @page.content_for(:body) unless params[:page] %>
+<% content_for :body do %>
+  <%- page_content = @page.content_for(Refinery::Pages.default_parts.first[:slug].to_sym) if Refinery::Pages.default_parts.any? -%>
+  <% if page_content.present? %>
+    <section class="page-section no-bottom-padding section-<%= Refinery::Pages.default_parts.first[:slug] %>">
+      <%=raw page_content %>
+    </section>
+  <% end %>
 
-    <% if @items.any? %>
-      <% @items.each do |item| %>
-        <article class="news_item_truncated">
-          <h4><%= link_to item.title, refinery.news_item_path(item) %></h4>
-          <p>
-            <small><%= t('.published') %> <%= l(item.publish_date, :format => :long) %></small>
-          </p>
-          <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 400, escape: false,
-                                         omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
-          <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
-        </article>
-      <% end %>
-
+  <% if @items.any? %>
+    <section id="blog_posts" class="page-section">
+      <%= render :partial => "/refinery/news/shared/item", :collection => @items %>
       <%= will_paginate @items %>
-    <% else %>
-      <p><em><%= t('.no_items_yet') %></em></p>
-    <% end %>
-  </div>
+    </section>
+  <% end %>
+<% end %>
 
-  <div class="medium-4 cell">
-    <%= raw @page.content_for(:side_body) %>
-
-    <%= render '/refinery/news/shared/body_content_right' %>
-  </div>
-</div>
+<%= render "/refinery/public_content_page" %>

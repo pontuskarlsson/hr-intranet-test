@@ -1,0 +1,48 @@
+en:
+  refinery:
+    plugins:
+      refinerycms_news:
+        title: News
+        description: Provides a simple news section
+    news:
+      admin:
+        items:
+          item:
+            view_live_html: "View this news item live <br/><em>(opens in a new window)</em>"
+            edit: "Edit this news item"
+            delete: "Remove this news item forever"
+            published: Published
+          index:
+            create: "Add News Item"
+            item: News
+            no_items_yet: 'There are no news items yet. Click "Add News Item" to add your first news item.'
+      shared:
+        items:
+          read_more: Read more
+          created_at: 'Created at %{when}'
+        archives: Archives
+      items:
+        show:
+          back_to_index: "Back to all news"
+          published: Published
+          source: Source
+        recent_posts:
+          recent_posts: Recent Posts
+        index:
+          published: Published
+          read_more: Read more
+          no_items_yet: There are no news item entries yet.
+          source: Source
+        archive:
+          news_item_archive_for: 'Archive for %{date}'
+          no_news_item_articles_posted: 'There are no news articles posted for %{date}. Stay tuned.'
+  activerecord:
+    attributes:
+      'refinery/news/item':
+        title: Title
+        body: Body
+        publish_date: Publish date
+        expiration_date: Expiration date
+        source: Source
+    models:
+      'refinery/news/item': News Item

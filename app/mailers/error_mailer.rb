@@ -7,7 +7,7 @@ class ErrorMailer < ApplicationMailer
   end
 
   def notification_email(msgs, params = nil)
-    @msgs = msgs
+    @msgs = Array(msgs)
     @params = params
     @filename = params && params[:file].respond_to?(:original_filename) && params[:file].original_filename || 'N/A'
     mail(to: 'daniel.viklund@happyrabbit.com', subject: 'Portal: Notification')

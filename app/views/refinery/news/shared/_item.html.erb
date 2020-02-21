@@ -1,0 +1,30 @@
+<article class="blog-teaser" id="<%= dom_id(item) %>">
+  <div class="blog-thumb">
+    <div class="image-box">
+      <% if false && (image = item.image) %>
+        <%= image_tag image.image.url %>
+      <% else %>
+        <%= image_tag 'Happy_Rabbit_Anchor_Logo_Circle' %>
+      <% end %>
+    </div>
+  </div>
+  <div class="blog-teaser-content">
+    <header>
+      <h2 class="text-align-center"><%= link_to item.title, refinery.news_item_path(item) %></h2>
+      <section class="details">
+        <time datetime="<%=l item.publish_date.to_date, :format => :default %>" class="posted_at">
+          <%#= t('created_at', :scope => 'refinery.blog.shared.posts', :when => l(post.published_at.to_date, :format => :long)) %>
+          <%= l(item.publish_date.to_date, :format => :long) %>
+        </time>
+      </section>
+    </header>
+    <section class="clearfix">
+      <%- truncated_body = truncate  Nokogiri::HTML(item.body).inner_text, length: 400, escape: false,
+                                     omission: "... #{link_to 'Read More', refinery.news_item_path(item)}" -%>
+      <%= truncated_body.split("\r\n").map { |p| "<p>#{p}</p>" }.join.html_safe %>
+    </section>
+    <footer>
+
+    </footer>
+  </div>
+</article>

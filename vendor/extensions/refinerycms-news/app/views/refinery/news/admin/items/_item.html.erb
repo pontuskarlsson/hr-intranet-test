@@ -1,0 +1,24 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>'>
+  <span class='title'>
+    <%= item.title %>
+    <span class="preview">
+      <%= t('.published') %> <%= l(item.publish_date, :format => :short) %>
+    </span>
+    <% if Refinery::I18n.frontend_locales.many? and
+          (locales = item.translations.collect{|t| t.locale}).present? %>
+      <span class='preview'>
+        <% locales.each do |locale| %>
+          <%= link_to locale_text_icon(locale.upcase), refinery.edit_news_admin_item_path(item, :switch_locale => locale),
+                      :class => "locale" %>
+        <% end %>
+      </span>
+    <% end %>
+  </span>
+  <span class='actions'>
+    <%= action_icon(:preview, refinery.news_item_path(item), t('.view_live_html')) %>
+    <%= action_icon(:edit, refinery.edit_news_admin_item_path(item), t('.edit')) %>
+    <%= action_icon(:delete, refinery.news_admin_item_path(item), t('.delete'),
+                    { :class => "cancel confirm-delete",
+                      data: { :confirm => t('message', :scope => 'refinery.admin.delete', :title => item.title)}}) %>
+  </span>
+</li>

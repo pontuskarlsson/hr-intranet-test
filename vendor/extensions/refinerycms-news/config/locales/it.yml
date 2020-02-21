@@ -1,0 +1,36 @@
+it:
+  refinery:
+    plugins:
+      refinerycms_news:
+        title: Notizie
+        description: Fornisce una sezione notizie in stile blog
+    news:
+      admin:
+        items:
+          item:
+            view_live_html: "Visualzza questa notizia live <br/><em>(si apre in una nuova finestra)</em>"
+            edit: "Modifica questa notizia"
+            delete: "Rimuovi questa notizia per sempre"
+            published: Pubblicata
+          index:
+            create: "Crea Notizia"
+            item: Notizia
+            no_items_yet: 'Non ci sono ancora notizie. Fare clic su "Crea Notizia" per aggiungere la prima notizia.'
+      items:
+        show:
+          back_to_index: "Torna a tutte le notizie"
+          published: Pubblicata
+        recent_posts:
+          recent_posts: Messaggi Recenti
+        index:
+          published: Pubblicata
+          read_more: Per saperne di più
+          no_items_yet: Non ci sono ancora notizie.
+  activerecord:
+    attributes:
+      'refinery/news/item':
+        title: Titolo
+        body: Corpo
+        publish_date: Data di pubblicazione
+    models:
+      'refinery/news/item': Notizia

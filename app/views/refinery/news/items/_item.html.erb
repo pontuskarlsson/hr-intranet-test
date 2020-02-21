@@ -1,0 +1,21 @@
+<article class="blog_post">
+  <header>
+    <h2 class="text-align-center"><%= @item.title %></h2>
+    <section class="details text-align-center">
+      <time datetime="<%=l @item.publish_date.to_date, :format => :default %>" class="posted_at">
+        <%= t('refinery.news.items.show.published') %> <%= l(@item.publish_date, :format => :long) %>
+      </time>
+
+      <% if @item.source.present? %>
+        <p>
+          <small><%= t('refinery.news.items.show.source') %> <%= @item.source %></small>
+        </p>
+      <% end %>
+    </section>
+  </header>
+  <%= @item.body.html_safe %>
+
+  <% if Refinery::Blog::Post::ShareThis.enabled? %>
+    <span class="st_sharethis" displayText="ShareThis"></span>
+  <% end %>
+</article>
