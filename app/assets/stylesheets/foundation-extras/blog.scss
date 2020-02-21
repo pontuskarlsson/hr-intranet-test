@@ -10,7 +10,8 @@ article.blog_post {
     }
 
     .tagged {
-        display: inline-block;
+        display: block;
+        text-align: center;
 
         a {
             text-decoration: none;
