@@ -35,7 +35,11 @@ module Refinery
       end
 
       def find_news_item
-        @item = Item.published.translated.friendly.find(params[:id])
+        if current_refinery_user.has_plugin?('refinerycms_news')
+          @item = Item.translated.friendly.find(params[:id])
+        else
+          @item = Item.published.translated.friendly.find(params[:id])
+        end
       end
 
       def find_page
