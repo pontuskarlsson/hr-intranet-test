@@ -112,7 +112,7 @@
             <td><%= supplier_label %></td>
             <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + billable.qty }, delimiter: ',', strip_insignificant_zeros: true %></td>
             <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + allocations[:jobs].count }, delimiter: ',', strip_insignificant_zeros: true %></td>
-            <td class="text-align-right"><%=number_to_currency jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost }, unit: '' %></td>
+            <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
           </tr>
         <% end %>
         </tbody>
@@ -162,6 +162,9 @@
 
       var dtSupp = $('.dt-project-supplier-summary').DataTable({
         "responsive": true,
+        columnDefs: [
+          { targets: [3], render: { "display": formatCurrency } }
+        ],
         "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'B><'medium-6 columns cell'f>r>" +
           "t" +
           "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
