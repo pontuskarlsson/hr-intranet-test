@@ -15,8 +15,8 @@ module Refinery
 
       def index
         @shipment = Shipment.new(
-            # from_contact_label: current_authentication_devise_user.contact.try(:name),
-            # from_contact_id: current_authentication_devise_user.contact.try(:id)
+            # from_contact_label: current_refinery_user.contact.try(:name),
+            # from_contact_id: current_refinery_user.contact.try(:id)
         )
 
         @shipments = @shipments.from_params(params)
@@ -28,7 +28,7 @@ module Refinery
       end
 
       def create
-        @shipment = current_authentication_devise_user.created_shipments.build(shipment_params)
+        @shipment = current_refinery_user.created_shipments.build(shipment_params)
         if @shipment.save
           flash[:notice] = 'Shipment successfully added.'
           redirect_to refinery.shipping_shipment_path(@shipment)
@@ -89,7 +89,7 @@ module Refinery
       end
 
       def create_document
-        @document_creator = ::Refinery::Shipping::DocumentCreator.new_in_model(@shipment, params[:document], current_authentication_devise_user)
+        @document_creator = ::Refinery::Shipping::DocumentCreator.new_in_model(@shipment, params[:document], current_refinery_user)
         if @document_creator.save
           flash[:notice] = 'Successfully added Document(s)'
         else
@@ -116,7 +116,7 @@ module Refinery
       protected
 
       def shipments_scope
-        @shipments ||= Shipment.for_user_roles(current_authentication_devise_user, @auth_role_titles)
+        @shipments ||= Shipment.for_user_roles(current_refinery_user, @auth_role_titles)
       end
 
       def find_shipments
@@ -182,19 +182,19 @@ module Refinery
       end
 
       def costs_form
-        @costs_form ||= Refinery::Shipping::CostsForm.new_in_model(@shipment, params[:shipment], current_authentication_devise_user)
+        @costs_form ||= Refinery::Shipping::CostsForm.new_in_model(@shipment, params[:shipment], current_refinery_user)
       end
 
       def items_form
-        @items_form ||= Refinery::Shipping::ItemsForm.new_in_model(@shipment, params[:items_form], current_authentication_devise_user)
+        @items_form ||= Refinery::Shipping::ItemsForm.new_in_model(@shipment, params[:items_form], current_refinery_user)
       end
 
       def routes_form
-        @route_form ||= Refinery::Shipping::RoutesForm.new_in_model(@shipment, params[:routes_form], current_authentication_devise_user)
+        @route_form ||= Refinery::Shipping::RoutesForm.new_in_model(@shipment, params[:routes_form], current_refinery_user)
       end
 
       def packages_form
-        @packages_form ||= Refinery::Shipping::PackagesForm.new_in_model(@shipment, params[:shipment], current_authentication_devise_user)
+        @packages_form ||= Refinery::Shipping::PackagesForm.new_in_model(@shipment, params[:shipment], current_refinery_user)
       end
 
       def search_terms

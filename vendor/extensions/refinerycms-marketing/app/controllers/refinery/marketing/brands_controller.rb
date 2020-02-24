@@ -33,7 +33,7 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/marketing/brands', current_authentication_devise_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/marketing/brands', current_refinery_user)
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

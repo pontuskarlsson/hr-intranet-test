@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :plan, :class => Refinery::Business::Plan do
     account
-    company
+    association :company, factory: :verified_company
     contact_person { |evaluator|
       FactoryBot.create(:company_user, company: evaluator.company).user
     }

@@ -17,13 +17,13 @@
 <%= javascript_include_tag 'refinery/core' %>
 <%= javascript_include_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.js' %>
 <%= yield :javascripts -%>
-<% if current_authentication_devise_user.present? %>
+<% if current_refinery_user.present? %>
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=<%= ENV['ZENDESK_WIDGET_KEY'] %>"></script>
 <script type="text/javascript">
   zE(function() {
     zE.identify({
-      name: <%= current_authentication_devise_user.full_name.to_json.html_safe %>,
-      email: <%= current_authentication_devise_user.email.to_json.html_safe %>
+      name: <%= current_refinery_user.full_name.to_json.html_safe %>,
+      email: <%= current_refinery_user.email.to_json.html_safe %>
     });
   });
 </script>

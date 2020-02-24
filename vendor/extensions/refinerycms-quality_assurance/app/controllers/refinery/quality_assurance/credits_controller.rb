@@ -24,7 +24,7 @@ module Refinery
       protected
 
       def credits_scope
-        @credits_scope ||= ::Refinery::Business::Voucher.for_user_roles(current_authentication_devise_user)
+        @credits_scope ||= ::Refinery::Business::Voucher.for_user_roles(current_refinery_user)
       end
 
       def find_all_credits

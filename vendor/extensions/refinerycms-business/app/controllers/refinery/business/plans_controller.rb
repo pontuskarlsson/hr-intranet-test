@@ -46,7 +46,7 @@ module Refinery
             )
             @plan.contract = document
             @plan.save!
-            Delayed::Job.enqueue(ConfirmContractJob.new(@plan.id, current_authentication_devise_user.id))
+            Delayed::Job.enqueue(ConfirmContractJob.new(@plan.id, current_refinery_user.id))
             format.html { redirect_to refinery.business_plan_path(@plan) }
           else
             format.html { render action: :show }
@@ -57,7 +57,7 @@ module Refinery
       protected
 
       def plan_scope
-        @plans ||= Refinery::Business::Plan.for_user_roles(current_authentication_devise_user)
+        @plans ||= Refinery::Business::Plan.for_user_roles(current_refinery_user)
       end
 
       def find_plans
@@ -75,7 +75,7 @@ module Refinery
       end
 
       def confirm_plan_form
-        @confirm_plan_form ||= ConfirmPlanForm.new_in_model(@plan, params[:plan], current_authentication_devise_user)
+        @confirm_plan_form ||= ConfirmPlanForm.new_in_model(@plan, params[:plan], current_refinery_user)
       end
 
       def contract_pdf_options

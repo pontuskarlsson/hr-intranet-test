@@ -19,7 +19,7 @@ module Refinery
       end
 
       def create
-        @budget_form = BudgetForm.new_in_model(Budget.new, params[:budget], current_authentication_devise_user)
+        @budget_form = BudgetForm.new_in_model(Budget.new, params[:budget], current_refinery_user)
         if @budget_form.save
           redirect_to refinery.business_budget_path(@budget_form.budget)
         else
@@ -33,7 +33,7 @@ module Refinery
       end
 
       def update
-        if @budget.budget_form(params[:budget], current_authentication_devise_user).save
+        if @budget.budget_form(params[:budget], current_refinery_user).save
           flash[:notice] = 'Successfully updated the Budget'
           redirect_to refinery.business_budget_path(@budget)
         else

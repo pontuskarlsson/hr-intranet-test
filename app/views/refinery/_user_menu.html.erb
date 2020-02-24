@@ -1,20 +1,20 @@
 <% if authentication_devise_user_signed_in? %>
   <ul class="dropdown menu" data-dropdown-menu>
     <li class="has-submenu">
-      <a href="#"><%= current_authentication_devise_user.full_name %></a>
+      <a href="#"><%= current_refinery_user.full_name %></a>
 
       <ul class="submenu menu vertical">
         <li><%= link_to 'My Profile', '/my_profile' %></li>
-        <li><%= link_to "/users/#{current_authentication_devise_user.to_param}/notifications" do %>
+        <li><%= link_to "/users/#{current_refinery_user.to_param}/notifications" do %>
             Notifications
-            <% if current_authentication_devise_user.has_unopened_notifications? %>
-              <span class="notification_count"><span class="unopened"><%= current_authentication_devise_user.unopened_notification_count %></span></span>
+            <% if current_refinery_user.has_unopened_notifications? %>
+              <span class="notification_count"><span class="unopened"><%= current_refinery_user.unopened_notification_count %></span></span>
             <% end %>
           <% end %></li>
-        <% if current_authentication_devise_user.has_role?(:superuser) %>
+        <% if current_refinery_user.has_role?(:superuser) %>
           <li><%= link_to 'Refinery', '/refinery' %></li>
-        <% elsif current_authentication_devise_user.has_role?(::Refinery::Business::ROLE_EXTERNAL) %>
-          <% current_authentication_devise_user.companies.each do |company| %>
+        <% elsif current_refinery_user.has_role?(::Refinery::Business::ROLE_EXTERNAL) %>
+          <% current_refinery_user.companies.each do |company| %>
             <li><%= link_to "#{company.name} Settings", "/settings/#{company.id}" %></li>
           <% end %>
         <% end %>

@@ -28,7 +28,7 @@ Refinery::QualityAssurance::Inspection.class_eval do
                      email_allowed: :is_email_allowed?
 
   after_save do
-    if status_changed? && status == 'Notified'
+    if saved_change_to_status? && status == 'Notified'
       delay.trigger_zap(RestHook::INSPECTION_NEW)
     end
   end

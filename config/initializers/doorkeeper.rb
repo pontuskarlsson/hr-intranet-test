@@ -7,7 +7,7 @@ Doorkeeper.configure do
     # Put your resource owner authentication logic here.
     # Example implementation:
     #   User.find_by_id(session[:user_id]) || redirect_to(new_user_session_url)
-    current_authentication_devise_user || warden.authenticate!(:scope => :authentication_devise_user)
+    current_refinery_user || warden.authenticate!(:scope => :authentication_devise_user)
   end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
@@ -19,8 +19,8 @@ Doorkeeper.configure do
     # Put your admin authentication logic here.
     # Example implementation:
 
-    if current_authentication_devise_user
-      role_titles = current_authentication_devise_user.roles.pluck(:title)
+    if current_refinery_user
+      role_titles = current_refinery_user.roles.pluck(:title)
       head :forbidden unless role_titles.include?('Superuser')
     else
       redirect_to sign_in_url

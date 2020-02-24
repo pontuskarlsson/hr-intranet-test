@@ -1,5 +1,5 @@
 <% content_for :side_body do %>
-  <% if current_authentication_devise_user.has_role?('Employees:Employee') %>
+  <% if current_refinery_user.has_role?('Employees:Employee') %>
     <% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
       Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
       *Refinery::Employees::PublicHoliday.all_calendar_functions
@@ -39,16 +39,16 @@
       <% end %>
     </section>
 
-  <% elsif current_authentication_devise_user.has_role?(Refinery::Business::ROLE_EXTERNAL) %>
+  <% elsif current_refinery_user.has_role?(Refinery::Business::ROLE_EXTERNAL) %>
 
-    <% if current_authentication_devise_user.companies.count == 1 %>
+    <% if current_refinery_user.companies.count == 1 %>
       <div class="widget">
         <header>
           Requests
         </header>
 
         <div class="widget-body">
-          <% if (requests = current_authentication_devise_user.companies.first.requests.recent).any? %>
+          <% if (requests = current_refinery_user.companies.first.requests.recent).any? %>
             <% requests.each do |request| %>
               <div class="widget-item">
                 <span class="widget-item-trail"><%= request.request_date %></span>
@@ -77,7 +77,7 @@
         </header>
 
         <div class="widget-body">
-          <% if (credits = current_authentication_devise_user.companies.first.vouchers.active.group(:article_id).count).any? %>
+          <% if (credits = current_refinery_user.companies.first.vouchers.active.group(:article_id).count).any? %>
             <% credits.each do |article_id, count| %>
               <div class="widget-item">
                 <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available

@@ -1,4 +1,4 @@
-<%- disabled = !@shipment.editable_by?(current_authentication_devise_user) -%>
+<%- disabled = !@shipment.editable_by?(current_refinery_user) -%>
 
 <% if disabled %>
   <p class="italic">Can only be edited by <%= @shipment.assigned_to.username %></p>

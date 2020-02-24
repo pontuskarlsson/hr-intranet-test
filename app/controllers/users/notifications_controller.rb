@@ -41,7 +41,7 @@ class Users::NotificationsController < ActivityNotification::NotificationsContro
 
   def set_target
     @target = Refinery::Authentication::Devise::User.friendly.find params[:user_id]
-    error_404 unless @target == current_authentication_devise_user
+    error_404 unless @target == current_refinery_user
   rescue ActiveRecord::RecordNotFound => e
     error_404
   end

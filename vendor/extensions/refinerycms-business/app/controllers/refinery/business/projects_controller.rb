@@ -65,7 +65,7 @@ module Refinery
             if page_role? ROLE_INTERNAL
               Refinery::Business::Project.where(nil)
             elsif page_role? ROLE_EXTERNAL
-              current_authentication_devise_user.projects
+              current_refinery_user.projects
             else
               Refinery::Business::Project.where('1=0')
             end

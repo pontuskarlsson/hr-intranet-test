@@ -11,20 +11,20 @@ Refinery::Page.class_eval do
     roles.any?{ |r| r.title == title.to_s.camelize }
   end
 
-  def user_authorized?(current_authentication_devise_user)
+  def user_authorized?(current_refinery_user)
     return true unless roles.exists?
-    return false if current_authentication_devise_user.nil?
+    return false if current_refinery_user.nil?
 
-    user_page_role_ids(current_authentication_devise_user).any?
+    user_page_role_ids(current_refinery_user).any?
   end
 
-  def user_page_role_ids(current_authentication_devise_user)
+  def user_page_role_ids(current_refinery_user)
     @user_page_role_ids ||= {}
-    @user_page_role_ids[current_authentication_devise_user.id] ||= (role_ids & current_authentication_devise_user.role_ids)
+    @user_page_role_ids[current_refinery_user.id] ||= (role_ids & current_refinery_user.role_ids)
   end
 
-  def user_page_role_titles(current_authentication_devise_user = authenticated_user)
-    Refinery::Authentication::Devise::Role.where(id: user_page_role_ids(current_authentication_devise_user)).pluck(:title)
+  def user_page_role_titles(current_refinery_user = authenticated_user)
+    Refinery::Authentication::Devise::Role.where(id: user_page_role_ids(current_refinery_user)).pluck(:title)
   end
 
   class << self
@@ -37,10 +37,10 @@ Refinery::Page.class_eval do
       includes(:page_roles).where(refinery_page_roles: { role_id: roles.map(&:id) << nil })
     end
 
-    def find_authorized_by_link_url!(link_url, current_authentication_devise_user = nil)
+    def find_authorized_by_link_url!(link_url, current_refinery_user = nil)
       find_by!(link_url: link_url).tap do |page|
-        raise ::ActiveRecord::RecordNotFound unless page.user_authorized?(current_authentication_devise_user)
-        page.authenticated_user = current_authentication_devise_user
+        raise ::ActiveRecord::RecordNotFound unless page.user_authorized?(current_refinery_user)
+        page.authenticated_user = current_refinery_user
       end
     end
 

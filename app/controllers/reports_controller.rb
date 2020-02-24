@@ -38,9 +38,9 @@ class ReportsController < ApplicationController
         if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL) or page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER)
           Refinery::QualityAssurance::Inspection.where(nil)
         elsif page_role? Refinery::QualityAssurance::ROLE_INSPECTOR
-          Refinery::QualityAssurance::Inspection.inspected_by(current_authentication_devise_user)
+          Refinery::QualityAssurance::Inspection.inspected_by(current_refinery_user)
         elsif page_role? Refinery::QualityAssurance::ROLE_EXTERNAL
-          Refinery::QualityAssurance::Inspection.for_companies(current_authentication_devise_user.companies)
+          Refinery::QualityAssurance::Inspection.for_companies(current_refinery_user.companies)
         else
           Refinery::QualityAssurance::Inspection.where('1=0')
         end

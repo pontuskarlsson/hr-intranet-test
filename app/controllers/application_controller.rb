@@ -85,7 +85,7 @@ class ApplicationController < ActionController::Base
   end
 
   def restrict_public_pages?
-    false # current_authentication_devise_user.nil? || !current_authentication_devise_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
+    false # current_refinery_user.nil? || !current_refinery_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
   end
 
   def login_url

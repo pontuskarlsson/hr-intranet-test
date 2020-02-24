@@ -33,7 +33,7 @@ module Refinery
 
           if @inspection_ids.length <= 100
             resources = ::Refinery::Resource.create_resources_with_access({ file: 'blank' }, {
-                'User' => { user_id: current_authentication_devise_user.id }
+                'User' => { user_id: current_refinery_user.id }
             })
             @resource = resources[0]
 
@@ -100,8 +100,8 @@ module Refinery
     protected
 
       def inspections_scope
-        @inspections_scope ||= Inspection.for_user_roles(current_authentication_devise_user, @auth_role_titles)
-        @inspections_scope_test ||= Inspection.for_user_roles_test(current_authentication_devise_user, @auth_role_titles)
+        @inspections_scope ||= Inspection.for_user_roles(current_refinery_user, @auth_role_titles)
+        @inspections_scope_test ||= Inspection.for_user_roles_test(current_refinery_user, @auth_role_titles)
 
         if @inspections_scope.map(&:id) != @inspections_scope_test.map(&:id)
           ErrorMailer.webhook_notification_email('+for_user_roles+ mismatch', params.to_unsafe_h).deliver_later

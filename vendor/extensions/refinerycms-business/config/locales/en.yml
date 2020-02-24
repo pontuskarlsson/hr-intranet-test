@@ -362,10 +362,15 @@ en:
 
       'refinery/business/plan':
         account_id: Account
+        account_manager_id: Account Manager
+        account_manager_label: Account Manager
         company_id: Company
         company_label: Company
         confirmed_at: Confirmed At
         confirmed_by_id: Confirmed By
+        confirmed_by_label: Confirmed By
+        contact_person_id: Contact Person
+        contact_person_label: Contact Person
         description: Description
         end_date: End Date
         min_contract_period_months: Min. Contract Period (months)

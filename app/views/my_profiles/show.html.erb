@@ -11,8 +11,8 @@
       <div class="cell medium-9">
         <div class="tabs-content" data-tabs-content="example-tabs">
           <div class="tabs-panel is-active" id="panel1v">
-            <% if current_authentication_devise_user.contact.present? %>
-              <%= form_for current_authentication_devise_user.contact, url: my_profile_path do |f| %>
+            <% if current_refinery_user.contact.present? %>
+              <%= form_for current_refinery_user.contact, url: my_profile_path do |f| %>
                 <div class='field'>
                   <%= f.label :first_name %>
                   <%= f.text_field :first_name %>
@@ -31,7 +31,7 @@
                 <%= f.submit 'Save Changes', class: 'button primary' %>
               <% end %>
             <% else %>
-              <%= form_for current_authentication_devise_user, url: my_profile_path do |f| %>
+              <%= form_for current_refinery_user, url: my_profile_path do |f| %>
                 <div class='field'>
                   <%= f.label :full_name %>
                   <%= f.text_field :full_name %>

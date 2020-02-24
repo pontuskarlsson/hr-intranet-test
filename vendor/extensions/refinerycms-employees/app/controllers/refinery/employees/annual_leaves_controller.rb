@@ -71,7 +71,7 @@ module Refinery
 
       protected
       def find_employee
-        @employee = current_authentication_devise_user.employee
+        @employee = current_refinery_user.employee
         raise ActiveRecord::RecordNotFound if @employee.nil?
       end
 
@@ -89,7 +89,7 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/annual_leaves', current_authentication_devise_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/annual_leaves', current_refinery_user)
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

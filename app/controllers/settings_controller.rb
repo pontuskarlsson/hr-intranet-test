@@ -20,7 +20,7 @@ class SettingsController < ApplicationController
       if invite_form.save
         format.html { redirect_to setting_path(@company, anchor: 'settings-users') }
         # New empty form
-        format.js { @invite_form = InviteForm.new_in_model(@company, {}, current_authentication_devise_user) }
+        format.js { @invite_form = InviteForm.new_in_model(@company, {}, current_refinery_user) }
       else
         format.html { render action: :show }
         format.js
@@ -31,7 +31,7 @@ class SettingsController < ApplicationController
   private
 
   def company_scope
-    @companies ||= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user)
+    @companies ||= ::Refinery::Business::Company.for_user_roles(current_refinery_user)
   end
 
   def find_company
@@ -49,7 +49,7 @@ class SettingsController < ApplicationController
   end
 
   def invite_form
-    @invite_form ||= InviteForm.new_in_model(@company, params[:invite_form], current_authentication_devise_user)
+    @invite_form ||= InviteForm.new_in_model(@company, params[:invite_form], current_refinery_user)
   end
 
 end

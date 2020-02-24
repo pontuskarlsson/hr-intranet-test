@@ -89,7 +89,7 @@
       page_options.init(false, '', '');
 
       $('.js_company_field').autocomplete({
-        source: <%= ::Refinery::Business::Company.for_user_roles(current_authentication_devise_user).to_source %>
+        source: <%= ::Refinery::Business::Company.for_user_roles(current_refinery_user).to_source %>
       });
     });
   </script>

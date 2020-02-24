@@ -11,7 +11,7 @@ Refinery::Admin::PagesController.class_eval do
 
   def user_can_assign_roles?
     Refinery::Authentication::Devise.superuser_can_assign_roles &&
-        current_authentication_devise_user.has_role?(:superuser)
+        current_refinery_user.has_role?(:superuser)
   end
 
   def extract_roles

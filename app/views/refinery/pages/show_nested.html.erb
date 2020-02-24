@@ -3,7 +3,7 @@
 
   <ul class="vertical menu drilldown" data-drilldown data-scroll-top="true">
     <% @page.children.each do |child| %>
-      <% if child.user_authorized? current_authentication_devise_user %>
+      <% if child.user_authorized? current_refinery_user %>
         <li>
           <%= link_to child.title, child.link_url.presence || '#' %>
           <% if child.children.any? %>

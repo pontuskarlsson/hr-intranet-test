@@ -1,6 +1,6 @@
 <ul class="menu vertical nested">
   <% child_pages.each do |page| %>
-    <% if page.user_authorized? current_authentication_devise_user %>
+    <% if page.user_authorized? current_refinery_user %>
       <li>
         <%= link_to page.title, page.link_url.presence || '#' %>
         <% if page.children.any? %>

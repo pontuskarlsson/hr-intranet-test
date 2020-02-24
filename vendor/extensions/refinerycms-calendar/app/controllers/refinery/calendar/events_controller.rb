@@ -24,8 +24,8 @@ module Refinery
       end
 
       def index
-        @calendars = ::Refinery::Calendar::Calendar.visible_for_user(current_authentication_devise_user)
-        @active_calendars = ::Refinery::Calendar::Calendar.active_for_user(current_authentication_devise_user)
+        @calendars = ::Refinery::Calendar::Calendar.visible_for_user(current_refinery_user)
+        @active_calendars = ::Refinery::Calendar::Calendar.active_for_user(current_refinery_user)
         @events = ::Refinery::Calendar::Event.in_calendars(@calendars).includes(:calendar).order('refinery_calendar_events.starts_at DESC')
 
         # you can use meta fields from your model instead (e.g. browser_title)
@@ -46,7 +46,7 @@ module Refinery
       end
 
       def update
-        if @event.calendar.allows_event_update_by?(current_authentication_devise_user)
+        if @event.calendar.allows_event_update_by?(current_refinery_user)
           if @event.update_attributes(event_params)
             flash[:notice] = 'Successfully updated event'
           else
@@ -57,7 +57,7 @@ module Refinery
       end
 
       def destroy
-        if @event.calendar.allows_event_update_by?(current_authentication_devise_user)
+        if @event.calendar.allows_event_update_by?(current_refinery_user)
           if @event.destroy
             flash[:notice] = 'Successfully removed event'
           else
@@ -74,7 +74,7 @@ module Refinery
 
       protected
       def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/calendar/events', current_authentication_devise_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/calendar/events', current_refinery_user)
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end
@@ -87,7 +87,7 @@ module Refinery
       end
 
       def personal_calendars
-        @personal_calendars ||= ::Refinery::Calendar::Calendar.where(user_id: current_authentication_devise_user.id)
+        @personal_calendars ||= ::Refinery::Calendar::Calendar.where(user_id: current_refinery_user.id)
       rescue StandardError
         []
       end
@@ -101,7 +101,7 @@ module Refinery
             @calendar = ::Refinery::Calendar::Calendar.create(
                 title: params[:event].delete(:new_calendar_title),
                 private: params[:event].delete(:private),
-                user_id: current_authentication_devise_user.id,
+                user_id: current_refinery_user.id,
                 activate_on_create: '1')
           end
         end

@@ -9,7 +9,8 @@ FactoryBot.define do
     password  "refinerycms"
     password_confirmation "refinerycms"
 
-    full_name { 'Refinery CMS' }
+    first_name { 'John' }
+    last_name { 'Doe' }
 
     factory :authentication_devise_user_with_roles do
       transient do

@@ -15,14 +15,28 @@ describe Refinery do
 
           it "shows two items" do
             visit refinery.business_admin_plans_path
-            page.should have_content("UniqueTitleOne")
-            page.should have_content("UniqueTitleTwo")
+            expect( page ).to have_content("UniqueTitleOne")
+            expect( page ).to have_content("UniqueTitleTwo")
           end
         end
 
         describe "create" do
-          let!(:company) { FactoryBot.create(:company) }
+          let!(:company) { FactoryBot.create(:verified_company) }
           let!(:account) { FactoryBot.create(:account) }
+          let!(:contact_person) {
+            FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+                ::Refinery::Business::ROLE_EXTERNAL
+            ])
+          }
+          let!(:account_manager) {
+            FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+                ::Refinery::Business::ROLE_INTERNAL
+            ])
+          }
+
+          before do
+            FactoryBot.create(:company_user, company: company, user: contact_person)
+          end
 
           before do
             visit refinery.business_admin_plans_path
@@ -33,12 +47,15 @@ describe Refinery do
           context "valid data" do
             it "should succeed" do
               fill_in "Company", :with => company.label
+              fill_in "Contact Person", :with => contact_person.label
+              fill_in "Account Manager", :with => account_manager.label
               select account.organisation, :from => "Account"
+              select 'USD', :from => "Currency code"
               fill_in "Title", :with => "My Monthly Plan"
               click_button "Save"
 
-              page.should have_content("was successfully added.")
-              Refinery::Business::Plan.count.should == 1
+              expect( page ).to have_content("was successfully added.")
+              expect( Refinery::Business::Plan.count ).to eq 1
             end
           end
 
@@ -46,32 +63,15 @@ describe Refinery do
             it "should fail" do
               click_button "Save"
 
-              page.should have_content("Company can't be blank")
-              Refinery::Business::Plan.count.should == 0
-            end
-          end
-
-          context "duplicate" do
-            before { FactoryBot.create(:plan, :description => "UniqueTitle") }
-
-            it "should fail" do
-              pending "Duplication is not checked at this time"
-              visit refinery.business_admin_plans_path
-
-              click_link "Add New Plan"
-
-              fill_in "Description", :with => "UniqueTitle"
-              click_button "Save"
-
-              page.should have_content("There were problems")
-              Refinery::Business::Plan.count.should == 1
+              expect( page ).to have_content("Company can't be blank")
+              expect( Refinery::Business::Plan.count ).to eq 0
             end
           end
 
         end
 
         describe "edit" do
-          before { FactoryBot.create(:plan, :description => "A order_id") }
+          before { FactoryBot.create(:plan, :title => "A plan title") }
 
           it "should succeed" do
             visit refinery.business_admin_plans_path
@@ -80,11 +80,11 @@ describe Refinery do
               click_link "Edit this plan"
             end
 
-            fill_in "Description", :with => "A different order_id"
+            fill_in "Title", :with => "A different plan title"
             click_button "Save"
 
-            page.should have_content("was successfully updated.")
-            page.should have_no_content("A order_id")
+            expect( page ).to have_content("was successfully updated.")
+            expect( page ).to have_no_content("A plan title")
           end
         end
 
@@ -96,8 +96,8 @@ describe Refinery do
 
             click_link "Remove this plan forever"
 
-            page.should have_content("was successfully removed.")
-            Refinery::Business::Plan.count.should == 0
+            expect( page ).to have_content("was successfully removed.")
+            expect( Refinery::Business::Plan.count ).to eq 0
           end
         end
 

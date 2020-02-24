@@ -45,7 +45,7 @@
     <ul id='plugins' class='checkboxes'>
       <% @available_plugins.each do |plugin| -%>
         <% if Refinery::Plugins.always_allowed.names.include?(plugin[:name]) or
-            (plugin[:name] == 'authentication_devise_users' && @user.id == current_authentication_devise_user.id) %>
+            (plugin[:name] == 'authentication_devise_users' && @user.id == current_refinery_user.id) %>
           <%= hidden_field_tag 'user[plugins][]', plugin[:name],
                                :id => "plugins_#{plugin[:name]}" %>
         <% else %>
@@ -63,7 +63,7 @@
     </ul>
   </div>
 
-  <% if current_authentication_devise_user.has_role?(:superuser) && Refinery::Authentication::Devise.superuser_can_assign_roles %>
+  <% if current_refinery_user.has_role?(:superuser) && Refinery::Authentication::Devise.superuser_can_assign_roles %>
     <div class='field role_access'>
       <span class='label_with_help'>
         <%= f.label :role_access, t('.role_access'), :class => "title_label" %>
@@ -86,7 +86,7 @@
 
   <%= render '/refinery/admin/form_actions', :f => f,
              :continue_editing => false,
-             :hide_delete => !current_authentication_devise_user.can_delete?(@user),
+             :hide_delete => !current_refinery_user.can_delete?(@user),
              :delete_title => t('delete', :scope => 'refinery.authentication.devise.admin.users'),
              :delete_confirmation => t('message', :scope => 'refinery.authentication.devise.admin.delete', :title => @user.username) %>
 <% end %>

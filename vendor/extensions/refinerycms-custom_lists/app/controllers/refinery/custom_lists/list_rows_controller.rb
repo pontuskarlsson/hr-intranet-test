@@ -36,7 +36,7 @@ module Refinery
 
       def find_page
         @page = ::Refinery::Page.find(params[:originating_page_id])
-        error_404 unless @page.user_authorized?(current_authentication_devise_user)
+        error_404 unless @page.user_authorized?(current_refinery_user)
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

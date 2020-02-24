@@ -4,11 +4,11 @@ module Refinery
       before_action :find_company
 
       def new
-        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company, params[:document], current_authentication_devise_user)
+        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company, params[:document], current_refinery_user)
       end
 
       def create
-        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company, params[:document], current_authentication_devise_user)
+        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company, params[:document], current_refinery_user)
         unless @document_creator.save
           render action: :new
         end
@@ -17,7 +17,7 @@ module Refinery
       protected
 
       def company_scope
-        @companies ||= Company.for_user_roles(current_authentication_devise_user)
+        @companies ||= Company.for_user_roles(current_refinery_user)
       end
 
       def find_company

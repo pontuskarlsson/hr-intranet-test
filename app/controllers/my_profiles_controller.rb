@@ -33,8 +33,8 @@ class MyProfilesController < ApplicationController
   end
 
   def profile_updated?
-    if current_authentication_devise_user.contact.present?
-      current_authentication_devise_user.contact.update_attributes(contact_params)
+    if current_refinery_user.contact.present?
+      current_refinery_user.contact.update_attributes(contact_params)
     else
       current_refinery_user.update_attributes(user_params)
     end

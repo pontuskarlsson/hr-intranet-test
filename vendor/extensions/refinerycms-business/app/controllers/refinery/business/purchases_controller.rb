@@ -23,7 +23,7 @@ module Refinery
       end
 
       def create
-        @purchase = current_authentication_devise_user.purchases.build(purchase_params)
+        @purchase = current_refinery_user.purchases.build(purchase_params)
 
         respond_to do |format|
           if @purchase.save # Not saved
@@ -35,7 +35,7 @@ module Refinery
       end
 
       def success
-        flash[:info] = "Payment was successful. Your credits will be issued shortly."
+        flash[:notice] = "Payment was successful. Your credits will be issued shortly."
         redirect_to refinery.business_purchases_path
       end
 
@@ -47,7 +47,7 @@ module Refinery
       private
 
       def purchases_scope
-        @purchases = Purchase.for_user_roles(current_authentication_devise_user)
+        @purchases = Purchase.for_user_roles(current_refinery_user)
       end
 
       def find_purchases

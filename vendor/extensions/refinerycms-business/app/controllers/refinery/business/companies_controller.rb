@@ -46,7 +46,7 @@ module Refinery
       end
 
       def create_document
-        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company, params[:document], current_authentication_devise_user)
+        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@company, params[:document], current_refinery_user)
         if @document_creator.save
           flash[:notice] = 'Successfully added Document(s)'
         else
@@ -58,7 +58,7 @@ module Refinery
       protected
 
       def company_scope
-        @companies ||= Company.for_user_roles(current_authentication_devise_user, @auth_role_titles)
+        @companies ||= Company.for_user_roles(current_refinery_user, @auth_role_titles)
       end
 
       def find_companies

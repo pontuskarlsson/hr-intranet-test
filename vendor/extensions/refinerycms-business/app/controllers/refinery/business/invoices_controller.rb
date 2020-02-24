@@ -111,11 +111,11 @@ module Refinery
       end
 
       def invoice_billables_form
-        @invoice_billables_form ||= InvoiceBillablesForm.new_in_model(@invoice, params[:invoice], current_authentication_devise_user)
+        @invoice_billables_form ||= InvoiceBillablesForm.new_in_model(@invoice, params[:invoice], current_refinery_user)
       end
 
       def invoice_items_build_form
-        @invoice_items_build_form ||= InvoiceItemsBuildForm.new_in_model(@invoice, params[:invoice_items_build_form], current_authentication_devise_user)
+        @invoice_items_build_form ||= InvoiceItemsBuildForm.new_in_model(@invoice, params[:invoice_items_build_form], current_refinery_user)
       end
 
     end

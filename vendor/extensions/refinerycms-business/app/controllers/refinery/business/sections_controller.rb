@@ -23,7 +23,7 @@ module Refinery
       end
 
       def update
-        # if @billable.billable_form(params[:billable], current_authentication_devise_user).save
+        # if @billable.billable_form(params[:billable], current_refinery_user).save
         #   flash[:notice] = 'Successfully updated the Billable'
         #   redirect_to refinery.business_billable_path(@billable)
         # else

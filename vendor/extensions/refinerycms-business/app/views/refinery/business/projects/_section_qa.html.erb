@@ -44,7 +44,7 @@
           <th>Date</th>
           <th data-dt-search-input="true">Assigned To</th>
           <th data-dt-search-input="true">Supplier</th>
-          <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %><th data-dt-search-input="true">Invoice</th><% end %>
+          <% if current_refinery_user.has_role?(Refinery::Business::ROLE_INTERNAL) %><th data-dt-search-input="true">Invoice</th><% end %>
           <th>Unit Price</th>
           <th>Unit Disc.</th>
           <th>Tot. Cost</th>
@@ -57,7 +57,7 @@
         <% section.jobs_and_allocations.each_pair do |billable, allocations| %>
           <tr>
             <td>
-              <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
+              <% if current_refinery_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
                 <%= link_to billable.title, refinery.business_billable_path(billable) %>
               <% else %>
                 <%= billable.title %>
@@ -66,9 +66,9 @@
             <td><%= billable.billable_date %></td>
             <td><%= billable.assigned_to_label %></td>
             <td><%= billable.supplier_label %></td>
-            <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
+            <% if current_refinery_user.has_role?(Refinery::Business::ROLE_INTERNAL) %>
               <td>
-                <% if current_authentication_devise_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
+                <% if current_refinery_user.has_role?(Refinery::Business::ROLE_INTERNAL_FINANCE) && billable.invoice.present? %>
                   <%= link_to billable.invoice_label, refinery.business_invoice_path(billable.invoice) %>
                 <% else %>
                   <%= billable.invoice_label %>

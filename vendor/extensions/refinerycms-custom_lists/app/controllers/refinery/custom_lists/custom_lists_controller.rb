@@ -26,7 +26,7 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/custom_lists', current_authentication_devise_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!('/custom_lists', current_refinery_user)
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

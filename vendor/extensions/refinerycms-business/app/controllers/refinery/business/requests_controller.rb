@@ -29,7 +29,7 @@ module Refinery
       end
 
       def create
-        @request_form = RequestForm.new_in_model(Request.new, params[:request], current_authentication_devise_user)
+        @request_form = RequestForm.new_in_model(Request.new, params[:request], current_refinery_user)
         if @request_form.save
           redirect_to refinery.business_request_path(@request_form.request)
         else
@@ -59,7 +59,7 @@ module Refinery
       protected
 
       def requests_scope
-        @requests = Refinery::Business::Request.for_user_roles(current_authentication_devise_user)
+        @requests = Refinery::Business::Request.for_user_roles(current_refinery_user)
       end
 
       def find_requests

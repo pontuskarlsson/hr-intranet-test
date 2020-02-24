@@ -35,10 +35,6 @@ Refinery::Authentication::Devise::User.class_eval do
     full_name
   end
 
-  def label
-    full_name
-  end
-
   def active_for_authentication?
     super && !deactivated
   end

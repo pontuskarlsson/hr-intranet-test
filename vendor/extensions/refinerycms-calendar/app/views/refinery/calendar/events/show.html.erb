@@ -19,7 +19,7 @@
     <p><%= link_to t('.view_on_map', default: 'View it on a map'), "http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q=#{CGI::escape(@event.venue.address)}&ie=UTF8&z=16" %></p>
   <% end -%>
 
-  <% if refinery_user_signed_in? && @event.calendar.user_id == current_authentication_devise_user.id %>
+  <% if refinery_user_signed_in? && @event.calendar.user_id == current_refinery_user.id %>
     <p><%= link_to t('.edit', default: 'Edit Details'), refinery.edit_calendar_event_path(@event) %></p>
     <p><%= link_to t('.delete', default: 'Remove Event'), refinery.calendar_event_path(@event), method: :delete, confirm: 'Are you sure you want to remove this event?' %></p>
   <% end %>

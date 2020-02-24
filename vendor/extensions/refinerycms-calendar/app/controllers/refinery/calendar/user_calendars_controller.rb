@@ -3,7 +3,7 @@ module Refinery
     class UserCalendarsController < ::ApplicationController
 
       def create
-        @user_calendar = UserCalendar.find_or_initialize_by(user_id: current_authentication_devise_user.id, calendar_id: user_calendar_params[:calendar_id])
+        @user_calendar = UserCalendar.find_or_initialize_by(user_id: current_refinery_user.id, calendar_id: user_calendar_params[:calendar_id])
         @user_calendar.inactive = user_calendar_params[:inactive]
         if @user_calendar.save
           render json: { success: true }

@@ -15,7 +15,7 @@ module Refinery
       end
 
       def find_and_auth_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!(page_title, current_authentication_devise_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!(page_title, current_refinery_user)
         @auth_role_titles = @page.user_page_role_titles & action_roles
       rescue ::ActiveRecord::RecordNotFound
         error_404

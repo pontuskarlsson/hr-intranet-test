@@ -37,8 +37,8 @@
     $(document).ready(function(){
       $('body').on('change', '.js_confirm_checkbox', function(evt) {
         if ($(this).is(':checked')) {
-          $('.js_confirmed_by_field').val(<%= current_authentication_devise_user.full_name.to_json.html_safe %>);
-          $('.js_confirmed_by_hidden').val(<%= current_authentication_devise_user.id %>);
+          $('.js_confirmed_by_field').val(<%= current_refinery_user.full_name.to_json.html_safe %>);
+          $('.js_confirmed_by_hidden').val(<%= current_refinery_user.id %>);
           var date = new Date();
           $('.js_confirmed_at').text(["Confirmed at", date.toLocaleString()].join(' '));
           $('.js_confirm_submit').attr('disabled', false);

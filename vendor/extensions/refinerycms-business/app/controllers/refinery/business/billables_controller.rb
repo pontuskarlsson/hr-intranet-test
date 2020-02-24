@@ -38,7 +38,7 @@ module Refinery
       end
 
       def create
-        # @billable_form = BillableForm.new_in_model(Billable.new, params[:billable], current_authentication_devise_user)
+        # @billable_form = BillableForm.new_in_model(Billable.new, params[:billable], current_refinery_user)
         # if @billable_form.save
         #   redirect_to refinery.business_billable_path(@billable_form.billable)
         # else

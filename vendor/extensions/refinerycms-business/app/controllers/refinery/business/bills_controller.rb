@@ -56,7 +56,7 @@ module Refinery
       end
 
       def invoice_billables_form
-        @bill_billables_form ||= InvoiceBillablesForm.new_in_model(@bill, params[:invoice], current_authentication_devise_user)
+        @bill_billables_form ||= InvoiceBillablesForm.new_in_model(@bill, params[:invoice], current_refinery_user)
       end
 
     end

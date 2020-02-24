@@ -45,7 +45,7 @@
 
             <div class="field">
               <%= radio_button_tag 'calendar', nil, personal_calendars.empty?, class: 'js_new_cal_radio' %>
-              <%= f.text_field :new_calendar_title, value: personal_calendars.empty? ? "#{ current_authentication_devise_user.full_name }'s Calendar" : '', class: 'js_new_cal_title_field', disabled: personal_calendars.any? %>
+              <%= f.text_field :new_calendar_title, value: personal_calendars.empty? ? "#{ current_refinery_user.full_name }'s Calendar" : '', class: 'js_new_cal_title_field', disabled: personal_calendars.any? %>
             </div>
 
             <div class="field">

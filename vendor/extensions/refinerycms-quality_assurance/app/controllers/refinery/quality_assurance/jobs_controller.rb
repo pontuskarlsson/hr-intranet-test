@@ -55,7 +55,7 @@ module Refinery
             elsif page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE)
               Job.where(nil)
             elsif page_role? ROLE_EXTERNAL
-              Job.for_companies(current_authentication_devise_user.companies)
+              Job.for_companies(current_refinery_user.companies)
             else
               Job.where('1=0')
             end
