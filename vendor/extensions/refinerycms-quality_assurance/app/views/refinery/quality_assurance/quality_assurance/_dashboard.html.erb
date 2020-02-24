@@ -1,0 +1,53 @@
+<div class="grid-x grid-padding-x">
+  <div class="cell medium-4">
+    <div class="widget">
+      <% if (pages = @page.children.select { |p| p.user_authorized?(current_refinery_user) }).count > 1 %>
+        <header>Go To</header>
+
+        <div class="widget-body">
+          <ul class="menu sub-menu vertical">
+            <% pages.each do |page| %>
+              <% if filter_params.any? %>
+                <li><%= link_to page.title, "#{page.link_url}?#{filter_params.to_query}" %></li>
+              <% else %>
+                <li><%= link_to page.title, page.link_url %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="cell medium-8">
+    <div class="widget">
+      <header>Recent inspections</header>
+
+      <div class="widget-body">
+        <table class="widget-table">
+          <thead>
+          <tr>
+            <th>Code</th>
+            <th>Date</th>
+            <th>PO</th>
+            <th>Product</th>
+            <th>Result</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% recent_inspections.each do |inspection| %>
+            <tr>
+              <td><%= link_to inspection.code, refinery.quality_assurance_inspection_path(inspection) %></td>
+              <td><%= inspection.display_inspection_date %></td>
+              <td><%= inspection.po_number %></td>
+              <td><%= inspection.product_code %></td>
+              <td><%= inspection.result %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

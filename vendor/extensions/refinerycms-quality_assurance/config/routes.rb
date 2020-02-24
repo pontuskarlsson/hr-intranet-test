@@ -2,6 +2,7 @@ Refinery::Core::Engine.routes.draw do
 
   # Frontend routes
   namespace :quality_assurance do
+    root to: 'quality_assurance#dashboard'
     resources :credits, only: [:index]
     resources :inspections, :only => [:index, :show, :edit, :update] do
       get :calendar, on: :collection

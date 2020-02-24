@@ -1,0 +1,10 @@
+<% content_for :body do %>
+  <% if has_qa_content? %>
+    <%= render 'dashboard' %>
+
+  <% else %>
+    <%= render 'get_started' %>
+  <% end %>
+<% end %>
+
+<%= render '/refinery/content_page' %>

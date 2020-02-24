@@ -7,16 +7,40 @@ div.widget {
     background: $white;
     display: block;
     border-radius: 3px;
-    border: 1px solid #d6d6d6;
+    //border: 1px solid #d6d6d6;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 
     header {
         width: 100%;
         margin: -10px -12px;
         padding: 10px 12px;
-        font-weight: bold;
-        font-size: 0.9rem;
-        background: $light-gray;
+        font-size: 0.8rem;
+        color: $black;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
         box-sizing: content-box;
+    }
+
+    table.widget-table {
+        margin: 0 -12px;
+        width: calc(100% + 24px);
+
+        thead {
+            background-color: $hr-blue-color;
+            color: $white;
+
+            border-left: 12px solid $hr-blue-color;
+            border-right: 12px solid $hr-blue-color;
+        }
+
+        tbody {
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+
+            tr {
+                background-color: transparent;
+            }
+        }
     }
 
     div.widget-body {
