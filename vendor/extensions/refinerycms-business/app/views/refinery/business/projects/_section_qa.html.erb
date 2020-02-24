@@ -37,7 +37,7 @@
       </tr>
       <tr>
         <th>Total Cost</th>
-        <td><%= section.jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
+        <td><%=number_to_currency section.jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost }, unit: '' %></td>
       </tr>
       </tbody>
     </table>
