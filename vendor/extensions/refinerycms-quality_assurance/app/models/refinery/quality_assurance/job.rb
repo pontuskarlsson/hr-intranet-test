@@ -77,7 +77,7 @@ module Refinery
                       billable_date: inspection_date,
                       assigned_to_id: assigned_to_id,
                       assigned_to_label: assigned_to_label,
-                      title: 'QC/QA Job(s)',
+                      title: 'QA/QC Job(s)',
                       qty: 1,
                       qty_unit: 'day',
                       article_code: ''

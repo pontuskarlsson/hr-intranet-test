@@ -1,6 +1,6 @@
 <ul class="tabs" data-tabs id="section-qa-content-tabs">
-  <li class="tabs-title is-active"><a href="#qa-panel1" aria-selected="true">Cost details</a></li>
-  <li class="tabs-title"><a data-tabs-target="qa-panel2" href="#panel2">Analytics: By Supplier</a></li>
+  <li class="tabs-title is-active"><a href="#qa-panel1" aria-selected="true">Overview</a></li>
+  <li class="tabs-title"><a data-tabs-target="qa-panel2" href="#panel2">Details</a></li>
 </ul>
 
 <div class="tabs-content" data-tabs-content="section-qa-content-tabs">
@@ -16,26 +16,63 @@
         <td><%= section.description %></td>
       </tr>
       <tr>
-        <th>No. of Billables</th>
+        <th>Mandays</th>
         <td>
-          Total of <%=number_to_human section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days
+          <%=number_with_delimiter section.jobs_and_allocations.keys.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) }.to_i %>
           <% false && if (not_invoiced = section.jobs_and_allocations.keys.select { |b| b.invoice.nil? }).any? %>
             (<%=number_to_human not_invoiced.inject(Rational(0)) { |acc, b| acc + b.allocated_by(section) } %> days not invoiced)
           <% end %>
         </td>
       </tr>
       <tr>
-        <th>No. of Jobs</th>
+        <th>Jobs</th>
         <td>
-          <p>
-            <%= section.quality_assurance_jobs.count %>,
-            <%= link_to 'View All', refinery.quality_assurance_jobs_path(section_id: section.id) %>
-          </p>
+          <%= section.quality_assurance_jobs.count %>,
+          <%= link_to 'View All', refinery.quality_assurance_jobs_path(section_id: section.id) %>
         </td>
+      </tr>
+      <tr>
+        <th>Suppliers</th>
+        <td><%=number_with_delimiter section.jobs_and_allocations.keys.map(&:supplier_label).uniq.count %></td>
+      </tr>
+      <tr>
+        <th>Total Cost</th>
+        <td><%= section.jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
       </tr>
       </tbody>
     </table>
 
+    <h5>Allocated Cost by supplier</h5>
+
+    <%= column_chart [], stacked: true, id: 'js-qa-supplier-chart', colors: ['rgb(86, 106, 229)'], background_colors: ['rgb(86, 106, 229)'], thousands: ',' %>
+
+    <% if section.quality_assurance_jobs.any? %>
+      <table class="display responsive nowrap dt-project-supplier-summary" style="width: 100%;">
+        <thead>
+        <tr>
+          <th>Supplier</th>
+          <th class="text-align-right">No. of Billables</th>
+          <th class="text-align-right">No. of Jobs</th>
+          <th class="text-align-right">Tot. Alloc. Cost</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% section.jobs_and_allocations.group_by { |billable, _|
+          billable.supplier_label
+        }.each_pair do |supplier_label, jobs_and_allocations| %>
+          <tr>
+            <td><%= supplier_label %></td>
+            <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + billable.qty }, delimiter: ',', strip_insignificant_zeros: true %></td>
+            <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + allocations[:jobs].count }, delimiter: ',', strip_insignificant_zeros: true %></td>
+            <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
+  <div class="tabs-panel" id="qa-panel2">
     <% if section.quality_assurance_jobs.any? %>
       <table class="display responsive nowrap dt-project-billables" style="width: 100%;">
         <thead>
@@ -62,7 +99,7 @@
               <% else %>
                 <%= billable.title %>
               <% end %>
-              </td>
+            </td>
             <td><%= billable.billable_date %></td>
             <td><%= billable.assigned_to_label %></td>
             <td><%= billable.supplier_label %></td>
@@ -82,37 +119,6 @@
             <td class="text-align-right"><%=number_to_human allocated_perc * 100 %>%</td>
             <td class="text-align-right"><%=number_to_currency allocated_perc * billable.total_cost, unit: '' %></td>
             <td class="text-align-right"><%=number_with_delimiter allocations[:jobs].count %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    <% end %>
-  </div>
-
-  <div class="tabs-panel" id="qa-panel2">
-    <h5>Allocated Cost by supplier</h5>
-
-    <%= column_chart [], stacked: true, id: 'js-qa-supplier-chart', colors: ['rgb(86, 106, 229)'], background_colors: ['rgb(86, 106, 229)'], thousands: ',' %>
-
-    <% if section.quality_assurance_jobs.any? %>
-      <table class="display responsive nowrap dt-project-supplier-summary" style="width: 100%;">
-        <thead>
-        <tr>
-          <th>Supplier</th>
-          <th class="text-align-right">No. of Billables</th>
-          <th class="text-align-right">No. of Jobs</th>
-          <th class="text-align-right">Tot. Alloc. Cost</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% section.jobs_and_allocations.group_by { |billable, _|
-          billable.supplier_label
-        }.each_pair do |supplier_label, jobs_and_allocations| %>
-          <tr>
-            <td><%= supplier_label %></td>
-            <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + billable.qty }, delimiter: ',', strip_insignificant_zeros: true %></td>
-            <td class="text-align-right"><%=number_with_precision jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + allocations[:jobs].count }, delimiter: ',', strip_insignificant_zeros: true %></td>
-            <td class="text-align-right"><%= jobs_and_allocations.inject(0.0) { |acc, (billable, allocations)| acc + (Rational(1) * allocations[:jobs].count / billable.total_no_of_jobs) * billable.total_cost } %></td>
           </tr>
         <% end %>
         </tbody>
