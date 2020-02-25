@@ -10,7 +10,7 @@
   <div class="number">
     <%= header_number %>
   </div>
-  <%=simple_format header_text %>
+  <%=simple_format local_assigns[:no_break_header] ? header_text.gsub("\n", ' ') : header_text %>
 </header>
 
 <div class="pricing-body">

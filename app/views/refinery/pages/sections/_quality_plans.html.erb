@@ -24,28 +24,28 @@
   }
 
   plans = {
-    'Small' => { header_title: 'Small', header_number: 5, header_text: "manday vouchers or more\nper month", header_promo: '', cta: {
+    'Small' => { header_title: 'Small', header_number: 5, header_text: "manday vouchers\nor more\nper month", header_promo: '', cta: {
       label: 'Get Started', url: refinery.new_business_request_path(plan: 'Small')
     }, features: [
       { large: '6%', text: 'discount' },
       { large: '$329', text: 'per voucher' },
       { large: '$1,645', text: 'and up monthly' },
     ] },
-    'Medium' => { header_title: 'Medium', header_number: 10, header_text: "manday vouchers or more\nper month", header_promo: 'Most popular', cta: {
+    'Medium' => { header_title: 'Medium', header_number: 10, header_text: "manday vouchers\nor more\nper month", header_promo: 'Most popular', cta: {
       label: 'Get Started', url: refinery.new_business_request_path(plan: 'Medium')
     }, features: [
       { large: '8%', text: 'discount' },
       { large: '$322', text: 'per voucher' },
       { large: '$3,220', text: 'and up monthly' },
     ] },
-    'Large' => { header_title: 'Large', header_number: 20, header_text: "manday vouchers or more\nper month", header_promo: '', cta: {
+    'Large' => { header_title: 'Large', header_number: 20, header_text: "manday vouchers\nor more\nper month", header_promo: '', cta: {
       label: 'Get Started', url: refinery.new_business_request_path(plan: 'Large')
     }, features: [
       { large: '10%', text: 'discount' },
       { large: '$315', text: 'per voucher' },
       { large: '$6,300', text: 'and up monthly' },
     ] },
-    'X-Large' => { header_title: 'X-Large', header_number: 30, header_text: "manday vouchers or more\nper month", header_promo: '', cta: {
+    'X-Large' => { header_title: 'X-Large', header_number: 30, header_text: "manday vouchers\nor more\nper month", header_promo: '', cta: {
       label: 'Get Started', url: refinery.new_business_request_path(plan: 'X-Large')
     }, features: [
       { large: '12%', text: 'discount' },
@@ -150,22 +150,22 @@
           <ul class="orbit-container">
             <li class="orbit-slide">
               <figure class="orbit-figure pricing-item">
-                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Small'] %>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Small'].merge(no_break_header: true) %>
               </figure>
             </li>
             <li class="is-active orbit-slide">
               <figure class="orbit-figure pricing-item">
-                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Medium'] %>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Medium'].merge(no_break_header: true) %>
               </figure>
             </li>
             <li class="orbit-slide">
               <figure class="orbit-figure pricing-item">
-                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Large'] %>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['Large'].merge(no_break_header: true) %>
               </figure>
             </li>
             <li class="orbit-slide">
               <figure class="orbit-figure pricing-item">
-                <%= render 'refinery/pages/sections/quality_plans/plan', plans['X-Large'] %>
+                <%= render 'refinery/pages/sections/quality_plans/plan', plans['X-Large'].merge(no_break_header: true) %>
               </figure>
             </li>
           </ul>
