@@ -464,10 +464,10 @@ ActiveRecord::Schema.define(version: 20200210075429) do
     t.integer "resource_id"
     t.string "document_type"
     t.text "comments"
-    t.text "meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "request_id"
+    t.text "meta", limit: 4294967295
     t.index ["company_id"], name: "index_refinery_business_documents_on_company_id"
     t.index ["document_type"], name: "index_refinery_business_documents_on_document_type"
     t.index ["request_id"], name: "index_refinery_business_documents_on_request_id"
@@ -685,9 +685,17 @@ ActiveRecord::Schema.define(version: 20200210075429) do
     t.text "meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
+    t.string "currency_code"
+    t.integer "contact_person_id"
+    t.integer "account_manager_id"
+    t.index ["account_id"], name: "index_refinery_business_plans_on_account_id"
+    t.index ["account_manager_id"], name: "index_refinery_business_plans_on_account_manager_id"
     t.index ["company_id"], name: "index_refinery_business_plans_on_company_id"
     t.index ["confirmed_at"], name: "index_refinery_business_plans_on_confirmed_at"
     t.index ["confirmed_by_id"], name: "index_refinery_business_plans_on_confirmed_by_id"
+    t.index ["contact_person_id"], name: "index_refinery_business_plans_on_contact_person_id"
+    t.index ["currency_code"], name: "index_refinery_business_plans_on_currency_code"
     t.index ["end_date"], name: "index_refinery_business_plans_on_end_date"
     t.index ["notice_given_at"], name: "index_refinery_business_plans_on_notice_given_at"
     t.index ["notice_given_by_id"], name: "index_refinery_business_plans_on_notice_given_by_id"
@@ -955,6 +963,7 @@ ActiveRecord::Schema.define(version: 20200210075429) do
     t.string "other_state"
     t.string "other_country"
     t.integer "image_id"
+    t.integer "owner_id"
     t.index ["base_id"], name: "index_refinery_contacts_on_base_id"
     t.index ["base_modified_at"], name: "index_refinery_contacts_on_base_modified_at"
     t.index ["code"], name: "index_refinery_contacts_on_code"
@@ -963,6 +972,7 @@ ActiveRecord::Schema.define(version: 20200210075429) do
     t.index ["insightly_id"], name: "index_refinery_contacts_on_insightly_id"
     t.index ["mailchimp_id"], name: "index_refinery_contacts_on_mailchimp_id"
     t.index ["organisation_id"], name: "index_refinery_contacts_on_organisation_id"
+    t.index ["owner_id"], name: "index_refinery_contacts_on_owner_id"
     t.index ["removed_from_base"], name: "index_refinery_contacts_on_removed_from_base"
     t.index ["state"], name: "index_refinery_contacts_on_state"
     t.index ["user_id"], name: "index_refinery_contacts_on_user_id"

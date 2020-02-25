@@ -1,6 +1,9 @@
 Refinery::Marketing::Contact.class_eval do
 
-  has_one :company, dependent: :nullify, class_name: 'Refinery::Business::Company'
+  has_one :company,       class_name: '::Refinery::Business::Company',
+                          dependent: :nullify
+  belongs_to :owner,      class_name: '::Refinery::Business::Company',
+                          optional: true
 
   def self.find_by_xero_id(account, xero_id)
     if account.organisation == 'Happy Rabbit Limited'

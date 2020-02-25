@@ -1,0 +1,38 @@
+<% if (events = Refinery::Calendar::Event.today.for_calendar_functions(
+  Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
+  *Refinery::Employees::PublicHoliday.all_calendar_functions
+).limit(5)).any? %>
+  <section class="page-part">
+    <div class="page-part-header">
+      TODAY IN CALENDAR
+    </div>
+    <ul class="events">
+      <% events.each do |event| %>
+        <li>
+          <%= render 'refinery/partials/home_event', event: event %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>
+
+<section class="page-part">
+  <div class="page-part-header">
+    UPCOMING IN CALENDAR
+  </div>
+
+  <% if (events = Refinery::Calendar::Event.after_today.for_calendar_functions(
+    Refinery::Employees::LeaveOfAbsence::CALENDAR_FUNCTION,
+    *Refinery::Employees::PublicHoliday.all_calendar_functions
+  ).limit(5)).any? %>
+    <ul class="events">
+      <% events.each do |event| %>
+        <li>
+          <%= render 'refinery/partials/home_event', event: event %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="italic">No Upcoming Events</p>
+  <% end %>
+</section>

@@ -3,7 +3,10 @@ module Refinery
     class Company < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_companies'
 
-      belongs_to :contact,      class_name: 'Refinery::Marketing::Contact', optional: true
+      belongs_to :contact,      class_name: '::Refinery::Marketing::Contact', optional: true
+      has_many :contacts,       class_name: '::Refinery::Marketing::Contact',
+                                foreign_key: :owner_id,
+                                dependent: :destroy
       has_many :company_users,  dependent: :destroy
       has_many :parcels,        through: :contact
       has_many :invoices,       dependent: :nullify
