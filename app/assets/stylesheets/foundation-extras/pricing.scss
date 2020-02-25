@@ -1,5 +1,5 @@
 #pricing-tabs {
-    margin-bottom: 3rem;
+    margin: 2rem 0;
 
     .tabs-title {
         width: 250px;
@@ -17,6 +17,7 @@
         a, a:focus {
             color: $medium-gray;
             font-size: 1.5rem;
+            font-weight: bold;
             text-decoration: none;
         }
     }
