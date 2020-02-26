@@ -2,9 +2,12 @@
   <% if @plan.status_is_confirmed? %>
     <% if @plan.contract&.resource.present? %>
       <%= link_to 'Print Contract', @plan.contract.resource.file.url, class: 'button' %>
+
+    <% elsif current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL) %>
+      <%= link_to 'Print Proposal', refinery.contract_business_plan_path(@plan, format: :pdf), class: 'button' %>
     <% end %>
 
-  <% elsif @plan.status_is_proposed? || current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL) %>
+  <% elsif @plan.status_is_proposed? %>
     <%= link_to 'Print Proposal', refinery.contract_business_plan_path(@plan, format: :pdf), class: 'button' %>
 
     <button class="button primary" data-open="js_confirm_contract_form">Sign / Accept</button>
