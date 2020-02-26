@@ -36,7 +36,7 @@
   <h3 style="margin-bottom: 0.5rem;">Terms</h3>
 
   <h5>Payment Terms</h5>
-  <p><%= @plan.payment_terms_days %> Days</p>
+  <p><%= @plan.payment_terms.display %></p>
 
   <h5>Contract Period</h5>
   <p><%= @plan.describe_contract_period %></p>

@@ -241,6 +241,12 @@ en:
         show:
           other: Other Plans
 
+        payment_terms:
+          last_day_of_following_month: Last day of following month
+          last_day_of_current_month: Last day of current month
+          X_DATE_following_month: 'On the %{qty} of following month'
+          X_DAYS_after_invoice_date: '%{qty} days after invoice date'
+
       projects:
         show:
           other: Other Projects

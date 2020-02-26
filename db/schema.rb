@@ -689,6 +689,7 @@ ActiveRecord::Schema.define(version: 20200210075429) do
     t.string "currency_code"
     t.integer "contact_person_id"
     t.integer "account_manager_id"
+    t.text "payment_terms_content"
     t.index ["account_id"], name: "index_refinery_business_plans_on_account_id"
     t.index ["account_manager_id"], name: "index_refinery_business_plans_on_account_manager_id"
     t.index ["company_id"], name: "index_refinery_business_plans_on_company_id"

@@ -32,6 +32,7 @@ module Refinery
       display_date_for :start_date, :end_date, :confirmed_at, :notice_given_at
 
       store :content, accessors: [ :plan_charges, :included_services ], coder: JSON, prefix: :plan
+      store :payment_terms_content, accessors: [:payment_terms_type, :payment_terms_qty], codes: JSON
 
       delegate :full_name, to: :confirmed_by, prefix: true, allow_nil: true
       delegate :full_name, to: :contact_person, prefix: true, allow_nil: true
@@ -52,6 +53,9 @@ module Refinery
         end
         if account_manager.present?
           errors.add(:account_manager_id, :invalid) unless account_manager.has_role?(::Refinery::Business::ROLE_INTERNAL)
+        end
+        if payment_terms.present?
+          errors.add(:payment_terms_type, :invalid) unless payment_terms.valid?
         end
       end
 
@@ -132,6 +136,48 @@ module Refinery
         when 'plan.confirmed' then "Happy Rabbit Monthly Plan Confirmed!"
         when 'plan.proposed' then "Happy Rabbit Monthly Plan Proposed!"
         end
+      end
+
+      def payment_terms
+        @payment_terms ||= PaymentTerms.new(payment_terms_type, payment_terms_qty)
+      end
+
+      class PaymentTerms < Struct.new(:terms_type, :terms_qty)
+        TYPES = %w(
+          last_day_of_following_month
+          last_day_of_current_month
+          X_DATE_following_month
+          X_DAYS_after_invoice_date
+        )
+
+        def present?
+          [terms_type, terms_qty].any?(&:present?)
+        end
+
+        def valid?
+          return false unless TYPES.include?(terms_type)
+
+          if terms_type['X']
+            terms_qty.to_i > 0
+          else
+            true
+          end
+        end
+
+        def display
+          if present?
+            if terms_type['DATE']
+              ::I18n.t "refinery.business.plans.payment_terms.#{terms_type}", qty: terms_qty.to_i.ordinalize
+            else
+              ::I18n.t "refinery.business.plans.payment_terms.#{terms_type}", qty: terms_qty
+            end
+          else
+            'N/A'
+          end
+        rescue StandardError => e
+          'N/A'
+        end
+
       end
 
     end

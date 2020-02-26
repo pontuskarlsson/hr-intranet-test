@@ -23,6 +23,7 @@ class CreateBusinessPlans < ActiveRecord::Migration[5.1]
       t.text :meta
       t.integer :contact_person_id
       t.integer :account_manager_id
+      t.text :payment_terms_content
 
       t.timestamps
     end

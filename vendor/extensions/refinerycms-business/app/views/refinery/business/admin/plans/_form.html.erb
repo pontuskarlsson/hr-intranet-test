@@ -84,6 +84,16 @@
   </div>
 
   <div class='field'>
+    <%= f.label :payment_terms_type -%>
+    <%= f.select :payment_terms_type, options_for_select(::Refinery::Business::Plan::PaymentTerms::TYPES, f.object.payment_terms_type) -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :payment_terms_qty -%>
+    <%= f.number_field :payment_terms_qty -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :notice_period_months -%>
     <%= f.text_field :notice_period_months -%>
   </div>
