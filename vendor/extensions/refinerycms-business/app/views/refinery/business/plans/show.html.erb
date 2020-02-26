@@ -4,8 +4,8 @@
       <%= link_to 'Print Contract', @plan.contract.resource.file.url, class: 'button' %>
     <% end %>
 
-  <% elsif @plan.status_is_proposed? %>
-    <%= link_to 'Print Contract', refinery.contract_business_plan_path(@plan, format: :pdf), class: 'button' %>
+  <% elsif @plan.status_is_proposed? || current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL) %>
+    <%= link_to 'Print Proposal', refinery.contract_business_plan_path(@plan, format: :pdf), class: 'button' %>
 
     <button class="button primary" data-open="js_confirm_contract_form">Sign / Accept</button>
 
@@ -101,9 +101,8 @@
         <tr>
           <th>Validity</th>
           <td>
-            Any unused Mandays will carry over to the following month and be used
-            on a “First in First Out” basis and expire after 12 months from invoice date
-            or on the first day after contract period ends, whichever comes first.
+            Any unused Manday Credits will carry over to the following month and be used
+            on a “First in First Out” basis and expire after 12 months from invoice date.
           </td>
         </tr>
         <tr>
