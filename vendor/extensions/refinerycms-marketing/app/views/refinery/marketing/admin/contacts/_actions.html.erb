@@ -8,6 +8,9 @@
     <%= link_to t('.create_new'), refinery.new_marketing_admin_contact_path,
                  :class => "add_icon" %>
   </li>
+
+  <%= render '/refinery/marketing/admin/shared/links' %>
+
 <% if !searching? && ::Refinery::Marketing::Admin::ContactsController.sortable? && ::Refinery::Marketing::Contact.many? %>
   <li>
     <%= link_to t('.reorder', :what => "Contacts"),

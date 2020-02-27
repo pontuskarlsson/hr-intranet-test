@@ -8,8 +8,10 @@ en:
         shared:
           links:
             manage_brands: Manage Brands
-            manage_shows: Manage Shows
+            manage_campaigns: Manage Campaigns
             manage_contacts: Manage Contacts
+            manage_landing_pages: Manage Landing Pages
+            manage_shows: Manage Shows
         brands:
           actions:
             create_new: Add New Brand
@@ -23,6 +25,50 @@ en:
             view_live_html: View this brand live <br/><em>(opens in a new window)</em>
             edit: Edit this brand
             delete: Remove this brand forever
+            preview: 'added %{created_at}'
+        campaigns:
+          actions:
+            create_new: Add New Campaign
+            reorder: Reorder Contacts
+            reorder_done: Done Reordering Contacts
+          records:
+            title: Campaigns
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Campaigns yet. Click "Add New Campaign" to add your first campaign.
+          campaign:
+            view_live_html: View this campaign live <br/><em>(opens in a new window)</em>
+            edit: Edit this campaign
+            delete: Remove this campaign forever
+            preview: 'added %{created_at}'
+        contacts:
+          actions:
+            create_new: Add New Contact
+            synchronise: Synchronise with Base
+            confirm_synchronise: Are you sure you want to Synchronise. It can take a few minutes, so please do not click synchronise more than once at a time.
+            reorder: Reorder Contacts
+            reorder_done: Done Reordering Contacts
+          records:
+            title: Contacts
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Contacts yet. Click "Add New Contact" to add your first contact.
+          contact:
+            view_live_html: View this contact live <br/><em>(opens in a new window)</em>
+            edit: Edit this contact
+            delete: Remove this contact forever
+            preview: '%{email}, %{organisation_name}, added %{created_at}'
+        landing_pages:
+          actions:
+            create_new: Add New Landing Page
+            reorder: Reorder Landing Pages
+            reorder_done: Done Reordering Landing Pages
+          records:
+            title: Landing Pages
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Landing Pages yet. Click "Add New Landing Page" to add your first landing page.
+          landing_page:
+            view_live_html: View this landing page live <br/><em>(opens in a new window)</em>
+            edit: Edit this landing page
+            delete: Remove this landing page forever
             preview: 'added %{created_at}'
         shows:
           actions:
@@ -41,22 +87,6 @@ en:
           form:
             not_synced_yet: Has not been synced yet
             sync: Sync
-        contacts:
-          actions:
-            create_new: Add New Contact
-            synchronise: Synchronise with Base
-            confirm_synchronise: Are you sure you want to Synchronise. It can take a few minutes, so please do not click synchronise more than once at a time.
-            reorder: Reorder Contacts
-            reorder_done: Done Reordering Contacts
-          records:
-            title: Contacts
-            sorry_no_results: Sorry! There are no results found.
-            no_items_yet: There are no Contacts yet. Click "Add New Contact" to add your first contact.
-          contact:
-            view_live_html: View this contact live <br/><em>(opens in a new window)</em>
-            edit: Edit this contact
-            delete: Remove this contact forever
-            preview: '%{email}, %{organisation_name}, added %{created_at}'
       brands:
         show:
           other: Other Brands
@@ -73,12 +103,8 @@ en:
         website: Website
         logo_id: Logo
         description: Description
-      'refinery/marketing/show':
-        name: Name
-        website: Website
-        logo_id: Logo
-        description: Description
-        msg_json_struct: Sync Instructions (JSON)
+      'refinery/marketing/campaign':
+        title: Title
       'refinery/contacts/contact':
         base_id: Base
         name: Name
@@ -105,3 +131,15 @@ en:
         email: Email
         organisation_name: Organisation Name
         tags_joined_by_comma: Tags Joined By Comma
+      'refinery/marketing/landing_page':
+        campaign_id: Campaign
+        campaign_label: Campaign
+        page_id: Page
+        slug: Slug
+        title: Title
+      'refinery/marketing/show':
+        name: Name
+        website: Website
+        logo_id: Logo
+        description: Description
+        msg_json_struct: Sync Instructions (JSON)

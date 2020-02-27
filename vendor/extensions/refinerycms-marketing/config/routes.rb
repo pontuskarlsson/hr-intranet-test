@@ -17,20 +17,21 @@ Refinery::Core::Engine.routes.draw do
         end
       end
 
-      resources :shows, :except => :show do
-        collection do
-          post :update_positions
-        end
-        member do
-          post :sync
-        end
-      end
+      resources :campaigns, :except => :show
+
       resources :contacts, :except => :show do
         collection do
           post :update_positions
         end
       end
+
+      resources :landing_pages, :except => :show
+      resources :shows, :except => :show
     end
+
+    get '*landing_page_slug', to: 'landing_pages#show',
+                              as: :landing_page,
+                              constraints: -> (req) { ::Refinery::Marketing::LandingPage.where(slug: req.path).exists? }
   end
 
 end

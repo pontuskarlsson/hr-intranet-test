@@ -4,6 +4,7 @@ require "spec_helper"
 describe Refinery do
   describe "Marketing" do
     describe "contacts" do
+      refinery_login_with_devise :authentication_devise_user
 
       describe "contact list" do
         before(:each) do

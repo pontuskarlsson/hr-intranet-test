@@ -6,17 +6,10 @@
     </span>
   </span>
   <span class='actions'>
-    
-    <%= link_to refinery_icon_tag("application_go.png"), refinery.marketing_brand_path(brand),
-        :title => t('.view_live_html'),
-        :target => "_blank" %>
-    
-    <%= link_to refinery_icon_tag("application_edit.png"), refinery.edit_marketing_admin_brand_path(brand),
-         :title => t('.edit') %>
-    <%= link_to refinery_icon_tag("delete.png"), refinery.marketing_admin_brand_path(brand),
-        :class => "cancel confirm-delete",
-        :title => t('.delete'),
-        :confirm => t('message', :scope => 'refinery.admin.delete', :title => brand.name),
-        :method => :delete %>
+    <%= action_icon(:preview, refinery.marketing_brand_path(brand), t('.view_live_html')) %>
+    <%= action_icon(:edit,    refinery.edit_marketing_admin_brand_path(brand), t('.edit') ) %>
+    <%= action_icon(:delete,  refinery.marketing_admin_brand_path(brand), t('.delete'),
+                    { class: "cancel confirm-delete",
+                      data: {confirm: t('message',  scope: 'refinery.admin.delete', title: brand.name)}}  ) %>
   </span>
 </li>

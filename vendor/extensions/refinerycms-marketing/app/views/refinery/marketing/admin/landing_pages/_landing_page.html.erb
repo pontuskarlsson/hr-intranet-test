@@ -1,0 +1,15 @@
+<li class='clearfix record <%= cycle("on", "on-hover") %>' id="<%= dom_id(landing_page) -%>">
+  <span class='title'>
+    <%= landing_page.title %>
+    <span class="preview">
+      <%= t('.preview', :created_at => l(landing_page.created_at, :format => :short)) %>
+    </span>
+  </span>
+  <span class='actions'>
+    <%= action_icon(:preview, landing_page.slug, t('.view_live_html')) %>
+    <%= action_icon(:edit,    refinery.edit_marketing_admin_landing_page_path(landing_page), t('.edit') ) %>
+    <%= action_icon(:delete,  refinery.marketing_admin_landing_page_path(landing_page), t('.delete'),
+                    { class: "cancel confirm-delete",
+                      data: {confirm: t('message',  scope: 'refinery.admin.delete', title: landing_page.title)}}  ) %>
+  </span>
+</li>

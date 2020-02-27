@@ -1,3 +1,4 @@
+# This migration comes from refinery_marketing (originally 14)
 class CreateMarketingLandingPages < ActiveRecord::Migration[5.1]
   def change
     create_table :refinery_marketing_landing_pages do |t|

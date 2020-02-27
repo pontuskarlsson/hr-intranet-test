@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200210075429) do
+ActiveRecord::Schema.define(version: 20200227025243) do
 
   create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "target_id", null: false
@@ -1125,6 +1125,28 @@ ActiveRecord::Schema.define(version: 20200210075429) do
     t.index ["event_id"], name: "index_refinery_leave_of_absences_on_event_id"
     t.index ["start_date"], name: "index_refinery_leave_of_absences_on_start_date"
     t.index ["status"], name: "index_refinery_leave_of_absences_on_status"
+  end
+
+  create_table "refinery_marketing_campaigns", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "title"
+    t.text "meta"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["title"], name: "index_refinery_marketing_campaigns_on_title"
+  end
+
+  create_table "refinery_marketing_landing_pages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "campaign_id"
+    t.integer "page_id"
+    t.string "title"
+    t.string "slug"
+    t.text "meta"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["campaign_id"], name: "index_refinery_marketing_landing_pages_on_campaign_id"
+    t.index ["page_id"], name: "index_refinery_marketing_landing_pages_on_page_id"
+    t.index ["slug"], name: "index_refinery_marketing_landing_pages_on_slug"
+    t.index ["title"], name: "index_refinery_marketing_landing_pages_on_title"
   end
 
   create_table "refinery_news_item_translations", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
