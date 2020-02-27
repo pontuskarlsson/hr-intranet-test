@@ -4,6 +4,7 @@ module Refinery
       self.table_name = 'refinery_business_companies'
 
       belongs_to :contact,      class_name: '::Refinery::Marketing::Contact', optional: true
+      belongs_to :verified_by,  class_name: '::Refinery::Authentication::Devise::User', optional: true
       has_many :contacts,       class_name: '::Refinery::Marketing::Contact',
                                 foreign_key: :owner_id,
                                 dependent: :destroy
@@ -27,6 +28,7 @@ module Refinery
       acts_as_indexed :fields => [:code, :name]
 
       configure_assign_by_label :contact, class_name: '::Refinery::Marketing::Contact'
+      configure_assign_by_label :verified_by, class_name: '::Refinery::Authentication::Devise::User'
       configure_label :code, :name, separator: ' ', limit_to_scope: :is_verified
 
       responds_to_data_tables :id, :name, :code, contact: [:country, :phone, :website, :email]

@@ -9,7 +9,8 @@ module Refinery
 
         def company_params
           params.require(:company).to_unsafe_h.slice(
-              'code', 'company_users_attributes', 'name', 'contact_id', 'contact_label', 'country_code', 'city'
+              'code', 'company_users_attributes', 'name', 'contact_id', 'contact_label', 'country_code', 'city',
+              'verified_at', 'verified_by_id', 'verified_by_label'
           )
         end
 

@@ -19,6 +19,16 @@
   </div>
 
   <div class='field'>
+    <%= f.label :verified_at -%>
+    <%= f.datetime_select :verified_at -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :verified_by_label -%>
+    <%= f.text_field :verified_by_label, class: 'js_user_field' -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :city -%>
     <%= f.text_field :city -%>
   </div>

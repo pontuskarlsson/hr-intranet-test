@@ -31,6 +31,9 @@ module Refinery
 
       def create
         @company = Company.new(company_params)
+        @company.verified_at = DateTime.now
+        @company.verified_by = current_refinery_user
+
         if @company.save
           redirect_to refinery.business_company_path @company
         else
