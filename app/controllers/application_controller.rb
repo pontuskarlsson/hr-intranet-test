@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   before_action :set_user_time_zone
 
-  helper_method :filter_params, :header_menu_pages, :home_page_url, :is_home_page?, :restrict_public_pages?, :login_url
+  helper_method :filter_params, :header_menu_pages, :home_page_url, :is_home_page?, :login_url
 
   # Workaround to avoid problem with user accessing other
   # engines while password is expired.
@@ -82,10 +82,6 @@ class ApplicationController < ActionController::Base
 
   def header_menu_pages
     Refinery::Page.find_by_link_url(home_page_url)&.children || []
-  end
-
-  def restrict_public_pages?
-    false # current_refinery_user.nil? || !current_refinery_user.has_role?(Refinery::Employees::ROLE_EMPLOYEE)
   end
 
   def login_url

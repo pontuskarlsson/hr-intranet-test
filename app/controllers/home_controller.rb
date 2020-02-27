@@ -7,12 +7,8 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_authentication_devise_user!
 
   def index
-    if restrict_public_pages?
-      render template: 'refinery/launching_soon'
-    else
-      template = 'sections'
-      render template: "refinery/pages/#{@page&.view_template.presence || template}"
-    end
+    template = 'sections'
+    render template: "refinery/pages/#{@page&.view_template.presence || template}"
   end
 
   def sections

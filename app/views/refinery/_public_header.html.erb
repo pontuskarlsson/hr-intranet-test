@@ -6,7 +6,6 @@
       </button>
     </div>
 
-    <% unless restrict_public_pages? %>
     <ul class="vertical menu" data-accordion-menu>
       <% header_menu_pages.each do |root| %>
         <% if root.children.any? %>
@@ -23,21 +22,18 @@
         <% end %>
       <% end %>
     </ul>
-    <% end %>
   </div>
 
   <div class="off-canvas-footer">
     <%= link_to 'Log In', login_url, class: 'button' %>
-    <% unless restrict_public_pages? %>
     <%= link_to 'Get Started', new_signup_path, class: 'button primary' %>
-    <% end %>
   </div>
 </div>
 
-<% if is_home_page? && !restrict_public_pages? %>
+<% if is_home_page? %>
 <div id="topAnchor" style="position: absolute; top: 0; height: 30px;"></div>
 <% end %>
-<div class="top-bar-container" data-sticky-container<% if is_home_page? && !restrict_public_pages? %> style="position: absolute; height: 70px; top: 30px; width: 100%;"<% end %>>
+<div class="top-bar-container" data-sticky-container<% if is_home_page? %> style="position: absolute; height: 70px; top: 30px; width: 100%;"<% end %>>
   <div class="sticky-topbar sticky" data-sticky data-sticky-on="small" data-options="marginTop: 0;"<% if is_home_page? %> data-top-anchor="topAnchor:bottom"<% end %>>
     <div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="large">
       <div class="title-bar-left">
@@ -47,9 +43,7 @@
       </div>
       <div class="title-bar-right">
         <%= link_to 'Log In', login_url, class: 'button hide-for-small-only' %>
-        <% unless restrict_public_pages? %>
         <%= link_to 'Get Started', new_signup_path, class: 'button primary' %>
-        <% end %>
 
         <button class="menu-icon" type="button" data-toggle="offCanvas"></button>
       </div>
@@ -71,7 +65,6 @@
             </div>
           </li>
 
-          <% unless restrict_public_pages? %>
           <% header_menu_pages.each do |root| %>
             <% if root.children.any? %>
               <li class="has-submenu">
@@ -86,14 +79,11 @@
               <li><%= link_to root.title, refinery.url_for(root.url) %></li>
             <% end %>
           <% end %>
-          <% end %>
         </ul>
       </div>
       <div class="top-bar-right show-for-large">
         <%= link_to 'Log In', login_url, class: 'button' %>
-        <% unless restrict_public_pages? %>
         <%= link_to 'Get Started', new_signup_path, class: 'button primary' %>
-        <% end %>
       </div>
     </div>
   </div>
