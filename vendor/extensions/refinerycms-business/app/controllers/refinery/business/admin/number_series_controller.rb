@@ -5,7 +5,8 @@ module Refinery
 
         crudify :'refinery/business/number_serie',
                 :title_attribute => 'identifier',
-                order: 'identifier ASC'
+                order: 'identifier ASC',
+                :redirect_to_url => "refinery.business_admin_number_series_index_path"
 
         def number_serie_params
           params.require(:number_serie).permit(
