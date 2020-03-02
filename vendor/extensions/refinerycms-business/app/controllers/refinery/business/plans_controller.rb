@@ -1,6 +1,11 @@
 module Refinery
   module Business
     class PlansController < BusinessController
+      set_page PAGE_COMPANIES_URL
+
+      allow_page_roles ROLE_EXTERNAL
+      allow_page_roles ROLE_INTERNAL
+
       before_action :find_plans, only: [:index]
       before_action :find_plan,  except: [:index, :create]
 
