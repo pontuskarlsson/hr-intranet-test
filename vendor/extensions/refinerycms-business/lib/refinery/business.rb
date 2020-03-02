@@ -6,6 +6,7 @@ module Refinery
 
   module Business
     require 'refinery/business/configuration'
+    require 'refinery/business/controller_scope_mixin'
     require 'refinery/business/engine'
     require 'refinery/business/job'
     require 'refinery/business/xero/sync/contacts'

@@ -113,6 +113,14 @@ module Refinery
         end
       end
 
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def happy_rabbit_reference_id
         "hr_stripe_#{id}" if persisted?
       end

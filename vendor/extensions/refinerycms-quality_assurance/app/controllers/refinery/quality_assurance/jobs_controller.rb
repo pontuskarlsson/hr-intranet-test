@@ -1,9 +1,8 @@
 module Refinery
   module QualityAssurance
-    class JobsController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class JobsController < QualityAssuranceController
       set_page PAGE_JOBS_URL
+
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL, only: [:index, :show]
       allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :show, :update]
@@ -46,23 +45,8 @@ module Refinery
 
     protected
 
-      def jobs_scope
-        @jobs ||=
-            if page_role?(ROLE_INTERNAL_MANAGER)
-              Job.where(nil)
-            elsif page_role?(ROLE_INTERNAL)
-              Job.where(nil)
-            elsif page_role?(Refinery::Business::ROLE_INTERNAL_FINANCE)
-              Job.where(nil)
-            elsif page_role? ROLE_EXTERNAL
-              Job.for_companies(current_refinery_user.companies)
-            else
-              Job.where('1=0')
-            end
-      end
-
       def find_all_jobs
-        @jobs = jobs_scope.order(inspection_date: :desc)
+        @jobs = jobs_scope.where(filter_params)
       end
 
       def find_job

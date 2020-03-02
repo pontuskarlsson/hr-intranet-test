@@ -1,10 +1,11 @@
 module Refinery
   module Employees
-    class SickLeavesController < ::ApplicationController
+    class SickLeavesController < ::Refinery::Employees::ApplicationController
+      set_page PAGE_SICK_LEAVES
+
       before_action :find_employee
       before_action :find_all_sick_leaves,  only: [:index]
       before_action :find_sick_leave,       except: [:index, :new, :create]
-      before_action :find_page
 
       def index
         # you can use meta fields from your model instead (e.g. browser_title)
@@ -92,12 +93,6 @@ module Refinery
 
       def find_all_sick_leaves
         @leave_of_absences = @employee.leave_of_absences.sick_leaves.includes(:doctors_note).order('start_date ASC')
-      end
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/sick_leaves', current_refinery_user)
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
       end
 
       def create_and_associate_resource

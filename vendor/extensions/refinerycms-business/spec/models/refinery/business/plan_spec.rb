@@ -56,7 +56,7 @@ module Refinery
 
         context 'when :payment_terms_type requires a qty, but qty is missing' do
           before {
-            plan.payment_terms_type = 'X_days_after_invoice_date'
+            plan.payment_terms_type = 'X_DAYS_after_invoice_date'
             plan.payment_terms_qty = nil
           }
 
@@ -65,7 +65,7 @@ module Refinery
 
         context 'when :payment_terms_type requires a qty, but qty is not a number' do
           before {
-            plan.payment_terms_type = 'X_days_after_invoice_date'
+            plan.payment_terms_type = 'X_DAYS_after_invoice_date'
             plan.payment_terms_qty = 'NotANumber'
           }
 
@@ -74,7 +74,7 @@ module Refinery
 
         context 'when :payment_terms_type requires a qty, and qty is present' do
           before {
-            plan.payment_terms_type = 'X_days_after_invoice_date'
+            plan.payment_terms_type = 'X_DAYS_after_invoice_date'
             plan.payment_terms_qty = '30'
           }
 

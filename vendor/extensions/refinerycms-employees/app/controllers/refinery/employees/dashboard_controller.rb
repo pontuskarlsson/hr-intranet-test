@@ -1,20 +1,12 @@
 module Refinery
   module Employees
-    class DashboardController < ::ApplicationController
-      before_action :find_page
+    class DashboardController < ::Refinery::Employees::ApplicationController
+      set_page '/employees'
 
       def index
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @employee in the line below:
         present(@page)
-      end
-
-      protected
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees', current_refinery_user)
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
       end
 
     end

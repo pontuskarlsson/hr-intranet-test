@@ -1,9 +1,8 @@
 module Refinery
   module Business
-    class SectionsController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class SectionsController < BusinessController
       set_page PAGE_PROJECTS_URL
+
       allow_page_roles ROLE_INTERNAL
 
       before_action :find_project
@@ -34,17 +33,8 @@ module Refinery
 
       protected
 
-      def project_scope
-        @projects ||=
-            if page_role? ROLE_INTERNAL
-              Refinery::Business::Project.where(nil)
-            else
-              Refinery::Business::Project.where('1=0')
-            end
-      end
-
       def find_project
-        @project = project_scope.find(params[:project_id])
+        @project = projects_scope.find(params[:project_id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

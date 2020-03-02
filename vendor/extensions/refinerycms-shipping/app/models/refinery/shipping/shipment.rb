@@ -231,6 +231,14 @@ module Refinery
         end
       end
 
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(consignee_company_id: selected_company.id).or(where(forwarder_company_id: selected_company.id))
+        end
+      end
+
       def update_status(status)
         if status == 'requested'
           if ready_to_request?

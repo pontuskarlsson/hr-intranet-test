@@ -16,7 +16,7 @@ module Refinery
 
       configure_label :name
 
-      responds_to_data_tables DT_COLUMNS
+      responds_to_data_tables *DT_COLUMNS
 
       validates :base_id, uniqueness: true, allow_nil: true
       validates :insightly_id, uniqueness: true, allow_nil: true

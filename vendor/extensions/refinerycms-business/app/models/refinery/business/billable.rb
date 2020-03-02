@@ -95,6 +95,24 @@ module Refinery
         self.article_code       = article.code            if article.present?
       end
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+        if titles.include? ROLE_INTERNAL_FINANCE or titles.include? ROLE_INTERNAL
+          where(nil)
+
+        else
+          where('1=0')
+        end
+      end
+
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def display_qty
         "#{qty} #{qty_unit}"
       end

@@ -41,7 +41,11 @@ module Refinery
 
       before_validation do
         if code.blank? && is_verified?
-          self.code = NumberSerie.next_counter!(self.class, :code)
+          assign_code!
+        end
+
+        if uuid.blank?
+          assign_uuid!
         end
 
         if contact_label.present?
@@ -98,6 +102,14 @@ module Refinery
 
       def is_verified?
         verified_at.present?
+      end
+
+      def assign_code!
+        self.code = NumberSerie.next_counter!(self.class, :code)
+      end
+
+      def assign_uuid!
+        self.uuid = SecureRandom.uuid
       end
 
     end

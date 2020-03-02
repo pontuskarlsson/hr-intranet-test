@@ -103,6 +103,28 @@ module Refinery
       }
       scope :for_companies, -> (companies) { where(company_id: Array(companies).map(&:id)) }
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+
+        if titles.include?(ROLE_INTERNAL) or titles.include?(ROLE_INTERNAL_MANAGER)
+          where(nil)
+
+        elsif titles.include? ROLE_EXTERNAL
+          for_companies(user.companies)
+
+        else
+          where('1=0')
+        end
+      end
+
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def assign_code!
         if code.blank?
           self.code = ::Refinery::Business::NumberSerie.next_counter!(::Refinery::QualityAssurance::Inspection, :code, prefix: 'QA-', pad_length: 6)

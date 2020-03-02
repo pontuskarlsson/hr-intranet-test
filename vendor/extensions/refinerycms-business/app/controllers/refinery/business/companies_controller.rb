@@ -4,15 +4,17 @@ module Refinery
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_COMPANIES_URL
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :show]
+      allow_page_roles ROLE_EXTERNAL
       allow_page_roles ROLE_INTERNAL
 
       before_action :find_companies, only: [:index]
-      before_action :find_company,  except: [:index, :new, :create]
+      before_action :find_company,  except: [:index, :new, :create, :unselect]
+
+      helper_method :new_company
 
       def index
         @companies = @companies.includes(:contact)
-        @company = Company.new
+
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @company in the line below:
         respond_to do |format|
@@ -23,24 +25,45 @@ module Refinery
         end
       end
 
+      def unselect
+        unselect_company!
+
+        redirect_to portal_root_url
+      end
+
+      def new
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @company in the line below:
+        present(@page)
+      end
+
       def show
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @company in the line below:
         present(@page)
       end
 
+      def select
+        select_company!(@company)
+
+        redirect_to portal_root_url
+      end
+
       def create
         @company = Company.new(company_params)
-        @company.verified_at = DateTime.now
-        @company.verified_by = current_refinery_user
 
         if @company.save
+          if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL)
+            @company.verified_at = DateTime.now
+            @company.verified_by = current_refinery_user
+          else
+            @company.company_users.create(user: current_refinery_user, role: 'Owner')
+
+          end
+
           redirect_to refinery.business_company_path @company
         else
-          find_companies
-          @companies = @companies.order(code: :asc)
-          present(@page)
-          render :index
+          render action: :new
         end
       end
 
@@ -80,6 +103,10 @@ module Refinery
 
       def company_params
         params.require(:company).permit(:name)
+      end
+
+      def new_company
+        @company ||= Company.new
       end
 
     end

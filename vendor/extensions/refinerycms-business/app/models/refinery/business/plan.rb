@@ -81,6 +81,14 @@ module Refinery
         end
       end
 
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def charges
         @charges ||= Array(plan_charges).map { |mm|
           ::Refinery::Business::Invoice::Charge.new(*mm.values_at(:qty, :article_label, :base_amount, :discount_amount, :discount_type))

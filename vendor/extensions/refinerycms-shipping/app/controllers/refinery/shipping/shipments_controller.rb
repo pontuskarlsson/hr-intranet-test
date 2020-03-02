@@ -1,8 +1,6 @@
 module Refinery
   module Shipping
-    class ShipmentsController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class ShipmentsController < ShippingController
       set_page PAGE_SHIPMENTS_URL
       allow_page_roles ROLE_INTERNAL
       allow_page_roles ROLE_EXTERNAL,     only: [:index, :show, :edit, :update]
@@ -114,10 +112,6 @@ module Refinery
       end
 
       protected
-
-      def shipments_scope
-        @shipments ||= Shipment.for_user_roles(current_refinery_user, @auth_role_titles)
-      end
 
       def find_shipments
         @shipments = shipments_scope.where(filter_params)

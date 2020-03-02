@@ -6,6 +6,10 @@ module Refinery
       isolate_namespace Refinery::Business
       engine_name :refinery_business
 
+      initializer 'controller-scope-mixin-hooks-for-business-engine' do |app|
+        ::ApplicationController.send(:include, ::Refinery::Business::ControllerScopeMixin)
+      end
+
       initializer 'resource-authorization-hooks-for-business-engine' do |app|
         ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Business::ROLE_INTERNAL
         ::Refinery::ResourceAuthorizations::AccessControl.allow! Refinery::Business::ROLE_EXTERNAL do |user, conditions|

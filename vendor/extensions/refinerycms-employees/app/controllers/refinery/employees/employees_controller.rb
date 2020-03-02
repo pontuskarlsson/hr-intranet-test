@@ -1,6 +1,7 @@
 module Refinery
   module Employees
-    class EmployeesController < ::ApplicationController
+    class EmployeesController < ::Refinery::Employees::ApplicationController
+      set_page PAGE_EMPLOYEES
 
       before_action :find_all_employees
       before_action :find_page
@@ -26,7 +27,7 @@ module Refinery
       end
 
       def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/employees', current_refinery_user)
+        @page = ::Refinery::Page.find_authorized_by_link_url!(PAGE_EMPLOYEES, current_refinery_user)
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

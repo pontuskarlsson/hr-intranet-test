@@ -20,9 +20,11 @@
 <% content_for :javascripts do -%>
   <script>
     $(document).ready(function(){
-      $('.js_contact_field').autocomplete({
-        source: <%= ::Refinery::Marketing::Contact.organisations.without_code.to_source %>
-      });
+      <% if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL) %>
+        $('.js_contact_field').autocomplete({
+          source: <%= ::Refinery::Marketing::Contact.organisations.without_code.to_source %>
+        });
+      <% end %>
     });
   </script>
 <% end -%>

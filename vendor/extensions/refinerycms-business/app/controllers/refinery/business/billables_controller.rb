@@ -1,9 +1,8 @@
 module Refinery
   module Business
-    class BillablesController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class BillablesController < BusinessController
       set_page PAGE_BILLABLES_URL
+
       allow_page_roles ROLE_INTERNAL_FINANCE
       allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :show]
 
@@ -67,23 +66,12 @@ module Refinery
 
       protected
 
-      def billable_scope
-        @billables =
-            if page_role? ROLE_INTERNAL_FINANCE
-              Refinery::Business::Billable.where(nil)
-            elsif page_role? ROLE_INTERNAL
-              Refinery::Business::Billable.where(nil)
-            else
-              Refinery::Business::Billable.where('1=0')
-            end
-      end
-
       def find_billables
-        @billables = billable_scope.where(filter_params)
+        @billables = billables_scope.where(filter_params)
       end
 
       def find_billable
-        @billable = billable_scope.find(params[:id])
+        @billable = billables_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

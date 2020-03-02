@@ -35,6 +35,10 @@ Refinery::Authentication::Devise::User.class_eval do
     full_name
   end
 
+  def initials
+    [first_name&.first, last_name&.first].reject(&:blank?).join ''
+  end
+
   def active_for_authentication?
     super && !deactivated
   end

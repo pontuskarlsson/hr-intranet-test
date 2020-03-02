@@ -1,0 +1,14 @@
+.company-menu {
+    &:not(.is-active) > a {
+        background-color: $hr-blue-color;
+        color: $white !important;
+    }
+
+    ul.company-list {
+        p, a {
+            white-space: nowrap;
+            padding: 0.7rem 1rem;
+            margin-bottom: 0;
+        }
+    }
+}

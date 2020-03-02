@@ -1,9 +1,8 @@
 module Refinery
   module QualityAssurance
-    class CreditsController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class CreditsController < QualityAssuranceController
       set_page PAGE_CREDITS_URL
+
       allow_page_roles ::Refinery::Business::ROLE_EXTERNAL, only: [:index]
       #allow_page_roles ::Refinery::Business::ROLE_INTERNAL, only: [:index]
 
@@ -22,10 +21,6 @@ module Refinery
       end
 
       protected
-
-      def credits_scope
-        @credits_scope ||= ::Refinery::Business::Voucher.for_user_roles(current_refinery_user)
-      end
 
       def find_all_credits
         @credits = credits_scope

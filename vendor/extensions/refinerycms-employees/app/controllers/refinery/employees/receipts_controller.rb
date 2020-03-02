@@ -1,6 +1,8 @@
 module Refinery
   module Employees
-    class ReceiptsController < ::ApplicationController
+    class ReceiptsController < ::Refinery::Employees::ApplicationController
+      set_page PAGE_EXPENSE_CLAIMS
+
       before_action :find_expense_claim
       before_action :find_receipt,      except: [:new, :create]
 

@@ -35,6 +35,27 @@ module Refinery
       scope :current, -> { where(status: CURRENT_STATUSES) }
       scope :past, -> { where(status: STATUSES - CURRENT_STATUSES) }
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+        if titles.include?(ROLE_INTERNAL)
+          where(nil)
+
+        elsif titles.include?(ROLE_EXTERNAL)
+          where(company_id: user.company_ids)
+
+        else
+          where('1=0')
+        end
+      end
+
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def self.from_params(params)
         active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
         archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))

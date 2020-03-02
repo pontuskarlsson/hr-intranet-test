@@ -1,8 +1,6 @@
 module Refinery
   module QualityAssurance
-    class InspectionsController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class InspectionsController < QualityAssuranceController
       set_page PAGE_INSPECTIONS_URL
       allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :defects, :download, :show]
       allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :defects, :download, :show]
@@ -99,16 +97,16 @@ module Refinery
 
     protected
 
-      def inspections_scope
-        @inspections_scope ||= Inspection.for_user_roles(current_refinery_user, @auth_role_titles)
-        @inspections_scope_test ||= Inspection.for_user_roles_test(current_refinery_user, @auth_role_titles)
-
-        if @inspections_scope.map(&:id) != @inspections_scope_test.map(&:id)
-          ErrorMailer.webhook_notification_email('+for_user_roles+ mismatch', params.to_unsafe_h).deliver_later
-        end
-
-        @inspections_scope
-      end
+      # def inspections_scope
+      #   @inspections_scope ||= Inspection.for_selected_company(selected_company).for_user_roles(current_refinery_user, @auth_role_titles)
+      #   @inspections_scope_test ||= Inspection.for_selected_company(selected_company).for_user_roles_test(current_refinery_user, @auth_role_titles)
+      #
+      #   if @inspections_scope.map(&:id) != @inspections_scope_test.map(&:id)
+      #     ErrorMailer.webhook_notification_email('+for_user_roles+ mismatch', params.to_unsafe_h).deliver_later
+      #   end
+      #
+      #   @inspections_scope
+      # end
 
       def find_all_inspections
         @inspections = inspections_scope.where(filter_params)
@@ -147,10 +145,6 @@ module Refinery
             acc << [inspection, inspection_defect]
           end
         }
-      end
-
-      def server_side?
-        params.has_key? :draw
       end
 
     end

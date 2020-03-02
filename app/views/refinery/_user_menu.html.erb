@@ -1,7 +1,47 @@
 <% if authentication_devise_user_signed_in? %>
   <ul class="dropdown menu" data-dropdown-menu>
+    <li class="has-submenu company-menu">
+      <% if selected_company.present? %>
+        <a href="#"><%= selected_company.name %></a>
+        <ul class="submenu menu vertical">
+          <li style="border-bottom: 1px solid gray;"><%= link_to "Company Settings", "/settings/#{selected_company.id}" %></li>
+          <li>
+            <div style="max-height: 180px; overflow-y: scroll;">
+              <ul class="submenu menu vertical company-list">
+                <% if current_refinery_user.companies.count > 1 %>
+                  <% if false %>
+                  <li class="active-company">
+                    <p><%= selected_company.name %></p>
+                  </li>
+                  <% end %>
+                  <% current_refinery_user.companies.each do |company| %>
+                    <% unless company == selected_company %>
+                      <li style="white-space: nowrap;">
+                        <%= link_to company.name, refinery.select_business_company_path(company), method: :post %>
+                      </li>
+                    <% end %>
+                  <% end %>
+                <% end %>
+
+                <li><%= link_to 'Add another Company', refinery.new_business_company_path %></li>
+
+                <% if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL) && selected_company.present? %>
+                  <li><%= link_to 'Clear Selection', refinery.unselect_business_companies_path, method: :post %></li>
+                <% end %>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      <% else %>
+        <%= link_to 'Select Company', refinery.business_companies_path %>
+      <% end %>
+    </li>
     <li class="has-submenu">
-      <a href="#"><%= current_refinery_user.full_name %></a>
+      <a href="#" class="avatar-menu-item">
+        <div class="avatar avatar-no-img">
+          <span aria-hidden="true"><%= current_refinery_user.initials %></span>
+        </div>
+      </a>
 
       <ul class="submenu menu vertical">
         <li><%= link_to 'My Profile', '/my_profile' %></li>
@@ -14,9 +54,7 @@
         <% if current_refinery_user.has_role?(:superuser) %>
           <li><%= link_to 'Refinery', '/refinery' %></li>
         <% elsif current_refinery_user.has_role?(::Refinery::Business::ROLE_EXTERNAL) %>
-          <% current_refinery_user.companies.each do |company| %>
-            <li><%= link_to "#{company.name} Settings", "/settings/#{company.id}" %></li>
-          <% end %>
+
         <% end %>
         <li><%= link_to 'Requests', refinery.business_requests_path %></li>
         <li><%= link_to 'Logout', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>

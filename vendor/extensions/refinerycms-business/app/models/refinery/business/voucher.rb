@@ -87,6 +87,14 @@ module Refinery
         end
       end
 
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def self.applicable_to(invoice, article_code = '')
         scope = invoice.invoice_for_month.present? ? active.valid_for_date(invoice.invoice_for_month) : active
 

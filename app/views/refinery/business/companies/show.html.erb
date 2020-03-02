@@ -1,148 +1,159 @@
-<div class="grid-x grid-padding-x">
-  <div class="cell">
-    <h2>
-      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
-        <%= @company.label %>
-      <% else %>
-        <%= @company.name %>
-      <% end %>
-    </h2>
-  </div>
+<% content_for :actions do %>
+  <% unless selected_company == @company %>
+    <%= link_to 'Select', refinery.select_business_company_path(@company), method: :post, class: 'button' %>
+  <% end %>
+<% end %>
 
-  <div class="cell medium-3">
-    <ul class="vertical tabs" data-tabs id="example-tabs">
-      <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Company Info</a></li>
-      <li class="tabs-title"><a href="#panel2v">Contacts</a></li>
-      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
-        <li class="tabs-title"><a href="#panel3v">User activity</a></li>
-      <% end %>
-      <% if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL_FINANCE) %>
-        <li class="tabs-title"><a href="#panel4v">Xero Integration</a></li>
-      <% end %>
-      <li class="tabs-title"><a href="#panel5v">Credits</a></li>
-    </ul>
-  </div>
-  <div class="cell medium-9">
-    <div class="tabs-content" data-tabs-content="example-tabs">
-      <div class="tabs-panel is-active" id="panel1v">
-        <% if @company.contact.present? %>
-          <div class="cell medium-6">
+<% content_for :body do %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <h2>
+        <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+          <%= @company.label %>
+        <% else %>
+          <%= @company.name %>
+        <% end %>
+      </h2>
+    </div>
+
+    <div class="cell medium-3">
+      <ul class="vertical tabs" data-tabs id="example-tabs">
+        <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Company Info</a></li>
+        <li class="tabs-title"><a href="#panel2v">Contacts</a></li>
+        <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+          <li class="tabs-title"><a href="#panel3v">User activity</a></li>
+        <% end %>
+        <% if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+          <li class="tabs-title"><a href="#panel4v">Xero Integration</a></li>
+        <% end %>
+        <li class="tabs-title"><a href="#panel5v">Credits</a></li>
+      </ul>
+    </div>
+    <div class="cell medium-9">
+      <div class="tabs-content" data-tabs-content="example-tabs">
+        <div class="tabs-panel is-active" id="panel1v">
+          <% if @company.contact.present? %>
+            <div class="cell medium-6">
+              <section class="contact-card">
+                <%= render 'refinery/marketing/contacts/contact_info', contact: @company.contact %>
+                <%= render 'refinery/marketing/contacts/address', contact: @company.contact %>
+                <%= render 'refinery/marketing/contacts/courier_details', contact: @company.contact %>
+              </section>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="tabs-panel" id="panel2v">
+          <section class="contact-card">
+            <%= render 'refinery/marketing/contacts/employees', contact: @company.contact %>
+          </section>
+        </div>
+
+        <% if page_role? Refinery::Business::ROLE_INTERNAL %>
+          <div class="tabs-panel" id="panel3v">
+            <h5><i class="fa fa-user"></i>Users</h5>
+
+            <% if @company.users.any? %>
+              <% @company.users.each do |user| %>
+                <p>
+                  <%= user.full_name %>
+                  <span style="color: #999; font-size: 10px;">
+                <% if user.last_active_at.nil? %>
+                  has never signed in
+                <% else %>
+                  last active <%= time_ago_in_words user.last_active_at %> ago
+                <% end %>
+              </span>
+                </p>
+              <% end %>
+            <% else %>
+              <p class="not_present">There are no users with access to this company</p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <% if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL_FINANCE) %>
+          <div class="tabs-panel" id="panel4v">
             <section class="contact-card">
-              <%= render 'refinery/marketing/contacts/contact_info', contact: @company.contact %>
-              <%= render 'refinery/marketing/contacts/address', contact: @company.contact %>
-              <%= render 'refinery/marketing/contacts/courier_details', contact: @company.contact %>
+              <h3>Xero Contacts</h3>
+              <table class="cc-table">
+                <tbody>
+                <tr>
+                  <th style="width: 120px;">Happy Rabbit Limited</th>
+                  <td>
+                    <% if @company.contact.try(:xero_hr_id).present? %>
+                      <%= link_to "https://go.xero.com/Contacts/View/#{@company.contact.xero_hr_id}", target: '_blank' do %>
+                        <%= @company.contact.xero_hr_id %> <i class="fa fa-external-link"></i>
+                      <% end %>
+                    <% end %>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Happy Rabbit Trading Limited</th>
+                  <td>
+                    <% if @company.contact.try(:xero_hrt_id).present? %>
+                      <%= link_to "https://go.xero.com/Contacts/View/#{@company.contact.xero_hrt_id}", target: '_blank' do %>
+                        <%= @company.contact.xero_hrt_id %> <i class="fa fa-external-link"></i>
+                      <% end %>
+                    <% end %>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </section>
           </div>
         <% end %>
-      </div>
 
-      <div class="tabs-panel" id="panel2v">
-        <section class="contact-card">
-          <%= render 'refinery/marketing/contacts/employees', contact: @company.contact %>
-        </section>
-      </div>
-
-      <% if page_role? Refinery::Business::ROLE_INTERNAL %>
-        <div class="tabs-panel" id="panel3v">
-          <h5><i class="fa fa-user"></i>Users</h5>
-
-          <% if @company.users.any? %>
-            <% @company.users.each do |user| %>
-              <p>
-                <%= user.full_name %>
-                <span style="color: #999; font-size: 10px;">
-              <% if user.last_active_at.nil? %>
-                has never signed in
-              <% else %>
-                last active <%= time_ago_in_words user.last_active_at %> ago
-              <% end %>
-            </span>
-              </p>
-            <% end %>
-          <% else %>
-            <p class="not_present">There are no users with access to this company</p>
-          <% end %>
-        </div>
-      <% end %>
-
-      <% if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL_FINANCE) %>
-        <div class="tabs-panel" id="panel4v">
+        <div class="tabs-panel" id="panel5v">
           <section class="contact-card">
-            <h3>Xero Contacts</h3>
-            <table class="cc-table">
-              <tbody>
-              <tr>
-                <th style="width: 120px;">Happy Rabbit Limited</th>
-                <td>
-                  <% if @company.contact.try(:xero_hr_id).present? %>
-                    <%= link_to "https://go.xero.com/Contacts/View/#{@company.contact.xero_hr_id}", target: '_blank' do %>
-                      <%= @company.contact.xero_hr_id %> <i class="fa fa-external-link"></i>
-                    <% end %>
-                  <% end %>
-                </td>
-              </tr>
-              <tr>
-                <th>Happy Rabbit Trading Limited</th>
-                <td>
-                  <% if @company.contact.try(:xero_hrt_id).present? %>
-                    <%= link_to "https://go.xero.com/Contacts/View/#{@company.contact.xero_hrt_id}", target: '_blank' do %>
-                      <%= @company.contact.xero_hrt_id %> <i class="fa fa-external-link"></i>
-                    <% end %>
-                  <% end %>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+            <h3>Credits</h3>
+            <% if (credits = @company.vouchers.active.includes(:article).group(:article).count).any? %>
+
+              <table class="cc-table">
+                <tbody>
+                <% credits.each_pair do |article, count| %>
+                  <tr>
+                    <th style="width: 120px;"><%= article.name %></th>
+                    <td><%=number_with_delimiter count, delimiter: ',' %> credits available</td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+
+            <% else %>
+              <p class="italic">No credits available.</p>
+            <% end %>
           </section>
         </div>
-      <% end %>
-
-      <div class="tabs-panel" id="panel5v">
-        <section class="contact-card">
-          <h3>Credits</h3>
-          <% if (credits = @company.vouchers.active.includes(:article).group(:article).count).any? %>
-
-            <table class="cc-table">
-              <tbody>
-              <% credits.each_pair do |article, count| %>
-                <tr>
-                  <th style="width: 120px;"><%= article.name %></th>
-                  <td><%=number_with_delimiter count, delimiter: ',' %> credits available</td>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
-
-          <% else %>
-            <p class="italic">No credits available.</p>
-          <% end %>
-        </section>
       </div>
     </div>
+
+    <div class="cell">
+      <% if current_refinery_user.authorized_for_page?(::Refinery::Business::PAGE_INVOICES_URL) %>
+        <h4>Finance</h4>
+        <ul class="menu vertical sub-menu" style="margin-bottom: 1rem;">
+          <li><%= link_to "See Invoices (#{@company.invoices.count})", refinery.business_invoices_path(company_id: @company) %></li>
+          <li><%= link_to "See Billables (#{@company.billables.count})", refinery.business_billables_path(company_id: @company) %></li>
+        </ul>
+      <% end %>
+
+      <% if current_refinery_user.authorized_for_page?(::Refinery::Business::PAGE_PROJECTS_URL) %>
+        <h4>Projects</h4>
+        <ul class="menu vertical sub-menu" style="margin-bottom: 1rem;">
+          <li><%= link_to "See Projects (#{@company.projects.current.count})", refinery.business_projects_path(company_id: @company) %></li>
+        </ul>
+      <% end %>
+
+      <% if current_refinery_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
+        <h4>Quality Assurance</h4>
+        <ul class="menu vertical sub-menu" style="margin-bottom: 1rem;">
+          <li><%= link_to "See Jobs (#{@company.jobs.count})", refinery.quality_assurance_jobs_path(company_id: @company) %></li>
+          <li><%= link_to "See Inspections (#{@company.inspections.count})", refinery.quality_assurance_inspections_path(company_id: @company) %></li>
+          <li><%= link_to "See Defects Summary", refinery.defects_quality_assurance_inspections_path(company_id: @company) %></li>
+        </ul>
+      <% end %>
+    </div>
   </div>
+<% end %>
 
-  <div class="cell">
-    <% if current_refinery_user.authorized_for_page?(::Refinery::Business::PAGE_INVOICES_URL) %>
-      <h4>Finance</h4>
-      <ul class="menu vertical sub-menu" style="margin-bottom: 1rem;">
-        <li><%= link_to "See Invoices (#{@company.invoices.count})", refinery.business_invoices_path(company_id: @company) %></li>
-        <li><%= link_to "See Billables (#{@company.billables.count})", refinery.business_billables_path(company_id: @company) %></li>
-      </ul>
-    <% end %>
-
-    <% if current_refinery_user.authorized_for_page?(::Refinery::Business::PAGE_PROJECTS_URL) %>
-      <h4>Projects</h4>
-      <ul class="menu vertical sub-menu" style="margin-bottom: 1rem;">
-        <li><%= link_to "See Projects (#{@company.projects.current.count})", refinery.business_projects_path(company_id: @company) %></li>
-      </ul>
-    <% end %>
-
-    <% if current_refinery_user.authorized_for_page?(::Refinery::QualityAssurance::PAGE_INSPECTIONS_URL) %>
-      <h4>Quality Assurance</h4>
-      <ul class="menu vertical sub-menu" style="margin-bottom: 1rem;">
-        <li><%= link_to "See Jobs (#{@company.jobs.count})", refinery.quality_assurance_jobs_path(company_id: @company) %></li>
-        <li><%= link_to "See Inspections (#{@company.inspections.count})", refinery.quality_assurance_inspections_path(company_id: @company) %></li>
-        <li><%= link_to "See Defects Summary", refinery.defects_quality_assurance_inspections_path(company_id: @company) %></li>
-      </ul>
-    <% end %>
-</div>
+<%= render 'refinery/content_page' %>

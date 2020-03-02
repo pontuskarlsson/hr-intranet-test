@@ -1,9 +1,8 @@
 module Refinery
   module Business
-    class OrdersController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class OrdersController < BusinessController
       set_page PAGE_ORDERS_URL
+
       allow_page_roles ROLE_INTERNAL_FINANCE
 
       before_action :find_orders, only: [:index]
@@ -25,15 +24,6 @@ module Refinery
       end
 
       protected
-
-      def orders_scope
-        @orders ||=
-            if page_role? ROLE_INTERNAL_FINANCE
-              Refinery::Business::Order.where(nil)
-            else
-              Refinery::Business::Order.where('1=0')
-            end
-      end
 
       def find_orders
         @orders = orders_scope

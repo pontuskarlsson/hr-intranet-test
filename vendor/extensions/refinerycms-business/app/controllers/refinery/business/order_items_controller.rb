@@ -1,6 +1,6 @@
 module Refinery
   module Business
-    class OrderItemsController < ::ApplicationController
+    class OrderItemsController < BusinessController
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_ORDERS_URL
@@ -18,15 +18,6 @@ module Refinery
       end
 
       protected
-
-      def orders_scope
-        @orders ||=
-            if page_role? ROLE_INTERNAL_FINANCE
-              Refinery::Business::Order.where(nil)
-            else
-              Refinery::Business::Order.where('1=0')
-            end
-      end
 
       def find_order
         @order = orders_scope.find(params[:order_id])

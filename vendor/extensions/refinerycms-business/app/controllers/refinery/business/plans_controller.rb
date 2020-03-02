@@ -1,6 +1,6 @@
 module Refinery
   module Business
-    class PlansController < ::ApplicationController
+    class PlansController < BusinessController
       before_action :find_plans, only: [:index]
       before_action :find_plan,  except: [:index, :create]
 
@@ -56,16 +56,12 @@ module Refinery
 
       protected
 
-      def plan_scope
-        @plans ||= Refinery::Business::Plan.for_user_roles(current_refinery_user)
-      end
-
       def find_plans
-        @plans = plan_scope.where(filter_params)
+        @plans = plans_scope.where(filter_params)
       end
 
       def find_plan
-        @plan = plan_scope.find(params[:id])
+        @plan = plans_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

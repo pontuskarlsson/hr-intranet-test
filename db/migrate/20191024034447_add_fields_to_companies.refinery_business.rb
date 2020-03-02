@@ -13,6 +13,9 @@ class AddFieldsToCompanies < ActiveRecord::Migration
 
     add_column :refinery_business_companies, :verified_by_id, :integer
     add_index :refinery_business_companies, :verified_by_id
+
+    add_column :refinery_business_companies, :uuid, :string
+    add_index :refinery_business_companies, :uuid
   end
 
 end

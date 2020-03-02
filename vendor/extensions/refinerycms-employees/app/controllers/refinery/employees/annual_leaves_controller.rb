@@ -1,11 +1,12 @@
 module Refinery
   module Employees
-    class AnnualLeavesController < ::ApplicationController
+    class AnnualLeavesController < ::Refinery::Employees::ApplicationController
+      set_page PAGE_ANNUAL_LEAVES
+
       before_action :find_employee
       before_action :find_all_annual_leaves,    only: [:index]
       before_action :find_annual_leave,         except: [:index, :create, :approve, :reject]
       before_action :find_approvable_loa,       only: [:approve, :reject]
-      before_action :find_page
 
       def index
         @leave_of_absence = @employee.leave_of_absences.build
@@ -86,12 +87,6 @@ module Refinery
 
       def find_approvable_loa
         @leave_of_absence = ::Refinery::Employees::LeaveOfAbsence.approvable_by(@employee).find(params[:id])
-      end
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/annual_leaves', current_refinery_user)
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
       end
 
       def annual_leave_params

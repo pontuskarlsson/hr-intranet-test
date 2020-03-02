@@ -1,9 +1,8 @@
 module Refinery
   module Business
-    class InvoicesController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class InvoicesController < BusinessController
       set_page PAGE_INVOICES_URL
+
       allow_page_roles ROLE_INTERNAL_FINANCE
 
       before_action :find_invoices, only: [:index]
@@ -82,15 +81,6 @@ module Refinery
       end
 
       protected
-
-      def invoices_scope
-        @invoices ||=
-            if page_role? ROLE_INTERNAL_FINANCE
-              Refinery::Business::Invoice.invoices.where(nil)
-            else
-              Refinery::Business::Invoice.invoices.where('1=0')
-            end
-      end
 
       def find_invoices
         @invoices = invoices_scope.where(filter_params)

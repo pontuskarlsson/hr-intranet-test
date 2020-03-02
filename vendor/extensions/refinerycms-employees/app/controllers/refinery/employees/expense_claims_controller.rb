@@ -1,9 +1,10 @@
 module Refinery
   module Employees
-    class ExpenseClaimsController < ::ApplicationController
+    class ExpenseClaimsController < ::Refinery::Employees::ApplicationController
+      set_page PAGE_EXPENSE_CLAIMS
+
       before_action :find_expense_claim,        except: [:index, :new, :create]
       before_action :find_all_expense_claims,   only: :index
-      before_action :find_page
 
       def index
         # you can use meta fields from your model instead (e.g. browser_title)
@@ -105,12 +106,6 @@ module Refinery
         @xero_expense_claim = ::Refinery::Employees::XeroExpenseClaim.find(params[:id])
       rescue ActiveRecord::RecordNotFound
         redirect_to refinery.employees_expense_claims_path
-      end
-
-      def find_page
-        @page = ::Refinery::Page.find_authorized_by_link_url!('/employees/expense_claims', current_refinery_user)
-      rescue ::ActiveRecord::RecordNotFound
-        error_404
       end
 
       def create_and_associate_resource

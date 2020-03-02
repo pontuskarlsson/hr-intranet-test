@@ -143,6 +143,24 @@ module Refinery
       scope :active,    -> { where.not(status: %w(DELETED VOIDED)) }
       scope :overdue,   -> { active.where('amount_due > 0').where('due_date < ?', Date.today) }
 
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+        if titles.include?(ROLE_INTERNAL_FINANCE)
+          where(nil)
+
+        else
+          where('1=0')
+        end
+      end
+
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id).or(where(to_company_id: selected_company.id)).or(where(from_company_id: selected_company.id))
+        end
+      end
+
       def display_total
         "#{total_amount} #{currency_code}"
       end

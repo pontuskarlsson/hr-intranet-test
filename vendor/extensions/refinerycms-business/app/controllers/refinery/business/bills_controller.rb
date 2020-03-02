@@ -1,13 +1,12 @@
 module Refinery
   module Business
-    class BillsController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class BillsController < BusinessController
       set_page PAGE_BILLS_URL
+
       allow_page_roles ROLE_INTERNAL_FINANCE
 
-      before_action :find_invoices, only: [:index]
-      before_action :find_invoice,  except: [:index, :new, :create]
+      before_action :find_bills, only: [:index]
+      before_action :find_bill,  except: [:index, :new, :create]
 
       helper_method :invoice_billables_form
 
@@ -28,20 +27,11 @@ module Refinery
 
       protected
 
-      def invoices_scope
-        @bills ||=
-            if page_role? ROLE_INTERNAL_FINANCE
-              Refinery::Business::Invoice.bills.where(nil)
-            else
-              Refinery::Business::Invoice.bills.where('1=0')
-            end
+      def find_bills
+        @bills = bills_scope.where(filter_params)
       end
 
-      def find_invoices
-        @bills = invoices_scope.where(filter_params)
-      end
-
-      def find_invoice
+      def find_bill
         @bill = invoices_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404

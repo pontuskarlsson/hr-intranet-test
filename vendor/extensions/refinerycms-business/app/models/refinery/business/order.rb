@@ -39,6 +39,24 @@ module Refinery
           self.seller_label = seller.label
         end
       end
+
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+        if titles.include?(ROLE_INTERNAL_FINANCE)
+          where(nil)
+
+        else
+          where('1=0')
+        end
+      end
+
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(buyer_id: selected_company.id).or(where(seller_id: selected_company.id))
+        end
+      end
       
       def buyer_label=(label)
         if buyer_label != label

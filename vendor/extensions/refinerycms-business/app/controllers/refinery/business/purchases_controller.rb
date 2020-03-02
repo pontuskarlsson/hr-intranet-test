@@ -1,6 +1,6 @@
 module Refinery
   module Business
-    class PurchasesController < ::ApplicationController
+    class PurchasesController < BusinessController
       layout 'application'
 
       before_action :authenticate_authentication_devise_user!
@@ -45,10 +45,6 @@ module Refinery
       end
 
       private
-
-      def purchases_scope
-        @purchases = Purchase.for_user_roles(current_refinery_user)
-      end
 
       def find_purchases
         @purchases = purchases_scope.where(filter_params)

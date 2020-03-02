@@ -58,6 +58,14 @@ module Refinery
         end
       end
 
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def self.from_params(params)
         active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
         archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))

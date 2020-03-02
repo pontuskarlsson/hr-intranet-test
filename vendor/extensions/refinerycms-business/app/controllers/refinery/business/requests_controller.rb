@@ -1,9 +1,8 @@
 module Refinery
   module Business
-    class RequestsController < ::ApplicationController
-      include Refinery::PageRoles::AuthController
-
+    class RequestsController < BusinessController
       set_page PAGE_REQUESTS_URL
+
       allow_page_roles ROLE_INTERNAL
       allow_page_roles ROLE_EXTERNAL
 
@@ -57,10 +56,6 @@ module Refinery
       end
 
       protected
-
-      def requests_scope
-        @requests = Refinery::Business::Request.for_user_roles(current_refinery_user)
-      end
 
       def find_requests
         @requests = requests_scope.where(filter_params)

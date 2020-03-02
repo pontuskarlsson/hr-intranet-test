@@ -7,8 +7,10 @@ Refinery::Core::Engine.routes.draw do
     end
     resources :bills, :only => [:index, :show]
     resources :budgets, :only => [:index, :show, :new, :create, :update]
-    resources :companies, :only => [:index, :show, :create] do
+    resources :companies, :only => [:index, :show, :new, :create] do
       resources :documents, only: [:new, :create]
+      post :select, on: :member
+      post :unselect, on: :collection
     end
     resources :invoices, :only => [:index, :show, :create, :update] do
       patch :add_billables, to: 'invoices#add_billables', on: :member

@@ -12,6 +12,13 @@ module Refinery
 
     ROLE_EMPLOYEE = 'Employees:Employee'
 
+    PAGE_ALL_LOA            = '/employees/all_leave_of_absences'
+    PAGE_ANNUAL_LEAVES      = '/employees/annual_leaves'
+    PAGE_CHART_OF_ACCOUNTS  = '/employees/chart_of_accounts'
+    PAGE_EMPLOYEES          = '/employees/employees'
+    PAGE_EXPENSE_CLAIMS     = '/employees/expense_claims'
+    PAGE_SICK_LEAVES        = '/employees/sick_leaves'
+
     class << self
       attr_writer :root
 

@@ -115,6 +115,14 @@ module Refinery
         end
       end
 
+      def self.for_selected_company(selected_company)
+        if selected_company.nil?
+          where(nil)
+        else
+          where(company_id: selected_company.id)
+        end
+      end
+
       def self.top_defects
         inspection_ids = where(nil).pluck(:id)
         res = Refinery::QualityAssurance::InspectionDefect
