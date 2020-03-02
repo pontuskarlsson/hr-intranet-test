@@ -23,6 +23,7 @@ class CreateBusinessPlans < ActiveRecord::Migration[5.1]
       t.integer :contact_person_id
       t.integer :account_manager_id
       t.text :payment_terms_content
+      t.string :confirmed_from_ip
 
       t.timestamps
     end
@@ -36,6 +37,7 @@ class CreateBusinessPlans < ActiveRecord::Migration[5.1]
     add_index :refinery_business_plans, :status
     add_index :refinery_business_plans, :confirmed_at
     add_index :refinery_business_plans, :confirmed_by_id
+    add_index :refinery_business_plans, :confirmed_from_ip
     add_index :refinery_business_plans, :notice_given_at
     add_index :refinery_business_plans, :notice_given_by_id
     add_index :refinery_business_plans, :contact_person_id

@@ -4,6 +4,7 @@ module Refinery
       set_main_model :plan, class_name: '::Refinery::Business::Plan', proxy: { attributes: %w() }
 
       attribute :confirmed_by_id,   Integer
+      attribute :remote_ip,         String
 
       validates :current_user,      presence: true
       validate do
@@ -21,6 +22,7 @@ module Refinery
       transaction do
         plan.confirmed_by_id = confirmed_by_id
         plan.confirmed_at = DateTime.now
+        plan.confirmed_from_ip = remote_ip
         plan.status = 'confirmed'
         plan.save!
 

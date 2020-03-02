@@ -159,7 +159,7 @@
     <tr>
       <th>Statement of Work</th>
       <th>&nbsp;</th>
-      <th>Credits - QA/QC Man Days</th>
+      <th>Credits - QA/QC Mandays</th>
       <th>&nbsp;</th>
       <th>Statistics</th>
     </tr>
@@ -170,7 +170,7 @@
         <table>
           <tbody>
           <tr>
-            <td>Man Days</td>
+            <td>Mandays</td>
             <td class="number"><%=number_with_delimiter @invoice.number_of_man_days %></td>
           </tr>
           <tr>
@@ -287,6 +287,8 @@
       </tfoot>
     </table>
   <% end %>
+
+  <p class="italic">Document generated <%= DateTime.now.in_time_zone(timezone).strftime('%B %d, %Y at %I:%M %P (%:::z)') %>.</p>
 
 </section>
 

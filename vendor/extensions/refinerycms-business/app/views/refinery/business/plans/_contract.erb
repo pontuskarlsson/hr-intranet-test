@@ -1,3 +1,6 @@
+<%- timezone = @plan.confirmed_by&.timezone.presence || 'UTC'
+%>
+
 <section class="contract_plan_summary">
   <h1 style="overflow: hidden; height: 2px;">Contract</h1>
   <h2 style="margin: 0 0 0.5rem;"><%= @plan.title %></h2>
@@ -35,20 +38,20 @@
 
   <h3 style="margin-bottom: 0.5rem;">Terms</h3>
 
-  <h5>Payment Terms</h5>
-  <p><%= @plan.payment_terms.display %></p>
-
   <h5>Contract Period</h5>
   <p><%= @plan.describe_contract_period %></p>
 
+  <h5>Min. Contract Value</h5>
+  <p><%=number_to_currency @plan.min_contract_value, delimiter: ',', unit: 'USD ' %></p>
+
   <h5>Validity</h5>
   <p>
-    Any unused Mandays will carry over to the following month and be used
+    Any unused Manday Credits will carry over to the following month and be used
     on a “First in First Out” basis and expire after 12 months from invoice date.
   </p>
 
-  <h5>Min. Contract Value</h5>
-  <p><%=number_to_currency @plan.min_contract_value, delimiter: ',', unit: 'USD ' %></p>
+  <h5>Payment Terms</h5>
+  <p><%= @plan.payment_terms.display %></p>
 
   <h3>Notes</h3>
   <ul>
@@ -56,7 +59,17 @@
     <li>Full access to all current and future customer features on website, incl. dashboards, WIP, logistics, etc. as long as you’re on this plan or higher plan.</li>
   </ul>
 
-  <p class="italic">Document created <%= DateTime.now.to_formatted_s(:long) %>.</p>
+  <% if @plan.status_is_confirmed? %>
+    <p class="italic">
+      Approved by user
+      <%= @plan.confirmed_by&.full_name.presence || 'Unknown' %>
+      on
+      <%= @plan.confirmed_at&.in_time_zone(timezone)&.strftime('%B %d, %Y at %I:%M %P (%:::z)') || 'Unknown' %>
+      from IP Address
+      <%= @plan.confirmed_from_ip.presence || 'Unknown' %>.
+    </p>
+  <% end %>
+  <p class="italic">Document generated <%= DateTime.now.in_time_zone(timezone).strftime('%B %d, %Y at %I:%M %P (%:::z)') %>.</p>
 
 </section>
 

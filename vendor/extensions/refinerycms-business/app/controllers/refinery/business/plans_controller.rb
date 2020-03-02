@@ -77,8 +77,12 @@ module Refinery
         params.permit([:company_id, :status]).to_h
       end
 
+      def confirm_plan_params
+        { remote_ip: request.remote_ip }.reverse_merge(params[:plan].respond_to?(:to_unsafe_h) ? params[:plan].to_unsafe_h : {})
+      end
+
       def confirm_plan_form
-        @confirm_plan_form ||= ConfirmPlanForm.new_in_model(@plan, params[:plan], current_refinery_user)
+        @confirm_plan_form ||= ConfirmPlanForm.new_in_model(@plan, confirm_plan_params, current_refinery_user)
       end
 
       def contract_pdf_options
