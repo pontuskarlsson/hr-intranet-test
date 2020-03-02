@@ -37,6 +37,7 @@ PATH
       refinerycms-page_roles (>= 1.0)
       refinerycms-resource_authorizations
       trans_forms
+      tzinfo
       xeroizer
     refinerycms-calendar (2.1.0)
       google_calendar (~> 0.4)

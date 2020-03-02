@@ -25,7 +25,7 @@ class MyProfilesController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:full_name)
+    params.require(:user).permit(:first_name, :last_name, :timezone)
   end
 
   def contact_params
@@ -33,11 +33,11 @@ class MyProfilesController < ApplicationController
   end
 
   def profile_updated?
-    if current_refinery_user.contact.present?
-      current_refinery_user.contact.update_attributes(contact_params)
-    else
+    # if current_refinery_user.contact.present?
+    #   current_refinery_user.contact.update_attributes(contact_params)
+    # else
       current_refinery_user.update_attributes(user_params)
-    end
+    #end
   end
 
 end

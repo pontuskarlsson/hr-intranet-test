@@ -100,7 +100,9 @@ class ApplicationController < ActionController::Base
   end
 
   def set_user_time_zone
-    Time.zone = 'Hong Kong'
+    if current_refinery_user.respond_to?(:timezone) && current_refinery_user.timezone.present?
+      Time.zone = current_refinery_user.timezone
+    end
   end
 
 end
