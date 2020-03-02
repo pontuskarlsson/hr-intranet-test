@@ -1,6 +1,8 @@
 module Refinery
   module Business
     class PurchasesController < BusinessController
+      include Refinery::PageRoles::AuthController
+
       layout 'application'
 
       before_action :authenticate_authentication_devise_user!

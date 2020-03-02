@@ -1,6 +1,8 @@
 module Refinery
   module Business
     class PlansController < BusinessController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_COMPANIES_URL
 
       allow_page_roles ROLE_EXTERNAL

@@ -1,6 +1,8 @@
 module Refinery
   module QualityAssurance
     class JobsController < QualityAssuranceController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_JOBS_URL
 
       allow_page_roles ROLE_EXTERNAL, only: [:index, :show]

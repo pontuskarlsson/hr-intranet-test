@@ -1,6 +1,8 @@
 module Refinery
   module Business
     class BillsController < BusinessController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_BILLS_URL
 
       allow_page_roles ROLE_INTERNAL_FINANCE

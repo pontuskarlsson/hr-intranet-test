@@ -1,7 +1,10 @@
 module Refinery
   module Shipping
     class ShipmentsController < ShippingController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_SHIPMENTS_URL
+
       allow_page_roles ROLE_INTERNAL
       allow_page_roles ROLE_EXTERNAL,     only: [:index, :show, :edit, :update]
       allow_page_roles ROLE_EXTERNAL_FF,  only: [:index, :show, :edit, :update]

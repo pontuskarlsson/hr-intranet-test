@@ -1,6 +1,8 @@
 module Refinery
   module QualityAssurance
     class CreditsController < QualityAssuranceController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_CREDITS_URL
 
       allow_page_roles ::Refinery::Business::ROLE_EXTERNAL, only: [:index]

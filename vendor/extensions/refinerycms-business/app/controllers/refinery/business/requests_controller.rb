@@ -1,6 +1,8 @@
 module Refinery
   module Business
     class RequestsController < BusinessController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_REQUESTS_URL
 
       allow_page_roles ROLE_INTERNAL

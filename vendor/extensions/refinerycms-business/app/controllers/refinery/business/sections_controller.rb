@@ -1,6 +1,8 @@
 module Refinery
   module Business
     class SectionsController < BusinessController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_PROJECTS_URL
 
       allow_page_roles ROLE_INTERNAL

@@ -1,7 +1,10 @@
 module Refinery
   module QualityAssurance
     class InspectionsController < QualityAssuranceController
+      include Refinery::PageRoles::AuthController
+
       set_page PAGE_INSPECTIONS_URL
+
       allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :defects, :download, :show]
       allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :defects, :download, :show]
       allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :defects, :download, :show, :update]
