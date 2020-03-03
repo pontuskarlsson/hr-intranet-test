@@ -20,6 +20,8 @@ module Refinery
         end
       end
 
+      scope :owner, -> { where(role: 'Owner') }
+
     end
   end
 end

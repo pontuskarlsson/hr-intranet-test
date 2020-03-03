@@ -34,7 +34,7 @@ module Refinery
       end
 
       def minimums
-        if minimums_attributes.is_a?(Hash)
+        if minimums_attributes.is_a?(Hash) && minimums_attributes.any?
           invoice.minimums(minimums_attributes.values)
         else
           invoice.minimums
@@ -305,9 +305,15 @@ module Refinery
         invoice.minimums = minimum_charges
         #invoice.additionals = additionals.values
         invoice.plan_opening_balance = @opening_balance_by_code.values.reduce(&:+) || 0
-        invoice.plan_redeemed = redeemed_vouchers.count
-        invoice.plan_issued = issued_vouchers.count
         invoice.plan_closing_balance = @closing_balance_by_code.values.reduce(&:+) || 0
+
+        # invoice.plan_redeemed = redeemed_vouchers.count
+        # invoice.plan_issued = issued_vouchers.count
+
+        min_charges_qty = minimum_charges.reduce(0.0) { |acc, c| acc + c.qty }
+        handled_qty = handled_billables.reduce(0.0) { |acc, b| acc + b.qty }
+        invoice.plan_issued = [min_charges_qty, handled_qty].max
+        invoice.plan_redeemed = invoice.plan_closing_balance - invoice.plan_opening_balance - invoice.plan_issued
 
         invoice.save!
 

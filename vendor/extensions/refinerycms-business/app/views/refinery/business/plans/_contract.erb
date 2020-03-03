@@ -64,12 +64,15 @@
       Approved by user
       <%= @plan.confirmed_by&.full_name.presence || 'Unknown' %>
       on
-      <%= @plan.confirmed_at&.in_time_zone(timezone)&.strftime('%B %d, %Y at %I:%M %P (%:::z)') || 'Unknown' %>
+      <%- date = @plan.confirmed_at&.in_time_zone(timezone) %>
+      <%= date ? "#{date.strftime('%B %d, %Y at %H:%M')} (UTC#{date.utc? ? '' : "%+d" % (date.utc_offset / 3600)})" : 'Unknown' %>
       from IP Address
       <%= @plan.confirmed_from_ip.presence || 'Unknown' %>.
     </p>
   <% end %>
-  <p class="italic">Document generated <%= DateTime.now.in_time_zone(timezone).strftime('%B %d, %Y at %I:%M %P (%:::z)') %>.</p>
+
+  <%- date = DateTime.now.in_time_zone(timezone) %>
+  <p class="italic">Document generated <%= "#{date.strftime('%B %d, %Y at %H:%M')} (UTC#{date.utc? ? '' : "%+d" % (date.utc_offset / 3600)})" %>.</p>
 
 </section>
 

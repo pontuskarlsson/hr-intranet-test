@@ -1,3 +1,6 @@
+<%- timezone = @invoice.company.company_users.owner.first&.user&.timezone.presence || 'UTC'
+%>
+
 <% content_for :head do %>
   <style type="text/css">
     .billables {
@@ -159,7 +162,7 @@
     <tr>
       <th>Statement of Work</th>
       <th>&nbsp;</th>
-      <th>Credits - QA/QC Mandays</th>
+      <th>Manday Credits</th>
       <th>&nbsp;</th>
       <th>Statistics</th>
     </tr>
@@ -199,12 +202,12 @@
             <td class="number"><%=number_with_precision @invoice.plan_opening_balance.to_f, strip_insignificant_zeros: true %></td>
           </tr>
           <tr>
-            <td>Redeemed</td>
-            <td class="number"><%=number_with_precision @invoice.plan_redeemed.to_f, strip_insignificant_zeros: true %></td>
-          </tr>
-          <tr>
             <td>Issued</td>
             <td class="number"><%=number_with_precision @invoice.plan_issued.to_f, strip_insignificant_zeros: true %></td>
+          </tr>
+          <tr>
+            <td>Redeemed</td>
+            <td class="number"><%=number_with_precision @invoice.plan_redeemed.to_f, strip_insignificant_zeros: true %></td>
           </tr>
           <tr>
             <td>Closing Balance</td>
@@ -287,8 +290,6 @@
       </tfoot>
     </table>
   <% end %>
-
-  <p class="italic">Document generated <%= DateTime.now.in_time_zone(timezone).strftime('%B %d, %Y at %I:%M %P (%:::z)') %>.</p>
 
 </section>
 
