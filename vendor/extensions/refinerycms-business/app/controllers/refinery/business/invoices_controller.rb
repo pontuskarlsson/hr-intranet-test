@@ -106,8 +106,17 @@ module Refinery
         @invoice_billables_form ||= InvoiceBillablesForm.new_in_model(@invoice, params[:invoice], current_refinery_user)
       end
 
+      def invoice_items_build_params
+        if params[:invoice_items_build_form]
+          params[:invoice_items_build_form]
+
+        elsif !@invoice.invoice_items.exists? && @invoice.company.plans.active.exists?
+          @invoice.company.plans.active.first.invoice_params
+        end
+      end
+
       def invoice_items_build_form
-        @invoice_items_build_form ||= InvoiceItemsBuildForm.new_in_model(@invoice, params[:invoice_items_build_form], current_refinery_user)
+        @invoice_items_build_form ||= InvoiceItemsBuildForm.new_in_model(@invoice, invoice_items_build_params, current_refinery_user)
       end
 
     end

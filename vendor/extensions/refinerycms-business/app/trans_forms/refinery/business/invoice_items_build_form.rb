@@ -34,7 +34,11 @@ module Refinery
       end
 
       def minimums
-        invoice.minimums
+        if minimums_attributes.is_a?(Hash)
+          invoice.minimums(minimums_attributes.values)
+        else
+          invoice.minimums
+        end
       end
 
       transaction do

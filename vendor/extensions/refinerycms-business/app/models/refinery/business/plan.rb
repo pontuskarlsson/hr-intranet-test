@@ -68,6 +68,7 @@ module Refinery
       end
 
       scope :non_draft, -> { where.not(status: 'draft') }
+      scope :active, -> { where(status: 'confirmed') }
 
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
@@ -87,6 +88,16 @@ module Refinery
         else
           where(company_id: selected_company.id)
         end
+      end
+
+      def invoice_params
+        {
+            plan_title: title,
+            plan_description: description,
+            minimums_attributes: Array(plan_charges).each_with_index.reduce({}) do |acc, (charge, i)|
+              acc.merge(i.to_s => charge)
+            end
+        }
       end
 
       def charges

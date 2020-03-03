@@ -13,5 +13,18 @@ FactoryBot.define do
     description { 'A description of a monthly plan.' }
     currency_code { ::Refinery::Business::Invoice::CURRENCY_CODES.first }
     status { 'draft' }
+
+
+    factory :confirmed_plan do
+      status { 'confirmed' }
+      plan_charges { [
+          { qty: '10',
+            article_label: FactoryBot.create(:article_voucher).code,
+            base_amount: '350',
+            discount_amount: '-35',
+            discount_type: 'fixed_amount'
+          }
+      ] }
+    end
   end
 end
