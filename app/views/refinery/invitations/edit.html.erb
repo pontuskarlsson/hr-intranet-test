@@ -1,24 +1,60 @@
-<div class="grid-x grid-padding-x">
-  <div class="cell medium-8 medium-offset-2 large-6 large-offset-3">
-    <h2 class="text-align-center"><%= t 'devise.invitations.edit.header' %></h2>
+<div class="login-sign-up">
+  <%= form_for resource, :as => resource_name, :url => '/refinery/users/invitation', :html => { :method => :put } do |f| %>
+    <%= devise_error_messages! %>
+    <%= f.hidden_field :invitation_token %>
+    <div class="grid-x grid-padding-x">
+      <div class="cell">
+        <h2 class="text-align-center" style="margin-top: 1rem;"><%= t 'devise.invitations.edit.header' %></h2>
 
-    <%= form_for resource, :as => resource_name, :url => '/refinery/users/invitation', :html => { :method => :put } do |f| %>
-      <%= devise_error_messages! %>
-      <%= f.hidden_field :invitation_token %>
+        <p class="text-align-center">
+          You have been invited
+          <% if resource.invited_by.present? %>
+            by <%= resource.invited_by.full_name %>
+          <% end %>
+          to create an account
+          <% if resource.companies.exists? %>
+          and manage <%= resource.companies.first.name %>
+          <% end %>
+          on the Happy Rabbit Portal.
+        </p>
+      </div>
+
+      <div class="cell medium-6">
+        <span><%= f.label :first_name, 'First Name' %></span>
+        <%= f.text_field :first_name, placeholder: 'First Name*', required: true %>
+      </div>
+
+      <div class="cell medium-6">
+        <span><%= f.label :last_name, 'Last Name' %></span>
+        <%= f.text_field :last_name, placeholder: 'Last Name*', required: true %>
+      </div>
 
       <% if f.object.class.require_password_on_accepting %>
-        <div class='field'>
-          <%= f.label :password -%>
-          <%= f.password_field :password %>
-        </div>
+      <div class="cell medium-6">
+        <span><%= f.label :password, 'Password' %></span>
+        <%= f.password_field :password, placeholder: 'Password*', required: true %>
+      </div>
 
-        <div class='field'>
-          <%= f.label :password_confirmation -%>
-          <%= f.password_field :password_confirmation %>
-        </div>
+      <div class="cell medium-6">
+        <span><%= f.label :password_confirmation, 'Confirm Password' %></span>
+        <%= f.password_field :password_confirmation, placeholder: 'Confirm Password*', required: true %>
+      </div>
       <% end %>
 
-      <p class="text-align-center"><%= f.submit t("devise.invitations.edit.submit_button"), class: 'button primary' %></p>
-    <% end %>
-  </div>
+      <div class="cell">
+        <p class="text-align-center"><%= f.submit t("devise.invitations.edit.submit_button"), class: 'button primary' %></p>
+      </div>
+
+      <div class="cell text-align-center">
+        <div class="agree-to-terms">
+          <p>
+            By clicking this button, you agree to our
+            <%= link_to 'Terms of Use', '/legal/terms-of-use', target: '_blank' %>,
+            <%= link_to 'Service Terms & Conditions', '/legal/service-terms-conditions', target: '_blank' %> and
+            <%= link_to 'Privacy Policy', '/legal/privacy-policy', target: '_blank' %>.
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

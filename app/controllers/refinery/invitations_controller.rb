@@ -11,6 +11,8 @@ class Refinery::InvitationsController < Devise::InvitationsController
     prepend_before_action :resource_from_invitation_token, :only => [:edit, :destroy]
   end
 
+  layout proc{ |controller| controller.action_name == 'edit' ? 'refinery/layouts/login' : 'application' }
+
   if respond_to? :helper_method
     helper_method :after_sign_in_path_for
   end
@@ -118,7 +120,7 @@ class Refinery::InvitationsController < Devise::InvitationsController
   end
 
   def update_resource_params
-    params.require(:authentication_devise_user).permit([:password, :password_confirmation, :invitation_token, :full_name])
+    params.require(:authentication_devise_user).permit([:password, :password_confirmation, :invitation_token, :first_name, :last_name])
     #devise_parameter_sanitizer.sanitize(:accept_invitation)
   end
 

@@ -45,8 +45,8 @@
 
 <% end -%>
 
-<% if Rails.env.development? %>
 <div class="grid-x grid-padding-x">
+  <% if false && Rails.env.development? %>
   <div class="cell">
     <div class="providers">
       <p class="text-align-center">or sign up with one of these services</p>
@@ -66,6 +66,7 @@
       Facebook
     </a>
   </div>
+  <% end %>
 
   <div class="cell text-align-center">
     <div class="agree-to-terms">
@@ -78,4 +79,3 @@
     </div>
   </div>
 </div>
-<% end %>
