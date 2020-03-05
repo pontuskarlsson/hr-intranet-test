@@ -6,6 +6,8 @@ Refinery::Authentication::Devise::User.class_eval do
            foreign_key: :resource_owner_id,
            dependent: :delete_all # or :destroy if you need callbacks
 
+  has_many :omni_authentications, class_name: '::Omni::Authentication', dependent: :destroy
+
   has_many :access_tokens,
            class_name: 'Doorkeeper::AccessToken',
            foreign_key: :resource_owner_id,

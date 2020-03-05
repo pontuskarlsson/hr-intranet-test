@@ -110,7 +110,7 @@ module Refinery
         if params[:invoice_items_build_form]
           params[:invoice_items_build_form]
 
-        elsif !@invoice.invoice_items.exists? && @invoice.company.plans.active.exists?
+        elsif !@invoice.invoice_items.exists? && @invoice.company.present? && @invoice.company.plans.active.exists?
           @invoice.company.plans.active.first.invoice_params
         end
       end

@@ -6,10 +6,12 @@ namespace :portal do
       task sync_changes: [:set_logger, :environment] do
         begin
           Refinery::Business::Account.find_each do |account|
-            syncer = Refinery::Business::Xero::Syncer.new account
-            syncer.sync_changes!
+            if (xero_authorization = account.omni_authorizations.xero.first).present?
+              syncer = Refinery::Business::Xero::Syncer.new account, xero_authorization
+              syncer.sync_changes!
 
-            ErrorMailer.error_email(syncer.errors[0], syncer.errors[1..-1]).deliver if syncer.errors.any?
+              ErrorMailer.error_email(syncer.errors[0], syncer.errors[1..-1]).deliver if syncer.errors.any?
+            end
           end
 
         rescue StandardError => e
@@ -22,10 +24,12 @@ namespace :portal do
       task sync_all: [:set_logger, :environment] do
         begin
           Refinery::Business::Account.find_each do |account|
-            syncer = Refinery::Business::Xero::Syncer.new account
-            syncer.sync_all!
+            if (xero_authorization = account.omni_authorizations.xero.first).present?
+              syncer = Refinery::Business::Xero::Syncer.new account, xero_authorization
+              syncer.sync_all!
 
-            ErrorMailer.error_email(syncer.errors[0], syncer.errors[1..-1]).deliver if syncer.errors.any?
+              ErrorMailer.error_email(syncer.errors[0], syncer.errors[1..-1]).deliver if syncer.errors.any?
+            end
           end
 
         rescue StandardError => e

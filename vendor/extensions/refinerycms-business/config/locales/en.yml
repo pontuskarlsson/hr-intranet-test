@@ -332,8 +332,13 @@ en:
         managed_status: Managed Status
         managed_statuses:
           draft: Draft
-          submitted: Submitted
-          changed: Changed
+          submitted_for_approval: Submitted For Approval
+          approved: Approved
+          issued: Issued
+          authorized: Authorized
+          sent: Sent
+          paid: Paid
+          voided: Voided
         reference: Reference
         seller_reference: Seller Reference
         status: Status

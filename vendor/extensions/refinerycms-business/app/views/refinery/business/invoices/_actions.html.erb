@@ -1,6 +1,11 @@
 <% if page_role? ::Refinery::Business::ROLE_INTERNAL_FINANCE %>
   <% if invoice.is_managed %>
-    <%= link_to 'View Statement', refinery.statement_business_invoice_path(invoice, format: :pdf) %>
+    <%= link_to 'View Statement', refinery.statement_business_invoice_path(invoice, format: :pdf), class: 'button' %>
+
+    <% if invoice.managed_status_is_draft? %>
+      <%= link_to 'Submit for Approval', refinery.business_invoice_path(invoice, managed_status: 'submitted_for_approval'), method: :put, html: { confirm: 'Are you sure?' }, class: 'button' %>
+    <% end %>
+
   <% else %>
     <%= button_to 'Set as Managed', [refinery, :business, invoice], params: { :"invoice[is_managed]" => true }, class: 'button', method: :put, html: { confirm: 'Managing this Invoice will overwrite any changes made manually in Xero. Do you want to continue?' } %>
   <% end %>

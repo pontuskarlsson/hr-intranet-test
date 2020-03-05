@@ -1,3 +1,5 @@
+<h3>Access granted to</h3>
+
 <table class="table table-striped">
   <thead>
   <tr>
@@ -9,7 +11,7 @@
   <tbody>
   <% if @applications.empty? %>
     <tr>
-      <td colspan="3" class="italic">No applications authorized</td>
+      <td colspan="3" class="italic">No applications granted access</td>
     </tr>
   <% end %>
   <% @applications.each do |application| %>
@@ -21,3 +23,33 @@
   <% end %>
   </tbody>
 </table>
+
+<h3>Access granted by</h3>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= t('doorkeeper.authorized_applications.index.application') %></th>
+    <th><%= t('doorkeeper.authorized_applications.index.created_at') %></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @omni_authentications.empty? %>
+    <tr>
+      <td colspan="3" class="italic">No applications granted access</td>
+    </tr>
+  <% end %>
+  <% @omni_authentications.each do |omni_authentication| %>
+    <tr>
+      <td><%= omni_authentication.provider %></td>
+      <td><%= omni_authentication.created_at.strftime(t('doorkeeper.authorized_applications.index.date_format')) %></td>
+      <td>&nbsp;</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<% if current_refinery_user.has_role?(::Refinery::Business::ROLE_INTERNAL_FINANCE) && @omni_authentications.empty? %>
+  <%= link_to 'Connect to Xero', '/auth/xero_oauth2', class: 'button' %>
+<% end %>

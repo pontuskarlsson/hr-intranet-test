@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   # OAuth
   use_doorkeeper
 
+  get 'auth/:provider/callback', to: 'omniauth#callback'
+
   namespace :api do
     namespace :v1 do
       get 'me', to: 'credentials#me', as: :me

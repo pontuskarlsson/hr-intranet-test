@@ -46,6 +46,9 @@ gem 'devise_invitable', '2.0.1'
 
 # OAuth
 gem 'doorkeeper'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-xero-oauth2'
 
 # RestClient
 gem 'rest-client'
@@ -67,7 +70,7 @@ gem 'wkhtmltopdf-binary'
 gem 'trans_forms', path: 'vendor/extensions'
 
 # Workaround to get the latest version of xeroizer that is not available from rubygems yet
-gem 'xeroizer', '2.20.0'
+gem 'xeroizer', git: 'https://github.com/waynerobinson/xeroizer'
 
 gem 'stripe', '5.14.0'
 

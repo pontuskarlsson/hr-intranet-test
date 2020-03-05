@@ -4,6 +4,7 @@ class MyProfilesController < ApplicationController
 
   def show
     @applications = ::Doorkeeper::Application.authorized_for(current_refinery_user)
+    @omni_authentications = current_refinery_user.omni_authentications
 
     present(@page)
   end

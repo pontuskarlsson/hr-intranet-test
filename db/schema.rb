@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200227025243) do
+ActiveRecord::Schema.define(version: 20200304052645) do
 
   create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "target_id", null: false
@@ -107,6 +107,34 @@ ActiveRecord::Schema.define(version: 20200227025243) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
+  end
+
+  create_table "omni_authentications", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "user_id"
+    t.string "provider"
+    t.string "uid"
+    t.text "token"
+    t.string "refresh_token"
+    t.text "auth_info"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "token_expires"
+    t.text "extra"
+    t.index ["provider"], name: "index_omni_authentications_on_provider"
+    t.index ["uid"], name: "index_omni_authentications_on_uid"
+    t.index ["user_id"], name: "index_omni_authentications_on_user_id"
+  end
+
+  create_table "omni_authorizations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "omni_authentication_id"
+    t.integer "company_id"
+    t.string "type"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_omni_authorizations_on_company_id"
+    t.index ["omni_authentication_id"], name: "index_omni_authorizations_on_omni_authentication_id"
+    t.index ["type"], name: "index_omni_authorizations_on_type"
   end
 
   create_table "refinery_annual_leave_records", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

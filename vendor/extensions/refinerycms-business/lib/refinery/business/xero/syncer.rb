@@ -5,9 +5,10 @@ module Refinery
 
         attr_reader :account, :errors
 
-        def initialize(account)
+        def initialize(account, xero_authorization)
           @account = account
-          @account_company = nil #Refinery::Business::Company.find_by! name: account.organisation
+          @xero_authorization = xero_authorization
+          @authentication = xero_authorization.omni_authentication
           @errors = []
         end
 
@@ -79,11 +80,63 @@ module Refinery
           end
         end
 
-        private
+        def push_invoice(invoice)
+          push_invoices = ::Refinery::Business::Xero::Push::Invoices.new client, errors
+
+          if invoice.invoice_id.present?
+            xero_invoice = client.Invoice.find(invoice.invoice_id)
+            sync_invoices.update!(invoice, xero_invoice)
+          else
+
+          end
+
+        end
+
+        #private
 
         def client
-          @xero_client ||= ::Refinery::Business::Xero::Client.new(account)
+          @xero_client ||= ::Refinery::Business::Xero::Client.new(access_token, @xero_authorization.tenant_id)
           @xero_client.client
+        end
+
+        def access_token
+          @access_token ||=
+              if @authentication.token_expired?(1.minute)
+                refresh_token
+              else
+                @authentication.token
+              end
+        end
+
+        def refresh_token
+          system_time = Time.now.to_i
+          xero_token_endpoint = 'https://identity.xero.com/connect/token'
+          refresh_request_body_hash = {
+              grant_type: 'refresh_token',
+              refresh_token: @authentication.refresh_token
+          }
+
+          resp = Faraday.post(xero_token_endpoint) do |req|
+            req.headers['Authorization'] = basic_auth
+            req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+            req.body = URI.encode_www_form(refresh_request_body_hash)
+          end
+
+          if resp.status == 200
+            resp_hash = JSON.parse(resp.body)
+
+            @authentication.token = resp_hash['access_token']
+            @authentication.refresh_token = resp_hash['refresh_token']
+            @authentication.token_expires = system_time + resp_hash['expires_in']
+            @authentication.save
+          else
+            raise 'Failed to refresh access token'
+          end
+          @authentication.token
+        end
+
+        def basic_auth
+          'Basic ' + Base64.strict_encode64(ENV['XERO_CLIENT_ID'] + ':' + ENV['XERO_CLIENT_SECRET'])
         end
 
       end

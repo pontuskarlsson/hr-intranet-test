@@ -15,12 +15,16 @@
         <table class="cc-table">
           <tbody>
           <tr>
+            <th>Account</th>
+            <td><%= @invoice.account&.organisation.presence || 'N/A' %></td>
+          </tr>
+          <tr>
             <th style="width: 150px;">Buyer</th>
             <td>
               <% if @invoice.company.present? %>
                 <%= link_to @invoice.company.label, refinery.business_company_path(@invoice.company) %>
               <% else %>
-                N/A
+                <%= @invoice.to_company_label %>
               <% end %>
             </td>
           </tr>

@@ -1,0 +1,25 @@
+<h3>Application Integrations</h3>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= t('doorkeeper.authorized_applications.index.application') %></th>
+    <th><%= t('doorkeeper.authorized_applications.index.created_at') %></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% if @company.omni_authorizations.empty? %>
+    <tr>
+      <td colspan="3" class="italic">No applications granted access</td>
+    </tr>
+  <% end %>
+  <% @company.omni_authorizations.each do |omni_authorization| %>
+    <tr>
+      <td><%= omni_authorization.omni_authentication.provider %></td>
+      <td><%= omni_authorization.created_at.strftime(t('doorkeeper.authorized_applications.index.date_format')) %></td>
+      <td>&nbsp;</td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
