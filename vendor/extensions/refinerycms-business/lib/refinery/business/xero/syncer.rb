@@ -85,9 +85,14 @@ module Refinery
 
           if invoice.invoice_id.present?
             xero_invoice = client.Invoice.find(invoice.invoice_id)
-            sync_invoices.update!(invoice, xero_invoice)
-          else
 
+            if push_invoices.update!(invoice, xero_invoice)
+
+            else
+              errors << 'Failed to push invoice to Xero'
+            end
+          else
+            errors << 'Failed to create invoice in Xero'
           end
 
         end

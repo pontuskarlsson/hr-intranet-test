@@ -1,0 +1,28 @@
+<table>
+  <tbody>
+  <tr>
+    <th>Inv No.</th>
+    <td><%= invoice.invoice_number %></td>
+  </tr>
+  <tr>
+    <th>Buyer</th>
+    <td><%= invoice.company_label %></td>
+  </tr>
+  <tr>
+    <th>Reference</th>
+    <td><%= invoice.reference %></td>
+  </tr>
+  <tr>
+    <th>Date</th>
+    <td><%= invoice.invoice_date %></td>
+  </tr>
+  <tr>
+    <th>Due Date</th>
+    <td><%= invoice.due_date %></td>
+  </tr>
+  <tr>
+    <th>Total Amount</th>
+    <td><%=number_to_currency invoice.total_amount, unit: invoice.currency_code %></td>
+  </tr>
+  </tbody>
+</table>

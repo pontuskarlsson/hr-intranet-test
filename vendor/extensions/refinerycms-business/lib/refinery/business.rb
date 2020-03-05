@@ -9,6 +9,7 @@ module Refinery
     require 'refinery/business/controller_scope_mixin'
     require 'refinery/business/engine'
     require 'refinery/business/job'
+    require 'refinery/business/xero/push/invoices'
     require 'refinery/business/xero/sync/contacts'
     require 'refinery/business/xero/sync/invoices'
     require 'refinery/business/xero/sync/items'

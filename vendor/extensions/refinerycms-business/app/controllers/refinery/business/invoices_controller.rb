@@ -10,7 +10,7 @@ module Refinery
       before_action :find_invoices, only: [:index]
       before_action :find_invoice,  except: [:index, :new, :create]
 
-      helper_method :invoice_billables_form, :invoice_items_build_form
+      helper_method :invoice_billables_form, :invoice_items_build_form, :invoice_form
 
       def index
         @invoices = @invoices.from_params(params)
@@ -41,7 +41,7 @@ module Refinery
       end
 
       def update
-        if @invoice.update_attributes(invoice_params)
+        if invoice_form.save
           flash[:notice] = 'Successfully updated the Invoice'
           if params[:redirect_to].present?
             redirect_to params[:redirect_to], status: :see_other
@@ -117,6 +117,15 @@ module Refinery
 
       def invoice_items_build_form
         @invoice_items_build_form ||= InvoiceItemsBuildForm.new_in_model(@invoice, invoice_items_build_params, current_refinery_user)
+      end
+
+      def invoice_form
+        @invoice_form ||=
+            if params[:set_status] == '1'
+              InvoiceStatusForm.new_in_model(@invoice, params[:invoice], current_refinery_user)
+            else
+              InvoiceForm.new_in_model(@invoice, params[:invoice], current_refinery_user)
+            end
       end
 
     end

@@ -1,0 +1,13 @@
+<%- @invoice = @notification.notifiable -%>
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>The invoice <%= @invoice.invoice_number %> has just been issued.</p>
+
+<p><%= link_to "View on Portal", move_notification_url_for(@notification, open: true) %>.</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<%= render 'invoice', invoice: @invoice %>

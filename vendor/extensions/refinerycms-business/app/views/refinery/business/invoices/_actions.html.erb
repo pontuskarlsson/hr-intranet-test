@@ -3,7 +3,20 @@
     <%= link_to 'View Statement', refinery.statement_business_invoice_path(invoice, format: :pdf), class: 'button' %>
 
     <% if invoice.managed_status_is_draft? %>
-      <%= link_to 'Submit for Approval', refinery.business_invoice_path(invoice, managed_status: 'submitted_for_approval'), method: :put, html: { confirm: 'Are you sure?' }, class: 'button' %>
+      <div style="display: inline-block;">
+        <%= button_to 'Submit for Approval', refinery.business_invoice_path(invoice), params: { :"invoice[managed_status]" => "submitted_for_approval", "set_status" => "1" }, method: :put, html: { confirm: 'Are you sure?' }, class: 'button' %>
+      </div>
+
+    <% elsif invoice.managed_status_is_submitted_for_approval? %>
+      <div style="display: inline-block;">
+        <%= button_to 'Approve Invoice', refinery.business_invoice_path(invoice), params: { :"invoice[managed_status]" => "approved", "set_status" => "1" }, method: :put, html: { confirm: 'Are you sure?' }, class: 'button' %>
+      </div>
+
+    <% elsif invoice.managed_status_is_approved? %>
+      <div style="display: inline-block;">
+        <%= button_to 'Issue Invoice', refinery.business_invoice_path(invoice), params: { :"invoice[managed_status]" => "issued", "set_status" => "1" }, method: :put, html: { confirm: 'Are you sure?' }, class: 'button' %>
+      </div>
+
     <% end %>
 
   <% else %>

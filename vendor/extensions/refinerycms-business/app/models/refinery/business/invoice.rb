@@ -67,7 +67,7 @@ module Refinery
 
       INVOICE_TYPES = %w(ACCREC ACCPAY)
       STATUSES = %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
-      MANAGED_STATUSES = %w(draft submitted_for_approval approved issued modified authorized sent paid voided)
+      MANAGED_STATUSES = %w(draft submitted_for_approval approved issued authorised sent paid voided)
       CURRENCY_CODES = %w(USD HKD EUR SEK CNY THB)
 
       belongs_to :account, optional: true
