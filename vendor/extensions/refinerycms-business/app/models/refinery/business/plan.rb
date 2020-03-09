@@ -109,9 +109,11 @@ module Refinery
       def describe_contract_period
         <<~HEREDOC
           #{notice_period_months + min_contract_period_months}
-          months including a
+          months minimum contract period after which the subscription
+          will be automatically renewed each month. The plan can be
+          cancelled with a
           #{notice_period_months}
-          months notice period, i.e. notice can be given after
+          month notice at any time after the first
           #{min_contract_period_months}
           months.
         HEREDOC
