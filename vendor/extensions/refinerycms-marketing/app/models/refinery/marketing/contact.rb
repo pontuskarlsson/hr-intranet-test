@@ -27,7 +27,7 @@ module Refinery
       scope :non_organisations, -> { where(is_organisation: false) }
       scope :in_crm, -> { where(removed_from_base: false).where.not(insightly_id: nil) }
       scope :not_in_crm, -> { where(insightly_id: nil) }
-      scope :without_code, -> { where("#{table_name}.code IS NULL OR #{table_name}.code = ''") }
+      scope :without_code, -> { where(code: nil).or(where(code: '')) }
 
       def self.employees_for(organisation)
         if (org = where(name: organisation).first).present?
