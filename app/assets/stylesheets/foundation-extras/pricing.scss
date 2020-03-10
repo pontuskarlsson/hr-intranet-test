@@ -40,7 +40,7 @@
     }
 }
 
-.tabs-panel-plans, .tabs-panel-pay-as-you-go {
+.tabs-panel-plans, .tabs-panel-prepay {
     padding: 0;
 
     .orbit-previous, .orbit-next {
@@ -74,7 +74,7 @@
     }
 }
 
-.tabs-panel-pay-as-you-go .pricing-container {
+.tabs-panel-prepay .pricing-container {
     grid-template-columns: repeat(3, calc(33% - 20px));
     width: 76%;
     margin-left: auto;
