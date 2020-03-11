@@ -36,7 +36,7 @@ module Refinery
         self.status ||= 'created'
         calculate_cost
 
-        if user.present?
+        if company_id.nil? && user.present?
           self.company_id = user.companies.first.id if user.companies.count == 1
         end
       end

@@ -7,8 +7,6 @@ module Refinery
 
       layout 'application'
 
-      before_action :authenticate_authentication_devise_user!
-
       before_action :find_purchases, only: [:index]
 
       def index
@@ -27,7 +25,7 @@ module Refinery
       end
 
       def create
-        @purchase = current_refinery_user.purchases.build(purchase_params)
+        @purchase = current_refinery_user.purchases.for_selected_company(selected_company).build(purchase_params)
 
         respond_to do |format|
           if @purchase.save # Not saved

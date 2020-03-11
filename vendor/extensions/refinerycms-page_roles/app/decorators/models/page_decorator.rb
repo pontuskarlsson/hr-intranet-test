@@ -19,8 +19,12 @@ Refinery::Page.class_eval do
   end
 
   def user_page_role_ids(current_refinery_user)
-    @user_page_role_ids ||= {}
-    @user_page_role_ids[current_refinery_user.id] ||= (role_ids & current_refinery_user.role_ids)
+    if current_refinery_user.is_a? ::Refinery::Authentication::Devise::User
+      @user_page_role_ids ||= {}
+      @user_page_role_ids[current_refinery_user.id] ||= (role_ids & current_refinery_user.role_ids)
+    else
+      []
+    end
   end
 
   def user_page_role_titles(current_refinery_user = authenticated_user)
