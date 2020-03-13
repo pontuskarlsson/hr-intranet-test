@@ -1,73 +1,77 @@
 <% content_for :body do %>
   <h2><%= @request.label %></h2>
 
-  <section class="contact-card">
-    <table class="cc-table">
-      <tbody>
-      <tr>
-        <th style="width: 150px;">Code</th>
-        <td><%= @request.code %></td>
-      </tr>
-      <tr>
-        <th>Subject</th>
-        <td><%= @request.subject %></td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td><%=simple_format @request.description %></td>
-      </tr>
-      <tr>
-        <th>Company</th>
-        <td>
-          <% if @request.company.present? %>
-            <%= link_to @request.company.label, refinery.business_company_path(@request.company) %>
-          <% else %>
-            N/A
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th>Created by</th>
-        <td><%= @request.created_by_full_name %></td>
-      </tr>
-      <tr>
-        <th>Requested by</th>
-        <td><%= @request.requested_by_full_name %></td>
-      </tr>
-      <tr>
-        <th>Date</th>
-        <td><%= @request.request_date %></td>
-      </tr>
-      <tr>
-        <th>Status</th>
-        <td><%= @request.display_status %></td>
-      </tr>
-      <tr>
-        <th>Type</th>
-        <td><%= @request.display_request_type %></td>
-      </tr>
-      <tr>
-        <th>Documents</th>
-        <td>
-          <% if @request.documents.any? %>
-            <ul style="list-style: none; margin-left: 0;">
-              <% @request.documents.each do |document| %>
-                <% if (resource = document.resource).present? %>
-                  <li><%= link_to resource.file.url, download: '' do %>
-                    <i class="fa fa-file-o"></i> <%= resource.file_name %>
-                  <% end %></li>
-                <% end %>
+  <div class="grid-x grid-padding-x">
+    <div class="cell medium-6">
+      <section class="contact-card">
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Code</th>
+            <td><%= @request.code %></td>
+          </tr>
+          <tr>
+            <th>Subject</th>
+            <td><%= @request.subject %></td>
+          </tr>
+          <tr>
+            <th>Company</th>
+            <td>
+              <% if @request.company.present? %>
+                <%= link_to @request.company.label, refinery.business_company_path(@request.company) %>
+              <% else %>
+                N/A
               <% end %>
-            </ul>
+            </td>
+          </tr>
+          <tr>
+            <th>Created by</th>
+            <td><%= @request.created_by_full_name %></td>
+          </tr>
+          <tr>
+            <th>Requested by</th>
+            <td><%= @request.requested_by_full_name %></td>
+          </tr>
+          <tr>
+            <th>Date</th>
+            <td><%= @request.request_date %></td>
+          </tr>
+          <tr>
+            <th>Status</th>
+            <td><%= @request.display_status %></td>
+          </tr>
+          <tr>
+            <th>Type</th>
+            <td><%= @request.display_request_type %></td>
+          </tr>
+          <tr>
+            <th>Documents</th>
+            <td>
+              <% if @request.documents.any? %>
+                <ul style="list-style: none; margin-left: 0;">
+                  <% @request.documents.each do |document| %>
+                    <% if (resource = document.resource).present? %>
+                      <li><%= link_to resource.file.url, download: '' do %>
+                          <i class="fa fa-file-o"></i> <%= resource.file_name %>
+                        <% end %></li>
+                    <% end %>
+                  <% end %>
+                </ul>
 
-          <% else %>
-            <span class="italic">No documents attached.</span>
-          <% end %>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </section>
+              <% else %>
+                <span class="italic">No documents attached.</span>
+              <% end %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="cell medium-6">
+      <%= render 'refinery/addons/comments/comments', commentable: @request, return_to: refinery.business_request_path(@request) %>
+    </div>
+  </div>
 <% end %>
 
 <% content_for :javascripts do -%>

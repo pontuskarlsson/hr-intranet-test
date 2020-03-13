@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200304052645) do
+ActiveRecord::Schema.define(version: 20200312085002) do
 
   create_table "activity_notifications", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "target_id", null: false
@@ -132,9 +132,26 @@ ActiveRecord::Schema.define(version: 20200304052645) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "account_id"
+    t.index ["account_id"], name: "index_omni_authorizations_on_account_id"
     t.index ["company_id"], name: "index_omni_authorizations_on_company_id"
     t.index ["omni_authentication_id"], name: "index_omni_authorizations_on_omni_authentication_id"
     t.index ["type"], name: "index_omni_authorizations_on_type"
+  end
+
+  create_table "refinery_addons_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.integer "comment_by_id"
+    t.string "comment_by_type"
+    t.integer "zendesk_id"
+    t.text "zendesk_meta"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_by_id", "comment_by_type"], name: "INDEX_ra_comments_ON_comment_by_id_and_comment_by_type"
+    t.index ["commentable_id", "commentable_type"], name: "INDEX_ra_comments_ON_commentable_id_and_commentable_type"
+    t.index ["zendesk_id"], name: "index_refinery_addons_comments_on_zendesk_id"
   end
 
   create_table "refinery_annual_leave_records", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -353,10 +370,12 @@ ActiveRecord::Schema.define(version: 20200304052645) do
     t.integer "account_id"
     t.decimal "purchase_unit_price", precision: 13, scale: 4, default: "0.0", null: false
     t.decimal "sales_unit_price", precision: 13, scale: 4, default: "0.0", null: false
+    t.boolean "is_discount", default: false, null: false
     t.index ["account_id"], name: "index_refinery_business_articles_on_account_id"
     t.index ["archived_at"], name: "index_refinery_business_articles_on_archived_at"
     t.index ["code"], name: "index_refinery_business_articles_on_code"
     t.index ["company_id"], name: "index_refinery_business_articles_on_company_id"
+    t.index ["is_discount"], name: "index_refinery_business_articles_on_is_discount"
     t.index ["is_managed"], name: "index_refinery_business_articles_on_is_managed"
     t.index ["is_public"], name: "index_refinery_business_articles_on_is_public"
     t.index ["is_purchased"], name: "index_refinery_business_articles_on_is_purchased"
@@ -797,6 +816,8 @@ ActiveRecord::Schema.define(version: 20200304052645) do
     t.datetime "archived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "zendesk_id"
+    t.text "zendesk_meta"
     t.index ["archived_at"], name: "index_refinery_business_requests_on_archived_at"
     t.index ["code"], name: "index_refinery_business_requests_on_code"
     t.index ["company_id"], name: "index_refinery_business_requests_on_company_id"
@@ -807,6 +828,7 @@ ActiveRecord::Schema.define(version: 20200304052645) do
     t.index ["requested_by_id"], name: "index_refinery_business_requests_on_requested_by_id"
     t.index ["status"], name: "index_refinery_business_requests_on_status"
     t.index ["subject"], name: "index_refinery_business_requests_on_subject"
+    t.index ["zendesk_id"], name: "index_refinery_business_requests_on_zendesk_id"
   end
 
   create_table "refinery_business_sections", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -848,13 +870,21 @@ ActiveRecord::Schema.define(version: 20200304052645) do
     t.datetime "updated_at"
     t.string "code"
     t.string "source"
+    t.integer "line_item_prepay_in_id"
+    t.integer "line_item_prepay_discount_in_id"
+    t.integer "line_item_prepay_out_id"
+    t.integer "line_item_prepay_discount_out_id"
     t.index ["article_id"], name: "INDEX_rb_vouchers_ON_article_id"
     t.index ["code"], name: "INDEX_rb_vouchers_ON_code"
     t.index ["company_id"], name: "INDEX_rb_vouchers_ON_company_id"
     t.index ["currency_code"], name: "INDEX_rb_vouchers_ON_currency_code"
     t.index ["discount_type"], name: "INDEX_rb_vouchers_ON_disount_type"
+    t.index ["line_item_prepay_discount_in_id"], name: "INDEX_rb_vouchers_ON_line_item_prepay_discount_in_id"
+    t.index ["line_item_prepay_discount_out_id"], name: "INDEX_rb_vouchers_ON_line_item_prepay_discount_out_id"
+    t.index ["line_item_prepay_in_id"], name: "index_refinery_business_vouchers_on_line_item_prepay_in_id"
     t.index ["line_item_prepay_move_from_id"], name: "INDEX_rb_vouchers_ON_line_item_prepay_move_from_id"
     t.index ["line_item_prepay_move_to_id"], name: "INDEX_rb_vouchers_ON_line_item_prepay_move_to_id"
+    t.index ["line_item_prepay_out_id"], name: "INDEX_rb_vouchers_ON_line_item_prepay_out_id"
     t.index ["line_item_sales_discount_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_discount_id"
     t.index ["line_item_sales_move_from_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_move_from_id"
     t.index ["line_item_sales_move_to_id"], name: "INDEX_rb_vouchers_ON_line_item_sales_move_to_id"

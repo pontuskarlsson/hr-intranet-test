@@ -15,7 +15,7 @@ module Portal
 
           # Logger prints to STDERR by default, to e.g. print to stdout:
           require 'logger'
-          config.logger = Logger.new(STDOUT)
+          config.logger = Rails.logger
         end
       end
 

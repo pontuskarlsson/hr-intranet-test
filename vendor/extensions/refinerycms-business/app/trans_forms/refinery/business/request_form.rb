@@ -3,6 +3,8 @@ module Refinery
     class RequestForm < ApplicationTransForm
       set_main_model :request, class_name: '::Refinery::Business::Request', proxy: { attributes: :all }
 
+      attr_accessor :comment
+
       attribute :request_date,      Date, default: proc { Date.today }
       attribute :company_label,     String
       attribute :file
@@ -11,8 +13,14 @@ module Refinery
 
       transaction do
         self.request = ::Refinery::Business::Request.create!(request_params)
+        self.comment = request.comments.create!(
+            body: description,
+            comment_by: request.requested_by,
+        )
 
         create_resources! if file.present?
+
+        push_to_zendesk
       end
 
       private
@@ -42,6 +50,15 @@ module Refinery
           )
         end
       end
+
+      def push_to_zendesk
+        Delayed::Job.enqueue(::Refinery::Addons::Zendesk::CreateTicketJob.new(
+            request.id,
+            request.class.name,
+            comment.id
+        ))
+      end
+
     end
   end
 end

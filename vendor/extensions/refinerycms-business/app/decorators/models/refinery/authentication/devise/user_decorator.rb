@@ -16,4 +16,8 @@ Refinery::Authentication::Devise::User.class_eval do
     Refinery::Business::Project.where(company_id: company_ids)
   end
 
+  def is_internal?
+    has_role?(::Refinery::Business::ROLE_INTERNAL)
+  end
+
 end

@@ -1,0 +1,43 @@
+<div class="comments-container">
+  <%= form_for ::Refinery::Addons::Comment.new(commentable: commentable), url: refinery.addons_comments_path do |f| %>
+    <%= hidden_field_tag :return_to, return_to %>
+    <%= f.hidden_field :commentable_id %>
+    <%= f.hidden_field :commentable_type %>
+
+    <%= f.text_area :body %>
+
+    <p><%= f.submit 'Add Comment', class: 'button' %></p>
+  <% end %>
+
+  <% commentable.comments.order(commented_at: :desc).group_by(&:comment_date).each_pair do |comment_date, comments| %>
+    <div class="comment-group-header">
+      <span class="comment-group-pre"></span>
+      <span class="comment-group-title"><%= comment_date.strftime('%e %b, %Y') %></span>
+      <span class="comment-group-post"></span>
+    </div>
+
+    <div class="comments-list">
+      <% comments.each do |comment| %>
+        <div class="comment-item">
+          <div class="comment-icon">
+            <div class="avatar avatar-no-img">
+              <span aria-hidden="true"><%= comment.comment_by_initials %></span>
+            </div>
+          </div>
+          <div class="comment-header">
+            <%= comment.comment_by_full_name %>
+            <% if comment.comment_by_is_internal? %>
+              <span class="comment-by-role role-happy-rabbit">Happy Rabbit</span>
+            <% elsif comment.comment_by.nil? %>
+              <span class="comment-by-role role-unverified">Unverified</span>
+            <% end %>
+            <%= comment.commented_at.strftime('%H:%M') %>
+          </div>
+          <div class="comment-body">
+            <%=simple_format comment.body %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

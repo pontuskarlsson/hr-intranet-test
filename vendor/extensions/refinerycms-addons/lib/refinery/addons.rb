@@ -9,6 +9,7 @@ module Refinery
     require 'refinery/addons/data_tables'
     require 'refinery/addons/display_decorators'
     require 'refinery/addons/engine'
+    require 'refinery/addons/has_comments'
 
     class << self
       attr_writer :root

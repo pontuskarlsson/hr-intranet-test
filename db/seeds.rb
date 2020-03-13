@@ -55,3 +55,6 @@ Refinery::ResourceAuthorizations::Engine.load_seed
 
 # Added by Refinery CMS Blog engine
 Refinery::Blog::Engine.load_seed
+
+# Added by Refinery CMS Addons extension
+Refinery::Addons::Engine.load_seed

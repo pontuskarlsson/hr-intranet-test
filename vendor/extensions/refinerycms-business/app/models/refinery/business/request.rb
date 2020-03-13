@@ -22,6 +22,8 @@ module Refinery
 
       configure_label :code,  :subject
 
+      has_comments
+
       responds_to_data_tables :id, :subject, :code, :description
 
       delegate :label, :full_name, to: :created_by, prefix: true, allow_nil: true
@@ -45,6 +47,7 @@ module Refinery
       end
 
       scope :recent, -> (no_of_records = 10) { order(request_date: :desc).limit(no_of_records) }
+      scope :requested, -> { where(status: 'requested') }
 
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)

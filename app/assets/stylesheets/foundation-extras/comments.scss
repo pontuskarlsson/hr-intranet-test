@@ -1,0 +1,73 @@
+.comments-container {
+
+    .comment-group-header {
+        display: flex;
+        flex-direction: row;
+
+        .comment-group-pre, .comment-group-post {
+            flex-grow: 1;
+            border-bottom: 1px solid $hr-blue-color;
+            height: 0.8rem;
+        }
+
+        .comment-group-title {
+            padding: 0 1rem;
+        }
+    }
+
+    .comments-list {
+
+    }
+
+    .comment-item {
+        display: grid;
+        grid-template-rows: 1.5rem 1fr;
+        grid-template-columns: 50px 1fr;
+        grid-template-areas:
+                "icon header"
+                "icon body";
+
+        padding: 0.5rem 0;
+
+        &:not(:last-child) {
+            .comment-body {
+                border-bottom: 1px solid $hr-blue-color;
+            }
+        }
+
+        .comment-icon {
+            grid-area: icon;
+        }
+
+        .comment-header {
+            grid-area: header;
+            font-size: 0.8rem;
+
+            .comment-by-role {
+                border: 1px solid $black;
+                border-radius: 3px;
+                padding: 1px;
+
+                &.role-happy-rabbit {
+                    border-color: $hr-green-color;
+                    color: $hr-green-color;
+                }
+
+                &.role-unverified {
+                    border-color: $dark-gray;
+                    color: $dark-gray;
+                }
+            }
+        }
+
+        .comment-body {
+            grid-area: body;
+            font-size: 0.8rem;
+            padding-left: 0.5rem;
+
+            p {
+                margin-bottom: 0.5rem;
+            }
+        }
+    }
+}
