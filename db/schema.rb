@@ -144,14 +144,17 @@ ActiveRecord::Schema.define(version: 20200312085002) do
     t.string "commentable_type"
     t.integer "comment_by_id"
     t.string "comment_by_type"
-    t.integer "zendesk_id"
     t.text "zendesk_meta"
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "zendesk_id"
+    t.datetime "commented_at"
+    t.string "comment_by_email"
+    t.string "comment_by_full_name"
     t.index ["comment_by_id", "comment_by_type"], name: "INDEX_ra_comments_ON_comment_by_id_and_comment_by_type"
     t.index ["commentable_id", "commentable_type"], name: "INDEX_ra_comments_ON_commentable_id_and_commentable_type"
-    t.index ["zendesk_id"], name: "index_refinery_addons_comments_on_zendesk_id"
+    t.index ["commented_at"], name: "index_refinery_addons_comments_on_commented_at"
   end
 
   create_table "refinery_annual_leave_records", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -816,8 +819,8 @@ ActiveRecord::Schema.define(version: 20200312085002) do
     t.datetime "archived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "zendesk_id"
     t.text "zendesk_meta"
+    t.bigint "zendesk_id"
     t.index ["archived_at"], name: "index_refinery_business_requests_on_archived_at"
     t.index ["code"], name: "index_refinery_business_requests_on_code"
     t.index ["company_id"], name: "index_refinery_business_requests_on_company_id"
@@ -828,7 +831,6 @@ ActiveRecord::Schema.define(version: 20200312085002) do
     t.index ["requested_by_id"], name: "index_refinery_business_requests_on_requested_by_id"
     t.index ["status"], name: "index_refinery_business_requests_on_status"
     t.index ["subject"], name: "index_refinery_business_requests_on_subject"
-    t.index ["zendesk_id"], name: "index_refinery_business_requests_on_zendesk_id"
   end
 
   create_table "refinery_business_sections", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

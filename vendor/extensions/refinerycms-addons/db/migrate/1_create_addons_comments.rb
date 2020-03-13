@@ -8,7 +8,7 @@ class CreateAddonsComments < ActiveRecord::Migration[5.1]
       t.string :comment_by_type
       t.string :comment_by_email
       t.string :comment_by_full_name
-      t.integer :zendesk_id
+      t.integer :zendesk_id, limit: 8
       t.text :zendesk_meta
 
       t.text :body
