@@ -51,10 +51,8 @@
               <span class="notification_count"><span class="unopened"><%= current_refinery_user.unopened_notification_count %></span></span>
             <% end %>
           <% end %></li>
-        <% if current_refinery_user.has_role?(:superuser) %>
+        <% if current_refinery_user.has_role?(:refinery) %>
           <li><%= link_to 'Refinery', '/refinery' %></li>
-        <% elsif current_refinery_user.has_role?(::Refinery::Business::ROLE_EXTERNAL) %>
-
         <% end %>
         <li><%= link_to 'Requests', refinery.business_requests_path %></li>
         <li><%= link_to 'Logout', destroy_session_path('authentication_devise_user'), method: 'delete' %></li>
