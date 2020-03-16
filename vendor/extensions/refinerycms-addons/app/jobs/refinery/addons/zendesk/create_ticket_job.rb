@@ -83,7 +83,8 @@ module Refinery
           if Rails.env.production?
             [
                 { user_id: find_or_create_user!('pontus.karlsson@happyrabbit.com', 'Pontus Karlsson')&.id },
-                { user_id: find_or_create_user!('leontina.heffernan@happyrabbit.com', 'Leontina Heffernan')&.id }
+                { user_id: find_or_create_user!('leontina.heffernan@happyrabbit.com', 'Leontina Heffernan')&.id },
+                { user_id: find_or_create_user!('ryan.lai@happyrabbit.com', 'Ryan Lai')&.id }
             ].reject { |u| u[:user_id].nil? }
 
           elsif Rails.env.development?
