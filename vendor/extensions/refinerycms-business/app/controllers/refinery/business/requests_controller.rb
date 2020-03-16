@@ -57,6 +57,29 @@ module Refinery
         end
       end
 
+      def add_document
+        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@request)
+      end
+
+      def create_document
+        @document_creator = ::Refinery::Business::DocumentCreator.new_in_model(@request, params[:document], current_refinery_user)
+        if @document_creator.save
+          flash[:notice] = 'Successfully added Document(s)'
+        else
+          flash[:alert] = 'Failed to add Document(s)'
+        end
+        redirect_to refinery.business_request_path(@request)
+      end
+
+      def destroy_document
+        if destroy_attachment_and_document
+          flash[:notice] = 'Successfully removed Document'
+        else
+          flash[:alert] = 'Failed to remove Document'
+        end
+        redirect_to refinery.business_request_path(@request)
+      end
+
       protected
 
       def find_requests
@@ -85,6 +108,12 @@ module Refinery
 
       def filter_params
         params.permit([:company_id, :project_id, :request_type, :status]).to_h
+      end
+
+      def destroy_attachment_and_document
+        document = @request.documents.find params[:document_id]
+        document.resource&.destroy
+        document.destroy
       end
       
     end

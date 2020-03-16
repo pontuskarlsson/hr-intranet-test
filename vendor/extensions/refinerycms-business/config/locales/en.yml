@@ -251,6 +251,10 @@ en:
         show:
           other: Other Projects
 
+      requests:
+        show:
+          confirm_remove_document: Are you sure you want to remove this Document?
+
       sections:
         show:
           other: Other Sections
@@ -310,6 +314,12 @@ en:
       'refinery/business/company':
         code: Code
         name: Name
+
+      'refinery/business/document':
+        document_type: Document Type
+        document_types:
+          contract: Contract
+          other: Other
 
       'refinery/business/invoice_item':
         transaction_type: Transaction Type

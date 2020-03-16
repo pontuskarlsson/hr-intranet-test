@@ -33,7 +33,13 @@ Refinery::Core::Engine.routes.draw do
         match 'cancel', to: 'purchases#cancel', via: [:get, :post]
       end
     end
-    resources :requests, :except => [:destroy]
+    resources :requests, :except => [:destroy] do
+      member do
+        get :add_document
+        post :create_document
+        delete 'document/:document_id', to: 'requests#destroy_document', as: :destroy_document
+      end
+    end
     resources :sections, :only => [:index, :show]
   end
 

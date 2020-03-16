@@ -12,7 +12,7 @@ module Refinery
       belongs_to :company
       belongs_to :resource
 
-      has_many :plans, dependent: :nullify
+      has_many :plans, dependent: :nullify, foreign_key: :contract_id
 
       configure_enumerables :document_type, TYPES
 

@@ -5,6 +5,8 @@ module Refinery
 
       set_main_model :document, proxy: { attributes: PROXY_ATTR }, class_name: '::Refinery::Shipping::Document'
 
+      attribute :request_id,          Integer
+
       attr_accessor :company
       attr_accessor :file
 
@@ -15,7 +17,12 @@ module Refinery
       attr_reader :documents, :resources
 
       def model=(model)
-        self.company = model
+        if model.is_a? ::Refinery::Business::Request
+          self.request_id = model.id
+          self.company = model.company
+        else
+          self.company = model
+        end
       end
 
       ### Form Transaction ###
@@ -27,7 +34,8 @@ module Refinery
           @documents << @company.documents.create!(
               resource_id: resource.id,
               document_type: document_type,
-              comments: comments
+              comments: comments,
+              request_id: request_id
           )
         end
 
