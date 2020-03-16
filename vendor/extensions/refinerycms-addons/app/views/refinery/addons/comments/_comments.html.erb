@@ -25,13 +25,15 @@
             </div>
           </div>
           <div class="comment-header">
-            <%= comment.comment_by_full_name %>
-            <% if comment.comment_by_is_internal? %>
-              <span class="comment-by-role role-happy-rabbit">Happy Rabbit</span>
-            <% elsif comment.comment_by.nil? %>
-              <span class="comment-by-role role-unverified">Unverified</span>
-            <% end %>
-            <%= comment.commented_at.strftime('%H:%M') %>
+            <span class="comment-header-name"><%= comment.comment_by_full_name %></span>
+            <span class="comment-header-time"><%= comment.commented_at.strftime('%H:%M') %></span>
+            <div>
+              <% if comment.comment_by_is_internal? %>
+                <span class="comment-by-role role-happy-rabbit">Happy Rabbit</span>
+              <% elsif comment.comment_by.nil? %>
+                <span class="comment-by-role role-unverified">Unverified</span>
+              <% end %>
+            </div>
           </div>
           <div class="comment-body">
             <%=simple_format comment.body %>
