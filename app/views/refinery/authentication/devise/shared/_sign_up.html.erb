@@ -1,5 +1,13 @@
 <%= form_for @sign_up_form, :url => refinery.signup_path do |f| -%>
-
+  <style type="text/css" media="screen">
+    [id='hp_cont'] {
+      display: none;
+    }
+  </style>
+  <div id="hp_cont">
+    <%= label_tag :a_comment_body, 'Do not fill this field' %>
+    <%= text_field_tag :a_comment_body %>
+  </div>
   <%= render '/refinery/admin/error_messages', :object => @sign_up_form, :include_object_name => true %>
 
   <div class="grid-x grid-padding-x">

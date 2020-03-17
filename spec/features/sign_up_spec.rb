@@ -53,6 +53,35 @@ describe Refinery do
               expect(company.company_users.first.role).to eq "Owner"
             end
           end
+
+          context "valid data" do
+            let(:action) do
+              within '#panelSignUp' do
+                fill_in "a_comment_body", :with => "Not blank"
+                fill_in "Company Name", :with => "A new Company name"
+                fill_in "First Name", :with => "John"
+                fill_in "Last Name", :with => "Doe"
+                fill_in "Email Address", :with => "john@doe.com"
+                fill_in "Password", :with => "12345678"
+                fill_in "Confirm Password", :with => "12345678"
+                click_button "Sign Up"
+              end
+            end
+
+            it "returns http status ok" do
+              action
+
+              expect(page.status_code).to eq 200
+            end
+
+            it "does not create a new user" do
+              expect{ action }.not_to change{Refinery::Authentication::Devise::User.count}
+            end
+
+            it "does not create a new company" do
+              expect{ action }.not_to change{ Refinery::Business::Company.count}
+            end
+          end
         end
       end
     end

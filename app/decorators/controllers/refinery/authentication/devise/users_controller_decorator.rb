@@ -3,6 +3,8 @@ Refinery::Authentication::Devise::UsersController.class_eval do
 
   skip_before_action :authenticate_authentication_devise_user!
 
+  before_action :protect_from_spam, only: [:create]
+
   helper_method :active_tab
 
   def new
@@ -46,6 +48,10 @@ Refinery::Authentication::Devise::UsersController.class_eval do
 
   def active_tab
     'sign_up'
+  end
+
+  def protect_from_spam
+    head :ok unless params[:a_comment_body].blank?
   end
 
 end
