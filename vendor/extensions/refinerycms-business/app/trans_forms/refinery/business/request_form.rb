@@ -3,16 +3,27 @@ module Refinery
     class RequestForm < ApplicationTransForm
       set_main_model :request, class_name: '::Refinery::Business::Request', proxy: { attributes: :all }
 
-      attr_accessor :comment
+      attr_accessor :company, :comment
 
       attribute :request_date,      Date, default: proc { Date.today }
-      attribute :company_label,     String
       attribute :file
 
-      validates :company_label,      presence: true
+      validates :company,     presence: true
+
+      def model=(model)
+        if model.is_a?(Refinery::Business::Company)
+          self.request = model.requests.build
+          self.company = model
+        else
+          self.company = model.company
+          self.request = model
+        end
+      end
 
       transaction do
-        self.request = ::Refinery::Business::Request.create!(request_params)
+        request.attributes = request_params
+        request.save!
+
         self.comment = request.comments.create!(
             body: description,
             comment_by: request.requested_by,
@@ -25,7 +36,7 @@ module Refinery
 
       private
 
-      def request_params(allowed = %i(subject description request_type company_label))
+      def request_params(allowed = %i(subject description request_type))
         attributes.slice(*allowed).merge(created_by_id: current_user.id, requested_by_id: current_user.id)
       end
 
@@ -56,7 +67,7 @@ module Refinery
             request.id,
             request.class.name,
             comment.id
-        ))
+        )) unless Rails.env.test?
       end
 
     end

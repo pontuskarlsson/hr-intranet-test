@@ -8,24 +8,6 @@
                    :object => @request_form,
                    :include_object_name => false %>
 
-        <% if current_refinery_user.companies.count == 1 %>
-          <%= f.hidden_field :company_label, value: current_refinery_user.companies.first.label %>
-
-        <% else %>
-          <h5><%= f.label :company_label, 'From' %></h5>
-          <%= f.text_field :company_label, :class => 'js_company_field' -%>
-
-          <% content_for :javascripts do -%>
-            <script>
-              $(document).ready(function() {
-                $('.js_company_field').autocomplete({
-                  source: <%= ::Refinery::Business::Company.for_user_roles(current_refinery_user).to_source %>
-                });
-              });
-            </script>
-          <% end -%>
-        <% end %>
-
         <div class="grid-x grid-padding-x">
           <div class="cell medium-6">
             <h5><%= f.label :request_type, 'Type' %></h5>
@@ -43,12 +25,6 @@
 
         <h5><%= f.label :description %></h5>
         <%= f.text_area :description, style: 'min-height: 10rem;' %>
-
-        <% if false && current_refinery_user.companies.count == 1 %>
-          <h5>Documents</h5>
-          <div class="js_request_files_cont"></div>
-          <div><%= link_to 'Add Document', refinery.new_business_company_document_path(current_refinery_user.companies.first, callback: 'addDocumentsToForm'), remote: true, class: 'button' %></div>
-        <% end %>
 
         <h5><%= f.label :file, 'Add File(s)' %></h5>
         <%= f.file_field :file, multiple: true %>

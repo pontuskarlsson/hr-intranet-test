@@ -25,12 +25,12 @@ module Refinery
       end
 
       def new
-        @request_form = RequestForm.new_in_model(Request.new, new_request_params)
+        @request_form = RequestForm.new_in_model(selected_company, new_request_params, current_refinery_user)
         present(@page)
       end
 
       def create
-        @request_form = RequestForm.new_in_model(Request.new, params[:request], current_refinery_user)
+        @request_form = RequestForm.new_in_model(selected_company, params[:request], current_refinery_user)
         if @request_form.save
           redirect_to refinery.business_request_path(@request_form.request)
         else
