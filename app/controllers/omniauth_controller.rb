@@ -32,23 +32,45 @@ class OmniauthController < ApplicationController
       end
 
     elsif current_user
-      current_user.omni_authentications.create!(
-          provider: auth_hash.provider,
-          uid: auth_hash.uid,
-          token: auth_hash.credentials.token,
-          token_expires: auth_hash.credentials.expires_at,
-          refresh_token: auth_hash.credentials.refresh_token,
-          auth_info: auth_hash.info,
-          extra: auth_hash.extra
-      )
-      flash[:notice] = "Authentication successful."
-      redirect_to my_profile_path
+      if create_authentication(current_user)
+        flash[:notice] = "Authentication successful."
+        redirect_to my_profile_path
+      else
+        flash[:alert] = "Failed to authenticate with that provider."
+        redirect_to my_profile_path
+      end
+
+    elsif auth_hash.info.&email.present? && (user = ::Refinery::Authentication::Devise::User.find_by(email: auth_hash.info.email)).present?
+      if create_authentication(user)
+        flash[:notice] = "Authentication successful."
+        sign_in_and_redirect user
+      else
+        flash[:alert] = "Failed to authenticate with that provider."
+        redirect_to new_signup_path
+      end
+
     else
-      #session[:omniauth] = omni.except('extra')
-      #redirect_to new_user_registration_path
-      flash[:notice] = "User not registered!"
-      redirect_to new_user_session_url
+      form = OauthSignUpForm.new(auth_hash: auth_hash)
+      if form.save
+        flash[:notice] = "Registration successful."
+        sign_in_and_redirect form.user
+      else
+        flash[:alert] = "Failed to register from that provider."
+        redirect_to new_signup_path
+      end
     end
+  end
+
+  def create_authentication(user)
+    user.omni_authentications.create(
+        provider: auth_hash.provider,
+        uid: auth_hash.uid,
+        token: auth_hash.credentials.token,
+        token_expires: auth_hash.credentials.expires_at,
+        refresh_token: auth_hash.credentials.refresh_token,
+        auth_info: auth_hash.info,
+        extra: auth_hash.extra
+    )
   end
 
 end

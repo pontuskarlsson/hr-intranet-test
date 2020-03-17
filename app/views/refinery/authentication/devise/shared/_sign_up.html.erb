@@ -54,26 +54,27 @@
 <% end -%>
 
 <div class="grid-x grid-padding-x">
-  <% if false && Rails.env.development? %>
+  <% if Rails.env.development? %>
   <div class="cell">
     <div class="providers">
-      <p class="text-align-center">or sign up with one of these services</p>
+      <p class="text-align-center">or sign up with <% if false %>one of these services<% end %></p>
     </div>
   </div>
 
-  <div class="cell medium-6 text-align-center">
-    <a href="#" class="button">
+  <div class="cell text-align-center">
+    <a href="/auth/google_oauth2" class="button">
       <i class="fa fa-google"></i>
       Google
     </a>
   </div>
-
+  <% if false %>
   <div class="cell medium-6 text-align-center">
     <a href="#" class="button">
       <i class="fa fa-facebook"></i>
       Facebook
     </a>
   </div>
+  <% end %>
   <% end %>
 
   <div class="cell text-align-center">
