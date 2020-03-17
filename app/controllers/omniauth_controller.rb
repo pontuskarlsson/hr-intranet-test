@@ -40,7 +40,7 @@ class OmniauthController < ApplicationController
         redirect_to my_profile_path
       end
 
-    elsif auth_hash.info.&email.present? && (user = ::Refinery::Authentication::Devise::User.find_by(email: auth_hash.info.email)).present?
+    elsif auth_hash.info&.email.present? && (user = ::Refinery::Authentication::Devise::User.find_by(email: auth_hash.info.email)).present?
       if create_authentication(user)
         flash[:notice] = "Authentication successful."
         sign_in_and_redirect user
