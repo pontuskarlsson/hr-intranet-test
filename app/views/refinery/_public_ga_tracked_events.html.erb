@@ -1,0 +1,14 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('body').on('change.zf.tabs', function(evt, tab) {
+      if (tab.data('ga-label')) {
+        if (window.ga) {
+          ga('send', 'event', 'Nav', 'SelectTab', tab.data('ga-label'));
+        }
+        <% if Rails.env.development? %>
+          console.log(['send', 'event', 'Nav', 'SelectTab', tab.data('ga-label')]);
+        <% end %>
+      }
+    });
+  });
+</script>
