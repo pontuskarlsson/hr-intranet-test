@@ -28,6 +28,30 @@ describe Refinery do
 
             expect( page.body ).to have_content("A plan title")
           end
+
+          context "when the status is proposed and the proposal_valid_until is an upcoming date" do
+            let!(:plan) { FactoryBot.create(:proposed_plan, :proposal_valid_until => 1.month.from_now) }
+
+            it "should succeed" do
+              visit refinery.business_plan_path(plan)
+
+              expect( page.body ).to have_content("Proposed")
+              expect( page.body ).not_to have_content("Expired")
+              expect( page.body ).to have_button("Accept")
+            end
+          end
+
+          context "when the status is proposed and the proposal_valid_until is a past date" do
+            let!(:plan) { FactoryBot.create(:proposed_plan, :proposal_valid_until => 1.month.ago) }
+
+            it "should succeed" do
+              visit refinery.business_plan_path(plan)
+
+              expect( page.body ).to have_content("Proposed")
+              expect( page.body ).to have_content("Expired")
+              expect( page.body ).not_to have_button("Accept")
+            end
+          end
         end
 
         context "when user is an internal user" do

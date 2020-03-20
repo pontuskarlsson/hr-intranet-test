@@ -10,17 +10,22 @@
   <% elsif @plan.status_is_proposed? %>
     <%= link_to 'Print Proposal', refinery.contract_business_plan_path(@plan, format: :pdf), class: 'button' %>
 
-    <button class="button primary" data-open="js_confirm_contract_form">Sign / Accept</button>
+    <% if @plan.proposal_has_expired? %>
+      <span class="italic">Proposal Expired</span>
 
-    <div class="reveal" id="js_confirm_contract_form" data-reveal>
-      <div class="js_confirm_form_content">
-        <%= render 'confirm_form', plan: @plan %>
+    <% else %>
+      <button class="button primary" data-open="js_confirm_contract_form">Sign / Accept</button>
+
+      <div class="reveal" id="js_confirm_contract_form" data-reveal>
+        <div class="js_confirm_form_content">
+          <%= render 'confirm_form', plan: @plan %>
+        </div>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-
-      <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+    <% end %>
   <% end %>
 </span>
 

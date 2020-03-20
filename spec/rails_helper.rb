@@ -54,7 +54,7 @@ RSpec.configure do |config|
     allow(PortalSubdomain).to receive(:matches?) { true }
   end
 
-  config.after :each do
+  config.after :each, type: :feature do
     Warden.test_reset!
   end
 end

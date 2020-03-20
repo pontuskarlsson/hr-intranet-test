@@ -24,6 +24,7 @@ class CreateBusinessPlans < ActiveRecord::Migration[5.1]
       t.integer :account_manager_id
       t.text :payment_terms_content
       t.string :confirmed_from_ip
+      t.datetime :proposal_valid_until
 
       t.timestamps
     end
@@ -42,5 +43,6 @@ class CreateBusinessPlans < ActiveRecord::Migration[5.1]
     add_index :refinery_business_plans, :notice_given_by_id
     add_index :refinery_business_plans, :contact_person_id
     add_index :refinery_business_plans, :account_manager_id
+    add_index :refinery_business_plans, :proposal_valid_until
   end
 end

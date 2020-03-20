@@ -8,7 +8,11 @@ module Refinery
 
       validates :current_user,      presence: true
       validate do
-        errors.add(:plan, :invalid) unless plan&.status == 'proposed'
+        if plan&.status == 'proposed'
+          errors.add(:plan, 'has expired') unless plan.proposal_valid_until > DateTime.now
+        else
+          errors.add(:plan, :invalid)
+        end
 
         unless current_user&.id == confirmed_by_id
           errors.add(:confirmed_by_id, :mismatch)

@@ -39,10 +39,11 @@ module Refinery
       delegate :full_name, to: :account_manager, prefix: true, allow_nil: true
       delegate :name, to: :company, prefix: true, allow_nil: true
 
-      validates :company_id,      presence: true
-      validates :reference,       presence: true, uniqueness: true
-      validates :currency_code,   inclusion: ::Refinery::Business::Invoice::CURRENCY_CODES
-      validates :status,          inclusion: STATUSES
+      validates :company_id,            presence: true
+      validates :reference,             presence: true, uniqueness: true
+      validates :currency_code,         inclusion: ::Refinery::Business::Invoice::CURRENCY_CODES
+      validates :status,                inclusion: STATUSES
+      validates :proposal_valid_until,  presence: true, if: :status_is_proposed?
 
       validate do
         if contract.present?
@@ -121,6 +122,10 @@ module Refinery
 
       def min_contract_value
         (notice_period_months + min_contract_period_months) * charges.reduce(0) { |acc, charge| acc + charge.total_amount  }
+      end
+
+      def proposal_has_expired?
+        status_is_proposed? && proposal_valid_until < DateTime.now
       end
 
       acts_as_notifiable :'refinery/authentication/devise/users',

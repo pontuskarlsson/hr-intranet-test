@@ -81,6 +81,51 @@ module Refinery
           it { is_expected.to be_valid }
         end
 
+        context 'when status is draft and proposal_valid_until is nil' do
+          before {
+            plan.status = 'draft'
+            plan.proposal_valid_until = nil
+          }
+
+          it { is_expected.to be_valid }
+        end
+
+        context 'when status is confirmed and proposal_valid_until is nil' do
+          before {
+            plan.status = 'confirmed'
+            plan.proposal_valid_until = nil
+          }
+
+          it { is_expected.to be_valid }
+        end
+
+        context 'when status is proposed and proposal_valid_until is nil' do
+          before {
+            plan.status = 'proposed'
+            plan.proposal_valid_until = nil
+          }
+
+          it { is_expected.not_to be_valid }
+        end
+
+        context 'when status is proposed and proposal_valid_until is upcoming date' do
+          before {
+            plan.status = 'proposed'
+            plan.proposal_valid_until = 1.month.from_now
+          }
+
+          it { is_expected.to be_valid }
+        end
+
+        context 'when status is proposed and proposal_valid_until is past date' do
+          before {
+            plan.status = 'proposed'
+            plan.proposal_valid_until = 1.month.ago
+          }
+
+          it { is_expected.to be_valid }
+        end
+
       end
     end
   end

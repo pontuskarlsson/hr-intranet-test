@@ -399,6 +399,7 @@ en:
         notice_given_by_id: Notice Given By
         notice_period_months: Notice Period (months)
         payment_terms_dats: Payment Terms (days)
+        proposal_valid_until: Proposal Valid Until
         reference: Reference
         start_date: Start Date
         status: Status

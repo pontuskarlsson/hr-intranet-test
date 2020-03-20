@@ -15,6 +15,20 @@ FactoryBot.define do
     status { 'draft' }
 
 
+    factory :proposed_plan do
+      status { 'proposed' }
+      proposal_valid_until { 1.month.from_now }
+      plan_charges { [
+          { qty: '10',
+            article_label: FactoryBot.create(:article_voucher).code,
+            base_amount: '350',
+            discount_amount: '-35',
+            discount_type: 'fixed_amount'
+          }
+      ] }
+    end
+
+
     factory :confirmed_plan do
       status { 'confirmed' }
       plan_charges { [
