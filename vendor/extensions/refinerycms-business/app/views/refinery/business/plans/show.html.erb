@@ -85,6 +85,16 @@
             <th>Confirmed At</th>
             <td><%= @plan.display_confirmed_at %></td>
           </tr>
+        <% elsif @plan.status_is_proposed? %>
+          <tr>
+            <th>Proposal Expires</th>
+            <td>
+              <%= @plan.display_proposal_valid_until %>
+              <% if @plan.proposal_has_expired? %>
+                <span class="italic">(Expired)</span>
+              <% end %>
+            </td>
+          </tr>
         <% end %>
         <tr>
           <th>Currency</th>
