@@ -29,7 +29,7 @@ module Refinery
 
       configure_label :reference
 
-      display_date_for :start_date, :end_date, :confirmed_at, :notice_given_at
+      display_date_for :start_date, :end_date, :confirmed_at, :notice_given_at, :proposal_valid_until
 
       store :content, accessors: [ :plan_charges, :included_services ], coder: JSON, prefix: :plan
       store :payment_terms_content, accessors: [:payment_terms_type, :payment_terms_qty], codes: JSON
@@ -125,7 +125,7 @@ module Refinery
       end
 
       def proposal_has_expired?
-        status_is_proposed? && proposal_valid_until < DateTime.now
+        status_is_proposed? && proposal_valid_until.past?
       end
 
       acts_as_notifiable :'refinery/authentication/devise/users',
