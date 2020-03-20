@@ -6,16 +6,23 @@ module Refinery
       attr_accessor :company, :comment
 
       attribute :request_date,      Date, default: proc { Date.today }
+      attribute :requested_by_id,   Integer, default: proc { |f| f.current_user&.id }
       attribute :file
 
       validates :company,     presence: true
+
+      validate do
+        if company.present?
+          errors.add(:requested_by_id, :invalid) unless requested_by_id.in? company.user_ids
+        end
+      end
 
       def model=(model)
         if model.is_a?(Refinery::Business::Company)
           self.request = model.requests.build
           self.company = model
         else
-          self.company = model.company
+          self.company = model&.company
           self.request = model
         end
       end
@@ -36,13 +43,13 @@ module Refinery
 
       private
 
-      def request_params(allowed = %i(subject description request_type))
-        attributes.slice(*allowed).merge(created_by_id: current_user.id, requested_by_id: current_user.id)
+      def request_params(allowed = %i(subject description requested_by_id request_type))
+        attributes.slice(*allowed).merge(created_by_id: current_user.id)
       end
 
       def roles_and_conditions
         {
-            Refinery::Business::ROLE_INTERNAL => {},
+            Refinery::Business::ROLE_INTERNAL => { company_id: request.company_id },
             Refinery::Business::ROLE_EXTERNAL => { company_id: request.company_id }
         }
       end

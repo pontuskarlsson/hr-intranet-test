@@ -122,6 +122,10 @@ describe Refinery do
               click_link "New Request"
             }
 
+            it "should not have a select for requested by" do
+              expect( page ).not_to have_select("Requested By")
+            end
+
             it "creates a new request" do
               expect {
                 fill_in "Subject", :with => "This is a test Subject"
@@ -141,6 +145,10 @@ describe Refinery do
               click_link "New Request"
             }
 
+            it "should not have a select for requested by" do
+              expect( page ).not_to have_select("Requested By")
+            end
+
             it "creates a new request" do
               expect {
                 fill_in "Subject", :with => "This is a test Subject"
@@ -153,23 +161,38 @@ describe Refinery do
           end
         end
 
-        # context "when user is an internal user" do
-        #   let!(:logged_in_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
-        #       ::Refinery::Business::ROLE_INTERNAL
-        #   ]) }
-        #
-        #   it "does show the first request" do
-        #     visit refinery.business_request_path(request1)
-        #
-        #     expect( page.body ).to have_content("ABC123")
-        #   end
-        #
-        #   it "does show the second request" do
-        #     visit refinery.business_request_path(request2)
-        #
-        #     expect( page.body ).to have_content("QWE456")
-        #   end
-        # end
+        context "when user is an internal user" do
+          let!(:logged_in_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+              ::Refinery::Business::ROLE_INTERNAL
+          ]) }
+          let!(:external_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+              ::Refinery::Business::ROLE_EXTERNAL
+          ]) }
+          before { FactoryBot.create(:company_user, company: company1, user: external_user) }
+
+          before {
+            Warden.on_next_request do |proxy|
+              proxy.raw_session[:selected_company_uuid] = company1.uuid
+            end
+            visit refinery.business_requests_path
+            click_link "New Request"
+          }
+
+          it "should have a select for requested by" do
+            expect( page ).to have_select("Requested By")
+          end
+
+          it "creates a new request" do
+            expect {
+              select external_user.label, :from => "Requested By"
+              fill_in "Subject", :with => "This is a test Subject"
+              fill_in "Description", :with => "This is a test Description"
+              select "Inspection", :from => "Type"
+
+              click_button "Send"
+            }.to change { company1.requests.count }.by 1
+          end
+        end
       end
     end
   end

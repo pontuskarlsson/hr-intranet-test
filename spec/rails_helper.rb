@@ -41,6 +41,7 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Warden::Test::Helpers, type: :feature
   config.extend ControllerMacros,     type: :controller
   config.include ControllerHelpers,   type: :controller
 
@@ -51,5 +52,9 @@ RSpec.configure do |config|
   config.before(:each) do
     allow(WWWSubdomain).to receive(:matches?) { true }
     allow(PortalSubdomain).to receive(:matches?) { true }
+  end
+
+  config.after :each do
+    Warden.test_reset!
   end
 end

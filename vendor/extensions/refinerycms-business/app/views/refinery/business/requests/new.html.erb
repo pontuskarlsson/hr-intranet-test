@@ -20,6 +20,11 @@
           </div>
         </div>
 
+        <% if current_refinery_user.is_internal? %>
+          <h5><%= f.label :requested_by_id, 'Requested By' %></h5>
+          <%= f.select :requested_by_id, options_from_collection_for_select(selected_company&.users || [], :id, :label) -%>
+        <% end %>
+
         <h5><%= f.label :subject %></h5>
         <%= f.text_field :subject, required: true %>
 
