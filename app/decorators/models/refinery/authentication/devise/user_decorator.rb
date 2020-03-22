@@ -83,7 +83,7 @@ Refinery::Authentication::Devise::User.class_eval do
   end
 
   def set_default_attributes!
-    self.username = email.gsub(/[^A-Za-z]/, '_') if email.present? && username.blank?
+    self.username = email.gsub(/[^A-Za-z0-9\-_]/, '_') if email.present? && username.blank?
     self.full_name = [first_name, last_name].reject(&:blank?).join(' ') if full_name.blank?
   end
 
