@@ -11,6 +11,8 @@ module Refinery
 
       STATUSES = %w(Draft Planned Booked Inspected Notified Alerted Delivered Confirmed)
 
+      PRODUCT_CATEGORIES = ['Accessories', 'Apparel, Other', 'Bags', 'Bottoms', 'Bras & Lingerie', 'Bottoms - Cut & Sewn Knits', 'Bottoms - Seamless Knits', 'Bottoms - Woven', 'Dresses & Skirts', 'Eyewear', 'Footwear', 'Hats', 'Outerwear', 'Socks', 'Shirts', 'Sweaters', 'Swimwear', 'Tops - Cut & Sewn Knits', 'Tops - Seamless Knits', 'Tops - Woven', 'Underwear']
+
       serialize :fields, Hash
 
       belongs_to :job, optional: true

@@ -32,7 +32,7 @@ module Refinery
       end
 
       def update
-        if @job.update_attributes(job_params)
+        if job_form.save
           flash[:notice] = 'Successfully updated the job'
           if params[:redirect_to].present?
             redirect_to params[:redirect_to], status: :see_other
@@ -61,8 +61,8 @@ module Refinery
         params.permit([:company_id, :section_id, :assigned_to_id, :status, :billable_type, :inspection_date, :job_type, :code]).to_h
       end
 
-      def job_params
-        params.require(:job).permit(:status, :project_code, :project_label, :project_id, :billable_id, :billable_label)
+      def job_form
+        @job_form ||= JobForm.new_in_model(@job, params[:job], current_refinery_user)
       end
 
     end

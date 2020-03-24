@@ -1,0 +1,11 @@
+<%= f.fields_for :purchase_orders, purchase_order, child_index: i do |purchase_order_form| %>
+  <span class="form-addable-remove">
+    <i class="fa fa-minus-square"></i>
+  </span>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <%= purchase_order_form.text_field :code, placeholder: "PO Number #{i}", required: true, class: 'js-po-code-field' %>
+    </div>
+  </div>
+<% end %>

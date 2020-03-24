@@ -46,6 +46,7 @@ module Portal
           company_code: 'CustomerCode',
           company_label: 'Customer',
           inspection_date: 'InspDate',
+          product_category: 'ProductCategory',
           assigned_to_label: 'Inspector'
       }.freeze
 

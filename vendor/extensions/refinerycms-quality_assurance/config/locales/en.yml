@@ -82,3 +82,26 @@ en:
         total_critical: Total Critical
         total_major: Total Major
         total_minor: Total Minor
+
+      'refinery/quality_assurance/job':
+        complexity: Complexity
+        complexities:
+          high: High
+          low: Low
+          medium: Medium
+        inspection_date: Inspection Date
+        inspection_sample_size: Inspection Sample Size
+        inspection_type: Inspection Type
+        po_number: Po Number
+        po_type: Po Type
+        po_qty: Po Qty
+        available_qty: Available Qty
+        product_code: Product Code
+        product_description: Product Description
+        product_colour_variants: Product Colour Variants
+        acc_critical: Acc Critical
+        acc_major: Acc Major
+        acc_minor: Acc Minor
+        total_critical: Total Critical
+        total_major: Total Major
+        total_minor: Total Minor

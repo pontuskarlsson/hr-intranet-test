@@ -1,0 +1,11 @@
+<%= f.fields_for :products, product, child_index: i do |product_form| %>
+  <span class="form-addable-remove">
+    <i class="fa fa-minus-square"></i>
+  </span>
+
+  <div class="grid-x grid-padding-x">
+    <div class="cell">
+      <%= product_form.text_field :code, placeholder: "Product Code / Style No. #{i}", required: true, class: 'js-product-code-field' %>
+    </div>
+  </div>
+<% end %>

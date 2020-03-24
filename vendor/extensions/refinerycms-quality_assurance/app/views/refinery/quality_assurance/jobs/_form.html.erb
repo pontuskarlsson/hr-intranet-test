@@ -1,0 +1,157 @@
+<% content_for :stylesheets do -%>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end -%>
+
+<table class="cc-table">
+  <tbody>
+  <tr>
+    <th style="width: 150px;">Job No.</th>
+    <td><%= link_to job.code, refinery.quality_assurance_job_path(job) %></td>
+  </tr>
+  <tr>
+    <th>Company</th>
+    <td><%= job.company_label %></td>
+  </tr>
+  <tr>
+    <th>Project</th>
+    <td><%= f.text_field :project_label, class: 'js_project_field' -%></td>
+  </tr>
+  <tr>
+    <th>Status</th>
+    <td><%= job.status %></td>
+  </tr>
+  <tr>
+    <th>Purchase Order(s)</th>
+    <td>
+      <div data-form-container="job-purchase-orders" class="form-addable">
+        <div class="form-addable-controls">
+          <i class="fa fa-plus-square form-ctrl-add"></i>
+        </div>
+
+        <% job.purchase_orders.each_with_index do |purchase_order, i| %>
+          <div class="form-addable-record">
+            <%= render 'refinery/quality_assurance/jobs/purchase_order_form', f: f, purchase_order: purchase_order, i: i+1 %>
+          </div>
+        <% end %>
+
+        <% content_for :javascripts do %>
+          <script type="text/javascript">
+            $(document).ready(function() {
+              Addable.partials["job-purchase-orders"] = {
+                "attributes": { "__index__": <%= job.purchase_orders.length+1 %> },
+                "template": "<%= escape_javascript render('refinery/quality_assurance/jobs/purchase_order_form', purchase_order: ::Refinery::QualityAssurance::Job::PurchaseOrder.new, i: '__index__', f: f) %>",
+              };
+            });
+          </script>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th>Product(s)</th>
+    <td>
+      <div data-form-container="job-products" class="form-addable">
+        <div class="form-addable-controls">
+          <i class="fa fa-plus-square form-ctrl-add"></i>
+        </div>
+
+        <% job.products.each_with_index do |product, i| %>
+          <div class="form-addable-record">
+            <%= render 'refinery/quality_assurance/jobs/product_form', f: f, product: product, i: i+1 %>
+          </div>
+        <% end %>
+
+        <% content_for :javascripts do %>
+          <script type="text/javascript">
+            $(document).ready(function() {
+              Addable.partials["job-products"] = {
+                "attributes": { "__index__": <%= job.products.length+1 %> },
+                "template": "<%= escape_javascript render('refinery/quality_assurance/jobs/product_form', product: ::Refinery::QualityAssurance::Job::Product.new, i: '__index__', f: f) %>",
+              };
+            });
+          </script>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <th>Product Category</th>
+    <td><%= f.select :product_category, options_for_select([['Please Select', '']] + ::Refinery::QualityAssurance::Inspection::PRODUCT_CATEGORIES, f.object.product_category) -%></td>
+  </tr>
+  <tr>
+    <th>Complexity</th>
+    <td><%= f.select :complexity, options_for_select(::Refinery::QualityAssurance::Job.complexity_options, f.object.complexity.presence || 'medium') -%></td>
+  </tr>
+  <tr>
+    <th>Assigned to</th>
+    <td><%= job.assigned_to_label %></td>
+  </tr>
+  <tr>
+    <th>Date</th>
+    <td><%= job.inspection_date %></td>
+  </tr>
+  </tbody>
+</table>
+
+<% if local_assigns[:inspection] %>
+  <p><%= link_to 'Auto assign from Inspection', 'javascript:void(0)', class: 'js-auto-assign-po', data: { 'po-numbers' => inspection.po_number, 'product-codes' => inspection.product_code } %></p>
+
+  <% content_for :javascripts do %>
+    <script type="text/javascript">
+      $(function() {
+        $('.js_project_field').autocomplete({
+          source: <%= job.company&.projects&.to_source || [].to_json %>
+        });
+
+        $('.js-auto-assign-po').on('click', function () {
+          // Handle POs
+          var poNumbers = $(this).data('po-numbers');
+          var prefix = poNumbers.match(/^[^0-9]+/);
+          var entries = poNumbers.split(/[,/]/);
+          var numbers = entries.map(function(v) { var res = v.match(/[0-9]+/); return res && res[0] });
+          var length = numbers.reduce(function(max, number) { return Math.max(max, number.length) }, 0);
+
+          <% if job.company_label == 'Hunter Boot Limited' %>
+          prefix = 'PO';
+          length = 8;
+          <% end %>
+
+          var result = numbers.map(function(v, i) {
+            var res = v;
+            for (var j = i-1; j >= 0; j--) {
+              var addFrom = numbers[j];
+
+              if (res.length === length) {
+                break;
+              } else if (addFrom.length > res.length) {
+                res = [addFrom.slice(0, addFrom.length - res.length), res].join('');
+              }
+            }
+            return [prefix, res].join('');
+          });
+
+          $('[data-form-container=job-purchase-orders] .form-addable-record').remove();
+          result.map(function() { $('[data-form-container=job-purchase-orders] .form-ctrl-add').trigger('click'); });
+          result.map(function(val, i) {
+            var input = $('[data-form-container=job-purchase-orders] .form-addable-record .js-po-code-field')[i];
+            $(input).attr('value', val);
+          });
+
+          // Handle Products
+          var productCodes = $(this).data('product-codes');
+          var entries = productCodes.split(/[,/]/).map(function(val) { return val.trim(); });
+
+
+          $('[data-form-container=job-products] .form-addable-record').remove();
+          entries.map(function() { $('[data-form-container=job-products] .form-ctrl-add').trigger('click'); });
+          entries.map(function(val, i) {
+            var input = $('[data-form-container=job-products] .form-addable-record .js-product-code-field')[i];
+            $(input).attr('value', val);
+          });
+        });
+      });
+    </script>
+  <% end %>
+<% end %>
+
+<p><%= f.submit 'Update', class: 'button' %></p>

@@ -1,177 +1,359 @@
-<% content_for :body_content_title do %>
-  <%= @inspection.label %>
+<% content_for :body do %>
+  <section class="contact-card">
+    <h1 class="cc-attribute cc-name">
+      <%=raw @inspection.code %>
+      <span class="result-<%= @inspection.result.try(:downcase) %>"><%= @inspection.result %></span>
+    </h1>
+    <% if @inspection.resource.present? %>
+      <%= link_to @inspection.resource.file.url do %>
+        <i class="fa fa-file-pdf-o"></i>
+        Download PDF Report
+      <% end %>
+    <% end %>
+
+    <div class="grid-x grid-padding-x">
+      <div class="cell medium-9">
+        <h3>Job Details</h3>
+        <% if (job = @inspection.job).present? %>
+          <% if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
+            <%= form_for job, url: [refinery, :quality_assurance, job] do |f| %>
+              <%= hidden_field_tag :redirect_to, refinery.quality_assurance_inspection_path(@inspection) %>
+              <%= render 'refinery/quality_assurance/jobs/form', f: f, job: job, inspection: @inspection %>
+            <% end %>
+
+          <% else %>
+            <table class="cc-table">
+              <tbody>
+              <tr>
+                <th style="width: 150px;">Job No.</th>
+                <td><%= job.code %></td>
+              </tr>
+              <tr>
+                <th>Company</th>
+                <td><%= job.company_label %></td>
+              </tr>
+              <% if @inspection.brand_label.present? %>
+                <tr>
+                  <th>Brand</th>
+                  <td><%= @inspection.brand_label %></td>
+                </tr>
+              <% end %>
+              <tr>
+                <th>Project</th>
+                <td><%= job.project_label.presence || 'N/A' %></td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td><%= job.status %></td>
+              </tr>
+              </tbody>
+            </table>
+          <% end %>
+
+        <% else %>
+          <table class="cc-table">
+            <tbody>
+            <tr>
+              <th style="width: 150px;">Job No.</th>
+              <td><%= @inspection.code %></td>
+            </tr>
+            </tbody>
+          </table>
+        <% end %>
+
+        <h3>Inspection Details</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Date</th>
+            <td><%= @inspection.display_inspection_date %></td>
+          </tr>
+          <tr>
+            <th>Supplier</th>
+            <td><%= @inspection.supplier_label %></td>
+          </tr>
+          <tr>
+            <th>Manufacturer</th>
+            <td><%= @inspection.manufacturer_label %></td>
+          </tr>
+          <tr>
+            <th>Inspected By</th>
+            <td><%= @inspection.inspected_by_name %></td>
+          </tr>
+          <tr>
+            <th>Comment</th>
+            <td><%= @inspection.summary_comment %></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3>Order / Product</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th>Inspection Type</th>
+            <td><%= @inspection.inspection_type %></td>
+          </tr>
+          <tr>
+            <th style="width: 150px;">PO Number</th>
+            <td><%=format_joined_items @inspection.po_number %></td>
+          </tr>
+          <tr>
+            <th>Order Type</th>
+            <td><%= @inspection.po_type %></td>
+          </tr>
+          <tr>
+            <th>Product Category</th>
+            <td><%= @inspection.product_category.presence || 'N/A' %></td>
+          </tr>
+          <tr>
+            <th>Style No. / Product Code</th>
+            <td><%= @inspection.product_code %></td>
+          </tr>
+          <tr>
+            <th>Product Description</th>
+            <td><%= @inspection.product_description %></td>
+          </tr>
+          <tr>
+            <th>Colours / Variants</th>
+            <td><%=format_joined_items @inspection.product_colour_variants %></td>
+          </tr>
+          <tr>
+            <th>PO Qty</th>
+            <td><%= number_with_delimiter @inspection.po_qty %></td>
+          </tr>
+          <tr>
+            <th>Available Qty</th>
+            <td><%= number_with_delimiter @inspection.available_qty %></td>
+          </tr>
+          <tr>
+            <th>Sample Size</th>
+            <td><%= number_with_delimiter @inspection.inspection_sample_size %></td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h3>Inspection Result</h3>
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Inspection Standard</th>
+            <td colspan="3"><%= @inspection.inspection_standard %></td>
+          </tr>
+          <tr>
+            <th></th>
+            <th style="text-align: center;">Critical</th>
+            <th style="text-align: center;">Major</th>
+            <th style="text-align: center;">Minor</th>
+          </tr>
+          <tr>
+            <th>Accepted</th>
+            <td style="text-align: center;"><%= @inspection.acc_critical %></td>
+            <td style="text-align: center;"><%= @inspection.acc_major %></td>
+            <td style="text-align: center;"><%= @inspection.acc_minor %></td>
+          </tr>
+          <tr>
+            <th>Found</th>
+            <td style="text-align: center;"><%= @inspection.total_critical %></td>
+            <td style="text-align: center;"><%= @inspection.total_major %></td>
+            <td style="text-align: center;"><%= @inspection.total_minor %></td>
+          </tr>
+          <tr>
+            <th>Result</th>
+            <td colspan="3" class="result-<%= @inspection.result.try(:downcase) %>"><%= @inspection.result %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cell medium-3">
+        <% if @inspection.inspection_photo.present? %>
+          <%= dragonfly_reveal_tag @inspection.inspection_photo.image %>
+        <% end %>
+      </div>
+    </div>
+
+    <ul class="tabs" data-tabs id="example-tabs">
+      <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Defects</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel2" href="#panel2">Chart</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel3" href="#panel3">Measurements</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel4" href="#panel4">Product Photos</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel5" href="#panel5">PPS & Techpack</a></li>
+      <li class="tabs-title"><a data-tabs-target="panel6" href="#panel6">Other Photos</a></li>
+    </ul>
+
+    <div class="tabs-content" data-tabs-content="example-tabs">
+      <div class="tabs-panel is-active" id="panel1">
+        <% @inspection.inspection_defects.each do |inspection_defect| %>
+          <h5 style="margin-top: 30px;"><%= inspection_defect.defect_label %></h5>
+
+          <section class="contact-card">
+            <table class="cc-table">
+              <tbody>
+              <tr>
+                <th></th>
+                <th style="text-align: center;">Critical</th>
+                <th style="text-align: center;">Major</th>
+                <th style="text-align: center;">Minor</th>
+                <th style="text-align: center;">Can Fix?</th>
+              </tr>
+              <tr>
+                <th>Found</th>
+                <td style="text-align: center;"><%= inspection_defect.critical %></td>
+                <td style="text-align: center;"><%= inspection_defect.major %></td>
+                <td style="text-align: center;"><%= inspection_defect.minor %></td>
+                <td style="text-align: center;"><%= inspection_defect.display_can_fix %></td>
+              </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <p><%= inspection_defect.comments %></p>
+
+          <div style="margin-top: 10px;">
+            <div class="block-css-grid">
+              <% inspection_defect.inspection_photos.each do |inspection_photo| %>
+                <%= dragonfly_reveal_tag inspection_photo.image %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="tabs-panel" id="panel2">
+        <%= bar_chart @inspection.chart_defects, stacked: true, colors: ['#30384B'] %>
+      </div>
+
+      <div class="tabs-panel" id="panel3">
+        <% @inspection.inspection_photos.non_defects.select(&:measurement_photo?).each do |inspection_photo| %>
+          <%= dragonfly_reveal_tag inspection_photo.image, 716, 716, false %>
+        <% end %>
+      </div>
+
+      <div class="tabs-panel" id="panel4">
+        <div class="block-css-grid">
+          <% @inspection.inspection_photos.non_defects.select(&:product_photo?).each do |inspection_photo| %>
+            <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="tabs-panel" id="panel5">
+        <section class="contact-card">
+          <table class="cc-table">
+            <tbody>
+            <tr>
+              <th style="width: 180px;">PPS Available</th>
+              <td><%= @inspection.display_pps_available %></td>
+              <th style="width: 180px;">Techpack Available</th>
+              <td><%= @inspection.display_tp_available %></td>
+            </tr>
+            <tr>
+              <th style="width: 180px;">Approved by Customer</th>
+              <td><%= @inspection.display_pps_approved %></td>
+              <th style="width: 180px;">Techpack by Customer</th>
+              <td><%= @inspection.display_tp_approved %></td>
+            </tr>
+            <tr>
+              <th style="width: 180px;">Comments</th>
+              <td><%=simple_format @inspection.pps_comments %></td>
+              <th style="width: 180px;">Comments</th>
+              <td><%=simple_format @inspection.tp_comments %></td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <div class="block-css-grid">
+          <% @inspection.inspection_photos.non_defects.select(&:sample_photo?).each do |inspection_photo| %>
+            <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="tabs-panel" id="panel6">
+        <div class="block-css-grid">
+          <% @inspection.inspection_photos.non_defects.select(&:other_photo?).each do |inspection_photo| %>
+            <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
 <% end %>
 
-<% content_for :body do %>
-  <section>
-    <h1>Company</h1>
-    <p>
-      <%=raw @inspection.company_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Supplier</h1>
-    <p>
-      <%=raw @inspection.supplier_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Supplier Label</h1>
-    <p>
-      <%=raw @inspection.supplier_label %>
-    </p>
-  </section>
-  <section>
-    <h1>Business Section</h1>
-    <p>
-      <%=raw @inspection.business_section_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Business Product</h1>
-    <p>
-      <%=raw @inspection.business_product_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Assigned To</h1>
-    <p>
-      <%=raw @inspection.assigned_to_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Resource</h1>
-    <p>
-      <%=raw @inspection.resource_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Inspected By</h1>
-    <p>
-      <%=raw @inspection.inspected_by_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Document</h1>
-    <p>
-      <%=raw @inspection.document_id %>
-    </p>
-  </section>
-  <section>
-    <h1>Result</h1>
-    <p>
-      <%=raw @inspection.result %>
-    </p>
-  </section>
-  <section>
-    <h1>Inspection Date</h1>
-    <p>
-      <%=raw @inspection.inspection_date %>
-    </p>
-  </section>
-  <section>
-    <h1>Inspection Sample Size</h1>
-    <p>
-      <%=raw @inspection.inspection_sample_size %>
-    </p>
-  </section>
-  <section>
-    <h1>Inspection Type</h1>
-    <p>
-      <%=raw @inspection.inspection_type %>
-    </p>
-  </section>
-  <section>
-    <h1>Po Number</h1>
-    <p>
-      <%=raw @inspection.po_number %>
-    </p>
-  </section>
-  <section>
-    <h1>Po Type</h1>
-    <p>
-      <%=raw @inspection.po_type %>
-    </p>
-  </section>
-  <section>
-    <h1>Po Qty</h1>
-    <p>
-      <%=raw @inspection.po_qty %>
-    </p>
-  </section>
-  <section>
-    <h1>Available Qty</h1>
-    <p>
-      <%=raw @inspection.available_qty %>
-    </p>
-  </section>
-  <section>
-    <h1>Product Code</h1>
-    <p>
-      <%=raw @inspection.product_code %>
-    </p>
-  </section>
-  <section>
-    <h1>Product Description</h1>
-    <p>
-      <%=raw @inspection.product_description %>
-    </p>
-  </section>
-  <section>
-    <h1>Product Colour Variants</h1>
-    <p>
-      <%=raw @inspection.product_colour_variants %>
-    </p>
-  </section>
-  <section>
-    <h1>Acc Critical</h1>
-    <p>
-      <%=raw @inspection.acc_critical %>
-    </p>
-  </section>
-  <section>
-    <h1>Acc Major</h1>
-    <p>
-      <%=raw @inspection.acc_major %>
-    </p>
-  </section>
-  <section>
-    <h1>Acc Minor</h1>
-    <p>
-      <%=raw @inspection.acc_minor %>
-    </p>
-  </section>
-  <section>
-    <h1>Total Critical</h1>
-    <p>
-      <%=raw @inspection.total_critical %>
-    </p>
-  </section>
-  <section>
-    <h1>Total Major</h1>
-    <p>
-      <%=raw @inspection.total_major %>
-    </p>
-  </section>
-  <section>
-    <h1>Total Minor</h1>
-    <p>
-      <%=raw @inspection.total_minor %>
-    </p>
-  </section>
+<% if page_role? Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER %>
+  <% content_for :side_body do %>
+    <aside>
+      <h5>Status</h5>
+      <p><%= @inspection.status %></p>
+
+      <% if @inspection.status == 'Inspected' %>
+        <h5>Verify content</h5>
+
+        <% if @inspection.to_be_verified.any? %>
+          <p>Please fix the following before notifying the customer:</p>
+
+          <ul>
+            <% @inspection.to_be_verified.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+
+        <% else %>
+          <p>We could not automatically determine anything that might be wrong, so look through in general.</p>
+
+          <% if @inspection.company.present? %>
+            <%= form_for @inspection, url: refinery.quality_assurance_inspection_path(@inspection) do |f| %>
+              <%= f.hidden_field :status, value: 'Notified' %>
+              <% if @inspection.company.users.any? %>
+                <ul>
+                  <% @inspection.company.users.each do |user| %>
+                    <li>
+                      <%= check_box_tag 'notify_users[]', user.id %>
+                      <%= label_tag user.id, user.full_name %>
+                    </li>
+                  <% end %>
+                </ul>
+
+                <p><%= f.submit 'Confirm and notify', confirm: 'This will send out a notification to the Customer.' %></p>
+              <% else %>
+
+                <p><%= f.submit 'Confirm', confirm: 'This will send out a notification to the Customer.' %></p>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </aside>
+  <% end %>
 <% end %>
 
 <% if @similar_inspections.any? %>
   <% content_for :side_body do %>
     <aside>
-      <h2><%= t('.other') %></h2>
-      <ul id="inspections">
-        <% @similar_inspections.each do |inspection| %>
-          <li>
-            <%= link_to inspection.label, refinery.quality_assurance_inspection_path(inspection) %>
-          </li>
-        <% end %>
-      </ul>
+      <h5><%= t('.similar') %></h5>
+      <% @similar_inspections.each do |inspection| %>
+        <div class="sidebar-item<%= ' with-preview' if inspection.inspection_photo.present? %>">
+          <% if inspection.inspection_photo.present? %>
+            <div class="item-preview">
+              <%= image_tag inspection.inspection_photo.image.image.thumb('45x45#').url %>
+            </div>
+          <% end %>
+          <div class="item-title">
+            <%= link_to inspection.code, refinery.quality_assurance_inspection_path(inspection) %>
+          </div>
+          <div class="item-content">
+            <%= [inspection.po_number, inspection.product_code, inspection.product_description, inspection.product_colour_variants].reject(&:blank?).join(', ') %>
+          </div>
+          <div class="item-trailing">
+            <div class="result-<%= inspection.result.try(:downcase) %>">
+              <i class="list-icon fa <%= inspection.result == 'Pass' ? 'fa-check-circle' : (inspection.result == 'Reject' ? 'fa-times-circle' : 'fa-question-circle') %>"></i>
+              <%= inspection.result %>
+            </div>
+            <small style="float: right;"><%= time_ago_in_words inspection.display_inspection_date %> ago</small>
+          </div>
+        </div>
+      <% end %>
     </aside>
   <% end %>
 <% end %>

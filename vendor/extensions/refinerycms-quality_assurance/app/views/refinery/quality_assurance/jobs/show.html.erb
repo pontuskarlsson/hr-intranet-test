@@ -7,47 +7,41 @@
     <div class="grid-x grid-padding-x">
       <div class="cell medium-6">
         <h3>Job Details</h3>
-        <table class="cc-table">
-          <tbody>
-          <tr>
-            <th style="width: 150px;">Job No.</th>
-            <td><%= @job.code %></td>
-          </tr>
-          <tr>
-            <th>Company</th>
-            <td><%= @job.company_label %></td>
-          </tr>
-          <tr>
-            <th>Project</th>
-            <td>
-              <% if @job.company.present? && page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
-                <%= form_for @job, url: refinery.quality_assurance_job_path(@job) do |f| %>
-                  <div class="input-group">
-                    <%= f.text_field :project_label, :class => 'js_project_field input-group-field' -%>
-                    <div class="input-group-button">
-                      <%= f.submit 'Update', class: 'button primary' %>
-                    </div>
-                  </div>
-                <% end %>
-              <% else %>
-                <%= @job.project_label.presence || 'N/A' %>
-              <% end %>
-            </td>
-          </tr>
-          <tr>
-            <th>Status</th>
-            <td><%= @job.status %></td>
-          </tr>
-          <tr>
-            <th>Assigned to</th>
-            <td><%= @job.assigned_to_label %></td>
-          </tr>
-          <tr>
-            <th>Date</th>
-            <td><%= @job.inspection_date %></td>
-          </tr>
-          </tbody>
-        </table>
+        <% if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>
+          <%= form_for @job, url: [refinery, :quality_assurance, @job] do |f| %>
+            <%= render 'refinery/quality_assurance/jobs/form', f: f, job: @job, inspection: @job.inspection %>
+          <% end %>
+
+        <% else %>
+          <table class="cc-table">
+            <tbody>
+            <tr>
+              <th style="width: 150px;">Job No.</th>
+              <td><%= @job.code %></td>
+            </tr>
+            <tr>
+              <th>Company</th>
+              <td><%= @job.company_label %></td>
+            </tr>
+            <tr>
+              <th>Project</th>
+              <td><%= @job.project_label.presence || 'N/A' %></td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td><%= @job.status %></td>
+            </tr>
+            <tr>
+              <th>Assigned to</th>
+              <td><%= @job.assigned_to_label %></td>
+            </tr>
+            <tr>
+              <th>Date</th>
+              <td><%= @job.inspection_date %></td>
+            </tr>
+            </tbody>
+          </table>
+        <% end %>
       </div>
 
       <div class="cell medium-6">

@@ -6,6 +6,9 @@ module Refinery
       STATUSES = %w(Draft Confirmed Scheduled Completed Invoiced)
       JOB_TYPES = %w(Inspection)
       BILLABLE_TYPES = %w(ManDay)
+      COMPLEXITY_LEVELS = %w(low medium high)
+
+      store :content, accessors: [:po_numbers, :product_codes, :product_category, :complexity]
 
       belongs_to :assigned_to,      class_name: '::Refinery::Authentication::Devise::User', optional: true
       belongs_to :company,          class_name: '::Refinery::Business::Company', optional: true
@@ -25,6 +28,8 @@ module Refinery
       acts_as_indexed :fields => [:code, :title, :description, :company_code, :company_label, :assigned_to_label]
       configure_assign_by_label :billable, class_name: '::Refinery::Business::Billable'
       configure_assign_by_label :project, class_name: '::Refinery::Business::Project'
+
+      configure_enumerables :complexity, COMPLEXITY_LEVELS
 
       delegate :label, to: :project, prefix: true, allow_nil: true
 
@@ -60,6 +65,8 @@ module Refinery
             section.description = "Inspections #{project.description}"
           }
         end
+
+        self.complexity ||= 'medium'
       end
 
       before_save do
@@ -96,6 +103,13 @@ module Refinery
         end
       end
 
+      after_save do
+        if inspection.present? && product_category.present? && product_category != inspection.product_category
+          inspection.product_category = product_category
+          inspection.save || throw(:abort)
+        end
+      end
+
       scope :billable_with, -> (job) {
         where.not(billable_id: nil).
             where.not(id: job.id).
@@ -129,6 +143,50 @@ module Refinery
         if code.blank?
           self.code = ::Refinery::Business::NumberSerie.next_counter!(::Refinery::QualityAssurance::Inspection, :code, prefix: 'QA-', pad_length: 6)
         end
+      end
+
+      def purchase_orders
+        Array(po_numbers).map { |po| PurchaseOrder.new(po) }
+      end
+
+      def purchase_orders_attributes=(attr)
+        self.po_numbers = Hash(attr).values.reduce([]) do |acc, val|
+          if val.respond_to?(:stringify_keys) && val.stringify_keys['code'].present?
+            acc << val.stringify_keys['code']
+          else
+            acc
+          end
+        end
+      end
+
+      class PurchaseOrder < Struct.new(:code)
+
+        def persisted?
+          false
+        end
+
+      end
+
+      def products
+        Array(product_codes).map { |po| Product.new(po) }
+      end
+
+      def products_attributes=(attr)
+        self.product_codes = Hash(attr).values.reduce([]) do |acc, val|
+          if val.respond_to?(:stringify_keys) && val.stringify_keys['code'].present?
+            acc << val.stringify_keys['code']
+          else
+            acc
+          end
+        end
+      end
+
+      class Product < Struct.new(:code)
+
+        def persisted?
+          false
+        end
+
       end
 
     end

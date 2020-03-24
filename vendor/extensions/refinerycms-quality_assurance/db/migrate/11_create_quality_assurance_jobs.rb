@@ -33,6 +33,8 @@ class CreateQualityAssuranceJobs < ActiveRecord::Migration
       t.decimal  :time_spent, precision: 8, scale: 2, null: false, default: 0
       t.text :time_log
 
+      t.text :content
+
       t.integer :position
 
       t.timestamps
