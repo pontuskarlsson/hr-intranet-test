@@ -184,7 +184,8 @@ module Refinery
           contact.title = crm_contact.title
 
           # Sync Address
-          pull_address contact, crm_contact, 'mail', 'other'
+          pull_address contact, crm_contact, 'mail'
+          pull_address contact, crm_contact, 'other'
 
           # Sync Custom Fields
           pull_custom_fields contact, crm_contact, CUSTOM_CONTACT_ATTR
@@ -213,7 +214,8 @@ module Refinery
           contact.website = crm_contact.website
 
           # Sync Address
-          pull_address contact, crm_contact, 'ship', 'billing'
+          pull_address contact, crm_contact, 'ship'
+          pull_address contact, crm_contact, 'billing'
 
           # Sync Custom Fields
           pull_custom_fields contact, crm_contact, CUSTOM_ORG_ATTR
@@ -221,20 +223,16 @@ module Refinery
           contact.tags_joined_by_comma = crm_contact.tags.join(',')
         end
 
-        def pull_address(contact, crm_contact, address_type, other_address_type = nil)
-          contact.address = crm_contact.send("address_#{address_type}_street")
-          contact.city =    crm_contact.send("address_#{address_type}_city")
-          contact.zip =     crm_contact.send("address_#{address_type}_postcode")
-          contact.state =   crm_contact.send("address_#{address_type}_state")
-          contact.country = crm_contact.send("address_#{address_type}_country")
-
-          if other_address_type
-            contact.other_address = crm_contact.send("address_#{other_address_type}_street")
-            contact.other_city =    crm_contact.send("address_#{other_address_type}_city")
-            contact.other_zip =     crm_contact.send("address_#{other_address_type}_postcode")
-            contact.other_state =   crm_contact.send("address_#{other_address_type}_state")
-            contact.other_country = crm_contact.send("address_#{other_address_type}_country")
-          end
+        def pull_address(contact, crm_contact, address_type)
+          form = Refinery::Marketing::AddressForm.new_in_model(contact, {
+              :relation     => address_type,
+              :address1     => crm_contact.send("address_#{address_type}_street"),
+              :city         => crm_contact.send("address_#{address_type}_city"),
+              :postal_code  => crm_contact.send("address_#{address_type}_postcode"),
+              :province     => crm_contact.send("address_#{address_type}_state"),
+              :country      => crm_contact.send("address_#{address_type}_country")
+          })
+          form.save!
         end
 
         def pull_custom_fields(contact, crm_contact, attribute_map)

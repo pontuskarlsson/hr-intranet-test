@@ -9,6 +9,9 @@ module Refinery
       belongs_to :organisation, class_name: 'Contact', optional: true
       belongs_to :image,        class_name: '::Refinery::Image', optional: true
       has_many :employees,      class_name: 'Contact', foreign_key: :organisation_id
+      has_many :links,          dependent: :destroy
+      has_many :linked_links,   as: :linked, class_name: 'Link', dependent: :destroy
+      has_many :addresses,      through: :links, source: :linked, source_type: 'Refinery::Marketing::Address'
 
       #serialize :custom_fields, Hash
 
@@ -18,9 +21,8 @@ module Refinery
 
       responds_to_data_tables *DT_COLUMNS
 
-      validates :base_id, uniqueness: true, allow_nil: true
       validates :insightly_id, uniqueness: true, allow_nil: true
-      #validates :name,    presence: true
+      validates :name,    presence: true, unless: proc { |c| c.email.present? }
       validates :user_id, uniqueness: true, allow_nil: true
 
       scope :organisations, -> { where(is_organisation: true) }
@@ -28,6 +30,16 @@ module Refinery
       scope :in_crm, -> { where(removed_from_base: false).where.not(insightly_id: nil) }
       scope :not_in_crm, -> { where(insightly_id: nil) }
       scope :without_code, -> { where(code: nil).or(where(code: '')) }
+
+      def self.for_user_roles(user, role_titles = nil)
+        titles = role_titles || user.roles.pluck(:title)
+
+        if titles.include?(ROLE_CRM_MANAGER) || titles.include?(::Refinery::Business::ROLE_INTERNAL)
+          in_crm
+        else
+          where('1=0')
+        end
+      end
 
       def self.employees_for(organisation)
         if (org = where(name: organisation).first).present?
@@ -37,7 +49,7 @@ module Refinery
         end
       end
 
-      # Override label configuration to only allow contacts with no :name
+      # Override label configuration to only allow contacts with :name present
       def self.to_source
         where.not(name: nil).pluck(:name).to_json.html_safe
       end

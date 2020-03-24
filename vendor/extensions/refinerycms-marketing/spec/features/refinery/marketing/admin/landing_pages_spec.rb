@@ -63,7 +63,7 @@ describe Refinery do
               click_link "Edit this landing page"
             end
 
-            fill_in "Name", :with => "A different name"
+            fill_in "Title", :with => "A different name"
             click_button "Save"
 
             expect( page ).to have_content("'A different name' was successfully updated.")

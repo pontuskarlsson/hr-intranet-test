@@ -15,8 +15,8 @@ describe Refinery do
 
           it "shows two items" do
             visit refinery.marketing_admin_contacts_path
-            page.should have_content("UniqueTitleOne")
-            page.should have_content("UniqueTitleTwo")
+            expect( page ).to have_content("UniqueTitleOne")
+            expect( page ).to have_content("UniqueTitleTwo")
           end
         end
 
@@ -29,12 +29,11 @@ describe Refinery do
 
           context "valid data" do
             it "should succeed" do
-              fill_in "Base", :with => "1234"
               fill_in "Name", :with => "This is a test of the first string field"
               click_button "Save"
 
-              page.should have_content("'This is a test of the first string field' was successfully added.")
-              Refinery::Marketing::Contact.count.should == 1
+              expect( page ).to have_content("'This is a test of the first string field' was successfully added.")
+              expect( Refinery::Marketing::Contact.count ).to eq 1
             end
           end
 
@@ -42,8 +41,8 @@ describe Refinery do
             it "should fail" do
               click_button "Save"
 
-              page.should have_content("Base can't be blank")
-              Refinery::Marketing::Contact.count.should == 0
+              expect( page ).to have_content(" can't be blank")
+              expect( Refinery::Marketing::Contact.count ).to eq 0
             end
           end
 
@@ -62,8 +61,8 @@ describe Refinery do
             fill_in "Name", :with => "A different name"
             click_button "Save"
 
-            page.should have_content("'A different name' was successfully updated.")
-            page.should have_no_content("A name")
+            expect( page ).to have_content("'A different name' was successfully updated.")
+            expect( page ).to have_no_content("A name")
           end
         end
 
@@ -75,8 +74,8 @@ describe Refinery do
 
             click_link "Remove this contact forever"
 
-            page.should have_content("'UniqueTitleOne' was successfully removed.")
-            Refinery::Marketing::Contact.count.should == 0
+            expect( page ).to have_content("'UniqueTitleOne' was successfully removed.")
+            expect( Refinery::Marketing::Contact.count ).to eq 0
           end
         end
 

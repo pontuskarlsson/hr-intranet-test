@@ -4,6 +4,7 @@ module Refinery
       include Refinery::PageRoles::AuthController
 
       set_page PAGE_CONTACTS_URL
+      allow_page_roles ::Refinery::Business::ROLE_INTERNAL, only: [:index, :show]
       allow_page_roles ROLE_CRM_MANAGER
 
       before_action :find_contacts, only: [:index]
@@ -27,16 +28,11 @@ module Refinery
       protected
 
       def contacts_scope
-        @companies ||=
-            if page_role? ROLE_CRM_MANAGER
-              Contact.in_crm
-            else
-              Contact.where('1=0')
-            end
+        @contacts ||= Contact.for_user_roles current_refinery_user
       end
 
       def find_contacts
-        @contacts = contacts_scope
+        contacts_scope
       end
 
       def find_contact

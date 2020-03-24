@@ -9,8 +9,16 @@ module Refinery
 
         it { is_expected.to be_valid }
 
-        context 'when base_id is already present' do
-          before { FactoryBot.create(:contact, base_id: contact.base_id) }
+        context 'when both name and email is missing' do
+          before { contact.name = ''; contact.email = '' }
+          it { is_expected.not_to be_valid }
+        end
+
+        context 'when insightly_id is already present' do
+          before {
+            contact.insightly_id = '123456789'
+            FactoryBot.create(:contact, insightly_id: contact.insightly_id)
+          }
           it { is_expected.not_to be_valid }
         end
 

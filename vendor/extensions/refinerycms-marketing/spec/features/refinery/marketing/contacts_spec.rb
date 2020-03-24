@@ -12,56 +12,99 @@ describe Refinery do
           FactoryBot.create(:contact, name: 'Unique Name 2')
         end
 
-        it "displays a list of contacts" do
-          visit refinery.marketing_contacts_path
+        context "when the user is external" do
+          let!(:logged_in_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+              ::Refinery::Business::ROLE_EXTERNAL
+          ]) }
 
-          page.should have_content("Unique Name 1")
-          page.should have_content("Unique Name 2")
+          it "does not list any contacts" do
+            visit refinery.marketing_contacts_path
+
+            expect( page ).not_to have_content("Loading, please wait...")
+            expect( page ).to have_content("The page you requested was not found")
+            expect( page ).to have_http_status 404
+          end
+        end
+
+        context "when the user is internal" do
+          let!(:logged_in_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+              ::Refinery::Business::ROLE_INTERNAL
+          ]) }
+
+          it "shows a table that will load the contacts" do
+            visit refinery.marketing_contacts_path
+
+            expect( page ).to have_content("Loading, please wait...")
+            expect( page ).not_to have_content("The page you requested was not found")
+            expect( page ).to have_http_status 200
+          end
         end
 
       end
 
       describe "contact details" do
-        let(:contact) { FactoryBot.create(:contact) }
+        let!(:contact) { FactoryBot.create(:contact) }
 
-        it "displays the details of a specific contact" do
-          visit refinery.marketing_contact_path(contact)
+        context "when the user is external" do
+          let!(:logged_in_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+              ::Refinery::Business::ROLE_EXTERNAL
+          ]) }
 
-          page.should have_content(contact.name)
-          page.should have_content(contact.email)
-        end
-
-        context "when other contacts has same tags" do
-          before(:each) do
-            FactoryBot.create(:contact, name: 'Similar contact 1', tags_joined_by_comma: contact.tags_joined_by_comma)
-            FactoryBot.create(:contact, name: 'Similar contact 2', tags_joined_by_comma: contact.tags_joined_by_comma)
-            FactoryBot.create(:contact, name: 'Not the same tags 1', tags_joined_by_comma: 'unlikely, different')
-          end
-          it "displays a list of similar contacts" do
+          it "does not display the contact details" do
             visit refinery.marketing_contact_path(contact)
 
-            page.should have_content('Similar contact 1')
-            page.should have_content('Similar contact 2')
-            page.should_not have_content('Not the same tags 1')
+            expect( page ).not_to have_content(contact.name)
+            expect( page ).not_to have_content(contact.email)
+            expect( page ).to have_http_status 404
           end
         end
 
-        context "when contact is organisation" do
-          let(:contact) { FactoryBot.create(:contact, is_organisation: true) }
-          before(:each) do
-            FactoryBot.create(:contact, name: 'John Doe', organisation: contact)
-            FactoryBot.create(:contact, name: 'Bruce Wayne', organisation: contact)
-            FactoryBot.create(:contact, name: 'Clark Kent')
-          end
-          it "displays a list of employees" do
+        context "when the user is internal" do
+          let!(:logged_in_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+              ::Refinery::Business::ROLE_INTERNAL
+          ]) }
+
+          it "displays the details of a specific contact" do
             visit refinery.marketing_contact_path(contact)
 
-            page.should have_content('John Doe')
-            page.should have_content('Bruce Wayne')
-            page.should_not have_content('Clark Kent')
+            expect( page ).to have_content(contact.name)
+            expect( page ).to have_content(contact.email)
+            expect( page ).to have_http_status 200
+          end
+
+          context "when other contacts has same tags" do
+            before(:each) do
+              FactoryBot.create(:contact, name: 'Similar contact 1', tags_joined_by_comma: contact.tags_joined_by_comma)
+              FactoryBot.create(:contact, name: 'Similar contact 2', tags_joined_by_comma: contact.tags_joined_by_comma)
+              FactoryBot.create(:contact, name: 'Not the same tags 1', tags_joined_by_comma: 'unlikely, different')
+            end
+
+            it "displays a list of similar contacts" do
+              visit refinery.marketing_contact_path(contact)
+
+              expect( page ).to have_content('Similar contact 1')
+              expect( page ).to have_content('Similar contact 2')
+              expect( page ).not_to have_content('Not the same tags 1')
+            end
+          end
+
+          context "when contact is organisation" do
+            let(:contact) { FactoryBot.create(:contact, is_organisation: true) }
+            before(:each) do
+              FactoryBot.create(:contact, name: 'John Doe', organisation: contact)
+              FactoryBot.create(:contact, name: 'Bruce Wayne', organisation: contact)
+              FactoryBot.create(:contact, name: 'Clark Kent')
+            end
+
+            it "displays a list of employees" do
+              visit refinery.marketing_contact_path(contact)
+
+              expect( page ).to have_content('John Doe')
+              expect( page ).to have_content('Bruce Wayne')
+              expect( page ).not_to have_content('Clark Kent')
+            end
           end
         end
-
       end
 
     end
