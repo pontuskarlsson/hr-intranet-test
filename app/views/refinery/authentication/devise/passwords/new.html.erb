@@ -1,0 +1,21 @@
+<div class="login-sign-up" style="padding: 1rem;">
+  <p><%= t('enter_email_address', :scope => 'refinery.authentication.devise.users.forgot') %></p>
+  <%= form_for resource, :as => resource_name,
+               :url => refinery.authentication_devise_user_password_path,
+               :html => { :method => :post } do |f| %>
+    <div class="grid-x grid-x-padding">
+      <div class="cell">
+        <span class="sr-only"><%= f.label :email %></span>
+        <%= f.text_field :email, :placeholder => t('email_address', :scope => 'refinery.authentication.devise.users.forgot') %>
+      </div>
+
+      <div class="cell">
+        <%= render '/refinery/admin/form_actions', :f => f,
+                   :continue_editing => false,
+                   :submit_button_text => t('reset_password', :scope => 'refinery.authentication.devise.users.forgot'),
+                   :cancel_url => refinery.authentication_devise_user_session_path,
+                   :cancel_title => nil -%>
+      </div>
+    </div>
+  <% end -%>
+</div>

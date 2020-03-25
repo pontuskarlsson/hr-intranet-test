@@ -43,7 +43,7 @@ en:
           forgot:
             email_address: Email Address
             enter_email_address: Please enter the email address for your account.
-            reset_password: Reset password
+            reset_password: Reset
             blank_email: You did not enter an email address.
             email_not_associated_with_account_html: "Sorry, '%{email}' isn't associated with any accounts.<br />Are you sure you typed the correct email address?"
             email_reset_sent: An email has been sent to you with a link to reset your password.
@@ -51,7 +51,7 @@ en:
           reset:
             successful: "Password reset successfully for '%{email}'"
             pick_new_password_for: "Pick a new password for %{email}"
-            reset_password: Reset password
+            reset_password: Reset
         roles:
           superuser: Superuser
           refinery: Refinery
