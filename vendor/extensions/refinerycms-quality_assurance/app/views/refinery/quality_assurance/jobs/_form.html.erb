@@ -106,48 +106,79 @@
         $('.js-auto-assign-po').on('click', function () {
           // Handle POs
           var poNumbers = $(this).data('po-numbers');
-          var prefix = poNumbers.match(/^[^0-9]+/);
-          var entries = poNumbers.split(/[,/]/);
-          var numbers = entries.map(function(v) { var res = v.match(/[0-9]+/); return res && res[0] });
-          var length = numbers.reduce(function(max, number) { return Math.max(max, number.length) }, 0);
+          if (poNumbers) {
+            var poPrefix = poNumbers.toString().match(/^[^0-9]+/);
+            poNumbers = poNumbers.toString().split(/[,/]/);
+            poNumbers = poNumbers.map(function(v) { var res = v.match(/[0-9]+[0-9\-]*/); return res && res[0] });
+            var length = poNumbers.reduce(function(max, number) { return Math.max(max, number.length) }, 0);
 
-          <% if job.company_label == 'Hunter Boot Limited' %>
-          prefix = 'PO';
-          length = 8;
-          <% end %>
+            <% if job.company_label == 'Hunter Boot Limited' %>
+            poPrefix = 'PO';
+            length = 8;
+            <% end %>
 
-          var result = numbers.map(function(v, i) {
-            var res = v;
-            for (var j = i-1; j >= 0; j--) {
-              var addFrom = numbers[j];
+            if (length > 0) {
+              poNumbers = poNumbers.map(function(v, i) {
+                var res = v;
+                for (var j = i-1; j >= 0; j--) {
+                  var addFrom = poNumbers[j];
 
-              if (res.length === length) {
-                break;
-              } else if (addFrom.length > res.length) {
-                res = [addFrom.slice(0, addFrom.length - res.length), res].join('');
-              }
+                  if (res.length === length) {
+                    break;
+                  } else if (addFrom.length > res.length) {
+                    res = [addFrom.slice(0, addFrom.length - res.length), res].join('');
+                  }
+                }
+
+                if (poPrefix) {
+                  return [poPrefix, res].join('');
+                } else {
+                  return res;
+                }
+              });
             }
-            return [prefix, res].join('');
-          });
 
-          $('[data-form-container=job-purchase-orders] .form-addable-record').remove();
-          result.map(function() { $('[data-form-container=job-purchase-orders] .form-ctrl-add').trigger('click'); });
-          result.map(function(val, i) {
-            var input = $('[data-form-container=job-purchase-orders] .form-addable-record .js-po-code-field')[i];
-            $(input).attr('value', val);
-          });
+            $('[data-form-container=job-purchase-orders] .form-addable-record').remove();
+            poNumbers.map(function() { $('[data-form-container=job-purchase-orders] .form-ctrl-add').trigger('click'); });
+            poNumbers.map(function(val, i) {
+              var input = $('[data-form-container=job-purchase-orders] .form-addable-record .js-po-code-field')[i];
+              $(input).attr('value', val);
+            });
+          }
 
           // Handle Products
           var productCodes = $(this).data('product-codes');
-          var entries = productCodes.split(/[,/]/).map(function(val) { return val.trim(); });
+          if (productCodes) {
+            productCodes = productCodes.toString().split(/[,]/).map(function(val) { return val.trim(); });
+            length = 0;
 
+            <% if job.company_label == 'Björn Borg Clothing AB' %>
+            length = 9;
+            <% end %>
 
-          $('[data-form-container=job-products] .form-addable-record').remove();
-          entries.map(function() { $('[data-form-container=job-products] .form-ctrl-add').trigger('click'); });
-          entries.map(function(val, i) {
-            var input = $('[data-form-container=job-products] .form-addable-record .js-product-code-field')[i];
-            $(input).attr('value', val);
-          });
+            if (length > 0) {
+              productCodes = productCodes.map(function(v, i) {
+                var res = v;
+                for (var j = i-1; j >= 0; j--) {
+                  var addFrom = productCodes[j];
+
+                  if (res.length === length) {
+                    break;
+                  } else if (addFrom.length > res.length) {
+                    res = [addFrom.slice(0, addFrom.length - res.length), res].join('');
+                  }
+                }
+                return res;
+              });
+            }
+
+            $('[data-form-container=job-products] .form-addable-record').remove();
+            productCodes.map(function() { $('[data-form-container=job-products] .form-ctrl-add').trigger('click'); });
+            productCodes.map(function(val, i) {
+              var input = $('[data-form-container=job-products] .form-addable-record .js-product-code-field')[i];
+              $(input).attr('value', val);
+            });
+          }
         });
       });
     </script>
