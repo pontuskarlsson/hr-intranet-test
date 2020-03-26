@@ -107,7 +107,7 @@ module Refinery
                   pull_organisation contact, crm_contact
 
                 else
-                  contact = Refinery::Marketing::Contact.create!(organisation_name: crm_contact.organisation_name) # create instead of new so that id is available for image access
+                  contact = Refinery::Marketing::Contact.create!(organisation_name: crm_contact.organisation_name, is_organisation: true) # create instead of new so that id is available for image access
                   pull_organisation contact, crm_contact
                 end
 
