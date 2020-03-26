@@ -5,7 +5,7 @@ module Refinery
 
       RELATIONS = {
           'Refinery::Marketing::Contact' => %w(employee),
-          'Refinery::Marketing::Address' => %w(billing mail shipping street other)
+          'Refinery::Marketing::Address' => %w(billing mail ship street other)
       }.freeze
 
       belongs_to :contact
