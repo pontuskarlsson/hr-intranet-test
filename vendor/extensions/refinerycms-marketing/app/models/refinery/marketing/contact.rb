@@ -25,6 +25,14 @@ module Refinery
       validates :name,    presence: true, unless: proc { |c| c.email.present? }
       validates :user_id, uniqueness: true, allow_nil: true
 
+      before_validation do
+        if is_organisation
+          self.name = organisation_name if name.blank?
+        else
+          self.name = [first_name, last_name].reject(&:blank?).join(' ') if name.blank?
+        end
+      end
+
       scope :organisations, -> { where(is_organisation: true) }
       scope :non_organisations, -> { where(is_organisation: false) }
       scope :in_crm, -> { where(removed_from_base: false).where.not(insightly_id: nil) }

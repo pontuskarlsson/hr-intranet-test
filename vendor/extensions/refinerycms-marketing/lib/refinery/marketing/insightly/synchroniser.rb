@@ -107,7 +107,7 @@ module Refinery
                   pull_organisation contact, crm_contact
 
                 else
-                  contact = Refinery::Marketing::Contact.create! # create instead of new so that id is available for image access
+                  contact = Refinery::Marketing::Contact.create!(organisation_name: crm_contact.organisation_name) # create instead of new so that id is available for image access
                   pull_organisation contact, crm_contact
                 end
 
@@ -133,7 +133,7 @@ module Refinery
                   pull_contact contact, crm_contact
 
                 else
-                  contact = Refinery::Marketing::Contact.new
+                  contact = Refinery::Marketing::Contact.create!(first_name: crm_contact.first_name, last_name: crm_contact.last_name)
                   pull_contact contact, crm_contact
                 end
 
@@ -161,7 +161,6 @@ module Refinery
           # Standard attributes
           contact.first_name = crm_contact.first_name
           contact.last_name = crm_contact.last_name
-          contact.name = [crm_contact.first_name, crm_contact.last_name].reject(&:blank?).join(' ')
           contact.description = crm_contact.background
 
           # Image attributes and resource
@@ -201,7 +200,6 @@ module Refinery
           contact.removed_from_base = false
 
           # Standard attributes
-          contact.name = crm_contact.organisation_name
           contact.organisation_name = crm_contact.organisation_name
           contact.description = crm_contact.background
 
