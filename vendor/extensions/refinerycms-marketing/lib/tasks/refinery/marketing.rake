@@ -9,7 +9,7 @@ namespace :refinery do
         synchroniser.pull_all
 
         if synchroniser.error.present?
-          ErrorMailer.error_email(synchroniser.error).deliver if defined?(ErrorMailer)
+          ErrorMailer.error_email(synchroniser.error, synchroniser.additional_errors).deliver if defined?(ErrorMailer)
         end
       end
 

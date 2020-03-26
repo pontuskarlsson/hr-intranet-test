@@ -65,11 +65,12 @@ module Refinery
         }.freeze
 
 
-        attr_accessor :error
+        attr_accessor :error, :additional_errors
         attr_reader :client
 
         def initialize(client = Client.new)
           @client = client
+          self.additional_errors = []
         end
 
         def push(contact, changes)
@@ -82,7 +83,7 @@ module Refinery
               push_contact contact, changes
             end
           rescue StandardError => e
-            self.error = error
+            add_error e
           end
         end
 
@@ -145,7 +146,7 @@ module Refinery
             end
             true
           rescue StandardError => e
-            self.error = e
+            add_error e
             false
           end
         end
@@ -232,7 +233,9 @@ module Refinery
               :province     => crm_contact.send("address_#{address_type}_state"),
               :country      => crm_contact.send("address_#{address_type}_country")
           })
-          form.save!
+          unless form.save
+            add_error form.errors if form.errors.present?
+          end
         end
 
         def pull_custom_fields(contact, crm_contact, attribute_map)
@@ -294,6 +297,14 @@ module Refinery
         def push_contact(contact, changes)
           return unless Insightly.configuration.updates_allowed
 
+        end
+
+        def add_error(e)
+          if error.nil?
+            self.error = e
+          else
+            additional_errors << e
+          end
         end
 
       end
