@@ -11,6 +11,10 @@ class CreateBusinessVouchers < ActiveRecord::Migration
       t.integer :line_item_prepay_move_to_id
       t.integer :line_item_prepay_move_from_id
       t.integer :line_item_sales_move_to_id
+      t.integer :line_item_prepay_in_id
+      t.integer :line_item_prepay_discount_in_id
+      t.integer :line_item_prepay_out_id
+      t.integer :line_item_prepay_discount_out_id
 
       t.string :discount_type
       t.decimal :base_amount, precision: 13, scale: 4
@@ -39,6 +43,10 @@ class CreateBusinessVouchers < ActiveRecord::Migration
     add_index :refinery_business_vouchers, :line_item_prepay_move_to_id, name: 'INDEX_rb_vouchers_ON_line_item_prepay_move_to_id'
     add_index :refinery_business_vouchers, :line_item_prepay_move_from_id, name: 'INDEX_rb_vouchers_ON_line_item_prepay_move_from_id'
     add_index :refinery_business_vouchers, :line_item_sales_move_to_id, name: 'INDEX_rb_vouchers_ON_line_item_sales_move_to_id'
+    add_index :refinery_business_vouchers, :line_item_prepay_in_id, name: 'INDEX_rb_vouchers_ON_line_item_prepay_in_id'
+    add_index :refinery_business_vouchers, :line_item_prepay_discount_in_id, name: 'INDEX_rb_vouchers_ON_line_item_prepay_discount_in_id'
+    add_index :refinery_business_vouchers, :line_item_prepay_out_id, name: 'INDEX_rb_vouchers_ON_line_item_prepay_out_id'
+    add_index :refinery_business_vouchers, :line_item_prepay_discount_out_id, name: 'INDEX_rb_vouchers_ON_line_item_prepay_discount_out_id'
     add_index :refinery_business_vouchers, :discount_type, name: 'INDEX_rb_vouchers_ON_disount_type'
     add_index :refinery_business_vouchers, :currency_code, name: 'INDEX_rb_vouchers_ON_currency_code'
     add_index :refinery_business_vouchers, :valid_from, name: 'INDEX_rb_vouchers_ON_valid_from'

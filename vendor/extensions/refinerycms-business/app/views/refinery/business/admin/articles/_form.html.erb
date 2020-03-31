@@ -69,6 +69,11 @@
   </div>
 
   <div class='field'>
+    <%= f.label :is_discount -%>
+    <%= f.check_box :is_discount -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :voucher_constraint_applicable_articles, 'Voucher Applicable to (comma-separated Article Codes)' -%>
     <%= f.text_field :voucher_constraint_applicable_articles -%>
   </div>

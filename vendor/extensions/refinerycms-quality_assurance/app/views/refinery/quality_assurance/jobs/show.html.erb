@@ -83,6 +83,15 @@
               <td><%= billable.assigned_to_label %></td>
             </tr>
             <tr>
+              <th>Date</th>
+              <td>
+                <%= billable.display_billable_date %>
+                <% if billable.billable_date != @job.inspection_date %>
+                  <span class="italic" style="color: red;">(Mismatch)</span>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
               <th>Status</th>
               <td><%= billable.status %></td>
             </tr>

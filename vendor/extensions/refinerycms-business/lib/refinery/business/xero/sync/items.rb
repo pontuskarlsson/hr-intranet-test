@@ -21,7 +21,9 @@ module Refinery
           end
 
           def sync!(xero_item)
-            article = account.articles.find_or_initialize_by(item_id: xero_item.item_id)
+            article = account.articles.find_by(item_id: xero_item.item_id)
+            article = account.articles.find_by(code: xero_item.code, item_id: "") if article.nil?
+            article = account.articles.build(item_id: xero_item.item_id) if article.nil?
 
             article.attributes = SYNC_ATTRIBUTES.each_with_object({}) { |(local, remote), acc|
               acc[local] = xero_item.attributes[remote]

@@ -103,7 +103,7 @@ module Refinery
 
       def charges
         @charges ||= Array(plan_charges).map { |mm|
-          ::Refinery::Business::Invoice::Charge.new(*mm.values_at(:qty, :article_label, :base_amount, :discount_amount, :discount_type))
+          Charge.new(*mm.values_at(:qty, :article_label, :base_amount, :discount_amount, :discount_type))
         }
       end
 

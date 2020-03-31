@@ -290,6 +290,7 @@ en:
         name: Name
 
       'refinery/business/billable':
+        bill_happy_rabbit: Bill Happy Rabbit
         billable_date: Billable Date
         billable_type: Billable Type
         billable_types:
@@ -297,6 +298,8 @@ en:
           cost: Cost
           product: Product
           time: Time
+        billed_company_id: Billed Company
+        billed_invoice_id: Billed Invoice
         description: Description
         status: Status
         statuses:

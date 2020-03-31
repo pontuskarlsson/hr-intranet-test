@@ -14,10 +14,12 @@ module Refinery
       
       STATUSES = %w(draft job_completed to_be_invoiced invoiced paid cancelled)
 
-      belongs_to :company, optional: true
+      belongs_to :company
+      belongs_to :billed_company,     class_name: '::Refinery::Business::Company', optional: true
       #belongs_to :project
       #belongs_to :section
       belongs_to :invoice, optional: true
+      belongs_to :billed_invoice,     class_name: '::Refinery::Business::Invoice', optional: true
       belongs_to :assigned_to,        class_name: '::Refinery::Authentication::Devise::User', optional: true
       belongs_to :article, optional: true
       belongs_to :line_item_sales,    class_name: '::Refinery::Business::InvoiceItem', optional: true
@@ -28,7 +30,10 @@ module Refinery
       #   acts_as_indexed :fields => [:title]
       acts_as_indexed :fields => [:title, :description, :article_code]
 
+      configure_assign_by_label :company, class_name: '::Refinery::Business::Company'
+      configure_assign_by_label :billed_company, class_name: '::Refinery::Business::Company'
       configure_assign_by_label :invoice, class_name: '::Refinery::Business::Invoice'
+      configure_assign_by_label :billed_invoice, class_name: '::Refinery::Business::Invoice'
       configure_enumerables :billable_type, TYPES
       configure_enumerables :status,        STATUSES
       configure_label :id, :title, :assigned_to_label, :billable_date
@@ -40,9 +45,7 @@ module Refinery
                               invoice: [:invoice_number, :reference]
 
       delegate :invoice_number, :reference, to: :invoice, prefix: true, allow_nil: true
-      delegate :label, to: :company, prefix: true, allow_nil: true
 
-      validates :company_id,    presence: true
       validates :billable_type, inclusion: TYPES
       validates :title,         presence: true
       validates :qty_unit,      inclusion: COMMISSION_UNITS,  if: :billable_type_is_commission?
@@ -72,6 +75,9 @@ module Refinery
         else
           self.status = 'draft'
         end
+
+        self.billed_company ||= company unless bill_happy_rabbit
+        self.billed_invoice ||= invoice unless bill_happy_rabbit || company != billed_company
       end
 
       validate do
@@ -86,6 +92,15 @@ module Refinery
 
         if line_item_discount.present?
           errors.add(:line_item_discount_id, 'cannot be from another invoice') unless line_item_discount.invoice_id == invoice_id
+        end
+
+        if billed_invoice.present?
+          errors.add(:billed_invoice_id, 'is not for correct company') unless billed_invoice.company == billed_company
+        end
+
+        if bill_happy_rabbit
+          errors.add(:billed_company_id, 'is not allowed when bill happy rabbit is true') if billed_company_id.present?
+          errors.add(:billed_invoice_id, 'is not allowed when bill happy rabbit is true') if billed_invoice_id.present?
         end
       end
 
@@ -210,6 +225,18 @@ module Refinery
 
       def supplier
         quality_assurance_jobs.map(&:inspection).compact.map(&:supplier_label).reject(&:blank?).uniq.first
+      end
+
+      def bill_other_company?
+        bill_happy_rabbit || billed_company_id != company_id
+      end
+
+      def bill_own_company?
+        !bill_other_company?
+      end
+
+      def display_bill_happy_rabbit
+        bill_happy_rabbit ? 'Yes' : 'No'
       end
 
       def self.from_params(params)

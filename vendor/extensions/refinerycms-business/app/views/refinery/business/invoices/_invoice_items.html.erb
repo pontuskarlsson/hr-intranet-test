@@ -38,7 +38,7 @@
       <% end %>
     <% else %>
       <div class="form-addable-record">
-        <%= render 'minimum_form', f: f, i: 0, charge: Refinery::Business::Invoice::Charge.new %>
+        <%= render 'minimum_form', f: f, i: 0, charge: Refinery::Business::Charge.new %>
       </div>
     <% end %>
 
@@ -55,7 +55,7 @@
 
           Addable.partials["invoice-minimum"] = {
             "attributes": { "__index__": <%= f.object.minimums.length + 1 %> },
-            "template": "<%= escape_javascript render('minimum_form', i: '__index__', f: f, charge: Refinery::Business::Invoice::Charge.new) %>",
+            "template": "<%= escape_javascript render('minimum_form', i: '__index__', f: f, charge: Refinery::Business::Charge.new) %>",
             "onAdd": onAddForm,
           };
         });
@@ -87,6 +87,8 @@
         <% if invoice_item.description.present? && (match = invoice_item.description.match(/^- - -(.*)/)).present? %>
           <span style="font-weight: bold;"><%= match[1] %></span>
         <% else %>
+
+          <% if false %>
           <%= invoice_item.description.to_s.gsub(/\[([A-Z-]+)(?:{(.*)})?\]/) { |m|
             if $~[2].present?
               content_tag(:span, $~[1], title: $~[2], class: 'has-tip inline-article', 'aria-haspopup': 'true', data: { tooltip: 'true' }).html_safe
@@ -94,6 +96,9 @@
               content_tag(:span, $~[1], class: 'inline-article').html_safe
             end
           }.html_safe %>
+          <% else %>
+            <%= invoice_item.description %>
+          <% end %>
         <% end %>
       </td>
       <td class="number"><%=number_with_precision invoice_item.quantity, strip_insignificant_zeros: true %></td>

@@ -122,21 +122,4 @@
   </section>
 <% end %>
 
-<% content_for :javascripts do -%>
-  <script>
-    $(document).ready(function(){
-      $('.js_invoice_field').autocomplete({
-        source: <%= @billable.company.invoices.to_source %>
-      });
-      $('.js_article_field').autocomplete({
-        source: <%= ::Refinery::Business::Article.non_voucher.is_public.to_source %>
-      });
-    });
-  </script>
-<% end -%>
-
-<% content_for :stylesheets do -%>
-  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
-<% end -%>
-
 <%= render '/refinery/content_page' %>

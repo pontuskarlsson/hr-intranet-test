@@ -14,5 +14,18 @@ FactoryBot.define do
     factory :invoice_with_id do
       invoice_id { SecureRandom.uuid }
     end
+
+
+    factory :invoice_with_all_items do
+      invoice_for_month { Date.parse '2019-01-01' }
+      invoice_date { Date.parse '2019-01-31' }
+      plan_title { 'Monthly Invoice' }
+      plan_description { 'Description of monthly invoice' }
+
+      after(:create) do |invoice, evaluator|
+        billable = FactoryBot.create(:billable, company: invoice.company, invoice: invoice, billable_date: invoice.invoice_for_month)
+
+      end
+    end
   end
 end

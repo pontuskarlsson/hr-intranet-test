@@ -14,6 +14,21 @@
   </div>
 
   <div class='field'>
+    <%= f.label :billed_company_label -%>
+    <%= f.text_field :billed_company_label, :class => 'js_company_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :billed_invoice_label -%>
+    <%= f.text_field :billed_invoice_label, :class => 'js_invoice_field' -%>
+  </div>
+
+  <div class='field'>
+    <%= f.label :bill_happy_rabbit -%>
+    <%= f.check_box :bill_happy_rabbit -%>
+  </div>
+
+  <div class='field'>
     <%= f.label :billable_type -%>
     <%= f.text_field :billable_type -%>
   </div>

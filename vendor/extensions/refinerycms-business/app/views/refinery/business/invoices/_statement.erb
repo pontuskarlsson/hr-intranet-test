@@ -58,7 +58,7 @@
     </tr>
     </thead>
     <tbody>
-    <% invoice.invoice_items.sales.each do |invoice_item|
+    <% invoice.invoice_items.sales_purchase.each do |invoice_item|
       qty = invoice_item.quantity - invoice_item.redeemed_vouchers.count
 
       # One turn first to allocate only minimum
@@ -80,7 +80,7 @@
       if qty > 0
         # Even though it is not a minimum, we add it to the same array. But since the qty is 0, it will be
         # excluded from the minimum list and only presented in the additional view.
-        invoice.minimums << mm = Refinery::Business::Invoice::Charge.new(
+        invoice.minimums << mm = Refinery::Business::Charge.new(
             0,
             invoice_item.item_code,
             invoice_item.unit_amount,
@@ -251,7 +251,7 @@
     </tbody>
   </table>
 
-  <% @invoice.billables.group_by(&:article).each do |article, billables| %>
+  <% @invoice.billables.includes(:article, :billed_to_company).order(:billable_date).group_by(&:article).each do |article, billables| %>
     <table class="details_of_work">
       <thead>
       <tr>
@@ -266,18 +266,50 @@
       </tr>
       </thead>
       <tbody>
-      <% billables.sort_by(&:billable_date).each do |billable| %>
+      <%- own_billables = billables.select(&:bill_own_company?) %>
+      <%- billables_by_other_company = billables.select(&:bill_other_company?).group_by(&:billed_company) %>
+      <% if own_billables.any? %>
+        <% own_billables.each do |billable| %>
+          <tr>
+            <td><%= billable.display_billable_date(billable.billable_date&.year == @invoice.invoice_for_month&.year ? '%e %b' : '%e %b %Y') %></td>
+            <td><%= billable.assigned_to_label %></td>
+            <td>
+              <%= "#{billable.supplier} - #{billable.manufacturer_label}".truncate(63) %>
+              <% if billable.description.present? %>
+                <div class="italic"><%=simple_format billable.description %></div>
+              <% end %>
+            </td>
+            <td class="number"><%=number_with_delimiter billable.qty %></td>
+            <td class="number"><%= billable.total_no_of_jobs %></td>
+          </tr>
+        <% end %>
+        <% if billables_by_other_company.any? %>
+          <tr>
+            <th colspan="3">Sub-total</th>
+            <th class="number"><%=number_with_delimiter own_billables.reduce(0) { |acc, b| acc + b.qty } %></th>
+            <th class="number"><%=number_with_delimiter own_billables.reduce(0) { |acc, b| acc + b.total_no_of_jobs } %></th>
+          </tr>
+        <% end %>
+      <% end %>
+      <% billables_by_other_company.each_pair do |company, other_billables| %>
+        <% other_billables.each do |billable| %>
+          <tr>
+            <td><%= billable.display_billable_date(billable.billable_date&.year == @invoice.invoice_for_month&.year ? '%e %b' : '%e %b %Y') %></td>
+            <td><%= billable.assigned_to_label %></td>
+            <td>
+              <%= "#{billable.supplier} - #{billable.manufacturer_label}".truncate(63) %>
+              <% if billable.description.present? %>
+                <div class="italic"><%=simple_format billable.description %></div>
+              <% end %>
+            </td>
+            <td class="number"><%=number_with_delimiter billable.qty %></td>
+            <td class="number"><%= billable.total_no_of_jobs %></td>
+          </tr>
+        <% end %>
         <tr>
-          <td><%= billable.display_billable_date(billable.billable_date&.year == @invoice.invoice_for_month&.year ? '%e %b' : '%e %b %Y') %></td>
-          <td><%= billable.assigned_to_label %></td>
-          <td>
-            <%= "#{billable.supplier} - #{billable.manufacturer_label}".truncate(63) %>
-            <% if billable.description.present? %>
-              <div class="italic"><%=simple_format billable.description %></div>
-            <% end %>
-          </td>
-          <td class="number"><%=number_with_delimiter billable.qty %></td>
-          <td class="number"><%= billable.total_no_of_jobs %></td>
+          <th colspan="3">Sub-total</th>
+          <th class="number"><%=number_with_delimiter other_billables.reduce(0) { |acc, b| acc + b.qty } %></th>
+          <th class="number"><%=number_with_delimiter other_billables.reduce(0) { |acc, b| acc + b.total_no_of_jobs } %></th>
         </tr>
       <% end %>
       </tbody>

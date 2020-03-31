@@ -14,7 +14,6 @@ describe Refinery do
 
           it "should succeed" do
             visit refinery.new_business_purchase_path
-
             expect( page.body ).to have_content("Selected Items")
           end
         end

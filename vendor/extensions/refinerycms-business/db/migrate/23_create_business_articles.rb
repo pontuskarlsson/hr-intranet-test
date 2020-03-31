@@ -22,6 +22,8 @@ class CreateBusinessArticles < ActiveRecord::Migration
       t.boolean :is_voucher, null: false, default: false
       t.text :voucher_constraint
 
+      t.boolean :is_discount, null: false, default: false
+
       t.datetime :archived_at
 
       t.timestamps
@@ -42,6 +44,7 @@ class CreateBusinessArticles < ActiveRecord::Migration
     add_index :refinery_business_articles, :managed_status
 
     add_index :refinery_business_articles, :is_voucher
+    add_index :refinery_business_articles, :is_discount
 
     add_index :refinery_business_articles, :archived_at
   end

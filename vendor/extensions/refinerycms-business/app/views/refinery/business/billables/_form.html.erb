@@ -1,4 +1,7 @@
 <%= form_for @billable, url: refinery.business_billable_path(@billable) do |f| %>
+  <%= render '/refinery/admin/error_messages',
+             :object => @billable,
+             :include_object_name => true %>
   <table class="cc-table">
     <tbody>
     <tr>
@@ -20,6 +23,23 @@
       </td>
     </tr>
     <tr>
+      <th>Billed Company</th>
+      <td>
+        <div class="input-group">
+          <%= f.text_field :billed_company_label, :class => 'js_company_field input-group-field' -%>
+          <% if @billable.billed_company.present? %>
+            <div class="input-group-button">
+              <%= link_to 'Go to', refinery.business_company_path(@billable.billed_company), class: 'button primary' %>
+            </div>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th>Bill Happy Rabbit</th>
+      <td><%= f.check_box :bill_happy_rabbit %></td>
+    </tr>
+    <tr>
       <th>Assigned To</th>
       <td><%= @billable.assigned_to_label %></td>
     </tr>
@@ -35,12 +55,25 @@
       <th><%= f.label :invoice_label, 'Invoice' %></th>
       <td>
         <div class="input-group">
+          <%= f.text_field :invoice_label, :class => 'js_invoice_field input-group-field' -%>
           <% if @billable.invoice.present? %>
             <div class="input-group-button">
               <%= link_to 'Go to', refinery.business_invoice_path(@billable.invoice), class: 'button primary' %>
             </div>
           <% end %>
-          <%= f.text_field :invoice_label, :class => 'js_invoice_field input-group-field' -%>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th><%= f.label :billed_invoice_label, 'Billed Invoice' %></th>
+      <td>
+        <div class="input-group">
+          <%= f.text_field :billed_invoice_label, :class => 'js_invoice_field input-group-field' -%>
+          <% if @billable.billed_invoice.present? %>
+            <div class="input-group-button">
+              <%= link_to 'Go to', refinery.business_invoice_path(@billable.billed_invoice), class: 'button primary' %>
+            </div>
+          <% end %>
         </div>
       </td>
     </tr>
@@ -63,3 +96,23 @@
     </tbody>
   </table>
 <% end %>
+
+<% content_for :javascripts do -%>
+  <script>
+    $(document).ready(function() {
+      $('.js_company_field').autocomplete({
+        source: <%= ::Refinery::Business::Company.is_verified.for_user_roles(current_refinery_user).to_source %>
+      });
+      $('.js_invoice_field').autocomplete({
+        source: <%= @billable.company.invoices.to_source %>
+      });
+      $('.js_article_field').autocomplete({
+        source: <%= ::Refinery::Business::Article.non_voucher.is_public.to_source %>
+      });
+    });
+  </script>
+<% end -%>
+
+<% content_for :stylesheets do -%>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end -%>

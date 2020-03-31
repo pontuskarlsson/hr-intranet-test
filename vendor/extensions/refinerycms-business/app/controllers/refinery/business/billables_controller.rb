@@ -79,7 +79,7 @@ module Refinery
       end
 
       def billable_params
-        params.require(:billable).permit(:article_code, :assigned_to_label, :assigned_to_id, :company_id, :company_label, :description, :project_id, :project_label, :invoice_id, :invoice_label, :section_id, :title, :status)
+        params.require(:billable).permit(:article_code, :assigned_to_label, :assigned_to_id, :company_id, :company_label, :billed_company_id, :billed_company_label, :bill_happy_rabbit, :description, :project_id, :project_label, :invoice_id, :invoice_label, :billed_invoice_id, :billed_invoice_label, :section_id, :title, :status)
       end
 
       def filter_params

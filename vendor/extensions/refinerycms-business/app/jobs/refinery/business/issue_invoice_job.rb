@@ -9,21 +9,19 @@ module Refinery
       # end
 
       def perform
-        @invoice = ::Refinery::Business::Invoice.find invoice_id
-        account = invoice.account
-        xero_authorization = account.omni_authorizations.xero.first
+        ActiveRecord::Base.transaction do
+          @invoice = ::Refinery::Business::Invoice.find invoice_id
+          account = invoice.account
+          xero_authorization = account.omni_authorizations.xero.first
 
-        syncer = Refinery::Business::Xero::Syncer.new account, xero_authorization
+          syncer = Refinery::Business::Xero::Syncer.new account, xero_authorization
 
-        invoice.status = 'AUTHORISED'
-        invoice.managed_status = 'authorised'
+          invoice.status = 'AUTHORISED'
+          invoice.managed_status = 'authorised'
 
-        syncer.push_invoice invoice
+          syncer.push_invoice invoice
 
-        if syncer.errors.any?
-          raise syncer.errors.join(', ')
-        else
-          invoice.save
+          raise syncer.errors.join(', ') if syncer.errors.any?
         end
       end
 
