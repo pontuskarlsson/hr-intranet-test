@@ -15,8 +15,12 @@
   <h4>Additional</h4>
   <% @additional.each do |e| %>
     <p>
-      <%= e.message %><br />
-      <%= e.record.inspect if e.respond_to? :record %>
+      <% if e.respond_to? :message %>
+        <%= e.message %><br />
+      <% end %>
+      <% if e.respond_to? :record %>
+        <%= e.record.inspect %>
+      <% end %>
     </p>
   <% end %>
 <% end %>

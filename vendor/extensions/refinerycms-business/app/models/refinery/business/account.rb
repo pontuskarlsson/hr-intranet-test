@@ -3,6 +3,9 @@ module Refinery
     class Account < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_accounts'
 
+      HRL = 'Happy Rabbit Limited'
+      HRTL = 'Happy Rabbit Trading Limited'
+
       has_many :invoices
       has_many :articles
       has_many :plans

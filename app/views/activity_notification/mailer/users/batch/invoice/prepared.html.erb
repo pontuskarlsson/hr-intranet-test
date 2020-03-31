@@ -1,0 +1,27 @@
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>It is now the end of the month and we have prepared <%= @notifications.count %> invoice(s).</p>
+
+<p style="margin: 0 0 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<% @notifications.each do |notification| %>
+  <%- invoice = notification.notifiable %>
+  <hr style="margin: 30px 0 10px;" />
+  <h3><%= link_to invoice.invoice_number, move_notification_url_for(notification, open: true) %></h3>
+
+  <table style="margin-bottom: 10px;">
+    <tbody>
+    <tr>
+      <th style="width: 100px;">Company</th>
+      <td style="font-weight: bold;"><%= invoice.company_label %></td>
+    </tr>
+    <tr>
+      <th>Billables</th>
+      <td><%=number_with_delimiter invoice.billables.count %></td>
+    </tr>
+    </tbody>
+  </table>
+<% end %>

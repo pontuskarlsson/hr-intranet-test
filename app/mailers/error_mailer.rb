@@ -2,7 +2,7 @@ class ErrorMailer < ApplicationMailer
 
   def error_email(error, additional = [])
     @error = error
-    @additional = additional
+    @additional = Array(additional)
     mail(to: 'daniel.viklund@happyrabbit.com', subject: 'An error occoured on the Portal')
   end
 

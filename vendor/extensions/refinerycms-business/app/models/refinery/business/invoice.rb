@@ -4,9 +4,15 @@ module Refinery
       self.table_name = 'refinery_business_invoices'
 
       INVOICE_TYPES = %w(ACCREC ACCPAY)
-      STATUSES = %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
+      STATUSES = %w(DRAFT SUBMITTED DELET ED AUTHORISED PAID VOIDED)
       MANAGED_STATUSES = %w(draft submitted_for_approval approved issued authorised sent paid voided)
       CURRENCY_CODES = %w(USD HKD EUR SEK CNY THB)
+
+      CURRENCY_RATES = {
+          'USD' => 0.128205
+      }.freeze
+
+      DEFAULT_CURRENCY = 'USD'
 
       belongs_to :account, optional: true
       belongs_to :company, optional: true
@@ -57,10 +63,7 @@ module Refinery
       end
 
       before_validation do
-        if currency_code == 'USD'
-          self.currency_rate ||= 0.128205
-        end
-
+        self.currency_rate ||= CURRENCY_RATES[currency_code]
         self.managed_status ||= 'draft' if is_managed
       end
 
@@ -80,6 +83,7 @@ module Refinery
       scope :bills,     -> { where(invoice_type: 'ACCPAY') }
       scope :active,    -> { where.not(status: %w(DELETED VOIDED)) }
       scope :overdue,   -> { active.where('amount_due > 0').where('due_date < ?', Date.today) }
+      scope :managed,   -> { where(is_managed: true) }
 
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)

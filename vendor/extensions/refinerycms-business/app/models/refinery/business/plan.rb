@@ -176,6 +176,10 @@ module Refinery
           X_DAYS_after_invoice_date
         )
 
+        def self.default
+          new('last_day_of_following_month')
+        end
+
         def present?
           [terms_type, terms_qty].any?(&:present?)
         end
@@ -202,6 +206,21 @@ module Refinery
           end
         rescue StandardError => e
           'N/A'
+        end
+
+        def due_date_for(invoice_date)
+          if terms_type == 'last_day_of_following_month'
+            invoice_date.next_month.end_of_month
+
+          elsif terms_type == 'last_day_of_current_month'
+            invoice_date.end_of_month
+
+          elsif terms_type == 'X_DATE_following_month'
+            invoice_date.next_month.change day: terms_qty.to_i
+
+          elsif terms_type == 'X_DAYS_after_invoice_date'
+            invoice_date + terms_qty.to_i.days
+          end
         end
 
       end

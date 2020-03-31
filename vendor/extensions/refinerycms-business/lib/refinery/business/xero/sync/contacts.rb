@@ -27,10 +27,10 @@ module Refinery
           private
 
           def assign_xero_id(contact, xero_id)
-            if account.organisation == 'Happy Rabbit Limited'
+            if account.organisation == ::Refinery::Business::Account::HRL
               contact.update_attributes xero_hr_id: xero_id
 
-            elsif account.organisation == 'Happy Rabbit Trading Limited'
+            elsif account.organisation == ::Refinery::Business::Account::HRTL
               contact.update_attributes xero_hrt_id: xero_id
             end
           end

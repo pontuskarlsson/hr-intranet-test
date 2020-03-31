@@ -20,7 +20,7 @@ module Refinery
         private
 
         def sync_accounts_from_xero
-          ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited').sync_accounts
+          ::Refinery::Employees::XeroClient.new(::Refinery::Business::Account::HRL).sync_accounts
         rescue StandardError => e
           false
         end

@@ -4,7 +4,7 @@ namespace :refinery do
     task sync_xero: :environment do
       puts 'Synchronising Expense Claim status with Xero'
 
-      client = Refinery::Employees::XeroClient.new('Happy Rabbit Limited').client
+      client = Refinery::Employees::XeroClient.new(::Refinery::Business::Account::HRL).client
 
       # Retrieved all the Expense Claims that have been submitted but not yet paid
       Refinery::Employees::XeroExpenseClaim.pending_in_xero.each do |xero_expense_claim|

@@ -178,7 +178,7 @@ module Refinery
       end
 
       def client
-        @xero_client ||= ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited')
+        @xero_client ||= ::Refinery::Employees::XeroClient.new(::Refinery::Business::Account::HRL)
         @xero_client.client
       end
 

@@ -20,7 +20,7 @@ module Refinery
         end
 
         def load_xero_guids_from_xero
-          ::Refinery::Employees::XeroClient.new('Happy Rabbit Limited').load_xero_guids
+          ::Refinery::Employees::XeroClient.new(::Refinery::Business::Account::HRL).load_xero_guids
         rescue StandardError => e
           []
         end
