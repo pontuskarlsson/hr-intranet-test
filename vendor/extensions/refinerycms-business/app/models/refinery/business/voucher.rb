@@ -74,10 +74,10 @@ module Refinery
       before_validation do
         if line_item_sales_purchase.present?
           self.status = line_item_sales_purchase.invoice.managed_status_is_authorised? ? 'redeemed' : 'reserved'
-        elsif valid_to.present? && valid_to < Date.today
-          self.status = 'expired'
+        # elsif valid_to.present? && valid_to < Date.today
+        #   self.status = 'expired'
         else
-          self.status = 'active'
+          self.status ||= 'active'
         end
       end
 
