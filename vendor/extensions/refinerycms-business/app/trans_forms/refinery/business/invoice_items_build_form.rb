@@ -298,7 +298,7 @@ module Refinery
 
         min_charges_qty = minimum_charges.reduce(0.0) { |acc, c| acc + c.qty }
         handled_qty = handled_billables.select(&:bill_own_company?).reduce(0.0) { |acc, b| acc + b.qty }
-        invoice.plan_issued = [min_charges_qty, handled_qty].max
+        invoice.plan_issued = [min_charges_qty, handled_qty - invoice.plan_opening_balance].max
         invoice.plan_redeemed = invoice.plan_closing_balance - invoice.plan_opening_balance - invoice.plan_issued
 
         invoice.save!

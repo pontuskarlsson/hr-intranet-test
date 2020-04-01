@@ -25,7 +25,7 @@ FactoryBot.define do
 
       name { 'Voucher Man Day' }
       is_voucher { true }
-      voucher_constraint_applicable_articles { |evaluator| evaluator.is_discount ? nil : Array(evaluator.applicable_to || FactoryBot.create(:article, account: evaluator.account)) }
+      voucher_constraint_applicable_articles { |evaluator| evaluator.is_discount ? nil : Array(evaluator.applicable_to || FactoryBot.create(:article, account: evaluator.account)).map(&:code) }
     end
 
   end
