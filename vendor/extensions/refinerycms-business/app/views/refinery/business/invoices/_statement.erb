@@ -285,7 +285,7 @@
         <% end %>
         <% if billables_by_other_company.any? %>
           <tr>
-            <th colspan="3">Sub-total</th>
+            <th colspan="3" style="text-align: right;">Sub-total</th>
             <th class="number"><%=number_with_delimiter own_billables.reduce(0) { |acc, b| acc + b.qty } %></th>
             <th class="number"><%=number_with_delimiter own_billables.reduce(0) { |acc, b| acc + b.total_no_of_jobs } %></th>
           </tr>
@@ -293,7 +293,7 @@
       <% end %>
       <% billables_by_other_company.each_pair do |company, other_billables| %>
         <tr>
-          <td colspan="5" class="italic">Payed for by <%= company.nil? ? 'Happy Rabbit' : company.name %></td>
+          <td colspan="5" class="italic">Paid for by <%= company.nil? ? 'Happy Rabbit Limited' : company.name %></td>
         </tr>
         <% other_billables.each do |billable| %>
           <tr>
@@ -311,7 +311,7 @@
         <% end %>
         <% if own_billables.any? || billables_by_other_company.keys.length > 1 %>
           <tr>
-            <th colspan="3">Sub-total</th>
+            <th colspan="3" style="text-align: right;">Sub-total</th>
             <th class="number"><%=number_with_delimiter other_billables.reduce(0) { |acc, b| acc + b.qty } %></th>
             <th class="number"><%=number_with_delimiter other_billables.reduce(0) { |acc, b| acc + b.total_no_of_jobs } %></th>
           </tr>
