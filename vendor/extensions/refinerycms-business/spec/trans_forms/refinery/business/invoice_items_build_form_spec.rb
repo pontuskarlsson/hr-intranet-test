@@ -170,7 +170,8 @@ module Refinery
         end
 
         context 'when there are no previous InvoiceItems, Billables, a minimum with discount, and a prior voucher' do
-          let!(:voucher) { FactoryBot.create(:voucher) }
+          let!(:voucher_article) { FactoryBot.create(:article_voucher, applicable_to: work_article) }
+          let!(:voucher) { FactoryBot.create(:voucher, company: invoice.company, article: voucher_article) }
           let!(:billable) { FactoryBot.create(:billable_with_article, company: invoice.company, article: work_article, invoice: invoice) }
           let(:attr) { { invoice_for_month: '2019-01-01', minimums_attributes: minimum_with_discount_attr } }
 

@@ -179,6 +179,7 @@ module Refinery
               currency_rate: ::Refinery::Business::Invoice::CURRENCY_RATES[currency_code],
               date: invoice_date,
               due_date: payment_terms.due_date_for(invoice_date),
+              reference: "Monthly Invoice #{invoice_for_month.strftime("%Y-%m")}"
           )
 
           # Set contact

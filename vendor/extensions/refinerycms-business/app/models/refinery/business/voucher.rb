@@ -87,9 +87,13 @@ module Refinery
           #   line_item_prepay_move_to.description = "[#{article&.code}{code:#{code}}] issued to #{company_label}, issued: #{valid_from&.to_date&.iso8601}, expires: #{valid_to&.to_date&.iso8601}"
           #   line_item_prepay_move_to.save || errors.add(:line_item_prepay_move_to_id, 'failed to update')
           # end
-          if line_item_prepay_in&.description.blank?
+          if line_item_prepay_in.present? && line_item_prepay_in.description.blank?
             line_item_prepay_in.description = "[#{article&.code}{code:#{code}}] issued to #{company_label}, issued: #{valid_from&.to_date&.iso8601}, expires: #{valid_to&.to_date&.iso8601}"
             line_item_prepay_in.save || errors.add(:line_item_prepay_in_id, 'failed to update')
+          end
+          if line_item_prepay_discount_in.present? && line_item_prepay_discount_in.description.blank?
+            line_item_prepay_discount_in.description = "[#{article&.code}-DISC{code:#{code}}] issued to #{company_label}, issued: #{valid_from&.to_date&.iso8601}, expires: #{valid_to&.to_date&.iso8601}"
+            line_item_prepay_discount_in.save || errors.add(:line_item_prepay_discount_in_id, 'failed to update')
           end
         end
         throw :abort if errors.any?
@@ -103,6 +107,10 @@ module Refinery
         if line_item_prepay_out.present? && line_item_prepay_out.description.blank?
           line_item_prepay_out.description = "[#{article&.code}{code:#{code}}] redeemed"
           line_item_prepay_out.save || errors.add(:line_item_prepay_out_id, 'failed to update')
+        end
+        if line_item_prepay_discount_out.present? && line_item_prepay_discount_out.description.blank?
+          line_item_prepay_discount_out.description = "[#{article&.code}-DISC{code:#{code}}] redeemed"
+          line_item_prepay_discount_out.save || errors.add(:line_item_prepay_discount_out_id, 'failed to update')
         end
         throw :abort if errors.any?
       end

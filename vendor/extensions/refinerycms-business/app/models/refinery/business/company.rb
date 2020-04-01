@@ -57,8 +57,8 @@ module Refinery
 
       before_save do
         if contact.present?
-          self.country_code = ISO3166::Country.find_country_by_name(contact.country || contact.other_country).try(:un_locode)
-          self.city = contact.city || contact.other_city
+          self.country_code = contact.addresses.detect(&:country_code)&.country_code
+          self.city = contact.addresses.detect { |a| a.city.presence }&.city
         end
       end
 
