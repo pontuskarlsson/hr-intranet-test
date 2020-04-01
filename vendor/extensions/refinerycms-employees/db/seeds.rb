@@ -10,23 +10,9 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/employees"
+  url = ::Refinery::Employees::PAGE_EMPLOYEES
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
-        :title => 'Employees',
-        :link_url => url,
-        :deletable => false,
-        :menu_match => "^#{url}(\/|\/.+?|)$"
-    )
-    Refinery::Pages.default_parts.each_with_index do |default_page_part, index|
-      page.parts.create(:title => default_page_part, :body => nil, :position => index)
-    end
-  end
-
-  url = "/employees/employees"
-  if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
-    page = Refinery::Page.create(
-      :parent_id => Refinery::Page.where(:link_url => '/employees').first.try(:id),
       :title => 'Employee Directory',
       :link_url => url,
       :deletable => false,
@@ -37,10 +23,9 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/employees/sick_leaves"
+  url = ::Refinery::Employees::PAGE_SICK_LEAVES
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
-        :parent_id => Refinery::Page.where(:link_url => '/employees').first.try(:id),
         :title => 'Sick Leave',
         :link_url => url,
         :deletable => false,
@@ -51,10 +36,9 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/employees/annual_leaves"
+  url = ::Refinery::Employees::PAGE_ANNUAL_LEAVES
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
-        :parent_id => Refinery::Page.where(:link_url => '/employees').first.try(:id),
         :title => 'Annual Leave',
         :link_url => url,
         :deletable => false,
@@ -65,10 +49,9 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/employees/expense_claims"
+  url = ::Refinery::Employees::PAGE_EXPENSE_CLAIMS
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
-        :parent_id => Refinery::Page.where(:link_url => '/employees').first.try(:id),
         :title => 'Expense Claims',
         :link_url => url,
         :deletable => false,
@@ -79,10 +62,9 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/employees/all_leave_of_absences"
+  url = ::Refinery::Employees::PAGE_ALL_LOA
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
-        :parent_id => Refinery::Page.where(:link_url => '/employees').first.try(:id),
         :title => 'All Leave Of Absences',
         :link_url => url,
         :deletable => false,
@@ -93,10 +75,9 @@ Refinery::I18n.frontend_locales.each do |lang|
     end
   end
 
-  url = "/employees/chart_of_accounts"
+  url = ::Refinery::Employees::PAGE_CHART_OF_ACCOUNTS
   if defined?(Refinery::Page) && Refinery::Page.where(:link_url => url).empty?
     page = Refinery::Page.create(
-        :parent_id => Refinery::Page.where(:link_url => '/employees').first.try(:id),
         :title => 'Chart of Accounts',
         :link_url => url,
         :deletable => false,

@@ -2,7 +2,6 @@ Refinery::Core::Engine.routes.draw do
 
   # Frontend routes
   namespace :employees do
-    root to: 'dashboard#index'
     resources :sick_leaves, :only => [:index, :new, :create, :edit, :update, :destroy] do
       member do
         get :add_note

@@ -5,7 +5,8 @@ module Refinery
       set_main_model :invoice, class_name: '::Refinery::Business::Invoice', proxy: { attributes: %w(is_managed) }
 
       transaction do
-
+        invoice.is_managed = is_managed
+        invoice.save!
       end
 
       private

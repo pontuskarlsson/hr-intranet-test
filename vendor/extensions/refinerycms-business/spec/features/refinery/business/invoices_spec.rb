@@ -70,6 +70,24 @@ describe Refinery do
           end
         end
       end
+
+      describe "update" do
+        context "when invoice is not managed and setting it to managed" do
+          let!(:invoice) { FactoryBot.create(:invoice, :invoice_number => "A invoice title", is_managed: false) }
+
+          let!(:logged_in_user) { FactoryBot.create(:authentication_devise_user_with_roles, role_titles: [
+              ::Refinery::Business::ROLE_INTERNAL_FINANCE
+          ]) }
+
+          it "should set to invoice to managed" do
+            visit refinery.business_invoice_path(invoice)
+
+            expect{
+              click_button "Set as Managed"
+            }.to change{ invoice.reload.is_managed }.from(false).to true
+          end
+        end
+      end
     end
   end
 end
