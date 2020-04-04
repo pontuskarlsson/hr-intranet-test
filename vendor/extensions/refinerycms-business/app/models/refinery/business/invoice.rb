@@ -4,7 +4,7 @@ module Refinery
       self.table_name = 'refinery_business_invoices'
 
       INVOICE_TYPES = %w(ACCREC ACCPAY)
-      STATUSES = %w(DRAFT SUBMITTED DELET ED AUTHORISED PAID VOIDED)
+      STATUSES = %w(DRAFT SUBMITTED DELETED AUTHORISED PAID VOIDED)
       MANAGED_STATUSES = %w(draft submitted_for_approval approved issued authorised sent paid voided)
       CURRENCY_CODES = %w(USD HKD EUR SEK CNY THB)
 
