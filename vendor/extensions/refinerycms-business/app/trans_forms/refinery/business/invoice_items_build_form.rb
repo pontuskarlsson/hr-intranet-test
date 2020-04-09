@@ -131,55 +131,68 @@ module Refinery
         # to issue vouchers for.
         #
         minimum_charges.each do |charge|
-          if charge.unallocated > 0
-            if charge.unallocated != charge.unallocated.to_i
-              raise ActiveRecord::ActiveRecordError, 'cannot issue partial vouchers (decimal quantities)'
-            end
+          @closing_balance_by_code[charge.article_label] ||= 0
+          @closing_balance_by_code[charge.article_label] += charge.unallocated
 
-            # Get a sales invoice item for the voucher article code
-            # sales = sales_item_per charge.article, charge.base_amount
-            # discount = discount_item_per sales, charge.discount_amount # Will return nil if discount_amount is 0
-            # sales_offset = sales_offset_item_per charge.unit_amount
+          issued_vouchers_for_charge, matching_items = charge.build_vouchers_for(invoice)
 
-            loop do
-              break unless charge.allocate!(1.0)
-
-              # pre_pay_to = invoice.invoice_items.pre_pay.build(unit_amount: charge.unit_amount, quantity: 1.0)
-              prepay_in = invoice.invoice_items.prepay_in.build(unit_amount: charge.base_amount, item_code: charge.article_label, quantity: 1.0)
-              prepay_discount_in =
-                  unless charge.discount_amount.to_d.zero?
-                    discount_item_code = "#{charge.article_label}-DISC"
-                    invoice.invoice_items.prepay_discount_in.build(unit_amount: charge.discount_amount, item_code: discount_item_code, quantity: 1.0)
-                  end
-              matching_discounts(prepay_in) << prepay_discount_in unless prepay_discount_in.nil?
-
-              issued_vouchers << invoice.company.vouchers.build(
-                  article: charge.article,
-                  # line_item_sales_purchase: sales_purchase,
-                  # line_item_sales_discount: discount,
-                  # line_item_sales_move_from: sales_offset,
-                  # line_item_prepay_move_to: pre_pay_to,
-                  line_item_prepay_in: prepay_in,
-                  line_item_prepay_discount_in: prepay_discount_in,
-                  base_amount: charge.base_amount,
-                  discount_type: charge.discount_type,
-                  discount_amount: charge.discount_type == 'fixed_amount' ? charge.discount_amount : nil,
-                  discount_percentage: charge.discount_type == 'percentage' ? charge.discount_amount * 0.01 : nil,
-                  amount: charge.unit_amount,
-                  currency_code: invoice.currency_code,
-                  valid_from: invoice.invoice_for_month,
-                  valid_to: invoice.invoice_for_month + 1.year - 1.day,
-                  source: 'invoice',
-              )
-
-              # sales_purchase.quantity += pre_pay_to.quantity
-              # discount.quantity += pre_pay_to.quantity if discount.present?
-              # sales_offset.quantity += pre_pay_to.quantity
-
-              @closing_balance_by_code[charge.article_label] ||= 0
-              @closing_balance_by_code[charge.article_label] += prepay_in.quantity
-            end
+          issued_vouchers_for_charge.each do |voucher|
+            issued_vouchers << voucher
           end
+
+          matching_items.each_pair do |prepay_in, prepay_discount_in|
+            matching_discounts(prepay_in) << prepay_discount_in
+          end
+
+          # if charge.unallocated > 0
+          #   if charge.unallocated != charge.unallocated.to_i
+          #     raise ActiveRecord::ActiveRecordError, 'cannot issue partial vouchers (decimal quantities)'
+          #   end
+          #
+          #   # Get a sales invoice item for the voucher article code
+          #   # sales = sales_item_per charge.article, charge.base_amount
+          #   # discount = discount_item_per sales, charge.discount_amount # Will return nil if discount_amount is 0
+          #   # sales_offset = sales_offset_item_per charge.unit_amount
+          #
+          #   loop do
+          #     break unless charge.allocate!(1.0)
+          #
+          #     # pre_pay_to = invoice.invoice_items.pre_pay.build(unit_amount: charge.unit_amount, quantity: 1.0)
+          #     prepay_in = invoice.invoice_items.prepay_in.build(unit_amount: charge.base_amount, item_code: charge.article_label, quantity: 1.0)
+          #     prepay_discount_in =
+          #         unless charge.discount_amount.to_d.zero?
+          #           discount_item_code = "#{charge.article_label}-DISC"
+          #           invoice.invoice_items.prepay_discount_in.build(unit_amount: charge.discount_amount, item_code: discount_item_code, quantity: 1.0)
+          #         end
+          #     matching_discounts(prepay_in) << prepay_discount_in unless prepay_discount_in.nil?
+          #
+          #     issued_vouchers << invoice.company.vouchers.build(
+          #         article: charge.article,
+          #         # line_item_sales_purchase: sales_purchase,
+          #         # line_item_sales_discount: discount,
+          #         # line_item_sales_move_from: sales_offset,
+          #         # line_item_prepay_move_to: pre_pay_to,
+          #         line_item_prepay_in: prepay_in,
+          #         line_item_prepay_discount_in: prepay_discount_in,
+          #         base_amount: charge.base_amount,
+          #         discount_type: charge.discount_type,
+          #         discount_amount: charge.discount_type == 'fixed_amount' ? charge.discount_amount : nil,
+          #         discount_percentage: charge.discount_type == 'percentage' ? charge.discount_amount * 0.01 : nil,
+          #         amount: charge.unit_amount,
+          #         currency_code: invoice.currency_code,
+          #         valid_from: invoice.invoice_for_month,
+          #         valid_to: invoice.invoice_for_month + 1.year - 1.day,
+          #         source: 'invoice',
+          #     )
+          #
+          #     # sales_purchase.quantity += pre_pay_to.quantity
+          #     # discount.quantity += pre_pay_to.quantity if discount.present?
+          #     # sales_offset.quantity += pre_pay_to.quantity
+          #
+          #     @closing_balance_by_code[charge.article_label] ||= 0
+          #     @closing_balance_by_code[charge.article_label] += prepay_in.quantity
+          #   end
+          # end
         end
 
 
