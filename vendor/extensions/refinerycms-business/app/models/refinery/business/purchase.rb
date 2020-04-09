@@ -5,12 +5,13 @@ module Refinery
 
       STATUSES = %w(created paid failed)
 
-      store :meta, accessors: [:article_code, :qty]
+      store :meta, accessors: [:article_code, :qty, :webhook_object]
 
       delegate :name, :description, :sales_unit_price, to: :article, prefix: true, allow_nil: true
 
       belongs_to :user,     class_name: 'Refinery::Authentication::Devise::User'
       belongs_to :company,  class_name: 'Refinery::Business::Company'
+      belongs_to :invoice,  class_name: 'Refinery::Business::Invoice'
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #

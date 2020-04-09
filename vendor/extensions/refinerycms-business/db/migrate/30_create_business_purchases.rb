@@ -3,6 +3,7 @@ class CreateBusinessPurchases < ActiveRecord::Migration[5.1]
     create_table :refinery_business_purchases do |t|
       t.integer :user_id
       t.integer :company_id
+      t.integer :invoice_id
       t.string :status
       t.string :stripe_checkout_session_id
       t.string :stripe_payment_intent_id
@@ -17,10 +18,11 @@ class CreateBusinessPurchases < ActiveRecord::Migration[5.1]
     end
     add_index :refinery_business_purchases, :user_id
     add_index :refinery_business_purchases, :company_id
+    add_index :refinery_business_purchases, :invoice_id
     add_index :refinery_business_purchases, :status
-    add_index :refinery_business_purchases, :stripe_checkout_session_id
-    add_index :refinery_business_purchases, :stripe_payment_intent_id
-    add_index :refinery_business_purchases, :stripe_event_id
+    add_index :refinery_business_purchases, :stripe_checkout_session_id, name: 'INDEX_r_b_purchases_ON_stripe_checkout_session_id'
+    add_index :refinery_business_purchases, :stripe_payment_intent_id, name: 'INDEX_r_b_purchases_ON_stripe_payment_intent_id'
+    add_index :refinery_business_purchases, :stripe_event_id, name: 'INDEX_r_b_purchases_ON_stripe_event_id'
     add_index :refinery_business_purchases, :discount_code
   end
 end

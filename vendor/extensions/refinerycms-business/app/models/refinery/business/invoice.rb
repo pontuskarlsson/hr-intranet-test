@@ -21,6 +21,7 @@ module Refinery
       belongs_to :project, optional: true
       has_many :billables,      dependent: :nullify
       has_many :invoice_items,  dependent: :destroy
+      has_one :purchase # If the invoice is for a specific purchase
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
