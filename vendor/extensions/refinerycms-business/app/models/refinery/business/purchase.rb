@@ -102,6 +102,18 @@ module Refinery
         end
       end
 
+      def base_amount
+        sub_total_cost / qty.to_i
+      end
+
+      def discount_amount
+        total_discount / qty.to_i
+      end
+
+      def purchased_charges
+        @purchased_charges ||= [Charge.new(qty, article_code, base_amount, discount_amount, 'fixed_amount')]
+      end
+
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
 

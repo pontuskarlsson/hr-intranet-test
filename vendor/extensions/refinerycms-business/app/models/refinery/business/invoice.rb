@@ -207,6 +207,28 @@ module Refinery
         end
       end
 
+      # === informative_item_per
+      #
+      # A method primarily used by form builder classes to re-use or build
+      # new informative invoice items in a specific sequence.
+      #
+      def informative_item_per(description, attr = {})
+        @matched_informatives ||= []
+
+        # Match existing but not previously matched informative items
+        item = invoice_items.detect do |invoice_item|
+          !@matched_informatives.include?(invoice_item) && invoice_item.informative? && invoice_item.description == description
+        end || invoice_items.informative.build(attr.merge(description: description))
+
+        # Set attributes in case it was a previously existing item that should now have another line_item_order
+        item.attributes = attr
+
+        # Add to matched array so we don't re-assign the same one again
+        @matched_informatives << item
+
+        item
+      end
+
       def self.from_params(params)
         active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
         archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))

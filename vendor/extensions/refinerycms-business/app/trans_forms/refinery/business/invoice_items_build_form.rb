@@ -201,12 +201,12 @@ module Refinery
         line_item_order = 0
         handled = []
         if invoice.invoice_for_month.present?
-          handled << informative_item_per("- - - Monthly Invoice for period #{invoice.invoice_for_month.at_beginning_of_month.iso8601} - #{invoice.invoice_for_month.at_end_of_month.iso8601}", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("- - - Monthly Invoice for period #{invoice.invoice_for_month.at_beginning_of_month.iso8601} - #{invoice.invoice_for_month.at_end_of_month.iso8601}", line_item_order: line_item_order += 1)
         end
 
         minimum_charges.each do |charge|
           if charge.qty > 0
-            handled << informative_item_per(charge.informative_description, line_item_order: line_item_order += 1)
+            handled << invoice.informative_item_per(charge.informative_description, line_item_order: line_item_order += 1)
           end
         end
 
@@ -214,8 +214,8 @@ module Refinery
         sales_purchases = invoice.invoice_items.select { |invoice_item| invoice_item.transaction_type_is_sales_purchase? && !invoice_item.article_is_voucher }
         if sales_purchases.any?
           # Add section header
-          handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
-          handled << informative_item_per("- - - Sales of Products and Services", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("- - -", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("- - - Sales of Products and Services", line_item_order: line_item_order += 1)
           sales_purchases.each do |invoice_item|
             invoice_item.line_item_order = line_item_order += 1
             handled << invoice_item
@@ -227,18 +227,18 @@ module Refinery
           end
         end
 
-        handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
-        handled << informative_item_per("- - - Credits: Opening Balance", line_item_order: line_item_order += 1)
+        handled << invoice.informative_item_per("- - -", line_item_order: line_item_order += 1)
+        handled << invoice.informative_item_per("- - - Credits: Opening Balance", line_item_order: line_item_order += 1)
         @opening_balance_by_code.each do |code, balance|
-          handled << informative_item_per("[#{code}] x #{balance}", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("[#{code}] x #{balance}", line_item_order: line_item_order += 1)
         end
 
         # Then comes the Pre Pay Redeem
         prepay_outs = invoice.invoice_items.select(&:transaction_type_is_prepay_out?)
         if prepay_outs.any?
           # Add section header
-          handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
-          handled << informative_item_per("- - - Credits: Redeemed", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("- - -", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("- - - Credits: Redeemed", line_item_order: line_item_order += 1)
           prepay_outs.each do |invoice_item|
             invoice_item.line_item_order = line_item_order += 1
             handled << invoice_item
@@ -258,8 +258,8 @@ module Refinery
         prepay_ins = invoice.invoice_items.select(&:transaction_type_is_prepay_in?)
         if prepay_ins.any? # sales_offset.any? || pre_pay.any?
           # Add section header
-          handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
-          handled << informative_item_per("- - - Credits: Issued", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("- - -", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("- - - Credits: Issued", line_item_order: line_item_order += 1)
           # sales_voucher.each do |invoice_item|
           #   invoice_item.line_item_order = line_item_order += 1
           #   handled << invoice_item
@@ -284,10 +284,10 @@ module Refinery
           end
         end
 
-        handled << informative_item_per("- - -", line_item_order: line_item_order += 1)
-        handled << informative_item_per("- - - Credits: Closing Balance", line_item_order: line_item_order += 1)
+        handled << invoice.informative_item_per("- - -", line_item_order: line_item_order += 1)
+        handled << invoice.informative_item_per("- - - Credits: Closing Balance", line_item_order: line_item_order += 1)
         @closing_balance_by_code.each do |code, balance|
-          handled << informative_item_per("[#{code}] x #{balance}", line_item_order: line_item_order += 1)
+          handled << invoice.informative_item_per("[#{code}] x #{balance}", line_item_order: line_item_order += 1)
         end
 
         # Any previously existing invoice items, that have not been added the to handled array, is no longer used
@@ -428,22 +428,22 @@ module Refinery
         end
       end
 
-      def informative_item_per(description, attr = {})
-        @matched_informatives ||= []
-
-        # Match existing but not previously matched informative items
-        item = invoice.invoice_items.detect do |invoice_item|
-          !@matched_informatives.include?(invoice_item) && invoice_item.informative? && invoice_item.description == description
-        end || invoice.invoice_items.informative.build(attr.merge(description: description))
-
-        # Set attributes in case it was a previously existing item that should now have another line_item_order
-        item.attributes = attr
-
-        # Add to matched array so we don't re-assign the same one again
-        @matched_informatives << item
-
-        item
-      end
+      # def invoice.informative_item_per(description, attr = {})
+      #   @matched_informatives ||= []
+      # 
+      #   # Match existing but not previously matched informative items
+      #   item = invoice.invoice_items.detect do |invoice_item|
+      #     !@matched_informatives.include?(invoice_item) && invoice_item.informative? && invoice_item.description == description
+      #   end || invoice.invoice_items.informative.build(attr.merge(description: description))
+      # 
+      #   # Set attributes in case it was a previously existing item that should now have another line_item_order
+      #   item.attributes = attr
+      # 
+      #   # Add to matched array so we don't re-assign the same one again
+      #   @matched_informatives << item
+      # 
+      #   item
+      # end
 
       # def all_discounts_for(for_item)
       #   description = "Discount: [#{for_item.item_code}{base_amount:#{for_item.unit_amount}}]"

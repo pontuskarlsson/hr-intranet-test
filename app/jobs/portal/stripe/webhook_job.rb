@@ -43,32 +43,39 @@ module Portal
           purchase.webhook_object = object
           purchase.save!
 
-          base_amount = purchase.sub_total_cost / purchase.qty.to_i
-          discount_amount = purchase.total_discount / purchase.qty.to_i
+          process_invoice!(purchase)
 
-          vouchers = purchase.no_of_credits.times.map do
-            purchase.company.vouchers.create!(
-                article: purchase.article,
-                status: 'active',
-                source: 'purchase',
-                discount_type: 'fixed_amount',
-                base_amount: base_amount,
-                discount_amount: discount_amount,
-                amount: base_amount + discount_amount,
-                currency_code: 'usd',
-                valid_from: purchase.created_at.to_date,
-                valid_to: purchase.created_at.to_date + 1.year - 1.day
-            )
-          end
-
-          # handle_contact purchase.company
-          # xero_invoice = create_xero_invoice(purchase)
+          # base_amount = purchase.sub_total_cost / purchase.qty.to_i
+          # discount_amount = purchase.total_discount / purchase.qty.to_i
           #
-          # sync_invoices = ::Refinery::Business::Xero::Sync::Invoices.new account, errors
-          # invoice = sync_invoices.sync! xero_invoice, is_managed: true
-          #
-          # invoice
+          # vouchers = purchase.no_of_credits.times.map do
+          #   purchase.company.vouchers.create!(
+          #       article: purchase.article,
+          #       status: 'active',
+          #       source: 'purchase',
+          #       discount_type: 'fixed_amount',
+          #       base_amount: base_amount,
+          #       discount_amount: discount_amount,
+          #       amount: base_amount + discount_amount,
+          #       currency_code: 'usd',
+          #       valid_from: purchase.created_at.to_date,
+          #       valid_to: purchase.created_at.to_date + 1.year - 1.day
+          #   )
+          # end
         end
+      end
+
+      def process_invoice!(purchase)
+        handle_contact purchase.company
+        xero_invoice = create_xero_invoice(purchase)
+
+        sync_invoices = ::Refinery::Business::Xero::Sync::Invoices.new account, errors
+        invoice = sync_invoices.sync! xero_invoice, is_managed: true
+
+        form = Refinery::Business::PurchaseInvoiceBuildForm.new_in_model(invoice)
+        form.save!
+      rescue StandardError => exception
+        ErrorMailer.error_email(exception).deliver
       end
 
       def account

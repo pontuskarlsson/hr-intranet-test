@@ -17,7 +17,7 @@ module Refinery
       end
 
       def total_amount
-        unit_amount * qty.to_f
+        unit_amount * qty.to_d
       end
 
       def persisted?
@@ -33,7 +33,7 @@ module Refinery
       end
 
       def allocate!(quantity)
-        allocated + quantity <= qty && !!(@_allocated_qty += quantity)
+        allocated + quantity <= qty.to_d && !!(@_allocated_qty += quantity)
       end
 
       def allocated
@@ -41,7 +41,7 @@ module Refinery
       end
 
       def unallocated
-        qty - allocated
+        qty.to_d - allocated
       end
 
       def informative_description
@@ -97,6 +97,8 @@ module Refinery
 
             matching_discounts[prepay_in] = prepay_discount_in unless prepay_discount_in.nil?
 
+            valid_from = invoice.invoice_for_month || invoice.invoice_date
+
             issued_vouchers << invoice.company.vouchers.build(
                 article: article,
                 line_item_prepay_in: prepay_in,
@@ -107,8 +109,8 @@ module Refinery
                 discount_percentage: discount_type == 'percentage' ? discount_amount * 0.01 : nil,
                 amount: unit_amount,
                 currency_code: invoice.currency_code,
-                valid_from: invoice.invoice_for_month,
-                valid_to: invoice.invoice_for_month + 1.year - 1.day,
+                valid_from: valid_from,
+                valid_to: valid_from + 1.year - 1.day,
                 source: 'invoice',
             )
           end
