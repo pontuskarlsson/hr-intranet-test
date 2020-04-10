@@ -62,9 +62,8 @@ describe Refinery do
 
             it "should prepopulate the build items form with plan content" do
               visit refinery.business_invoice_path(invoice)
-
               expect(page).to have_field("Plan title", with: "A specific monthly plan")
-              expect(page).to have_field("Monthly Minimum Qty", with: confirmed_plan.plan_charges[0]['qty'])
+              expect(page).to have_field("Monthly Minimum Qty", with: confirmed_plan.plan_charges[0]['qty'].to_d)
               expect(page).to have_field("Article", with: confirmed_plan.plan_charges[0]['article_label'])
             end
           end

@@ -11,13 +11,25 @@ module Refinery
         'N/A'
       end
 
+      def qty
+        super&.to_d
+      end
+
+      def base_amount
+        super&.to_d
+      end
+
+      def discount_amount
+        super&.to_d
+      end
+
       def unit_amount
         # Discount amount is a negative value so we add it when calculating total_amount
-        base_amount.to_f + discount_amount.to_f
+        base_amount + discount_amount
       end
 
       def total_amount
-        unit_amount * qty.to_d
+        unit_amount * qty
       end
 
       def persisted?
@@ -33,7 +45,7 @@ module Refinery
       end
 
       def allocate!(quantity)
-        allocated + quantity <= qty.to_d && !!(@_allocated_qty += quantity)
+        allocated + quantity <= qty && !!(@_allocated_qty += quantity)
       end
 
       def allocated
@@ -41,7 +53,7 @@ module Refinery
       end
 
       def unallocated
-        qty.to_d - allocated
+        qty - allocated
       end
 
       def informative_description
@@ -58,7 +70,7 @@ module Refinery
       end
 
       def total_additional_amount
-        unit_amount * additional_qty.to_f
+        unit_amount * additional_qty
       end
 
       def discount_item_code
@@ -93,7 +105,7 @@ module Refinery
             break unless allocate!(1.0)
 
             prepay_in = invoice.invoice_items.prepay_in.build(unit_amount: base_amount, item_code: article_label, quantity: 1.0)
-            prepay_discount_in = discount_amount.to_d.zero? ? nil : invoice.invoice_items.prepay_discount_in.build(unit_amount: discount_amount, item_code: discount_item_code, quantity: 1.0)
+            prepay_discount_in = discount_amount.zero? ? nil : invoice.invoice_items.prepay_discount_in.build(unit_amount: discount_amount, item_code: discount_item_code, quantity: 1.0)
 
             matching_discounts[prepay_in] = prepay_discount_in unless prepay_discount_in.nil?
 
