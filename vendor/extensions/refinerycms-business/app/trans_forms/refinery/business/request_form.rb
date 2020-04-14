@@ -1,12 +1,29 @@
 module Refinery
   module Business
     class RequestForm < ApplicationTransForm
+
+      DEFAULT_REQUEST_DESCRIPTION = <<~DESC
+      What type of inspection do you require?
+      [In-line / Final / Both In-line and Final]
+
+      Will PP Sample be made available to inspector?
+      [a / b / c]
+      a) The Sample will be made available at the factory by the brand or its representative for HR attention
+      b) Use factory own keep sample
+      c) Brand sends to HR directly
+
+      What suppliers / factories will the inspections take place at?
+      [Company name as well as contact details and address information for first time inspections]
+      DESC
+
       set_main_model :request, class_name: '::Refinery::Business::Request', proxy: { attributes: :all }
 
       attr_accessor :company, :comment
 
       attribute :request_date,      Date, default: proc { Date.today }
       attribute :requested_by_id,   Integer, default: proc { |f| f.current_user&.id }
+      attribute :request_type,      String, default: 'inspection'
+      attribute :description,       String, default: DEFAULT_REQUEST_DESCRIPTION
       attribute :file
 
       validates :company,     presence: true
