@@ -11,7 +11,7 @@ module Refinery
 
       belongs_to :user,     class_name: 'Refinery::Authentication::Devise::User'
       belongs_to :company,  class_name: 'Refinery::Business::Company'
-      belongs_to :invoice,  class_name: 'Refinery::Business::Invoice'
+      belongs_to :invoice,  class_name: 'Refinery::Business::Invoice', optional: true
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #
