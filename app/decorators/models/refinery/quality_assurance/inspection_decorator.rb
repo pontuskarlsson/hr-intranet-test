@@ -29,7 +29,7 @@ Refinery::QualityAssurance::Inspection.class_eval do
 
   after_save do
     if saved_change_to_status? && status == 'Notified'
-      delay.trigger_zap(RestHook::INSPECTION_NEW)
+      #delay.trigger_zap(RestHook::INSPECTION_NEW)
     end
   end
 
