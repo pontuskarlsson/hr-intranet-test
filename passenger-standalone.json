@@ -1,3 +1,4 @@
 {
-  "min_instances": 2
+  "min_instances": 2,
+  "passenger_max_request_queue_size": 300
 }
