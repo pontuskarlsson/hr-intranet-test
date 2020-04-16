@@ -26,8 +26,8 @@ Refinery::Authentication::Devise::User.class_eval do
 
   acts_as_target devise_resource: :authentication_devise_user,
                  email: :email,
-                 email_allowed: ->(user, notifiable, key) { user.active_for_authentication? && user.accepted_or_not_invited? },
-                 batch_email_allowed: ->(user, key) { user.active_for_authentication? && user.accepted_or_not_invited? }
+                 email_allowed: ->(user, notifiable, key) { user.active_for_authentication? && (user.accepted_or_not_invited? || user.valid_invitation?) },
+                 batch_email_allowed: ->(user, key) { user.active_for_authentication? && (user.accepted_or_not_invited? || user.valid_invitation?) }
 
   before_validation do
     set_default_attributes!
