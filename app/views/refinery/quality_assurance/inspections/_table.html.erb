@@ -4,8 +4,16 @@
     <th><div class="hidden-title">Row</div></th>
     <th><div class="hidden-title">Select</div></th>
     <th>Photo</th>
-    <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
+    <% if false %>
+      <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
+    <% else %>
+      <th data-dt-search-input="true">Type</th>
+    <% end %>
+    <% if false %>
     <th data-dt-search-select="Pass,Reject,Hold">Result</th>
+    <% else %>
+    <th data-dt-search-input="true">Result</th>
+    <% end %>
     <th data-dt-search-input="true">Insp. Date</th>
     <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th data-dt-search-input="true">Status</th><%- end %>
     <th data-dt-search-input="true">PO</th>
