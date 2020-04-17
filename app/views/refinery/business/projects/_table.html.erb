@@ -44,7 +44,7 @@
           { data: "id", "render": { "display": idColumnRendererFor("<%= refinery.business_projects_path %>") } },
           { data: "code" },
           { data: "description" },
-          { data: "company_label", "render": function(data, type, row) {
+          { data: "company_name", "render": function(data, type, row) {
             var href = ["<%= refinery.business_companies_path %>", row.company_id].join('/');
             return $('<a></a>')
               .attr('href', href)

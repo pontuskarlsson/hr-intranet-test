@@ -18,6 +18,8 @@ module Refinery
       configure_enumerables :status, STATUSES
       configure_label :code, :description
 
+      delegate :name, to: :company, prefix: true, allow_nil: true
+
       validates :company_id,    presence: true
       validates :code,          uniqueness: true, allow_blank: true
       validates :start_date,    presence: true
