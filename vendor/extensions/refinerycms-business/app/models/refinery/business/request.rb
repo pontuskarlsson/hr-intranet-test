@@ -24,7 +24,7 @@ module Refinery
 
       has_comments
 
-      responds_to_data_tables :id, :subject, :code, :description
+      responds_to_data_tables :id, :subject, :code, :request_date, :status
 
       delegate :label, :full_name, to: :created_by, prefix: true, allow_nil: true
       delegate :label, :full_name, to: :requested_by, prefix: true, allow_nil: true

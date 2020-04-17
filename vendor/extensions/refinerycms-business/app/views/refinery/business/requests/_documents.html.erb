@@ -4,8 +4,10 @@
       <div class="card-label">File Name</div>
       <div class="card-text" title="<%= document.resource_file_name %>"><%= document.resource_file_name %></div>
 
-      <div class="card-label">Document Type</div>
-      <div class="card-text"><%= document.display_document_type %></div>
+      <% unless document.document_type_is_other? %>
+        <div class="card-label">Document Type</div>
+        <div class="card-text"><%= document.display_document_type %></div>
+      <% end %>
 
       <div class="card-label">Comments</div>
       <div class="card-text"><%= document.comments.presence || 'N/A' %></div>

@@ -21,7 +21,7 @@
         <th>Company</th>
         <td>
           <% if @project.company.present? %>
-            <%= link_to @project.company_label, refinery.business_company_path(@project.company) %>
+            <%= @project.company.name %>
           <% else %>
             <%= @project.company_label %>
           <% end %>
