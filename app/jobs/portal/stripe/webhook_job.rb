@@ -70,16 +70,17 @@ module Portal
         xero_invoice = create_xero_invoice(purchase)
 
         sync_invoices = ::Refinery::Business::Xero::Sync::Invoices.new account, errors
-        invoice = sync_invoices.sync! xero_invoice, is_managed: true
+        purchase.invoice = sync_invoices.sync! xero_invoice, is_managed: true
+        purchase.save!
 
-        form = Refinery::Business::PurchaseInvoiceBuildForm.new_in_model(invoice)
+        form = Refinery::Business::PurchaseInvoiceBuildForm.new_in_model(purchase.invoice)
         form.save!
       rescue StandardError => exception
         ErrorMailer.error_email(exception).deliver
       end
 
       def account
-        @account ||= Refinery::Business::Account.find_by!(name: 'Happy Rabbit Limited')
+        @account ||= Refinery::Business::Account.find_by!(organisation: 'Happy Rabbit Limited')
       end
 
       def client
