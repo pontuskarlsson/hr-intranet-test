@@ -2,19 +2,29 @@
   <table class="document-summary-table">
     <thead>
     <tr>
-      <th>Invoice No.</th>
+      <th>
+        <% if @invoice.purchase.nil? %>
+          Invoice No.
+        <% else %>
+          Receipt No.
+        <% end %>
+      </th>
       <th>Issue Date</th>
       <th>Due Date</th>
+      <% if @invoice.purchase.nil? %>
       <th>Billing Period</th>
+      <% end %>
       <th>Your Reference</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td><%= @invoice.invoice_number %></td>
+      <td><%= @invoice.invoice_number.gsub('INV', 'REC') %></td>
       <td><%= @invoice.display_invoice_date %></td>
       <td><%= @invoice.display_due_date %></td>
+      <% if @invoice.purchase.nil? %>
       <td><%= @invoice.display_billing_period %></td>
+      <% end %>
       <td><%= @invoice.buyer_reference %></td>
     </tr>
     </tbody>

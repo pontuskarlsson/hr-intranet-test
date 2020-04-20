@@ -1,0 +1,154 @@
+<%- timezone = @invoice.company.company_users.owner.first&.user&.timezone.presence || 'UTC'
+%>
+
+<% content_for :head do %>
+  <style type="text/css">
+    .billables {
+      width: 100%;
+    }
+    .billables td, .billables th {
+      padding-bottom: 0.6rem;
+    }
+    .billables tfoot td, .billables tfoot th {
+      padding-top: 1rem;
+    }
+    .billables td:nth-child(1), .billables th:nth-child(1) { width: 60px; }
+    .billables td:nth-child(3), .billables th:nth-child(3) { width: 120px; }
+    .billables td:nth-child(4), .billables th:nth-child(4) { width: 120px; }
+    .billables td:nth-child(5), .billables th:nth-child(5) { width: 120px; }
+
+    .billables.total td:nth-child(1), .billables.total th:nth-child(1) { width: auto; }
+    .billables.total td:nth-child(2), .billables.total th:nth-child(2) { width: 120px; }
+
+    table.summary_of_work > tbody > tr > td:nth-child(odd) {
+      width: 28%;
+    }
+
+    table.summary_of_work > tbody > tr > td:nth-child(even) {
+      width: 8%;
+    }
+
+    table.details_of_work {
+      margin: 2rem 0 1rem;
+    }
+    table.details_of_work td, table.details_of_work th {
+      padding-bottom: 0.6rem;
+    }
+    table.details_of_work > tbody > tr > td:nth-child(1) { width: 100px; }
+    table.details_of_work > tbody > tr > td:nth-child(2) { width: 160px; }
+    table.details_of_work > tbody > tr > td:nth-child(3) { width: auto; }
+    table.details_of_work > tbody > tr > td:nth-child(4) { width: 80px; }
+    table.details_of_work > tbody > tr > td:nth-child(5) { width: 100px; }
+  </style>
+<% end %>
+
+<section class="invoice_plan_summary">
+  <h1 style="overflow: hidden; height: 2px;">Receipt</h1>
+
+  <table class="billables">
+    <thead>
+    <tr>
+      <th>Quantity</th>
+      <th>Description</th>
+      <th class="currency">Unit Price</th>
+      <th class="currency">Unit Discount</th>
+      <th class="currency">Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% invoice.invoice_items.prepay_in.each do |invoice_item|
+      qty = invoice_item.quantity - invoice_item.redeemed_vouchers.count
+
+      # One turn first to allocate only minimum
+      invoice.minimums.each do |mm|
+        min = [mm.unallocated, qty].min
+        if mm.allocated_to?(invoice_item.item_code, min)
+          qty -= min
+        end
+      end
+
+      # Second round to allocate any remaining
+      invoice.minimums.each do |mm|
+        if qty > 0 && mm.applicable_to?(invoice_item.item_code)
+          mm.allocate_additional qty
+          qty = 0
+        end
+      end
+
+      if qty > 0
+        # Even though it is not a minimum, we add it to the same array. But since the qty is 0, it will be
+        # excluded from the minimum list and only presented in the additional view.
+        invoice.minimums << mm = Refinery::Business::Charge.new(
+            0,
+            invoice_item.item_code,
+            invoice_item.unit_amount,
+            0
+        )
+
+        mm.allocate_additional qty
+      end
+    end
+    %>
+    <% invoice.minimums.each do |charge| %>
+      <% if charge.qty > 0 %>
+        <tr>
+          <td><%=number_with_precision charge.qty, strip_insignificant_zeros: true %></td>
+          <td>
+            <%= charge.article&.name %>
+            <% if charge.doubled? %>
+              <div class="italic">Discount Coupon "<%= charge.promo %>" applied</div>
+            <% end %>
+          </td>
+          <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
+          <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
+          <td class="currency"><%=number_to_currency charge.total_amount, unit: '' %></td>
+        </tr>
+      <% end %>
+    <% end %>
+    <% invoice.minimums.each do |charge| %>
+      <% if charge.additional_qty > 0 %>
+        <tr>
+          <td><%=number_with_precision charge.additional_qty, strip_insignificant_zeros: true %></td>
+          <td><%= charge.article&.name %></td>
+          <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
+          <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
+          <td class="currency"><%=number_to_currency charge.total_additional_amount, unit: '' %></td>
+        </tr>
+      <% end %>
+    <% end %>
+    </tbody>
+    <tfoot>
+    <tr>
+      <th colspan="4" class="currency">Subtotal, <%= @invoice.currency_code %></th>
+      <th class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></th>
+    </tr>
+    </tfoot>
+  </table>
+
+  <hr style="margin-top: 2rem;"/>
+
+  <table class="billables total">
+    <tbody>
+      <tr>
+        <td class="currency">Subtotal, <%= @invoice.currency_code %></td>
+        <td class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></td>
+      </tr>
+      <tr>
+        <td class="currency">Invoice Total, <%= @invoice.currency_code %></td>
+        <td class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></td>
+      </tr>
+      <tr>
+        <td class="currency">Paid by Credit Card</td>
+        <td class="currency"><%=number_to_currency -@invoice.total_amount, unit: '' %></td>
+      </tr>
+      <tr>
+        <td class="currency">&nbsp;</td>
+        <td class="currency">&nbsp;</td>
+      </tr>
+      <tr>
+        <th class="currency">Amount Due, <%= @invoice.currency_code %></th>
+        <th class="currency"><%=number_to_currency 0, unit: '' %></th>
+      </tr>
+    </tbody>
+  </table>
+</section>

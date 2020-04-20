@@ -21,6 +21,9 @@ module Refinery
       has_many :redeemed_vouchers,  class_name: '::Refinery::Business::Voucher',
                                     foreign_key: :line_item_sales_purchase_id,
                                     dependent: :nullify
+      has_many :redeemed_prepay_vouchers, class_name: '::Refinery::Business::Voucher',
+                                    foreign_key: :line_item_prepay_out_id,
+                                    dependent: :nullify
       has_many :sales_billables,    class_name: '::Refinery::Business::Billable',
                                     foreign_key: :line_item_sales_id,
                                     dependent: :nullify
@@ -115,6 +118,10 @@ module Refinery
 
       def calculated_line_amount
         quantity * unit_amount unless quantity.nil? || unit_amount.nil?
+      end
+
+      def unique_invoice_combo
+        [item_code, ]
       end
 
     end

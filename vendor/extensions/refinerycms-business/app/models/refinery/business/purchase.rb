@@ -5,6 +5,10 @@ module Refinery
 
       STATUSES = %w(created paid failed)
 
+      PROMO_MAX_DOUBLE_QTY = 10
+
+
+
       store :meta, accessors: [:article_code, :qty, :webhook_object]
 
       delegate :name, :description, :sales_unit_price, to: :article, prefix: true, allow_nil: true
@@ -33,85 +37,61 @@ module Refinery
       validates :total_cost, numericality: { greater_than_or_equal_to: 0 }
       validates :qty, numericality: { greater_than: 0, only_integer: true }
 
+      validate do
+        if discount_code.present?
+          errors.add(:discount_code, 'is not a valid code') unless discount.present?
+          errors.add(:discount_code, 'is not a valid code') if discount.present? && !charges.all? { |charge| discount.charge_valid?(charge) }
+        end
+        errors.add(:article_code, 'is not a valid article') unless article&.is_voucher
+      end
+
       before_validation do
         self.status ||= 'created'
-        calculate_cost
+        calculate_cost!
 
         if company_id.nil? && user.present?
           self.company_id = user.companies.first.id if user.companies.count == 1
         end
       end
 
-      after_create do
-        session = Stripe::Checkout::Session.create({
-            success_url: ::Refinery::Business.config.stripe_success_url,
-            cancel_url: ::Refinery::Business.config.stripe_cancel_url,
-            payment_method_types: ['card'],
-            mode: 'payment',
-            customer_email: user.email,
-            client_reference_id: happy_rabbit_reference_id,
-            line_items: [
-                {
-                    name: article_name,
-                    description: article_description,
-                    amount: (total_cost / qty.to_i * 100).to_i,
-                    currency: 'usd',
-                    quantity: qty.to_i,
-                },
-            ],
-        })
-
-        self.stripe_checkout_session_id = session.id
-        throw :abort unless save
-      end
-
-      validate do
-        errors.add(:discount_code, :invalid) if discount_code.present? && discount_code.downcase != 'ss20promo'
-        errors.add(:article_code, :invalid) unless article&.is_voucher
-      end
-
       def article
         @article ||= Article.find_by code: article_code
       end
 
-      def calculate_cost
-        quantity = (self.qty.presence.to_i || 0)
+      def qty
+        super&.to_i || 0
+      end
 
-        self.sub_total_cost = article.present? ? quantity * article_sales_unit_price : 0.0
+      def calculate_cost!
+        self.sub_total_cost = article.present? ? qty * article_sales_unit_price : 0.0
 
-        if quantity >= 10
-          self.total_discount = sub_total_cost * -0.04
-        elsif quantity >= 5
-          self.total_discount = sub_total_cost * -0.02
-        else
-          0.0
-        end
-
+        self.total_discount = discount.present? ? sub_total_cost * discount.percentage : 0.0
         self.total_cost = sub_total_cost + total_discount
       end
 
-      def discount_double?
-        discount_code&.downcase == 'ss20promo'
-      end
-
-      def no_of_credits
-        if discount_double?
-          qty.to_i + [qty.to_i, 10].min
-        else
-          qty.to_i
-        end
-      end
-
-      def base_amount
-        sub_total_cost / qty.to_i
+      def discount
+        @discount ||= discount_code.present? ? Discount.by_promo(discount_code) : Discount.base_discount_for(qty)
       end
 
       def discount_amount
-        total_discount / qty.to_i
+        if discount.present?
+          discount.percentage * article_sales_unit_price
+        else
+          0.0
+        end
       end
 
-      def purchased_charges
-        @purchased_charges ||= [Charge.new(qty, article_code, base_amount, discount_amount, 'fixed_amount')]
+      def charges
+        @charges ||= [
+            Charge.new(
+                qty,
+                article_code,
+                article_sales_unit_price,
+                discount_amount,
+                'fixed_amount',
+                { 'doubled' => true, 'promo' => discount_code }
+            )
+        ]
       end
 
       def self.for_user_roles(user, role_titles = nil)

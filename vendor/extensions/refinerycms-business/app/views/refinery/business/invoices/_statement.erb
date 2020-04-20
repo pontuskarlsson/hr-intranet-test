@@ -113,6 +113,28 @@
         </tr>
       <% end %>
     <% end %>
+    <%- redeemed_vouchers = {} %>
+    <% invoice.invoice_items.sales_purchase.group_by(&:item_code).each_pair do |item_code, invoice_items| %>
+      <%-
+        redeemed_vouchers[item_code] ||= []
+      %>
+      <tr>
+        <td><%=number_with_precision invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.quantity }, strip_insignificant_zeros: true %></td>
+        <td><%= invoice_items[0]&.redeemed_prepay_vouchers&.first&.article&.name %> - Redeemed</td>
+        <td class="currency">&nbsp;</td>
+        <td class="currency">&nbsp;</td>
+        <td class="currency"><%=number_to_currency 0, unit: '' %></td>
+      </tr>
+    <% end %>
+    <% invoice.invoice_items.prepay_out.group_by(&:item_code).each_pair do |item_code, invoice_items| %>
+      <tr>
+        <td><%=number_with_precision invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.quantity }, strip_insignificant_zeros: true %></td>
+        <td><%= invoice_items[0]&.redeemed_prepay_vouchers&.first&.article&.name %> - Redeemed</td>
+        <td class="currency">&nbsp;</td>
+        <td class="currency">&nbsp;</td>
+        <td class="currency"><%=number_to_currency 0, unit: '' %></td>
+      </tr>
+    <% end %>
     </tbody>
     <tfoot>
     <tr>

@@ -143,56 +143,6 @@ module Refinery
           matching_items.each_pair do |prepay_in, prepay_discount_in|
             matching_discounts(prepay_in) << prepay_discount_in
           end
-
-          # if charge.unallocated > 0
-          #   if charge.unallocated != charge.unallocated.to_i
-          #     raise ActiveRecord::ActiveRecordError, 'cannot issue partial vouchers (decimal quantities)'
-          #   end
-          #
-          #   # Get a sales invoice item for the voucher article code
-          #   # sales = sales_item_per charge.article, charge.base_amount
-          #   # discount = discount_item_per sales, charge.discount_amount # Will return nil if discount_amount is 0
-          #   # sales_offset = sales_offset_item_per charge.unit_amount
-          #
-          #   loop do
-          #     break unless charge.allocate!(1.0)
-          #
-          #     # pre_pay_to = invoice.invoice_items.pre_pay.build(unit_amount: charge.unit_amount, quantity: 1.0)
-          #     prepay_in = invoice.invoice_items.prepay_in.build(unit_amount: charge.base_amount, item_code: charge.article_label, quantity: 1.0)
-          #     prepay_discount_in =
-          #         unless charge.discount_amount.to_d.zero?
-          #           discount_item_code = "#{charge.article_label}-DISC"
-          #           invoice.invoice_items.prepay_discount_in.build(unit_amount: charge.discount_amount, item_code: discount_item_code, quantity: 1.0)
-          #         end
-          #     matching_discounts(prepay_in) << prepay_discount_in unless prepay_discount_in.nil?
-          #
-          #     issued_vouchers << invoice.company.vouchers.build(
-          #         article: charge.article,
-          #         # line_item_sales_purchase: sales_purchase,
-          #         # line_item_sales_discount: discount,
-          #         # line_item_sales_move_from: sales_offset,
-          #         # line_item_prepay_move_to: pre_pay_to,
-          #         line_item_prepay_in: prepay_in,
-          #         line_item_prepay_discount_in: prepay_discount_in,
-          #         base_amount: charge.base_amount,
-          #         discount_type: charge.discount_type,
-          #         discount_amount: charge.discount_type == 'fixed_amount' ? charge.discount_amount : nil,
-          #         discount_percentage: charge.discount_type == 'percentage' ? charge.discount_amount * 0.01 : nil,
-          #         amount: charge.unit_amount,
-          #         currency_code: invoice.currency_code,
-          #         valid_from: invoice.invoice_for_month,
-          #         valid_to: invoice.invoice_for_month + 1.year - 1.day,
-          #         source: 'invoice',
-          #     )
-          #
-          #     # sales_purchase.quantity += pre_pay_to.quantity
-          #     # discount.quantity += pre_pay_to.quantity if discount.present?
-          #     # sales_offset.quantity += pre_pay_to.quantity
-          #
-          #     @closing_balance_by_code[charge.article_label] ||= 0
-          #     @closing_balance_by_code[charge.article_label] += prepay_in.quantity
-          #   end
-          # end
         end
 
 
@@ -251,28 +201,12 @@ module Refinery
         end
 
         # Then comes the Sales Offset
-        # sales_voucher = invoice.invoice_items.select { |invoice_item| invoice_item.transaction_type_is_sales? && invoice_item.article_is_voucher }
-        # sales_offset = invoice.invoice_items.select(&:transaction_type_is_sales_offset?)
-        # pre_pay = invoice.invoice_items.select(&:transaction_type_is_pre_pay?)
-
         prepay_ins = invoice.invoice_items.select(&:transaction_type_is_prepay_in?)
         if prepay_ins.any? # sales_offset.any? || pre_pay.any?
           # Add section header
           handled << invoice.informative_item_per("- - -", line_item_order: line_item_order += 1)
           handled << invoice.informative_item_per("- - - Credits: Issued", line_item_order: line_item_order += 1)
-          # sales_voucher.each do |invoice_item|
-          #   invoice_item.line_item_order = line_item_order += 1
-          #   handled << invoice_item
-          #
-          #   Array(matching_discounts(invoice_item)).each do |discount_invoice_item|
-          #     discount_invoice_item.line_item_order = line_item_order += 1
-          #     handled << discount_invoice_item
-          #   end
-          # end
-          # sales_offset.each do |invoice_item|
-          #   invoice_item.line_item_order = line_item_order += 1
-          #   handled << invoice_item
-          # end
+
           prepay_ins.each do |invoice_item|
             invoice_item.line_item_order = line_item_order += 1
             handled << invoice_item
@@ -302,12 +236,8 @@ module Refinery
         invoice.total_amount = invoice.invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.calculated_line_amount.to_f }
 
         invoice.minimums = minimum_charges
-        #invoice.additionals = additionals.values
         invoice.plan_opening_balance = @opening_balance_by_code.values.reduce(&:+) || 0
         invoice.plan_closing_balance = @closing_balance_by_code.values.reduce(&:+) || 0
-
-        # invoice.plan_redeemed = redeemed_vouchers.count
-        # invoice.plan_issued = issued_vouchers.count
 
         min_charges_qty = minimum_charges.reduce(0.0) { |acc, c| acc + c.qty }
         handled_qty = handled_billables.select(&:bill_own_company?).reduce(0.0) { |acc, b| acc + b.qty }
@@ -317,18 +247,12 @@ module Refinery
         invoice.save!
 
         issued_vouchers.map { |v|
-          # v.line_item_sales_purchase = v.line_item_sales_purchase
-          # v.line_item_sales_discount = v.line_item_sales_discount
-          # v.line_item_sales_move_from = v.line_item_sales_move_from
-          # v.line_item_prepay_move_to = v.line_item_prepay_move_to
           v.line_item_prepay_in = v.line_item_prepay_in
           v.line_item_prepay_discount_in = v.line_item_prepay_discount_in
           v.save!
         }
 
         redeemed_vouchers.map { |v|
-          # v.line_item_prepay_move_from = v.line_item_prepay_move_from
-          # v.line_item_sales_move_to = v.line_item_sales_move_to
           v.line_item_prepay_out = v.line_item_prepay_out
           v.line_item_prepay_discount_out = v.line_item_prepay_discount_out
           v.line_item_sales_purchase = v.line_item_sales_purchase
@@ -363,6 +287,10 @@ module Refinery
                 )
           end
         end
+      end
+
+      def add_redeemed_charge(voucher)
+
       end
 
       def next_voucher_for(code)
@@ -400,13 +328,6 @@ module Refinery
         end || invoice.invoice_items.sales_purchase.build(item_code: article.code, description: article.name, unit_amount: unit_amount, quantity: 0.0)
       end
 
-      # def sales_offset_item_per(unit_amount)
-      #   ua = unit_amount > 0 ? unit_amount * -1 : unit_amount
-      #   invoice.invoice_items.detect do |invoice_item|
-      #     invoice_item.transaction_type == 'sales_offset' && invoice_item.unit_amount == ua
-      #   end || invoice.invoice_items.build(transaction_type: 'sales_offset', unit_amount: ua, quantity: 0.0)
-      # end
-
       def sales_discount_per(for_item, unit_amount)
         da = unit_amount && unit_amount > 0 ? unit_amount * -1 : unit_amount
 
@@ -427,39 +348,6 @@ module Refinery
           invoice_item
         end
       end
-
-      # def invoice.informative_item_per(description, attr = {})
-      #   @matched_informatives ||= []
-      # 
-      #   # Match existing but not previously matched informative items
-      #   item = invoice.invoice_items.detect do |invoice_item|
-      #     !@matched_informatives.include?(invoice_item) && invoice_item.informative? && invoice_item.description == description
-      #   end || invoice.invoice_items.informative.build(attr.merge(description: description))
-      # 
-      #   # Set attributes in case it was a previously existing item that should now have another line_item_order
-      #   item.attributes = attr
-      # 
-      #   # Add to matched array so we don't re-assign the same one again
-      #   @matched_informatives << item
-      # 
-      #   item
-      # end
-
-      # def all_discounts_for(for_item)
-      #   description = "Discount: [#{for_item.item_code}{base_amount:#{for_item.unit_amount}}]"
-      #
-      #   matching_transaction_type = {
-      #       'sales_purchase' => 'sales_discount',
-      #       'prepay_in' => 'prepay_discount_in',
-      #       'prepay_out' => 'prepay_discount_out'
-      #   }[for_item.transaction_type]
-      #
-      #   return nil if matching_transaction_type.nil?
-      #
-      #   invoice.invoice_items.select do |invoice_item|
-      #     invoice_item.transaction_type == matching_transaction_type && invoice_item.description && invoice_item.description[description]
-      #   end
-      # end
 
       def allocate_billable!(billable)
         if (voucher = next_voucher_for billable.article_code).present?
@@ -484,6 +372,8 @@ module Refinery
           billable.line_item_sales = sales_purchase
 
           redeemed_vouchers << voucher
+
+          add_redeemed_charge voucher
 
         elsif (charge = minimum_charges.detect { |mc| mc.allocated_to?(billable.article_code, billable.qty) }).present? or
             (charge = minimum_charges.detect { |mc| mc.applicable_to?(billable.article_code) }).present?

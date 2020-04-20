@@ -19,16 +19,18 @@ module Refinery
       end
 
       def new
-        @purchase = Purchase.new(article_code: params[:item], qty: params[:qty], discount_code: params[:discount_code])
-        @purchase.article_code = 'VOUCHER-QAQC-DAY' # The only one we sell right now
-        @purchase.calculate_cost
+        @purchase_form = PurchaseForm.new_in_model(selected_company, {
+            qty: params[:qty],
+            discount_code: params[:discount_code],
+            article_code: 'VOUCHER-QAQC-DAY' # The only one we sell right now
+        }, current_refinery_user)
       end
 
       def create
-        @purchase = current_refinery_user.purchases.for_selected_company(selected_company).build(purchase_params)
+        @purchase_form = PurchaseForm.new_in_model(selected_company, params[:purchase], current_refinery_user)
 
         respond_to do |format|
-          if @purchase.save # Not saved
+          if @purchase_form.save # Not saved
             format.js
           else
             format.js { render action: :new }
@@ -50,10 +52,6 @@ module Refinery
 
       def find_purchases
         @purchases = purchases_scope.where(filter_params)
-      end
-
-      def purchase_params(allowed = %i(qty article_code discount_code))
-        params.require(:purchase).permit(allowed)
       end
 
       def filter_params

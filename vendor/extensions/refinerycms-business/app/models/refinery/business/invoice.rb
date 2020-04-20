@@ -133,7 +133,7 @@ module Refinery
 
       def minimums(charge_attributes = plan_minimums)
         @minimums ||= Array(charge_attributes).map { |mm|
-          Charge.new(*mm.values_at(:qty, :article_label, :base_amount, :discount_amount, :discount_type))
+          Charge.new(*mm.values_at(:qty, :article_label, :base_amount, :discount_amount, :discount_type, :options))
         }
       end
 

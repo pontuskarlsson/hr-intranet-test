@@ -13,6 +13,7 @@ module Refinery
       has_many :invoices,       dependent: :nullify
       has_many :plans,          dependent: :nullify
       has_many :projects,       dependent: :destroy
+      has_many :purchases,      dependent: :nullify
       has_many :requests,       dependent: :nullify
       has_many :documents,      dependent: :nullify
       has_many :billables,      dependent: :destroy

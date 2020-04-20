@@ -48,7 +48,7 @@ module Refinery
         # if there is anything out of the minimum quantities, that remain and we need
         # to issue vouchers for.
         #
-        invoice.purchase.purchased_charges.each do |charge|
+        invoice.purchase.charges.each do |charge|
           @closing_balance_by_code[charge.article_label] ||= 0
           @closing_balance_by_code[charge.article_label] += charge.unallocated
 
@@ -73,7 +73,7 @@ module Refinery
           handled << invoice.informative_item_per("- - - Invoice for Purchase #{invoice.invoice_date.iso8601}", line_item_order: line_item_order += 1)
         end
 
-        invoice.purchase.purchased_charges.each do |charge|
+        invoice.purchase.charges.each do |charge|
           if charge.qty > 0
             handled << invoice.informative_item_per(charge.informative_description, line_item_order: line_item_order += 1)
           end
@@ -124,8 +124,15 @@ module Refinery
         invoice.plan_closing_balance = @closing_balance_by_code.values.reduce(&:+) || 0
 
 
-        invoice.plan_issued = invoice.purchase.purchased_charges.reduce(0.0) { |acc, c| acc + c.qty }
+        invoice.plan_issued = invoice.purchase.charges.reduce(0.0) { |acc, c| acc + c.qty }
         invoice.plan_redeemed = 0
+
+        # Store one charge per article label, but set the qty to 0. Otherwise it would be displayed as a minimum which
+        # does not make sense on a Purchase Invoice (Receipt)
+        # invoice.minimums = invoice.purchase.charges.each_with_object({}) { |charge, acc|
+        #   acc[charge.article_label] ||= charge.dup.tap { |c| c.qty = '0' }
+        # }.values
+        invoice.minimums = invoice.purchase.charges
 
         invoice.save!
 

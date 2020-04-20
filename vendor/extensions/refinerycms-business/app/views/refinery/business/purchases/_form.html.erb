@@ -2,48 +2,66 @@
   <script src="https://js.stripe.com/v3/"></script>
 <% end %>
 
-<%= form_for purchase, url: refinery.business_purchases_path, remote: true do |f| %>
+<%= form_for purchase_form, url: refinery.business_purchases_path, remote: true do |f| %>
   <%= f.hidden_field :article_code %>
   <div class="grid-container">
     <div class="grid-x grid-padding-x">
       <div class="cell medium-8">
         <div class="hr-box-shadow" style="padding: 1rem;">
           <%= render '/refinery/admin/error_messages',
-                     :object => purchase,
+                     :object => f.object,
                      :include_object_name => true %>
 
           <h3>Selected Items</h3>
 
-          <hr/>
-
-          <h5><%= f.object.article_name %></h5>
-          <p><%= f.object.article_description %></p>
+          <hr style="margin-bottom: 0.5rem;" />
 
           <div class="grid-x grid-padding-x">
-            <div class="cell medium-4">
-              <h6>Unit price</h6>
+            <div class="cell medium-6">
+              <h6>Article</h6>
             </div>
-            <div class="cell medium-2">
-              <h6><%= f.label :qty %></h6>
+            <div class="cell medium-2 text-align-right">
+              <h6>Unit Price</h6>
+            </div>
+            <div class="cell medium-2 text-align-right">
+              <h6>Qty</h6>
+            </div>
+            <div class="cell medium-2 text-align-right">
+              <h6>Total</h6>
             </div>
           </div>
+
+          <hr style="margin-top: 0;" />
+
           <div class="grid-x grid-padding-x">
-            <div class="cell medium-4">
+            <div class="cell medium-6">
+              <h5><%= f.object.article_name %></h5>
+            </div>
+            <div class="cell medium-2 text-align-right">
               <p>
-                <span class="js_base_price_label"><%=number_to_currency f.object.article_sales_unit_price, delimiter: ',', unit: 'USD ' %></span><br />
+                <span class="js_base_price_label"><%=number_to_currency f.object.article_sales_unit_price, delimiter: ',', unit: '' %></span><br />
                 <span class="js_discount_price_label"></span>
-                <span class="js_discount_label" style="white-space: nowrap; font-size: 0.8rem;"></span>
+                <span class="js_discount_label" style="white-space: nowrap; font-size: 0.8rem; color: red;"></span>
               </p>
             </div>
-            <div class="cell medium-2">
-              <%= f.number_field :qty, value: f.object.qty.presence || 1, style: 'width: 50px;', class: 'js_purchase_qty_field' %>
+            <div class="cell medium-2 text-align-right">
+              <%= f.number_field :qty, class: 'js_purchase_qty_field text-align-right', step: f.object.step_qty, max: f.object.max_qty %>
+              <% if false %>
+                <div class="primary button-group no-gaps">
+                  <% if f.object.discount_double? %>
+                    <a class="primary button" data-purchase-qty="2">x 2</a>
+                    <a class="primary button" data-purchase-qty="10">x 10</a>
+                    <a class="primary button" data-purchase-qty="20">x 20</a>
+                  <% else %>
+                    <a class="primary button" data-purchase-qty="1">x 1</a>
+                    <a class="primary button" data-purchase-qty="5">x 5</a>
+                    <a class="primary button" data-purchase-qty="10">x 10</a>
+                  <% end %>
+                </div>
+              <% end %>
             </div>
-            <div class="cell medium-4">
-              <div class="primary button-group no-gaps">
-                <a class="primary button" data-purchase-qty="1">x 1</a>
-                <a class="primary button" data-purchase-qty="5">x 5</a>
-                <a class="primary button" data-purchase-qty="10">x10</a>
-              </div>
+            <div class="cell medium-2 text-align-right">
+              <span class="js_purchase_item_total"><%=number_to_currency f.object.total_cost, delimiter: ',', unit: '' %></span>
             </div>
           </div>
         </div>
@@ -87,11 +105,7 @@
           <h6>Discount Code</h6>
           <%= f.text_field :discount_code, autocomplete: 'off' %>
           <% if f.object.discount_double? %>
-            <p>2-for-1 Promo code! You will receive an additional
-              <span class="bold"><span class="js_discount_additional"><%= [f.object.qty&.to_i || 0, 10].min %></span>
-              Manday(s)</span> for a total of
-              <span class="bold"><span class="js_discount_total"><%= (f.object.qty&.to_i || 0) + [f.object.qty&.to_i || 0, 10].min %></span>
-              Mandays</span>.
+            <p>2-for-1 Promo code! Buy in groups of 2 with a 50% discount.
             </p>
           <% end %>
 
@@ -114,29 +128,39 @@
                   $('.js_purchase_sub_total').html('USD '+ formatPurchaseCurrency(sub_total));
 
                   var discount = 0;
+                  <% if f.object.discount_double? %>
+                    discount = val * 350 * -0.5;
+
+                  $('.js_discount_label').text('50% Discount');
+                  $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.5));
+                  $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
+
+                  <% else %>
                   if (val >= 10) {
-                    discount = val * 350 * -0.04
+                    discount = val * 350 * -0.04;
                     $('.js_discount_label').text('4% Discount');
-                    $('.js_discount_price_label').text('USD '+ formatPurchaseCurrency(350 * 0.96));
+                    $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.96));
                     $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
                   } else if (val >= 5) {
-                    discount = val * 350 * -0.02
+                    discount = val * 350 * -0.02;
                     $('.js_discount_label').text('2% Discount');
-                    $('.js_discount_price_label').text('USD '+ formatPurchaseCurrency(350 * 0.98));
+                    $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.98));
                     $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
                   } else {
                     $('.js_discount_label').text('');
                     $('.js_discount_price_label').text('');
                     $('.js_base_price_label').css({ textDecoration: 'none', color: 'inherit' });
                   }
+                  <% end %>
                   $('.js_purchase_total_discount').html('USD '+ formatPurchaseCurrency(discount));
 
+                  $('.js_purchase_item_total').html(formatPurchaseCurrency(sub_total + discount));
                   $('.js_purchase_total').html('USD ' + formatPurchaseCurrency(sub_total + discount));
 
-                  <% if f.object.discount_double? %>
-                    $('.js_discount_additional').html(formatPurchaseCurrency(Math.min(val, 10)));
-                    $('.js_discount_total').html(formatPurchaseCurrency(val + Math.min(val, 10)));
-                  <% end %>
+                  <%# if f.object.discount_double? %>
+<!--                    $('.js_discount_additional').html(formatPurchaseCurrency(Math.min(val, 10)));-->
+<!--                    $('.js_discount_total').html(formatPurchaseCurrency(val + Math.min(val, 10)));-->
+                  <%# end %>
                 };
 
                 qtyField.on('change', changeQty);
@@ -144,7 +168,13 @@
                 $('[data-purchase-qty]').on('click', function() {
                   $('.js_purchase_qty_field').val($(this).data('purchase-qty'));
                   changeQty();
-                })
+                });
+
+                if (qtyField.val() === '') {
+                  qtyField.val('0');
+                }
+
+                changeQty();
               });
             </script>
           <% end %>

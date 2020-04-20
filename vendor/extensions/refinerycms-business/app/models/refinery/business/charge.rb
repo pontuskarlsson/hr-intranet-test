@@ -1,6 +1,6 @@
 module Refinery
   module Business
-    class Charge < Struct.new(:qty, :article_label, :base_amount, :discount_amount, :discount_type)
+    class Charge < Struct.new(:qty, :article_label, :base_amount, :discount_amount, :discount_type, :options)
       def article
         @article ||= Article.find_by_label(article_label) || raise(ActiveRecord::RecordNotFound)
       end
@@ -75,6 +75,18 @@ module Refinery
 
       def discount_item_code
         "#{article_label}-DISC"
+      end
+
+      def options
+        super || {}
+      end
+
+      def doubled?
+        options['doubled']
+      end
+
+      def promo
+        options['promo']
       end
 
       # === build_vouchers_for
