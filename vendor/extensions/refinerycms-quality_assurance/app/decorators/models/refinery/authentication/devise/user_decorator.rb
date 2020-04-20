@@ -18,4 +18,18 @@ Refinery::Authentication::Devise::User.class_eval do
       end
     end
   }
+
+  scope :for_722, -> (h) {
+    product_category, supplier_label = h[:product_category], h[:supplier_label]
+
+    if product_category == 'Bags'
+      where(email: %w(johan.astroem@fjallraven.se johanna.adner@fjallraven.se sara.gunnebjoerk@fjallraven.se))
+
+    else
+      case supplier_label
+      when 'Dongguan Manhattan Outdoor Clothing Co., Ltd' then where(email: %w(emma.pettersson@fjallraven.se sara.gunnebjoerk@fjallraven.se))
+      else where(email: %w(emma.pettersson@fjallraven.se sara.gunnebjoerk@fjallraven.se laura.awan@fjallraven.se maria.pettersson@fjallraven.se))
+      end
+    end
+  }
 end

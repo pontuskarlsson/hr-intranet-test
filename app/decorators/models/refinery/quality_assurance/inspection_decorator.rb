@@ -17,6 +17,10 @@ Refinery::QualityAssurance::Inspection.class_eval do
                          users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) +
                          users.for_role(Refinery::QualityAssurance::ROLE_EXTERNAL).for_companies(inspection.company).for_meta(product_category: inspection.product_category)
 
+                       elsif inspection.company_code == '00722'
+                         users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) +
+                         users.for_role(Refinery::QualityAssurance::ROLE_EXTERNAL).for_companies(inspection.company).for_722(product_category: inspection.product_category, supplier_label: inspection.supplier_label)
+
                        else
                          users.for_role(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) +
                          users.for_role(Refinery::QualityAssurance::ROLE_EXTERNAL).for_companies(inspection.company)
