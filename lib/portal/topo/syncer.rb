@@ -99,9 +99,9 @@ module Portal
       end
 
       def company_from(code, label)
-        if code.present? && (company = ::Refinery::Business::Company.find_by(code: code)).present?
+        if code.present? && (company = ::Refinery::Business::Company.is_verified.find_by(code: code)).present?
           company
-        elsif label.present? && (company = ::Refinery::Business::Company.find_by(name: label)).present?
+        elsif label.present? && (company = ::Refinery::Business::Company.is_verified.find_by(name: label)).present?
           company
         end
       end
