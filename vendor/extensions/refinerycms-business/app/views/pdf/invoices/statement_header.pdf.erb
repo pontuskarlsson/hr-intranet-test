@@ -19,7 +19,7 @@
     </thead>
     <tbody>
     <tr>
-      <td><%= @invoice.invoice_number.gsub('INV', 'REC') %></td>
+      <td><%= @invoice.statement_number %></td>
       <td><%= @invoice.display_invoice_date %></td>
       <td><%= @invoice.display_due_date %></td>
       <% if @invoice.purchase.nil? %>

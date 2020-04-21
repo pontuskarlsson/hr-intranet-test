@@ -7,8 +7,8 @@ module Refinery
       DISCOUNT_TYPES = %w(fixed_amount percentage)
       SOURCES = %w(invoice purchase)
 
-      belongs_to :company, optional: true
-      belongs_to :article, optional: true
+      belongs_to :company
+      belongs_to :article
       belongs_to :line_item_sales_purchase,       class_name: 'InvoiceItem', optional: true
       belongs_to :line_item_sales_discount,       class_name: 'InvoiceItem', optional: true
       # belongs_to :line_item_sales_move_from,  class_name: 'InvoiceItem', optional: true
@@ -28,7 +28,6 @@ module Refinery
 
       delegate :applicable_to?, :code, to: :article, prefix: true, allow_nil: true
 
-      validates :article_id,      presence: true
       validates :status,          inclusion: STATUSES
       validates :discount_type,   inclusion: DISCOUNT_TYPES, allow_blank: true
       validates :valid_from,      presence: true
@@ -37,12 +36,12 @@ module Refinery
       # validates :line_item_sales_move_from_id, presence: true, if: :source_is_invoice?
       # validates :line_item_prepay_move_to_id, presence: true, if: :source_is_invoice?
       # validates :line_item_sales_move_to_id, presence: true, if: -> { line_item_prepay_move_from_id.present? }
-      validates :line_item_prepay_in_id,            presence: true, if: :source_is_invoice?
-      validates :line_item_prepay_discount_in_id,   presence: true, if: -> { line_item_prepay_discount_out_id.present? || line_item_sales_discount_id.present? }
-      validates :line_item_prepay_out_id,           presence: true, if: -> { line_item_sales_purchase_id.present? }
-      validates :line_item_prepay_discount_out_id,  presence: true, if: -> { line_item_prepay_discount_in_id.present? && line_item_sales_purchase_id.present? }
+      validates :line_item_prepay_in_id,            presence: true, if: -> { line_item_sales_purchase_id.nil? }
+      validates :line_item_prepay_discount_in_id,   presence: true, if: -> { line_item_prepay_discount_out_id.present? || (line_item_sales_discount_id.present? && line_item_prepay_in_id.present?) }
+      validates :line_item_prepay_out_id,           presence: true, if: -> { line_item_sales_purchase_id.present? && line_item_prepay_in_id.present? }
+      validates :line_item_prepay_discount_out_id,  presence: true, if: -> { line_item_prepay_discount_in_id.present? && line_item_prepay_out_id.present? }
       validates :line_item_sales_purchase_id,       presence: true, if: -> { line_item_prepay_out_id.present? }
-      validates :line_item_sales_discount_id,       presence: true, if: -> { line_item_sales_purchase_id.present? && line_item_prepay_discount_in_id.present? }
+      validates :line_item_sales_discount_id,       presence: true, if: -> { line_item_sales_purchase_id.present? && line_item_prepay_discount_out_id.present? }
 
       validate do
         errors.add(:article_id, 'is not a voucher') unless article&.is_voucher

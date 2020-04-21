@@ -14,8 +14,8 @@ module Refinery
           it { is_expected.not_to be_valid }
         end
 
-        context 'when :code is already present' do
-          before { FactoryBot.create(:article, code: article.code) }
+        context 'when :code is already present in the Account' do
+          before { FactoryBot.create(:article, code: article.code, account: article.account) }
           it { is_expected.not_to be_valid }
         end
 

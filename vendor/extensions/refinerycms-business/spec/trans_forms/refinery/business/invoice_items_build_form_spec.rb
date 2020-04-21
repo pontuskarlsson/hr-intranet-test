@@ -233,6 +233,10 @@ module Refinery
 
           it { is_expected.to eq true }
 
+          it { expect{ form.save }.to change{ invoice.company.vouchers.reserved.count }.by(1) }
+
+          it { expect{ form.save }.to change{ invoice.company.vouchers.active.count }.by(9) }
+
           it 'creates InvoiceItems' do
             form.save
 

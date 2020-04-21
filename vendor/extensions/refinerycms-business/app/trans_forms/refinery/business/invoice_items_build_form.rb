@@ -56,6 +56,20 @@ module Refinery
         #
         # STEP 1
         #
+        # Build a list of minimum charges of Voucher article codes, as well as keep track of the prices and
+        # discounts for said Vouchers.
+        #
+        # Note that the same Voucher article codes can be submitted more than once, i.e. when there is one price
+        # for 9 quantities and then another price for 1 last quantity. In this circumstance, we need to make
+        # sure that we reach the total quantities for each Voucher article code occurrence and that the price
+        # is correctly allocated.
+        #
+        set_minimum_charges!
+
+
+        #
+        # STEP 2
+        #
         # Delete previous invoice items and set the basic Invoice attributes
         #
         invoice.invoice_items.each(&:destroy!)
@@ -71,38 +85,9 @@ module Refinery
 
 
         #
-        # STEP 2
-        #
-        # Build a list of minimum charges of Voucher article codes, as well as keep track of the prices and
-        # discounts for said Vouchers.
-        #
-        # Note that the same Voucher article codes can be submitted more than once, i.e. when there is one price
-        # for 9 quantities and then another price for 1 last quantity. In this circumstance, we need to make
-        # sure that we reach the total quantities for each Voucher article code occurrence and that the price
-        # is correctly allocated.
-        #
-        # The question is what happens when the Billables exceed the sum of multiple minimum charges
-        # for the same Voucher article code, which price should apply to the additional Billables? For now,
-        # we simply take the first occurrence and call that the primary price.
-        #
-        set_minimum_charges!
-
-
-        #
         # STEP 3
         #
         # Go through each billable and create invoice items for them.
-        #
-        # First we try to allocate vouchers from the opening balance of credits.
-        #
-        # If no voucher could be used, we try to allocate the billable to the
-        # minimum amounts.
-        #
-        # If all minimum amounts have been allocated, try to allocate additional
-        # amounts to the first minimum that is applicable
-        #
-        # Lastly, if a billable is still un-allocated, add an additional charge
-        # and allocate to that one
         #
         invoice.billables.includes(:article).each do |billable|
           if billable.is_base_unit?
@@ -289,10 +274,6 @@ module Refinery
         end
       end
 
-      def add_redeemed_charge(voucher)
-
-      end
-
       def next_voucher_for(code)
         @next_voucher_for ||= invoice.company.vouchers.applicable_to(invoice).includes(:article)
 
@@ -349,6 +330,22 @@ module Refinery
         end
       end
 
+
+      # First we try to allocate vouchers from the opening balance of credits.
+      #
+      # If no voucher could be used, we try to allocate the billable to the
+      # "minimum" Charges.
+      #
+      # If all minimum amounts have been allocated, we allocate it to the
+      # "additional" qty of the charge. The question is what happens when there
+      # were multiple "minimum" Charges for the same Voucher article code, which
+      # charge should we allocate the additional qty to? For now, we simply take
+      # the first occurrence and use that.
+      #
+      # Lastly, if a billable is still un-allocated but the article code is not
+      # valid for any of the other Charges, then we simple use the base price
+      # for that article code.
+      #
       def allocate_billable!(billable)
         if (voucher = next_voucher_for billable.article_code).present?
           prepay_out = invoice.invoice_items.prepay_out.build(unit_amount: -voucher.base_amount, quantity: billable.qty)
@@ -373,8 +370,6 @@ module Refinery
 
           redeemed_vouchers << voucher
 
-          add_redeemed_charge voucher
-
         elsif (charge = minimum_charges.detect { |mc| mc.allocated_to?(billable.article_code, billable.qty) }).present? or
             (charge = minimum_charges.detect { |mc| mc.applicable_to?(billable.article_code) }).present?
           # Get a sales invoice item for the billable article code (not charge which is the voucher article)
@@ -386,6 +381,16 @@ module Refinery
             discount = sales_discount_per sales_purchase, charge.discount_amount
             discount.quantity += billable.qty
             billable.line_item_discount = discount
+          end
+
+          i = 0
+          loop do
+            break if i >= billable.qty
+            redeemed_vouchers << charge.new_voucher(invoice, {
+                line_item_sales_purchase: sales_purchase,
+                line_item_sales_discount: discount,
+            })
+            i += 1
           end
 
         elsif billable.article.sales_unit_price > 0

@@ -8,12 +8,21 @@ FactoryBot.define do
     source { 'invoice' }
 
     transient do
-      invoice_purchase { |evaluator| FactoryBot.create(:invoice, evaluator.article.account) }
+      invoice_purchase { |evaluator| FactoryBot.create(:invoice, company: evaluator.company, account: evaluator.article.account) }
     end
 
     line_item_prepay_in { |evaluator| FactoryBot.create(:invoice_item_prepay_in, invoice: evaluator.invoice_purchase, unit_amount: evaluator.base_amount) }
     valid_from { |evaluator| evaluator.invoice_purchase.invoice_for_month || evaluator.invoice_purchase.invoice_date }
     valid_to { |evaluator| evaluator.valid_from + 1.year - 1.day }
 
+
+    factory :redeemed_voucher do
+      transient do
+        invoice_redeem { |evaluator| FactoryBot.create(:invoice, company: evaluator.company, account: evaluator.article.account, managed_status: 'authorised', status: 'AUTHORISED') }
+      end
+
+      line_item_prepay_out { |evaluator| FactoryBot.create(:invoice_item_prepay_out, invoice: evaluator.invoice_redeem, unit_amount: -evaluator.base_amount) }
+      line_item_sales_purchase { |evaluator| FactoryBot.create(:invoice_item_sales_purchase, invoice: evaluator.invoice_redeem, unit_amount: evaluator.base_amount) }
+    end
   end
 end

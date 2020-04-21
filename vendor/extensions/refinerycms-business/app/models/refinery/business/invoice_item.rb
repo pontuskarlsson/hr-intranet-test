@@ -16,8 +16,7 @@ module Refinery
       belongs_to :invoice
       belongs_to :article,          foreign_key: :item_code, primary_key: :code, optional: true
       has_many :issued_vouchers,    class_name: '::Refinery::Business::Voucher',
-                                    foreign_key: :line_item_prepay_in_id,
-                                    dependent: :destroy
+                                    foreign_key: :line_item_prepay_in_id
       has_many :redeemed_vouchers,  class_name: '::Refinery::Business::Voucher',
                                     foreign_key: :line_item_sales_purchase_id,
                                     dependent: :nullify
@@ -66,12 +65,6 @@ module Refinery
         end
       end
 
-      before_create do
-        # if transaction_type_is_sales_offset?
-        #   self.description = 'Sales offset to Pre Payments' if description.blank?
-        # end
-      end
-
       before_save do
         if invoice.present?
           self.line_item_order ||= (invoice.invoice_items.maximum(:line_item_order) || 0) + 1
@@ -83,25 +76,26 @@ module Refinery
       end
 
       before_destroy do
-        if issued_vouchers.redeemed.exists? or redeemed_vouchers.redeemed.exists?
-          errors.add(:invoice_id, 'cannot delete a transaction for already redeemed vouchers')
+        if issued_vouchers.exists?
+          if issued_vouchers.redeemed.or(issued_vouchers.reserved).exists? or redeemed_vouchers.redeemed.exists?
+            errors.add(:invoice_id, 'cannot delete a transaction for already redeemed vouchers')
+          else
+            issued_vouchers.destroy_all
+          end
         end
         if redeemed_vouchers.reserved.exists?
           redeemed_vouchers.reserved.update_all(
               status: 'active',
-              line_item_prepay_move_from_id: nil,
-              line_item_sales_move_to_id: nil,
+              line_item_prepay_out_id: nil,
+              line_item_prepay_discount_out_id: nil,
+              line_item_sales_purchase_id: nil,
+              line_item_sales_discount_id: nil,
           )
         end
         throw :abort if errors.any?
       end
 
       scope :in_order,        -> { order(line_item_order: :asc) }
-      #scope :discount,        -> { where(transaction_type: 'discount') }
-      #scope :pre_pay,         -> { where(transaction_type: 'pre_pay') }
-      #scope :pre_pay_redeem,  -> { where(transaction_type: 'pre_pay_redeem') }
-      #scope :sales,           -> { where(transaction_type: 'sales') }
-      #scope :sales_offset,    -> { where(transaction_type: 'sales_offset') }
       TRANSACTION_TYPES.each do |transaction_type|
         scope transaction_type, -> { where(transaction_type: transaction_type) }
       end
@@ -120,8 +114,24 @@ module Refinery
         quantity * unit_amount unless quantity.nil? || unit_amount.nil?
       end
 
-      def unique_invoice_combo
-        [item_code, ]
+      def invoice_voucher_combo
+        if transaction_type_is_prepay_in?
+          [item_code, unit_amount, issued_vouchers[0]&.line_item_prepay_discount_in&.unit_amount]
+        elsif transaction_type_is_sales_purchase?
+          [redeemed_vouchers[0]&.article_code, unit_amount, redeemed_vouchers[0]&.line_item_sales_discount&.unit_amount]
+        end
+      end
+
+      def associated_discount
+        if transaction_type_is_sales_purchase?
+          redeemed_vouchers[0]&.line_item_sales_discount
+
+        elsif transaction_type_is_prepay_in?
+          issued_vouchers[0]&.line_item_prepay_discount_in
+
+        elsif transaction_type_is_prepay_out?
+          redeemed_prepay_vouchers[0]&.line_item_prepay_discount_out
+        end
       end
 
     end

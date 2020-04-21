@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :article, :class => Refinery::Business::Article do
+    account
     sequence(:code) { |n| "WORK-DAY-#{n}" }
     name { 'Work Man Day' }
     is_sold { true }

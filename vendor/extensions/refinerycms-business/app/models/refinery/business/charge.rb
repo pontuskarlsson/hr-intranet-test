@@ -121,26 +121,31 @@ module Refinery
 
             matching_discounts[prepay_in] = prepay_discount_in unless prepay_discount_in.nil?
 
-            valid_from = invoice.invoice_for_month || invoice.invoice_date
-
-            issued_vouchers << invoice.company.vouchers.build(
-                article: article,
+            issued_vouchers << new_voucher(invoice, {
                 line_item_prepay_in: prepay_in,
                 line_item_prepay_discount_in: prepay_discount_in,
-                base_amount: base_amount,
-                discount_type: discount_type,
-                discount_amount: discount_type == 'fixed_amount' ? discount_amount : nil,
-                discount_percentage: discount_type == 'percentage' ? discount_amount * 0.01 : nil,
-                amount: unit_amount,
-                currency_code: invoice.currency_code,
-                valid_from: valid_from,
-                valid_to: valid_from + 1.year - 1.day,
-                source: 'invoice',
-            )
+            })
           end
         end
 
         [issued_vouchers, matching_discounts]
+      end
+
+      def new_voucher(invoice, attributes = {})
+        valid_from = invoice.invoice_for_month || invoice.invoice_date
+
+        invoice.company.vouchers.build(attributes.merge(
+            article: article,
+            base_amount: base_amount,
+            discount_type: discount_type,
+            discount_amount: discount_type == 'fixed_amount' ? discount_amount : nil,
+            discount_percentage: discount_type == 'percentage' ? discount_amount * 0.01 : nil,
+            currency_code: invoice.currency_code,
+            amount: unit_amount,
+            valid_from: valid_from,
+            valid_to: valid_from + 1.year - 1.day,
+            source: 'invoice',
+        ))
       end
     end
   end

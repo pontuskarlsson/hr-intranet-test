@@ -9,6 +9,22 @@ FactoryBot.define do
       article { |evaluator| FactoryBot.create(:article_voucher, account: evaluator.invoice.account) }
       unit_amount { |evaluator| evaluator.article.sales_unit_price }
       quantity { 1.0 }
+
+      factory :invoice_item_prepay_in_with_voucher do
+        after(:create) do |invoice_item, evaluator|
+          invoice_item.quantity.to_i.times do
+            FactoryBot.create(:voucher, company: evaluator.invoice.company, article: evaluator.article, line_item_prepay_in: invoice_item)
+          end
+        end
+      end
+
+      factory :invoice_item_prepay_in_with_redeemed_voucher do
+        after(:create) do |invoice_item, evaluator|
+          invoice_item.quantity.to_i.times do
+            FactoryBot.create(:redeemed_voucher, company: evaluator.invoice.company, article: evaluator.article, line_item_prepay_in: invoice_item)
+          end
+        end
+      end
     end
 
     factory :invoice_item_prepay_out do

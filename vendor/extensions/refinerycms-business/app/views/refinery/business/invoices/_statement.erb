@@ -91,17 +91,20 @@
       end
     end
     %>
+
+    <%# Issued Vouchers %>
     <% invoice.minimums.each do |charge| %>
       <% if charge.qty > 0 %>
         <tr>
-          <td><%=number_with_precision charge.qty, strip_insignificant_zeros: true %></td>
-          <td><%= charge.article&.name %> - Minimum</td>
+          <td><%=number_with_precision charge.qty + charge.additional_qty, strip_insignificant_zeros: true %></td>
+          <td><%= charge.article&.name %> - Issued</td>
           <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
           <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
           <td class="currency"><%=number_to_currency charge.total_amount, unit: '' %></td>
         </tr>
       <% end %>
     <% end %>
+    <% if false %>
     <% invoice.minimums.each do |charge| %>
       <% if charge.additional_qty > 0 %>
         <tr>
@@ -113,28 +116,59 @@
         </tr>
       <% end %>
     <% end %>
-    <%- redeemed_vouchers = {} %>
-    <% invoice.invoice_items.sales_purchase.group_by(&:item_code).each_pair do |item_code, invoice_items| %>
+    <% end %>
+
+    <%# Sold Products & Services %>
+    <% invoice.invoice_items.sales_purchase.each do |invoice_item| %>
+      <tr>
+        <td><%=number_with_precision invoice_item.quantity, strip_insignificant_zeros: true %></td>
+        <td><%= invoice_item.article&.name %></td>
+        <td class="currency"><%=number_to_currency invoice_item.unit_amount, unit: '' %></td>
+        <td class="currency"><%=number_to_currency invoice_item.associated_discount&.unit_amount || '', unit: '' %></td>
+        <td class="currency"><%=number_to_currency invoice_item.line_amount + (invoice_item.associated_discount&.line_amount || 0), unit: '' %></td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td colspan="5" class="currency">&nbsp;</td>
+    </tr>
+    <tr>
+      <th colspan="5">Redeemed Credits</th>
+    </tr>
+
+    <%# Redeemed Vouchers %>
+    <% invoice.invoice_items.sales_purchase.group_by(&:invoice_voucher_combo).each_pair do |invoice_voucher_combo, invoice_items| %>
       <%-
-        redeemed_vouchers[item_code] ||= []
-      %>
-      <tr>
-        <td><%=number_with_precision invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.quantity }, strip_insignificant_zeros: true %></td>
-        <td><%= invoice_items[0]&.redeemed_prepay_vouchers&.first&.article&.name %> - Redeemed</td>
-        <td class="currency">&nbsp;</td>
-        <td class="currency">&nbsp;</td>
-        <td class="currency"><%=number_to_currency 0, unit: '' %></td>
-      </tr>
+        sum_qty_by_issued_invoice = invoice_items.each_with_object({}) { |invoice_item, acc|
+          invoice_item.redeemed_vouchers.each do |voucher|
+            issued_by_invoice = voucher.line_item_prepay_in.present? ? voucher.line_item_prepay_in.invoice : invoice
+            acc[issued_by_invoice] ||= 0
+            acc[issued_by_invoice] += 1
+          end
+        }
+        voucher_code, base_amount, discount = invoice_voucher_combo[0], invoice_voucher_combo[1], invoice_voucher_combo[2]
+      -%>
+      <% sum_qty_by_issued_invoice.each_pair do |issued_by_invoice, sum_qty| %>
+        <tr>
+          <td><%=number_with_precision sum_qty, strip_insignificant_zeros: true %></td>
+          <td>
+            <%= invoice.account.articles.find_by_label(voucher_code)&.name || 'Credits' %>
+            from
+            <% if issued_by_invoice == invoice %>
+              this invoice
+            <% else %>
+              <%= issued_by_invoice.statement_number %>
+              Issued
+              <%= issued_by_invoice.display_invoice_date %>
+            <% end %>
+          </td>
+          <td class="currency"><%=number_to_currency -base_amount, unit: '' %></td>
+          <td class="currency"><%=number_to_currency discount && discount < 0 ? -discount : '', unit: '' %></td>
+          <td class="currency"><%=number_to_currency -sum_qty * (base_amount + discount.to_f), unit: '' %></td>
+        </tr>
+      <% end %>
     <% end %>
-    <% invoice.invoice_items.prepay_out.group_by(&:item_code).each_pair do |item_code, invoice_items| %>
-      <tr>
-        <td><%=number_with_precision invoice_items.reduce(0) { |acc, invoice_item| acc + invoice_item.quantity }, strip_insignificant_zeros: true %></td>
-        <td><%= invoice_items[0]&.redeemed_prepay_vouchers&.first&.article&.name %> - Redeemed</td>
-        <td class="currency">&nbsp;</td>
-        <td class="currency">&nbsp;</td>
-        <td class="currency"><%=number_to_currency 0, unit: '' %></td>
-      </tr>
-    <% end %>
+
     </tbody>
     <tfoot>
     <tr>
@@ -256,16 +290,6 @@
             <td>Final Insp. Pass Rate</td>
             <td class="number"><%=number_to_percentage @invoice.final_insp_pass_rate * 100, strip_insignificant_zeros: true %></td>
           </tr>
-          <% if false %>
-          <tr>
-            <td>In-line Defects Found</td>
-            <td class="number"><%=number_with_precision @invoice.inline_defects_found, strip_insignificant_zeros: true %></td>
-          </tr>
-          <tr>
-            <td>In-line Defects Fixable?</td>
-            <td class="number"><%=number_with_precision @invoice.inline_defects_fixable, strip_insignificant_zeros: true %></td>
-          </tr>
-          <% end %>
           </tbody>
         </table>
       </td>

@@ -155,6 +155,14 @@ module Refinery
         self.plan_additionals = nil
       end
 
+      def statement_number
+        if purchase.nil?
+          invoice_number
+        else
+          invoice_number.gsub('INV', 'REC')
+        end
+      end
+
       def number_of_man_days
         billables.sum(:qty)
       end
@@ -192,18 +200,6 @@ module Refinery
           @_inspections
         else
           @_inspections.select { |i| i.inspection_type == inspection_type.to_s }
-        end
-      end
-
-      def inline_defects_found
-        billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.select(&:inspection_type_is_in_line?).reduce(0) do |acc, inspection|
-          acc + inspection.total_defects
-        end
-      end
-
-      def inline_defects_fixable
-        billables.map(&:quality_assurance_jobs).flatten.map(&:inspection).compact.select(&:inspection_type_is_in_line?).reduce(0) do |acc, inspection|
-          acc + inspection.total_defects_fixable
         end
       end
 
