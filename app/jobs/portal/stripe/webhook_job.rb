@@ -92,7 +92,7 @@ module Portal
               currency_rate: ::Refinery::Business::Invoice::CURRENCY_RATES[currency_code],
               date: purchase.created_at,
               due_date: purchase.created_at,
-              reference: "Invoice for Prepayment (#{purchase.created_at.strftime("%Y-%m-%d")})"
+              reference: "Receipt for Prepayment (#{purchase.created_at.strftime("%Y-%m-%d")})"
           )
 
           # Set contact

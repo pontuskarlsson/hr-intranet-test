@@ -82,7 +82,7 @@ module Refinery
       end
 
       def doubled?
-        options['doubled']
+        unit_amount == base_amount / 2
       end
 
       def promo

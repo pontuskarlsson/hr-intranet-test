@@ -89,7 +89,7 @@ module Refinery
                 article_sales_unit_price,
                 discount_amount,
                 'fixed_amount',
-                { 'doubled' => true, 'promo' => discount_code }
+                { 'promo' => discount_code }
             )
         ]
       end
