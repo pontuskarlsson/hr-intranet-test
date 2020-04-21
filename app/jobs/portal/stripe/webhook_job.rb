@@ -40,28 +40,15 @@ module Portal
           object = data['object']
           purchase = ::Refinery::Business::Purchase.find_by_happy_rabbit_reference_id! object['client_reference_id']
           purchase.status = 'paid'
-          purchase.webhook_object = object
+          purchase.webhook_object = object.to_hash
+          purchase.stripe_payment_intent_id = object['payment_intent']
+
+          payment_intent = Stripe::PaymentIntent.retrieve purchase.stripe_payment_intent_id
+          purchase.card_object = payment_intent.charges.data[0].payment_method_details.card.to_hash
+
           purchase.save!
 
           process_invoice!(purchase)
-
-          # base_amount = purchase.sub_total_cost / purchase.qty.to_i
-          # discount_amount = purchase.total_discount / purchase.qty.to_i
-          #
-          # vouchers = purchase.no_of_credits.times.map do
-          #   purchase.company.vouchers.create!(
-          #       article: purchase.article,
-          #       status: 'active',
-          #       source: 'purchase',
-          #       discount_type: 'fixed_amount',
-          #       base_amount: base_amount,
-          #       discount_amount: discount_amount,
-          #       amount: base_amount + discount_amount,
-          #       currency_code: 'usd',
-          #       valid_from: purchase.created_at.to_date,
-          #       valid_to: purchase.created_at.to_date + 1.year - 1.day
-          #   )
-          # end
         end
       end
 

@@ -9,7 +9,7 @@ module Refinery
 
 
 
-      store :meta, accessors: [:article_code, :qty, :webhook_object]
+      store :meta, accessors: [:article_code, :qty, :webhook_object, :card_object]
 
       delegate :name, :description, :sales_unit_price, to: :article, prefix: true, allow_nil: true
 
