@@ -134,11 +134,16 @@
         <td class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></td>
       </tr>
       <tr>
-        <td class="currency">Invoice Total, <%= @invoice.currency_code %></td>
+        <td class="currency">Total, <%= @invoice.currency_code %></td>
         <td class="currency"><%=number_to_currency @invoice.total_amount, unit: '' %></td>
       </tr>
       <tr>
-        <td class="currency">Paid by Credit Card</td>
+        <td class="currency">
+          Paid by Credit Card
+          <% if @invoice.purchase.card_last4.present? %>
+            ending in <%= @invoice.purchase.card_last4 %>
+          <% end %>
+        </td>
         <td class="currency"><%=number_to_currency -@invoice.total_amount, unit: '' %></td>
       </tr>
       <tr>

@@ -94,6 +94,10 @@ module Refinery
         ]
       end
 
+      def card_last4
+        card_object && card_object['last4']
+      end
+
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
 
