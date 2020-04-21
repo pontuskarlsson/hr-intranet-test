@@ -118,7 +118,7 @@ module Refinery
       scope :reserved, -> { where(status: 'reserved') }
       scope :redeemed, -> { where(status: 'redeemed') }
       scope :expired, -> { where(status: 'expired') }
-      scope :valid_for_date, -> (date) { where("#{table_name}.valid_from <= :date AND #{table_name}.valid_to >= :date", date: date) }
+      scope :valid_for_date, -> (date) { where("#{table_name}.valid_to >= :date", date: date) }
       scope :first_in_first_out, -> { order(code: :asc) }
 
       def self.for_user_roles(user, role_titles = nil)
