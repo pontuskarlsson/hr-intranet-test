@@ -41,7 +41,7 @@ module Portal
           purchase = ::Refinery::Business::Purchase.find_by_happy_rabbit_reference_id! object['client_reference_id']
           purchase.status = 'paid'
           purchase.webhook_object = object.to_hash
-          purchase.stripe_payment_intent_id = object['payment_intent']
+          purchase.stripe_payment_intent_id = purchase.webhook_object['payment_intent']
 
           payment_intent = Stripe::PaymentIntent.retrieve purchase.stripe_payment_intent_id
           purchase.card_object = payment_intent.charges.data[0].payment_method_details.card.to_hash

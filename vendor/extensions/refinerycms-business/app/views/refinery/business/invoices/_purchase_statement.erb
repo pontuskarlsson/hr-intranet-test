@@ -139,9 +139,10 @@
       </tr>
       <tr>
         <td class="currency">
-          Paid by Credit Card
           <% if @invoice.purchase.card_last4.present? %>
-            ending in <%= @invoice.purchase.card_last4 %>
+            Paid by <%= @invoice.purchase.card_brand %> ****<%= @invoice.purchase.card_last4 %>
+          <% else %>
+            Paid by Credit Card
           <% end %>
         </td>
         <td class="currency"><%=number_to_currency -@invoice.total_amount, unit: '' %></td>

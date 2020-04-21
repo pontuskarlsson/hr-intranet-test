@@ -98,6 +98,10 @@ module Refinery
         card_object && card_object['last4']
       end
 
+      def card_brand
+        card_object && card_object['brand']&.titlecase
+      end
+
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
 
