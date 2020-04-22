@@ -114,24 +114,17 @@ module Refinery
         quantity * unit_amount unless quantity.nil? || unit_amount.nil?
       end
 
-      def invoice_voucher_combo
-        if transaction_type_is_prepay_in?
-          [item_code, unit_amount, issued_vouchers[0]&.line_item_prepay_discount_in&.unit_amount]
-        elsif transaction_type_is_sales_purchase?
-          [redeemed_vouchers[0]&.article_code, unit_amount, redeemed_vouchers[0]&.line_item_sales_discount&.unit_amount]
+      def vouchers_by_issued_invoice
+        redeemed_vouchers.group_by do |v|
+          [
+              v.line_item_prepay_discount_in&.invoice || invoice,
+              v.discount_amount
+          ]
         end
       end
 
-      def associated_discount
-        if transaction_type_is_sales_purchase?
-          redeemed_vouchers[0]&.line_item_sales_discount
-
-        elsif transaction_type_is_prepay_in?
-          issued_vouchers[0]&.line_item_prepay_discount_in
-
-        elsif transaction_type_is_prepay_out?
-          redeemed_prepay_vouchers[0]&.line_item_prepay_discount_out
-        end
+      def vouchers_by_discount
+        redeemed_vouchers.group_by(&:discount_amount)
       end
 
     end
