@@ -9,6 +9,7 @@ module Portal
       def perform
         case type
         when 'checkout.session.completed' then perform_checkout_session
+        when 'payout.paid' then perform_payout
         else raise 'Unknown object'
         end
       end
@@ -44,8 +45,9 @@ module Portal
           purchase.stripe_payment_intent_id = purchase.webhook_object['payment_intent']
 
           payment_intent = Stripe::PaymentIntent.retrieve purchase.stripe_payment_intent_id
-          purchase.card_object = payment_intent.charges.data[0].payment_method_details.card.to_hash
 
+          purchase.card_object = payment_intent.charges.first.payment_method_details.card.to_hash
+          purchase.stripe_charge_id = payment_intent.charges.first.id
           purchase.save!
 
           process_invoice!(purchase)
@@ -58,6 +60,8 @@ module Portal
 
         sync_invoices = ::Refinery::Business::Xero::Sync::Invoices.new account, errors
         purchase.invoice = sync_invoices.sync! xero_invoice, is_managed: true
+        purchase.invoice.invoice_number = purchase.invoice.invoice_number.gsub('INV', 'REC')
+        purchase.invoice.save!
         purchase.save!
 
         form = Refinery::Business::PurchaseInvoiceBuildForm.new_in_model(purchase.invoice)
@@ -92,7 +96,7 @@ module Portal
               currency_rate: ::Refinery::Business::Invoice::CURRENCY_RATES[currency_code],
               date: purchase.created_at,
               due_date: purchase.created_at,
-              reference: "Receipt for Prepayment (#{purchase.created_at.strftime("%Y-%m-%d")})"
+              reference: purchase.stripe_payment_intent_id, # "Receipt for Prepayment (#{purchase.created_at.strftime("%Y-%m-%d")})"
           )
 
           # Set contact
@@ -154,6 +158,41 @@ module Portal
 
       def errors
         @errors ||= []
+      end
+
+      def perform_payout
+        ActiveRecord::Base.transaction do
+          object = data['object']
+
+          payout_id = object['id']
+          balance_transactions = Stripe::BalanceTransaction.list(payout: payout_id, type: 'charge')
+          process_transactions payout_id, balance_transactions
+
+          # Send batch notification email to the users with unopened notifications of specified key in 1 hour
+          Refinery::Authentication::Devise::User.send_batch_unopened_notification_email(
+              batch_key: 'batch.invoice.payout',
+              filtered_by_key: 'invoice.payout',
+              custom_filter: ["created_at >= ?", 5.minutes.ago]
+          )
+        end
+      end
+
+      def process_transactions(payout_id, list)
+        list.each do |balance_transaction|
+          if (purchase = ::Refinery::Business::Purchase.find_by(stripe_charge_id: balance_transaction.source)).present?
+            purchase.stripe_payout_id = payout_id
+            purchase.save!
+
+            if purchase.invoice.present?
+              purchase.invoice.reference = payout_id
+              purchase.invoice.save!
+
+              purchase.invoice.notify :'refinery/authentication/devise/users', key: 'invoice.payout'
+            end
+          end
+        end
+
+        process_transactions payout_id, list.next_page if list.has_more
       end
 
     end

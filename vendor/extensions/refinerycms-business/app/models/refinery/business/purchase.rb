@@ -32,6 +32,7 @@ module Refinery
       validates :stripe_checkout_session_id, uniqueness: true, allow_blank: true
       validates :stripe_payment_intent_id, uniqueness: true, allow_blank: true
       validates :stripe_event_id, uniqueness: true, allow_blank: true
+      validates :stripe_charge_id, uniqueness: true, allow_blank: true
       validates :sub_total_cost, numericality: { greater_than: 0 }
       validates :total_discount, numericality: { less_than_or_equal_to: 0 }
       validates :total_cost, numericality: { greater_than_or_equal_to: 0 }

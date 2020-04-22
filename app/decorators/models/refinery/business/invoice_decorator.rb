@@ -16,7 +16,7 @@ Refinery::Business::Invoice.class_eval do
 
   def is_email_allowed?(target, key)
     # Do not send out emails for notifications that will be batch notified afterwards.
-    !%w(invoice.prepared).include? key
+    !%w(invoice.prepared invoice.payout).include? key
   end
 
   def printable_name

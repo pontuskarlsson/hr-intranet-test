@@ -1,0 +1,32 @@
+<p>Dear <%= @target.printable_target_name %>,</p>
+
+<p>A payout from Stripe has just been paid, see reference <%= @notifications[0].notifiable&.reference %>.</p>
+
+<p style="margin: 0 0 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<table style="margin-bottom: 10px;">
+  <thead>
+  <tr>
+    <th>Invoice</th>
+    <th>Date</th>
+    <th>Customer</th>
+    <th>Total</th>
+    <th>Xero</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @notifications.each do |notification| %>
+    <%- invoice = notification.notifiable %>
+    <tr>
+      <td><%= link_to invoice.invoice_number, move_notification_url_for(notification, open: true) %></td>
+      <td><%= invoice.display_invoice_date %></td>
+      <td><%= invoice.company_label %></td>
+      <td><%=number_to_currency invoice.total_amount, unit: invoice.currency_code %></td>
+      <td><% link_to 'View in Xero', "https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=#{invoice.invoice_id}" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

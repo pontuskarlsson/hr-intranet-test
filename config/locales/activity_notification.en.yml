@@ -41,6 +41,10 @@ en:
 
     user:
       batch:
+        invoice:
+          payout:
+            mail_subject: 'Payout received'
+
         shipment:
           status_request:
             mail_subject: 'Status Request for Shipments - %{current_date}'
