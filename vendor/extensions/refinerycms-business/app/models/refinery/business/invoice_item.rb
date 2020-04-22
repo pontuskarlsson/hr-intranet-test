@@ -117,7 +117,7 @@ module Refinery
       def vouchers_by_issued_invoice
         redeemed_vouchers.group_by do |v|
           [
-              v.line_item_prepay_discount_in&.invoice || invoice,
+              v.line_item_prepay_in&.invoice || invoice,
               v.discount_amount
           ]
         end
