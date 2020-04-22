@@ -1,29 +1,39 @@
 <% if job.inspection.present? %>
   <h3>Inspection Details</h3>
-  <table class="cc-table">
-    <tbody>
-    <tr>
-      <th style="width: 150px;">&nbsp;</th>
-      <td><%= link_to 'View Inspection', refinery.quality_assurance_inspection_path(job.inspection) %></td>
-    </tr>
-    <tr>
-      <th>Date</th>
-      <td><%= job.inspection.display_inspection_date %></td>
-    </tr>
-    <tr>
-      <th>Supplier</th>
-      <td><%= job.inspection.supplier_label %></td>
-    </tr>
-    <tr>
-      <th>Manufacturer</th>
-      <td><%= job.inspection.manufacturer_label %></td>
-    </tr>
-    <tr>
-      <th>Inspected By</th>
-      <td><%= job.inspection.inspected_by_name %></td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="grid-x grid-padding-x">
+    <div class="cell medium-6">
+      <table class="cc-table">
+        <tbody>
+        <tr>
+          <th style="width: 150px;">&nbsp;</th>
+          <td><%= link_to 'View Inspection', refinery.quality_assurance_inspection_path(job.inspection) %></td>
+        </tr>
+        <tr>
+          <th>Date</th>
+          <td><%= job.inspection.display_inspection_date %></td>
+        </tr>
+        <tr>
+          <th>Supplier</th>
+          <td><%= job.inspection.supplier_label %></td>
+        </tr>
+        <tr>
+          <th>Manufacturer</th>
+          <td><%= job.inspection.manufacturer_label %></td>
+        </tr>
+        <tr>
+          <th>Inspected By</th>
+          <td><%= job.inspection.inspected_by_name %></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cell medium-6">
+      <% if job.inspection.inspection_photo.present? %>
+        <%= dragonfly_reveal_tag job.inspection.inspection_photo.image %>
+      <% end %>
+    </div>
+  </div>
 
   <h3>Order / Product</h3>
   <table class="cc-table">
