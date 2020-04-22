@@ -165,8 +165,8 @@ module Portal
           object = data['object']
 
           payout_id = object['id']
-          balance_transactions = Stripe::BalanceTransaction.list(payout: payout_id, type: 'charge')
-          process_transactions payout_id, balance_transactions
+          list = Stripe::BalanceTransaction.list(payout: payout_id, type: 'charge')
+          process_transactions payout_id, list
 
           # Send batch notification email to the users with unopened notifications of specified key in 1 hour
           Refinery::Authentication::Devise::User.send_batch_unopened_notification_email(
@@ -185,7 +185,7 @@ module Portal
 
             if purchase.invoice.present?
               purchase.invoice.reference = payout_id
-              purchase.invoice.save!
+              push_invoice_to_xero purchase.invoice
 
               purchase.invoice.notify :'refinery/authentication/devise/users', key: 'invoice.payout'
             end
@@ -193,6 +193,15 @@ module Portal
         end
 
         process_transactions payout_id, list.next_page if list.has_more
+      end
+
+      def push_invoice_to_xero(invoice)
+        account = invoice.account
+        xero_authorization = account.omni_authorizations.xero.first
+
+        syncer = Refinery::Business::Xero::Syncer.new account, xero_authorization
+
+        syncer.push_invoice invoice
       end
 
     end

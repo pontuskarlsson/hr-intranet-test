@@ -13,6 +13,7 @@ module Refinery
           }.freeze
 
           UPDATE_ATTRIBUTES = {
+              invoice_number: 'invoice_number',
               reference: 'reference',
               date: 'invoice_date',
               due_date: 'due_date',
