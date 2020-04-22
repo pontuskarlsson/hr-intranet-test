@@ -26,7 +26,7 @@ module Refinery
       configure_enumerables :source,        SOURCES
       configure_label :description
 
-      delegate :applicable_to?, :code, to: :article, prefix: true, allow_nil: true
+      delegate :applicable_to?, :code, :name, to: :article, prefix: true, allow_nil: true
 
       validates :status,          inclusion: STATUSES
       validates :discount_type,   inclusion: DISCOUNT_TYPES, allow_blank: true

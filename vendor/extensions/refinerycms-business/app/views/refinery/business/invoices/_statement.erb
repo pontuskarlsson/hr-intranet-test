@@ -144,7 +144,7 @@
         <tr>
           <td><%=number_with_precision vouchers.count, strip_insignificant_zeros: true %></td>
           <td>
-            <%= invoice_item.article&.name %>
+            <%= vouchers[0].article_name %>
             from
             <% if issued_by_invoice == invoice %>
               this invoice
