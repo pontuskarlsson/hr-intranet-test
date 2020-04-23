@@ -25,7 +25,7 @@
       <td><%= invoice.display_invoice_date %></td>
       <td><%= invoice.company_label %></td>
       <td><%=number_to_currency invoice.total_amount, unit: invoice.currency_code %></td>
-      <td><% link_to 'View in Xero', "https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=#{invoice.invoice_id}" %></td>
+      <td><%= link_to 'View in Xero', "https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=#{invoice.invoice_id}" %></td>
     </tr>
   <% end %>
   </tbody>
