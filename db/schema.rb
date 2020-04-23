@@ -829,6 +829,7 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.datetime "updated_at", null: false
     t.text "zendesk_meta"
     t.bigint "zendesk_id"
+    t.text "requested_services"
     t.index ["archived_at"], name: "index_refinery_business_requests_on_archived_at"
     t.index ["code"], name: "index_refinery_business_requests_on_code"
     t.index ["company_id"], name: "index_refinery_business_requests_on_company_id"
