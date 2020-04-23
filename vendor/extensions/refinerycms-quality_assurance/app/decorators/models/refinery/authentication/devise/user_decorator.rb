@@ -22,13 +22,15 @@ Refinery::Authentication::Devise::User.class_eval do
   scope :for_722, -> (h) {
     product_category, supplier_label = h[:product_category], h[:supplier_label]
 
+    leadertek_users = where(arel_table[:email].matches("%@leadertek.cn"))
+
     if product_category == 'Bags'
-      where(email: %w(johan.astroem@fjallraven.se johanna.adner@fjallraven.se sara.gunnebjoerk@fjallraven.se))
+      leadertek_users.or(where(email: %w(johan.astroem@fjallraven.se johanna.adner@fjallraven.se sara.gunnebjoerk@fjallraven.se)))
 
     else
       case supplier_label
-      when 'Dongguan Manhattan Outdoor Clothing Co., Ltd' then where(email: %w(emma.pettersson@fjallraven.se sara.gunnebjoerk@fjallraven.se))
-      else where(email: %w(emma.pettersson@fjallraven.se sara.gunnebjoerk@fjallraven.se laura.awan@fjallraven.se maria.pettersson@fjallraven.se))
+      when 'Dongguan Manhattan Outdoor Clothing Co., Ltd', 'Yangzhou Jinquan Travelling Goods Co., Ltd' then leadertek_users.or(where(email: %w(emma.pettersson@fjallraven.se sara.gunnebjoerk@fjallraven.se)))
+      else leadertek_users.or(where(email: %w(emma.pettersson@fjallraven.se sara.gunnebjoerk@fjallraven.se laura.awan@fjallraven.se maria.pettersson@fjallraven.se)))
       end
     end
   }
