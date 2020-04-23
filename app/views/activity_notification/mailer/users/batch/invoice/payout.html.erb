@@ -13,18 +13,35 @@
     <th>Invoice</th>
     <th>Date</th>
     <th>Customer</th>
-    <th>Total</th>
+    <th>Gross, USD</th>
+    <th>Gross, HKD</th>
+    <th>Fees, HKD</th>
+    <th>Net, HKD</th>
     <th>Xero</th>
   </tr>
   </thead>
   <tbody>
+  <%- charges = {} %>
+  <%- txns = {} %>
   <% @notifications.each do |notification| %>
     <%- invoice = notification.notifiable %>
+    <%-
+      charge = nil
+      txn = nil
+      begin
+        charge = charges[invoice.stripe_charge_id]  ||= Stripe::Charge.retrieve invoice.stripe_charge_id if invoice.stripe_charge_id.present?
+        txn = txns[charge.balance_transaction]      ||= Stripe::BalanceTransaction.retrieve charge.balance_transaction if charge.present?
+      rescue StandardError => e
+      end
+    %>
     <tr>
       <td><%= link_to invoice.invoice_number, move_notification_url_for(notification, open: true) %></td>
       <td><%= invoice.display_invoice_date %></td>
       <td><%= invoice.company_label %></td>
-      <td><%=number_to_currency invoice.total_amount, unit: invoice.currency_code %></td>
+      <td><%=number_to_currency charge&.amount / 100.0, unit: "#{charge&.currency&.upcase} " %></td>
+      <td><%=number_to_currency txn&.amount / 100.0,    unit: "#{txn&.currency&.upcase} " %></td>
+      <td><%=number_to_currency txn&.fee / 100.0,       unit: "#{txn&.currency&.upcase} " %></td>
+      <td><%=number_to_currency txn&.net / 100.0,       unit: "#{txn&.currency&.upcase} " %></td>
       <td><%= link_to 'View in Xero', "https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=#{invoice.invoice_id}" %></td>
     </tr>
   <% end %>
