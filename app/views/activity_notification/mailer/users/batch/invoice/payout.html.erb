@@ -38,10 +38,10 @@
       <td><%= link_to invoice.invoice_number, move_notification_url_for(notification, open: true) %></td>
       <td><%= invoice.display_invoice_date %></td>
       <td><%= invoice.company_label %></td>
-      <td><%=number_to_currency charge&.amount / 100.0, unit: "#{charge&.currency&.upcase} " %></td>
-      <td><%=number_to_currency txn&.amount / 100.0,    unit: "#{txn&.currency&.upcase} " %></td>
-      <td><%=number_to_currency txn&.fee / 100.0,       unit: "#{txn&.currency&.upcase} " %></td>
-      <td><%=number_to_currency txn&.net / 100.0,       unit: "#{txn&.currency&.upcase} " %></td>
+      <td><%= charge && number_to_currency(charge.amount / 100.0, unit: "#{charge.currency.upcase} ") %></td>
+      <td><%=txn && number_to_currency(txn.amount / 100.0,    unit: "#{txn.currency.upcase} ") %></td>
+      <td><%=txn && number_to_currency(txn.fee / 100.0,       unit: "#{txn.currency.upcase} ") %></td>
+      <td><%=txn && number_to_currency(txn.net / 100.0,       unit: "#{txn.currency.upcase} ") %></td>
       <td><%= link_to 'View in Xero', "https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=#{invoice.invoice_id}" %></td>
     </tr>
   <% end %>
