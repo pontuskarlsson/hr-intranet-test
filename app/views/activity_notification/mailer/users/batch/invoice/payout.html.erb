@@ -25,11 +25,12 @@
   <%- txns = {} %>
   <% @notifications.each do |notification| %>
     <%- invoice = notification.notifiable %>
+    <%- purchase = invoice.purchase %>
     <%-
       charge = nil
       txn = nil
       begin
-        charge = charges[invoice.stripe_charge_id]  ||= Stripe::Charge.retrieve invoice.stripe_charge_id if invoice.stripe_charge_id.present?
+        charge = charges[purchase.stripe_charge_id] ||= Stripe::Charge.retrieve purchase.stripe_charge_id if purchase&.stripe_charge_id.present?
         txn = txns[charge.balance_transaction]      ||= Stripe::BalanceTransaction.retrieve charge.balance_transaction if charge.present?
       rescue StandardError => e
       end
