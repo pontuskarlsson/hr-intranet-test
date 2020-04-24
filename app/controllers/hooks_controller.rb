@@ -90,7 +90,7 @@ class HooksController < ApplicationController
   end
 
   def parse_topo
-    Delayed::Job.enqueue(TopoWebhookJob.new(params[:hook] && params[:hook].to_unsafe_h))
+    Delayed::Job.enqueue(TopoWebhookJob.new(params[:hook] && params[:hook].to_unsafe_h.to_hash))
   end
 
   def parse_wip
