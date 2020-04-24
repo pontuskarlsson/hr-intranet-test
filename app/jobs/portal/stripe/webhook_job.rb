@@ -62,6 +62,10 @@ module Portal
         purchase.invoice = sync_invoices.sync! xero_invoice, is_managed: true
         purchase.invoice.invoice_number = purchase.invoice.invoice_number.gsub('INV', 'REC')
         purchase.invoice.save!
+
+        purchase.invoice.update_stripe_ref! 'StripePI', purchase.stripe_payment_intent_id
+        purchase.invoice.update_stripe_ref! 'StripeCH', purchase.stripe_charge_id
+
         purchase.save!
 
         form = Refinery::Business::PurchaseInvoiceBuildForm.new_in_model(purchase.invoice)
@@ -185,6 +189,7 @@ module Portal
 
             if purchase.invoice.present?
               purchase.invoice.reference = payout_id
+              purchase.invoice.update_stripe_ref! 'StripePO', purchase.stripe_payout_id
               push_invoice_to_xero purchase.invoice
 
               purchase.invoice.notify :'refinery/authentication/devise/users', key: 'invoice.payout'

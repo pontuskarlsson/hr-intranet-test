@@ -225,6 +225,16 @@ module Refinery
         item
       end
 
+      def update_stripe_ref!(type, ref = '')
+        if (invoice_item = invoice_items.informative.detect { |ii| ii.description["#{type}:"] }).present?
+          invoice_item.description = "#{type}: #{ref}"
+          invoice_item.save!
+        else
+          next_line_item_order = (invoice_items.max(:line_item_order) || 0) + 1
+          informative_item_per("#{type}: #{ref}", line_item_order: next_line_item_order).save!
+        end
+      end
+
       def self.from_params(params)
         active = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:active, true))
         archived = ActiveRecord::Type::lookup(:boolean).cast(params.fetch(:archived, true))

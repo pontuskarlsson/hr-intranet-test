@@ -9,6 +9,9 @@
         <div class="card-text"><%= document.display_document_type %></div>
       <% end %>
 
+      <div class="card-label">Created</div>
+      <div class="card-text"><%= document.created_at.strftime('%B %d, %Y %I:%M%p') %></div>
+
       <div class="card-label">Comments</div>
       <div class="card-text"><%= document.comments.presence || 'N/A' %></div>
 
