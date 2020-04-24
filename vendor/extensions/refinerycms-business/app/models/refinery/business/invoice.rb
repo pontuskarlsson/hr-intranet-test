@@ -230,7 +230,7 @@ module Refinery
           invoice_item.description = "#{type}: #{ref}"
           invoice_item.save!
         else
-          next_line_item_order = (invoice_items.max(:line_item_order) || 0) + 1
+          next_line_item_order = (invoice_items.maximum(:line_item_order) || 0) + 1
           informative_item_per("#{type}: #{ref}", line_item_order: next_line_item_order).save!
         end
       end
