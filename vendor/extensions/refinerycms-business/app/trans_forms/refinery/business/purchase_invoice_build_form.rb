@@ -111,9 +111,9 @@ module Refinery
 
         handled << invoice.informative_item_per("- - -", line_item_order: line_item_order += 1)
         handled << invoice.informative_item_per("- - - Stripe References", line_item_order: line_item_order += 1)
-        handled << invoice.informative_item_per("StripePI: ", line_item_order: line_item_order += 1)
-        handled << invoice.informative_item_per("StripeCH: ", line_item_order: line_item_order += 1)
-        handled << invoice.informative_item_per("StripePO: ", line_item_order: line_item_order += 1)
+        handled << invoice.informative_item_per("StripePI: #{invoice.purchase&.stripe_payment_intent_id}", line_item_order: line_item_order += 1)
+        handled << invoice.informative_item_per("StripeCH: #{invoice.purchase&.stripe_charge_id}", line_item_order: line_item_order += 1)
+        handled << invoice.informative_item_per("StripePO: #{invoice.purchase&.stripe_payout_id}", line_item_order: line_item_order += 1)
 
         # Any previously existing invoice items, that have not been added the to handled array, is no longer used
         # and can be removed

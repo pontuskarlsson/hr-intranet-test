@@ -63,9 +63,6 @@ module Portal
         purchase.invoice.invoice_number = purchase.invoice.invoice_number.gsub('INV', 'REC')
         purchase.invoice.save!
 
-        purchase.invoice.update_stripe_ref! 'StripePI', purchase.stripe_payment_intent_id
-        purchase.invoice.update_stripe_ref! 'StripeCH', purchase.stripe_charge_id
-
         purchase.save!
 
         form = Refinery::Business::PurchaseInvoiceBuildForm.new_in_model(purchase.invoice)
