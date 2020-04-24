@@ -43,11 +43,13 @@
           <% end %>
         </div>
 
-        <div class="tabs-panel" id="panel2v">
-          <section class="contact-card">
-            <%= render 'refinery/marketing/contacts/employees', contact: @company.contact %>
-          </section>
-        </div>
+        <% if @company.contact.present? %>
+          <div class="tabs-panel" id="panel2v">
+            <section class="contact-card">
+              <%= render 'refinery/marketing/contacts/employees', contact: @company.contact %>
+            </section>
+          </div>
+        <% end %>
 
         <% if page_role? Refinery::Business::ROLE_INTERNAL %>
           <div class="tabs-panel" id="panel3v">
