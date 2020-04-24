@@ -11,13 +11,13 @@
   <thead>
   <tr>
     <th>Invoice</th>
+    <th>Xero</th>
     <th>Date</th>
     <th>Customer</th>
-    <th>Gross, USD</th>
-    <th>Gross, HKD</th>
-    <th>Fees, HKD</th>
-    <th>Net, HKD</th>
-    <th>Xero</th>
+    <th style="text-align: right;">Gross, USD</th>
+    <th style="text-align: right;">Gross, HKD</th>
+    <th style="text-align: right;">Fees, HKD</th>
+    <th style="text-align: right;">Net, HKD</th>
   </tr>
   </thead>
   <tbody>
@@ -37,13 +37,13 @@
     %>
     <tr>
       <td><%= link_to invoice.invoice_number, move_notification_url_for(notification, open: true) %></td>
+      <td><%= link_to 'Go to', "https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=#{invoice.invoice_id}" %></td>
       <td><%= invoice.display_invoice_date %></td>
       <td><%= invoice.company_label %></td>
-      <td><%= charge && number_to_currency(charge.amount / 100.0, unit: "#{charge.currency.upcase} ") %></td>
-      <td><%=txn && number_to_currency(txn.amount / 100.0,    unit: "#{txn.currency.upcase} ") %></td>
-      <td><%=txn && number_to_currency(txn.fee / 100.0,       unit: "#{txn.currency.upcase} ") %></td>
-      <td><%=txn && number_to_currency(txn.net / 100.0,       unit: "#{txn.currency.upcase} ") %></td>
-      <td><%= link_to 'View in Xero', "https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=#{invoice.invoice_id}" %></td>
+      <td style="text-align: right;"><%= charge && number_to_currency(charge.amount / 100.0, unit: '') %></td>
+      <td style="text-align: right;"><%=txn && number_to_currency(txn.amount / 100.0,        unit: '') %></td>
+      <td style="text-align: right;"><%=txn && number_to_currency(txn.fee / 100.0,           unit: '') %></td>
+      <td style="text-align: right;"><%=txn && number_to_currency(txn.net / 100.0,           unit: '') %></td>
     </tr>
   <% end %>
   </tbody>

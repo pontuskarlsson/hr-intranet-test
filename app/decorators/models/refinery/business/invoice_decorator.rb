@@ -30,6 +30,7 @@ Refinery::Business::Invoice.class_eval do
   def overriding_notification_email_subject(target, key)
     case key
     when 'invoice.issued' then "Invoice #{invoice_number} has been issued"
+    when 'batch.invoice.payout' then "Stripe Payout"
     else "Invoice #{invoice_number}"
     end
   end
