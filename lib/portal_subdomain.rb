@@ -12,7 +12,7 @@ class PortalSubdomain
     if Rails.env.production?
       "#{portal}.happyrabbit.com"
     else
-      "#{portal}.happyrabbit.com:5000"
+      "#{portal}.happyrabbit.com:5005"
     end
   end
 

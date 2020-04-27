@@ -12,7 +12,7 @@ class WWWSubdomain
     if Rails.env.production?
       "#{www}.happyrabbit.com"
     else
-      "#{www}.happyrabbit.com:5000"
+      "#{www}.happyrabbit.com:5005"
     end
   end
 
