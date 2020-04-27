@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20200323131342) do
   create_table "delayed_jobs", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
-    t.text "handler", null: false
     t.text "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
@@ -46,6 +45,7 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.string "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text "handler", limit: 16777215
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
@@ -803,12 +803,18 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.text "meta"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "invoice_id"
+    t.string "stripe_charge_id"
+    t.string "stripe_payout_id"
     t.index ["company_id"], name: "index_refinery_business_purchases_on_company_id"
     t.index ["discount_code"], name: "index_refinery_business_purchases_on_discount_code"
+    t.index ["invoice_id"], name: "index_refinery_business_purchases_on_invoice_id"
     t.index ["status"], name: "index_refinery_business_purchases_on_status"
+    t.index ["stripe_charge_id"], name: "INDEX_r_b_purchases_ON_stripe_charge_id"
     t.index ["stripe_checkout_session_id"], name: "index_refinery_business_purchases_on_stripe_checkout_session_id"
     t.index ["stripe_event_id"], name: "index_refinery_business_purchases_on_stripe_event_id"
     t.index ["stripe_payment_intent_id"], name: "index_refinery_business_purchases_on_stripe_payment_intent_id"
+    t.index ["stripe_payout_id"], name: "INDEX_r_b_purchases_ON_stripe_payout_id"
     t.index ["user_id"], name: "index_refinery_business_purchases_on_user_id"
   end
 
