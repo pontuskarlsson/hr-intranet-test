@@ -1448,7 +1448,6 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text "fields"
     t.string "company_label"
     t.integer "inspection_photo_id"
     t.string "company_code"
@@ -1470,6 +1469,7 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.boolean "tp_available"
     t.boolean "tp_approved"
     t.text "tp_comments"
+    t.text "fields", limit: 16777215
     t.index ["assigned_to_id"], name: "index_qa_inspections_on_assigned_to_id"
     t.index ["brand_label"], name: "index_refinery_quality_assurance_inspections_on_brand_label"
     t.index ["business_product_id"], name: "index_qa_inspections_on_business_product_id"
