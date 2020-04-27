@@ -222,19 +222,19 @@
           <tbody>
           <tr>
             <td>Mandays</td>
-            <td class="number"><%=number_with_delimiter @invoice.number_of_man_days %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_man_days, strip_insignificant_zeros: true %></td>
           </tr>
           <tr>
             <td>Inspections</td>
-            <td class="number"><%=number_with_delimiter @invoice.number_of_inspections %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_inspections, strip_insignificant_zeros: true %></td>
           </tr>
           <tr>
             <td>Pieces Inspected</td>
-            <td class="number"><%=number_with_delimiter @invoice.number_of_pieces_inspected %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_pieces_inspected, strip_insignificant_zeros: true %></td>
           </tr>
           <tr>
             <td>Locations Visited</td>
-            <td class="number"><%=number_with_delimiter @invoice.number_of_locations %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_locations, strip_insignificant_zeros: true %></td>
           </tr>
           </tbody>
         </table>

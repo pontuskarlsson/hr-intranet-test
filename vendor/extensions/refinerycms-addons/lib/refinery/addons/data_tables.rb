@@ -121,7 +121,7 @@ module Refinery
                 end
 
                 if ar_col.type == :string
-                  acc = acc.where("#{klass.table_name}.#{ar_col.name} LIKE ?", "%#{val}%")
+                  acc = acc.where("#{klass.table_name}.#{ar_col.name} ILIKE ?", "%#{val}%")
 
                 elsif ar_col.type == :date
                   if val[':']
