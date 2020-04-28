@@ -14,7 +14,7 @@ Refinery::Authentication::Devise::User.class_eval do
       case h[:product_category]
       when 'Socks' then where(email: ['sarahjh.griffiths@hunterboots.com', 'lauren.hawker@hunterboots.com', 'wati.lim@hunterboots.com'])
       when 'Bags' then where(email: ['phil.hall@hunterboots.com', 'levant.gemal@hunterboots.com', 'lauren.hawker@hunterboots.com', 'wati.lim@hunterboots.com'])
-      else where(email: ['keely.duggan@hunterboots.com', 'lauren.hawker@hunterboots.com', 'wati.lim@hunterboots.com'])
+      else where(email: ['daniel.bshaw@hunterboots.com', 'keely.duggan@hunterboots.com', 'lauren.hawker@hunterboots.com', 'wati.lim@hunterboots.com'])
       end
     end
   }
