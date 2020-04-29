@@ -9,6 +9,7 @@
     <th>Due Date</th>
     <th data-dt-search-select="<%= ::Refinery::Business::Invoice::STATUSES.join(',') %>">Status</th>
     <th data-dt-search-input="true">Cur.</th>
+    <th data-dt-search-input="true" style="text-align: right;">Ex. Rate</th>
     <th style="text-align: right;">Tot. Amount</th>
     <th style="text-align: right;">Paid</th>
     <th style="text-align: right;">Due</th>
@@ -25,6 +26,7 @@
     <th>Due Date</th>
     <th>Status</th>
     <th>Cur.</th>
+    <th style="text-align: right;">Ex. Rate</th>
     <th style="text-align: right;">Tot. Amount</th>
     <th style="text-align: right;">Paid</th>
     <th style="text-align: right;">Due</th>
@@ -59,6 +61,7 @@
           { data: "due_date" },
           { data: "status" },
           { data: "currency_code" },
+          { data: "currency_rate" },
           { data: "total_amount", render: formatCurrency },
           { data: "amount_paid", render: formatCurrency },
           { data: "amount_due", render: formatCurrency }

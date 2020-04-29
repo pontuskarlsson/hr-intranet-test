@@ -34,7 +34,7 @@ module Refinery
       end
 
       def find_bill
-        @bill = invoices_scope.find(params[:id])
+        @bill = bills_scope.find(params[:id])
       rescue ::ActiveRecord::RecordNotFound
         error_404
       end

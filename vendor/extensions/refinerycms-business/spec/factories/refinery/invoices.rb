@@ -11,6 +11,12 @@ FactoryBot.define do
     is_managed { true }
 
 
+    factory :bill do
+      is_managed { false}
+      invoice_type { 'ACCPAY' }
+    end
+
+
     factory :invoice_with_id do
       invoice_id { SecureRandom.uuid }
     end
