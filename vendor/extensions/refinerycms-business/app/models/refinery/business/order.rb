@@ -46,7 +46,7 @@ module Refinery
           where(nil)
 
         else
-          where('1=0')
+          none
         end
       end
 

@@ -20,7 +20,7 @@ class Api::V1::QualityAssurance::InspectionsController < Api::V1::ApiController
           ::Refinery::QualityAssurance::Inspection.for_companies(current_resource_owner.companies)
 
         else
-          ::Refinery::QualityAssurance::Inspection.where('1=0')
+          ::Refinery::QualityAssurance::Inspection.none
         end
   end
 

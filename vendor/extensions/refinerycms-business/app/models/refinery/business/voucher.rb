@@ -129,7 +129,7 @@ module Refinery
         elsif titles.include? ROLE_EXTERNAL
           where(company_id: user.company_ids)
         else
-          where('1=0')
+          none
         end
       end
 

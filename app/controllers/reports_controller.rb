@@ -42,7 +42,7 @@ class ReportsController < ApplicationController
         elsif page_role? Refinery::QualityAssurance::ROLE_EXTERNAL
           Refinery::QualityAssurance::Inspection.for_companies(current_refinery_user.companies)
         else
-          Refinery::QualityAssurance::Inspection.where('1=0')
+          Refinery::QualityAssurance::Inspection.none
         end
   end
 

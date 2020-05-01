@@ -93,7 +93,7 @@ module Refinery
         elsif titles.include? ROLE_EXTERNAL
           user.companies
         else
-          where('1=0')
+          none
         end
       end
 

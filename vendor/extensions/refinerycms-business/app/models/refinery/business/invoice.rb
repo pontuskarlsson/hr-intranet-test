@@ -92,7 +92,7 @@ module Refinery
           where(nil)
 
         else
-          where('1=0')
+          none
         end
       end
 
@@ -246,7 +246,7 @@ module Refinery
         elsif archived
           where.not(archived_at: nil)
         else
-          where('1=0')
+          none
         end
       end
 

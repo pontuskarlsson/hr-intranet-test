@@ -23,15 +23,15 @@ xml.urlset "xmlns" => "http://www.sitemaps.org/schemas/sitemap/0.9" do
     end
   }
 
-  (Refinery::Page.find_by_link_url('/')&.children || Refinery::Page.where('1=0')).live.in_menu.each do |page|
+  (Refinery::Page.find_by_link_url('/')&.children || Refinery::Page.none).live.in_menu.each do |page|
     loc_proc.call page
   end
 
-  (Refinery::Page.find_by_link_url('/company')&.children || Refinery::Page.where('1=0')).live.in_menu.each do |page|
+  (Refinery::Page.find_by_link_url('/company')&.children || Refinery::Page.none).live.in_menu.each do |page|
     loc_proc.call page
   end
 
-  (Refinery::Page.find_by_link_url('/resources')&.children || Refinery::Page.where('1=0')).live.in_menu.each do |page|
+  (Refinery::Page.find_by_link_url('/resources')&.children || Refinery::Page.none).live.in_menu.each do |page|
     loc_proc.call page
   end
 

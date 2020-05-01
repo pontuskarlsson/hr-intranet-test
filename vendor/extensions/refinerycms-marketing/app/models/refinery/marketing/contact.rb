@@ -45,7 +45,7 @@ module Refinery
         if titles.include?(ROLE_CRM_MANAGER) || titles.include?(::Refinery::Business::ROLE_INTERNAL)
           in_crm
         else
-          where('1=0')
+          none
         end
       end
 
@@ -53,7 +53,7 @@ module Refinery
         if (org = where(name: organisation).first).present?
           org.employees
         else
-          where('1=0')
+          none
         end
       end
 

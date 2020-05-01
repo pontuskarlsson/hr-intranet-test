@@ -57,7 +57,7 @@ module Refinery
         elsif titles.include? ROLE_EXTERNAL
           where(company_id: user.company_ids)
         else
-          where('1=0')
+          none
         end
       end
 
@@ -80,7 +80,7 @@ module Refinery
         elsif archived
           where.not(archived_at: nil)
         else
-          where('1=0')
+          none
         end
       end
 

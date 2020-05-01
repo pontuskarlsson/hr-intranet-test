@@ -79,7 +79,7 @@ module Refinery
         elsif titles.include? ROLE_EXTERNAL
           where(company_id: user.company_ids)
         else
-          where('1=0')
+          none
         end
       end
 
@@ -134,7 +134,7 @@ module Refinery
                            #
                            #  ActivityNotification::Notification.notify_all
                            #
-                           Refinery::Authentication::Devise::User.where('1=0')
+                           Refinery::Authentication::Devise::User.none
                          },
                          tracked: false, # no automatic callbacks
                          # group: :article,

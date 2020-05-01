@@ -46,7 +46,7 @@ module Refinery
           where(company_id: user.company_ids)
 
         else
-          where('1=0')
+          none
         end
       end
 
@@ -69,7 +69,7 @@ module Refinery
         elsif archived
           past
         else
-          where('1=0')
+          none
         end
       end
 

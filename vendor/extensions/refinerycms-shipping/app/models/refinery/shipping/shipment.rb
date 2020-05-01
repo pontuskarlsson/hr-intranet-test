@@ -227,7 +227,7 @@ module Refinery
           where.not(status: %w(draft cancelled)).where(forwarder_company_id: user.company_ids)
 
         else
-          where('1=0')
+          none
         end
       end
 
@@ -371,7 +371,7 @@ module Refinery
 
         # Only used by background tracker at the moment
         def shipped_not_delivered
-          where('1=0')
+          none
           #where(status: %w(shipped))
         end
 
@@ -386,7 +386,7 @@ module Refinery
           elsif archived
             where.not(archived_at: nil)
           else
-            where('1=0')
+            none
           end
         end
       end

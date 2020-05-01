@@ -127,7 +127,7 @@ module Refinery
           for_companies(user.companies)
 
         else
-          where('1=0')
+          none
         end
       end
 
