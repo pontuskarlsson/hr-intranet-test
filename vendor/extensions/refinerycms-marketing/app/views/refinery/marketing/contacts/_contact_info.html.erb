@@ -5,6 +5,12 @@
     <th>Phone</th>
     <td><%= contact.phone %></td>
   </tr>
+  <% if contact.br_number.present? %>
+    <tr>
+      <th>BR No.</th>
+      <td><%= contact.br_number %></td>
+    </tr>
+  <% end %>
   <% if contact.mobile.present? %>
     <tr>
       <th>Mobile</th>

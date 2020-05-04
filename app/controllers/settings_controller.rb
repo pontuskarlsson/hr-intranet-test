@@ -4,7 +4,7 @@ class SettingsController < ApplicationController
   helper_method :invite_form
 
   def show
-
+    @company_contact_form = CompanyContactForm.new_in_model(@company.contact)
   end
 
   def update

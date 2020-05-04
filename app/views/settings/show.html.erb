@@ -12,12 +12,9 @@
     <div class="cell medium-9">
       <div class="tabs-content" data-tabs-content="example-tabs">
         <div class="tabs-panel is-active" id="panel1v">
-          <%= form_for @company, url: setting_path(@company) do |f| %>
-            <div class='field'>
-              <%= f.label :name %>
-              <%= f.text_field :name %>
-            </div>
-
+          <h3>Company Details</h3>
+          <%= form_for @company_contact_form, url: setting_path(@company) do |f| %>
+            <%= render 'company_contact_form', f: f %>
             <%= f.submit 'Save Changes', class: 'button primary' %>
           <% end %>
         </div>
