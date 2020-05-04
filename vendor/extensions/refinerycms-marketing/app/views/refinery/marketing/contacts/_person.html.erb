@@ -50,7 +50,15 @@
 
   <%= render 'refinery/marketing/contacts/contact_info', contact: contact %>
 
-  <%= render 'refinery/marketing/contacts/address', contact: contact %>
+  <% if contact.mail_address.present? %>
+    <h3>Mail Address</h3>
+    <%= render 'refinery/marketing/contacts/address', address: contact.mail_address %>
+  <% end %>
+
+  <% if contact.other_address.present? %>
+    <h3>Other Address</h3>
+    <%= render 'refinery/marketing/contacts/address', address: contact.other_address %>
+  <% end %>
 
   <% if contact.description.present? %>
     <h3>Additional</h3>

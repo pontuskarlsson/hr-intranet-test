@@ -1,21 +1,26 @@
-<h3>Street Address</h3>
 <table class="cc-table">
   <tbody>
   <tr>
     <th>Street</th>
-    <td><%= contact.address %></td>
+    <td>
+      <%= address.address1 %>
+      <% if address.address2.present? %>
+        <br/>
+        <%= address.address2 %>
+      <% end %>
+    </td>
   </tr>
   <tr>
     <th>City</th>
-    <td><%= contact.city %></td>
+    <td><%= address.city %></td>
   </tr>
   <tr>
     <th>Postal</th>
-    <td><%= contact.attributes['zip'] %></td>
+    <td><%= address.postal_code %></td>
   </tr>
   <tr>
-    <th>State</th>
-    <td><%= contact.state %></td>
+    <th>State / Province</th>
+    <td><%= contact.province %></td>
   </tr>
   <tr>
     <th>Country</th>
@@ -23,31 +28,3 @@
   </tr>
   </tbody>
 </table>
-
-<% if [contact.other_address, contact.other_city, contact.other_zip, contact.other_state, contact.other_country].any?(&:present?) %>
-  <h3>Postal Address</h3>
-  <table class="cc-table">
-    <tbody>
-    <tr>
-      <th>Street</th>
-      <td><%= contact.other_address %></td>
-    </tr>
-    <tr>
-      <th>City</th>
-      <td><%= contact.other_city %></td>
-    </tr>
-    <tr>
-      <th>Postal</th>
-      <td><%= contact.other_zip %></td>
-    </tr>
-    <tr>
-      <th>State</th>
-      <td><%= contact.other_state %></td>
-    </tr>
-    <tr>
-      <th>Country</th>
-      <td><%= contact.other_country %></td>
-    </tr>
-    </tbody>
-  </table>
-<% end %>

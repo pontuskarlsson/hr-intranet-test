@@ -14,7 +14,17 @@
   <% end %>
 
   <%= render 'refinery/marketing/contacts/contact_info', contact: contact %>
-  <%= render 'refinery/marketing/contacts/address', contact: contact %>
+
+  <% if contact.billing_address.present? %>
+    <h3>Billing Address</h3>
+    <%= render 'refinery/marketing/contacts/address', address: contact.billing_address %>
+  <% end %>
+
+  <% if contact.ship_address.present? %>
+    <h3>Ship Address</h3>
+    <%= render 'refinery/marketing/contacts/address', address: contact.ship_address %>
+  <% end %>
+
   <%= render 'refinery/marketing/contacts/courier_details', contact: contact %>
   <%= render 'refinery/marketing/contacts/employees', contact: contact %>
 </section>

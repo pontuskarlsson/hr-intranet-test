@@ -99,8 +99,32 @@ module Refinery
       end
 
       def billing_address
-        links.detect { |l|
+        @billing_address ||= links.detect { |l|
           l.relation == 'billing' && l.linked_type == 'Refinery::Marketing::Address'
+        }&.linked
+      end
+
+      def mail_address
+        @mail_address ||= links.detect { |l|
+          l.relation == 'mail' && l.linked_type == 'Refinery::Marketing::Address'
+        }&.linked
+      end
+
+      def ship_address
+        @ship_address ||= links.detect { |l|
+          l.relation == 'ship' && l.linked_type == 'Refinery::Marketing::Address'
+        }&.linked
+      end
+
+      def street_address
+        @street_address ||= links.detect { |l|
+          l.relation == 'street' && l.linked_type == 'Refinery::Marketing::Address'
+        }&.linked
+      end
+
+      def other_address
+        @other_address ||= links.detect { |l|
+          l.relation == 'other' && l.linked_type == 'Refinery::Marketing::Address'
         }&.linked
       end
 
