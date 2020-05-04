@@ -31,6 +31,8 @@ module Refinery
 
       configure_enumerables :complexity, COMPLEXITY_LEVELS
 
+      has_comments
+
       delegate :label, to: :project, prefix: true, allow_nil: true
 
       #validates :company_id,        presence: true # Remove validation since some inspections from external might not be able to match company name initially
@@ -156,6 +158,30 @@ module Refinery
           else
             acc
           end
+        end
+      end
+
+      def submitter_email
+        created_by_email
+      end
+
+      def submitter_full_name
+        created_by_full_name
+      end
+
+      def requester_email
+        requested_by_email
+      end
+
+      def requester_full_name
+        requested_by_full_name
+      end
+
+      def default_subject
+        if job_type == 'Inspection'
+          [code, inspection&.po_number, inspection&.product_code].reject(&:blank?).join ' - '
+        else
+          code
         end
       end
 

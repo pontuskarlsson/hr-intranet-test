@@ -1,5 +1,5 @@
 <div class="comments-container">
-  <%= form_for ::Refinery::Addons::Comment.new(commentable: commentable), url: refinery.addons_comments_path do |f| %>
+  <%= form_for ::Refinery::Addons::CommentCreator.new_in_model(commentable), url: refinery.addons_comments_path do |f| %>
     <%= hidden_field_tag :return_to, return_to %>
     <%= f.hidden_field :commentable_id %>
     <%= f.hidden_field :commentable_type %>

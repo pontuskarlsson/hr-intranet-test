@@ -35,6 +35,9 @@ class CreateQualityAssuranceJobs < ActiveRecord::Migration
 
       t.text :content
 
+      t.integer :zendesk_id, limit: 8
+      t.jsonb :zendesk_meta
+
       t.integer :position
 
       t.timestamps
@@ -63,6 +66,8 @@ class CreateQualityAssuranceJobs < ActiveRecord::Migration
     add_index :refinery_quality_assurance_jobs, :inspection_date, name: 'index_qa_inspection_jobs_on_inspection_date'
 
     add_index :refinery_quality_assurance_jobs, :position, name: 'index_qa_inspection_jobs_on_position'
+
+    add_index :refinery_quality_assurance_jobs, :zendesk_id
 
     # Add column to Inspection to connect with the Job
     add_column :refinery_quality_assurance_inspections, :job_id, :integer

@@ -4,8 +4,8 @@ Refinery::Authentication::Devise::User.class_eval do
 
   validates :topo_id,     uniqueness: true, allow_blank: true
 
-  scope :has_inspected, -> (inspection) { where(id: inspection.inspected_by_id) }
-  scope :company_inspections, -> (inspection) { where(id: inspection.inspected_by_id) }
+  scope :has_inspected, -> (inspection) { inspection.inspected_by_id.present? ? where(id: inspection.inspected_by_id) : none }
+  scope :company_inspections, -> (inspection) { inspection.company.present? ? for_company_roles(inspection.company, ::Refinery::QualityAssurance::ROLE_EXTERNAL) : none }
   scope :for_meta, -> (h) {
     if h[:product_category].blank?
       where(nil)
@@ -34,4 +34,17 @@ Refinery::Authentication::Devise::User.class_eval do
       end
     end
   }
+
+  def self.for_company_roles(company, role_titles = nil)
+    titles = Array(role_titles)
+
+    if titles.empty?
+      company.users
+
+    else
+      company.users.includes(:roles).select do |user|
+        (user.roles.map(&:title) & titles).any?
+      end
+    end
+  end
 end

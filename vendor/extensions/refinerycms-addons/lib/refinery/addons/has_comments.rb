@@ -10,8 +10,6 @@ module Refinery
         def has_comments
           has_many :comments, as: :commentable, class_name: '::Refinery::Addons::Comment', dependent: :destroy
 
-          serialize :zendesk_meta, Hash
-
           validates :zendesk_id, uniqueness: true, allow_nil: true
         end
 

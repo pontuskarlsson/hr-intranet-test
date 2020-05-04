@@ -9,8 +9,8 @@ module Refinery
 
         def perform
           if commentable.present?
-            submitter = find_or_create_user! commentable.created_by.email, commentable.created_by.full_name
-            requester = find_or_create_user! commentable.requested_by.email, commentable.requested_by.full_name
+            submitter = find_or_create_user! commentable.submitter_email, commentable.submitter_full_name
+            requester = find_or_create_user! commentable.requester_email, commentable.requester_full_name
             ticket = create_ticket! submitter, requester, commentable.subject, commentable.description
 
             commentable.zendesk_id = ticket.id
@@ -69,10 +69,7 @@ module Refinery
         end
 
         def commentable
-          @commentable ||=
-              case commentable_type
-              when 'Refinery::Business::Request' then Refinery::Business::Request.find commentable_id
-              end
+          @commentable ||= commentable_type.constantize.for_user_roles(current_user).find commentable_id
         end
 
         def comment

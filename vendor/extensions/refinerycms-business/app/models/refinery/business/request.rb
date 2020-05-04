@@ -23,11 +23,12 @@ module Refinery
       configure_label :code,  :subject
 
       has_comments
+      serialize :zendesk_meta, Hash
 
       responds_to_data_tables :id, :subject, :code, :request_date, :status
 
-      delegate :label, :full_name, to: :created_by, prefix: true, allow_nil: true
-      delegate :label, :full_name, to: :requested_by, prefix: true, allow_nil: true
+      delegate :label, :full_name, :email, to: :created_by, prefix: true, allow_nil: true
+      delegate :label, :full_name, :email, to: :requested_by, prefix: true, allow_nil: true
 
       validates :company_id,            presence: true
       validates :created_by_id,         presence: true
@@ -82,6 +83,22 @@ module Refinery
         else
           none
         end
+      end
+
+      def submitter_email
+        created_by_email
+      end
+
+      def submitter_full_name
+        created_by_full_name
+      end
+
+      def requester_email
+        requested_by_email
+      end
+
+      def requester_full_name
+        requested_by_full_name
       end
 
     end

@@ -16,6 +16,14 @@ module Refinery
         self.country = ISO3166::Country[country_code]&.name
       end
 
+      def all_address_lines
+        if country == 'Sweden'
+          [address1, address2, [zip, city].reject(&:blank?).join(' '), country].reject(&:blank?)
+        else
+          [address1, address2, city, zip, state, country].reject(&:blank?)
+        end
+      end
+
     end
   end
 end

@@ -98,6 +98,12 @@ module Refinery
         end
       end
 
+      def billing_address
+        links.detect { |l|
+          l.relation == 'billing' && l.linked_type == 'Refinery::Marketing::Address'
+        }&.linked
+      end
+
     end
   end
 end

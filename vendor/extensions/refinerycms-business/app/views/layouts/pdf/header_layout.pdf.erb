@@ -25,9 +25,17 @@
   <tr>
     <td style="width: 38.3%; vertical-align: bottom;">
       <p style="margin-bottom: 3px; font-weight: 800;">Customer</p>
-      <% if local_assigns[:company]&.contact.present? %>
-        <% local_assigns[:company].contact.all_address_lines.each do |line| %>
-          <p style="line-height: 1rem; margin: 0;"><%= line %></p>
+      <% if (company = local_assigns[:company]).present? %>
+        <p style="line-height: 1rem; margin: 0;"><%= company.name %></p>
+
+        <% if company.contact&.br_number.present? %>
+          <p style="line-height: 1rem; margin: 0;">BR No. <%= company.contact.br_number %></p>
+        <% end %>
+
+        <% if (address = company.contact&.billing_address).present? %>
+          <% address.all_address_lines.each do |line| %>
+            <p style="line-height: 1rem; margin: 0;"><%= line %></p>
+          <% end %>
         <% end %>
       <% end %>
     </td>

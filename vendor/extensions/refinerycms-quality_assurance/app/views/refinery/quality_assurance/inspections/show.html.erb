@@ -282,12 +282,12 @@
 <% end %>
 
 <% if page_role? Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER %>
-  <% content_for :side_body do %>
-    <aside>
-      <h5>Status</h5>
-      <p><%= @inspection.status %></p>
+  <% if @inspection.status == 'Inspected' %>
+    <% content_for :side_body do %>
+      <aside>
+        <h5>Status</h5>
+        <p><%= @inspection.status %></p>
 
-      <% if @inspection.status == 'Inspected' %>
         <h5>Verify content</h5>
 
         <% if @inspection.to_be_verified.any? %>
@@ -323,6 +323,18 @@
             <% end %>
           <% end %>
         <% end %>
+      </aside>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if false && (job = @inspection.job).present? && @inspection.status == 'Notified' %>
+  <% content_for :side_body do %>
+    <aside>
+      <% if job.comments.any? %>
+        <%= render 'refinery/addons/comments/comments', commentable: job, return_to: refinery.quality_assurance_inspection_path(@inspection) %>
+      <% else %>
+        <%= render 'refinery/addons/comments/new_thread', commentable: job, return_to: refinery.quality_assurance_inspection_path(@inspection) %>
       <% end %>
     </aside>
   <% end %>

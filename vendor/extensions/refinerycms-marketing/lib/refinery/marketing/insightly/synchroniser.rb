@@ -50,7 +50,7 @@ module Refinery
             "ORGANISATION_FIELD_14" => nil, # "Lyst",
             "ORGANISATION_FIELD_15" => :skype, # "Skype",
             "ORGANISATION_FIELD_16" => :email, # "Email, Organisation",
-            "ORGANISATION_FIELD_17" => nil, # "BR No.",
+            "ORGANISATION_FIELD_17" => :br_number, # "BR No.",
             "ORGANISATION_FIELD_18" => :facebook, # "Facebook",
             "ORGANISATION_FIELD_19" => :twitter, # "Twitter",
             "ORGANISATION_FIELD_20" => :linked_in, # "LinkedIn",

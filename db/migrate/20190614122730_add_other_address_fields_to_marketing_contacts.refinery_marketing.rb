@@ -13,6 +13,9 @@ class AddOtherAddressFieldsToMarketingContacts < ActiveRecord::Migration
 
     add_column :refinery_contacts, :owner_id, :integer
     add_index :refinery_contacts, :owner_id
+
+    add_column :refinery_contacts, :br_number, :string
+    add_index :refinery_contacts, :br_number
   end
 
 end
