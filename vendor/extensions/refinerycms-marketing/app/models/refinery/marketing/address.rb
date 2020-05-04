@@ -18,9 +18,9 @@ module Refinery
 
       def all_address_lines
         if country == 'Sweden'
-          [address1, address2, [zip, city].reject(&:blank?).join(' '), country].reject(&:blank?)
+          [address1, address2, [postal_code, city].reject(&:blank?).join(' '), country].reject(&:blank?)
         else
-          [address1, address2, city, zip, state, country].reject(&:blank?)
+          [address1, address2, city, postal_code, province, country].reject(&:blank?)
         end
       end
 
