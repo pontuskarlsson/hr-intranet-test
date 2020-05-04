@@ -96,7 +96,7 @@
     <% invoice.minimums.each do |charge| %>
       <% if charge.qty > 0 %>
         <tr>
-          <td><%=number_with_precision charge.qty + charge.additional_qty, strip_insignificant_zeros: true %></td>
+          <td><%=number_with_precision charge.qty + charge.additional_qty, strip_insignificant_zeros: true, delimiter: ',' %></td>
           <td><%= charge.article&.name %> - Issued</td>
           <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
           <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
@@ -108,7 +108,7 @@
     <% invoice.minimums.each do |charge| %>
       <% if charge.additional_qty > 0 %>
         <tr>
-          <td><%=number_with_precision charge.additional_qty, strip_insignificant_zeros: true %></td>
+          <td><%=number_with_precision charge.additional_qty, strip_insignificant_zeros: true, delimiter: ',' %></td>
           <td><%= charge.article&.name %></td>
           <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
           <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
@@ -122,7 +122,7 @@
     <% invoice.invoice_items.sales_purchase.each do |invoice_item| %>
       <% invoice_item.vouchers_by_discount.each_pair do |discount_amount, vouchers| %>
         <tr>
-          <td><%=number_with_precision vouchers.count, strip_insignificant_zeros: true %></td>
+          <td><%=number_with_precision vouchers.count, strip_insignificant_zeros: true, delimiter: ',' %></td>
           <td><%= invoice_item.article&.name %></td>
           <td class="currency"><%=number_to_currency invoice_item.unit_amount, unit: '' %></td>
           <td class="currency"><%=number_to_currency discount_amount == 0 ? '' : discount_amount, unit: '' %></td>
@@ -142,7 +142,7 @@
     <% invoice.invoice_items.sales_purchase.each do |invoice_item| %>
       <% invoice_item.vouchers_by_issued_invoice.each_pair do |(issued_by_invoice, discount_amount), vouchers| %>
         <tr>
-          <td><%=number_with_precision vouchers.count, strip_insignificant_zeros: true %></td>
+          <td><%=number_with_precision vouchers.count, strip_insignificant_zeros: true, delimiter: ',' %></td>
           <td>
             <%= vouchers[0].article_name %>
             from
@@ -222,19 +222,19 @@
           <tbody>
           <tr>
             <td>Mandays</td>
-            <td class="number"><%=number_with_precision @invoice.number_of_man_days, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_man_days, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Inspections</td>
-            <td class="number"><%=number_with_precision @invoice.number_of_inspections, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_inspections, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Pieces Inspected</td>
-            <td class="number"><%=number_with_precision @invoice.number_of_pieces_inspected, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_pieces_inspected, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Locations Visited</td>
-            <td class="number"><%=number_with_precision @invoice.number_of_locations, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.number_of_locations, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           </tbody>
         </table>
@@ -247,19 +247,19 @@
           <tbody>
           <tr>
             <td>Opening Balance</td>
-            <td class="number"><%=number_with_precision @invoice.plan_opening_balance.to_f, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.plan_opening_balance.to_f, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Issued</td>
-            <td class="number"><%=number_with_precision @invoice.plan_issued.to_f, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.plan_issued.to_f, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Redeemed</td>
-            <td class="number"><%=number_with_precision @invoice.plan_redeemed.to_f, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.plan_redeemed.to_f, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Closing Balance</td>
-            <td class="number"><%=number_with_precision @invoice.plan_closing_balance.to_f, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.plan_closing_balance.to_f, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           </tbody>
         </table>
@@ -272,11 +272,11 @@
           <tbody>
           <tr>
             <td>In-line Inspections</td>
-            <td class="number"><%=number_with_precision @invoice.inspections('In-line').count, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.inspections('In-line').count, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Final Inspections</td>
-            <td class="number"><%=number_with_precision @invoice.inspections('Final').count, strip_insignificant_zeros: true %></td>
+            <td class="number"><%=number_with_precision @invoice.inspections('Final').count, strip_insignificant_zeros: true, delimiter: ',' %></td>
           </tr>
           <tr>
             <td>Final Insp. Pass Rate</td>
