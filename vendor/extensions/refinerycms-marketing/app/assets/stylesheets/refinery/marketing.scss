@@ -109,6 +109,12 @@
             }
         }
     }
+
+    &.wide-header-cells {
+        .cc-table th {
+            width: 140px;
+        }
+    }
 }
 
 .business-cards {

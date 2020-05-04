@@ -8,7 +8,9 @@ class SettingsController < ApplicationController
   end
 
   def update
-    if @company.update_attributes(company_params)
+    @company_contact_form = CompanyContactForm.new_in_model(@company.contact, params[:company_contact_form], current_refinery_user)
+    if @company_contact_form.save
+      ErrorMailer.notification_email("Company settings updated for #{@company.code}", params.to_unsafe_h.to_hash).deliver_later
       redirect_to setting_path(@company)
     else
       render action: :show

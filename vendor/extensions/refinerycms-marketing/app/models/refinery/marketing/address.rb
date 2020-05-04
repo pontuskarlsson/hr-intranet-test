@@ -3,6 +3,8 @@ module Refinery
     class Address < Refinery::Core::BaseModel
       self.table_name = 'refinery_marketing_addresses'
 
+      attr_accessor :link_relation
+
       belongs_to :owner,      class_name: '::Refinery::Business::Company', optional: true
 
       validates :country,     presence: true

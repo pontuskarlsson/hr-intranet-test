@@ -27,6 +27,15 @@ module Refinery
         self.country = ISO3166::Country[country_code]&.name
       end
 
+      def country_code
+        address&.country_code
+      end
+
+      # This should be moved to TransForms lib, called when form is used in +fields_for+
+      def id
+        address&.id
+      end
+
       transaction do
         if fields.values.any?(&:present?)
           address.attributes = fields

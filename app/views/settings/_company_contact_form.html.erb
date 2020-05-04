@@ -1,4 +1,4 @@
-<section class="contact-card">
+<section class="contact-card wide-header-cells">
   <table class="cc-table">
     <tbody>
     <tr>
@@ -6,9 +6,15 @@
       <td><%= f.text_field :name %></td>
     </tr>
     <tr>
-      <th><%= f.label :br_number %></th>
+      <th><%= f.label :br_number, 'BR No.' %></th>
       <td><%= f.text_field :br_number %></td>
     </tr>
     </tbody>
   </table>
+
+  <h5>Billing Address</h5>
+  <%= f.fields_for :address_forms, f.object.address_forms_for('billing'), child_index: 0 do |address_form| %>
+    <%= address_form.hidden_field :relation %>
+    <%= render 'refinery/marketing/contacts/address_form', f: address_form %>
+  <% end %>
 </section>

@@ -1,0 +1,28 @@
+<table class="cc-table">
+  <tbody>
+  <tr>
+    <th><%= f.label :address1, 'Address' %></th>
+    <td><%= f.text_field :address1 %></td>
+  </tr>
+  <tr>
+    <th><label>&nbsp;</label></th>
+    <td><%= f.text_field :address2 %></td>
+  </tr>
+  <tr>
+    <th><%= f.label :city %></th>
+    <td><%= f.text_field :city %></td>
+  </tr>
+  <tr>
+    <th><%= f.label :postal_code, 'Postal / Zip' %></th>
+    <td><%= f.text_field :postal_code %></td>
+  </tr>
+  <tr>
+    <th><%= f.label :province, 'State / Province' %></th>
+    <td><%= f.text_field :province %></td>
+  </tr>
+  <tr>
+    <th><%= f.label :country_code, 'Country' %></th>
+    <td><%= f.select :country_code, options_for_select([['Please select', '']] + ISO3166::Country.all_names_with_codes, f.object.country_code) -%></td>
+  </tr>
+  </tbody>
+</table>

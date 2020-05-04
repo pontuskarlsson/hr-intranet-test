@@ -24,6 +24,8 @@ services:
     depends_on:
       - db
       - redis
+    tty: true
+    stdin_open: true
 
 volumes:
   my_dbdata:
