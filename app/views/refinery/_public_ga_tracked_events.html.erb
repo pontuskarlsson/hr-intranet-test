@@ -5,6 +5,9 @@
         window.ga && ga('send', 'event', 'Nav', 'SelectTab', tab.data('ga-label'));
         <% if Rails.env.development? %>console.log(['send', 'event', 'Nav', 'SelectTab', tab.data('ga-label')]);<% end %>
       }
+    }).on('click', 'a.ga-link', function(evt, link) {
+      window.ga && ga('send', 'event', 'Nav', 'ClickLink', link.text());
+      <% if Rails.env.development? %>console.log(['send', 'event', 'Nav', 'ClickLink', link.text()]);<% end %>
     });
   });
 </script>
