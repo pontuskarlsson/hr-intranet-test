@@ -9,9 +9,10 @@ module Refinery
 
         def perform
           if commentable.present?
+            zendesk_meta = commentable.zendesk_meta || {}
             submitter = find_or_create_user! commentable.submitter_email, commentable.submitter_full_name
             requester = find_or_create_user! commentable.requester_email, commentable.requester_full_name
-            ticket = create_ticket! submitter, requester, commentable.subject, commentable.description
+            ticket = create_ticket! submitter, requester, zendesk_meta['subject'], zendesk_meta['description']
 
             commentable.zendesk_id = ticket.id
             commentable.zendesk_meta = ticket.attributes.to_hash
@@ -61,7 +62,7 @@ module Refinery
           client.tickets.create!(
               submitter_id: submitter.id,
               requester_id: requester.id,
-              followers: default_followers,
+              followers: default_followers + company_followers,
               external_id: "#{commentable_type}/#{commentable_id}",
               subject: subject,
               description: description
@@ -69,7 +70,7 @@ module Refinery
         end
 
         def commentable
-          @commentable ||= commentable_type.constantize.for_user_roles(current_user).find commentable_id
+          @commentable ||= commentable_type.constantize.find commentable_id
         end
 
         def comment
@@ -86,9 +87,20 @@ module Refinery
 
           elsif Rails.env.development?
             [
-                { user_id: find_or_create_user!('daniel.viklund@happyrabbit.com', 'Daniel Viklund')&.id }
+                { user_id: find_or_create_user!('daniel.viklund@happyrabbit.com', 'Daniel Viklund')&.id },
+                { user_id: find_or_create_user!('daniel@fabriqo.com', 'Daniel (Fabriqo)')&.id },
             ].reject { |u| u[:user_id].nil? }
 
+          else
+            []
+          end
+        end
+
+        def company_followers
+          if commentable.respond_to?(:company_followers)
+            commentable.company_followers.map { |user|
+              { user_id: find_or_create_user!(user.email, user.full_name)&.id }
+            }.reject { |u| u[:user_id].nil? }
           else
             []
           end

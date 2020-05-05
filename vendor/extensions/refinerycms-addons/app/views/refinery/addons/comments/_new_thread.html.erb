@@ -1,42 +1,48 @@
 <a href="javascript:void(0)" onClick="$('.js-comments-container').show(); $(this).hide()" class="button">Initiate Dialogue</a>
 
 <div class="comments-container js-comments-container" style="display: none;">
-  <%= form_for ::Refinery::Addons::CommentCreator.new_in_model(commentable), url: refinery.addons_comments_path do |f| %>
-    <%= hidden_field_tag :return_to, return_to %>
-    <%= f.hidden_field :commentable_id %>
-    <%= f.hidden_field :commentable_type %>
+  <% if commentable.company && commentable.company.users.any? %>
+    <%= form_for ::Refinery::Addons::CommentCreator.new_in_model(commentable), url: refinery.addons_comments_path do |f| %>
+      <%= hidden_field_tag :return_to, return_to %>
+      <%= f.hidden_field :new_ticket, value: '1' %>
+      <%= f.hidden_field :commentable_id %>
+      <%= f.hidden_field :commentable_type %>
 
-    <% if commentable.respond_to?(:default_subject) %>
-      <%= f.hidden_field :subject, value: commentable.default_subject %>
-    <% else %>
-      <%= f.text_field :subject, placeholder: 'Subject' %>
+      <% if commentable.respond_to?(:default_subject) %>
+        <%= f.hidden_field :subject, value: commentable.default_subject %>
+      <% else %>
+        <%= f.text_field :subject, placeholder: 'Subject' %>
+      <% end %>
+
+      <%= f.label :body, 'Comments' %>
+      <%= f.text_area :body %>
+
+      <%= f.label 'cc-user', 'Recipients' %>
+      <ul style="list-style: none; margin: 0; padding: 0;">
+        <% commentable.company.users.each do |user| %>
+          <li>
+            <%= check_box_tag 'comment[cc_user_ids][]', user.id, {}, id: "cc-user-#{user.id}" %>
+            <%= label_tag "cc-user-#{user.id}", user.full_name %>
+          </li>
+        <% end %>
+        <li>
+          <%= check_box_tag 'default_users[]', "default-user-lh", true, disabled: true %>
+          <%= label_tag "default-user-lh", 'Leontina Heffernan' %>
+        </li>
+        <li>
+          <%= check_box_tag 'default_users[]', "default-user-rl", true, disabled: true %>
+          <%= label_tag "default-user-rl", 'Ryan Lai' %>
+        </li>
+        <li>
+          <%= check_box_tag 'default_users[]', "default-user-pk", true, disabled: true %>
+          <%= label_tag "default-user-pk", 'Pontus Karlsson' %>
+        </li>
+      </ul>
+
+      <p><%= f.submit 'Send Comments', class: 'button' %></p>
     <% end %>
 
-    <%= f.label :body, 'Comments' %>
-    <%= f.text_area :body %>
-
-    <%= f.label 'cc-user', 'Recipients' %>
-    <ul style="list-style: none; margin: 0; padding: 0;">
-      <% commentable.company.users.each do |user| %>
-        <li>
-          <%= check_box_tag 'comment[cc_user_ids][]', "cc-user-#{user.id}" %>
-          <%= label_tag "cc-user-#{user.id}", user.full_name %>
-        </li>
-      <% end %>
-      <li>
-        <%= check_box_tag 'default_users[]', "default-user-lh", true, disabled: true %>
-        <%= label_tag "default-user-lh", 'Leontina Heffernan' %>
-      </li>
-      <li>
-        <%= check_box_tag 'default_users[]', "default-user-rl", true, disabled: true %>
-        <%= label_tag "default-user-rl", 'Ryan Lai' %>
-      </li>
-      <li>
-        <%= check_box_tag 'default_users[]', "default-user-pk", true, disabled: true %>
-        <%= label_tag "default-user-pk", 'Pontus Karlsson' %>
-      </li>
-    </ul>
-
-    <p><%= f.submit 'Send Comments', class: 'button' %></p>
+  <% else %>
+    <p class="italic">There are no user accounts for this company account.</p>
   <% end %>
 </div>

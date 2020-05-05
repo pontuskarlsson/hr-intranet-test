@@ -88,7 +88,10 @@ module Refinery
               end
             end
 
-            data = filtered
+            # Add last order statement, to make sure the rows are always in consist order. Otherwise
+            # it could change row order for pagination, resulting in some rows appearing on multiple
+            # pages and some rows not appearing at all.
+            data = filtered.order(id: :asc)
 
             if params[:start].present? && params[:length].present?
               length = params[:length].to_i

@@ -11,14 +11,14 @@ module Refinery
       attribute :new_ticket,  Boolean, default: false
       attribute :subject,     String
 
+      attribute :cc_user_ids, Array
+
       validates :subject,           presence: true, if: :new_ticket
       validates :body,              presence: true
       validates :commentable_type,  inclusion: COMMENTABLE_TYPES
 
       def model=(model)
         if model.is_a? Comment
-          self.commentable_id = model.commentable_id
-          self.commentable_type = model.commentable_type
           self.comment = model
         else
           self.commentable_id = model.id
@@ -30,7 +30,11 @@ module Refinery
 
       transaction do
         if new_ticket
-          commentable.meta_zendesk = { 'subject' => subject, 'description' => body }
+          commentable.zendesk_meta = {
+              'subject' => subject,
+              'description' => body,
+              'cc_user_ids' => cc_user_ids,
+          }
           commentable.save!
         end
 

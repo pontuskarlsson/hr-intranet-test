@@ -161,27 +161,39 @@ module Refinery
         end
       end
 
+      def first_comment
+        @first_comment ||= comments.order(created_at: :asc).first
+      end
+
       def submitter_email
-        created_by_email
+        first_comment&.comment_by_email
       end
 
       def submitter_full_name
-        created_by_full_name
+        first_comment&.comment_by_full_name
       end
 
       def requester_email
-        requested_by_email
+        first_comment&.comment_by_email
       end
 
       def requester_full_name
-        requested_by_full_name
+        first_comment&.comment_by_full_name
       end
 
       def default_subject
         if job_type == 'Inspection'
-          [code, inspection&.po_number, inspection&.product_code].reject(&:blank?).join ' - '
+          [code, inspection&.po_number, inspection&.product_code, inspection&.result].reject(&:blank?).join ' - '
         else
           code
+        end
+      end
+
+      def company_followers
+        if zendesk_meta && (ids = Array(zendesk_meta['cc_user_ids'])).any? && company.present?
+          company.users.where(id: ids)
+        else
+          []
         end
       end
 

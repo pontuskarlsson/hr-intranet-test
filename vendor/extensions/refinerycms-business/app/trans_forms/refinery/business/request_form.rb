@@ -46,6 +46,12 @@ module Refinery
 
       transaction do
         request.attributes = request_params
+
+        request.zendesk_meta = {
+            'subject' => subject,
+            'description' => description,
+        }
+
         request.save!
 
         self.comment = request.comments.create!(
