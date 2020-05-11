@@ -88,4 +88,8 @@ Refinery::Authentication::Devise::User.class_eval do
     self.full_name = [first_name, last_name].reject(&:blank?).join(' ') if full_name.blank?
   end
 
+  def ga_user_id
+    uuid
+  end
+
 end
