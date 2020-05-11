@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200323131342) do
+ActiveRecord::Schema.define(version: 20200511002841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pgcrypto"
 
   create_table "activity_notifications", id: :serial, force: :cascade do |t|
     t.integer "target_id", null: false
@@ -240,6 +241,7 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.string "first_name", limit: 255
     t.string "last_name", limit: 255
     t.string "timezone", limit: 255
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }
     t.index ["full_name"], name: "public_refinery_authentication_devise_users_full_name4_idx"
     t.index ["id"], name: "public_refinery_authentication_devise_users_id2_idx"
     t.index ["invitation_token"], name: "public_refinery_authentication_devise_users_invitation_token0_i", unique: true
@@ -249,6 +251,7 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.index ["password_changed_at"], name: "public_refinery_authentication_devise_users_password_changed_at"
     t.index ["slug"], name: "public_refinery_authentication_devise_users_slug3_idx"
     t.index ["topo_id"], name: "public_refinery_authentication_devise_users_topo_id7_idx"
+    t.index ["uuid"], name: "index_refinery_authentication_devise_users_on_uuid"
   end
 
   create_table "refinery_blog_categories", id: :serial, force: :cascade do |t|
@@ -1048,8 +1051,10 @@ ActiveRecord::Schema.define(version: 20200323131342) do
     t.string "other_country", limit: 255
     t.integer "image_id"
     t.integer "owner_id"
+    t.string "br_number"
     t.index ["base_id"], name: "public_refinery_contacts_base_id0_idx"
     t.index ["base_modified_at"], name: "public_refinery_contacts_base_modified_at1_idx"
+    t.index ["br_number"], name: "index_refinery_contacts_on_br_number"
     t.index ["code"], name: "public_refinery_contacts_code8_idx"
     t.index ["courier_company"], name: "public_refinery_contacts_courier_company7_idx"
     t.index ["image_id"], name: "public_refinery_contacts_image_id12_idx"
