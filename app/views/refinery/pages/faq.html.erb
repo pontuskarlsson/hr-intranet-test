@@ -88,14 +88,15 @@
     <% @questions_by_category.each_pair do |category, questions| %>
       <a name="<%= category[:slug] %>"></a>
       <h4><%= category[:label] %></h4>
-      <ul class="accordion" data-accordion data-allow-all-closed="true" data-multi-expand="true">
+      <ul class="accordion" data-deep-link="true" data-accordion data-allow-all-closed="true" data-multi-expand="true">
         <% questions.select{ |qa| qa[:answer].present? }.each do |qa| %>
+          <%- question_slug = "#{category[:slug]}-#{qa[:question].downcase.gsub(/[^a-z0-9]/, '-').gsub(/-+/, '-').gsub(/-$/, '')}" -%>
           <li class="accordion-item" data-accordion-item>
             <!-- Accordion tab title -->
-            <a href="#" class="accordion-title"><%= qa[:question] %></a>
+            <a href="#<%=question_slug %>" class="accordion-title"><%= qa[:question] %></a>
 
             <!-- Accordion tab content: it would start in the open state due to using the `is-active` state class. -->
-            <div class="accordion-content" data-tab-content>
+            <div class="accordion-content" data-tab-content id="<%= question_slug %>">
               <%=simple_format qa[:answer] %>
             </div>
           </li>

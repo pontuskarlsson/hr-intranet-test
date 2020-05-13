@@ -27,4 +27,11 @@ class HappyRabbitMailer < ApplicationMailer
     )
   end
 
+  def welcome1(user)
+    @user = user
+    @header = 'Welcome to Happy Rabbit!'
+
+    mail(to: user.email, subject: "Welcome to Happy Rabbit!")
+  end
+
 end

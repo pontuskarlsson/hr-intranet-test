@@ -1,0 +1,63 @@
+<p>Hi <%= @user.full_name %>,</p>
+
+<p>Thanks for signing up!</p>
+
+<p>
+  You’re one step closer to integrated quality management and improved visibility
+  through defect tracking and data insights.
+</p>
+
+<h3>Get started</h3>
+
+<h5>1. Invite your team mates</h5>
+
+<p>
+  To invite your colleagues, go to Company Settings and select the Users tab on
+  the left. Click the Invite button and complete the contact information for your
+  team members.
+</p>
+
+<h5>2. Request a Manday estimate</h5>
+
+<p>
+  Not sure how many Mandays you’d need for your inspections? Simply
+  <%= link_to 'login', refinery.login_url %> to your account and click
+  New Request. Here you can upload your PO and style overview. We will then
+  estimate the number of Mandays required to carry out inspections on those POs
+  and get back to you with this estimate within one working day.
+</p>
+
+<h5>3. Decide on a package that suits you</h5>
+
+<p>There are two ways to purchase Manday Credits from us:</p>
+
+<p>
+  Prepaid credits or Monthly plans. Both offer discounts based on volume and the
+  choice between them depends on your level of commitment and recurring business.
+  Click <%= link_to 'here', "#{root_url}services/quality#prepaid-and-plans" %> for more information
+  on available packages.
+</p>
+
+<p><%= link_to 'Login', refinery.login_url, class: 'button' %></p>
+
+<h3>More info</h3>
+
+<p>
+  We are sure you have a bunch of questions about our service. <br/>
+  You can find our Frequently Asked Questions <%= link_to 'here', faq_url %>.<br/>
+  Also, make sure to check out our Journal <%= link_to 'here', refinery.blog_root_url %>.
+</p>
+
+<h3>Need help?</h3>
+
+<p>
+  Please don’t hesitate to get in touch. Just reply to this email or click the
+  SUPPORT button if you’re already signed in to the portal.
+</p>
+
+<p>Kind Regards,</p>
+
+<p>
+  Leontina<br/>
+  Customer account manager
+</p>
