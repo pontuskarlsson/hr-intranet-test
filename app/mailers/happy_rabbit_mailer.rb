@@ -31,7 +31,11 @@ class HappyRabbitMailer < ApplicationMailer
     @user = user
     @header = 'Welcome to Happy Rabbit!'
 
-    mail(to: user.email, subject: "Welcome to Happy Rabbit!")
+    mail(
+        from: "\"Happy Rabbit\" <hello@happyrabbit.com>",
+        to: user.email,
+        subject: "Welcome to Happy Rabbit!"
+    )
   end
 
 end
