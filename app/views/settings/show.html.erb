@@ -1,17 +1,17 @@
 <div class="grid-container">
   <div class="grid-x grid-margin-x">
     <div class="cell medium-3">
-      <ul class="vertical tabs" data-tabs id="example-tabs">
-        <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Company Details</a></li>
-        <li class="tabs-title"><a href="#panel2v" aria-selected="true">Users</a></li>
-        <li class="tabs-title"><a href="#panel3v" aria-selected="true">Billing</a></li>
-        <li class="tabs-title"><a href="#panel4v" aria-selected="true">Standards</a></li>
-        <li class="tabs-title"><a href="#panel5v" aria-selected="true">Integrations</a></li>
+      <ul class="vertical tabs" data-tabs id="settings-tabs" data-deep-link="true">
+        <li class="tabs-title is-active"><a href="#company-details" aria-selected="true">Company Details</a></li>
+        <li class="tabs-title"><a href="#company-users" aria-selected="true">Users</a></li>
+        <li class="tabs-title"><a href="#company-billing" aria-selected="true">Billing</a></li>
+        <li class="tabs-title"><a href="#company-standards" aria-selected="true">Standards</a></li>
+        <li class="tabs-title"><a href="#company-integrations" aria-selected="true">Integrations</a></li>
       </ul>
     </div>
     <div class="cell medium-9">
-      <div class="tabs-content" data-tabs-content="example-tabs">
-        <div class="tabs-panel is-active" id="panel1v">
+      <div class="tabs-content" data-tabs-content="settings-tabs">
+        <div class="tabs-panel is-active" id="company-details">
           <h3>Company Details</h3>
           <%= form_for @company_contact_form, url: setting_path(@company) do |f| %>
             <%= render 'company_contact_form', f: f %>
@@ -19,7 +19,7 @@
           <% end %>
         </div>
 
-        <div class="tabs-panel" id="panel2v">
+        <div class="tabs-panel" id="company-users">
           <span class="action-bar">
             <button class="button" data-open="js_invite_form">Invite</button>
 
@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <div class="tabs-panel" id="panel3v">
+        <div class="tabs-panel" id="company-billing">
           <div class="grid-x grid-padding-x">
             <div class="cell medium-6">
               <h3>Credits</h3>
@@ -90,13 +90,13 @@
           </div>
         </div>
 
-        <div class="tabs-panel" id="panel4v">
+        <div class="tabs-panel" id="company-standards">
           <h3>Quality Standards</h3>
           <p class="italic">We are working on a new feature to let each company select
             which quality standard(s) is used. Stay tuned!</p>
         </div>
 
-        <div class="tabs-panel" id="panel5v">
+        <div class="tabs-panel" id="company-integrations">
           <%= render 'authorizations' %>
         </div>
 
