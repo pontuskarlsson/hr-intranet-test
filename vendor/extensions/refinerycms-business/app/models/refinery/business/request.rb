@@ -25,7 +25,8 @@ module Refinery
       has_comments
       serialize :zendesk_meta, Hash
 
-      responds_to_data_tables :id, :subject, :code, :request_date, :status
+      responds_to_data_tables :id, :subject, :code, :request_date, :status,
+                              company: [:name]
 
       delegate :label, :full_name, :email, to: :created_by, prefix: true, allow_nil: true
       delegate :label, :full_name, :email, to: :requested_by, prefix: true, allow_nil: true

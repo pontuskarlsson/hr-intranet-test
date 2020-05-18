@@ -1,50 +1,88 @@
-<table class="display" cellspacing="0" style="width: 100%;">
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
-    <th></th>
-    <th>Code</th>
-    <th>Subject</th>
-    <th>Date</th>
-    <th>Status</th>
-    <th>Type</th>
+    <th><div class="hidden-title">Row</div></th>
+    <th><div class="hidden-title">Select</div></th>
+    <th data-dt-search-input="true">Code</th>
+    <% if selected_company.nil? %>
+      <th data-dt-search-input="true">Company</th>
+    <% end %>
+    <th data-dt-search-input="true">Subject</th>
+    <th data-dt-search-input="true">Date</th>
+    <th data-dt-search-input="true">Status</th>
   </tr>
   </thead>
 
   <tfoot>
   <tr>
     <th></th>
+    <th></th>
     <th>Code</th>
+    <% if selected_company.nil? %>
+      <th>Company</th>
+    <% end %>
     <th>Subject</th>
     <th>Date</th>
     <th>Status</th>
-    <th>Type</th>
   </tr>
   </tfoot>
 
   <tbody>
-  <% requests.each do |request| %>
-    <tr>
-      <td>
-        <%= link_to refinery.business_request_path(request) do %>
-          <i class="fa fa-arrow-right"></i>
-        <% end %>
-      </td>
-      <td>
-        <%= request.code %>
-      </td>
-      <td>
-        <%= request.subject %>
-      </td>
-      <td>
-        <%= request.request_date %>
-      </td>
-      <td>
-        <%= request.display_status %>
-      </td>
-      <td>
-        <%= request.display_request_type %>
-      </td>
-    </tr>
-  <% end %>
+  <tr>
+    <td colspan="<%= selected_company.nil? ? 7 : 6 %>">Loading, please wait...</td>
+  </tr>
   </tbody>
 </table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var ajaxStatus = { active: true, archived: false };
+
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        select: {
+          style:    'multi',
+          selector: 'td:nth-child(2)'
+        },
+        "paging":         true,
+        "lengthMenu": [
+          [ 10, 25, 50, 100, -1 ],
+          [ '10', '25', '50', '100', 'All' ]
+        ],
+        "ajax": {
+          "url": "<%= refinery.business_requests_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
+        "serverSide": true,
+        "order": [[2, 'desc']],
+        columnDefs: [ {
+          orderable: false,
+          className: 'select-checkbox',
+          targets:   1
+        } ],
+        "columns": [
+          { data: "id", "orderable": false, "render": { "display": idColumnRendererFor("<%= refinery.business_requests_path %>") } },
+          { data: "id", "render": function() {return '<span style="display: inline-block; width: 20px;">&nbsp;</span>';} },
+          { data: "code" },
+          <% if selected_company.nil? %>
+          { data: "company_name" },
+          <% end %>
+          { data: "subject" },
+          { data: "request_date", render: dtDateRenderer },
+          { data: "status" }
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        "buttons": []
+      });
+
+      initDataTable(dt, null, true);
+    });
+  </script>
+<% end %>
