@@ -44,7 +44,7 @@ module Portal
           purchase.webhook_object = object.to_hash
           purchase.stripe_payment_intent_id = purchase.webhook_object['payment_intent']
 
-          payment_intent = Stripe::PaymentIntent.retrieve purchase.stripe_payment_intent_id
+          payment_intent = ::Stripe::PaymentIntent.retrieve purchase.stripe_payment_intent_id
 
           purchase.card_object = payment_intent.charges.first.payment_method_details.card.to_hash
           purchase.stripe_charge_id = payment_intent.charges.first.id
@@ -166,7 +166,7 @@ module Portal
           object = data['object']
 
           payout_id = object['id']
-          list = Stripe::BalanceTransaction.list(payout: payout_id, type: 'charge')
+          list = ::Stripe::BalanceTransaction.list(payout: payout_id, type: 'charge')
           process_transactions payout_id, list
 
           # Send batch notification email to the users with unopened notifications of specified key in 1 hour
