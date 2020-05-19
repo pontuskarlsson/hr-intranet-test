@@ -40,8 +40,11 @@ module Refinery
 
       validate do
         if discount_code.present?
-          errors.add(:discount_code, 'is not a valid code') unless discount.present?
-          errors.add(:discount_code, 'is not a valid code') if discount.present? && !charges.all? { |charge| discount.charge_valid?(charge) }
+          if discount.present?
+            charges.each { |charge| discount.validate_charge(charge, errors) }
+          else
+            errors.add(:discount_code, 'is not a valid code')
+          end
         end
         errors.add(:article_code, 'is not a valid article') unless article&.is_voucher
       end

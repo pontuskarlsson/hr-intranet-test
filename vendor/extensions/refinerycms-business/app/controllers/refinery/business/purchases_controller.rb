@@ -8,6 +8,9 @@ module Refinery
       layout 'application'
 
       before_action :find_purchases, only: [:index]
+      before_action :apply_discount, only: [:create]
+
+      helper_method :apply_discount_label
 
       def index
         respond_to do |format|
@@ -56,6 +59,25 @@ module Refinery
 
       def filter_params
         params.permit([:company_id, :status]).to_h
+      end
+
+      def apply_discount_label
+        t('refinery.business.purchases.new.apply')
+      end
+
+      def apply_discount
+        if params[:commit] == apply_discount_label
+          @purchase_form = PurchaseForm.new_in_model(selected_company, params[:purchase], current_refinery_user)
+
+          if @purchase_form.discount_double? && @purchase_form.qty.to_i.odd?
+            @purchase_form.qty = @purchase_form.default_qty
+          end
+
+          respond_to do |format|
+            format.html { render action: :new }
+            format.js { render action: :new }
+          end
+        end
       end
 
     end

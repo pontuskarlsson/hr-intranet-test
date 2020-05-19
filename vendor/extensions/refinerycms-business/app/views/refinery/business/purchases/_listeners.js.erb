@@ -1,0 +1,55 @@
+var qtyField = $('.js_purchase_qty_field');
+
+function formatPurchaseCurrency(val) {
+  return $(formatCurrency(val)).prop('innerHTML');
+}
+
+function changeQty() {
+  var val = parseInt(qtyField.val());
+
+  var sub_total = val * 350;
+  $('.js_purchase_sub_total').html('USD '+ formatPurchaseCurrency(sub_total));
+
+  var discount = 0;
+  <% if purchase_form.discount_double? %>
+  discount = val * 350 * -0.5;
+
+  $('.js_discount_label').text('50% Discount');
+  $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.5));
+  $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
+
+  <% else %>
+  if (val >= 10) {
+    discount = val * 350 * -0.04;
+    $('.js_discount_label').text('4% Discount');
+    $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.96));
+    $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
+  } else if (val >= 5) {
+    discount = val * 350 * -0.02;
+    $('.js_discount_label').text('2% Discount');
+    $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.98));
+    $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
+  } else {
+    $('.js_discount_label').text('');
+    $('.js_discount_price_label').text('');
+    $('.js_base_price_label').css({ textDecoration: 'none', color: 'inherit' });
+  }
+  <% end %>
+  $('.js_purchase_total_discount').html('USD '+ formatPurchaseCurrency(discount));
+
+  $('.js_purchase_item_total').html(formatPurchaseCurrency(sub_total + discount));
+  $('.js_purchase_total').html('USD ' + formatPurchaseCurrency(sub_total + discount));
+}
+
+qtyField.on('change', changeQty);
+
+$('[data-purchase-qty]').on('click', function() {
+  $('.js_purchase_qty_field').val($(this).data('purchase-qty'));
+  changeQty();
+});
+
+if (qtyField.val() === '') {
+  qtyField.val('0');
+}
+
+changeQty();

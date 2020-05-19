@@ -45,7 +45,11 @@
               </p>
             </div>
             <div class="cell medium-2 text-align-right">
-              <%= f.number_field :qty, class: 'js_purchase_qty_field text-align-right', step: f.object.step_qty, max: f.object.max_qty %>
+              <% if f.object.discount_double? && f.object.qty.to_i.odd? %>
+                <%= f.number_field :qty, class: 'js_purchase_qty_field text-align-right', step: f.object.step_qty, min: 0, max: f.object.max_qty, value: f.object.default_qty %>
+              <% else %>
+                <%= f.number_field :qty, class: 'js_purchase_qty_field text-align-right', step: f.object.step_qty, min: 0, max: f.object.max_qty %>
+              <% end %>
               <% if false %>
                 <div class="primary button-group no-gaps">
                   <% if f.object.discount_double? %>
@@ -103,81 +107,18 @@
           <hr/>
 
           <h6>Discount Code</h6>
-          <%= f.text_field :discount_code, autocomplete: 'off' %>
+          <div class="input-group">
+            <%= f.text_field :discount_code, autocomplete: 'off', class: 'input-group-field' %>
+            <div class="input-group-button">
+              <%= f.submit apply_discount_label, class: 'button primary' %>
+            </div>
+          </div>
           <% if f.object.discount_double? %>
             <p>2-for-1 Promo code! Buy in groups of 2 with a 50% discount.
             </p>
           <% end %>
 
           <hr/>
-
-          <% content_for :javascripts do %>
-            <script type="text/javascript">
-              $(function() {
-
-                var qtyField = $('.js_purchase_qty_field');
-
-                function formatPurchaseCurrency(val) {
-                  return $(formatCurrency(val)).prop('innerHTML');
-                }
-
-                function changeQty() {
-                  var val = parseInt(qtyField.val());
-
-                  var sub_total = val * 350
-                  $('.js_purchase_sub_total').html('USD '+ formatPurchaseCurrency(sub_total));
-
-                  var discount = 0;
-                  <% if f.object.discount_double? %>
-                    discount = val * 350 * -0.5;
-
-                  $('.js_discount_label').text('50% Discount');
-                  $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.5));
-                  $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
-
-                  <% else %>
-                  if (val >= 10) {
-                    discount = val * 350 * -0.04;
-                    $('.js_discount_label').text('4% Discount');
-                    $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.96));
-                    $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
-                  } else if (val >= 5) {
-                    discount = val * 350 * -0.02;
-                    $('.js_discount_label').text('2% Discount');
-                    $('.js_discount_price_label').text(formatPurchaseCurrency(350 * 0.98));
-                    $('.js_base_price_label').css({ textDecoration: 'line-through', color: 'gray' });
-                  } else {
-                    $('.js_discount_label').text('');
-                    $('.js_discount_price_label').text('');
-                    $('.js_base_price_label').css({ textDecoration: 'none', color: 'inherit' });
-                  }
-                  <% end %>
-                  $('.js_purchase_total_discount').html('USD '+ formatPurchaseCurrency(discount));
-
-                  $('.js_purchase_item_total').html(formatPurchaseCurrency(sub_total + discount));
-                  $('.js_purchase_total').html('USD ' + formatPurchaseCurrency(sub_total + discount));
-
-                  <%# if f.object.discount_double? %>
-<!--                    $('.js_discount_additional').html(formatPurchaseCurrency(Math.min(val, 10)));-->
-<!--                    $('.js_discount_total').html(formatPurchaseCurrency(val + Math.min(val, 10)));-->
-                  <%# end %>
-                };
-
-                qtyField.on('change', changeQty);
-
-                $('[data-purchase-qty]').on('click', function() {
-                  $('.js_purchase_qty_field').val($(this).data('purchase-qty'));
-                  changeQty();
-                });
-
-                if (qtyField.val() === '') {
-                  qtyField.val('0');
-                }
-
-                changeQty();
-              });
-            </script>
-          <% end %>
 
           <p><%= f.submit 'Checkout', class: 'button success' %></p>
 

@@ -26,6 +26,19 @@ module Refinery
               expect{ form.save }.to change{ Purchase.count }.by(1)
             end
           end
+
+          context 'when buying 2-for-1 vouchers using promo discount' do
+            let(:attr) { { article_code: article.code, qty: 2, discount_code: 'SS20PROMO' } }
+
+            it 'creates a Purchase' do
+              expect{ form.save }.to change{ Purchase.count }.by(1)
+
+              expect(form.purchase.charges.count).to eq 1
+              expect(form.purchase.total_cost).to eq article.sales_unit_price
+              expect(form.purchase.sub_total_cost).to eq 2 * article.sales_unit_price
+              expect(form.purchase.total_discount).to eq -article.sales_unit_price
+            end
+          end
         end
       end
     end

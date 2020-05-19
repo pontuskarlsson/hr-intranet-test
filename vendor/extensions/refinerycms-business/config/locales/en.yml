@@ -251,6 +251,10 @@ en:
         show:
           other: Other Projects
 
+      purchases:
+        new:
+          apply: Apply
+
       requests:
         show:
           confirm_remove_document: Are you sure you want to remove this Document?

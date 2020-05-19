@@ -1,3 +1,11 @@
 <div id="purchase_form">
   <%= render 'form', purchase_form: @purchase_form %>
 </div>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      <%= render 'listeners.js', purchase_form: @purchase_form %>
+    });
+  </script>
+<% end %>

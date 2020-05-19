@@ -30,18 +30,28 @@ module Refinery
         @validation_block = options[:validation_block]
       end
 
-      def charge_valid?(charge)
-        @validation_block.nil? || @validation_block.call(charge)
+      def validate_charge(charge, errors)
+        if @validation_block.present?
+          @validation_block.call(charge, errors)
+        end
       end
 
     end
   end
 end
 
-Refinery::Business::Discount.register 'SS20PROMO', percentage: -0.5 do |validate_charge|
+Refinery::Business::Discount.register 'SS20PROMO', percentage: -0.5 do |validate_charge, errors|
   # Only allow to double up to 10 days, which equals 20 total days and must be
   # an even number since the base qty is doubled.
-  validate_charge.qty <= 20 &&
-      validate_charge.qty.to_i == validate_charge.qty &&
-      validate_charge.qty.to_i.even?
+  if validate_charge.qty > 20
+    errors.add(:discount_code, 'can only be used to buy up to 20 Mandays')
+  end
+
+  if validate_charge.qty.to_i != validate_charge.qty
+    errors.add(:discount_code, 'cannot be used to buy partial Mandays')
+  end
+
+  if validate_charge.qty.to_i.odd?
+    errors.add(:discount_code, 'is a 2-for-1 promotion and cannot result in an odd qty')
+  end
 end
