@@ -108,7 +108,7 @@
           var poNumbers = $(this).data('po-numbers');
           if (poNumbers) {
             var poPrefix = poNumbers.toString().match(/^[^0-9]+/);
-            poNumbers = poNumbers.toString().split(/[,/]/);
+            poNumbers = poNumbers.toString().split(/[,/;]/);
             poNumbers = poNumbers.map(function(v) { var res = v.match(/[0-9]+[0-9\-]*/); return res && res[0] });
             var length = poNumbers.reduce(function(max, number) { return Math.max(max, number.length) }, 0);
 
@@ -149,7 +149,7 @@
           // Handle Products
           var productCodes = $(this).data('product-codes');
           if (productCodes) {
-            productCodes = productCodes.toString().split(/[,]/).map(function(val) { return val.trim(); });
+            productCodes = productCodes.toString().split(/[,;]/).map(function(val) { return val.trim(); });
             length = 0;
 
             <% if job.company_label == 'Björn Borg Clothing AB' %>
