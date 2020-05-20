@@ -19,6 +19,10 @@ div.widget {
         text-transform: uppercase;
         letter-spacing: 1.2px;
         box-sizing: content-box;
+
+        small {
+            float: right;
+        }
     }
 
     table.widget-table {
@@ -79,6 +83,11 @@ div.widget {
                 border-radius: 3px;
                 margin-bottom: 3px;
                 line-height: 1.3em;
+            }
+
+            .item-footer {
+                color: #999;
+                font-size: 0.7rem;
             }
         }
 

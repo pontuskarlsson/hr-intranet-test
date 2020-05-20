@@ -2,6 +2,7 @@
   <div class="widget">
     <header>
       Requests
+      <small><%= link_to 'View all', refinery.business_requests_path %></small>
     </header>
 
     <div class="widget-body">
@@ -15,7 +16,7 @@
           <%= request.subject %>
           </div>
           <% if has_multiple_companies? %>
-            <div style="color: #999;">
+            <div class="item-footer">
               <%= request.company_name %>
             </div>
           <% end %>
