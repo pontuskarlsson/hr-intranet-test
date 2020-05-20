@@ -1,62 +1,54 @@
 <% content_for :side_body do %>
-  <% if current_refinery_user.has_role?('Employees:Employee') %>
-    <%= render 'refinery/employees/calendars' %>
+  <div class="widget">
+    <header>
+      Requests
+    </header>
 
-  <% elsif current_refinery_user.has_role?(Refinery::Business::ROLE_EXTERNAL) %>
-
-    <% if current_refinery_user.companies.count == 1 %>
-      <div class="widget">
-        <header>
-          Requests
-        </header>
-
-        <div class="widget-body">
-          <% if (requests = current_refinery_user.companies.first.requests.recent).any? %>
-            <% requests.each do |request| %>
-              <div class="widget-item">
-                <span class="widget-item-trail"><%= request.request_date %></span>
-                <%= link_to refinery.business_request_path(request) do -%>
-                  <%= request.code %>
-                  <span class="widget-type"><%= request.display_request_type %></span>
-                <%- end %>
-                <div>
-                <%= request.subject %>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
-
-          <%= link_to 'New Request', refinery.new_business_request_path, class: 'button cta' %>
-
-          <p class="widget-subtext">
-            Please send a request here and upload any supporting documents to start a new project with Happy Rabbit.
-          </p>
+    <div class="widget-body">
+      <% recent_requests.each do |request| %>
+        <div class="widget-item">
+          <span class="widget-item-trail"><%= request.request_date %></span>
+          <%= link_to refinery.business_request_path(request) do -%>
+            <%= request.code %>
+            <span class="widget-type"><%= request.display_request_type %></span>
+          <%- end %>
+          <div>
+          <%= request.subject %>
+          </div>
         </div>
-      </div>
+      <% end %>
 
-      <div class="widget">
-        <header>
-          Credits
-        </header>
+      <%= link_to 'New Request', refinery.new_business_request_path, class: 'button cta' %>
 
-        <div class="widget-body">
-          <% if (credits = current_refinery_user.companies.first.vouchers.active.group(:article_id).count).any? %>
-            <% credits.each do |article_id, count| %>
-              <div class="widget-item">
-                <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available
-              </div>
-            <% end %>
+      <p class="widget-subtext">
+        Please send a request here and upload any supporting documents to start a new project with Happy Rabbit.
+      </p>
+    </div>
+  </div>
+
+  <% if selected_company.present? %>
+    <div class="widget">
+      <header>
+        Credits
+      </header>
+
+      <div class="widget-body">
+        <% if (credits = selected_company.vouchers.active.group(:article_id).count).any? %>
+          <% credits.each do |article_id, count| %>
+            <div class="widget-item">
+              <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available
+            </div>
           <% end %>
+        <% end %>
 
-          <%= link_to 'Purchase Credits', refinery.new_business_purchase_path, class: 'button cta' %>
+        <%= link_to 'Purchase Credits', refinery.new_business_purchase_path, class: 'button cta' %>
 
-          <p class="widget-subtext">
-            Credits are issued when you don't use the minimum from your plan.
-            They can also be purchased separately.
-          </p>
-        </div>
+        <p class="widget-subtext">
+          Credits are issued when you don't use the minimum from your plan.
+          They can also be purchased separately.
+        </p>
       </div>
-    <% end %>
+    </div>
   <% end %>
 <% end %>
 
