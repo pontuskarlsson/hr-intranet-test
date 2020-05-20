@@ -10,11 +10,15 @@
           <span class="widget-item-trail"><%= request.request_date %></span>
           <%= link_to refinery.business_request_path(request) do -%>
             <%= request.code %>
-            <span class="widget-type"><%= request.display_request_type %></span>
           <%- end %>
           <div>
           <%= request.subject %>
           </div>
+          <% if has_multiple_companies? %>
+            <div style="color: #999;">
+              <%= request.company_name %>
+            </div>
+          <% end %>
         </div>
       <% end %>
 

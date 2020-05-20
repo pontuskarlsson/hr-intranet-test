@@ -1,7 +1,7 @@
 class PortalController < ApplicationController
   before_action :find_page
 
-  helper_method :recent_requests
+  helper_method :recent_requests, :has_multiple_companies?
 
   def dashboard
     template = @page&.link_url == "/" ? "home" : "show"
@@ -21,6 +21,10 @@ class PortalController < ApplicationController
 
   def recent_requests(limit = 5)
     requests_scope.order(request_date: :desc).limit(limit)
+  end
+
+  def has_multiple_companies?
+    @has_multiple_companies ||= ::Refinery::Business::Company.for_user_roles(current_refinery_user).count > 1
   end
 
 end

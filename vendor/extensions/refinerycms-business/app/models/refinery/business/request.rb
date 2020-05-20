@@ -30,6 +30,7 @@ module Refinery
 
       delegate :label, :full_name, :email, to: :created_by, prefix: true, allow_nil: true
       delegate :label, :full_name, :email, to: :requested_by, prefix: true, allow_nil: true
+      delegate :name, to: :company, prefix: true, allow_nil: true
 
       validates :company_id,            presence: true
       validates :created_by_id,         presence: true
