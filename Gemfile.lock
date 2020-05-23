@@ -678,8 +678,5 @@ DEPENDENCIES
   xeroizer!
   zendesk_api (= 1.17)
 
-RUBY VERSION
-   ruby 2.5.7p206
-
 BUNDLED WITH
    1.17.3
