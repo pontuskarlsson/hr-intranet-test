@@ -2,7 +2,7 @@
   <h5 style="margin-top: 30px;"><%= inspection_defect.defect_label %></h5>
 
   <div class="grid-x grid-padding-x">
-    <div class="cell medium-3">
+    <div class="cell medium-4">
       <section class="contact-card">
         <table class="cc-table">
           <tbody>
@@ -22,7 +22,6 @@
             <th>Can Fix?</th>
             <td><%= inspection_defect.display_can_fix %></td>
           </tr>
-          <% if current_refinery_user.has_role?(::Refinery::QualityAssurance::ROLE_INTERNAL) %>
           <tr>
             <th>Comments</th>
             <td>&nbsp;</td>
@@ -31,18 +30,17 @@
             <td colspan="2">
               <ol>
                 <% inspection.comments_for(inspection_defect).each do |comment| %>
-                  <li><%= comment %></li>
+                  <li><small><%= comment %></small></li>
                 <% end %>
               </ol>
             </td>
           </tr>
-          <% end %>
           </tbody>
         </table>
       </section>
     </div>
 
-    <div class="cell medium-9">
+    <div class="cell medium-8">
       <div style="margin-top: 10px;">
         <div class="block-css-grid">
           <% inspection_defect.inspection_photos.each do |inspection_photo| %>
