@@ -33,9 +33,15 @@ en:
             edit: Edit this inspection
             delete: Remove this inspection forever
 
+      causes:
+        show:
+          other: Other Causes
+          similar: Similar Causes
+
       defects:
         show:
           other: Other Defects
+          similar: Similar Defects
 
       inspections:
         show:

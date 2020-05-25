@@ -1,0 +1,50 @@
+<% content_for :body do %>
+  <section class="contact-card">
+    <h1 class="cc-attribute cc-name"><%=raw @defect.defect_name %></h1>
+    
+    <div class="grid-x grid-padding-x">
+      <div class="cell medium-9">
+        
+        <table class="cc-table">
+          <tbody>
+          <tr>
+            <th style="width: 150px;">Code</th>
+            <td><%= @defect.code %></td>
+          </tr>
+          <tr>
+            <th style="width: 150px;">Category</th>
+            <td><%= @defect.category_name %></td>
+          </tr>
+          <tr>
+            <th>Defect</th>
+            <td><%= @defect.defect_name %></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <%= render 'tabs', defect: @defect %>
+  </section>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h5><%= t('.similar') %></h5>
+    <% similar_to(@defect).each do |defect| %>
+      <div class="sidebar-item">
+        <div class="item-title">
+          <%= link_to defect.code, refinery.quality_assurance_defect_path(defect) %>
+        </div>
+        <div class="item-content">
+          <%= defect.defect_name %>
+        </div>
+        <div class="item-trailing">
+          <small style="float: right;"><%= defect.category_name %></small>
+        </div>
+      </div>
+    <% end %>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

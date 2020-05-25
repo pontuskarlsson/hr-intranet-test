@@ -161,7 +161,6 @@
         <ul class="menu vertical sub-menu" style="margin-bottom: 1rem;">
           <li><%= link_to "See Jobs (#{@company.jobs.count})", refinery.quality_assurance_jobs_path(company_id: @company) %></li>
           <li><%= link_to "See Inspections (#{@company.inspections.count})", refinery.quality_assurance_inspections_path(company_id: @company) %></li>
-          <li><%= link_to "See Defects Summary", refinery.defects_quality_assurance_inspections_path(company_id: @company) %></li>
         </ul>
       <% end %>
     </div>

@@ -11,11 +11,12 @@ module Refinery
     ROLE_EXTERNAL = 'QualityAssurance:External'
     ROLE_INSPECTOR = 'QualityAssurance:Inspector'
 
+    PAGE_CAUSES_URL = '/quality_assurance/causes'
     PAGE_CREDITS_URL = '/quality_assurance/credits'
     PAGE_DASHBOARD_URL = '/quality_assurance'
+    PAGE_DEFECTS_URL = '/quality_assurance/defects'
     PAGE_INSPECTIONS_URL = '/quality_assurance/inspections'
     PAGE_INSPECTIONS_CALENDAR = '/quality_assurance/inspections/calendar'
-    PAGE_INSPECTIONS_DEFECTS = '/quality_assurance/inspections/defects'
     PAGE_JOBS_URL = '/quality_assurance/jobs'
 
     class << self

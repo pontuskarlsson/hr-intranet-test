@@ -1,7 +1,34 @@
 <% content_for :body do %>
+  <div class="grid-x grid-padding-x">
+    <% if true %>
+      <div class="cell medium-3">
+        <ul class="vertical tabs" data-tabs id="example-tabs">
+          <li class="tabs-title is-active"><a href="#panel1v" aria-selected="true">Pass Rate</a></li>
+          <li class="tabs-title"><a href="#panel2v">Pass Rate By Supplier</a></li>
+          <li class="tabs-title"><a href="#panel3v">Top Defects</a></li>
+        </ul>
+      </div>
+      <div class="cell medium-9">
+        <div class="tabs-content" data-tabs-content="example-tabs">
+          <div class="tabs-panel is-active" id="panel1v">
+            <%= render 'chart_pass_rate', chart_id: 'chart-pass-rate-qty', source_table_id: 'js_inspections_data_table' %>
+          </div>
 
-  <%= render 'table', table_id: 'js_inspections_data_table', options: {}, inspections: @inspections, ajax: refinery.quality_assurance_inspections_path(filter_params) %>
+          <div class="tabs-panel" id="panel2v">
+            <%= render 'chart_pass_rate_by_supplier', chart_id: 'chart-pass-rate-by-supplier', source_table_id: 'js_inspections_data_table' %>
+          </div>
 
+          <div class="tabs-panel" id="panel3v">
+            <%= render 'chart_top_defects', chart_id: 'chart-top-defects', source_table_id: 'js_inspections_data_table' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="cell" style="margin-top: 2rem;">
+      <%= render 'table', table_id: 'js_inspections_data_table', options: {}, inspections: @inspections %>
+    </div>
+  </div>
 <% end %>
 
 <%= render '/refinery/content_page' %>

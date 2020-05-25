@@ -6,6 +6,8 @@ module Refinery
       belongs_to :inspection, optional: true
       belongs_to :defect, optional: true
       has_many :inspection_photos, dependent: :nullify
+      has_many :identified_causes, dependent: :destroy
+      has_many :causes, through: :identified_causes
 
       # To enable admin searching, add acts_as_indexed on searchable fields, for example:
       #

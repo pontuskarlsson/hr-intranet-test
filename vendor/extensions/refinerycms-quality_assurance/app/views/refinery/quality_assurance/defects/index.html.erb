@@ -1,0 +1,7 @@
+<% content_for :body do %>
+
+  <%= render 'table', table_id: 'js_defects_data_table', options: {}, ajax: refinery.quality_assurance_defects_path(filter_params) %>
+
+<% end %>
+
+<%= render '/refinery/content_page' %>

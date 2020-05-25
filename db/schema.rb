@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200511002841) do
+ActiveRecord::Schema.define(version: 20200515051447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1381,6 +1381,24 @@ ActiveRecord::Schema.define(version: 20200511002841) do
     t.index ["holiday_date"], name: "public_refinery_public_holidays_holiday_date1_idx"
   end
 
+  create_table "refinery_quality_assurance_causes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "category_code"
+    t.string "category_name"
+    t.integer "cause_code"
+    t.string "cause_name"
+    t.text "description"
+    t.jsonb "block"
+    t.jsonb "block_versions"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "code"
+    t.index ["category_code"], name: "index_refinery_quality_assurance_causes_on_category_code"
+    t.index ["category_name"], name: "index_refinery_quality_assurance_causes_on_category_name"
+    t.index ["cause_code"], name: "index_refinery_quality_assurance_causes_on_cause_code"
+    t.index ["cause_name"], name: "index_refinery_quality_assurance_causes_on_cause_name"
+    t.index ["code"], name: "index_refinery_quality_assurance_causes_on_code"
+  end
+
   create_table "refinery_quality_assurance_defects", id: :serial, force: :cascade do |t|
     t.integer "category_code"
     t.string "category_name", limit: 255
@@ -1389,10 +1407,23 @@ ActiveRecord::Schema.define(version: 20200511002841) do
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "code"
     t.index ["category_code"], name: "public_refinery_quality_assurance_defects_category_code0_idx"
     t.index ["category_name"], name: "public_refinery_quality_assurance_defects_category_name1_idx"
+    t.index ["code"], name: "index_qa_defects_on_code"
     t.index ["defect_code"], name: "public_refinery_quality_assurance_defects_defect_code2_idx"
     t.index ["defect_name"], name: "public_refinery_quality_assurance_defects_defect_name3_idx"
+  end
+
+  create_table "refinery_quality_assurance_identified_causes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cause_id"
+    t.bigint "inspection_defect_id"
+    t.jsonb "analytics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "details"
+    t.index ["cause_id"], name: "INDEX_qa_identified_causes_ON_cause_id"
+    t.index ["inspection_defect_id"], name: "INDEX_qa_identified_causes_ON_inspection_defect_id"
   end
 
   create_table "refinery_quality_assurance_inspection_defects", id: :serial, force: :cascade do |t|
@@ -1557,6 +1588,16 @@ ActiveRecord::Schema.define(version: 20200511002841) do
     t.index ["status"], name: "public_refinery_quality_assurance_jobs_status9_idx"
     t.index ["title"], name: "public_refinery_quality_assurance_jobs_title11_idx"
     t.index ["zendesk_id"], name: "index_refinery_quality_assurance_jobs_on_zendesk_id"
+  end
+
+  create_table "refinery_quality_assurance_possible_causes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cause_id"
+    t.bigint "defect_id"
+    t.jsonb "analytics"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cause_id"], name: "INDEX_qa_possible_causes_ON_cause_id"
+    t.index ["defect_id"], name: "INDEX_qa_possible_causes_ON_defect_id"
   end
 
   create_table "refinery_resource_translations", id: :serial, force: :cascade do |t|
@@ -2172,4 +2213,8 @@ ActiveRecord::Schema.define(version: 20200511002841) do
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id", name: "oauth_access_grants_application_id_fkey", on_update: :restrict, on_delete: :restrict
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id", name: "oauth_access_tokens_application_id_fkey", on_update: :restrict, on_delete: :restrict
+  add_foreign_key "refinery_quality_assurance_identified_causes", "refinery_quality_assurance_causes", column: "cause_id"
+  add_foreign_key "refinery_quality_assurance_identified_causes", "refinery_quality_assurance_inspection_defects", column: "inspection_defect_id"
+  add_foreign_key "refinery_quality_assurance_possible_causes", "refinery_quality_assurance_causes", column: "cause_id"
+  add_foreign_key "refinery_quality_assurance_possible_causes", "refinery_quality_assurance_defects", column: "defect_id"
 end

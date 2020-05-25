@@ -1,0 +1,7 @@
+<% if params[:edit_causes] %>
+  $('#possible-causes').html(<%= render('possible_causes_form', defect: @defect).to_json.html_safe %>);
+<% end %>
+
+<% if content_for?(:javascripts) %>
+  $("<%= escape_javascript yield(:javascripts) %>").appendTo('body');
+<% end %>

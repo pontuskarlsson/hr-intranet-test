@@ -39,6 +39,10 @@ module Refinery
             end
           end
 
+          define_singleton_method(:find_by_label!) do |label|
+            find_by_label label || raise_record_not_found_exception!
+          end
+
           define_method(:label) do
             attributes.map { |attr| send(attr) }.reject(&:blank?).join options[:separator]
           end

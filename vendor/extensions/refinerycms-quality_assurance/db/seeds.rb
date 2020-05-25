@@ -14,11 +14,13 @@ Refinery::I18n.frontend_locales.each do |lang|
   end if defined?(Refinery::User)
 
   [
+      [Refinery::QualityAssurance::PAGE_CAUSES_URL, 'Causes', role_internal, role_external],
       [Refinery::QualityAssurance::PAGE_CREDITS_URL, 'Credits', business_ext_role],
+      [Refinery::QualityAssurance::PAGE_DASHBOARD_URL, 'Dashboard', role_internal, role_external],
+      [Refinery::QualityAssurance::PAGE_DEFECTS_URL, 'Defects', role_internal, role_external],
       [Refinery::QualityAssurance::PAGE_INSPECTIONS_URL, 'Inspections', role_internal, role_external],
       [Refinery::QualityAssurance::PAGE_JOBS_URL, 'Jobs', role_internal, role_external],
       [Refinery::QualityAssurance::PAGE_INSPECTIONS_CALENDAR, 'Calendar', role_internal_manager],
-      [Refinery::QualityAssurance::PAGE_INSPECTIONS_DEFECTS, 'Defects', role_internal, role_external]
   ].each do |url, title, *roles|
     Refinery::Page.where(link_url: url).first_or_create!(
       title: title,

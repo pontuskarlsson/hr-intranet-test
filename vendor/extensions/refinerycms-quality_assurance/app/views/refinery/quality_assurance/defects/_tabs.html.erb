@@ -1,0 +1,34 @@
+<% content_for :stylesheets do -%>
+  <%= stylesheet_link_tag '//ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css' %>
+<% end -%>
+
+<ul class="tabs" data-tabs id="defect-tabs" data-deep-link="true">
+  <li class="tabs-title is-active"><a href="#possible-causes" aria-selected="true">Possible Causes</a></li>
+</ul>
+
+<div class="tabs-content" data-tabs-content="defect-tabs">
+  <div class="tabs-panel is-active" id="possible-causes">
+    <% if current_refinery_user.has_role?(::Refinery::QualityAssurance::ROLE_INTERNAL) %>
+      <%= link_to 'Edit', refinery.edit_quality_assurance_defect_path(defect, edit_causes: '1'), remote: true, class: 'button primary' %>
+    <% end %>
+
+    <% defect.possible_causes.includes(:cause).each do |possible_cause| %>
+      <div class="grid-x grid-padding-x">
+        <div class="cell medium-3">
+          <h5>Code</h5>
+          <%= possible_cause.cause_code %>
+        </div>
+
+        <div class="cell medium-9">
+          <h5>Category - Name</h5>
+          <%= possible_cause.cause_title %>
+        </div>
+
+        <div class="cell">
+          <h5>Description</h5>
+          <%= possible_cause.cause_description %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

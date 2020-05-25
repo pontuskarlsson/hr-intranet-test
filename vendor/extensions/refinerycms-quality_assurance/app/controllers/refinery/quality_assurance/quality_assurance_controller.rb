@@ -13,6 +13,14 @@ module Refinery
 
       protected
 
+      def causes_scope
+        @causes_scope ||= Cause.for_selected_company(selected_company).for_user_roles(current_refinery_user)
+      end
+
+      def defects_scope
+        @defects_scope ||= Defect.for_selected_company(selected_company).for_user_roles(current_refinery_user)
+      end
+
       def credits_scope
         @credits_scope ||= ::Refinery::Business::Voucher.for_selected_company(selected_company).for_user_roles(current_refinery_user)
       end

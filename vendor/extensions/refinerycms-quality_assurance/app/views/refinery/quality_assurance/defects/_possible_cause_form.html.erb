@@ -1,0 +1,64 @@
+<%= f.fields_for :possible_causes, possible_cause, child_index: i do |pc_form| %>
+  <span class="form-addable-remove">
+    <% if possible_cause.persisted? %>
+      <%= pc_form.hidden_field :_destroy %>
+    <% end %>
+    <i class="fa fa-minus-square"></i>
+  </span>
+
+  <% if possible_cause.persisted? %>
+    <div class="grid-x grid-padding-x">
+      <div class="cell medium-3">
+        <h5><%= pc_form.label :cause_code %></h5>
+        <%= pc_form.text_field :cause_code, disabled: true %>
+      </div>
+
+      <div class="cell medium-9">
+        <h5><%= pc_form.label :cause_title, 'Category / Name' %></h5>
+        <%= pc_form.text_field :cause_title, disabled: true %>
+      </div>
+
+      <div class="cell">
+        <h5><%= pc_form.label :cause_description %></h5>
+        <%= pc_form.text_area :cause_description, disabled: true %>
+      </div>
+    </div>
+
+  <% else %>
+    <div class="grid-x grid-padding-x">
+      <div class="cell">
+        <h5><%= pc_form.label :cause_label, 'Add existing Cause' %></h5>
+        <%= pc_form.text_field :cause_label, class: 'js_cause_label' %>
+      </div>
+
+      <div class="cell">
+        <p>Or create and add new cause</p>
+      </div>
+
+      <div class="cell medium-3">
+        <h5><%= pc_form.label :cause_category_code, 'Category Code' %></h5>
+        <%= pc_form.text_field :cause_category_code, placeholder: 'Optional' %>
+      </div>
+
+      <div class="cell medium-9">
+        <h5><%= pc_form.label :cause_category_name, 'Category Name' %></h5>
+        <%= pc_form.text_field :cause_category_name, placeholder: 'Optional' %>
+      </div>
+
+      <div class="cell medium-3">
+        <h5><%= pc_form.label :cause_cause_code, 'Cause Code' %></h5>
+        <%= pc_form.text_field :cause_cause_code, placeholder: 'Optional' %>
+      </div>
+
+      <div class="cell medium-9">
+        <h5><%= pc_form.label :cause_cause_name, 'Cause Name *' %></h5>
+        <%= pc_form.text_field :cause_cause_name, placeholder: 'Required' %>
+      </div>
+
+      <div class="cell">
+        <h5><%= pc_form.label :cause_description %></h5>
+        <%= pc_form.text_area :cause_description %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

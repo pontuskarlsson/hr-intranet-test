@@ -1,0 +1,73 @@
+<ul class="tabs" data-tabs id="inspection-tabs">
+  <li class="tabs-title is-active"><a href="#tab-inspection-defects" aria-selected="true">Defects</a></li>
+  <li class="tabs-title"><a data-tabs-target="tab-inspection-defect-chart" href="#tab-inspection-defect-chart">Chart</a></li>
+  <li class="tabs-title"><a data-tabs-target="tab-inspection-measurements" href="#tab-inspection-measurements">Measurements</a></li>
+  <li class="tabs-title"><a data-tabs-target="tab-inspection-product-photos" href="#tab-inspection-product-photos">Product Photos</a></li>
+  <li class="tabs-title"><a data-tabs-target="tab-inspection-pps-techpack" href="#tab-inspection-pps-techpack">PPS & Techpack</a></li>
+  <li class="tabs-title"><a data-tabs-target="tab-inspection-photos" href="#tab-inspection-photos">Other Photos</a></li>
+</ul>
+
+<div class="tabs-content" data-tabs-content="inspection-tabs">
+  <div class="tabs-panel is-active" id="tab-inspection-defects">
+    <%= render 'tab_defects', inspection: inspection %>
+  </div>
+
+  <div class="tabs-panel" id="tab-inspection-defect-chart">
+    <%= bar_chart inspection.chart_defects, stacked: true, colors: ['#30384B'] %>
+  </div>
+
+  <div class="tabs-panel" id="tab-inspection-measurements">
+    <% inspection.inspection_photos.non_defects.select(&:measurement_photo?).each do |inspection_photo| %>
+      <%= dragonfly_reveal_tag inspection_photo.image, 716, 716, false %>
+    <% end %>
+  </div>
+
+  <div class="tabs-panel" id="tab-inspection-product-photos">
+    <div class="block-css-grid">
+      <% inspection.inspection_photos.non_defects.select(&:product_photo?).each do |inspection_photo| %>
+        <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="tabs-panel" id="tab-inspection-pps-techpack">
+    <section class="contact-card">
+      <table class="cc-table">
+        <tbody>
+        <tr>
+          <th style="width: 180px;">PPS Available</th>
+          <td><%= inspection.display_pps_available %></td>
+          <th style="width: 180px;">Techpack Available</th>
+          <td><%= inspection.display_tp_available %></td>
+        </tr>
+        <tr>
+          <th style="width: 180px;">Approved by Customer</th>
+          <td><%= inspection.display_pps_approved %></td>
+          <th style="width: 180px;">Techpack by Customer</th>
+          <td><%= inspection.display_tp_approved %></td>
+        </tr>
+        <tr>
+          <th style="width: 180px;">Comments</th>
+          <td><%=simple_format inspection.pps_comments %></td>
+          <th style="width: 180px;">Comments</th>
+          <td><%=simple_format inspection.tp_comments %></td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="block-css-grid">
+      <% inspection.inspection_photos.non_defects.select(&:sample_photo?).each do |inspection_photo| %>
+        <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="tabs-panel" id="tab-inspection-photos">
+    <div class="block-css-grid">
+      <% inspection.inspection_photos.non_defects.select(&:other_photo?).each do |inspection_photo| %>
+        <%= dragonfly_reveal_tag inspection_photo.image, 190, 190, false %>
+      <% end %>
+    </div>
+  </div>
+</div>

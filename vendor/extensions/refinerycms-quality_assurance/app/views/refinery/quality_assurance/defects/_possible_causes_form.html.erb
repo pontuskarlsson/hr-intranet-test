@@ -1,0 +1,35 @@
+<%= form_for possible_causes_form, url: refinery.quality_assurance_defect_path(defect) do |f| %>
+  <%= hidden_field_tag 'update_causes', '1' %>
+
+  <div data-form-container="defect-possible-causes" class="form-addable">
+    <div class="form-addable-controls">
+      <i class="fa fa-plus-square form-ctrl-add"></i>
+    </div>
+
+    <% defect.possible_causes.each_with_index do |possible_cause, i| %>
+      <div class="form-addable-record">
+        <%= render 'possible_cause_form', f: f, possible_cause: possible_cause, i: i+1 %>
+      </div>
+    <% end %>
+
+    <% content_for :javascripts do %>
+      <script type="text/javascript">
+        $(document).ready(function() {
+          var handleAdd = function() {
+            $('.js_cause_label').autocomplete({
+              source: <%= ::Refinery::QualityAssurance::Cause.to_source %>
+            });
+          };
+
+          Addable.partials["defect-possible-causes"] = {
+            "attributes": { "__index__": <%= defect.possible_causes.length+1 %> },
+            "template": "<%= escape_javascript render('possible_cause_form', possible_cause: ::Refinery::QualityAssurance::PossibleCause.new, i: '__index__', f: f) %>",
+            "onAdd": handleAdd,
+          };
+        });
+      </script>
+    <% end %>
+  </div>
+
+  <p><%= f.submit 'Save', class: 'button primary' %></p>
+<% end %>

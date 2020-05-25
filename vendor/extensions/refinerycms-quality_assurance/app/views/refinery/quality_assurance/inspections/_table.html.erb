@@ -1,26 +1,184 @@
-<table>
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
   <thead>
   <tr>
-    <th></th>
-    <th>Inspected</th>
-    <th>Result</th>
-    <th>PO</th>
-    <th>Style</th>
+    <th><div class="hidden-title">Row</div></th>
+    <th><div class="hidden-title">Select</div></th>
+    <th>Photo</th>
+    <% if false %>
+      <th data-dt-search-select="In-Line,Final,Re-Final">Type</th>
+    <% else %>
+      <th data-dt-search-input="true">Type</th>
+    <% end %>
+    <% if false %>
+      <th data-dt-search-select="Pass,Reject,Hold">Result</th>
+    <% else %>
+      <th data-dt-search-input="true">Result</th>
+    <% end %>
+    <th data-dt-search-input="true">Insp. Date</th>
+    <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th data-dt-search-input="true">Status</th><%- end %>
+    <th data-dt-search-input="true">PO</th>
+    <th data-dt-search-input="true">Style</th>
+    <th data-dt-search-input="true">Description</th>
+    <%- if false %><th data-dt-search-input="true">Project Ref.</th><%- end %>
+    <th data-dt-search-input="true">Customer</th>
+    <th data-dt-search-input="true">Supplier</th>
+    <th data-dt-search-input="true">Manufacturer</th>
+    <th data-dt-search-input="true">Project Code</th>
+    <th data-dt-search-input="true">PO Qty</th>
+    <th data-dt-search-input="true">Avail. Qty</th>
+    <th data-dt-search-input="true">Sample Size</th>
+    <th data-dt-search-input="true">Insp. By</th>
+    <th data-dt-search-input="true">Product Code</th>
+    <th data-dt-search-input="true">Product Desc.</th>
+    <th data-dt-search-input="true">Product Colours</th>
+    <th data-dt-search-input="true">Insp. Code</th>
   </tr>
   </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Photo</th>
+    <th>Type</th>
+    <th>Result</th>
+    <th>Insp. Date</th>
+    <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %><th>Status</th><%- end %>
+    <th>PO</th>
+    <th>Style</th>
+    <th>Description</th>
+    <%- if false %><th>Project Reference</th><%- end %>
+    <th>Customer</th>
+    <th>Supplier</th>
+    <th>Manufacturer</th>
+    <th>Project Code</th>
+    <th>PO Qty</th>
+    <th>Avail. Qty</th>
+    <th>Sample Size</th>
+    <th>Insp. By</th>
+    <th>Product Code</th>
+    <th>Product Desc.</th>
+    <th>Product Colours</th>
+    <th>Insp. Code</th>
+  </tr>
+  </tfoot>
+
   <tbody>
-  <% inspections.each do |inspection| %>
-    <tr>
-      <td>
-        <%= link_to refinery.quality_assurance_inspection_path(inspection) do %>
-          <i class="fa fa-arrow-right"></i>
-        <% end %>
-      </td>
-      <td><%= time_ago_in_words inspection.inspection_date %> ago</td>
-      <td style="color: <%= inspection.result == 'Pass' ? 'green' : inspection.result == 'Reject' ? 'red' : 'black' %>"><%= inspection.result %></td>
-      <td><%= inspection.po_number %></td>
-      <td><%= inspection.product_label %></td>
-    </tr>
-  <% end %>
+  <tr>
+    <td colspan="<%= page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) ? '22' : '21' %>">Loading, please wait...</td>
+  </tr>
   </tbody>
 </table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var ajaxStatus = { active: true, archived: false };
+
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        select: {
+          style:    'multi',
+          selector: 'td:nth-child(2)'
+        },
+        "paging":         true,
+        "lengthMenu": [
+          [ 10, 25, 50, 100, -1 ],
+          [ '10', '25', '50', '100', 'All' ]
+        ],
+        "ajax": {
+          "url": "<%= refinery.quality_assurance_inspections_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
+        "serverSide": true,
+        "order": [[5, 'desc']],
+        columnDefs: [ {
+          orderable: false,
+          className: 'select-checkbox',
+          targets:   1
+        } ],
+        "columns": [
+          { data: "id", "orderable": false, "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_inspections_path %>") } },
+          { data: "id", "render": function() {return '<span style="display: inline-block; width: 20px;">&nbsp;</span>';} },
+          { data: "inspection_photo_thumb_url", "render": dtThumbRenderer },
+          { data: "inspection_type" },
+          { data: "result", "render": { "display": function(data, type, row) { return '<span class="result-'+(data || '').toLowerCase()+'">'+data+'</span>' } } },
+          { data: "inspection_date", render: dtDateRenderer },
+            <%- if page_role?(Refinery::QualityAssurance::ROLE_INTERNAL_MANAGER) %>{ data: "status" },<%- end %>
+          { data: "po_number" },
+          { data: "product_code"},
+          { data: "product_description"},
+//          { data: "company_project_reference" },
+          { data: "company_label" },
+          { data: "supplier_label" },
+          { data: "manufacturer_label" },
+          { data: "project_code" },
+          { data: "po_qty" },
+          { data: "available_qty" },
+          { data: "inspection_sample_size" },
+          { data: "inspected_by_name" },
+          { data: "product_code" },
+          { data: "product_description" },
+          { data: "product_colour_variants" },
+          { data: "code" },
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5',
+          {
+            text: 'Summary Report',
+            action: function(e, dt, node, config) {
+              var data = dt.rows({ selected: true }).data();
+              var resp;
+              if (data.length > 0) {
+                resp = confirm('You have selected '+data.length+' rows. Do you want to continue?');
+              } else {
+                data = dt.rows({ search: 'applied' }).data();
+                resp = confirm('There are '+data.length+' rows filtered. Do you want to continue?');
+              }
+
+              if (resp) {
+                var $form = $('<form action="/reports/inspections.pdf" method="post" target="_blank"></form>');
+                $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
+                data.each(function(dataRow) { $form.append('<input type="hidden" name="id[]" value="'+dataRow.id+'" />') });
+                $form.appendTo(document.body);
+                $form.submit();
+              }
+            }
+          },
+          {
+            text: 'Download Report(s)',
+            action: function(e, dt, node, config) {
+              var data = dt.rows({ selected: true }).data();
+              var resp;
+              if (data.length > 0) {
+                resp = confirm('You have selected '+data.length+' rows. Do you want to continue?');
+              } else {
+                data = dt.rows({ search: 'applied' }).data();
+                resp = confirm('There are '+data.length+' rows filtered. Do you want to continue?');
+              }
+
+              if (resp) {
+                var $form = $('<form action="<%= refinery.download_quality_assurance_inspections_path %>" method="post" data-remote="true"></form>');
+                $('<input type="hidden" />').attr('name', $('meta[name=csrf-param]').attr('content')).attr('value', $('meta[name=csrf-token]').attr('content')).appendTo($form);
+                data.each(function(dataRow) { $form.append('<input type="hidden" name="id[]" value="'+dataRow.id+'" />') });
+                $form.appendTo(document.body);
+                $form.submit();
+              }
+            }
+          }
+        ]
+      });
+
+      dt.on( 'draw', dtOnDrawSetImgSrc);
+
+      initDataTable(dt, null, true);
+    });
+  </script>
+<% end %>

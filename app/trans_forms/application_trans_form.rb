@@ -55,7 +55,7 @@ class ApplicationTransForm < TransForms::FormBase
 
   def find_from!(collection, identifier, find_by = :id)
     if identifier.present?
-      collection.detect { |instance| instance.send(find_by) == identifier.to_i } || (raise NotFoundFromError)
+      collection.detect { |instance| instance.send(find_by).to_s == identifier.to_s } || (raise TransForms::NotFoundFromError)
     else
       raise ActiveRecord::RecordNotFound
     end

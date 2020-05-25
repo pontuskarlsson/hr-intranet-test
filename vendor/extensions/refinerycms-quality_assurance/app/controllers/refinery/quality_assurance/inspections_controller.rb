@@ -5,12 +5,12 @@ module Refinery
 
       set_page PAGE_INSPECTIONS_URL
 
-      allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :defects, :download, :show]
-      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :defects, :download, :show]
-      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :defects, :download, :show, :update]
+      allow_page_roles ROLE_EXTERNAL, only: [:index, :calendar, :download, :show]
+      allow_page_roles ROLE_INTERNAL, only: [:index, :calendar, :download, :show]
+      allow_page_roles ROLE_INTERNAL_MANAGER, only: [:index, :calendar, :download, :show, :update]
 
-      before_action :find_all_inspections,  only: [:index, :calendar, :defects, :show]
-      before_action :find_inspection,       except: [:index, :calendar, :defects, :new, :create, :download]
+      before_action :find_all_inspections,  only: [:index, :calendar, :show]
+      before_action :find_inspection,       except: [:index, :calendar, :new, :create, :download]
 
       helper_method :filter_params, :calendar_params, :inspection_defects
 
@@ -49,15 +49,6 @@ module Refinery
 
       def calendar
         @page = Refinery::Page.find_by(link_url: PAGE_INSPECTIONS_CALENDAR) || @page
-
-        respond_to do |format|
-          format.html { present(@page) }
-          format.json
-        end
-      end
-
-      def defects
-        @page = Refinery::Page.find_by(link_url: PAGE_INSPECTIONS_DEFECTS) || @page
 
         respond_to do |format|
           format.html { present(@page) }

@@ -1,0 +1,78 @@
+<table id="<%= table_id %>" class="display responsive nowrap" cellspacing="0" style="width: 100%;">
+  <thead>
+  <tr>
+    <th><div class="hidden-title">Row</div></th>
+    <th><div class="hidden-title">Select</div></th>
+    <th data-dt-search-input="true">Code</th>
+    <th data-dt-search-input="true">Category</th>
+    <th data-dt-search-input="true">Defect</th>
+  </tr>
+  </thead>
+
+  <tfoot>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Code</th>
+    <th>Category</th>
+    <th>Defect</th>
+  </tr>
+  </tfoot>
+
+  <tbody>
+  <tr>
+    <td colspan="5">Loading, please wait...</td>
+  </tr>
+  </tbody>
+</table>
+
+<%= render 'refinery/datatable_dependencies' %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var ajaxStatus = { active: true, archived: false };
+
+      var dt = $('#<%= table_id %>').DataTable({
+        "responsive":     true,
+        select: {
+          style:    'multi',
+          selector: 'td:nth-child(2)'
+        },
+        "paging":         true,
+        "lengthMenu": [
+          [ 10, 25, 50, 100, -1 ],
+          [ '10', '25', '50', '100', 'All' ]
+        ],
+        "ajax": {
+          "url": "<%= refinery.quality_assurance_defects_path %>",
+          "data": function(d) {
+            Object.assign(d, ajaxStatus, JSON.parse($('meta[name=filter-params]').attr('content')));
+          }
+        },
+        "serverSide": true,
+        "order": [[2, 'asc']],
+        columnDefs: [ {
+          orderable: false,
+          className: 'select-checkbox',
+          targets:   1
+        } ],
+        "columns": [
+          { data: "id", "orderable": false, "render": { "display": idColumnRendererFor("<%= refinery.quality_assurance_defects_path %>") } },
+          { data: "id", "render": function() {return '<span style="display: inline-block; width: 20px;">&nbsp;</span>';} },
+          { data: "code", "width": "60px" },
+          { data: "category_name", "width": "120px" },
+          { data: "defect_name" },
+        ],
+        "dom": "<'row grid-x'<'medium-6 columns cell extra-toolbar'Bl><'medium-6 columns cell'f>r>"+
+          "t"+
+          "<'row grid-x'<'medium-6 columns cell'i><'medium-6 columns cell'p>>",
+        buttons: [
+          'excelHtml5',
+        ]
+      });
+
+      initDataTable(dt, null, true);
+    });
+  </script>
+<% end %>
