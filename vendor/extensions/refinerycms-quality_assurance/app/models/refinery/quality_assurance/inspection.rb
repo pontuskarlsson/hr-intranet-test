@@ -263,6 +263,22 @@ module Refinery
         resource&.file&.remote_url expires: expires
       end
 
+      def comments_for(inspection_defect)
+        @retrieved ||= []
+        defect_data, index = fields.dig('data', 'Defect').each_with_index.detect do |d, i|
+          !@retrieved.include?(i) && d['Defectlist'].to_s == inspection_defect.defect_code.to_s
+        end
+
+        if defect_data.nil?
+          []
+        else
+          @retrieved << index
+          defect_data['DefectPhoto'].map { |dp| dp['DefectPhotoComment'] }
+        end
+      rescue StandardError => e
+        []
+      end
+
       # def assign_code!
       #   self.code = ::Refinery::Business::NumberSerie.next_counter!(self.class, :code, prefix: 'QA-', pad_length: 6) if code.blank?
       # end

@@ -22,11 +22,20 @@
             <th>Can Fix?</th>
             <td><%= inspection_defect.display_can_fix %></td>
           </tr>
-          <% if inspection_defect.comments.present? %>
-            <tr>
-              <th>Comments</th>
-              <td><%= inspection_defect.comments %></td>
-            </tr>
+          <% if current_refinery_user.has_role?(::Refinery::QualityAssurance::ROLE_INTERNAL) %>
+          <tr>
+            <th>Comments</th>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <ol>
+                <% inspection.comments_for(inspection_defect).each do |comment| %>
+                  <li><%= comment %></li>
+                <% end %>
+              </ol>
+            </td>
+          </tr>
           <% end %>
           </tbody>
         </table>

@@ -13,6 +13,9 @@ module Refinery
       #
       #   acts_as_indexed :fields => [:title]
 
+      delegate :category_code, :category_name, :defect_code, :defect_name, :code, :title,
+               to: :defect, prefix: true, allow_nil: true
+
       validates :inspection_id,   presence: true
       validates :defect_id,       uniqueness: { scope: :inspection_id }, allow_nil: true
 
