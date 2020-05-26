@@ -163,6 +163,10 @@ module Refinery
         end
       end
 
+      def receipt?
+        purchase.present?
+      end
+
       def number_of_man_days
         billables.sum(:qty)
       end

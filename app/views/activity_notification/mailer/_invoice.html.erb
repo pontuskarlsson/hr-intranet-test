@@ -1,12 +1,12 @@
 <table>
   <tbody>
   <tr>
-    <th>Inv No.</th>
+    <th><%= invice.receipt? ? 'Receipt No.' : 'Invoice No.' %></th>
     <td><%= invoice.invoice_number %></td>
   </tr>
   <tr>
     <th>Buyer</th>
-    <td><%= invoice.company_label %></td>
+    <td><%= invoice.company_name %></td>
   </tr>
   <tr>
     <th>Reference</th>
@@ -14,15 +14,15 @@
   </tr>
   <tr>
     <th>Date</th>
-    <td><%= invoice.invoice_date %></td>
+    <td><%= invoice.display_invoice_date %></td>
   </tr>
   <tr>
     <th>Due Date</th>
-    <td><%= invoice.due_date %></td>
+    <td><%= invoice.display_due_date %></td>
   </tr>
   <tr>
     <th>Total Amount</th>
-    <td><%=number_to_currency invoice.total_amount, unit: invoice.currency_code %></td>
+    <td><%=number_to_currency invoice.total_amount, unit: "#{invoice.currency_code} " %></td>
   </tr>
   </tbody>
 </table>
