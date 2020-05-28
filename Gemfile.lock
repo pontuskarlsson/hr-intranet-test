@@ -41,6 +41,11 @@ PATH
   specs:
     refinerycms-addons (1.0)
       refinerycms-core (>= 3.0.6)
+    refinerycms-authentication-devise (2.0.0)
+      actionmailer (>= 5.0.0, < 5.2)
+      devise (~> 4.0, >= 4.3.0)
+      friendly_id (~> 5.2.1)
+      refinerycms-core (>= 3.0.0, < 5.0)
     refinerycms-business (1.0)
       countries
       jbuilder (>= 2.9.0)
@@ -436,11 +441,6 @@ GEM
       decorators (~> 2.0)
       refinerycms-core (>= 3.0.0, < 5.0)
       stringex (~> 2.5.2)
-    refinerycms-authentication-devise (2.0.0)
-      actionmailer (>= 5.0.0, < 5.2)
-      devise (~> 4.0, >= 4.3.0)
-      friendly_id (~> 5.2.1)
-      refinerycms-core (>= 3.0.0, < 5.0)
     refinerycms-core (4.0.2)
       actionpack (>= 5.1.0, < 5.2)
       activerecord (>= 5.1.0, < 5.2)
@@ -647,7 +647,7 @@ DEPENDENCIES
   refinerycms (= 4.0.2)
   refinerycms-acts-as-indexed
   refinerycms-addons!
-  refinerycms-authentication-devise (~> 2.0.0)
+  refinerycms-authentication-devise!
   refinerycms-blog!
   refinerycms-business!
   refinerycms-calendar!

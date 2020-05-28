@@ -110,6 +110,8 @@ module Refinery
         self.article_code       = article.code            if article.present?
       end
 
+      scope :all_non_invoiced, -> { where(status: %w(draft job_completed to_be_invoiced)) }
+
       def self.for_user_roles(user, role_titles = nil)
         titles = role_titles || user.roles.pluck(:title)
         if titles.include? ROLE_INTERNAL_FINANCE or titles.include? ROLE_INTERNAL

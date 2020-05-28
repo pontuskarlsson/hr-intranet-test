@@ -24,7 +24,7 @@ gem 'jbuilder'
 
 # Refinery CMS
 gem 'refinerycms', '4.0.2'
-gem 'refinerycms-authentication-devise', '~> 2.0.0'
+gem 'refinerycms-authentication-devise', path: 'vendor/extensions'
 gem 'refinerycms-blog', git: 'https://github.com/refinery/refinerycms-blog', ref: '684036e9efbea667b286a850e5028d3a53b578bf'
 # gem 'refinerycms-news', github: 'refinery/refinerycms-news', branch: 'master'
 gem 'refinerycms-page-images'

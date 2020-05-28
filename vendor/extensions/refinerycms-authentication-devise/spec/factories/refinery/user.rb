@@ -1,7 +1,3 @@
-# Copying the factories from refinerycms-authentication-devise module here. The first reason for that
-# is that the factory_paths in the module is not correct on the 2.0.0 release (fixed on master branch though).
-# Bt I also want a full_name attribute on it.
-#
 FactoryBot.define do
   factory :authentication_devise_user, :class => Refinery::Authentication::Devise::User do
     sequence(:username) { |n| "refinery#{n}" }

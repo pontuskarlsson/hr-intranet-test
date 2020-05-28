@@ -135,6 +135,23 @@
             <% else %>
               <p class="italic">No credits available.</p>
             <% end %>
+
+            <h3>Non-invoiced Billables</h3>
+            <% if (billables = @company.billables.all_non_invoiced).any? %>
+              <table class="cc-table">
+                <tbody>
+                <% billables.group_by { |b| b.billable_date.beginning_of_month }.each_pair do |billable_date, monthly_billables| %>
+                  <tr>
+                    <th style="width: 120px;"><%= billable_date.strftime('%b %Y') %></th>
+                    <td><%=number_with_delimiter monthly_billables.count, delimiter: ',' %> billables pending</td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+
+            <% else %>
+              <p class="italic">No non-invoiced billable pending.</p>
+            <% end %>
           </section>
         </div>
       </div>

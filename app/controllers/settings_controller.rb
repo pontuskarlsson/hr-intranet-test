@@ -1,15 +1,14 @@
 class SettingsController < ApplicationController
   before_action :find_company
 
-  helper_method :invite_form
+  helper_method :invite_form, :company_billing_form, :company_contact_form
 
   def show
-    @company_contact_form = CompanyContactForm.new_in_model(@company.contact)
+
   end
 
   def update
-    @company_contact_form = CompanyContactForm.new_in_model(@company.contact, params[:company_contact_form], current_refinery_user)
-    if @company_contact_form.save
+    if settings_form_saved?
       ErrorMailer.notification_email("Company settings updated for #{@company.code}", params.to_unsafe_h.to_hash).deliver_later
       redirect_to setting_path(@company)
     else
@@ -50,8 +49,25 @@ class SettingsController < ApplicationController
     params.require(:invite_form).permit(:email, :first_name, :last_name, :role)
   end
 
+  def settings_form_saved?
+    if params[:update_billing]
+      company_billing_form.save
+
+    else
+      company_billing_form.save
+    end
+  end
+
   def invite_form
     @invite_form ||= InviteForm.new_in_model(@company, params[:invite_form], current_refinery_user)
+  end
+
+  def company_billing_form
+    @company_billing_form ||= ::Refinery::Business::CompanyBillingForm.new_in_model(@company, params[:company], current_refinery_user)
+  end
+
+  def company_contact_form
+    @company_contact_form ||= CompanyContactForm.new_in_model(@company.contact, params[:company_contact_form], current_refinery_user)
   end
 
 end

@@ -1,0 +1,59 @@
+<div class="grid-x grid-padding-x">
+  <div class="cell medium-6">
+    <h3>Billing Account</h3>
+
+    <%= form_for company_billing_form, url: setting_path(company) do |f| %>
+      <%= hidden_field_tag :update_billing, '1' %>
+
+      <%= f.fields_for :billing_accounts, f.object.billing_account do |ba_form| %>
+        <h5><%= ba_form.label :email_addresses, 'Send Invoices / Receipts to' %></h5>
+        <%= ba_form.text_field :email_addresses, placeholder: 'Email Addresses (comma separated)' %>
+      <% end %>
+
+      <%= f.submit 'Save Changes', class: 'button primary' %>
+    <% end %>
+  </div>
+
+  <div class="cell medium-6">
+    <h3>Credits</h3>
+    <% if (credits = company.vouchers.active.group(:article_id).count).any? %>
+      <% credits.each do |article_id, count| %>
+        <div class="widget-item">
+          <%=number_with_delimiter count, delimiter: ',' %> <span class="bold"><%= Refinery::Business::Article.find_by_id(article_id)&.name %></span> available
+        </div>
+      <% end %>
+
+    <% else %>
+      <p class="italic">You do not have any credits yet.</p>
+    <% end %>
+
+    <%= link_to 'Purchase Credits', refinery.new_business_purchase_path, class: 'button cta' %>
+
+    <h3>Plan</h3>
+    <% if company.plans.non_draft.any? %>
+      <table>
+        <thead>
+        <tr>
+          <th>Reference</th>
+          <th>Start Date</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% company.plans.non_draft.each do |plan| %>
+          <tr>
+            <td><%= link_to plan.reference, refinery.business_plan_path(plan) %></td>
+            <td><%= plan.start_date %></td>
+            <td><%= plan.display_status %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="italic">You are not currently on any plan.</p>
+    <% end %>
+    <p>
+      <%= link_to 'Request Plan', refinery.new_business_request_path, class: 'button cta' %>
+    </p>
+  </div>
+</div>

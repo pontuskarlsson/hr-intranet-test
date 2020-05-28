@@ -5,6 +5,7 @@ module Refinery
 
       belongs_to :contact,      class_name: '::Refinery::Marketing::Contact', optional: true
       belongs_to :verified_by,  class_name: '::Refinery::Authentication::Devise::User', optional: true
+      has_many :billing_accounts, dependent: :nullify
       has_many :contacts,       class_name: '::Refinery::Marketing::Contact',
                                 foreign_key: :owner_id,
                                 dependent: :destroy

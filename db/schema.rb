@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200515051447) do
+ActiveRecord::Schema.define(version: 20200528011341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -447,6 +447,19 @@ ActiveRecord::Schema.define(version: 20200515051447) do
     t.index ["title"], name: "public_refinery_business_billables_title6_idx"
     t.index ["total_cost"], name: "public_refinery_business_billables_total_cost11_idx"
     t.index ["unit_price"], name: "public_refinery_business_billables_unit_price10_idx"
+  end
+
+  create_table "refinery_business_billing_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "company_id"
+    t.string "name"
+    t.boolean "primary", default: false, null: false
+    t.string "email_addresses"
+    t.jsonb "preferences"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "INDEX_rb_billing_accounts_ON_company_id"
+    t.index ["name"], name: "index_refinery_business_billing_accounts_on_name"
+    t.index ["primary"], name: "index_refinery_business_billing_accounts_on_primary"
   end
 
   create_table "refinery_business_budget_items", id: :serial, force: :cascade do |t|
@@ -2213,6 +2226,7 @@ ActiveRecord::Schema.define(version: 20200515051447) do
 
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id", name: "oauth_access_grants_application_id_fkey", on_update: :restrict, on_delete: :restrict
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id", name: "oauth_access_tokens_application_id_fkey", on_update: :restrict, on_delete: :restrict
+  add_foreign_key "refinery_business_billing_accounts", "refinery_business_companies", column: "company_id"
   add_foreign_key "refinery_quality_assurance_identified_causes", "refinery_quality_assurance_causes", column: "cause_id"
   add_foreign_key "refinery_quality_assurance_identified_causes", "refinery_quality_assurance_inspection_defects", column: "inspection_defect_id"
   add_foreign_key "refinery_quality_assurance_possible_causes", "refinery_quality_assurance_causes", column: "cause_id"
