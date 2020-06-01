@@ -1,5 +1,5 @@
 <% if @invoice.purchase.present? %>
-  <%= render 'purchase_statement', invoice: @invoice %>
+  <%= render 'refinery/business/invoices/purchase_statement', invoice: @invoice %>
 <% else %>
-  <%= render 'statement', invoice: @invoice %>
+  <%= render 'refinery/business/invoices/statement', invoice: @invoice %>
 <% end %>

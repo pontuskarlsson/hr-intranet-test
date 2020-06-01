@@ -1,0 +1,15 @@
+<%- @invoice = @notification.notifiable -%>
+<p>Dear Sir / Madam,</p>
+
+<p>
+  The invoice <%= @invoice.invoice_number %> has just been issued.
+  Find a PDF file attached or
+  <%= link_to "View on Portal", refinery.business_invoice_path(@invoice) %>.
+</p>
+
+<p style="margin-bottom: 30px;">
+  Best regards<br/>
+  The Happy Rabbit Team
+</p>
+
+<%= render 'invoice', invoice: @invoice %>

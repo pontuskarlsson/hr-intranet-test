@@ -1,6 +1,11 @@
 <% if page_role? ::Refinery::Business::ROLE_INTERNAL_FINANCE %>
   <% if invoice.is_managed %>
-    <%= link_to 'View Statement', refinery.statement_business_invoice_path(invoice, format: :pdf), class: 'button' %>
+    <% if invoice.statement&.resource.present? %>
+      <%= link_to 'View Statement', invoice.statement.resource.file.url, class: 'button' %>
+
+    <% else %>
+      <%= link_to 'View Statement', refinery.statement_business_invoice_path(invoice, format: :pdf), class: 'button' %>
+    <% end %>
 
     <% if invoice.managed_status_is_draft? %>
       <div style="display: inline-block;">

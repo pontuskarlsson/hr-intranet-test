@@ -15,6 +15,7 @@ class AddFromAndToToInvoices < ActiveRecord::Migration
     add_column :refinery_business_invoices, :plan_details, :text
     add_column :refinery_business_invoices, :buyer_reference, :string
     add_column :refinery_business_invoices, :seller_reference, :string
+    add_column :refinery_business_invoices, :statement_id, :integer
     add_index :refinery_business_invoices, :from_company_id, name: 'INDEX_rb_invoices_ON_from_company_id'
     add_index :refinery_business_invoices, :from_company_label, name: 'INDEX_rb_invoices_ON_from_company_label'
     add_index :refinery_business_invoices, :from_contact_id, name: 'INDEX_rb_invoices_ON_from_contact_id'
@@ -27,6 +28,7 @@ class AddFromAndToToInvoices < ActiveRecord::Migration
     add_index :refinery_business_invoices, :invoice_for_month, name: 'INDEX_rb_invoices_ON_invoice_for_month'
     add_index :refinery_business_invoices, :buyer_reference, name: 'INDEX_rb_invoices_ON_buyer_reference'
     add_index :refinery_business_invoices, :seller_reference, name: 'INDEX_rb_invoices_ON_seller_reference'
+    add_index :refinery_business_invoices, :statement_id, name: 'INDEX_rb_invoices_ON_statement_id'
   end
 
 end

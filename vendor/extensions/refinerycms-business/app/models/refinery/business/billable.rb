@@ -259,3 +259,6 @@ module Refinery
     end
   end
 end
+
+# Make sure the job is registered as possible billable jobs
+Refinery::QualityAssurance::Job

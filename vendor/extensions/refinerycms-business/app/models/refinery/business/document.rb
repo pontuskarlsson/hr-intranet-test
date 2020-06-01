@@ -3,7 +3,7 @@ module Refinery
     class Document < Refinery::Core::BaseModel
       self.table_name = 'refinery_business_documents'
 
-      TYPES = %w(other contract)
+      TYPES = %w(other contract invoice receipt)
 
       attr_accessor :file # For form accessor upon creation
 
@@ -12,7 +12,8 @@ module Refinery
       belongs_to :company
       belongs_to :resource
 
-      has_many :plans, dependent: :nullify, foreign_key: :contract_id
+      has_many :invoices,   dependent: :nullify, foreign_key: :statement_id
+      has_many :plans,      dependent: :nullify, foreign_key: :contract_id
 
       configure_enumerables :document_type, TYPES
 

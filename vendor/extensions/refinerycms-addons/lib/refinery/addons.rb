@@ -10,6 +10,7 @@ module Refinery
     require 'refinery/addons/display_decorators'
     require 'refinery/addons/engine'
     require 'refinery/addons/has_comments'
+    require 'refinery/addons/report_renderer'
 
     class << self
       attr_writer :root

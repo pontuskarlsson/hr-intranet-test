@@ -25,7 +25,15 @@
     var renderSummary = function(events) {
       $('#billables-summary').html('');
 
+      var startOfMonth = calendar.getDate();
+      var startOfNextMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth() + 1, 1);
+
       var summary = events.reduce(function(acc, event) {
+        // Do not include the events that might span the corner cells for previous or next month
+        var eventDate = new Date(event.billable_date);
+        if (eventDate < startOfMonth || eventDate >= startOfNextMonth)
+          return acc;
+
         var companies = [event.company_label, event.supplier_label, event.manufacturer_label].join(' | ');
         if (!acc[event.assigned_to_label]) {
           acc[event.assigned_to_label] = {};
@@ -63,6 +71,9 @@
       $('<td colspan="5"></td>').text(tot_days).appendTo($row);
       $row.appendTo($table, 'tfoot');
 
+      $('<h3></h3>')
+        .text('Summary for ' + calendar.getDate().format("mmmm yyyy"))
+        .appendTo('#billables-summary');
       $table.appendTo('#billables-summary');
     };
 

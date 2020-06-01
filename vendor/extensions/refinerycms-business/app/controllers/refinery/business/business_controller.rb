@@ -57,6 +57,18 @@ module Refinery
         params.has_key? :draw
       end
 
+      def create_resource_from_content(file_content, file_name, access_hash = {})
+        resource = Refinery::Resource.new.tap do |r|
+          r.file = file_content
+          r.file.name = file_name
+          r.file_mime_type = r.file.mime_type
+          r.authorizations_access = Refinery::Resource.access_string_for access_hash
+        end
+
+        resource.save!
+        resource
+      end
+
     end
   end
 end

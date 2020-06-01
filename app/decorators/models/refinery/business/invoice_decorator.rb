@@ -10,6 +10,13 @@ Refinery::Business::Invoice.class_eval do
                      # notifier: :user,
                      email_allowed: :is_email_allowed?
 
+  acts_as_notifiable :'refinery/business/billing_accounts',
+                     targets: ->(invoice, key) {
+                       Refinery::Business::BillingAccount.where(company_id: invoice.company_id)
+                     },
+                     tracked: false, # no automatic callbacks
+                     email_allowed: :is_ba_email_allowed?
+
   def notifiable_path(target, key)
     refinery.business_invoice_path(self)
   end
@@ -17,6 +24,11 @@ Refinery::Business::Invoice.class_eval do
   def is_email_allowed?(target, key)
     # Do not send out emails for notifications that will be batch notified afterwards.
     !%w(invoice.prepared invoice.payout).include? key
+  end
+
+  def is_ba_email_allowed?(target, key)
+    # Do not send out emails for notifications that will be batch notified afterwards.
+    !%w().include? key
   end
 
   def printable_name

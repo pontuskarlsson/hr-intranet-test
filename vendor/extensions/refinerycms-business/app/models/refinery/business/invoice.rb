@@ -19,6 +19,8 @@ module Refinery
       belongs_to :from_company, class_name: 'Company', optional: true
       belongs_to :to_company,   class_name: 'Company', optional: true
       belongs_to :project, optional: true
+      belongs_to :statement,    class_name: 'Document',
+                                optional: true
       has_many :billables,      dependent: :nullify
       has_many :invoice_items,  dependent: :destroy
       has_one :purchase # If the invoice is for a specific purchase
@@ -41,6 +43,8 @@ module Refinery
                               company: [:name]
 
       store :plan_details, accessors: [ :plan_title, :plan_description, :plan_minimums, :plan_additionals, :plan_opening_balance, :plan_redeemed, :plan_issued, :plan_closing_balance ], coder: JSON, prefix: :plan
+
+      delegate :name, to: :company, prefix: true, allow_nil: true
 
       validates :account_id,      presence: true
       validates :invoice_id,      uniqueness: true, allow_blank: true
@@ -165,6 +169,14 @@ module Refinery
 
       def receipt?
         purchase.present?
+      end
+
+      def statement_file_name
+         if receipt?
+           "#{account&.organisation} Receipt #{invoice_number}.pdf"
+         else
+           "#{account&.organisation} Invoice #{invoice_number}.pdf"
+         end
       end
 
       def number_of_man_days
