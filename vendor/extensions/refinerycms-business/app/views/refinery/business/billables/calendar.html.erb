@@ -100,6 +100,11 @@
       },
     });
     calendar.render();
+    window._calendar = calendar;
+
+    setTimeout(function() {
+      calendar.render();
+    })
   });
 </script>
 <% end %>
