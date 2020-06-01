@@ -59,7 +59,9 @@
     </thead>
     <tbody>
     <% invoice.invoice_items.sales_purchase.each do |invoice_item|
-      qty = invoice_item.quantity - invoice_item.redeemed_vouchers.count
+      # Check how much of the line_item qty remains after deducting the vouchers that
+      # were redeemed from other invoices (not issued and redeemed right away by this invoice).
+      qty = invoice_item.quantity - invoice_item.redeemed_vouchers.where.not(line_item_prepay_in_id: nil).count
 
       # One turn first to allocate only minimum
       invoice.minimums.each do |mm|
