@@ -26,6 +26,7 @@
       $('#billables-summary').html('');
 
       var startOfMonth = calendar.getDate();
+      startOfMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth(), 1);
       var startOfNextMonth = new Date(startOfMonth.getFullYear(), startOfMonth.getMonth() + 1, 1);
 
       var summary = events.reduce(function(acc, event) {
@@ -101,10 +102,6 @@
     });
     calendar.render();
     window._calendar = calendar;
-
-    setTimeout(function() {
-      calendar.render();
-    })
   });
 </script>
 <% end %>
