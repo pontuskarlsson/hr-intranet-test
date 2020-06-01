@@ -20,4 +20,17 @@ class ActivityMailer < ActivityNotification::Mailer
     end
   end
 
+  # Prepare email header from notification key and options.
+  #
+  # @param [String] key Key of the notification
+  # @param [Hash] options Options for email notification
+  def headers_for(key, options)
+    super.tap do |headers|
+      if key == 'invoice.issued'
+        headers[:from] = 'Happy Rabbit Finance <finance@happyrabbit.com>'
+        headers[:bcc] = 'finance@happyrabbit.com'
+      end
+    end
+  end
+
 end
