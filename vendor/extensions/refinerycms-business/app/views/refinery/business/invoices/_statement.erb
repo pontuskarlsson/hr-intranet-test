@@ -102,7 +102,7 @@
           <td><%= charge.article&.name %> - Issued</td>
           <td class="currency"><%=number_to_currency charge.base_amount, unit: '' %></td>
           <td class="currency"><%=number_to_currency charge.discount_amount.present? ? charge.discount_amount : '', unit: '' %></td>
-          <td class="currency"><%=number_to_currency charge.total_amount, unit: '' %></td>
+          <td class="currency"><%=number_to_currency charge.total_amount + charge.total_additional_amount, unit: '' %></td>
         </tr>
       <% end %>
     <% end %>
