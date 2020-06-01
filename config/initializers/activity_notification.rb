@@ -36,7 +36,7 @@ ActivityNotification.configure do |config|
   config.mailer_sender = 'noreply@happyrabbit.com'
 
   # Configure the class responsible to send e-mails.
-  # config.mailer = "ActivityNotification::Mailer"
+  config.mailer = "ActivityMailer"
 
   # Configure the parent class responsible to send e-mails.
   config.parent_mailer = 'NotificationMailer'

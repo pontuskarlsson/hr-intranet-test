@@ -268,7 +268,9 @@
           <a href="http://twitter.com/happyrabbitltd"><%= asset_image_tag 'twitter.png' %></a>
         </div>
 
-        <p style="margin-bottom: 20px;"><%= link_to 'Manage your subscription', user_subscriptions_url(@target) %></p>
+        <% if @target.is_a?(::Refinery::Authentication::Devise::User) %>
+          <p style="margin-bottom: 20px;"><%= link_to 'Manage your subscription', user_subscriptions_url(@target) %></p>
+        <% end %>
 
         <p><strong>Happy Rabbit Group</strong></p>
         <p>2104, Wai Wah Commercial Centre<br>

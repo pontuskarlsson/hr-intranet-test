@@ -35,6 +35,7 @@ module Refinery
 
       def success(job)
         @invoice.notify :'refinery/authentication/devise/users', key: 'invoice.issued'
+        @invoice.notify :'refinery/business/billing_accounts', key: 'invoice.issued'
       end
 
       def error(job, exception)

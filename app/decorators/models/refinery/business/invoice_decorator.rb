@@ -43,6 +43,7 @@ Refinery::Business::Invoice.class_eval do
     case key
     when 'invoice.issued' then "Invoice #{invoice_number} has been issued"
     when 'batch.invoice.payout' then "Stripe Payout"
+    when 'batch.invoice.prepared' then 'Invoices have been prepared'
     else "Invoice #{invoice_number}"
     end
   end
