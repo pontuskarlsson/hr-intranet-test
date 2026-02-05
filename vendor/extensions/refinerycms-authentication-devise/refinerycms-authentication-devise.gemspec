@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.license           = %q{MIT}
   s.require_paths     = %w(lib)
 
-  s.files             = `git ls-files`.split("\n")
-  s.test_files        = `git ls-files -- spec/*`.split("\n")
+  s.files             = Dir.glob("{app,config,db,lib}/**/*") + Dir.glob("*.{md,txt,gemspec}")
+  s.test_files        = Dir.glob("spec/**/*")
 
   s.add_dependency 'refinerycms-core',  ['>= 3.0.0', '< 5.0']
   s.add_dependency 'actionmailer',      ['>= 5.0.0', '< 5.2']
