@@ -18,5 +18,7 @@ RUN bundle install
 ENV RAILS_LOG_TO_STDOUT=enabled
 ENV RAILS_SERVE_STATIC_FILES=enabled
 
-# Shell form - variables expand at runtime
-CMD bundle exec rails server -b 0.0.0.0 -p ${PORT}
+# Make entrypoint executable
+RUN chmod +x /myapp/docker-entrypoint.sh
+
+ENTRYPOINT ["/myapp/docker-entrypoint.sh"]
