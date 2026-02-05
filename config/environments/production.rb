@@ -40,7 +40,8 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  # Disabled when behind a reverse proxy (Railway, Heroku, etc.) that handles SSL
+  config.force_ssl = ENV['RAILS_FORCE_SSL'].present?
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
@@ -87,8 +88,9 @@ Rails.application.configure do
   config.active_job.queue_adapter = :delayed_job
 
   config.after_initialize do
-    ::ActsAsIndexed.configure do |config|
-      config.index_file = ['/var/app/support/aai_index']
+    ::ActsAsIndexed.configure do |aai_config|
+      # Use env var or default to /tmp for Docker/Railway compatibility
+      aai_config.index_file = [ENV.fetch('AAI_INDEX_PATH', '/tmp/aai_index')]
     end
   end
 end
