@@ -18,4 +18,5 @@ RUN bundle install
 ENV RAILS_LOG_TO_STDOUT=enabled
 ENV RAILS_SERVE_STATIC_FILES=enabled
 
-CMD ["sh", "-c", "echo 'Starting Rails on port $PORT' && exec bundle exec rails server -b 0.0.0.0 -p $PORT"]
+# Shell form - variables expand at runtime
+CMD bundle exec rails server -b 0.0.0.0 -p ${PORT}
