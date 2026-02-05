@@ -14,6 +14,5 @@ COPY . /myapp
 
 RUN bundle install
 
-# Simple startup - just run Rails
-# Assets will compile on first request (config.assets.compile = true)
-CMD ["sh", "-c", "echo '=== Starting Rails ===' && echo \"PORT=$PORT\" && bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}"]
+# Use shell form - variable expansion happens at runtime
+CMD echo "Starting on PORT=$PORT" && exec bundle exec rails server -b 0.0.0.0 -p $PORT
