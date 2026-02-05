@@ -14,5 +14,14 @@ COPY . /myapp
 
 RUN bundle install
 
-# Use shell form - variable expansion happens at runtime
-CMD echo "Starting on PORT=$PORT" && exec bundle exec rails server -b 0.0.0.0 -p $PORT
+# Startup script with full error output
+RUN printf '#!/bin/bash\n\
+set -x\n\
+echo "PORT=$PORT"\n\
+echo "RAILS_ENV=$RAILS_ENV"\n\
+echo "DATABASE_URL set: $(test -n "$DATABASE_URL" && echo yes || echo no)"\n\
+echo "Starting Rails..."\n\
+exec bundle exec rails server -b 0.0.0.0 -p $PORT 2>&1\n\
+' > /start.sh && chmod +x /start.sh
+
+CMD ["/start.sh"]
