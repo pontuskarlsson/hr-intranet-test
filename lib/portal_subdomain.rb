@@ -1,6 +1,8 @@
 class PortalSubdomain
 
   def self.matches? request
+    # Allow Railway domain or matching subdomain
+    return true if ENV['RAILWAY_PUBLIC_DOMAIN'].present? && request.host == ENV['RAILWAY_PUBLIC_DOMAIN']
     request.subdomain == portal
   end
 
@@ -9,6 +11,9 @@ class PortalSubdomain
   end
 
   def self.domain
+    # Use Railway domain if set, otherwise use happyrabbit.com
+    return ENV['RAILWAY_PUBLIC_DOMAIN'] if ENV['RAILWAY_PUBLIC_DOMAIN'].present?
+
     if Rails.env.production?
       "#{portal}.happyrabbit.com"
     else
