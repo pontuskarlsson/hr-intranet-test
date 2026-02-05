@@ -14,14 +14,8 @@ COPY . /myapp
 
 RUN bundle install
 
-# Startup script with full error output
-RUN printf '#!/bin/bash\n\
-set -x\n\
-echo "PORT=$PORT"\n\
-echo "RAILS_ENV=$RAILS_ENV"\n\
-echo "DATABASE_URL set: $(test -n "$DATABASE_URL" && echo yes || echo no)"\n\
-echo "Starting Rails..."\n\
-exec bundle exec rails server -b 0.0.0.0 -p $PORT 2>&1\n\
-' > /start.sh && chmod +x /start.sh
+# Set environment for logging
+ENV RAILS_LOG_TO_STDOUT=enabled
+ENV RAILS_SERVE_STATIC_FILES=enabled
 
-CMD ["/start.sh"]
+CMD ["sh", "-c", "echo 'Starting Rails on port $PORT' && exec bundle exec rails server -b 0.0.0.0 -p $PORT"]
