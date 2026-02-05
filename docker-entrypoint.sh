@@ -10,5 +10,5 @@ if [ -z "$PORT" ]; then
   exit 1
 fi
 
-echo "Starting Puma on port $PORT..."
-exec bundle exec puma -C config/puma.rb
+echo "Starting Rails on port $PORT..."
+exec bundle exec rails server -b 0.0.0.0 -p "$PORT"
